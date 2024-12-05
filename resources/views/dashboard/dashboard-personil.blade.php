@@ -30,7 +30,7 @@
         </div><!-- end card -->
         <div class="card">
             <div class="card-header bg-primary-subtle">
-                <h4 class="card-title mb-0">Selamat Ulang Tahun</h4>
+                <h4 class="card-title mb-0">Selamat Ulang Tahun Bro!!</h4>
             </div><!-- end card header -->
             <div class="card-body">
 
