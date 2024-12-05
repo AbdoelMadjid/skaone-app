@@ -23,6 +23,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class PesertaDidikController extends Controller
 {
@@ -150,43 +151,75 @@ class PesertaDidikController extends Controller
      */
     public function update(PesertaDidikRequest $request, PesertaDidik $pesertaDidik)
     {
-        // Proses file foto jika ada yang diunggah
+        $this->validate($request, [
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:256000',
+        ]);
+
+        $imageName = $pesertaDidik->foto; // Nama foto default (sebelum diubah)
+        $isPhotoUpdated = false; // Untuk melacak apakah foto diperbarui
+
         if ($request->hasFile('foto')) {
-            // Hapus foto lama jika ada
+            // Hapus foto lama dan thumbnail jika ada
             if ($pesertaDidik->foto) {
-                $oldPhotoPath = base_path('images/peserta_didik/' . $pesertaDidik->foto);
-                if (file_exists($oldPhotoPath)) {
-                    unlink($oldPhotoPath);
+                $oldImagePath = base_path('images/peserta_didik/' . $pesertaDidik->foto);
+                $oldThumbnailPath = base_path('images/thumbnail/' . $pesertaDidik->foto);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
+                if (file_exists($oldThumbnailPath)) {
+                    unlink($oldThumbnailPath);
                 }
             }
 
-            // Unggah foto baru
-            $appPhotoFile = $request->file('foto');
-            $appPhotoName = time() . '_' . $appPhotoFile->getClientOriginalName();
-            $appPhotoFile->move(base_path('images/peserta_didik/'), $appPhotoName);
+            // Proses upload foto baru
+            $imageFile = $request->file('foto');
+            $imageName = 'pd_' . time() . '.' . $imageFile->extension();
 
-            // Setel nama file baru pada model
-            $pesertaDidik->foto = $appPhotoName;
+            // Simpan thumbnail di `images/thumbnail`
+            $thumbnailPath = base_path('images/thumbnail');
+            $img = Image::make($imageFile->path());
+            $img->resize(150, 150, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save($thumbnailPath . '/' . $imageName);
+
+            // Simpan foto asli di `images/peserta_didik`
+            $destinationPath = base_path('images/peserta_didik');
+            $imageFile->move($destinationPath, $imageName);
+
+            $isPhotoUpdated = true; // Tandai bahwa foto diperbarui
         }
 
-        // Cek perubahan pada nama_lengkap dan kontak_email
+        // Cek perubahan nama atau email
         $isNameChanged = $pesertaDidik->nama_lengkap !== $request->input('nama_lengkap');
         $isEmailChanged = $pesertaDidik->kontak_email !== $request->input('kontak_email');
 
-
-        // Isi atribut lain dari request kecuali 'foto'
+        // Perbarui data di `peserta_didik`
         $pesertaDidik->fill($request->except('foto'));
+        $pesertaDidik->foto = $imageName; // Perbarui nama foto jika ada
         $pesertaDidik->save();
 
-        // Update data di tabel users jika nama_lengkap atau kontak_email berubah
-        if ($isNameChanged || $isEmailChanged) {
-            $user = User::where('nis', $pesertaDidik->nis)->first();
+        // Perbarui data di tabel `users` sesuai kondisi
+        $user = User::where('nis', $pesertaDidik->nis)->first();
+        if ($user) {
+            // Periksa apakah avatar berbeda dengan foto
+            $isAvatarDifferent = $user->avatar !== $imageName;
 
-            if ($user) {
+            // Opsi 1: Jika foto diperbarui, avatar selalu diupdate
+            // Opsi 2: Jika foto dan avatar berbeda, sinkronkan avatar dengan foto
+            if ($isPhotoUpdated || $isAvatarDifferent) {
                 $user->update([
                     'name' => $request->input('nama_lengkap'),
                     'email' => $request->input('kontak_email'),
+                    'avatar' => $imageName, // Sinkronkan avatar dengan foto
                 ]);
+            } else {
+                // Jika hanya nama atau email yang berubah
+                if ($isNameChanged || $isEmailChanged) {
+                    $user->update([
+                        'name' => $request->input('nama_lengkap'),
+                        'email' => $request->input('kontak_email'),
+                    ]);
+                }
             }
         }
 

@@ -56,8 +56,30 @@ class PesertaDidikDataTable extends DataTable
                     $logoPath = $defaultPhotoPath;
                 }
 
+                $AvatarUser = DB::table('users')
+                    ->select('avatar')
+                    ->where('nis', $row->nis)
+                    ->first(); // Mengambil satu baris data
+
+                $avataruserPath = ''; // Inisialisasi
+
+                if ($AvatarUser && $AvatarUser->avatar) {
+                    $avatarPath = base_path('images/peserta_didik/' . $AvatarUser->avatar);
+
+                    // Periksa apakah file avatar ada
+                    if (file_exists($avatarPath)) {
+                        $avataruserPath = asset('images/peserta_didik/' . $AvatarUser->avatar);
+                    } else {
+                        // Jika file tidak ada, gunakan foto default berdasarkan jenis kelamin
+                        $avataruserPath = $defaultPhotoPath;
+                    }
+                } else {
+                    // Jika tidak ada data avatar, gunakan foto default
+                    $avataruserPath = $defaultPhotoPath;
+                }
+
                 // Mengembalikan tag img dengan path gambar
-                return '<img src="' . $logoPath . '" alt="Foto" width="50" />';
+                return '<img src="' . $logoPath . '" alt="Foto" width="50" /><img src="' . $avataruserPath . '" alt="Foto" width="50" />';
             })
             ->addColumn('tempat_tanggal_lahir', function ($row) {
                 return $row->tempat_lahir . ', ' . \Carbon\Carbon::parse($row->tanggal_lahir)->format('d-m-Y');
