@@ -81,7 +81,7 @@
                                             class="d-flex justify-content-between border-bottom border-bottom-dashed py-0">
                                             <p class="fw-medium mb-0">
                                                 @if ($user->avatar == 'personil.jpg' || $user->avatar == 'siswacewek.png' || $user->avatar == 'siswacowok.png')
-                                                    <img src="{{ URL::asset('build/images/user-dummy-img.jpg') }}"
+                                                    <img src="{{ URL::asset('build/images/users/user-dummy-img.jpg') }}"
                                                         alt="" class="avatar-xs rounded-circle me-2">
                                                 @else
                                                     <img src="{{ URL::asset('images/thumbnail/' . $user->avatar . '') }}"
