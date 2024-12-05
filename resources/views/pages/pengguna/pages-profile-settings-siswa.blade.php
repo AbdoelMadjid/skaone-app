@@ -32,7 +32,7 @@
                                 <img src="{{ URL::asset('images/peserta_didik/' . $pesertaDidik->foto) }}" alt="User Avatar"
                                     class="rounded-circle avatar-xl img-thumbnail user-profile-image">
                             @endif
-                            <div class="p-0 avatar-xs rounded-circle profile-photo-edit">
+                            {{-- <div class="p-0 avatar-xs rounded-circle profile-photo-edit">
                                 <input id="profile-img-file-input" type="file" name="profile_image"
                                     class="profile-img-file-input" required>
                                 <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
@@ -40,7 +40,7 @@
                                         <i class="ri-camera-fill"></i>
                                     </span>
                                 </label>
-                            </div>
+                            </div> --}}
                         </div>
                         <h5 class="mb-1 fs-16">{{ $pesertaDidik->nama_lengkap }}</h5>
                         <p class="mb-0 text-muted">{{ $user->role_labels }}</p>
