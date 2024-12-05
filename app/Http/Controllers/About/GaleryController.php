@@ -56,7 +56,7 @@ class GaleryController extends Controller
             $imageName = time() . '.' . $image->extension();
 
             // Membuat dan menyimpan thumbnail di `public/images/thumbnail`
-            $destinationPathThumbnail = public_path('images/thumbnail');
+            $destinationPathThumbnail = base_path('images/thumbnail');
             $img = Image::make($image->path());
 
             // Tentukan persentase ukuran yang diinginkan (misalnya 50% dari ukuran asli)
@@ -72,7 +72,7 @@ class GaleryController extends Controller
             })->save($destinationPathThumbnail . '/' . $imageName);
 
             // Menyimpan file gambar asli di `public/images/galery`
-            $destinationPath = public_path('images/galery');
+            $destinationPath = base_path('images/galery');
             $image->move($destinationPath, $imageName);
 
             // Menyimpan nama file ke database
@@ -128,8 +128,8 @@ class GaleryController extends Controller
         if ($request->hasFile('image')) {
             // Hapus gambar dan thumbnail lama jika ada
             if ($galery->image) {
-                $oldImagePath = public_path('images/galery/' . $galery->image);
-                $oldThumbnailPath = public_path('images/thumbnail/' . $galery->image);
+                $oldImagePath = base_path('images/galery/' . $galery->image);
+                $oldThumbnailPath = base_path('images/thumbnail/' . $galery->image);
                 if (file_exists($oldImagePath)) {
                     unlink($oldImagePath);
                 }
@@ -143,7 +143,7 @@ class GaleryController extends Controller
             $galeryName = time() . '.' . $galeryFile->extension();
 
             // Buat dan simpan thumbnail di `public/images/thumbnail`
-            $destinationPathThumbnail = public_path('images/thumbnail');
+            $destinationPathThumbnail = base_path('images/thumbnail');
             $img = Image::make($galeryFile->path());
 
             // Tentukan persentase ukuran (misalnya 50% dari ukuran asli)
@@ -159,7 +159,7 @@ class GaleryController extends Controller
             })->save($destinationPathThumbnail . '/' . $galeryName);
 
             // Simpan gambar asli di `public/images/galery`
-            $destinationPath = public_path('images/galery');
+            $destinationPath = base_path('images/galery');
             $galeryFile->move($destinationPath, $galeryName);
 
             // Perbarui nama file gambar di database
@@ -180,8 +180,8 @@ class GaleryController extends Controller
     {
         // Hapus file gambar dan thumbnail jika ada
         if ($galery->image) {
-            $imagePath = public_path('images/galery/' . $galery->image);
-            $thumbnailPath = public_path('images/thumbnail/' . $galery->image);
+            $imagePath = base_path('images/galery/' . $galery->image);
+            $thumbnailPath = base_path('images/thumbnail/' . $galery->image);
 
             // Periksa dan hapus file gambar asli
             if (file_exists($imagePath)) {

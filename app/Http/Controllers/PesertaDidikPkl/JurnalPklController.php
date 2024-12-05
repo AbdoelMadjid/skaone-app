@@ -77,7 +77,7 @@ class JurnalPklController extends Controller
             $imageName = 'jurnal_' . time() . '.' . $image->extension();
 
             // Membuat dan menyimpan thumbnail di `public/images/thumbnail`
-            $destinationPathThumbnail = public_path('images/thumbnail');
+            $destinationPathThumbnail = base_path('images/thumbnail');
             $img = Image::make($image->path());
 
             // Tentukan persentase ukuran yang diinginkan (misalnya 50% dari ukuran asli)
@@ -93,7 +93,7 @@ class JurnalPklController extends Controller
             })->save($destinationPathThumbnail . '/' . $imageName);
 
             // Menyimpan file gambar asli di `public/images/galery`
-            $destinationPath = public_path('images/jurnal-pkl');
+            $destinationPath = base_path('images/jurnal-pkl');
             $image->move($destinationPath, $imageName);
 
             // Menyimpan nama file ke database

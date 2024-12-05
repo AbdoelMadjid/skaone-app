@@ -31,7 +31,7 @@ class ValidasiJurnalDataTable extends DataTable
                 $defaultPhotoPath = asset('images/noimagejurnal.jpg');
 
                 // Tentukan path foto dari database
-                $imagePath = public_path('images/jurnal-pkl/' . $row->gambar);
+                $imagePath = base_path('images/jurnal-pkl/' . $row->gambar);
                 $gamabrPath = '';
 
                 // Cek apakah file foto ada di folder 'images/personil'

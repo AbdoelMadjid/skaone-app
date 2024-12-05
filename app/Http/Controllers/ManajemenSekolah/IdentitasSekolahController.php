@@ -39,7 +39,7 @@ class IdentitasSekolahController extends Controller
         if ($request->hasFile('logo_sekolah')) {
             // Delete the old icon if it exists
             if ($identitasSekolah->logo_sekolah) {
-                $oldIconPath = public_path('images' . $identitasSekolah->logo_sekolah);
+                $oldIconPath = base_path('images' . $identitasSekolah->logo_sekolah);
                 if (file_exists($oldIconPath)) {
                     unlink($oldIconPath);
                 }
@@ -47,7 +47,7 @@ class IdentitasSekolahController extends Controller
             // Upload the new icon
             $identitasSekolahFile = $request->file('logo_sekolah');
             $identitasSekolahName = time() . '_' . $identitasSekolahFile->getClientOriginalName();
-            $identitasSekolahFile->move(public_path('images'), $identitasSekolahName);
+            $identitasSekolahFile->move(base_path('images'), $identitasSekolahName);
             $identitasSekolah->logo_sekolah = $identitasSekolahName;
         }
 
@@ -86,7 +86,7 @@ class IdentitasSekolahController extends Controller
         if ($request->hasFile('logo_sekolah')) {
             // Delete the old icon if it exists
             if ($identitasSekolah->logo_sekolah) {
-                $oldLogoPath = public_path('images/' . $identitasSekolah->logo_sekolah);
+                $oldLogoPath = base_path('images/' . $identitasSekolah->logo_sekolah);
                 if (file_exists($oldLogoPath)) {
                     unlink($oldLogoPath);
                 }
@@ -94,7 +94,7 @@ class IdentitasSekolahController extends Controller
             // Upload the new Logo
             $appLogoFile = $request->file('logo_sekolah');
             $appLogoName = time() . '_' . $appLogoFile->getClientOriginalName();
-            $appLogoFile->move(public_path('images'), $appLogoName);
+            $appLogoFile->move(base_path('images'), $appLogoName);
             $identitasSekolah->logo_sekolah = $appLogoName;
         }
 

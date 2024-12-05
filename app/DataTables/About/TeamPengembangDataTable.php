@@ -35,7 +35,7 @@ class TeamPengembangDataTable extends DataTable
                     : asset('images/cewek.png');
 
                 // Tentukan path photo dari database
-                $imagePath = public_path('images/team/' . $row->photo);
+                $imagePath = base_path('images/team/' . $row->photo);
                 $logoPath = '';
 
                 // Cek apakah file photo ada di folder 'images/personil'

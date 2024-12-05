@@ -10,7 +10,7 @@
 
             <h5 class="fs-14 mb-3 mt-4">Image Galery</h5>
             <img id="image-preview"
-                src="{{ $data->image && file_exists(public_path('images/galery/' . $data->image)) ? asset('images/galery/' . $data->image) : asset('build/images/bg-auth.jpg') }}"
+                src="{{ $data->image && file_exists(base_path('images/galery/' . $data->image)) ? asset('images/galery/' . $data->image) : asset('build/images/bg-auth.jpg') }}"
                 width="350" alt="Photo" />
 
         </div>

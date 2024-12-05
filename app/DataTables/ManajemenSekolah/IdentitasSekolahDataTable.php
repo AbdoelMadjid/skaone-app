@@ -30,7 +30,7 @@ class IdentitasSekolahDataTable extends DataTable
             })
             ->addColumn('detail', function ($row) {
                 // Define the paths
-                $imagePath = public_path('images/' . $row->logo_sekolah);
+                $imagePath = base_path('images/' . $row->logo_sekolah);
                 $logoPath = '';
 
                 // Check if the file exists in the 'images' folder

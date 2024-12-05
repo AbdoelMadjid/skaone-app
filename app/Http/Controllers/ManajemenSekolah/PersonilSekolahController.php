@@ -70,7 +70,7 @@ class PersonilSekolahController extends Controller
         if ($request->hasFile('photo')) {
             // Delete the old icon if it exists
             if ($personilSekolah->photo) {
-                $oldIconPath = public_path('images/personil' . $personilSekolah->photo);
+                $oldIconPath = base_path('images/personil' . $personilSekolah->photo);
                 if (file_exists($oldIconPath)) {
                     unlink($oldIconPath);
                 }
@@ -78,7 +78,7 @@ class PersonilSekolahController extends Controller
             // Upload the new icon
             $personilSekolahFile = $request->file('photo');
             $personilSekolahName = time() . '_' . $personilSekolahFile->getClientOriginalName();
-            $personilSekolahFile->move(public_path('images/personil'), $personilSekolahName);
+            $personilSekolahFile->move(base_path('images/personil'), $personilSekolahName);
             $personilSekolah->photo = $personilSekolahName;
         }
 
@@ -121,7 +121,7 @@ class PersonilSekolahController extends Controller
         if ($request->hasFile('photo')) {
             // Hapus foto lama jika ada
             if ($personilSekolah->photo) {
-                $oldPhotoPath = public_path('images/personil/' . $personilSekolah->photo);
+                $oldPhotoPath = base_path('images/personil/' . $personilSekolah->photo);
                 if (file_exists($oldPhotoPath)) {
                     unlink($oldPhotoPath);
                 }
@@ -130,7 +130,7 @@ class PersonilSekolahController extends Controller
             // Unggah foto baru
             $appPhotoFile = $request->file('photo');
             $appPhotoName = time() . '_' . $appPhotoFile->getClientOriginalName();
-            $appPhotoFile->move(public_path('images/personil/'), $appPhotoName);
+            $appPhotoFile->move(base_path('images/personil/'), $appPhotoName);
 
             // Setel nama file baru pada model
             $personilSekolah->photo = $appPhotoName;

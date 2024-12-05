@@ -41,7 +41,7 @@ class AppProfilController extends Controller
         if ($request->hasFile('app_icon')) {
             // Delete the old icon if it exists
             if ($appProfil->app_icon) {
-                $oldIconPath = public_path('images/' . $appProfil->app_icon);
+                $oldIconPath = base_path('images/' . $appProfil->app_icon);
                 if (file_exists($oldIconPath)) {
                     unlink($oldIconPath);
                 }
@@ -49,7 +49,7 @@ class AppProfilController extends Controller
             // Upload the new icon
             $appIconFile = $request->file('app_icon');
             $appIconName = time() . '_' . $appIconFile->getClientOriginalName();
-            $appIconFile->move(public_path('images'), $appIconName);
+            $appIconFile->move(base_path('images'), $appIconName);
             $appProfil->app_icon = $appIconName;
         }
 
@@ -62,7 +62,7 @@ class AppProfilController extends Controller
         if ($request->hasFile('app_logo')) {
             // Delete the old icon if it exists
             if ($appProfil->app_logo) {
-                $oldLogoPath = public_path('images/' . $appProfil->app_logo);
+                $oldLogoPath = base_path('images/' . $appProfil->app_logo);
                 if (file_exists($oldLogoPath)) {
                     unlink($oldLogoPath);
                 }
@@ -70,7 +70,7 @@ class AppProfilController extends Controller
             // Upload the new icon
             $appLogoFile = $request->file('app_logo');
             $appLogoName = time() . '_' . $appLogoFile->getClientOriginalName();
-            $appLogoFile->move(public_path('images'), $appLogoName);
+            $appLogoFile->move(base_path('images'), $appLogoName);
             $appProfil->app_logo = $appLogoName;
         }
 
@@ -113,7 +113,7 @@ class AppProfilController extends Controller
         if ($request->hasFile('app_icon')) {
             // Delete the old icon if it exists
             if ($appProfil->app_icon) {
-                $oldIconPath = public_path('images/' . $appProfil->app_icon);
+                $oldIconPath = base_path('images/' . $appProfil->app_icon);
                 if (file_exists($oldIconPath)) {
                     unlink($oldIconPath);
                 }
@@ -121,7 +121,7 @@ class AppProfilController extends Controller
             // Upload the new icon
             $appIconFile = $request->file('app_icon');
             $appIconName = time() . '_' . $appIconFile->getClientOriginalName();
-            $appIconFile->move(public_path('images'), $appIconName);
+            $appIconFile->move(base_path('images'), $appIconName);
             $appProfil->app_icon = $appIconName;
         }
 
@@ -129,7 +129,7 @@ class AppProfilController extends Controller
         if ($request->hasFile('app_logo')) {
             // Delete the old logo if it exists
             if ($appProfil->app_logo) {
-                $oldLogoPath = public_path('images/' . $appProfil->app_logo);
+                $oldLogoPath = base_path('images/' . $appProfil->app_logo);
                 if (file_exists($oldLogoPath)) {
                     unlink($oldLogoPath);
                 }
@@ -137,7 +137,7 @@ class AppProfilController extends Controller
             // Upload the new logo
             $appLogoFile = $request->file('app_logo');
             $appLogoName = time() . '_' . $appLogoFile->getClientOriginalName();
-            $appLogoFile->move(public_path('images'), $appLogoName);
+            $appLogoFile->move(base_path('images'), $appLogoName);
             $appProfil->app_logo = $appLogoName;
         }
 

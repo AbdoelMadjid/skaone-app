@@ -177,8 +177,8 @@ class ProfilPenggunaController extends Controller
         if ($request->hasFile('profile_image')) {
             // Hapus gambar dan thumbnail lama jika ada
             if ($personil->photo) {
-                $oldImagePath = public_path('images/personil/' . $personil->photo);
-                $oldThumbnailPath = public_path('images/thumbnail/' . $personil->photo);
+                $oldImagePath = base_path('images/personil/' . $personil->photo);
+                $oldThumbnailPath = base_path('images/thumbnail/' . $personil->photo);
                 if (file_exists($oldImagePath)) {
                     unlink($oldImagePath);
                 }
@@ -192,7 +192,7 @@ class ProfilPenggunaController extends Controller
             $personilName = 'pgw_' . time() . '.' . $personilFile->extension();
 
             // Buat dan simpan thumbnail di `public/images/thumbnail`
-            $destinationPathThumbnail = public_path('images/thumbnail');
+            $destinationPathThumbnail = base_path('images/thumbnail');
             $img = Image::make($personilFile->path());
 
             // Tentukan persentase ukuran (misalnya 50% dari ukuran asli)
@@ -208,7 +208,7 @@ class ProfilPenggunaController extends Controller
             })->save($destinationPathThumbnail . '/' . $personilName);
 
             // Simpan gambar asli di `public/images/personil`
-            $destinationPath = public_path('images/personil');
+            $destinationPath = base_path('images/personil');
             $personilFile->move($destinationPath, $personilName);
 
             // Perbarui nama file gambar di database
@@ -245,7 +245,7 @@ class ProfilPenggunaController extends Controller
         if ($request->hasFile('bg_profil')) {
             // Jika sudah ada foto, hapus foto lama
             if ($personil->bg_profil) {
-                $oldPhotoPath = public_path('images/bgprofil/' . $personil->bg_profil);
+                $oldPhotoPath = base_path('images/bgprofil/' . $personil->bg_profil);
                 if (file_exists($oldPhotoPath)) {
                     unlink($oldPhotoPath); // Hapus foto lama
                 }
@@ -254,7 +254,7 @@ class ProfilPenggunaController extends Controller
             // Upload foto baru
             $photoFile = $request->file('bg_profil');
             $photoName = 'bgp_' . time() . '.' . $photoFile->extension();
-            $photoFile->move(public_path('images/bgprofil'), $photoName);
+            $photoFile->move(base_path('images/bgprofil'), $photoName);
             $personil->bg_profil = $photoName; // Simpan nama foto baru
         }
 
@@ -282,8 +282,8 @@ class ProfilPenggunaController extends Controller
         if ($request->hasFile('profile_image')) {
             // Hapus gambar dan thumbnail lama jika ada
             if ($pesertadidik->foto) {
-                $oldImagePath = public_path('images/peserta_didik/' . $pesertadidik->foto);
-                $oldThumbnailPath = public_path('images/thumbnail/' . $pesertadidik->foto);
+                $oldImagePath = base_path('images/peserta_didik/' . $pesertadidik->foto);
+                $oldThumbnailPath = base_path('images/thumbnail/' . $pesertadidik->foto);
                 if (file_exists($oldImagePath)) {
                     unlink($oldImagePath);
                 }
@@ -297,7 +297,7 @@ class ProfilPenggunaController extends Controller
             $pesertadidikName = 'pd_' . time() . '.' . $pesertadidikFile->extension();
 
             // Buat dan simpan thumbnail di `public/images/thumbnail`
-            $destinationPathThumbnail = public_path('images/thumbnail');
+            $destinationPathThumbnail = base_path('images/thumbnail');
             $img = Image::make($pesertadidikFile->path());
 
             // Tentukan persentase ukuran (misalnya 50% dari ukuran asli)
@@ -313,7 +313,7 @@ class ProfilPenggunaController extends Controller
             })->save($destinationPathThumbnail . '/' . $pesertadidikName);
 
             // Simpan gambar asli di `public/images/pesertadidik`
-            $destinationPath = public_path('images/peserta_didik');
+            $destinationPath = base_path('images/peserta_didik');
             $pesertadidikFile->move($destinationPath, $pesertadidikName);
 
             // Perbarui nama file gambar di database

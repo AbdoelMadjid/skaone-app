@@ -58,7 +58,7 @@ class User extends Authenticatable
 
     /* public function getAvatarUrlAttribute()
     {
-        $avatarPath = public_path('images/personil/' . $this->avatar);
+        $avatarPath = base_path('images/personil/' . $this->avatar);
 
         // Cek apakah file avatar ada di folder public/images/personil/
         if ($this->avatar && file_exists($avatarPath)) {
@@ -83,7 +83,7 @@ class User extends Authenticatable
             $personil = PersonilSekolah::where('id_personil', $this->personal_id)->first();
 
             if ($personil && $personil->photo) {
-                $avatarPath = public_path('images/personil/' . $personil->photo);
+                $avatarPath = base_path('images/personil/' . $personil->photo);
 
                 // Cek apakah file avatar ada di folder public/images/personil/
                 if (file_exists($avatarPath)) {
@@ -104,7 +104,7 @@ class User extends Authenticatable
             $pesertaDidik = PesertaDidik::where('nis', $this->nis)->first();
 
             if ($pesertaDidik && $pesertaDidik->foto) {
-                $avatarPath = public_path('images/peserta_didik/' . $pesertaDidik->foto);
+                $avatarPath = base_path('images/peserta_didik/' . $pesertaDidik->foto);
 
                 // Cek apakah file avatar ada di folder public/images/pesertadidik/
                 if (file_exists($avatarPath)) {

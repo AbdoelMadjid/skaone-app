@@ -41,9 +41,9 @@
             <x-form.input name="alamat_email" :value="old('alamat_email', $data->alamat_email)" label="Email" />
             <x-form.input name="logo_sekolah" type="file" label="Logo Sekolah" />
             <h5 class="fs-14 mb-3">Gambar Logo:</h5>
-            @if ($data->logo_sekolah && file_exists(public_path('build/images/' . $data->logo_sekolah)))
+            @if ($data->logo_sekolah && file_exists(base_path('build/images/' . $data->logo_sekolah)))
                 <img src="{{ asset('build/images/' . $data->logo_sekolah) }}" width="100" alt="Logo Sekolah" />
-            @elseif ($data->logo_sekolah && file_exists(public_path('images/' . $data->logo_sekolah)))
+            @elseif ($data->logo_sekolah && file_exists(base_path('images/' . $data->logo_sekolah)))
                 <img src="{{ asset('images/' . $data->logo_sekolah) }}" width="100" alt="Logo Sekolah" />
             @else
                 <img src="{{ asset('build/images/users/user-dummy-img.jpg') }}" width="100" alt="Default Photo" />

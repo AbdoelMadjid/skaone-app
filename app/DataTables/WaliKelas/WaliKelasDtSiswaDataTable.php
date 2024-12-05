@@ -33,7 +33,7 @@ class WaliKelasDtSiswaDataTable extends DataTable
                     : asset('images/siswacewek.png');
 
                 // Tentukan path foto dari database
-                $imagePath = public_path('images/peserta_didik/' . $row->foto);
+                $imagePath = base_path('images/peserta_didik/' . $row->foto);
                 $logoPath = '';
 
                 // Cek apakah file foto ada di folder 'images/personil'

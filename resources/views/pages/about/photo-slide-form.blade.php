@@ -8,7 +8,7 @@
             <x-form.input name="gambar" type="file" label="Upload Gambar Slide" onchange="previewImage(event)" />
             <h5 class="fs-14 mb-3 mt-4">Image Slide</h5>
             <img id="image-preview"
-                src="{{ $data->gambar && file_exists(public_path('images/photoslide/' . $data->gambar)) ? asset('images/photoslide/' . $data->gambar) : asset('build/images/bg-auth.jpg') }}"
+                src="{{ $data->gambar && file_exists(base_path('images/photoslide/' . $data->gambar)) ? asset('images/photoslide/' . $data->gambar) : asset('build/images/bg-auth.jpg') }}"
                 width="350" alt="Photo" />
         </div>
         <div class="col-md-6">

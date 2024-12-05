@@ -47,7 +47,7 @@ class TeamPengembangController extends Controller
             $imageName = 'team_' . time() . '.' . $image->extension();
 
             // Membuat dan menyimpan thumbnail di `public/images/thumbnail`
-            $destinationPathThumbnail = public_path('images/thumbnail');
+            $destinationPathThumbnail = base_path('images/thumbnail');
             $img = Image::make($image->path());
 
             // Tentukan persentase ukuran yang diinginkan (misalnya 50% dari ukuran asli)
@@ -63,7 +63,7 @@ class TeamPengembangController extends Controller
             })->save($destinationPathThumbnail . '/' . $imageName);
 
             // Menyimpan file gambar asli di `public/images/galery`
-            $destinationPath = public_path('images/team');
+            $destinationPath = base_path('images/team');
             $image->move($destinationPath, $imageName);
 
             // Menyimpan nama file ke database
@@ -108,8 +108,8 @@ class TeamPengembangController extends Controller
         if ($request->hasFile('photo')) {
             // Hapus gambar dan thumbnail lama jika ada
             if ($teamPengembang->photo) {
-                $oldImagePath = public_path('images/team/' . $teamPengembang->photo);
-                $oldThumbnailPath = public_path('images/thumbnail/' . $teamPengembang->photo);
+                $oldImagePath = base_path('images/team/' . $teamPengembang->photo);
+                $oldThumbnailPath = base_path('images/thumbnail/' . $teamPengembang->photo);
                 if (file_exists($oldImagePath)) {
                     unlink($oldImagePath);
                 }
@@ -123,7 +123,7 @@ class TeamPengembangController extends Controller
             $imageName = 'team_' . time() . '.' . $imageFile->extension();
 
             // Buat dan simpan thumbnail di `public/images/thumbnail`
-            $destinationPathThumbnail = public_path('images/thumbnail');
+            $destinationPathThumbnail = base_path('images/thumbnail');
             $img = Image::make($imageFile->path());
 
             // Tentukan persentase ukuran (misalnya 50% dari ukuran asli)
@@ -139,7 +139,7 @@ class TeamPengembangController extends Controller
             })->save($destinationPathThumbnail . '/' . $imageName);
 
             // Simpan gambar asli di `public/images/galery`
-            $destinationPath = public_path('images/team');
+            $destinationPath = base_path('images/team');
             $imageFile->move($destinationPath, $imageName);
 
             // Perbarui nama file gambar di database

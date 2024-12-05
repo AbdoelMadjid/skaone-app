@@ -28,7 +28,7 @@ class GaleryDataTable extends DataTable
             ->addColumn('image', function ($row) {
 
                 // Tentukan path foto dari database
-                $imagePath = public_path('images/galery/' . $row->image);
+                $imagePath = base_path('images/galery/' . $row->image);
                 $logoPath = '';
 
                 // Cek apakah file foto ada di folder 'images/personil'

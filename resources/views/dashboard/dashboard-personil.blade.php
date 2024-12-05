@@ -84,7 +84,7 @@
                                                     <img src="{{ URL::asset('build/images/user-dummy-img.jpg') }}"
                                                         alt="" class="avatar-xs rounded-circle me-2">
                                                 @else
-                                                    <img src="{{ URL::asset('build/images/thumbnail/' . $user->avatar . '') }}"
+                                                    <img src="{{ URL::asset('images/thumbnail/' . $user->avatar . '') }}"
                                                         alt="" class="avatar-xs rounded-circle me-2">
                                                 @endif
                                                 @if ($user->personal_id)

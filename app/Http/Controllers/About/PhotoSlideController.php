@@ -40,7 +40,7 @@ class PhotoSlideController extends Controller
         if ($request->hasFile('gambar')) {
             // Delete the old icon if it exists
             if ($photoSlide->gambar) {
-                $oldIconPath = public_path('images/photoslide/' . $photoSlide->gambar);
+                $oldIconPath = base_path('images/photoslide/' . $photoSlide->gambar);
                 if (file_exists($oldIconPath)) {
                     unlink($oldIconPath);
                 }
@@ -48,7 +48,7 @@ class PhotoSlideController extends Controller
             // Upload the new icon
             $photoSlideFile = $request->file('gambar');
             $photoSlideName = time() . '_' . $photoSlideFile->getClientOriginalName();
-            $photoSlideFile->move(public_path('images/photoslide'), $photoSlideName);
+            $photoSlideFile->move(base_path('images/photoslide'), $photoSlideName);
             $photoSlide->gambar = $photoSlideName;
         }
         // Simpan instance PhotoSlide ke database
@@ -91,7 +91,7 @@ class PhotoSlideController extends Controller
         if ($request->hasFile('gambar')) {
             // Delete the old icon if it exists
             if ($photoSlide->gambar) {
-                $oldIconPath = public_path('images/photoslide/' . $photoSlide->gambar);
+                $oldIconPath = base_path('images/photoslide/' . $photoSlide->gambar);
                 if (file_exists($oldIconPath)) {
                     unlink($oldIconPath);
                 }
@@ -99,7 +99,7 @@ class PhotoSlideController extends Controller
             // Upload the new icon
             $photoSlideFile = $request->file('gambar');
             $photoSlideName = time() . '_' . $photoSlideFile->getClientOriginalName();
-            $photoSlideFile->move(public_path('images/photoslide'), $photoSlideName);
+            $photoSlideFile->move(base_path('images/photoslide'), $photoSlideName);
             $photoSlide->gambar = $photoSlideName;
         }
         // Simpan instance PhotoSlide ke database
@@ -117,7 +117,7 @@ class PhotoSlideController extends Controller
     {
         // Hapus file gambar dan thumbnail jika ada
         if ($photoSlide->gambar) {
-            $imagePath = public_path('images/photoslide/' . $photoSlide->gambar);
+            $imagePath = base_path('images/photoslide/' . $photoSlide->gambar);
 
             // Periksa dan hapus file gambar asli
             if (file_exists($imagePath)) {

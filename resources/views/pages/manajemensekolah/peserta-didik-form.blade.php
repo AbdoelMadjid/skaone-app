@@ -129,7 +129,7 @@
             </div>
             <div class="col-md-6">
                 <img id="image-preview"
-                    src="{{ $data->foto && file_exists(public_path('images/peserta_didik/' . $data->foto)) ? asset('images/peserta_didik/' . $data->foto) : asset('build/images/users/user-dummy-img.jpg') }}"
+                    src="{{ $data->foto && file_exists(base_path('images/peserta_didik/' . $data->foto)) ? asset('images/peserta_didik/' . $data->foto) : asset('build/images/users/user-dummy-img.jpg') }}"
                     width="150" alt="Photo" />
             </div>
         </div>

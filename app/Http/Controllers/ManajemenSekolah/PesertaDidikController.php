@@ -95,7 +95,7 @@ class PesertaDidikController extends Controller
         if ($request->hasFile('foto')) {
             // Delete the old icon if it exists
             if ($pesertaDidik->foto) {
-                $oldIconPath = public_path('images/peserta_didik' . $pesertaDidik->foto);
+                $oldIconPath = base_path('images/peserta_didik' . $pesertaDidik->foto);
                 if (file_exists($oldIconPath)) {
                     unlink($oldIconPath);
                 }
@@ -103,7 +103,7 @@ class PesertaDidikController extends Controller
             // Upload the new icon
             $pesertaDidikFile = $request->file('foto');
             $pesertaDidikName = time() . '_' . $pesertaDidikFile->getClientOriginalName();
-            $pesertaDidikFile->move(public_path('images/peserta_didik'), $pesertaDidikName);
+            $pesertaDidikFile->move(base_path('images/peserta_didik'), $pesertaDidikName);
             $pesertaDidik->foto = $pesertaDidikName;
         }
 
@@ -154,7 +154,7 @@ class PesertaDidikController extends Controller
         if ($request->hasFile('foto')) {
             // Hapus foto lama jika ada
             if ($pesertaDidik->foto) {
-                $oldPhotoPath = public_path('images/peserta_didik/' . $pesertaDidik->foto);
+                $oldPhotoPath = base_path('images/peserta_didik/' . $pesertaDidik->foto);
                 if (file_exists($oldPhotoPath)) {
                     unlink($oldPhotoPath);
                 }
@@ -163,7 +163,7 @@ class PesertaDidikController extends Controller
             // Unggah foto baru
             $appPhotoFile = $request->file('foto');
             $appPhotoName = time() . '_' . $appPhotoFile->getClientOriginalName();
-            $appPhotoFile->move(public_path('images/peserta_didik/'), $appPhotoName);
+            $appPhotoFile->move(base_path('images/peserta_didik/'), $appPhotoName);
 
             // Setel nama file baru pada model
             $pesertaDidik->foto = $appPhotoName;

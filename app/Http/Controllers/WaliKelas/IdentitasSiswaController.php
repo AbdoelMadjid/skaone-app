@@ -159,8 +159,8 @@ class IdentitasSiswaController extends Controller
         if ($request->hasFile('foto')) {
             // Hapus gambar dan thumbnail lama jika ada
             if ($identitasSiswa->foto) {
-                $oldImagePath = public_path('images/peserta_didik/' . $identitasSiswa->foto);
-                $oldThumbnailPath = public_path('images/thumbnail/' . $identitasSiswa->foto);
+                $oldImagePath = base_path('images/peserta_didik/' . $identitasSiswa->foto);
+                $oldThumbnailPath = base_path('images/thumbnail/' . $identitasSiswa->foto);
                 if (file_exists($oldImagePath)) {
                     unlink($oldImagePath);
                 }
@@ -174,7 +174,7 @@ class IdentitasSiswaController extends Controller
             $imageName = 'pd_' . time() . '.' . $imageFile->extension();
 
             // Buat dan simpan thumbnail di `public/images/thumbnail`
-            $destinationPathThumbnail = public_path('images/thumbnail');
+            $destinationPathThumbnail = base_path('images/thumbnail');
             $img = Image::make($imageFile->path());
 
             // Tentukan persentase ukuran (misalnya 50% dari ukuran asli)
@@ -190,7 +190,7 @@ class IdentitasSiswaController extends Controller
             })->save($destinationPathThumbnail . '/' . $imageName);
 
             // Simpan gambar asli di `public/images/galery`
-            $destinationPath = public_path('images/peserta_didik');
+            $destinationPath = base_path('images/peserta_didik');
             $imageFile->move($destinationPath, $imageName);
 
             // Perbarui nama file gambar di database
