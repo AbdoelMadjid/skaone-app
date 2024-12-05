@@ -156,8 +156,11 @@ class IdentitasSiswaController extends Controller
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:256000',
         ]);
 
+        $imageName = $identitasSiswa->foto; // Nama foto default (sebelum diubah)
+        $isPhotoUpdated = false; // Untuk melacak apakah foto diperbarui
+
         if ($request->hasFile('foto')) {
-            // Hapus gambar dan thumbnail lama jika ada
+            // Hapus foto lama dan thumbnail jika ada
             if ($identitasSiswa->foto) {
                 $oldImagePath = base_path('images/peserta_didik/' . $identitasSiswa->foto);
                 $oldThumbnailPath = base_path('images/thumbnail/' . $identitasSiswa->foto);
@@ -169,51 +172,55 @@ class IdentitasSiswaController extends Controller
                 }
             }
 
-            // Upload gambar baru dan buat thumbnail
+            // Proses upload foto baru
             $imageFile = $request->file('foto');
             $imageName = 'pd_' . time() . '.' . $imageFile->extension();
 
-            // Buat dan simpan thumbnail di `public/images/thumbnail`
-            $destinationPathThumbnail = base_path('images/thumbnail');
+            // Simpan thumbnail di `images/thumbnail`
+            $thumbnailPath = base_path('images/thumbnail');
             $img = Image::make($imageFile->path());
-
-            // Tentukan persentase ukuran (misalnya 50% dari ukuran asli)
-            $percentage = 50; // 50% dari ukuran asli
-
-            // Hitung dimensi baru berdasarkan persentase
-            $newWidth = $img->width() * ($percentage / 100);
-            $newHeight = $img->height() * ($percentage / 100);
-
-            // Resize dengan persentase
-            $img->resize($newWidth, $newHeight, function ($constraint) {
+            $img->resize(150, 150, function ($constraint) {
                 $constraint->aspectRatio();
-            })->save($destinationPathThumbnail . '/' . $imageName);
+            })->save($thumbnailPath . '/' . $imageName);
 
-            // Simpan gambar asli di `public/images/galery`
+            // Simpan foto asli di `images/peserta_didik`
             $destinationPath = base_path('images/peserta_didik');
             $imageFile->move($destinationPath, $imageName);
 
-            // Perbarui nama file gambar di database
-            $identitasSiswa->foto = $imageName;
+            $isPhotoUpdated = true; // Tandai bahwa foto diperbarui
         }
 
-        // Cek perubahan pada nama_lengkap dan kontak_email
+        // Cek perubahan nama atau email
         $isNameChanged = $identitasSiswa->nama_lengkap !== $request->input('nama_lengkap');
         $isEmailChanged = $identitasSiswa->kontak_email !== $request->input('kontak_email');
 
-        // Isi atribut lain dari request kecuali 'foto'
+        // Perbarui data di `peserta_didik`
         $identitasSiswa->fill($request->except('foto'));
+        $identitasSiswa->foto = $imageName; // Perbarui nama foto jika ada
         $identitasSiswa->save();
 
-        // Update data di tabel users jika nama_lengkap atau kontak_email berubah
-        if ($isNameChanged || $isEmailChanged) {
-            $user = User::where('nis', $identitasSiswa->nis)->first();
+        // Perbarui data di tabel `users` sesuai kondisi
+        $user = User::where('nis', $identitasSiswa->nis)->first();
+        if ($user) {
+            // Periksa apakah avatar berbeda dengan foto
+            $isAvatarDifferent = $user->avatar !== $imageName;
 
-            if ($user) {
+            // Opsi 1: Jika foto diperbarui, avatar selalu diupdate
+            // Opsi 2: Jika foto dan avatar berbeda, sinkronkan avatar dengan foto
+            if ($isPhotoUpdated || $isAvatarDifferent) {
                 $user->update([
                     'name' => $request->input('nama_lengkap'),
                     'email' => $request->input('kontak_email'),
+                    'avatar' => $imageName, // Sinkronkan avatar dengan foto
                 ]);
+            } else {
+                // Jika hanya nama atau email yang berubah
+                if ($isNameChanged || $isEmailChanged) {
+                    $user->update([
+                        'name' => $request->input('nama_lengkap'),
+                        'email' => $request->input('kontak_email'),
+                    ]);
+                }
             }
         }
 
