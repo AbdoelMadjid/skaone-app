@@ -1,0 +1,50 @@
+<?php
+
+use App\Http\Controllers\ManajemenSekolah\WaliKelasController;
+use App\Http\Controllers\WaliKelas\AbsensiSiswaWalasController;
+use App\Http\Controllers\WaliKelas\CatatanWalikelasController;
+use App\Http\Controllers\WaliKelas\DataKelasController;
+use App\Http\Controllers\WaliKelas\EkstrakurikulerController;
+use App\Http\Controllers\WaliKelas\IdentitasSiswaController;
+use App\Http\Controllers\WaliKelas\PraktekKerjaController;
+use App\Http\Controllers\WaliKelas\PrestasiSiswaController;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+Route::middleware('auth')->group(function () {
+    Route::group(['prefix' => 'walikelas', 'as' => 'walikelas.'], function () {
+        Route::resource('data-kelas', DataKelasController::class);
+        Route::post('/data-kelas/simpantitimangsa', [DataKelasController::class, 'simpantitimangsa'])
+            ->name('data-kelas.simpantitimangsa');
+        Route::get('/downloadpdfdatasiswa', [DataKelasController::class, 'downloadDataSiswa'])->name('downloadpdfdatasiswa');
+
+
+        Route::resource('identitas-siswa', IdentitasSiswaController::class);
+        Route::resource('absensi-siswa', AbsensiSiswaWalasController::class);
+        Route::post('/absensi-siswa/generateabsensi', [AbsensiSiswaWalasController::class, 'generateAbsensi'])->name('absensi-siswa.generateabsensi');
+        Route::post('/absensi-siswa/update-absensi', [AbsensiSiswaWalasController::class, 'updateAbsensi']);
+        Route::resource('ekstrakulikuler', EkstrakurikulerController::class);
+        Route::post('/ekstrakulikuler/generateeskul', [EkstrakurikulerController::class, 'generateEskul'])->name('ekstrakulikuler.generateeskul');
+        Route::post('/ekstrakulikuler/{id}/save-eskul-wajib', [EkstrakurikulerController::class, 'saveEskulWajib'])->name('ekstrakulikuler.save-eskul-wajib');
+        Route::post('/ekstrakulikuler/{id}/save-eskul-pilihan1', [EkstrakurikulerController::class, 'saveEskulPilihan1'])->name('ekstrakulikuler.save-eskul-pilihan1');
+        Route::post('/ekstrakulikuler/{id}/save-eskul-pilihan2', [EkstrakurikulerController::class, 'saveEskulPilihan2'])->name('ekstrakulikuler.save-eskul-pilihan2');
+        Route::post('/ekstrakulikuler/{id}/save-eskul-pilihan3', [EkstrakurikulerController::class, 'saveEskulPilihan3'])->name('ekstrakulikuler.save-eskul-pilihan3');
+        Route::post('/ekstrakulikuler/{id}/save-eskul-pilihan4', [EkstrakurikulerController::class, 'saveEskulPilihan4'])->name('ekstrakulikuler.save-eskul-pilihan4');
+        //Route::post('/ekstrakulikuler/save-penilaian-eskul', [WaliKelasController::class, 'savePenilaianEskul']);
+        Route::resource('prestasi-siswa', PrestasiSiswaController::class);
+        Route::resource('praktek-kerja', PraktekKerjaController::class);
+        Route::resource('catatan-wali-kelas', CatatanWalikelasController::class);
+        Route::post('/catatan-wali-kelas/generatecatatanwalikelas', [CatatanWalikelasController::class, 'generatecatatanwalikelas'])->name('catatan-wali-kelas.generatecatatanwalikelas');
+        Route::post('/catatan-wali-kelas/update-catatan', [CatatanWalikelasController::class, 'updateCatatan']);
+    });
+});

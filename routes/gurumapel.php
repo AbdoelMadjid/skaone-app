@@ -1,0 +1,74 @@
+<?php
+
+use App\Http\Controllers\GuruMapel\AbsensiSiswaGmapelController;
+use App\Http\Controllers\GuruMapel\AdministrasiGuruController;
+use App\Http\Controllers\GuruMapel\AjuanRemedialController;
+use App\Http\Controllers\GuruMapel\ArsipKbmGmapelController;
+use App\Http\Controllers\GuruMapel\DataCpTerpilihController;
+use App\Http\Controllers\GuruMapel\DataKbmController;
+use App\Http\Controllers\GuruMapel\DetailDataKbmController;
+use App\Http\Controllers\GuruMapel\FormatifController;
+use App\Http\Controllers\GuruMapel\MateriAjarController;
+use App\Http\Controllers\GuruMapel\PenilaianController;
+use App\Http\Controllers\GuruMapel\SumatifController;
+use App\Http\Controllers\GuruMapel\TujuanPembelajaranController;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+Route::middleware('auth')->group(function () {
+    Route::group(['prefix' => 'gurumapel', 'as' => 'gurumapel.'], function () {
+        Route::resource('administrasi-guru', AdministrasiGuruController::class);
+
+        Route::group(['prefix' => 'datangajar', 'as' => 'datangajar.'], function () {
+            Route::resource('data-kbm', DataKbmController::class);
+            Route::get('/fetch-capaian-pembelajaran', [DataKbmController::class, 'fetchData']);
+
+            Route::resource('data-kbm-detail', DetailDataKbmController::class);
+            Route::post('/data-kbm-detail/update-kkm', [DetailDataKbmController::class, 'updateKkm']);
+
+            Route::resource('capaian-pembelajaran', DataCpTerpilihController::class);
+            Route::get('/getrombeloptions', [DataCpTerpilihController::class, 'getRombel'])->name('getrombeloptions');
+            Route::get('/getCapaianPembelajaran', [DataCpTerpilihController::class, 'getCapaianPembelajaran'])->name('getCapaianPembelajaran');
+            Route::post('/savecpterpilih', [DataCpTerpilihController::class, 'saveCpTerpilih'])->name('savecpterpilih');
+            Route::post('/hapuscppilihan', [DataCpTerpilihController::class, 'hapusCPPilihan'])->name('hapuscppilihan');
+            Route::post('/updatejmlmateri', [DataCpTerpilihController::class, 'updateJmlMateri'])->name('updatejmlmateri');
+
+            Route::resource('tujuan-pembelajaran', TujuanPembelajaranController::class);
+            Route::get('/getisicp', [TujuanPembelajaranController::class, 'getIsiCP'])->name('getisicp');
+            Route::get('/getkoderombel', [TujuanPembelajaranController::class, 'getKodeRombel'])->name('getkoderombel');
+            Route::get('/getkodemapel', [TujuanPembelajaranController::class, 'getKodeMapel'])->name('getkodemapel');
+            Route::post('/savetujuanpembelajaran', [TujuanPembelajaranController::class, 'saveTujuanPembelajaran'])->name('savetujuanpembelajaran');
+            Route::get('/checktujuanpembelajaran', [TujuanPembelajaranController::class, 'checkTujuanPembelajaran'])->name('checktujuanpembelajaran');
+            Route::post('/hapustujuanpembelajaran', [TujuanPembelajaranController::class, 'hapusTujuanPembelajaran'])->name('hapustujuanpembelajaran');
+        });
+
+        Route::group(['prefix' => 'penilaian', 'as' => 'penilaian.'], function () {
+            Route::resource('formatif', FormatifController::class);
+            Route::get('formatif/create/{kode_rombel}/{kel_mapel}/{id_personil}', [FormatifController::class, 'create'])->name('formatif.create');
+
+            Route::resource('sumatif', SumatifController::class);
+            Route::get('sumatif/create/{kode_rombel}/{kel_mapel}/{id_personil}', [SumatifController::class, 'create'])->name('sumatif.create');
+            Route::get('sumatif/edit/{kode_rombel}/{kel_mapel}/{id_personil}', [SumatifController::class, 'edit'])->name('sumatif.edit');
+
+            //Route::post('/sumatif/store', [SumatifController::class, 'store'])->name('store');
+        });
+
+        //Route::resource('penilaian', PenilaianController::class);
+
+        //Route::get('/penilaian/formatif', [PenilaianController::class, 'isiFormatif'])->name('penilaian.formatif');
+
+        Route::resource('absensi-siswa', AbsensiSiswaGmapelController::class);
+        Route::resource('ajuan-remedial', AjuanRemedialController::class);
+        Route::resource('arsip-kbm', ArsipKbmGmapelController::class);
+    });
+});

@@ -1,0 +1,85 @@
+[05-Dec-2024 12:05:54 Asia/Jakarta] PHP Warning:  require_once(/home/smknkadi/public_html/../bootstrap/app.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:05:54 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/../bootstrap/app.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/index.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:05:54 Asia/Jakarta] PHP Warning:  require_once(/home/smknkadi/public_html/../bootstrap/app.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:05:54 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/../bootstrap/app.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/index.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:05:55 Asia/Jakarta] PHP Warning:  require_once(/home/smknkadi/public_html/../bootstrap/app.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:05:55 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/../bootstrap/app.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/index.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:05:56 Asia/Jakarta] PHP Warning:  require_once(/home/smknkadi/public_html/../bootstrap/app.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:05:56 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/../bootstrap/app.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/index.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:05:56 Asia/Jakarta] PHP Warning:  require_once(/home/smknkadi/public_html/../bootstrap/app.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:05:56 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/../bootstrap/app.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/index.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:08:49 Asia/Jakarta] PHP Warning:  require_once(/home/smknkadi/public_html/../bootstrap/app.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:08:49 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/../bootstrap/app.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/index.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:08:50 Asia/Jakarta] PHP Warning:  require_once(/home/smknkadi/public_html/../bootstrap/app.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:08:50 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/../bootstrap/app.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/index.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:08:51 Asia/Jakarta] PHP Warning:  require_once(/home/smknkadi/public_html/../bootstrap/app.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:08:51 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/../bootstrap/app.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/index.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:08:52 Asia/Jakarta] PHP Warning:  require_once(/home/smknkadi/public_html/../bootstrap/app.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:08:52 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/../bootstrap/app.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/index.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:08:52 Asia/Jakarta] PHP Warning:  require_once(/home/smknkadi/public_html/../bootstrap/app.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:08:52 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/../bootstrap/app.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/index.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:08:53 Asia/Jakarta] PHP Warning:  require_once(/home/smknkadi/public_html/../bootstrap/app.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:08:53 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/../bootstrap/app.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/index.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:08:53 Asia/Jakarta] PHP Warning:  require_once(/home/smknkadi/public_html/../bootstrap/app.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:08:53 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/../bootstrap/app.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/index.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:08:54 Asia/Jakarta] PHP Warning:  require_once(/home/smknkadi/public_html/../bootstrap/app.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:08:54 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/../bootstrap/app.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/index.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:08:54 Asia/Jakarta] PHP Warning:  require_once(/home/smknkadi/public_html/../bootstrap/app.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:08:54 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/../bootstrap/app.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/index.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:08:55 Asia/Jakarta] PHP Warning:  require_once(/home/smknkadi/public_html/../bootstrap/app.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:08:55 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/../bootstrap/app.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/index.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:08:55 Asia/Jakarta] PHP Warning:  require_once(/home/smknkadi/public_html/../bootstrap/app.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:08:55 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/../bootstrap/app.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/index.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:08:56 Asia/Jakarta] PHP Warning:  require_once(/home/smknkadi/public_html/../bootstrap/app.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/index.php on line 47
+[05-Dec-2024 12:08:56 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/../bootstrap/app.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/index.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/smknkadi/public_html/index.php on line 47

@@ -1,0 +1,40 @@
+.table {
+    border-collapse: collapse;
+    /* Merge table borders */
+    width: 100%;
+    /* Add a border around the table */
+}
+
+/* Add border to each cell and row */
+.table th,
+.table td {
+    border: 1px solid #ececec;
+    /* Border for each cell */
+    padding: 8px;
+    /* Padding for cells */
+}
+
+/* Header styling */
+.table th {
+    padding-top: 12px;
+    /* Top padding */
+    padding-bottom: 12px;
+    /* Bottom padding */
+    text-align: center;
+    /* Text alignment */
+    background-color: #999999;
+    /* Background color for header */
+    color: white;
+    /* Text color for header */
+}
+
+/* Optional: Style for table rows on hover */
+.table tr:hover {
+    background-color: #f1f1f1;
+    /* Row hover color */
+}
+
+table.dataTable thead th {
+    text-align: center;
+    vertical-align: middle;
+}

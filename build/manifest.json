@@ -1,0 +1,230 @@
+{
+  "resources/fonts/boxicons.eot": {
+    "file": "icons/boxicons.eot",
+    "src": "resources/fonts/boxicons.eot"
+  },
+  "resources/fonts/boxicons.svg": {
+    "file": "icons/boxicons.svg",
+    "src": "resources/fonts/boxicons.svg"
+  },
+  "resources/fonts/boxicons.ttf": {
+    "file": "icons/boxicons.ttf",
+    "src": "resources/fonts/boxicons.ttf"
+  },
+  "resources/fonts/boxicons.woff": {
+    "file": "icons/boxicons.woff",
+    "src": "resources/fonts/boxicons.woff"
+  },
+  "resources/fonts/boxicons.woff2": {
+    "file": "icons/boxicons.woff2",
+    "src": "resources/fonts/boxicons.woff2"
+  },
+  "resources/fonts/hkgrotesk-bold.woff": {
+    "file": "icons/hkgrotesk-bold.woff",
+    "src": "resources/fonts/hkgrotesk-bold.woff"
+  },
+  "resources/fonts/hkgrotesk-light.eot": {
+    "file": "icons/hkgrotesk-light.eot",
+    "src": "resources/fonts/hkgrotesk-light.eot"
+  },
+  "resources/fonts/hkgrotesk-light.woff": {
+    "file": "icons/hkgrotesk-light.woff",
+    "src": "resources/fonts/hkgrotesk-light.woff"
+  },
+  "resources/fonts/hkgrotesk-medium.eot": {
+    "file": "icons/hkgrotesk-medium.eot",
+    "src": "resources/fonts/hkgrotesk-medium.eot"
+  },
+  "resources/fonts/hkgrotesk-medium.woff": {
+    "file": "icons/hkgrotesk-medium.woff",
+    "src": "resources/fonts/hkgrotesk-medium.woff"
+  },
+  "resources/fonts/hkgrotesk-regular.eot": {
+    "file": "icons/hkgrotesk-regular.eot",
+    "src": "resources/fonts/hkgrotesk-regular.eot"
+  },
+  "resources/fonts/hkgrotesk-regular.woff": {
+    "file": "icons/hkgrotesk-regular.woff",
+    "src": "resources/fonts/hkgrotesk-regular.woff"
+  },
+  "resources/fonts/hkgrotesk-semibold.eot": {
+    "file": "icons/hkgrotesk-semibold.eot",
+    "src": "resources/fonts/hkgrotesk-semibold.eot"
+  },
+  "resources/fonts/hkgrotesk-semibold.woff": {
+    "file": "icons/hkgrotesk-semibold.woff",
+    "src": "resources/fonts/hkgrotesk-semibold.woff"
+  },
+  "resources/fonts/la-brands-400.eot": {
+    "file": "icons/la-brands-400.eot",
+    "src": "resources/fonts/la-brands-400.eot"
+  },
+  "resources/fonts/la-brands-400.svg": {
+    "file": "icons/la-brands-400.svg",
+    "src": "resources/fonts/la-brands-400.svg"
+  },
+  "resources/fonts/la-brands-400.ttf": {
+    "file": "icons/la-brands-400.ttf",
+    "src": "resources/fonts/la-brands-400.ttf"
+  },
+  "resources/fonts/la-brands-400.woff": {
+    "file": "icons/la-brands-400.woff",
+    "src": "resources/fonts/la-brands-400.woff"
+  },
+  "resources/fonts/la-brands-400.woff2": {
+    "file": "icons/la-brands-400.woff2",
+    "src": "resources/fonts/la-brands-400.woff2"
+  },
+  "resources/fonts/la-regular-400.eot": {
+    "file": "icons/la-regular-400.eot",
+    "src": "resources/fonts/la-regular-400.eot"
+  },
+  "resources/fonts/la-regular-400.svg": {
+    "file": "icons/la-regular-400.svg",
+    "src": "resources/fonts/la-regular-400.svg"
+  },
+  "resources/fonts/la-regular-400.ttf": {
+    "file": "icons/la-regular-400.ttf",
+    "src": "resources/fonts/la-regular-400.ttf"
+  },
+  "resources/fonts/la-regular-400.woff": {
+    "file": "icons/la-regular-400.woff",
+    "src": "resources/fonts/la-regular-400.woff"
+  },
+  "resources/fonts/la-regular-400.woff2": {
+    "file": "icons/la-regular-400.woff2",
+    "src": "resources/fonts/la-regular-400.woff2"
+  },
+  "resources/fonts/la-solid-900.eot": {
+    "file": "icons/la-solid-900.eot",
+    "src": "resources/fonts/la-solid-900.eot"
+  },
+  "resources/fonts/la-solid-900.svg": {
+    "file": "icons/la-solid-900.svg",
+    "src": "resources/fonts/la-solid-900.svg"
+  },
+  "resources/fonts/la-solid-900.ttf": {
+    "file": "icons/la-solid-900.ttf",
+    "src": "resources/fonts/la-solid-900.ttf"
+  },
+  "resources/fonts/la-solid-900.woff": {
+    "file": "icons/la-solid-900.woff",
+    "src": "resources/fonts/la-solid-900.woff"
+  },
+  "resources/fonts/la-solid-900.woff2": {
+    "file": "icons/la-solid-900.woff2",
+    "src": "resources/fonts/la-solid-900.woff2"
+  },
+  "resources/fonts/materialdesignicons-webfont.eot": {
+    "file": "icons/materialdesignicons-webfont.eot",
+    "src": "resources/fonts/materialdesignicons-webfont.eot"
+  },
+  "resources/fonts/materialdesignicons-webfont.ttf": {
+    "file": "icons/materialdesignicons-webfont.ttf",
+    "src": "resources/fonts/materialdesignicons-webfont.ttf"
+  },
+  "resources/fonts/materialdesignicons-webfont.woff": {
+    "file": "icons/materialdesignicons-webfont.woff",
+    "src": "resources/fonts/materialdesignicons-webfont.woff"
+  },
+  "resources/fonts/materialdesignicons-webfont.woff2": {
+    "file": "icons/materialdesignicons-webfont.woff2",
+    "src": "resources/fonts/materialdesignicons-webfont.woff2"
+  },
+  "resources/fonts/remixicon.eot": {
+    "file": "icons/remixicon.eot",
+    "src": "resources/fonts/remixicon.eot"
+  },
+  "resources/fonts/remixicon.svg": {
+    "file": "icons/remixicon.svg",
+    "src": "resources/fonts/remixicon.svg"
+  },
+  "resources/fonts/remixicon.ttf": {
+    "file": "icons/remixicon.ttf",
+    "src": "resources/fonts/remixicon.ttf"
+  },
+  "resources/fonts/remixicon.woff": {
+    "file": "icons/remixicon.woff",
+    "src": "resources/fonts/remixicon.woff"
+  },
+  "resources/fonts/remixicon.woff2": {
+    "file": "icons/remixicon.woff2",
+    "src": "resources/fonts/remixicon.woff2"
+  },
+  "resources/images/auth-one-bg.jpg": {
+    "file": "icons/auth-one-bg.jpg",
+    "src": "resources/images/auth-one-bg.jpg"
+  },
+  "resources/images/chat-bg-pattern.png": {
+    "file": "icons/chat-bg-pattern.png",
+    "src": "resources/images/chat-bg-pattern.png"
+  },
+  "resources/images/cover-pattern.png": {
+    "file": "icons/cover-pattern.png",
+    "src": "resources/images/cover-pattern.png"
+  },
+  "resources/images/file.png": {
+    "file": "icons/file.png",
+    "src": "resources/images/file.png"
+  },
+  "resources/images/flags/us.svg": {
+    "file": "icons/us.svg",
+    "src": "resources/images/flags/us.svg"
+  },
+  "resources/images/landing/bg-pattern.png": {
+    "file": "icons/bg-pattern.png",
+    "src": "resources/images/landing/bg-pattern.png"
+  },
+  "resources/images/modal-bg.png": {
+    "file": "icons/modal-bg.png",
+    "src": "resources/images/modal-bg.png"
+  },
+  "resources/images/new.png": {
+    "file": "icons/new.png",
+    "src": "resources/images/new.png"
+  },
+  "resources/images/nft/bg-home.jpg": {
+    "file": "icons/bg-home.jpg",
+    "src": "resources/images/nft/bg-home.jpg"
+  },
+  "resources/images/nft/marketplace.png": {
+    "file": "icons/marketplace.png",
+    "src": "resources/images/nft/marketplace.png"
+  },
+  "resources/images/sidebar/img-1.jpg": {
+    "file": "icons/img-1.jpg",
+    "src": "resources/images/sidebar/img-1.jpg"
+  },
+  "resources/images/sidebar/img-2.jpg": {
+    "file": "icons/img-2.jpg",
+    "src": "resources/images/sidebar/img-2.jpg"
+  },
+  "resources/images/sidebar/img-3.jpg": {
+    "file": "icons/img-3.jpg",
+    "src": "resources/images/sidebar/img-3.jpg"
+  },
+  "resources/images/sidebar/img-4.jpg": {
+    "file": "icons/img-4.jpg",
+    "src": "resources/images/sidebar/img-4.jpg"
+  },
+  "resources/scss/app.scss": {
+    "file": "css/app.min.css",
+    "isEntry": true,
+    "src": "resources/scss/app.scss"
+  },
+  "resources/scss/bootstrap.scss": {
+    "file": "css/bootstrap.min.css",
+    "isEntry": true,
+    "src": "resources/scss/bootstrap.scss"
+  },
+  "resources/scss/custom.scss": {
+    "file": "css/custom.min.css",
+    "isEntry": true,
+    "src": "resources/scss/custom.scss"
+  },
+  "resources/scss/icons.scss": {
+    "file": "css/icons.min.css",
+    "isEntry": true,
+    "src": "resources/scss/icons.scss"
+  }
+}

@@ -1,0 +1,262 @@
+<?php
+
+namespace App\DataTables\GuruMapel;
+
+use App\Models\Kurikulum\DataKBM\KbmPerRombel;
+use App\Traits\DatatableHelper;
+use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\EloquentDataTable;
+use Yajra\DataTables\Html\Builder as HtmlBuilder;
+use Yajra\DataTables\Html\Button;
+use Yajra\DataTables\Html\Column;
+use Yajra\DataTables\Html\Editor\Editor;
+use Yajra\DataTables\Html\Editor\Fields;
+use Yajra\DataTables\Services\DataTable;
+
+class PenilaianDataTable extends DataTable
+{
+    use DatatableHelper;
+    /**
+     * Build the DataTable class.
+     *
+     * @param QueryBuilder $query Results from query() method.
+     */
+    public function dataTable(QueryBuilder $query): EloquentDataTable
+    {
+        return (new EloquentDataTable($query))
+            ->addColumn('jml_siswa', function ($row) {
+                $jumlahSiswa = DB::table('peserta_didik_rombels')
+                    ->where('rombel_kode', $row->kode_rombel)
+                    ->count();
+
+                return $jumlahSiswa;
+            })
+            ->addColumn('thn_ajaran_semester', function ($row) {
+
+                return $row->tahunajaran . ' / ' . $row->semester;
+            })
+            ->addColumn('nilai_formatif', function ($row) {
+                // Query untuk cek apakah data sudah ada
+                $dataExists = DB::table('nilai_formatif')
+                    ->where('tahunajaran', $row->tahunajaran)
+                    ->where('tingkat', $row->tingkat)
+                    ->where('ganjilgenap', $row->ganjilgenap)
+                    ->where('semester', $row->semester)
+                    ->where('kode_rombel', $row->kode_rombel)
+                    ->where('kel_mapel', $row->kel_mapel)
+                    ->where('id_personil', $row->id_personil)
+                    ->exists();
+
+                // Hitung jumlah tujuan pembelajaran
+                $jumlahTP = DB::table('tujuan_pembelajarans')
+                    ->where('kode_rombel', $row->kode_rombel)
+                    ->where('kel_mapel', $row->kel_mapel)
+                    ->count();
+
+                if (!$dataExists) {
+                    // Jika data belum ada, tampilkan tombol "Isi Nilai Formatif"
+                    return '
+                        <button
+                            type="button"
+                            class="btn btn-soft-info"
+                            data-bs-toggle="modal"
+                            data-bs-target="#nilaiFormatifTambah"
+                            data-tingkat="' . $row->tingkat . '"
+                            data-ganjilgenap="' . $row->ganjilgenap . '"
+                            data-semester="' . $row->semester . '"
+                            data-kode-rombel="' . $row->kode_rombel . '"
+                            data-kel-mapel="' . $row->kel_mapel . '"
+                            data-id-personil="' . $row->id_personil . '"
+                            data-mata-pelajaran="' . $row->mata_pelajaran . '"
+                            data-tahunajaran="' . $row->tahunajaran . '"
+                            data-rombel="' . $row->rombel . '"
+                            data-kkm="' . $row->kkm . '"
+                            data-jml-tp="' . $jumlahTP . '"
+                            title="Isi Nilai Formatif"><i class="ri-menu-add-fill fs-4"></i>
+                        </button>';
+                } else {
+                    // Jika data sudah ada, tampilkan tombol "Edit Nilai Formatif"
+                    return '
+                        <button
+                            type="button"
+                            class="btn btn-soft-danger"
+                            data-bs-toggle="modal"
+                            data-bs-target="#nilaiFormatifEdit"
+                            data-tingkat="' . $row->tingkat . '"
+                            data-ganjilgenap="' . $row->ganjilgenap . '"
+                            data-semester="' . $row->semester . '"
+                            data-kode-rombel="' . $row->kode_rombel . '"
+                            data-kel-mapel="' . $row->kel_mapel . '"
+                            data-id-personil="' . $row->id_personil . '"
+                            data-mata-pelajaran="' . $row->mata_pelajaran . '"
+                            data-tahunajaran="' . $row->tahunajaran . '"
+                            data-rombel="' . $row->rombel . '"
+                            data-kkm="' . $row->kkm . '"
+                            data-jml-tp="' . $jumlahTP . '"
+                            title="Edit Nilai Formatif"><i class="ri-list-ordered fs-4"></i>
+                        </button>';
+                }
+            })
+            ->addColumn('formatif', function ($row) {
+                // Query untuk cek apakah data sudah ada
+                $dataExists = DB::table('nilai_formatif')
+                    ->where('tahunajaran', $row->tahunajaran)
+                    ->where('tingkat', $row->tingkat)
+                    ->where('ganjilgenap', $row->ganjilgenap)
+                    ->where('semester', $row->semester)
+                    ->where('kode_rombel', $row->kode_rombel)
+                    ->where('kel_mapel', $row->kel_mapel)
+                    ->where('id_personil', $row->id_personil)
+                    ->exists();
+
+                // Hitung jumlah tujuan pembelajaran
+                $jumlahTP = DB::table('tujuan_pembelajarans')
+                    ->where('kode_rombel', $row->kode_rombel)
+                    ->where('kel_mapel', $row->kel_mapel)
+                    ->count();
+
+                if (!$dataExists) {
+                    // Jika data belum ada, tampilkan tombol "Isi Nilai Formatif"
+                    return '
+                         <a
+                            href="' . route('gurumapel.penilaian.formatif', [
+                        'kode_rombel' => $row->kode_rombel,
+                        'kel_mapel' => $row->kel_mapel,
+                        'id_personil' => $row->id_personil
+                    ]) . '"
+                            class="btn btn-soft-info"
+                            title="Isi Nilai Formatif">
+                            <i class="ri-menu-add-fill fs-4"></i>
+                        </a>';
+                } else {
+                    // Jika data sudah ada, tampilkan tombol "Edit Nilai Formatif"
+                    return '
+                        <button
+                            type="button"
+                            class="btn btn-soft-danger"
+                            data-bs-toggle="modal"
+                            data-bs-target="#nilaiFormatifEdit"
+                            data-tingkat="' . $row->tingkat . '"
+                            data-ganjilgenap="' . $row->ganjilgenap . '"
+                            data-semester="' . $row->semester . '"
+                            data-kode-rombel="' . $row->kode_rombel . '"
+                            data-kel-mapel="' . $row->kel_mapel . '"
+                            data-id-personil="' . $row->id_personil . '"
+                            data-mata-pelajaran="' . $row->mata_pelajaran . '"
+                            data-tahunajaran="' . $row->tahunajaran . '"
+                            data-rombel="' . $row->rombel . '"
+                            data-kkm="' . $row->kkm . '"
+                            data-jml-tp="' . $jumlahTP . '"
+                            title="Edit Nilai Formatif"><i class="ri-list-ordered fs-4"></i>
+                        </button>';
+                }
+            })
+            ->addColumn('jumlah_cp', function ($row) {
+                // Menghitung jumlah siswa berdasarkan rombel_kode dari tabel peserta_didik_rombels
+                $JumlahCP = DB::table('capaian_pembelajarans')
+                    ->where('inisial_mp', $row->kel_mapel)
+                    ->where('tingkat', $row->tingkat)
+                    ->count();
+
+                $JumlahMA = DB::table('cp_terpilihs')
+                    ->where('kode_rombel', $row->kode_rombel)
+                    ->where('kel_mapel', $row->kel_mapel)
+                    ->count();
+
+                $jumlahTP = DB::table('tujuan_pembelajarans')
+                    ->where('kode_rombel', $row->kode_rombel)
+                    ->where('kel_mapel', $row->kel_mapel)
+                    ->count();
+
+                return $JumlahCP . ' / ' . $JumlahMA . ' / ' . $jumlahTP;
+            })
+            ->addColumn('action', function ($row) {
+                // Menggunakan basicActions untuk menghasilkan action buttons
+                $actions = $this->basicActions($row);
+                return view('action', compact('actions'));
+            })
+            ->addIndexColumn()
+            ->rawColumns(['jml_siswa', 'jumlah_cp', 'nilai_formatif', 'formatif', 'action']);
+    }
+
+    /**
+     * Get the query source of dataTable.
+     */
+    public function query(KbmPerRombel $model): QueryBuilder
+    {
+        /**
+         * @var user $user
+         */
+        $user = Auth::user();
+        $personal_id = $user->personal_id;
+
+        // Cek apakah user memiliki role 'gmapel'
+        if ($user->hasRole('gmapel')) {
+            // Ambil data berdasarkan id_personil yang sesuai dengan personal_id user yang sedang login
+            return $model->newQuery()
+                ->where('id_personil', $personal_id);
+        }
+
+        return $model->newQuery()->orderBy('tingkat', 'asc')
+            ->orderBy('semester', 'asc')
+            ->orderBy('kel_mapel', 'asc');
+
+        // Jika user tidak memiliki role 'gmapel', kembalikan query kosong atau hentikan
+        return $model->newQuery()->whereNull('id'); // Mengembalikan query yang tidak akan mengembalikan data
+    }
+
+    /**
+     * Optional method if you want to use the html builder.
+     */
+    public function html(): HtmlBuilder
+    {
+        return $this->builder()
+            ->setTableId('penilaian-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            //->dom('Bfrtip')
+            ->orderBy(1)
+            ->selectStyleSingle()
+            ->buttons([
+                Button::make('excel'),
+                Button::make('csv'),
+                Button::make('pdf'),
+                Button::make('print'),
+                Button::make('reset'),
+                Button::make('reload')
+            ]);
+    }
+
+    /**
+     * Get the dataTable columns definition.
+     */
+    public function getColumns(): array
+    {
+        return [
+            Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
+            Column::make('thn_ajaran_semester')->title('Thn Ajaran / Semester')->addClass('text-center'),
+            Column::make('rombel')->title('Rombel')->addClass('text-center'),
+            Column::make('mata_pelajaran')->title('Nama Mapel'),
+            Column::make('jml_siswa')->title('Jumlah Siswa')->addClass('text-center'),
+            Column::make('jumlah_cp')->title('CP /  CP Terpilih / TP')->addClass('text-center'),
+            Column::make('kkm')->title('KKM')->addClass('text-center'),
+            Column::make('nilai_formatif')->title('Formatif')->addClass('text-center'),
+            Column::make('formatif')->title('Input Formatif')->addClass('text-center'),
+            /* Column::computed('action')
+                ->exportable(false)
+                ->printable(false)
+                ->width(60)
+                ->addClass('text-center'), */
+        ];
+    }
+
+    /**
+     * Get the filename for export.
+     */
+    protected function filename(): string
+    {
+        return 'Penilaian_' . date('YmdHis');
+    }
+}

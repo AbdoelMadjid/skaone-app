@@ -1,0 +1,367 @@
+<?php
+
+namespace App\Http\Controllers\Kurikulum\DataKBM;
+
+use App\DataTables\Kurikulum\DataKBM\PesertaDidikRombelDataTable;
+use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Kurikulum\DataKBM\PesertaDidikRombelRequest;
+use App\Models\ManajemenSekolah\KompetensiKeahlian;
+use App\Models\ManajemenSekolah\PesertaDidik;
+use App\Models\ManajemenSekolah\RombonganBelajar;
+use App\Models\ManajemenSekolah\TahunAjaran;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+
+class PesertaDidikRombelController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(PesertaDidikRombelDataTable $pesertaDidikRombelDataTable)
+    {
+        $angkaSemester = [];
+        for ($i = 1; $i <= 6; $i++) {
+            $angkaSemester[$i] = (string) $i;
+        }
+
+        $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
+        $kompetensiKeahlianOptions = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
+        $rombonganBelajar = RombonganBelajar::pluck('rombel', 'kode_rombel')->toArray();
+
+        return $pesertaDidikRombelDataTable->render('pages.kurikulum.datakbm.peserta-didik-rombel', [
+            'tahunAjaranOptions' => $tahunAjaranOptions,
+            'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
+            'rombonganBelajar' => $rombonganBelajar,
+            'angkaSemester' => $angkaSemester,
+        ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create(PesertaDidikRombel $pesertaDidikRombel)
+    {
+        $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
+        $kompetensiKeahlianOptions = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
+        $rombonganBelajar = RombonganBelajar::where('tahunajaran', $pesertaDidikRombel->tahun_ajaran)
+            ->where('id_kk', $pesertaDidikRombel->kode_kk)
+            ->where('tingkat', $pesertaDidikRombel->tingkat)
+            ->pluck('rombel', 'kode_rombel')->toArray();
+        $pesertaDidikOptions = PesertaDidik::pluck('nama_lengkap', 'nis')->toArray();
+
+        $peserta_didiks = PesertaDidik::join('kompetensi_keahlians', 'peserta_didiks.kode_kk', '=', 'kompetensi_keahlians.idkk')
+            ->select('peserta_didiks.*', 'kompetensi_keahlians.nama_kk', 'kompetensi_keahlians.idkk')
+            ->get()
+            ->groupBy('idkk'); // Mengelompokkan berdasarkan idkk
+
+        return view('pages.kurikulum.datakbm.peserta-didik-rombel-form', [
+            'data' => new PesertaDidikRombel(),
+            'tahunAjaranOptions' => $tahunAjaranOptions,
+            'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
+            'rombonganBelajar' => $rombonganBelajar,
+            'pesertaDidikOptions' => $pesertaDidikOptions,
+            'peserta_didiks' => $peserta_didiks,
+            'action' => route('kurikulum.datakbm.peserta-didik-rombel.store'),
+        ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(PesertaDidikRombelRequest $request)
+    {
+        // Validasi data umum
+        $validatedData = $request->validated();
+
+        // Periksa apakah input 'nis' tunggal diisi
+        $nisSingle = $request->input('nis');
+        // Periksa apakah input multiple 'daftarsiswa' diisi sebagai array
+        $daftarSiswa = $request->input('daftarsiswa'); // Ini harus berupa array
+
+        // Jika 'nis' tunggal diisi, simpan hanya satu siswa
+        if ($nisSingle && !$daftarSiswa) {
+            PesertaDidikRombel::create(array_merge($validatedData, ['nis' => $nisSingle]));
+        }
+        // Jika 'daftarsiswa' multiple diisi dan berbentuk array, simpan semua siswa
+        elseif (!$nisSingle && is_array($daftarSiswa)) {
+            foreach ($daftarSiswa as $nis) {
+                PesertaDidikRombel::create(array_merge($validatedData, ['nis' => $nis]));
+            }
+        }
+        // Jika keduanya tidak diisi, kembalikan pesan error atau abaikan
+        else {
+            return response()->json(['error' => 'Harap pilih salah satu peserta didik atau beberapa siswa dari daftar.'], 400);
+        }
+
+        // Mengembalikan respons sukses setelah penyimpanan
+        return responseSuccess();
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(PesertaDidikRombel $pesertaDidikRombel)
+    {
+        $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
+        $kompetensiKeahlianOptions = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
+        $rombonganBelajar = RombonganBelajar::where('tahunajaran', $pesertaDidikRombel->tahun_ajaran)
+            ->where('id_kk', $pesertaDidikRombel->kode_kk)
+            ->where('tingkat', $pesertaDidikRombel->rombel_tingkat)
+            ->pluck('rombel', 'kode_rombel')->toArray();
+
+        $selectedRombel = $pesertaDidikRombel->rombel_kode;
+
+        $pesertaDidikOptions = PesertaDidik::pluck('nama_lengkap', 'nis')->toArray();
+
+        $peserta_didiks = PesertaDidik::join('kompetensi_keahlians', 'peserta_didiks.kode_kk', '=', 'kompetensi_keahlians.idkk')
+            ->select('peserta_didiks.*', 'kompetensi_keahlians.nama_kk', 'kompetensi_keahlians.idkk')
+            ->get()
+            ->groupBy('idkk'); // Mengelompokkan berdasarkan idkk
+
+        return view('pages.kurikulum.datakbm.peserta-didik-rombel-form', [
+            'data' => $pesertaDidikRombel,
+            'tahunAjaranOptions' => $tahunAjaranOptions,
+            'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
+            'rombonganBelajar' => $rombonganBelajar,
+            'pesertaDidikOptions' => $pesertaDidikOptions,
+            'peserta_didiks' => $peserta_didiks,
+            'selectedRombel' => $selectedRombel,
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(PesertaDidikRombel $pesertaDidikRombel)
+    {
+        $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
+        $kompetensiKeahlianOptions = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
+        $rombonganBelajar = RombonganBelajar::where('tahunajaran', $pesertaDidikRombel->tahun_ajaran)
+            ->where('id_kk', $pesertaDidikRombel->kode_kk)
+            ->where('tingkat', $pesertaDidikRombel->tingkat)
+            ->pluck('rombel', 'kode_rombel')->toArray();
+
+        $selectedRombel = $pesertaDidikRombel->rombel_kode;
+
+        $pesertaDidikOptions = PesertaDidik::pluck('nama_lengkap', 'nis')->toArray();
+
+        $peserta_didiks = PesertaDidik::join('kompetensi_keahlians', 'peserta_didiks.kode_kk', '=', 'kompetensi_keahlians.idkk')
+            ->select('peserta_didiks.*', 'kompetensi_keahlians.nama_kk', 'kompetensi_keahlians.idkk')
+            ->get()
+            ->groupBy('idkk'); // Mengelompokkan berdasarkan idkk
+
+        return view('pages.kurikulum.datakbm.peserta-didik-rombel-form', [
+            'data' => $pesertaDidikRombel,
+            'tahunAjaranOptions' => $tahunAjaranOptions,
+            'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
+            'rombonganBelajar' => $rombonganBelajar,
+            'pesertaDidikOptions' => $pesertaDidikOptions,
+            'peserta_didiks' => $peserta_didiks,
+            'selectedRombel' => $selectedRombel,
+            'action' => route('kurikulum.datakbm.peserta-didik-rombel.update', $pesertaDidikRombel->id)
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(PesertaDidikRombelRequest $request, PesertaDidikRombel $pesertaDidikRombel)
+    {
+        $pesertaDidikRombel->fill($request->validated());
+        $pesertaDidikRombel->save();
+
+        return responseSuccess();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(PesertaDidikRombel $pesertaDidikRombel)
+    {
+        $pesertaDidikRombel->delete();
+
+        return responseSuccessDelete();
+    }
+
+    public function getRombonganBelajar(Request $request)
+    {
+        $rombonganBelajar = RombonganBelajar::where('tahunajaran', $request->tahun_ajaran)
+            ->where('id_kk', $request->kode_kk)
+            ->where('tingkat', $request->tingkat)
+            ->pluck('rombel', 'kode_rombel');
+
+        return response()->json($rombonganBelajar);
+    }
+
+    public function getSiswa(Request $request)
+    {
+        $kode_kk = $request->input('kode_kk');
+
+        // Ambil data siswa berdasarkan kode_kk
+        $siswa = PesertaDidik::where('kode_kk', $kode_kk)->get();
+
+        // Kembalikan dalam format JSON
+        return response()->json($siswa);
+    }
+
+    // KurikulumController.php
+
+    public function getRombel(Request $request)
+    {
+        $tahunAjaran = $request->get('tahun_ajaran');
+        $kodeKK = $request->get('kode_kk');
+
+        // Mengambil data rombongan belajar sesuai tahun ajaran dan kompetensi keahlian
+        $rombonganBelajar = RombonganBelajar::where('tahunajaran', $tahunAjaran)
+            ->where('id_kk', $kodeKK)
+            ->pluck('rombel', 'kode_rombel'); // Mengambil kolom rombel dan kode_rombel
+
+        return response()->json($rombonganBelajar); // Mengembalikan data sebagai JSON
+    }
+
+    public function getRombels(Request $request)
+    {
+
+        // Mengambil data rombel berdasarkan tahunajaran, kode_kk, dan tingkat yang dipilih
+        $rombels = RombonganBelajar::where('tahunajaran', $request->tahunajaran)
+            ->where('id_kk', $request->kode_kk)
+            ->where('tingkat', $request->tingkat)
+            ->get();
+
+        // Mengambil jumlah siswa per rombel berdasarkan rombel_kode
+        $jumlahSiswa = PesertaDidikRombel::selectRaw('rombel_kode, COUNT(nis) as jumlah_siswa')
+            ->where('tahun_ajaran', $request->tahunajaran)
+            ->where('kode_kk', $request->kode_kk)
+            ->where('rombel_tingkat', $request->tingkat)
+            ->groupBy('rombel_kode')
+            ->get()
+            ->keyBy('rombel_kode'); // Memetakan rombel_kode sebagai key
+
+        // Gabungkan data rombel dan jumlah siswa per rombel tanpa mengubah format response
+        $rombels->each(function ($rombel) use ($jumlahSiswa) {
+            // Menambahkan informasi jumlah_siswa ke setiap item rombel
+            $rombel->jumlah_siswa = $jumlahSiswa[$rombel->kode_rombel]->jumlah_siswa ?? 0;
+        });
+
+
+
+        return response()->json($rombels);
+    }
+
+
+    public function getStudentData(Request $request)
+    {
+        $rombels = $request->input('rombels');
+
+        $students = DB::table('rombongan_belajars')
+            ->join('peserta_didik_rombels', 'rombongan_belajars.kode_rombel', '=', 'peserta_didik_rombels.rombel_kode')
+            ->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
+            ->leftJoin('users', 'peserta_didiks.nis', '=', 'users.nis') // Tambahkan left join ke tabel users
+            ->select(
+                'rombongan_belajars.kode_rombel as kode_rombel',
+                'rombongan_belajars.rombel as rombel',
+                'peserta_didiks.nama_lengkap as nama_siswa',
+                'peserta_didiks.nis as nis',
+                'peserta_didiks.foto as foto',
+                'peserta_didiks.kontak_email as email'
+            )
+            ->whereIn('rombongan_belajars.kode_rombel', $rombels)
+            ->whereNull('users.nis') // Hanya ambil siswa yang NIS-nya tidak ada di tabel users
+            ->get();
+
+        return response()->json($students);
+    }
+
+    public function formGenerateAkun(Request $request)
+    {
+        $rombels = $request->input('selected_rombel_ids');  // Mendapatkan rombel yang dipilih
+        $rombels = explode(',', $rombels);  // Mengubah string ID rombel menjadi array
+
+        // Ambil data siswa berdasarkan rombel yang dipilih
+        $students = DB::table('rombongan_belajars')
+            ->join('peserta_didik_rombels', 'rombongan_belajars.kode_rombel', '=', 'peserta_didik_rombels.rombel_kode')
+            ->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
+            ->select(
+                'peserta_didiks.nama_lengkap',
+                'peserta_didiks.nis',
+                'peserta_didiks.foto',
+                'peserta_didiks.kontak_email as email',
+                'rombongan_belajars.tingkat'
+            )
+            ->whereIn('rombongan_belajars.kode_rombel', $rombels)
+            ->get();
+
+        // Menyimpan data siswa ke dalam tabel users
+        foreach ($students as $student) {
+            // Cek apakah akun sudah ada berdasarkan nis
+            $existingUser = User::where('nis', $student->nis)->exists();
+
+            if ($existingUser) {
+                // Jika sudah ada, abaikan dan lanjutkan ke siswa berikutnya
+                continue;
+            }
+
+            // Generate email unik jika email sudah ada
+            $email = $student->email;
+            while (User::where('email', $email)->exists()) {
+                $randomNumber = rand(100, 999); // 3 angka acak
+                $emailParts = explode('@', $student->email);
+                $email = $emailParts[0] . $randomNumber . '@' . $emailParts[1];
+            }
+
+            // Jika akun belum ada, buatkan akun baru
+            $user = User::create([
+                'name' => $student->nama_lengkap,
+                'avatar' => $student->foto,
+                'email' => $email,
+                'nis' => $student->nis,
+                'password' => bcrypt('siswaSKAONE30'),  // Password default
+            ]);
+
+            // Menambahkan role sesuai dengan tingkat siswa
+            if ($student->tingkat == 12) {
+                $user->assignRole(['siswa', 'pesertapkl']);  // Menetapkan role 'siswa' dan 'pesertapkl' jika tingkat 12
+            } else {
+                $user->assignRole('siswa');  // Menetapkan role 'siswa' jika bukan tingkat 12
+            }
+        }
+
+        return redirect()->back()->with('success', 'Akun berhasil dibuat!');
+    }
+
+
+
+
+
+
+
+
+    // In your Controller
+    public function getPesertaDidik($kode_kk, Request $request)
+    {
+        // Ambil data tahun ajaran dari request
+        $tahun_ajaran = $request->input('tahun_ajaran');
+
+        // Ambil semua siswa yang memiliki kode_kk sesuai
+        $peserta_didiks = PesertaDidik::where('kode_kk', $kode_kk)->get();
+
+        // Ambil NIS siswa yang sudah terdaftar di rombel untuk tahun ajaran yang dipilih
+        $siswaTerdaftar = PesertaDidikRombel::where('tahun_ajaran', $tahun_ajaran)
+            ->pluck('nis')
+            ->toArray();
+
+        // Filter siswa yang belum terdaftar pada tahun ajaran tertentu
+        $siswaBelumTerdaftar = PesertaDidik::where('kode_kk', $kode_kk)
+            ->whereNotIn('nis', function ($query) use ($tahun_ajaran) {
+                $query->select('nis')
+                    ->from('peserta_didik_rombels')
+                    ->where('tahun_ajaran', $tahun_ajaran);
+            })
+            ->get();
+
+        return response()->json($siswaBelumTerdaftar);
+    }
+}
