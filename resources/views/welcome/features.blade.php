@@ -83,7 +83,7 @@
                             <div class="col col-lg">
                                 <div class="mt-3 mt-lg-0 py-4 px-3">
                                     <h5 class="text-muted text-uppercase fs-13">
-                                        User Sedang Login
+                                        User Login Hari ini
                                     </h5>
                                     <div class="d-flex align-items-center">
                                         <div class="flex-shrink-0">
