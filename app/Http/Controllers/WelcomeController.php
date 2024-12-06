@@ -125,6 +125,7 @@ class WelcomeController extends Controller
             ->where('last_login_at', '>=', now()->subMinutes(59)) // Contoh, pengguna yang login dalam 5 menit terakhir
             ->get(); // Ambil pengguna aktif
 
+        $activeUsersCount = $activeUsers->count();
 
         $today = Carbon::today(); // Mengambil tanggal hari ini
         $userLoginHariini = User::whereDate('last_login_at', $today)->get();
@@ -229,6 +230,7 @@ class WelcomeController extends Controller
                 'jumlahPD',
                 'jumlahKelas',
                 'loginCount',
+                'activeUsersCount',
             )
         );
     }
