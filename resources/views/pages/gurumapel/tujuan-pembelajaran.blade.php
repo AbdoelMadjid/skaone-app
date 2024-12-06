@@ -148,9 +148,8 @@
                             if (response.exists) {
                                 // Tampilkan notifikasi jika kode_cp sudah ada
                                 showToast('warning', response.message);
-                                // Kosongkan pilihan kode_cp untuk mencegah pengisian ulang
-                                $('#kode_cp').val('');
                                 // Reset semua input terkait
+                                $('#kode_cp').val('');
                                 $('#kel_mapel').val('');
                                 $('#jml_materi').val('');
                                 $('#tingkat').val('');
@@ -160,7 +159,7 @@
                                 $('#tampil_cp').hide();
                                 $('#judul-tp').hide();
                             } else {
-                                // Generate materi input fields based on jml_materi
+                                // Generate input materi berdasarkan jumlah materi
                                 if (jmlMateri) {
                                     $('#ngisi_tp').empty();
 
@@ -168,29 +167,26 @@
                                         var rowHtml = `
                                             <div class="row mt-3">
                                                 <div class="col-md-3">
-                                                    <input type="text" name="tp_kode[]" id="tp_kode_${i}"
-                                                        value="${kodeCp}-${i}" class="form-control" readonly>
+                                                    <input type="text" name="tp_kode[]" id="tp_kode_${i}" value="${kodeCp}-${i}" class="form-control" readonly>
                                                     <select class="form-select mt-2" name="tp_no[]">
                                                         <option value="${i}" selected>${i}</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <textarea class="form-control tp_isi" name="tp_isi[]" id="tp_isi_${i}" rows="3"></textarea>
-                                                     <small id="tp_isi_word_count_${i}" class="text-muted">0/25 kata</small>
+                                                    <small id="tp_isi_word_count_${i}" class="text-primary fw-bold text-muted">0/25 kata</small>
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <input type="text" name="tp_desk_tinggi[]" id="tp_desk_tinggi_${i}"
-                                                        value="Peserta didik mampu" class="form-control" readonly>
-                                                    <input type="text" name="tp_desk_rendah[]" id="tp_desk_rendah_${i}"
-                                                        value="Peserta didik kurang mampu" class="form-control" readonly>
+                                                    <input type="text" name="tp_desk_tinggi[]" id="tp_desk_tinggi_${i}" value="Peserta didik mampu" class="form-control" readonly>
+                                                    <input type="text" name="tp_desk_rendah[]" id="tp_desk_rendah_${i}" value="Peserta didik kurang mampu" class="form-control" readonly>
                                                 </div>
                                             </div>`;
                                         $('#ngisi_tp').append(rowHtml);
                                     }
 
-                                    // Tambahkan validasi jumlah kata pada semua textarea yang dibuat
-                                    $('.tp_isi').on('input', function() {
-                                        const maxWords = 25 a; // Batas jumlah kata
+                                    // Validasi jumlah kata
+                                    $('#ngisi_tp').on('input', '.tp_isi', function() {
+                                        const maxWords = 25; // Batas jumlah kata
                                         const textArea = $(this);
                                         const wordCountDisplay = textArea.next(
                                             'small'
@@ -202,13 +198,13 @@
                                         const wordCount = words.length;
 
                                         wordCountDisplay.text(
-                                            `${wordCount}/${maxWords} words`);
+                                            `${wordCount}/${maxWords} kata`);
 
                                         if (wordCount > maxWords) {
                                             // Jika melebihi batas, ubah teks menjadi merah dan tebal
                                             wordCountDisplay.removeClass('text-muted')
                                                 .addClass('text-danger fw-bold');
-                                            alert(
+                                            showToast('warning',
                                                 `Jumlah kata sudah melebihi batas maksimal ${maxWords} kata!`
                                             );
                                         } else {
@@ -222,7 +218,7 @@
                                     $('#ngisi_tp').empty();
                                 }
 
-                                // Fetch isi_cp and kode_rombel
+                                // Fetch isi_cp dan kode_rombel
                                 if (kodeCp) {
                                     var requestIsiCp = $.ajax({
                                         url: '/gurumapel/datangajar/getisicp',
@@ -251,37 +247,32 @@
                                     });
 
                                     $.when(requestIsiCp, requestKodeRombel, requestKodeMapel)
-                                        .done(function(
-                                            responseIsiCp,
-                                            responseKodeRombel, responseKodeMapel, ) {
+                                        .done(function(responseIsiCp, responseKodeRombel,
+                                            responseKodeMapel) {
                                             $('#isi_cp').val(responseIsiCp[0]?.isi_cp ||
                                                 '');
                                             $('#element_cp').val(responseIsiCp[0]
-                                                ?.element || ''); // Add element data
+                                                ?.element || ''); // Tambahkan element data
 
                                             var kodeRombelArray = responseKodeRombel[0]
                                                 ?.kode_rombel || [];
                                             $('#selected_rombel_ids').val(kodeRombelArray
-                                                .join(
-                                                    ',')
-                                            ); // Save rombel IDs as comma-separated
+                                                .join(',')
+                                            ); // Simpan rombel ID sebagai koma
 
                                             var kodeMapelArray = responseKodeMapel[0]
                                                 ?.kel_mapel || [];
-                                            $('#kel_mapel').val(kodeMapelArray
-                                                .join(
-                                                    ',')
-                                            ); // Save Mapel IDs as comma-separated
+                                            $('#kel_mapel').val(kodeMapelArray.join(
+                                                ',')); // Simpan Mapel ID sebagai koma
                                         });
 
                                     $('#tampil_cp').show();
                                     $('#judul-tp').show();
                                 } else {
-                                    // Sembunyikan elemen tampil_cp jika kode_cp tidak dipilih
+                                    // Sembunyikan elemen jika kode_cp tidak dipilih
                                     $('#tampil_cp').hide();
                                     $('#judul-tp').hide();
                                 }
-
                             }
                         },
                         error: function() {
