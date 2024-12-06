@@ -3,6 +3,7 @@
 /images
 /storage/*.key
 /vendor
+offline.html
 .env
 .env.backup
 .env.production

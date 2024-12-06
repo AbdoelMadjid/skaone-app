@@ -250,6 +250,15 @@ class TujuanPembelajaranController extends Controller
             'selected_tp_data' => 'required', // JSON string berisi data materi
         ]);
 
+        $request->validate([
+            'tp_isi.*' => ['required', function ($attribute, $value, $fail) {
+                $wordCount = str_word_count($value);
+                if ($wordCount > 25) {
+                    $fail("The text in $attribute exceeds the maximum allowed word count of 25.");
+                }
+            }],
+        ]);
+
         // Ambil data dari request
         $kode_rombel = explode(',', $request->input('selected_rombel_ids'));
         $kel_mapel = explode(',', $request->input('kel_mapel'));

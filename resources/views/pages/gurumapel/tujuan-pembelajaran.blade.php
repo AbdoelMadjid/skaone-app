@@ -175,7 +175,8 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <textarea class="form-control" name="tp_isi[]" id="tp_isi_${i}" rows="3"></textarea>
+                                                    <textarea class="form-control tp_isi" name="tp_isi[]" id="tp_isi_${i}" rows="3"></textarea>
+                                                     <small id="tp_isi_word_count_${i}" class="text-muted">0/25 kata</small>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <input type="text" name="tp_desk_tinggi[]" id="tp_desk_tinggi_${i}"
@@ -186,6 +187,37 @@
                                             </div>`;
                                         $('#ngisi_tp').append(rowHtml);
                                     }
+
+                                    // Tambahkan validasi jumlah kata pada semua textarea yang dibuat
+                                    $('.tp_isi').on('input', function() {
+                                        const maxWords = 25 a; // Batas jumlah kata
+                                        const textArea = $(this);
+                                        const wordCountDisplay = textArea.next(
+                                            'small'
+                                        ); // Elemen untuk menampilkan jumlah kata
+
+                                        // Hitung jumlah kata
+                                        const words = textArea.val().trim().split(/\s+/)
+                                            .filter(word => word.length > 0);
+                                        const wordCount = words.length;
+
+                                        wordCountDisplay.text(
+                                            `${wordCount}/${maxWords} words`);
+
+                                        if (wordCount > maxWords) {
+                                            // Jika melebihi batas, ubah teks menjadi merah dan tebal
+                                            wordCountDisplay.removeClass('text-muted')
+                                                .addClass('text-danger fw-bold');
+                                            alert(
+                                                `Jumlah kata sudah melebihi batas maksimal ${maxWords} kata!`
+                                            );
+                                        } else {
+                                            // Jika tidak, kembalikan ke normal
+                                            wordCountDisplay.removeClass(
+                                                'text-danger fw-bold').addClass(
+                                                'text-muted');
+                                        }
+                                    });
                                 } else {
                                     $('#ngisi_tp').empty();
                                 }
@@ -259,6 +291,7 @@
                     });
                 }
             });
+
 
             $('#form-tp-ajar').on('submit', function(e) {
                 e.preventDefault();
