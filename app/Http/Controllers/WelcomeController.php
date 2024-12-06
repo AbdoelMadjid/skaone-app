@@ -184,6 +184,21 @@ class WelcomeController extends Controller
             $totalSiswaPerKK[$kodeKK] = array_sum(array_column($data, 'jumlah_siswa'));
         }
 
+
+        $jumlahPersonil = DB::table('personil_sekolahs')
+            ->count();
+
+        $jumlahPD = DB::table('peserta_didiks')
+            ->count();
+
+        $jumlahKelas = DB::table('rombongan_belajars')
+            ->where('tahunajaran', $tahunAjaran->tahunajaran)
+            ->count();
+
+        $loginCount = DB::table('users')
+            ->select('login_count')
+            ->count();
+
         return view(
             'welcome',
             compact(
@@ -210,6 +225,10 @@ class WelcomeController extends Controller
                 'semester',
                 'jumlahSiswaPerKK',
                 'totalSiswaPerKK',
+                'jumlahPersonil',
+                'jumlahPD',
+                'jumlahKelas',
+                'loginCount',
             )
         );
     }
