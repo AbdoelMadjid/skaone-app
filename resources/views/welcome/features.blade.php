@@ -31,8 +31,7 @@
                             </div><!-- end col -->
                             <div class="col col-lg border-end">
                                 <div class="mt-3 mt-md-0 py-4 px-3">
-                                    <h5 class="text-muted text-uppercase fs-13">Peserta Didik <i
-                                            class="ri-arrow-up-circle-line text-success fs-18 float-end align-middle"></i>
+                                    <h5 class="text-muted text-uppercase fs-13">Peserta Didik
                                     </h5>
                                     <div class="d-flex align-items-center">
                                         <div class="flex-shrink-0">
