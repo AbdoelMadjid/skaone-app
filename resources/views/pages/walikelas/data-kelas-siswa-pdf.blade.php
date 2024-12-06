@@ -73,7 +73,7 @@
             <td width="50%" valign="top" class="no-border">
                 <!-- Kosongkan area jika tidak diperlukan -->
             </td>
-            <td width="50%" valign="top" class="no-border" style="text-align: center;">
+            <td width="50%" valign="top" class="no-border">
                 Kadipaten, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}<br>
                 <strong>Wali Kelas,</strong>
                 <br><br><br><br><br>
