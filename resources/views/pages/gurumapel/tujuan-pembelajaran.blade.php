@@ -34,7 +34,7 @@
                 </div>
                 <div class="card-body">
 
-                    @if ($data->isEmpty() || $status === 'Lengkap')
+                    {{-- @if ($data->isEmpty() || $cekstatus === 'Lengkap')
                     @else
                         <div class="alert alert-danger alert-dismissible alert-additional fade show mb-2" role="alert">
                             <div class="alert-body">
@@ -76,7 +76,7 @@
                                 </table>
                             </div>
                         </div>
-                    @endif
+                    @endif --}}
                     {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
                 </div>
             </div>

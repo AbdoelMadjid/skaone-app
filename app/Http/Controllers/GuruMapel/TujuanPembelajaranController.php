@@ -103,7 +103,7 @@ class TujuanPembelajaranController extends Controller
                 ->sum('jml_materi');
 
             // Tentukan status Lengkap atau Kurang X TP
-            $status = ($total_materi - $total_tujuan) == 0 ? 'Lengkap' : 'Kurang ' . ($total_materi - $total_tujuan) . ' TP';
+            //$cekstatus = ($total_materi - $total_tujuan) == 0 ? 'Lengkap' : 'Kurang ' . ($total_materi - $total_tujuan) . ' TP';
 
             $rombel = DB::table('mata_pelajarans')
                 ->select('mata_pelajaran')
@@ -117,7 +117,6 @@ class TujuanPembelajaranController extends Controller
                 'kel_mapel' => $item->kel_mapel,
                 'total_tujuan' => $total_tujuan,
                 'total_materi' => $total_materi,
-                'status' => $status
             ];
         }
 
