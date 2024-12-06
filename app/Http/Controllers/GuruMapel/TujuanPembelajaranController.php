@@ -131,7 +131,6 @@ class TujuanPembelajaranController extends Controller
                 'cpOptions',
                 'data',
                 'result',
-                'status',
             )
         );
     }
