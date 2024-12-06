@@ -5,6 +5,7 @@ namespace App\Http\Controllers\WaliKelas;
 use App\Http\Controllers\Controller;
 use App\Models\ManajemenSekolah\TahunAjaran;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Dompdf\Dompdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -286,5 +287,53 @@ class DataKelasController extends Controller
             'siswaData'
         ));
         return $pdf->download('Username Kelas ' . $waliKelas->rombel . '.pdf');
+    }
+
+    public function downloadPDF()
+    {
+        $user = auth()->user();
+
+        // Ambil data yang sama seperti di view
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')
+            ->with(['semesters' => function ($query) {
+                $query->where('status', 'Aktif');
+            }])
+            ->first();
+
+        if (!$tahunAjaranAktif) {
+            return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
+        }
+
+        $waliKelas = DB::table('rombongan_belajars')
+            ->where('wali_kelas', $user->personal_id)
+            ->where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->first();
+
+        if (!$waliKelas) {
+            return redirect()->back()->with('error', 'Data wali kelas tidak ditemukan.');
+        }
+
+        $siswaData = DB::table('peserta_didik_rombels')
+            ->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
+            ->where('peserta_didik_rombels.tahun_ajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('peserta_didik_rombels.rombel_kode', $waliKelas->kode_rombel)
+            ->select('peserta_didik_rombels.nis', 'peserta_didiks.nama_lengkap', 'peserta_didiks.kontak_email')
+            ->get();
+
+        $personil = DB::table('personil_sekolahs')
+            ->where('id_personil', $waliKelas->wali_kelas)
+            ->first();
+
+        // Load view PDF
+        $html = view('pages.walikelas.data-kelas-siswa-pdf', compact('siswaData', 'waliKelas', 'personil'))->render();
+
+        // Generate PDF
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        // Download file
+        return $dompdf->stream("data-siswa-{$waliKelas->kode_rombel}.pdf");
     }
 }

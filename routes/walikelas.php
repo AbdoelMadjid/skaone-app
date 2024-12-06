@@ -26,7 +26,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('data-kelas', DataKelasController::class);
         Route::post('/data-kelas/simpantitimangsa', [DataKelasController::class, 'simpantitimangsa'])
             ->name('data-kelas.simpantitimangsa');
-        Route::get('/downloadpdfdatasiswa', [DataKelasController::class, 'downloadDataSiswa'])->name('downloadpdfdatasiswa');
+        Route::get('/downloadpdfdatasiswa', [DataKelasController::class, 'downloadPDF'])->name('downloadpdfdatasiswa');
 
 
         Route::resource('identitas-siswa', IdentitasSiswaController::class);
