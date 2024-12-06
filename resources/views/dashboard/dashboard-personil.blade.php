@@ -65,7 +65,7 @@
     </div>
     <div class="col-xl-8 col-md-6">
         <!-- Rounded Ribbon -->
-        <div class="card ribbon-box border shadow-none mb-lg-2">
+        <div class="card ribbon-box border shadow-none mb-lg-4">
             <div class="card-body">
                 <div class="ribbon ribbon-primary round-shape">Personil Sekolah Login Hari ini</div>
                 <div class="ribbon-content mt-5 text-muted">
@@ -109,7 +109,7 @@
             </div>
         </div>
         <!-- Rounded Ribbon -->
-        <div class="card ribbon-box border shadow-none mb-lg-0">
+        <div class="card ribbon-box border shadow-none mb-lg-4">
             <div class="card-body">
                 <div class="ribbon ribbon-primary round-shape">Peserta Didik Login Hari ini</div>
                 <div class="ribbon-content mt-5 text-muted">
