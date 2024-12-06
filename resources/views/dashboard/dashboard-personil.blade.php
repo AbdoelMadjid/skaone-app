@@ -31,7 +31,7 @@
         <!-- Ribbon Shape -->
         <div class="card ribbon-box border shadow-none mb-lg-0">
             <div class="card-body">
-                <div class="ribbon ribbon-primary ribbon-shape">Ulang Tahun Bulan Ini</div>
+                <div class="ribbon ribbon-danger ribbon-shape">Ulang Tahun Bulan Ini</div>
                 <div class="ribbon-content text-muted mt-5">
                     @if ($ulangTahun->isEmpty())
                         <p>Tidak ada yang ulang tahun bulan ini</p>
@@ -67,9 +67,8 @@
         <!-- Rounded Ribbon -->
         <div class="card ribbon-box border shadow-none mb-lg-2">
             <div class="card-body">
-                <div class="ribbon ribbon-primary round-shape">Personil Sekolah</div>
-                <h5 class="fs-14 text-end">Login Hari ini</h5>
-                <div class="ribbon-content mt-4 text-muted">
+                <div class="ribbon ribbon-primary round-shape">Personil Sekolah Login Hari ini</div>
+                <div class="ribbon-content mt-5 text-muted">
                     @if ($userLoginHariiniPersonil->isEmpty())
                         <p>No users have logged in today.</p>
                     @else
@@ -112,9 +111,8 @@
         <!-- Rounded Ribbon -->
         <div class="card ribbon-box border shadow-none mb-lg-0">
             <div class="card-body">
-                <div class="ribbon ribbon-primary round-shape">Peserta Didik</div>
-                <h5 class="fs-14 text-end">Login Hari Ini</h5>
-                <div class="ribbon-content mt-4 text-muted">
+                <div class="ribbon ribbon-primary round-shape">Peserta Didik Login Hari ini</div>
+                <div class="ribbon-content mt-5 text-muted">
                     @if ($userLoginHariiniSiswa->isEmpty())
                         <p>No users have logged in today.</p>
                     @else
