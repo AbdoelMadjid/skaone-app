@@ -62,23 +62,6 @@
                                     </div>
                                 </div>
                             </div><!-- end col -->
-                            <div class="col col-lg border-end">
-                                <div class="mt-3 mt-lg-0 py-4 px-3">
-                                    <h5 class="text-muted text-uppercase fs-13">
-                                        Total Login
-                                    </h5>
-                                    <div class="d-flex align-items-center">
-                                        <div class="flex-shrink-0">
-                                            <i class="mdi mdi-account-multiple-plus display-6 text-muted"></i>
-                                        </div>
-                                        <div class="flex-grow-1 ms-3">
-                                            <h2 class="mb-0"><span class="counter-value"
-                                                    data-target="{{ $loginCount }}">0</span>
-                                            </h2>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!-- end col -->
                             <div class="col col-lg">
                                 <div class="mt-3 mt-lg-0 py-4 px-3">
                                     <h5 class="text-muted text-uppercase fs-13">
@@ -91,6 +74,23 @@
                                         <div class="flex-grow-1 ms-3">
                                             <h2 class="mb-0"><span class="counter-value"
                                                     data-target="{{ $loginTodayCount }}">0</span>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- end col -->
+                            <div class="col col-lg border-end">
+                                <div class="mt-3 mt-lg-0 py-4 px-3">
+                                    <h5 class="text-muted text-uppercase fs-13">
+                                        Total Login
+                                    </h5>
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0">
+                                            <i class="mdi mdi-account-multiple-plus display-6 text-muted"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h2 class="mb-0"><span class="counter-value"
+                                                    data-target="{{ $loginCount }}">0</span>
                                             </h2>
                                         </div>
                                     </div>
