@@ -76,5 +76,17 @@
             <td width="50%" valign="top" class="no-border" style="text-align: center;">
                 Kadipaten, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}<br>
                 <strong>Wali Kelas,</strong>
-                <br><br><br>
+                <br><br><br><br><br>
                 <strong>{{ $personil->gelardepan }} {{ $personil->namalengkap }}
+                    {{ $personil->gelarbelakang }}</strong><br>
+                @if (!empty($personil->nip))
+                    NIP. {{ $personil->nip }}
+                @else
+                    NIP. -
+                @endif
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>
