@@ -27,6 +27,46 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    <div class="alert alert-danger alert-dismissible alert-additional fade show mb-2" role="alert">
+                        <div class="alert-body">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 me-3">
+                                    <i class="ri-alert-line display-6 align-middle"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h5 class="alert-heading">Mohon di Perhatikan !!</h5>
+                                    <p class="mb-0">Masih ada TP yang kurang lengkap</p>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="alert-content">
+                            <table width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Kode Rombel</th>
+                                        <th>Kelompok Mapel</th>
+                                        <th>Total Tujuan</th>
+                                        <th>Total Materi</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($result as $item)
+                                        <tr>
+                                            <td>{{ $item['kode_rombel'] }}</td>
+                                            <td>{{ $item['kel_mapel'] }}</td>
+                                            <td>{{ $item['total_tujuan'] }}</td>
+                                            <td>{{ $item['total_materi'] }}</td>
+                                            <td>{{ $item['status'] }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                     {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
                 </div>
             </div>
