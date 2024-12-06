@@ -56,7 +56,7 @@ class PesertaDidikDataTable extends DataTable
                     $logoPath = $defaultPhotoPath;
                 }
 
-                $AvatarUser = DB::table('users')
+                /* $AvatarUser = DB::table('users')
                     ->select('avatar')
                     ->where('nis', $row->nis)
                     ->first(); // Mengambil satu baris data
@@ -76,10 +76,10 @@ class PesertaDidikDataTable extends DataTable
                 } else {
                     // Jika tidak ada data avatar, gunakan foto default
                     $avataruserPath = $defaultPhotoPath;
-                }
+                } */
 
                 // Mengembalikan tag img dengan path gambar
-                return '<img src="' . $logoPath . '" alt="Foto" width="50" /><img src="' . $avataruserPath . '" alt="Foto" width="50" />';
+                return '<img src="' . $logoPath . '" alt="Foto" width="50" />';
             })
             ->addColumn('tempat_tanggal_lahir', function ($row) {
                 return $row->tempat_lahir . ', ' . \Carbon\Carbon::parse($row->tanggal_lahir)->format('d-m-Y');
