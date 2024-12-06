@@ -33,50 +33,6 @@
                     </div>
                 </div>
                 <div class="card-body">
-
-                    {{-- @if ($data->isEmpty() || $cekstatus === 'Lengkap')
-                    @else
-                        <div class="alert alert-danger alert-dismissible alert-additional fade show mb-2" role="alert">
-                            <div class="alert-body">
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                                <div class="d-flex">
-                                    <div class="flex-shrink-0 me-3">
-                                        <i class="ri-alert-line display-6 align-middle"></i>
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <h5 class="alert-heading">Mohon di Perhatikan !!</h5>
-                                        <p class="mb-0">Masih ada TP yang kurang lengkap</p>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="alert-content">
-                                <table width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th class="judul">Kode Rombel</th>
-                                            <th class="judul">Kelompok Mapel</th>
-                                            <th class="judul">Total TP Seharusnya</th>
-                                            <th class="judul">Total Sudah Input TP</th>
-                                            <th class="judul">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($result as $item)
-                                            <tr>
-                                                <td class="judul">{{ $item['kode_rombel'] }}</td>
-                                                <td class="judul">{{ $item['kel_mapel'] }}</td>
-                                                <td class="judul">{{ $item['total_materi'] }}</td>
-                                                <td class="judul">{{ $item['total_tujuan'] }}</td>
-                                                <td class="judul">{{ $item['status'] }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    @endif --}}
                     {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
                 </div>
             </div>

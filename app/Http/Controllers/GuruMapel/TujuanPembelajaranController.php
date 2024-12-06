@@ -77,49 +77,6 @@ class TujuanPembelajaranController extends Controller
                 ];
             });
 
-        // Ambil semua kombinasi kode_rombel dan kel_mapel berdasarkan id_personil
-        $data = DB::table('tujuan_pembelajarans')
-            ->select('kode_rombel', 'kel_mapel')
-            ->where('id_personil', $personal_id)
-            ->distinct() // Ambil kombinasi unik kode_rombel dan kel_mapel
-            ->get();
-
-        $result = [];
-
-        // Loop untuk setiap kombinasi kode_rombel dan kel_mapel
-        foreach ($data as $item) {
-            // Hitung total_tujuan berdasarkan kode_rombel, kel_mapel, dan id_personil
-            $total_tujuan = DB::table('tujuan_pembelajarans')
-                ->where('id_personil', $personal_id)
-                ->where('kode_rombel', $item->kode_rombel)
-                ->where('kel_mapel', $item->kel_mapel)
-                ->count();
-
-            // Hitung total_materi berdasarkan kode_rombel, kel_mapel, dan id_personil
-            $total_materi = DB::table('cp_terpilihs')
-                ->where('id_personil', $personal_id)
-                ->where('kode_rombel', $item->kode_rombel)
-                ->where('kel_mapel', $item->kel_mapel)
-                ->sum('jml_materi');
-
-            // Tentukan status Lengkap atau Kurang X TP
-            //$cekstatus = ($total_materi - $total_tujuan) == 0 ? 'Lengkap' : 'Kurang ' . ($total_materi - $total_tujuan) . ' TP';
-
-            $rombel = DB::table('mata_pelajarans')
-                ->select('mata_pelajaran')
-                ->where('kel_mapel', $item->kel_mapel)
-                ->get();
-
-            // Simpan data hasil untuk ditampilkan
-            $result[] = [
-                'kode_rombel' => $item->kode_rombel,
-                'rombel' => $rombel,
-                'kel_mapel' => $item->kel_mapel,
-                'total_tujuan' => $total_tujuan,
-                'total_materi' => $total_materi,
-            ];
-        }
-
         return $tujuanPembelajaranDataTable->render(
             'pages.gurumapel.tujuan-pembelajaran',
             compact(
@@ -128,8 +85,6 @@ class TujuanPembelajaranController extends Controller
                 'semester',
                 'fullName',
                 'cpOptions',
-                'data',
-                'result',
             )
         );
     }
