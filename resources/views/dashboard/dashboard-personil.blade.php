@@ -69,11 +69,11 @@
                 <h4 class="card-title mb-0">User Login Hari ini </h4>
             </div><!-- end card header -->
             <div class="card-body">
-                @if ($userLoginHariini->isEmpty())
+                @if ($userLoginHariiniPersonil->isEmpty())
                     <p>No users have logged in today.</p>
                 @else
                     <div class="row">
-                        @foreach ($userLoginHariini->chunk(2) as $userRow)
+                        @foreach ($userLoginHariiniPersonil->chunk(2) as $userRow)
                             <div class="row">
                                 @foreach ($userRow as $user)
                                     <div class="col-md-6">
@@ -92,6 +92,39 @@
                                                 @else
                                                     {{ $user->nis }} -
                                                 @endif
+                                                {!! $user->name !!}
+                                            </p>
+                                            <div>
+                                                <span class="text-success fw-medium fs-12">{{ $user->login_count }}
+                                                    x</span>
+                                            </div>
+                                        </div><!-- end -->
+                                    </div><!-- end col -->
+                                @endforeach
+                            </div><!-- end row -->
+                        @endforeach
+                    </div>
+                @endif
+                <h5>Siswa</h5>
+                @if ($userLoginHariiniSiswa->isEmpty())
+                    <p>No users have logged in today.</p>
+                @else
+                    <div class="row">
+                        @foreach ($userLoginHariiniSiswa->chunk(2) as $userRow)
+                            <div class="row">
+                                @foreach ($userRow as $user)
+                                    <div class="col-md-6">
+                                        <div
+                                            class="d-flex justify-content-between border-bottom border-bottom-dashed py-0">
+                                            <p class="fw-medium mb-0">
+                                                @if ($user->avatar == 'siswacewek.png' || $user->avatar == 'siswacowok.png')
+                                                    <img src="{{ URL::asset('build/images/users/user-dummy-img.jpg') }}"
+                                                        alt="" class="avatar-xs rounded-circle me-2">
+                                                @else
+                                                    <img src="{{ URL::asset('images/thumbnail/' . $user->avatar . '') }}"
+                                                        alt="" class="avatar-xs rounded-circle me-2">
+                                                @endif
+                                                {{ $user->nis }} -
                                                 {!! $user->name !!}
                                             </p>
                                             <div>

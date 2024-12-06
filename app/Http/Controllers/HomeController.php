@@ -124,7 +124,14 @@ class HomeController extends Controller
 
 
         $today = Carbon::today(); // Mengambil tanggal hari ini
-        $userLoginHariini = User::whereDate('last_login_at', $today)->get();
+
+        $userLoginHariiniPersonil = User::whereDate('last_login_at', $today)
+            ->whereNotNull('personal_id')->orderBy('last_login_at')
+            ->get();
+
+        $userLoginHariiniSiswa = User::whereDate('last_login_at', $today)
+            ->whereNotNull('nis')->orderBy('last_login_at')
+            ->get();
 
         $nis = auth()->user()->nis;
         $totalHadir = AbsensiSiswaPkl::where('nis', $nis)
@@ -178,7 +185,8 @@ class HomeController extends Controller
             'activeUsers',
             'personil',
             'aingPengguna',
-            'userLoginHariini',
+            'userLoginHariiniPersonil',
+            'userLoginHariiniSiswa',
             'totalHadir',
             'totalSakit',
             'totalIzin',
