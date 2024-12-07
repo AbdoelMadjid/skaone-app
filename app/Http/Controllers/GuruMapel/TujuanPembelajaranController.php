@@ -81,6 +81,7 @@ class TujuanPembelajaranController extends Controller
         $KbmPersonil = KbmPerRombel::where('id_personil', $personal_id)
             ->where('tahunajaran', $tahunAjaran->tahunajaran)
             ->where('ganjilgenap', $semester->semester)
+            ->orderBy('kel_mapel')
             ->get();
 
         return $tujuanPembelajaranDataTable->render(
