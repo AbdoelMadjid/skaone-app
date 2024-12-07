@@ -30,7 +30,7 @@
                             id="buatMateriAjarBtn" title="Buat Tujuan Pembelajaran">Tambah Tujuan Pembelajaran</button>
                         <button class="btn btn-soft-warning" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseWithicon2" aria-expanded="false" aria-controls="collapseWithicon2"
-                            title="Cek Capaian Pembelajaran Terpilih">
+                            title="Cek Tujuan Pembelajaran">
                             <i class="ri-filter-2-line"></i>
                         </button>
                         <button id="deleteSelected" class="btn btn-soft-danger" style="display: none;"><i
