@@ -23,26 +23,27 @@
                             <div class="flex-grow-1">
                                 <h4 class="fs-18 lh-base mb-3">Peserta PKL : </h4>
                                 <h4 class="fs-22 fw-semibold ff-secondary mb-0">
-                                    {{ $data->first()->nama_lengkap ?? 'Data tidak ditemukan' }}
+                                    {{ $data->isNotEmpty() ? $data->first()->nama_lengkap : 'Data tidak ditemukan' }}
                                 </h4>
                                 <div class="d-flex gap-3 mt-4">
                                     Rombel : <br>
-                                    {{ $data->first()->rombel_nama ?? 'Data tidak ditemukan' }}
+                                    {{ $data->isNotEmpty() ? $data->first()->rombel_nama : 'Data tidak ditemukan' }}
                                 </div>
-                                {{--  <div class="d-flex gap-3 mt-4">
-                                    <a href="#!" class="btn btn-primary">Discover Now </a>
-                                    <a href="#!" class="btn btn-success">Create Your Own</a>
-                                </div> --}}
                             </div>
-                            @if ($data->first()->foto == 'siswacowok.png')
-                                <img src="{{ URL::asset('images/siswacowok.png') }}" alt="User Avatar"
-                                    class="rounded-circle avatar-xl img-thumbnail user-profile-image">
-                            @elseif ($data->first()->foto == 'siswacewek.png')
-                                <img src="{{ URL::asset('images/siswacowok.png') }}" alt="User Avatar"
-                                    class="rounded-circle avatar-xl img-thumbnail user-profile-image">
+                            @if ($data->isNotEmpty())
+                                @if ($data->first()->foto == 'siswacowok.png')
+                                    <img src="{{ URL::asset('images/siswacowok.png') }}" alt="User Avatar"
+                                        class="rounded-circle avatar-xl img-thumbnail user-profile-image">
+                                @elseif ($data->first()->foto == 'siswacewek.png')
+                                    <img src="{{ URL::asset('images/siswacewek.png') }}" alt="User Avatar"
+                                        class="rounded-circle avatar-xl img-thumbnail user-profile-image">
+                                @else
+                                    <img src="{{ URL::asset('images/peserta_didik/' . $data->first()->foto) }}"
+                                        alt="User Avatar" class="rounded-circle avatar-xl img-thumbnail user-profile-image">
+                                @endif
                             @else
-                                <img src="{{ URL::asset('images/peserta_didik/' . $data->first()->foto) }}"
-                                    alt="User Avatar" class="rounded-circle avatar-xl img-thumbnail user-profile-image">
+                                <img src="{{ URL::asset('images/user-dummy-img.jpg') }}" alt="No Data"
+                                    class="rounded-circle avatar-xl img-thumbnail user-profile-image">
                             @endif
                         </div>
                     </div>
@@ -52,18 +53,21 @@
                             <div class="flex-grow-1">
                                 <h4 class="fs-18 lh-base mb-3">Pembimbing : </h4>
                                 <h4 class="fs-22 fw-semibold ff-secondary mb-0">
-                                    @foreach ($data as $item)
-                                        {{ $item->gelardepan ?? '' }} {{ $item->namalengkap }},
-                                        {{ $item->gelarbelakang ?? '' }}
-                                    @endforeach
+                                    @if ($data->isNotEmpty())
+                                        @foreach ($data as $item)
+                                            {{ $item->gelardepan ?? '' }} {{ $item->namalengkap }},
+                                            {{ $item->gelarbelakang ?? '' }}
+                                        @endforeach
+                                    @else
+                                        Data tidak ditemukan
+                                    @endif
                                 </h4>
                                 <div class="d-flex gap-3 mt-4">
                                     Contact Person : <br>
-                                    {{ $data->first()->kontak_hp ?? 'Data tidak ditemukan' }}
+                                    {{ $data->isNotEmpty() ? $data->first()->kontak_hp : 'Data tidak ditemukan' }}
                                 </div>
                             </div>
-                            {{-- <img src="{{ URL::asset('build/images/bg-d.png') }}" alt="" class="img-fluid" /> --}}
-                            <img src="{{ $data->first()->photo ? URL::asset('images/personil/' . $data->first()->photo) : URL::asset('images/user-dummy-img.jpg') }}"
+                            <img src="{{ $data->isNotEmpty() && $data->first()->photo ? URL::asset('images/personil/' . $data->first()->photo) : URL::asset('images/user-dummy-img.jpg') }}"
                                 alt="User Avatar" class="rounded-circle avatar-xl img-thumbnail user-profile-image">
                         </div>
                     </div>
@@ -72,16 +76,20 @@
                         <div class="card-body bg-marketplace d-flex">
                             <div class="flex-grow-1">
                                 <h4 class="fs-18 lh-base mb-3">Tempat Prakerin : </h4>
-
-                                @foreach ($data as $item)
-                                    <h4 class="fs-22 fw-semibold ff-secondary mb-0">
-                                        {{ $item->nama ?? '' }}
-                                    </h4>
-                                    <h4 class="fs-15 fw-semibold ff-secondary mb-0">{{ $item->alamat }}</h4>
-                                @endforeach
+                                @if ($data->isNotEmpty())
+                                    @foreach ($data as $item)
+                                        <h4 class="fs-22 fw-semibold ff-secondary mb-0">
+                                            {{ $item->nama ?? '' }}
+                                        </h4>
+                                        <h4 class="fs-15 fw-semibold ff-secondary mb-0">{{ $item->alamat }}</h4>
+                                    @endforeach
+                                @else
+                                    Data tidak ditemukan
+                                @endif
                             </div>
                         </div>
                     </div>
+
                 </div>
                 <!--end col-->
                 <div class="col-xl-8">
