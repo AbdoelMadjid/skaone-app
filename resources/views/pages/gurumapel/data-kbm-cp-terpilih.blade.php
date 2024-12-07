@@ -68,6 +68,7 @@
                                             <th>Mata Pelajaran</th>
                                             <th>Kode Rombel</th>
                                             <th>Rombel</th>
+                                            <th>Jumlah TP</th>
                                             <th>Cek CP</th>
                                         </tr>
                                     </thead>
@@ -88,6 +89,13 @@
                                                             ->where('kel_mapel', $kbm->kel_mapel)
                                                             ->first();
                                                     @endphp
+                                                    @if ($cpTerpilih)
+                                                        {{ $cpTerpilih->jml_materi }}
+                                                    @else
+                                                        0
+                                                    @endif
+                                                </td>
+                                                <td class='text-center'>
                                                     @if ($cpTerpilih)
                                                         <i class="bx bx-message-square-check fs-3 text-info"></i>
                                                     @else
