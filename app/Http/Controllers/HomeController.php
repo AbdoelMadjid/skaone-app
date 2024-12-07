@@ -24,7 +24,7 @@ class HomeController extends Controller
         $aingPengguna = User::find(Auth::user()->id);
 
         $activeUsers = User::whereNotNull('last_login_at') // Atau sesuaikan kondisi sesuai kebutuhan Anda
-            ->where('last_login_at', '>=', now()->subMinutes(45)) // Contoh, pengguna yang login dalam 5 menit terakhir
+            ->where('last_login_at', '>=', now()->subMinutes(59)) // Contoh, pengguna yang login dalam 5 menit terakhir
             ->get(); // Ambil pengguna aktif
 
         $activeUsersCount = $activeUsers->count();
