@@ -38,7 +38,6 @@ class FormatifDataTable extends DataTable
                 return $row->tahunajaran . ' / ' . $row->semester;
             })
             ->addColumn('jumlah_cp', function ($row) {
-                // Menghitung jumlah siswa berdasarkan rombel_kode dari tabel peserta_didik_rombels
                 $JumlahCP = DB::table('capaian_pembelajarans')
                     ->where('inisial_mp', $row->kel_mapel)
                     ->where('tingkat', $row->tingkat)
@@ -57,18 +56,61 @@ class FormatifDataTable extends DataTable
                 return $JumlahCP . ' / ' . $JumlahMA . ' / ' . $jumlahTP;
             })
             ->addColumn('action', function ($row) {
-                // Menambahkan action "Create" untuk DataTable tertentu
-                $actions = $this->basicActions($row);
-                if (request()->is('gurumapel/*')) {
-                    $actions['Create'] = route('gurumapel.penilaian.formatif.create', [
-                        'kode_rombel' => $row->kode_rombel,
-                        'kel_mapel' => $row->kel_mapel,
-                        'id_personil' => $row->id_personil,
-                    ]);
+                $jumlahTP = DB::table('tujuan_pembelajarans')
+                    ->where('kode_rombel', $row->kode_rombel)
+                    ->where('kel_mapel', $row->kel_mapel)
+                    ->count();
+
+                $dataExists = DB::table('nilai_formatif')
+                    ->where('tahunajaran', $row->tahunajaran)
+                    ->where('tingkat', $row->tingkat)
+                    ->where('ganjilgenap', $row->ganjilgenap)
+                    ->where('semester', $row->semester)
+                    ->where('kode_rombel', $row->kode_rombel)
+                    ->where('kel_mapel', $row->kel_mapel)
+                    ->where('id_personil', $row->id_personil)
+                    ->exists();
+
+                if ($jumlahTP > 0) {
+                    if (!$dataExists) {
+                        $tombol = '
+                        <div class="btn-group dropstart">
+                            <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
+                                class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                <li><a class="dropdown-item" href="' . route('gurumapel.penilaian.formatif.create', [
+                            'kode_rombel' => $row->kode_rombel,
+                            'kel_mapel' => $row->kel_mapel,
+                            'id_personil' => $row->id_personil,
+                        ]) . '">Create</a></li>
+                            </ul>
+                        </div>';
+                    } else {
+                        $tombol = '
+                        <div class="btn-group dropstart">
+                            <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
+                                class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                <li><a class="dropdown-item" href="' . route('gurumapel.penilaian.formatif.edit', [
+                            'kode_rombel' => $row->kode_rombel,
+                            'kel_mapel' => $row->kel_mapel,
+                            'id_personil' => $row->id_personil,
+                        ]) . '">Edit</a></li>
+                            </ul>
+                        </div>';
+                    }
+                } else {
+                    $tombol = '
+                        <div class="btn-group dropstart">
+                            <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
+                                class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                <li><span class="dropdown-item">Anda pingin ngisi nilai? <br>Isi TP dulu bro !!!</span></li>
+                            </ul>
+                        </div>';
                 }
-                unset($actions['Delete']);
-                unset($actions['Detail']);
-                return view('action', compact('actions'));
+
+                return $tombol;
             })
             ->addIndexColumn()
             ->rawColumns(['jml_siswa', 'jumlah_cp', 'nilai_formatif', 'formatif', 'action']);

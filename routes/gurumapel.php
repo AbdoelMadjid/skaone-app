@@ -55,17 +55,14 @@ Route::middleware('auth')->group(function () {
         Route::group(['prefix' => 'penilaian', 'as' => 'penilaian.'], function () {
             Route::resource('formatif', FormatifController::class);
             Route::get('formatif/create/{kode_rombel}/{kel_mapel}/{id_personil}', [FormatifController::class, 'create'])->name('formatif.create');
+            Route::get('formatif/edit/{kode_rombel}/{kel_mapel}/{id_personil}', [FormatifController::class, 'edit'])->name('formatif.edit');
+            Route::post('/hapusnilaiformatif', [FormatifController::class, 'hapusNilaiFormatif'])->name('hapusnilaiformatif');
+            Route::get('/exportformatif', [FormatifController::class, 'exportExcelFormatif'])->name('exportformatif');
 
             Route::resource('sumatif', SumatifController::class);
             Route::get('sumatif/create/{kode_rombel}/{kel_mapel}/{id_personil}', [SumatifController::class, 'create'])->name('sumatif.create');
             Route::get('sumatif/edit/{kode_rombel}/{kel_mapel}/{id_personil}', [SumatifController::class, 'edit'])->name('sumatif.edit');
-
-            //Route::post('/sumatif/store', [SumatifController::class, 'store'])->name('store');
         });
-
-        //Route::resource('penilaian', PenilaianController::class);
-
-        //Route::get('/penilaian/formatif', [PenilaianController::class, 'isiFormatif'])->name('penilaian.formatif');
 
         Route::resource('absensi-siswa', AbsensiSiswaGmapelController::class);
         Route::resource('ajuan-remedial', AjuanRemedialController::class);

@@ -18,7 +18,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @yield('title') - {{ $fullName }}</h5>
+                    <h5 class="card-title mb-0 flex-grow-1">Nilai @yield('title') - {{ $fullName }}</h5>
                     <div>
                     </div>
                 </div>
@@ -42,6 +42,10 @@
 @section('script-bottom')
     <script>
         const datatable = 'formatif-table';
+
+        @if (session('toast_success'))
+            showToast('success', '{{ session('toast_success') }}');
+        @endif
 
         handleDataTableEvents(datatable);
         handleAction(datatable)
