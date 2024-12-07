@@ -27,6 +27,7 @@ class HomeController extends Controller
             ->where('last_login_at', '>=', now()->subMinutes(45)) // Contoh, pengguna yang login dalam 5 menit terakhir
             ->get(); // Ambil pengguna aktif
 
+        $activeUsersCount = $activeUsers->count();
 
         $today = Carbon::today(); // Mengambil tanggal hari ini
 
@@ -38,6 +39,19 @@ class HomeController extends Controller
             ->whereNotNull('nis')->orderBy('last_login_at')
             ->get();
 
+        $loginTodayCount = LoginRecord::whereDate('login_at', $today)->count();
+
+        $jumlahPersonil = DB::table('personil_sekolahs')
+            ->count();
+
+        $jumlahPD = DB::table('peserta_didiks')
+            ->count();
+
+        $loginCount = DB::table('users')
+            ->select('login_count')
+            ->count();
+
+        // ABSENSI SISWA PKL ================================
         $nis = auth()->user()->nis;
         $totalHadir = AbsensiSiswaPkl::where('nis', $nis)
             ->where('status', 'HADIR')
@@ -69,6 +83,7 @@ class HomeController extends Controller
             ->where('status', 'IZIN')
             ->exists();
 
+        // ULANG TAHUN =============================
         $bulanIni = Carbon::now()->format('m'); // Ambil bulan saat ini
         $ulangTahun = DB::table('personil_sekolahs')
             ->whereMonth('tanggallahir', $bulanIni)
@@ -77,6 +92,11 @@ class HomeController extends Controller
 
         return view('dashboard', compact(
             'activeUsers',
+            'activeUsersCount',
+            'loginTodayCount',
+            'jumlahPersonil',
+            'jumlahPD',
+            'loginCount',
             'aingPengguna',
             'userLoginHariiniPersonil',
             'userLoginHariiniSiswa',
