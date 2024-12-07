@@ -58,6 +58,13 @@ class DataCpTerpilihController extends Controller
         $koderombelArray = $kbmPerRombels->pluck('kode_rombel')->toArray();
         $kodemapelArray = $kbmPerRombels->pluck('kode_mapel')->toArray();
 
+
+        $KbmPersonil = KbmPerRombel::where('id_personil', $personal_id)
+            ->where('tahunajaran', $tahunAjaran->tahunajaran)
+            ->where('ganjilgenap', $semester->semester)
+            ->get();
+
+
         $mapelOptions = KbmPerRombel::where('id_personil', $personal_id)
             ->get()
             ->mapWithKeys(function ($item) {
@@ -76,6 +83,7 @@ class DataCpTerpilihController extends Controller
             'pages.gurumapel.data-kbm-cp-terpilih',
             compact(
                 'kbmPerRombels',
+                'KbmPersonil',
                 'personal_id',
                 'tahunAjaran',
                 'semester',

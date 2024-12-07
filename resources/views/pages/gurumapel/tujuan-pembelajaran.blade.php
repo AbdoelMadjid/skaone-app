@@ -33,6 +33,52 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    <!-- Rounded Ribbon -->
+                    <div class="card ribbon-box border shadow-none mb-lg-2">
+                        <div class="card-body">
+                            <div class="ribbon ribbon-primary round-shape">Cek Tujuan Pembelajaran</div>
+                            <div class="ribbon-content mt-5 text-muted">
+                                <table class="table " style="no border">
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Kel Mapel</th>
+                                            <th>Mata Pelajaran</th>
+                                            <th>Kode Rombel</th>
+                                            <th>Rombel</th>
+                                            <th>Cek TP</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($KbmPersonil as $index => $kbm)
+                                            <tr>
+                                                <td class='text-center'>{{ $index + 1 }}.</td>
+                                                <td>{{ $kbm->kel_mapel }}</td>
+                                                <td>{{ $kbm->mata_pelajaran }}</td>
+                                                <td>{{ $kbm->kode_rombel }}</td>
+                                                <td>{{ $kbm->rombel }}</td>
+                                                <td class='text-center'>
+                                                    @php
+                                                        // Ambil cp_terpilih
+                                                        $cpTerpilih = DB::table('tujuan_pembelajarans')
+                                                            ->where('id_personil', $kbm->id_personil)
+                                                            ->where('kode_rombel', $kbm->kode_rombel)
+                                                            ->where('kel_mapel', $kbm->kel_mapel)
+                                                            ->first();
+                                                    @endphp
+                                                    @if ($cpTerpilih)
+                                                        <i class="bx bx-message-square-check fs-3 text-info"></i>
+                                                    @else
+                                                        <i class="bx bx-message-square-x fs-3 text-danger"></i>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                     {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
                 </div>
             </div>

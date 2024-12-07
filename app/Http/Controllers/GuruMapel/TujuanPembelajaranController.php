@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\GuruMapel\CpTerpilih;
 use App\Models\GuruMapel\MateriAjar;
 use App\Models\GuruMapel\TujuanPembelajaran;
+use App\Models\Kurikulum\DataKBM\KbmPerRombel;
 use App\Models\ManajemenSekolah\PersonilSekolah;
 use App\Models\ManajemenSekolah\Semester;
 use App\Models\ManajemenSekolah\TahunAjaran;
@@ -77,6 +78,11 @@ class TujuanPembelajaranController extends Controller
                 ];
             });
 
+        $KbmPersonil = KbmPerRombel::where('id_personil', $personal_id)
+            ->where('tahunajaran', $tahunAjaran->tahunajaran)
+            ->where('ganjilgenap', $semester->semester)
+            ->get();
+
         return $tujuanPembelajaranDataTable->render(
             'pages.gurumapel.tujuan-pembelajaran',
             compact(
@@ -85,6 +91,7 @@ class TujuanPembelajaranController extends Controller
                 'semester',
                 'fullName',
                 'cpOptions',
+                'KbmPersonil',
             )
         );
     }
