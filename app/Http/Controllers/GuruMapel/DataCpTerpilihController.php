@@ -63,6 +63,7 @@ class DataCpTerpilihController extends Controller
             ->where('tahunajaran', $tahunAjaran->tahunajaran)
             ->where('ganjilgenap', $semester->semester)
             ->orderBy('kel_mapel')
+            ->orderBy('kode_rombel')
             ->get();
 
 
