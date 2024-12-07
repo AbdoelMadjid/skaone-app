@@ -101,92 +101,97 @@
                 </div><!-- end card -->
             </div><!-- end col -->
         </div><!-- end row -->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card ribbon-box border shadow-none mb-lg-4">
-                    <div class="card-body">
-                        <div class="ribbon ribbon-info round-shape">User sedang login</div>
-                        <div class="ribbon-content mt-4 text-muted">
-                            @if ($activeUsers->isEmpty())
-                                <p>No users are currently logged in.</p>
-                            @else
-                                @foreach ($activeUsers->chunk(6) as $userRow)
-                                    <div class="row">
-                                        @foreach ($userRow as $user)
-                                            <div class="col-md-4">
-                                                <x-variasi-list>
-                                                    {{ $user->name }} ({{ $user->login_count }})
-                                                </x-variasi-list>
-                                            </div><!-- end col -->
+        @if (Route::has('login'))
+            @auth
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card ribbon-box border shadow-none mb-lg-4">
+                            <div class="card-body">
+                                <div class="ribbon ribbon-info round-shape">User sedang login</div>
+                                <div class="ribbon-content mt-4 text-muted">
+                                    @if ($activeUsers->isEmpty())
+                                        <p>No users are currently logged in.</p>
+                                    @else
+                                        @foreach ($activeUsers->chunk(6) as $userRow)
+                                            <div class="row">
+                                                @foreach ($userRow as $user)
+                                                    <div class="col-md-4">
+                                                        <x-variasi-list>
+                                                            {{ $user->name }} ({{ $user->login_count }})
+                                                        </x-variasi-list>
+                                                    </div><!-- end col -->
+                                                @endforeach
+                                            </div><!-- end row -->
                                         @endforeach
-                                    </div><!-- end row -->
-                                @endforeach
-                            @endif
+                                    @endif
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <!-- Rounded Ribbon -->
-                <div class="card ribbon-box border shadow-none mb-lg-4">
-                    <div class="card-body">
-                        <div class="ribbon ribbon-info round-shape">User login hari ini</div>
-                        <div class="ribbon-content mt-4 text-muted">
-                            @if ($userLoginHariini->isEmpty())
-                                <p>No users have logged in today.</p>
-                            @else
-                                @foreach ($userLoginHariini->chunk(6) as $userRow)
-                                    <div class="row">
-                                        @foreach ($userRow as $user)
-                                            <div class="col-md-4">
-                                                <x-variasi-list>
-                                                    {{ $user->name }} ({{ $user->login_count }})
-                                                </x-variasi-list>
-                                            </div><!-- end col -->
-                                        @endforeach
-                                    </div><!-- end row -->
-                                @endforeach
-
-                            @endif
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title mb-0">User Login</h4>
-                    </div><!-- end card header -->
-                    @php
-                        $ploginhariini = ($loginTodayCount / 5000) * 100;
-                        $jumlahsemualogin = ($loginCount / 5000) * 100;
-                    @endphp
-                    <div class="card-body">
                         <!-- Rounded Ribbon -->
-                        <div class="d-flex align-items-center pb-2 mb-4">
-                            <div class="flex-grow-1">
-                                <div class="progress animated-progress custom-progress progress-label">
-                                    <div class="progress-bar bg-primary progress-xl" role="progressbar"
-                                        style="width: {{ $ploginhariini }}%" aria-valuenow="{{ $ploginhariini }}"
-                                        aria-valuemin="0" aria-valuemax="100">
-                                        <div class="label">Login hari ini : {{ $loginTodayCount }}</div>
-                                    </div>
+                        <div class="card ribbon-box border shadow-none mb-lg-4">
+                            <div class="card-body">
+                                <div class="ribbon ribbon-info round-shape">User login hari ini</div>
+                                <div class="ribbon-content mt-4 text-muted">
+                                    @if ($userLoginHariini->isEmpty())
+                                        <p>No users have logged in today.</p>
+                                    @else
+                                        @foreach ($userLoginHariini->chunk(6) as $userRow)
+                                            <div class="row">
+                                                @foreach ($userRow as $user)
+                                                    <div class="col-md-4">
+                                                        <x-variasi-list>
+                                                            {{ $user->name }} ({{ $user->login_count }})
+                                                        </x-variasi-list>
+                                                    </div><!-- end col -->
+                                                @endforeach
+                                            </div><!-- end row -->
+                                        @endforeach
+                                    @endif
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex align-items-center pb-2">
-                            <div class="flex-grow-1">
-                                <div class="progress animated-progress custom-progress progress-label progress-xl">
-                                    <div class="progress-bar bg-danger progress-xl" role="progressbar"
-                                        style="width: {{ $jumlahsemualogin }}%"
-                                        aria-valuenow="{{ $jumlahsemualogin }}" aria-valuemin="0" aria-valuemax="100">
-                                        <div class="label">Total Login : {{ $loginCount }}</div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title mb-0">User Login</h4>
+                            </div><!-- end card header -->
+                            @php
+                                $ploginhariini = ($loginTodayCount / 5000) * 100;
+                                $jumlahsemualogin = ($loginCount / 5000) * 100;
+                            @endphp
+                            <div class="card-body">
+                                <!-- Rounded Ribbon -->
+                                <div class="d-flex align-items-center pb-2 mb-4">
+                                    <div class="flex-grow-1">
+                                        <div class="progress animated-progress custom-progress progress-label">
+                                            <div class="progress-bar bg-primary progress-xl" role="progressbar"
+                                                style="width: {{ $ploginhariini }}%" aria-valuenow="{{ $ploginhariini }}"
+                                                aria-valuemin="0" aria-valuemax="100">
+                                                <div class="label">Login hari ini : {{ $loginTodayCount }}</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div><!-- end card-body -->
-                </div><!-- end card -->
-            </div>
+                                <div class="d-flex align-items-center pb-2">
+                                    <div class="flex-grow-1">
+                                        <div class="progress animated-progress custom-progress progress-label progress-xl">
+                                            <div class="progress-bar bg-danger progress-xl" role="progressbar"
+                                                style="width: {{ $jumlahsemualogin }}%"
+                                                aria-valuenow="{{ $jumlahsemualogin }}" aria-valuemin="0"
+                                                aria-valuemax="100">
+                                                <div class="label">Total Login : {{ $loginCount }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- end card-body -->
+                        </div><!-- end card -->
+                    </div>
 
-            <!-- end col -->
-        </div>
+                    <!-- end col -->
+                </div>
+            @else
+            @endauth
+        @endif
         <!-- end row -->
     </div>
 </section>
