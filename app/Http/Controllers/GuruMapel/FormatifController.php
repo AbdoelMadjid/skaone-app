@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class FormatifController extends Controller
 {
@@ -407,5 +408,97 @@ class FormatifController extends Controller
         // Unduh file Excel
         $fileName = "Penilaian_Formatif_{$data->mata_pelajaran}_{$kode_rombel}_{$personil->namalengkap}.xlsx";
         return Excel::download(new PenilaianFormatifExport($params), $fileName);
+    }
+
+    public function uploadNilaiFormatif(Request $request)
+    {
+        $request->validate([
+            'file_excel' => 'required|mimes:xlsx,xls',
+        ]);
+
+        $file = $request->file('file_excel');
+
+        try {
+            // Load file Excel
+            $spreadsheet = IOFactory::load($file->getPathname());
+            $sheet = $spreadsheet->getActiveSheet();
+
+            // Iterasi setiap baris mulai dari baris kedua (mengabaikan header)
+            $data = [];
+            foreach ($sheet->getRowIterator(2) as $row) {
+                $rowIndex = $row->getRowIndex();
+
+                // Ambil data dari kolom sesuai urutan
+                $tahunajaran = $sheet->getCell("A{$rowIndex}")->getValue();
+                $ganjilgenap = $sheet->getCell("B{$rowIndex}")->getValue();
+                $semester = $sheet->getCell("C{$rowIndex}")->getValue();
+                $tingkat = $sheet->getCell("D{$rowIndex}")->getValue();
+                $kode_rombel = $sheet->getCell("E{$rowIndex}")->getValue();
+                $kel_mapel = $sheet->getCell("F{$rowIndex}")->getValue();
+                $id_personil = $sheet->getCell("G{$rowIndex}")->getValue();
+                $nis = $sheet->getCell("H{$rowIndex}")->getValue();
+
+                // Abaikan kolom nama siswa (I)
+                $tp_isi_1 = $sheet->getCell("J{$rowIndex}")->getValue();
+                $tp_isi_2 = $sheet->getCell("K{$rowIndex}")->getValue();
+                $tp_isi_3 = $sheet->getCell("L{$rowIndex}")->getValue();
+                $tp_isi_4 = $sheet->getCell("M{$rowIndex}")->getValue();
+                $tp_isi_5 = $sheet->getCell("N{$rowIndex}")->getValue();
+                $tp_isi_6 = $sheet->getCell("O{$rowIndex}")->getValue();
+                $tp_isi_7 = $sheet->getCell("P{$rowIndex}")->getValue();
+                $tp_isi_8 = $sheet->getCell("Q{$rowIndex}")->getValue();
+                $tp_isi_9 = $sheet->getCell("R{$rowIndex}")->getValue();
+
+                $tp_nilai_1 = $sheet->getCell("S{$rowIndex}")->getValue();
+                $tp_nilai_2 = $sheet->getCell("T{$rowIndex}")->getValue();
+                $tp_nilai_3 = $sheet->getCell("U{$rowIndex}")->getValue();
+                $tp_nilai_4 = $sheet->getCell("V{$rowIndex}")->getValue();
+                $tp_nilai_5 = $sheet->getCell("W{$rowIndex}")->getValue();
+                $tp_nilai_6 = $sheet->getCell("X{$rowIndex}")->getValue();
+                $tp_nilai_7 = $sheet->getCell("Y{$rowIndex}")->getValue();
+                $tp_nilai_8 = $sheet->getCell("Z{$rowIndex}")->getValue();
+                $tp_nilai_9 = $sheet->getCell("AA{$rowIndex}")->getValue();
+
+                $rerata_formatif = $sheet->getCell("AB{$rowIndex}")->getCalculatedValue(); // Menggunakan getCalculatedValue()
+
+                // Tambahkan ke array data
+                $data[] = [
+                    'tahunajaran' => $tahunajaran,
+                    'ganjilgenap' => $ganjilgenap,
+                    'semester' => $semester,
+                    'tingkat' => $tingkat,
+                    'kode_rombel' => $kode_rombel,
+                    'kel_mapel' => $kel_mapel,
+                    'id_personil' => $id_personil,
+                    'nis' => $nis,
+                    'tp_isi_1' => $tp_isi_1,
+                    'tp_isi_2' => $tp_isi_2,
+                    'tp_isi_3' => $tp_isi_3,
+                    'tp_isi_4' => $tp_isi_4,
+                    'tp_isi_5' => $tp_isi_5,
+                    'tp_isi_6' => $tp_isi_6,
+                    'tp_isi_7' => $tp_isi_7,
+                    'tp_isi_8' => $tp_isi_8,
+                    'tp_isi_9' => $tp_isi_9,
+                    'tp_nilai_1' => $tp_nilai_1,
+                    'tp_nilai_2' => $tp_nilai_2,
+                    'tp_nilai_3' => $tp_nilai_3,
+                    'tp_nilai_4' => $tp_nilai_4,
+                    'tp_nilai_5' => $tp_nilai_5,
+                    'tp_nilai_6' => $tp_nilai_6,
+                    'tp_nilai_7' => $tp_nilai_7,
+                    'tp_nilai_8' => $tp_nilai_8,
+                    'tp_nilai_9' => $tp_nilai_9,
+                    'rerata_formatif' => $rerata_formatif,
+                ];
+            }
+
+            // Insert data ke database
+            NilaiFormatif::insert($data);
+
+            return redirect()->back()->with('success', 'Data berhasil diunggah ke database.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 }

@@ -20,8 +20,18 @@
                 <div class="card-header d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">Tambah Nilai @yield('title') - {{ $fullName }}</h5>
                     <div>
-                        <a href="{{ route('gurumapel.penilaian.exportformatif', ['kode_rombel' => $data->kode_rombel, 'kel_mapel' => $data->kel_mapel, 'id_personil' => $data->id_personil]) }}"
-                            class="btn btn-soft-success">Download Excel</a>
+                        <div class="btn-group dropstart">
+                            <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
+                                class="btn btn-soft-info btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                <li><a href="{{ route('gurumapel.penilaian.exportformatif', ['kode_rombel' => $data->kode_rombel, 'kel_mapel' => $data->kel_mapel, 'id_personil' => $data->id_personil]) }}"
+                                        class="dropdown-item btn btn-soft-primary" tittle="Download Format Nilai Formatif">
+                                        <i class="bx bx-download"></i> Download</a></li>
+                                <li><button class="dropdown-item btn btn-soft-success" data-bs-toggle="modal"
+                                        data-bs-target="#modalUploadFormatif" tittle="Upload Nilai Formatif">
+                                        <i class="bx bx-upload"></i> Upload</button></li>
+                            </ul>
+                        </div>
                         <a class="btn btn-soft-info" href="{{ route('gurumapel.penilaian.formatif.index') }}">Kembali</a>
                     </div>
                 </div>
@@ -121,6 +131,7 @@
             </div>
         </div>
     </div>
+    @include('pages.gurumapel.formatif-upload-nilai')
     @if (session('success'))
         <div id="session-message" data-message="{{ session('success') }}"></div>
     @endif

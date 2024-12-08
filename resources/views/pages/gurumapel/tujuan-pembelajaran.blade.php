@@ -51,6 +51,7 @@
                                                 <th>Mata Pelajaran</th>
                                                 <th>Kode Rombel</th>
                                                 <th>Rombel</th>
+                                                <th>Jumlah TP</th>
                                                 <th>Cek TP</th>
                                             </tr>
                                         </thead>
@@ -62,6 +63,21 @@
                                                     <td>{{ $kbm->mata_pelajaran }}</td>
                                                     <td>{{ $kbm->kode_rombel }}</td>
                                                     <td>{{ $kbm->rombel }}</td>
+                                                    <td class='text-center'>
+                                                        @php
+                                                            // Ambil cp_terpilih
+                                                            $jmlTP = DB::table('tujuan_pembelajarans')
+                                                                ->where('id_personil', $kbm->id_personil)
+                                                                ->where('kode_rombel', $kbm->kode_rombel)
+                                                                ->where('kel_mapel', $kbm->kel_mapel)
+                                                                ->count();
+                                                        @endphp
+                                                        @if ($jmlTP)
+                                                            {{ $jmlTP }}
+                                                        @else
+                                                            0
+                                                        @endif
+                                                    </td>
                                                     <td class='text-center'>
                                                         @php
                                                             // Ambil cp_terpilih

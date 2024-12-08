@@ -58,6 +58,7 @@ Route::middleware('auth')->group(function () {
             Route::get('formatif/edit/{kode_rombel}/{kel_mapel}/{id_personil}', [FormatifController::class, 'edit'])->name('formatif.edit');
             Route::post('/hapusnilaiformatif', [FormatifController::class, 'hapusNilaiFormatif'])->name('hapusnilaiformatif');
             Route::get('/exportformatif', [FormatifController::class, 'exportExcelFormatif'])->name('exportformatif');
+            Route::post('/uploadformatif', [FormatifController::class, 'uploadNilaiFormatif'])->name('uploadformatif');
 
             Route::resource('sumatif', SumatifController::class);
             Route::get('sumatif/create/{kode_rombel}/{kel_mapel}/{id_personil}', [SumatifController::class, 'create'])->name('sumatif.create');
