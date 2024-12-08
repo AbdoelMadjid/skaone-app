@@ -178,6 +178,9 @@
 @section('script-bottom')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
     <script>
+        @if (session('toast_success'))
+            showToast('success', '{{ session('toast_success') }}');
+        @endif
         $(document).ready(function() {
             $('#hapusdata').on('click', function() {
                 // Ambil data dari atribut data-* pada tombol

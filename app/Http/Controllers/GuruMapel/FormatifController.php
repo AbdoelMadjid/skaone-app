@@ -496,7 +496,11 @@ class FormatifController extends Controller
             // Insert data ke database
             NilaiFormatif::insert($data);
 
-            return redirect()->back()->with('success', 'Data berhasil diunggah ke database.');
+            return redirect()->route('gurumapel.penilaian.formatif.edit', [
+                'kode_rombel' => $kode_rombel,
+                'kel_mapel' => $kel_mapel,
+                'id_personil' => $id_personil,
+            ])->with('toast_success', 'Data Nilai Formatif berhasil diunggah ke database.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
