@@ -306,6 +306,6 @@ class TujuanPembelajaranController extends Controller
         }
 
         return redirect()->route('gurumapel.datangajar.tujuan-pembelajaran.index')
-            ->with('success', 'Tujuan Pembelajaran berhasil disimpan.');
+            ->with('toast_success', 'Tujuan Pembelajaran berhasil disimpan.');
     }
 }

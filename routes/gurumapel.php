@@ -42,6 +42,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/savecpterpilih', [DataCpTerpilihController::class, 'saveCpTerpilih'])->name('savecpterpilih');
             Route::post('/hapuscppilihan', [DataCpTerpilihController::class, 'hapusCPPilihan'])->name('hapuscppilihan');
             Route::post('/updatejmlmateri', [DataCpTerpilihController::class, 'updateJmlMateri'])->name('updatejmlmateri');
+            Route::get('/checkcpterpilih', [DataCpTerpilihController::class, 'checkCPTerpilih'])->name('checkcpterpilih');
 
             Route::resource('tujuan-pembelajaran', TujuanPembelajaranController::class);
             Route::get('/getisicp', [TujuanPembelajaranController::class, 'getIsiCP'])->name('getisicp');

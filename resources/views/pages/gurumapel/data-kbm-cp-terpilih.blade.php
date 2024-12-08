@@ -162,6 +162,10 @@
     <script>
         const datatable = 'datacpterpilih-table';
 
+        @if (session('toast_success'))
+            showToast('success', '{{ session('toast_success') }}');
+        @endif
+
         function updateJmlMateri(id, jmlmateriValue) {
             $.ajax({
                 url: '/gurumapel/datangajar/updatejmlmateri', // Rute untuk update KKM
@@ -273,7 +277,7 @@
 
                 updateSemesterValue();
 
-                let isErrorNotified =
+                /* let isErrorNotified =
                     false; // Variabel untuk memastikan notifikasi error hanya tampil sekali
 
                 function handleAjaxError(xhr, defaultMessage) {
@@ -301,49 +305,84 @@
                             $('#selected_cp_list').hide();
                         }
                     }
-                }
+                } */
 
-                if (kelMapel && tingkat) {
-                    // AJAX untuk checkbox rombel
+                if (selectedOption) {
                     $.ajax({
-                        url: "{{ route('gurumapel.datangajar.getrombeloptions') }}",
-                        type: "GET",
+                        url: '/gurumapel/datangajar/checkcpterpilih',
+                        method: 'GET',
                         data: {
-                            kel_mapel: kelMapel,
-                            tingkat: tingkat,
-                            personal_id: personalId,
-                        },
-                        success: function(data) {
-                            $('#rombel_pilih').show();
-                            updateRombelOptions(data); // Fungsi untuk update checkbox rombel
-                        },
-                        error: function(xhr) {
-                            handleAjaxError(xhr,
-                                "Terjadi kesalahan saat mengambil data rombel.");
-                        },
-                    });
-
-                    // AJAX untuk capaian pembelajaran
-                    $.ajax({
-                        url: "{{ route('gurumapel.datangajar.getCapaianPembelajaran') }}",
-                        type: "GET",
-                        data: {
+                            id_personil: personalId,
                             kel_mapel: kelMapel,
                             tingkat: tingkat,
                         },
                         success: function(response) {
-                            $('#selected_cp_list').show();
-                            updateCapaianPembelajaran(
-                                response); // Fungsi untuk update tabel capaian pembelajaran
+                            if (response.exists) {
+                                // Tampilkan notifikasi jika kel_mapel sudah ada
+                                showToast('warning', response.message);
+                                // Reset semua input terkait
+                                $('#kel_mapel').val('');
+                                $('#checkbox-kode-rombel').empty();
+                                $('#checkbox-rombel').empty();
+                                $('#selected_cp_tbody').empty();
+                                $('#selected_cp_list').hide();
+                                $('#rombel_pilih').hide();
+                                $('#button-simpan').hide();
+                            } else {
+                                if (kelMapel && tingkat) {
+                                    // AJAX untuk checkbox rombel
+                                    $.ajax({
+                                        url: "{{ route('gurumapel.datangajar.getrombeloptions') }}",
+                                        type: "GET",
+                                        data: {
+                                            kel_mapel: kelMapel,
+                                            tingkat: tingkat,
+                                            personal_id: personalId,
+                                        },
+                                        success: function(data) {
+                                            $('#button-simpan').show();
+                                            $('#rombel_pilih').show();
+                                            updateRombelOptions(
+                                                data
+                                            ); // Fungsi untuk update checkbox rombel
+                                        },
+                                        error: function() {
+                                            showToast('error',
+                                                "Terjadi kesalahan saat mengambil data rombel."
+                                            );
+                                        },
+                                    });
+
+                                    // AJAX untuk capaian pembelajaran
+                                    $.ajax({
+                                        url: "{{ route('gurumapel.datangajar.getCapaianPembelajaran') }}",
+                                        type: "GET",
+                                        data: {
+                                            kel_mapel: kelMapel,
+                                            tingkat: tingkat,
+                                        },
+                                        success: function(response) {
+                                            $('#selected_cp_list').show();
+                                            updateCapaianPembelajaran(
+                                                response
+                                            ); // Fungsi untuk update tabel capaian pembelajaran
+                                        },
+                                        error: function() {
+                                            showToast('error',
+                                                "Terjadi kesalahan saat mengambil data capaian pembelajaran."
+                                            );
+                                        },
+                                    });
+                                } else {
+                                    resetAll(); // Reset semua elemen jika tidak ada pilihan
+                                }
+                            }
                         },
-                        error: function(xhr) {
-                            handleAjaxError(xhr,
-                                "Terjadi kesalahan saat mengambil data capaian pembelajaran."
-                            );
-                        },
+                        error: function() {
+                            showToast('error',
+                                'Terjadi kesalahan saat memeriksa data. Silakan coba lagi.');
+                        }
                     });
-                } else {
-                    resetAll(); // Reset semua elemen jika tidak ada pilihan
                 }
             });
 

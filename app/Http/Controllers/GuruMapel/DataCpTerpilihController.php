@@ -159,17 +159,21 @@ class DataCpTerpilihController extends Controller
         return response()->json(['success' => false], 500);
     }
 
-    public function checkKodeMapel(Request $request)
+    public function checkCPTerpilih(Request $request)
     {
-        $kodeMapel = $request->input('kode_mapel');
+        $kelMapel = $request->input('kel_mapel');
+        $personalId = $request->input('id_personil');
+        $tingkat = $request->input('tingkat');
 
         // Cek apakah kode_cp sudah ada di tabel materi_ajars
         $exists = DB::table('cp_terpilihs')
-            ->where('kode_mapel', $kodeMapel)
+            ->where('tingkat', $tingkat)
+            ->where('kel_mapel', $kelMapel)
+            ->where('id_personil', $personalId)
             ->exists();
 
         if ($exists) {
-            return response()->json(['exists' => true, 'message' => "Materi Ajar untuk Kode CP $kodeMapel sudah dibuat."]);
+            return response()->json(['exists' => true, 'message' => "Materi Ajar untuk Kode Mapel $kelMapel sudah dibuat."]);
         }
 
         return response()->json(['exists' => false]);
@@ -296,7 +300,7 @@ class DataCpTerpilihController extends Controller
 
         // Redirect dengan pesan sukses
         return redirect()->route('gurumapel.datangajar.capaian-pembelajaran.index')
-            ->with('success', 'CP berhasil dipilih dan disimpan.');
+            ->with('toast_success', 'CP berhasil dipilih dan disimpan.');
     }
 
 

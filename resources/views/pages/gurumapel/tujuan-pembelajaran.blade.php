@@ -122,6 +122,10 @@
     <script>
         const datatable = 'tujuanpembelajaran-table';
 
+        @if (session('toast_success'))
+            showToast('success', '{{ session('toast_success') }}');
+        @endif
+
         $(document).ready(function() {
             var table = $('#tujuanpembelajaran-table').DataTable();
 
@@ -177,7 +181,7 @@
                                 },
                                 success: function(response) {
                                     showToast('success',
-                                        'Materi Ajar berhasil dihapus!');
+                                        'Tujuan Pembelajaran berhasil dihapus!');
                                     table.ajax.reload(); // Reload DataTables
                                     // Reset semua checkbox dan hide tombol delete
                                     $('.chk-child').prop('checked', false);
@@ -232,6 +236,7 @@
                                 $('#selected_rombel_ids').val('');
                                 $('#tampil_cp').hide();
                                 $('#judul-tp').hide();
+                                $('#button-simpan').hide();
                             } else {
                                 // Generate input materi berdasarkan jumlah materi
                                 if (jmlMateri) {
@@ -342,10 +347,12 @@
 
                                     $('#tampil_cp').show();
                                     $('#judul-tp').show();
+                                    $('#button-simpan').show();
                                 } else {
                                     // Sembunyikan elemen jika kode_cp tidak dipilih
                                     $('#tampil_cp').hide();
                                     $('#judul-tp').hide();
+                                    $('#button-simpan').hide();
                                 }
                             }
                         },
