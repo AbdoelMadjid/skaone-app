@@ -150,5 +150,10 @@ class PenilaianFormatifExport implements FromArray, WithHeadings, ShouldAutoSize
                 ->getProtection()
                 ->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
         }
+
+        // Tambahkan logika untuk menyembunyikan kolom J - R
+        for ($col = 'J'; $col <= 'R'; $col++) {
+            $sheet->getColumnDimension($col)->setVisible(false);
+        }
     }
 }
