@@ -18,7 +18,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @yield('title') - {{ $fullName }}</h5>
+                    <h5 class="card-title mb-0 flex-grow-1">Nilai @yield('title') - {{ $fullName }}</h5>
                     <div>
                     </div>
                 </div>
