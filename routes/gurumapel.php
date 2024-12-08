@@ -6,6 +6,7 @@ use App\Http\Controllers\GuruMapel\AjuanRemedialController;
 use App\Http\Controllers\GuruMapel\ArsipKbmGmapelController;
 use App\Http\Controllers\GuruMapel\DataCpTerpilihController;
 use App\Http\Controllers\GuruMapel\DataKbmController;
+use App\Http\Controllers\GuruMapel\DeskripsiNilaiController;
 use App\Http\Controllers\GuruMapel\DetailDataKbmController;
 use App\Http\Controllers\GuruMapel\FormatifController;
 use App\Http\Controllers\GuruMapel\MateriAjarController;
@@ -67,6 +68,9 @@ Route::middleware('auth')->group(function () {
             Route::post('/hapusnilaisumatif', [SumatifController::class, 'hapusNilaiSumatif'])->name('hapusnilaisumatif');
             Route::get('/exportsumatif', [SumatifController::class, 'exportExcelSumatif'])->name('exportsumatif');
             Route::post('/uploadsumatif', [SumatifController::class, 'uploadNilaiSumatif'])->name('uploadsumatif');
+
+            Route::resource('deskripsi-nilai', DeskripsiNilaiController::class);
+            Route::get('/getpesertadidik', [DeskripsiNilaiController::class, 'getPesertaDidik'])->name('getpesertadidik');
         });
 
         Route::resource('absensi-siswa', AbsensiSiswaGmapelController::class);
