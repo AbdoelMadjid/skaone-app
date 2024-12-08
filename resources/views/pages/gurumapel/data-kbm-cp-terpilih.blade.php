@@ -90,19 +90,27 @@
                                                     <td class='text-center'>
                                                         @php
                                                             // Ambil cp_terpilih
+                                                            $JmlMateri = DB::table('cp_terpilihs')
+                                                                ->where('id_personil', $kbm->id_personil)
+                                                                ->where('kode_rombel', $kbm->kode_rombel)
+                                                                ->where('kel_mapel', $kbm->kel_mapel)
+                                                                ->sum('jml_materi');
+                                                        @endphp
+                                                        @if ($JmlMateri)
+                                                            {{ $JmlMateri }}
+                                                        @else
+                                                            0
+                                                        @endif
+                                                    </td>
+                                                    <td class='text-center'>
+                                                        @php
+                                                            // Ambil cp_terpilih
                                                             $cpTerpilih = DB::table('cp_terpilihs')
                                                                 ->where('id_personil', $kbm->id_personil)
                                                                 ->where('kode_rombel', $kbm->kode_rombel)
                                                                 ->where('kel_mapel', $kbm->kel_mapel)
                                                                 ->first();
                                                         @endphp
-                                                        @if ($cpTerpilih)
-                                                            {{ $cpTerpilih->jml_materi }}
-                                                        @else
-                                                            0
-                                                        @endif
-                                                    </td>
-                                                    <td class='text-center'>
                                                         @if ($cpTerpilih)
                                                             <i class="bx bx-message-square-check fs-3 text-info"></i>
                                                         @else
