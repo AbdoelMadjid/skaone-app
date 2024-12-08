@@ -169,6 +169,63 @@
                 }
             }
         });
+        // Fungsi untuk memvalidasi nilai input
+        function validateInputs() {
+            const jumlahTP = parseInt(document.getElementById('jml_tp').value); // Ambil jumlah TP
+            const kkm = parseFloat(document.getElementById('kkm').value); // Ambil KKM dari input dengan ID 'kkm'
+
+            // Ambil semua input dengan class 'tp-input'
+            const inputs = document.querySelectorAll('.tp-input');
+
+            inputs.forEach(input => {
+                const siswaNis = input.getAttribute('name').match(/\[(.*?)\]/)[1]; // Ambil NIS siswa
+                const nilai = parseFloat(input.value);
+
+                // Validasi nilai
+                if (input.value.trim() === "" || isNaN(nilai)) {
+                    // Jika nilai kosong atau tidak valid
+                    input.style.backgroundColor = 'yellow'; // Ubah warna latar belakang menjadi kuning
+                    input.style.color = 'black'; // Ubah warna teks menjadi hitam
+                } else if (nilai < kkm || nilai > 100) {
+                    // Jika nilai kurang dari KKM atau lebih dari 100
+                    input.style.backgroundColor = 'red'; // Ubah warna latar belakang menjadi merah
+                    input.style.color = 'white'; // Ubah warna teks menjadi putih
+                } else {
+                    // Jika nilai valid
+                    input.style.backgroundColor = ''; // Reset warna latar belakang
+                    input.style.color = ''; // Reset warna teks
+                }
+
+                // Hitung rata-rata untuk setiap siswa
+                let totalNilai = 0;
+                let validCount = 0; // Hitung jumlah nilai valid untuk rata-rata
+                for (let i = 1; i <= jumlahTP; i++) {
+                    const nilaiInput = document.getElementById(`tp_nilai_${siswaNis}_${i}`);
+                    const nilaiTP = parseFloat(nilaiInput.value);
+                    if (!isNaN(nilaiTP)) {
+                        totalNilai += nilaiTP;
+                        validCount++;
+                    }
+                }
+
+                const rerataInput = document.getElementById(`rerata_formatif_${siswaNis}`);
+                const rerataValue = validCount > 0 ? (totalNilai / validCount).toFixed(0) :
+                    ""; // Hitung rata-rata jika ada nilai valid
+                rerataInput.value = rerataValue;
+
+                // Validasi rerata_formatif jika kurang dari KKM
+                if (rerataValue === "" || rerataValue < kkm || rerataValue > 100) {
+                    rerataInput.style.backgroundColor = 'red'; // Ubah warna latar belakang menjadi merah
+                    rerataInput.style.color = 'white'; // Ubah warna teks menjadi putih
+                } else {
+                    rerataInput.style.backgroundColor = ''; // Reset warna latar belakang
+                    rerataInput.style.color = ''; // Reset warna teks
+                }
+            });
+        }
+
+        // Jalankan validasi saat halaman selesai dimuat
+        document.addEventListener('DOMContentLoaded', validateInputs);
     </script>
 @endsection
 @section('script-bottom')

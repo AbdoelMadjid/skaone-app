@@ -24,7 +24,7 @@
                             data-kel-mapel="{{ $data->kel_mapel }}" data-id-personil="{{ $data->id_personil }}">
                             <i class="ri-delete-bin-2-line"></i>
                         </button>
-                        <a class="btn btn-soft-info" href="{{ route('gurumapel.penilaian.formatif.index') }}">Kembali</a>
+                        <a class="btn btn-soft-info" href="{{ route('gurumapel.penilaian.sumatif.index') }}">Kembali</a>
 
                     </div>
                 </div>
@@ -173,6 +173,61 @@
                 }
             }
         });
+
+        // Fungsi untuk memvalidasi nilai awal pada halaman
+        function validateInputs() {
+            // Ambil nilai KKM dari elemen dengan ID 'kkm'
+            const kkm = parseFloat(document.getElementById('kkm').value) || 0;
+
+            // Ambil semua input dengan kelas 'sts-input' dan 'sas-input'
+            const stsInputs = document.querySelectorAll('.sts-input');
+            const sasInputs = document.querySelectorAll('.sas-input');
+
+            stsInputs.forEach(stsInput => {
+                // Ambil NIS siswa dari atribut name input
+                const siswaNis = stsInput.getAttribute('name').match(/\[(.*?)\]/)[1];
+                const sasInput = document.getElementById(`sas[${siswaNis}]`);
+                const rerataSumatifInput = document.getElementById(`rerata_sumatif_${siswaNis}`);
+
+                // Ambil nilai STS dan SAS
+                const stsValue = parseFloat(stsInput.value) || 0;
+                const sasValue = parseFloat(sasInput.value) || 0;
+
+                // Hitung rata-rata sumatif
+                const rerataSumatif = (stsValue + sasValue) / 2;
+                rerataSumatifInput.value = rerataSumatif.toFixed(0); // Format dengan 0 desimal
+
+                // Validasi nilai STS
+                if (stsValue < kkm || stsValue > 100) {
+                    stsInput.style.backgroundColor = 'red';
+                    stsInput.style.color = 'white';
+                } else {
+                    stsInput.style.backgroundColor = '';
+                    stsInput.style.color = '';
+                }
+
+                // Validasi nilai SAS
+                if (sasValue < kkm || sasValue > 100) {
+                    sasInput.style.backgroundColor = 'red';
+                    sasInput.style.color = 'white';
+                } else {
+                    sasInput.style.backgroundColor = '';
+                    sasInput.style.color = '';
+                }
+
+                // Validasi rerata sumatif
+                if (rerataSumatif < kkm || rerataSumatif > 100) {
+                    rerataSumatifInput.style.backgroundColor = 'red';
+                    rerataSumatifInput.style.color = 'white';
+                } else {
+                    rerataSumatifInput.style.backgroundColor = '';
+                    rerataSumatifInput.style.color = '';
+                }
+            });
+        }
+
+        // Jalankan validasi saat halaman selesai dimuat
+        document.addEventListener('DOMContentLoaded', validateInputs);
     </script>
 @endsection
 @section('script-bottom')
