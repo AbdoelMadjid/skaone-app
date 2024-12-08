@@ -63,6 +63,9 @@ Route::middleware('auth')->group(function () {
             Route::resource('sumatif', SumatifController::class);
             Route::get('sumatif/create/{kode_rombel}/{kel_mapel}/{id_personil}', [SumatifController::class, 'create'])->name('sumatif.create');
             Route::get('sumatif/edit/{kode_rombel}/{kel_mapel}/{id_personil}', [SumatifController::class, 'edit'])->name('sumatif.edit');
+            Route::post('/hapusnilaisumatif', [SumatifController::class, 'hapusNilaiSumatif'])->name('hapusnilaisumatif');
+            Route::get('/exportsumatif', [SumatifController::class, 'exportExcelSumatif'])->name('exportsumatif');
+            Route::post('/uploadsumatif', [SumatifController::class, 'uploadNilaiSumatif'])->name('uploadsumatif');
         });
 
         Route::resource('absensi-siswa', AbsensiSiswaGmapelController::class);

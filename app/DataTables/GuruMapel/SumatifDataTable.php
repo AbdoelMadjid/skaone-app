@@ -58,33 +58,61 @@ class SumatifDataTable extends DataTable
                 return $JumlahCP . ' / ' . $JumlahMA . ' / ' . $jumlahTP;
             })
             ->addColumn('action', function ($row) {
-                // Menambahkan action "Create" untuk DataTable tertentu
-                //$actions = $this->mybasicActions($row);
-                if (request()->is('gurumapel/*')) {
-                    $dataExists = DB::table('nilai_sumatif')
-                        ->where('tahunajaran', $row->tahunajaran)
-                        ->where('tingkat', $row->tingkat)
-                        ->where('ganjilgenap', $row->ganjilgenap)
-                        ->where('semester', $row->semester)
-                        ->where('kode_rombel', $row->kode_rombel)
-                        ->where('kel_mapel', $row->kel_mapel)
-                        ->where('id_personil', $row->id_personil)
-                        ->exists();
+                $jumlahTP = DB::table('tujuan_pembelajarans')
+                    ->where('kode_rombel', $row->kode_rombel)
+                    ->where('kel_mapel', $row->kel_mapel)
+                    ->count();
+
+                $dataExists = DB::table('nilai_sumatif')
+                    ->where('tahunajaran', $row->tahunajaran)
+                    ->where('tingkat', $row->tingkat)
+                    ->where('ganjilgenap', $row->ganjilgenap)
+                    ->where('semester', $row->semester)
+                    ->where('kode_rombel', $row->kode_rombel)
+                    ->where('kel_mapel', $row->kel_mapel)
+                    ->where('id_personil', $row->id_personil)
+                    ->exists();
+
+                if ($jumlahTP > 0) {
                     if (!$dataExists) {
-                        $actions['Create'] = route('gurumapel.penilaian.sumatif.create', [
+                        $tombol = '
+                        <div class="btn-group dropstart">
+                            <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
+                                class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                <li><a class="dropdown-item" href="' . route('gurumapel.penilaian.sumatif.create', [
                             'kode_rombel' => $row->kode_rombel,
                             'kel_mapel' => $row->kel_mapel,
                             'id_personil' => $row->id_personil,
-                        ]);
+                        ]) . '">Create</a></li>
+                            </ul>
+                        </div>';
                     } else {
-                        $actions['Edit'] = route('gurumapel.penilaian.sumatif.edit', [
+                        $tombol = '
+                        <div class="btn-group dropstart">
+                            <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
+                                class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                <li><a class="dropdown-item" href="' . route('gurumapel.penilaian.sumatif.edit', [
                             'kode_rombel' => $row->kode_rombel,
                             'kel_mapel' => $row->kel_mapel,
                             'id_personil' => $row->id_personil,
-                        ]);
+                        ]) . '">Edit</a></li>
+                            </ul>
+                        </div>';
                     }
+                } else {
+                    $tombol = '
+                        <div class="btn-group dropstart">
+                            <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
+                                class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                <li><span class="dropdown-item">Anda pingin ngisi nilai? <br>Isi TP dulu bro !!!</span></li>
+                            </ul>
+                        </div>';
                 }
-                return view('action', compact('actions'));
+
+                return $tombol;
             })
             ->addIndexColumn()
             ->rawColumns(['jml_siswa', 'jumlah_cp', 'action']);

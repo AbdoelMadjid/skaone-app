@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\GuruMapel;
 
 use App\DataTables\GuruMapel\SumatifDataTable;
+use App\Exports\PenilaianSumatifExport;
 use App\Http\Controllers\Controller;
 use App\Models\GuruMapel\NilaiSumatif;
 use App\Models\GuruMapel\TujuanPembelajaran;
@@ -13,6 +14,8 @@ use App\Models\ManajemenSekolah\TahunAjaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class SumatifController extends Controller
 {
@@ -109,6 +112,7 @@ class SumatifController extends Controller
             )
             ->where('kbm_per_rombels.id_personil', $id_personil)
             ->where('kbm_per_rombels.kode_rombel', $kode_rombel)
+            ->where('kbm_per_rombels.kel_mapel', $kel_mapel)
             ->get();
 
         $tujuanPembelajaran = TujuanPembelajaran::where('id_personil', $id_personil)
@@ -117,13 +121,12 @@ class SumatifController extends Controller
             ->orderBy('tp_kode')
             ->get();
 
-        return view('pages.gurumapel.sumatif-create-form', [
+        return view('pages.gurumapel.sumatif-create', [
             'data' => $data,
             'jumlahTP' => $jumlahTP,
             'pesertaDidik' => $pesertaDidik,
             'tujuanPembelajaran' => $tujuanPembelajaran,
             'fullName' => $fullName,
-            'action' => route('gurumapel.penilaian.sumatif.store')
         ]);
     }
 
@@ -169,9 +172,8 @@ class SumatifController extends Controller
             ]);
         }
 
-        return responseSuccess();
-        // Redirect dengan pesan sukses
-        //return redirect()->back()->with('success', 'Data nilai sumatif berhasil disimpan.');
+        return redirect()->route('gurumapel.penilaian.sumatif.index')
+            ->with('toast_success', 'Data berhasil disimpan!');
     }
 
 
@@ -223,6 +225,7 @@ class SumatifController extends Controller
             )
             ->where('kbm_per_rombels.id_personil', $id_personil)
             ->where('kbm_per_rombels.kode_rombel', $kode_rombel)
+            ->where('kbm_per_rombels.kel_mapel', $kel_mapel)
             ->get()
             ->map(function ($siswa) use ($nilaiSumatif) {
                 // Tambahkan nilai STS dan SAS ke data siswa
@@ -231,13 +234,19 @@ class SumatifController extends Controller
                 return $siswa;
             });
 
-        return view('pages.gurumapel.sumatif-edit-form', [
+        $tujuanPembelajaran = TujuanPembelajaran::where('id_personil', $id_personil)
+            ->where('kode_rombel', $kode_rombel)
+            ->where('kel_mapel', $kel_mapel)
+            ->orderBy('tp_kode')
+            ->get();
+
+        return view('pages.gurumapel.sumatif-edit', [
             'data' => $data,
             'jumlahTP' => $jumlahTP,
             'nilaiSumatif' => $nilaiSumatif,
             'pesertaDidik' => $pesertaDidik,
+            'tujuanPembelajaran' => $tujuanPembelajaran,
             'fullName' => $fullName,
-            'action' => route('gurumapel.penilaian.sumatif.update', $data->id)
         ]);
     }
 
@@ -289,26 +298,9 @@ class SumatifController extends Controller
             }
         }
 
-        // Redirect kembali dengan pesan sukses
-        return responseSuccess(true);
+        return redirect()->route('gurumapel.penilaian.sumatif.index')
+            ->with('toast_success', 'Data berhasil disimpan!');
     }
-
-    /* public function update(Request $request, $id)
-    {
-        $validated = $request->validate([
-            'sts.*' => 'required|numeric|min:0|max:100',
-            'sas.*' => 'required|numeric|min:0|max:100',
-        ]);
-
-        foreach ($validated['sts'] as $nis => $sts) {
-            NilaiSumatif::updateOrCreate(
-                ['nis' => $nis, 'id_kbm_rombel' => $id],
-                ['sts' => $sts, 'sas' => $validated['sas'][$nis]]
-            );
-        }
-
-        return redirect()->route('gurumapel.penilaian.sumatif.index')->with('success', 'Data berhasil diperbarui!');
-    } */
 
     /**
      * Remove the specified resource from storage.
@@ -316,5 +308,148 @@ class SumatifController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function hapusNilaiSumatif(Request $request)
+    {
+        // Validasi data yang masuk
+        $request->validate([
+            'kode_rombel' => 'required|string',
+            'kel_mapel' => 'required|string',
+            'id_personil' => 'required|string',
+        ]);
+
+        // Hapus data sesuai parameter
+        $deleted = NilaiSumatif::where('kode_rombel', $request->kode_rombel)
+            ->where('kel_mapel', $request->kel_mapel)
+            ->where('id_personil', $request->id_personil)
+            ->delete();
+
+        if ($deleted) {
+            return response()->json(['message' => 'Data berhasil dihapus!'], 200);
+        }
+
+        return response()->json(['message' => 'Gagal menghapus data!'], 500);
+    }
+
+    public function exportExcelSumatif(Request $request)
+    {
+        $kode_rombel = $request->kode_rombel;
+        $kel_mapel = $request->kel_mapel;
+        $id_personil = $request->id_personil;
+
+        // Validasi keberadaan data
+        $data = KbmPerRombel::where('kode_rombel', $kode_rombel)
+            ->where('kel_mapel', $kel_mapel)
+            ->where('id_personil', $id_personil)
+            ->first();
+
+        if (!$data) {
+            return redirect()->back()->with('error', 'Data tidak ditemukan');
+        }
+
+        // Ambil nama lengkap personil
+        $personil = PersonilSekolah::where('id_personil', $id_personil)->first();
+        $fullName = $personil
+            ? trim(($personil->gelardepan ? $personil->gelardepan . ' ' : '') . $personil->namalengkap . ($personil->gelarbelakang ? ', ' . $personil->gelarbelakang : ''))
+            : 'Unknown';
+
+        // Hitung jumlah TP
+        $jumlahTP = DB::table('tujuan_pembelajarans')
+            ->where('kode_rombel', $kode_rombel)
+            ->where('kel_mapel', $kel_mapel)
+            ->count();
+
+        // Ambil peserta didik
+        $pesertaDidik = DB::table('kbm_per_rombels')
+            ->join('peserta_didik_rombels', 'peserta_didik_rombels.rombel_kode', '=', 'kbm_per_rombels.kode_rombel')
+            ->join('peserta_didiks', 'peserta_didiks.nis', '=', 'peserta_didik_rombels.nis')
+            ->select(
+                'kbm_per_rombels.kode_rombel',
+                'kbm_per_rombels.rombel',
+                'peserta_didik_rombels.nis',
+                'peserta_didiks.nama_lengkap'
+            )
+            ->where('kbm_per_rombels.id_personil', $id_personil)
+            ->where('kbm_per_rombels.kode_rombel', $kode_rombel)
+            ->where('kbm_per_rombels.kel_mapel', $kel_mapel)
+            ->get();
+
+        // Parameter untuk eksport
+        $params = [
+            'tahunajaran' => $data->tahunajaran,
+            'ganjilgenap' => $data->ganjilgenap,
+            'semester' => $data->semester,
+            'tingkat' => $data->tingkat,
+            'id_personil' => $data->id_personil,
+            'kode_rombel' => $kode_rombel,
+            'kel_mapel' => $kel_mapel,
+            'id_personil' => $id_personil,
+            'pesertaDidik' => $pesertaDidik,
+            'mata_pelajaran' => $data->mata_pelajaran,
+        ];
+
+        // Unduh file Excel
+        $fileName = "Penilaian_Sumatif_{$data->mata_pelajaran}_{$kode_rombel}_{$personil->namalengkap}.xlsx";
+        return Excel::download(new PenilaianSumatifExport($params), $fileName);
+    }
+
+    public function uploadNilaiSumatif(Request $request)
+    {
+        $request->validate([
+            'file_excel' => 'required|mimes:xlsx,xls',
+        ]);
+
+        $file = $request->file('file_excel');
+
+        try {
+            // Load file Excel
+            $spreadsheet = IOFactory::load($file->getPathname());
+            $sheet = $spreadsheet->getActiveSheet();
+
+            // Iterasi setiap baris mulai dari baris kedua (mengabaikan header)
+            $data = [];
+            foreach ($sheet->getRowIterator(2) as $row) {
+                $rowIndex = $row->getRowIndex();
+
+                // Ambil data dari kolom sesuai urutan
+                $tahunajaran = $sheet->getCell("A{$rowIndex}")->getValue();
+                $ganjilgenap = $sheet->getCell("B{$rowIndex}")->getValue();
+                $semester = $sheet->getCell("C{$rowIndex}")->getValue();
+                $tingkat = $sheet->getCell("D{$rowIndex}")->getValue();
+                $kode_rombel = $sheet->getCell("E{$rowIndex}")->getValue();
+                $kel_mapel = $sheet->getCell("F{$rowIndex}")->getValue();
+                $id_personil = $sheet->getCell("G{$rowIndex}")->getValue();
+                $nis = $sheet->getCell("H{$rowIndex}")->getValue();
+
+                // Abaikan kolom nama siswa (I)
+                $sts = $sheet->getCell("J{$rowIndex}")->getValue();
+                $sas = $sheet->getCell("K{$rowIndex}")->getValue();
+
+                $rerata_sumatif = $sheet->getCell("L{$rowIndex}")->getCalculatedValue(); // Menggunakan getCalculatedValue()
+
+                // Tambahkan ke array data
+                $data[] = [
+                    'tahunajaran' => $tahunajaran,
+                    'ganjilgenap' => $ganjilgenap,
+                    'semester' => $semester,
+                    'tingkat' => $tingkat,
+                    'kode_rombel' => $kode_rombel,
+                    'kel_mapel' => $kel_mapel,
+                    'id_personil' => $id_personil,
+                    'nis' => $nis,
+                    'sts' => $sts,
+                    'sas' => $sas,
+                    'rerata_sumatif' => $rerata_sumatif,
+                ];
+            }
+
+            // Insert data ke database
+            NilaiSumatif::insert($data);
+
+            return redirect()->back()->with('success', 'Data berhasil diunggah ke database.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 }
