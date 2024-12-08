@@ -75,6 +75,7 @@
                                                 <th>Mata Pelajaran</th>
                                                 <th>Kode Rombel</th>
                                                 <th>Rombel</th>
+                                                <th>Jumlah CP</th>
                                                 <th>Jumlah TP</th>
                                                 <th>Cek CP</th>
                                             </tr>
@@ -87,6 +88,21 @@
                                                     <td>{{ $kbm->mata_pelajaran }}</td>
                                                     <td>{{ $kbm->kode_rombel }}</td>
                                                     <td>{{ $kbm->rombel }}</td>
+                                                    <td class='text-center'>
+                                                        @php
+                                                            // Ambil cp_terpilih
+                                                            $jmlCP = DB::table('cp_terpilihs')
+                                                                ->where('id_personil', $kbm->id_personil)
+                                                                ->where('kode_rombel', $kbm->kode_rombel)
+                                                                ->where('kel_mapel', $kbm->kel_mapel)
+                                                                ->count();
+                                                        @endphp
+                                                        @if ($jmlCP)
+                                                            {{ $jmlCP }}
+                                                        @else
+                                                            0
+                                                        @endif
+                                                    </td>
                                                     <td class='text-center'>
                                                         @php
                                                             // Ambil cp_terpilih
@@ -267,6 +283,9 @@
                             isErrorNotified = true; // Tandai bahwa notifikasi sudah ditampilkan
                             $('#kel_mapel').val('');
                             $('#rombel_pilih').hide();
+                            $('#checkbox-kode-rombel').empty();
+                            $('#checkbox-rombel').empty();
+                            $('#selected_cp_tbody').empty();
                             $('#selected_cp_list').hide();
                         }
                     } else {
@@ -274,6 +293,12 @@
                             console.error("Error:", xhr.statusText || defaultMessage);
                             showToast('error', defaultMessage || "Terjadi kesalahan.");
                             isErrorNotified = true; // Tandai bahwa notifikasi sudah ditampilkan
+                            $('#kel_mapel').val('');
+                            $('#rombel_pilih').hide();
+                            $('#checkbox-kode-rombel').empty();
+                            $('#checkbox-rombel').empty();
+                            $('#selected_cp_tbody').empty();
+                            $('#selected_cp_list').hide();
                         }
                     }
                 }
