@@ -174,8 +174,14 @@ class FormatifController extends Controller
             );
         }
 
-        return redirect()->route('gurumapel.penilaian.formatif.index')
-            ->with('toast_success', 'Data berhasil disimpan!');
+        return redirect()->route('gurumapel.penilaian.formatif.edit', [
+            'kode_rombel' => $data['kode_rombel'],
+            'kel_mapel' => $data['kel_mapel'],
+            'id_personil' => $data['id_personil'],
+        ])->with('toast_success', 'Data Nilai Formatif berhasil disimpan.');
+
+        /* return redirect()->route('gurumapel.penilaian.formatif.index')
+            ->with('toast_success', 'Data berhasil disimpan!'); */
     }
 
     /**
@@ -306,8 +312,14 @@ class FormatifController extends Controller
             );
         }
 
-        return redirect()->route('gurumapel.penilaian.formatif.index')
-            ->with('toast_success', 'Data berhasil disimpan!');
+        return redirect()->route('gurumapel.penilaian.formatif.edit', [
+            'kode_rombel' => $data['kode_rombel'],
+            'kel_mapel' => $data['kel_mapel'],
+            'id_personil' => $data['id_personil'],
+        ])->with('toast_success', 'Data Nilai Formatif berhasil disimpan.');
+
+        /* return redirect()->route('gurumapel.penilaian.formatif.index')
+            ->with('toast_success', 'Data berhasil disimpan!'); */
     }
 
     /**
