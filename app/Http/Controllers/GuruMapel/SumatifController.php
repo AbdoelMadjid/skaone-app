@@ -172,8 +172,11 @@ class SumatifController extends Controller
             ]);
         }
 
-        return redirect()->route('gurumapel.penilaian.sumatif.index')
-            ->with('toast_success', 'Data berhasil disimpan!');
+        return redirect()->route('gurumapel.penilaian.sumatif.edit', [
+            'kode_rombel' => $request->kode_rombel,
+            'kel_mapel' => $request->kel_mapel,
+            'id_personil' => $request->id_personil,
+        ])->with('toast_success', 'Data Nilai Sumatif berhasil disimpan.');
     }
 
 
@@ -298,8 +301,14 @@ class SumatifController extends Controller
             }
         }
 
-        return redirect()->route('gurumapel.penilaian.sumatif.index')
-            ->with('toast_success', 'Data berhasil disimpan!');
+        return redirect()->route('gurumapel.penilaian.sumatif.edit', [
+            'kode_rombel' => $data->kode_rombel,
+            'kel_mapel' => $data->kel_mapel,
+            'id_personil' => $data->id_personil,
+        ])->with('toast_success', 'Data Nilai Sumatif berhasil diupdate.');
+
+        /*         return redirect()->route('gurumapel.penilaian.sumatif.index')
+            ->with('toast_success', 'Data berhasil disimpan!'); */
     }
 
     /**
