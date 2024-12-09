@@ -99,6 +99,7 @@ class FormatifController extends Controller
         $jumlahTP = DB::table('tujuan_pembelajarans')
             ->where('kode_rombel', $kode_rombel)
             ->where('kel_mapel', $kel_mapel)
+            ->where('id_personil', $id_personil)
             ->count();
 
         $pesertaDidik = DB::table('kbm_per_rombels')
