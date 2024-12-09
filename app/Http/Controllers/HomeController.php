@@ -49,7 +49,7 @@ class HomeController extends Controller
 
         $loginCount = DB::table('users')
             ->select('login_count')
-            ->count();
+            ->sum('login_count');
 
         // ABSENSI SISWA PKL ================================
         $nis = auth()->user()->nis;
