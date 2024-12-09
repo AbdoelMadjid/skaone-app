@@ -76,13 +76,13 @@
                 dataType: 'json',
                 success: function(data) {
                     // Update pengguna aktif
-                    $('.active-user').attr('data-target', data.activeUsersCount).text(data.activeUsersCount);
+                    $('#active-user').attr('data-target', data.activeUsersCount).text(data.activeUsersCount);
 
                     // Update login hari ini
-                    $('.login-today').attr('data-target', data.loginTodayCount).text(data.loginTodayCount);
+                    $('#login-today').attr('data-target', data.loginTodayCount).text(data.loginTodayCount);
 
                     // Update total login
-                    $('.login-count').attr('data-target', data.loginCount).text(data.loginCount);
+                    $('#login-count').attr('data-target', data.loginCount).text(data.loginCount);
                 },
                 error: function(error) {
                     console.error('Error fetching real-time stats:', error);
