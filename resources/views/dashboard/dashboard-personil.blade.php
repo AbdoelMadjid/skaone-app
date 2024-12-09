@@ -165,8 +165,8 @@
                 <h5 class="fs-14 text-end">
 
                 </h5>
-                <div class="px-4 mx-n4" data-simplebar style="height: calc(100vh - 368px);">
-                    <div class="ribbon-content mt-5 text-muted">
+                <div class="ribbon-content mt-5 text-muted">
+                    <div class="px-4 mx-n4" data-simplebar style="height: calc(100vh - 368px);">
                         @if ($userLoginHariiniPersonil->isEmpty())
                             <p>No users have logged in today.</p>
                         @else
@@ -208,9 +208,8 @@
         <div class="card ribbon-box border shadow-none mb-lg-4">
             <div class="card-body">
                 <div class="ribbon ribbon-primary round-shape">Peserta Didik Login Hari ini</div>
-                <div class="px-4 mx-n4" data-simplebar style="height: calc(100vh - 368px);">
-                    <div class="ribbon-content mt-5 text-muted">
-
+                <div class="ribbon-content mt-5 text-muted">
+                    <div class="px-4 mx-n4" data-simplebar style="height: calc(100vh - 368px);">
                         @if ($userLoginHariiniSiswa->isEmpty())
                             <p>No users have logged in today.</p>
                         @else
