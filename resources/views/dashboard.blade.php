@@ -66,6 +66,38 @@
 @section('script')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/apexcharts/apexcharts.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/counterup2/1.0.7/index.js"></script>
+    <script>
+        function fetchDashboardStats() {
+            $.ajax({
+                url: '/dashboard-stats',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    const updateCounter = (selector, value) => {
+                        $(selector).attr('data-target', value).text(value);
+                        CounterUp($(selector)[0], {
+                            duration: 2000
+                        });
+                    };
+
+                    // Update dan animasi angka
+                    updateCounter('.active-user', data.activeUsersCount);
+                    updateCounter('.login-today', data.loginTodayCount);
+                    updateCounter('.login-count', data.loginCount);
+                },
+                error: function(error) {
+                    console.error('Error fetching dashboard stats:', error);
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            fetchDashboardStats();
+            setInterval(fetchDashboardStats, 5000);
+        });
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const nis = '{{ auth()->user()->nis }}'; // Pastikan ini adalah NIS dari pengguna yang login

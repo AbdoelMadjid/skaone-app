@@ -46,7 +46,7 @@
                                     <i class="mdi mdi-account-clock display-6 text-muted"></i>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
-                                    <h2 class="mb-0"><span class="counter-value"
+                                    <h2 class="mb-0"><span class="counter-value active-user"
                                             data-target="{{ $activeUsersCount }}">0</span>
                                     </h2>
                                 </div>
@@ -63,7 +63,7 @@
                                     <i class="mdi mdi-account-arrow-right display-6 text-muted"></i>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
-                                    <h2 class="mb-0"><span class="counter-value"
+                                    <h2 class="mb-0"><span class="counter-value login-today"
                                             data-target="{{ $loginTodayCount }}">0</span>
                                     </h2>
                                 </div>
@@ -80,7 +80,7 @@
                                     <i class="mdi mdi-account-multiple-plus display-6 text-muted"></i>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
-                                    <h2 class="mb-0"><span class="counter-value"
+                                    <h2 class="mb-0"><span class="counter-value login-count"
                                             data-target="{{ $loginCount }}">0</span>
                                     </h2>
                                 </div>

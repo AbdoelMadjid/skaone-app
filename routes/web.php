@@ -28,6 +28,9 @@ use App\Http\Controllers\ManajemenPengguna\UserController;
 use App\Http\Controllers\Pengguna\GantiPasswordController;
 use App\Http\Controllers\Pengguna\PesanController;
 use App\Http\Controllers\WelcomeController;
+use App\Models\ManajemenPengguna\LoginRecord;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
@@ -70,6 +73,25 @@ Route::get('/dashboard', [HomeController::class, 'index'])
     ->middleware(['auth', 'verified', 'check.default.password'])
     ->name('dashboard');
 Route::get('/dashboard/active-users', [HomeController::class, 'fetchActiveUsers'])->name('dashboard.active-users');
+
+Route::get('/dashboard-stats', function () {
+    // Hitung pengguna aktif dalam 59 menit terakhir
+    $activeUsersCount = User::whereNotNull('last_login_at')
+        ->where('last_login_at', '>=', now()->subMinutes(59))
+        ->count();
+
+    // Hitung login hari ini
+    $loginTodayCount = LoginRecord::whereDate('login_at', now()->toDateString())->count();
+
+    // Hitung total login
+    $loginCount = DB::table('users')->sum('login_count');
+
+    return response()->json([
+        'activeUsersCount' => $activeUsersCount,
+        'loginTodayCount' => $loginTodayCount,
+        'loginCount' => $loginCount,
+    ]);
+});
 
 Route::middleware(['auth', 'master'])->post('/switch-account', [UserController::class, 'switchAccount'])->name('switch.account');
 // Rute untuk kembali ke akun asal
