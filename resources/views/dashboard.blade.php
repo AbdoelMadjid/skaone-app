@@ -69,35 +69,34 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/counterup2/1.0.7/index.js"></script>
     <script>
-        function fetchDashboardStats() {
+        function fetchRealTimeStats() {
             $.ajax({
-                url: '/dashboard-stats',
+                url: '/real-time-stats', // Endpoint real-time stats
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    const updateCounter = (selector, value) => {
-                        $(selector).attr('data-target', value).text(value);
-                        CounterUp($(selector)[0], {
-                            duration: 2000
-                        });
-                    };
+                    // Update pengguna aktif
+                    $('.active-user').attr('data-target', data.activeUsersCount).text(data.activeUsersCount);
 
-                    // Update dan animasi angka
-                    updateCounter('.active-user', data.activeUsersCount);
-                    updateCounter('.login-today', data.loginTodayCount);
-                    updateCounter('.login-count', data.loginCount);
+                    // Update login hari ini
+                    $('.login-today').attr('data-target', data.loginTodayCount).text(data.loginTodayCount);
+
+                    // Update total login
+                    $('.login-count').attr('data-target', data.loginCount).text(data.loginCount);
                 },
                 error: function(error) {
-                    console.error('Error fetching dashboard stats:', error);
+                    console.error('Error fetching real-time stats:', error);
                 }
             });
         }
 
-        $(document).ready(function() {
-            fetchDashboardStats();
-            setInterval(fetchDashboardStats, 5000);
-        });
+        // Jalankan fungsi setiap 5 detik
+        setInterval(fetchRealTimeStats, 5000);
+
+        // Jalankan fungsi saat halaman pertama kali dimuat
+        $(document).ready(fetchRealTimeStats);
     </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const nis = '{{ auth()->user()->nis }}'; // Pastikan ini adalah NIS dari pengguna yang login

@@ -74,8 +74,8 @@ Route::get('/dashboard', [HomeController::class, 'index'])
     ->name('dashboard');
 Route::get('/dashboard/active-users', [HomeController::class, 'fetchActiveUsers'])->name('dashboard.active-users');
 
-Route::get('/dashboard-stats', function () {
-    // Hitung pengguna aktif dalam 59 menit terakhir
+Route::get('/real-time-stats', function () {
+    // Hitung pengguna aktif
     $activeUsersCount = User::whereNotNull('last_login_at')
         ->where('last_login_at', '>=', now()->subMinutes(59))
         ->count();
@@ -92,6 +92,7 @@ Route::get('/dashboard-stats', function () {
         'loginCount' => $loginCount,
     ]);
 });
+
 
 Route::middleware(['auth', 'master'])->post('/switch-account', [UserController::class, 'switchAccount'])->name('switch.account');
 // Rute untuk kembali ke akun asal
