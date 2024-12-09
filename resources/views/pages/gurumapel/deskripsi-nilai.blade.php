@@ -40,9 +40,9 @@
                                                 class="d-flex py-1 align-items-center">
                                                 <div class="flex-grow-1">
                                                     <h5 class="fs-13 mb-0 listname">
-                                                        {{ $kbm->mata_pelajaran }} <br>
+                                                        {{ $kbm->kel_mapel }} - {{ $kbm->mata_pelajaran }} <br>
                                                         <i class="ri-stop-mini-fill align-middle fs-15 text-secondary"></i>
-                                                        {{ $kbm->rombel }}
+                                                        {{ $kbm->kode_rombel }} - {{ $kbm->rombel }}
                                                     </h5>
                                                 </div>
 
@@ -83,8 +83,8 @@
                     </button>
                 </div>
                 <div class="col-sm order-3 order-sm-2 mt-3 mt-sm-0">
-                    <h5 class="fw-semibold mb-0">Deskripsi Nilai <span
-                            class="badge bg-primary align-bottom ms-2">v2.0.0</span></h5>
+                    <h5 class="fw-semibold mb-0">Deskripsi Nilai <span class="badge bg-primary align-bottom ms-2">Mata
+                            Pelajaran</span></h5>
                 </div>
 
                 <div class="col-auto order-2 order-sm-3 ms-auto">
@@ -98,7 +98,7 @@
                     </div>
                 </div>
             </div>
-            <div class="p-3 bg-light rounded mb-4">
+            {{-- <div class="p-3 bg-light rounded mb-4">
                 <div class="row g-2">
                     <div class="col-lg-auto">
                         <select class="form-control" data-choices data-choices-search-false name="choices-select-sortlist"
@@ -132,8 +132,11 @@
                         </button>
                     </div>
                 </div>
+            </div> --}}
+            <div>
+                <h5>Rombel: <span id="rombel-info"></span></h5>
+                <h5>Mata Pelajaran: <span id="mapel-info"></span></h5>
             </div>
-
             <div class="todo-content position-relative px-4 mx-n4" id="todo-content">
                 <div class="todo-task" id="todo-task">
                     <div class="table-responsive">
@@ -172,7 +175,7 @@
 
                 // AJAX request ke server
                 $.ajax({
-                    url: '/getpesertadidik', // Endpoint sesuai dengan route Laravel
+                    url: '/gurumapel/penilaian/getpesertadidik', // Endpoint sesuai dengan route Laravel
                     type: 'GET',
                     data: {
                         kel_mapel: kelMapel,
@@ -180,22 +183,35 @@
                         id_personil: idPersonil
                     },
                     success: function(response) {
-                        // Kosongkan tabel sebelum menambahkan data
+                        // Kosongkan tabel dan elemen rombel
                         $('#data-nilai-siswa').empty();
+                        $('#rombel-info').text('');
+                        $('#mapel-info').text('');
 
-                        // Iterasi data dan tambahkan ke tabel
-                        response.forEach((item, index) => {
+                        if (response.length > 0) {
+                            // Ambil nama rombel dari respons
+                            $('#rombel-info').text(response[0].rombel);
+                            $('#mapel-info').text(response[0].mata_pelajaran);
+
+                            // Iterasi data dan tambahkan ke tabel
+                            response.forEach((item, index) => {
+                                $('#data-nilai-siswa').append(`
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${item.nis}</td>
+                            <td>${item.nama_lengkap}</td>
+                        </tr>
+                    `);
+                            });
+                        } else {
                             $('#data-nilai-siswa').append(`
                     <tr>
-                        <td>${index + 1}</td>
-                        <td>${item.nis}</td>
-                        <td>${item.nama_lengkap}</td>
+                        <td colspan="3">Data tidak ditemukan</td>
                     </tr>
                 `);
-                        });
+                        }
                     },
                     error: function() {
-                        // Tampilkan pesan error jika gagal
                         alert('Terjadi kesalahan. Silakan coba lagi.');
                     }
                 });

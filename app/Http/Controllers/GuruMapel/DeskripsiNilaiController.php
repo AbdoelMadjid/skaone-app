@@ -137,6 +137,7 @@ class DeskripsiNilaiController extends Controller
             ->select(
                 'kbm_per_rombels.kode_rombel',
                 'kbm_per_rombels.rombel',
+                'kbm_per_rombels.mata_pelajaran',
                 'peserta_didik_rombels.nis',
                 'peserta_didiks.nama_lengkap'
             )
