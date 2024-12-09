@@ -125,27 +125,55 @@ class DeskripsiNilaiController extends Controller
         //
     }
 
-    public function getPesertaDidik(Request $request)
+    public function getNilaiFormatif(Request $request)
     {
         $id_personil = $request->input('id_personil');
         $kode_rombel = $request->input('kode_rombel');
         $kel_mapel = $request->input('kel_mapel');
 
-        $pesertaDidik = DB::table('kbm_per_rombels')
-            ->join('peserta_didik_rombels', 'peserta_didik_rombels.rombel_kode', '=', 'kbm_per_rombels.kode_rombel')
-            ->join('peserta_didiks', 'peserta_didiks.nis', '=', 'peserta_didik_rombels.nis')
+        // Hitung jumlah TP
+        $jumlahTP = DB::table('tujuan_pembelajarans')
+            ->where('kode_rombel', $kode_rombel)
+            ->where('kel_mapel', $kel_mapel)
+            ->where('id_personil', $id_personil)
+            ->count();
+
+        // Query data nilai formatif dan data siswa
+        /* $data = DB::table('nilai_formatif')
+            ->join('peserta_didiks', 'nilai_formatif.nis', '=', 'peserta_didiks.nis')
             ->select(
-                'kbm_per_rombels.kode_rombel',
-                'kbm_per_rombels.rombel',
-                'kbm_per_rombels.mata_pelajaran',
-                'peserta_didik_rombels.nis',
-                'peserta_didiks.nama_lengkap'
+                'peserta_didiks.nis',
+                'peserta_didiks.nama_lengkap',
+                'nilai_formatif.*'
             )
-            ->where('kbm_per_rombels.id_personil', $id_personil)
-            ->where('kbm_per_rombels.kode_rombel', $kode_rombel)
-            ->where('kbm_per_rombels.kel_mapel', $kel_mapel)
+            ->where('nilai_formatif.id_personil', $id_personil)
+            ->where('nilai_formatif.kode_rombel', $kode_rombel)
+            ->where('nilai_formatif.kel_mapel', $kel_mapel)
+            ->get(); */
+
+        $data = DB::table('nilai_formatif')
+            ->join('peserta_didiks', 'nilai_formatif.nis', '=', 'peserta_didiks.nis')
+            ->join('kbm_per_rombels', function ($join) use ($id_personil, $kode_rombel, $kel_mapel) {
+                $join->on('nilai_formatif.kode_rombel', '=', 'kbm_per_rombels.kode_rombel')
+                    ->where('kbm_per_rombels.id_personil', $id_personil)
+                    ->where('kbm_per_rombels.kel_mapel', $kel_mapel);
+            })
+            ->select(
+                'peserta_didiks.nis',
+                'peserta_didiks.nama_lengkap',
+                'nilai_formatif.*',
+                'kbm_per_rombels.rombel',
+                'kbm_per_rombels.mata_pelajaran'
+            )
+            ->where('nilai_formatif.id_personil', $id_personil)
+            ->where('nilai_formatif.kode_rombel', $kode_rombel)
+            ->where('nilai_formatif.kel_mapel', $kel_mapel)
+            ->orderBy('nilai_formatif.nis')
             ->get();
 
-        return response()->json($pesertaDidik);
+        return response()->json([
+            'data' => $data,
+            'jumlahTP' => $jumlahTP, // Kirim jumlah TP
+        ]);
     }
 }

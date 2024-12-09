@@ -70,7 +70,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/uploadsumatif', [SumatifController::class, 'uploadNilaiSumatif'])->name('uploadsumatif');
 
             Route::resource('deskripsi-nilai', DeskripsiNilaiController::class);
-            Route::get('/getpesertadidik', [DeskripsiNilaiController::class, 'getPesertaDidik'])->name('getpesertadidik');
+            Route::get('/getnilaiformatif', [DeskripsiNilaiController::class, 'getNilaiFormatif'])->name('getnilaiformatif');
         });
 
         Route::resource('absensi-siswa', AbsensiSiswaGmapelController::class);

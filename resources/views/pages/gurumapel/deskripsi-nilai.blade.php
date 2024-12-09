@@ -5,6 +5,11 @@
 @section('css')
     <link href="{{ URL::asset('build/libs/nouislider/nouislider.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ URL::asset('build/libs/gridjs/theme/mermaid.min.css') }}">
+    <style>
+        .hidden {
+            display: none !important;
+        }
+    </style>
 @endsection
 @section('content')
     <div class="chat-wrapper d-lg-flex gap-1 mx-n4 mt-n4 p-1">
@@ -33,6 +38,15 @@
                             <div class="collapse show" id="velzonAdmin">
                                 <ul class="mb-0 sub-menu list-unstyled ps-3 vstack gap-2 mb-2">
                                     @foreach ($KbmPersonil as $kbm)
+                                        @php
+                                            // Hitung jumlah siswa untuk setiap rombel
+                                            $jmlsiswa = DB::table('peserta_didik_rombels')
+                                                ->where('tahun_ajaran', $kbm->tahunajaran)
+                                                ->where('kode_kk', $kbm->kode_kk)
+                                                ->where('rombel_tingkat', $kbm->tingkat)
+                                                ->where('rombel_kode', $kbm->kode_rombel)
+                                                ->count();
+                                        @endphp
                                         <li>
                                             <a href="#" id="datadeskripsi" data-kel-mapel="{{ $kbm->kel_mapel }}"
                                                 data-kode-rombel="{{ $kbm->kode_rombel }}"
@@ -45,23 +59,9 @@
                                                         {{ $kbm->kode_rombel }} - {{ $kbm->rombel }}
                                                     </h5>
                                                 </div>
-
                                                 <div class="flex-shrink-0 ms-2">
                                                     <span class="badge bg-light text-muted">
-                                                        @php
-                                                            // Ambil cp_terpilih
-                                                            $jmlsiswa = DB::table('peserta_didik_rombels')
-                                                                ->where('tahun_ajaran', $kbm->tahunajaran)
-                                                                ->where('kode_kk', $kbm->kode_kk)
-                                                                ->where('rombel_tingkat', $kbm->tingkat)
-                                                                ->where('rombel_kode', $kbm->kode_rombel)
-                                                                ->count();
-                                                        @endphp
-                                                        @if ($jmlsiswa)
-                                                            {{ $jmlsiswa }}
-                                                        @else
-                                                            0
-                                                        @endif
+                                                        {{ $jmlsiswa }}
                                                     </span>
                                                 </div>
                                             </a>
@@ -98,6 +98,7 @@
                     </div>
                 </div>
             </div>
+
             {{-- <div class="p-3 bg-light rounded mb-4">
                 <div class="row g-2">
                     <div class="col-lg-auto">
@@ -138,7 +139,6 @@
                 <div class="card-body">
                     <div class="ribbon ribbon-primary round-shape">Data KBM</div>
                     <div class="ribbon-content mt-5 text-muted">
-                        <!-- Vertical alignment (align-items-center) -->
                         <div class="row">
                             <div class="col col-md-7">
                                 <div class="row align-items-center">
@@ -157,15 +157,8 @@
             <div class="todo-content position-relative px-4 mx-n4" id="todo-content">
                 <div class="todo-task" id="todo-task">
                     <div class="table-responsive">
-                        <table class="table align-middle position-relative table-nowrap">
-                            <thead class="table-active">
-                                <tr>
-                                    <th scope="col">No.</th>
-                                    <th scope="col">NIS</th>
-                                    <th scope="col">Nama Siswa</th>
-                                </tr>
-                            </thead>
-                            <tbody id="data-nilai-siswa"></tbody>
+                        <table class="table align-middle position-relative table-nowrap" id="data-nilai-siswa">
+                            <!-- Header dan Body akan diisi oleh AJAX -->
                         </table>
                     </div>
                 </div>
@@ -176,59 +169,91 @@
 @section('script')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
     <script>
-        $(document).ready(function() {
-            $(document).on('click', '#datadeskripsi', function(e) {
-                e.preventDefault();
+        $(document).on('click', '#datadeskripsi', function(e) {
+            e.preventDefault();
 
-                // Ambil data dari atribut HTML
-                let kelMapel = $(this).data('kel-mapel');
-                let kodeRombel = $(this).data('kode-rombel');
-                let idPersonil = $(this).data('id-personil');
+            // Ambil data dari atribut HTML
+            let kelMapel = $(this).data('kel-mapel');
+            let kodeRombel = $(this).data('kode-rombel');
+            let idPersonil = $(this).data('id-personil');
 
-                // AJAX request ke server
-                $.ajax({
-                    url: '/gurumapel/penilaian/getpesertadidik', // Endpoint sesuai dengan route Laravel
-                    type: 'GET',
-                    data: {
-                        kel_mapel: kelMapel,
-                        kode_rombel: kodeRombel,
-                        id_personil: idPersonil
-                    },
-                    success: function(response) {
-                        // Kosongkan tabel dan elemen rombel
-                        $('#data-nilai-siswa').empty();
-                        $('#rombel-info').text('');
-                        $('#mapel-info').text('');
-
-                        if (response.length > 0) {
-                            // Ambil nama rombel dari respons
-                            $('#rombel-info').text(response[0].rombel);
-                            $('#mapel-info').text(response[0].mata_pelajaran);
-
-                            // Iterasi data dan tambahkan ke tabel
-                            response.forEach((item, index) => {
-                                $('#data-nilai-siswa').append(`
-                        <tr>
-                            <td>${index + 1}</td>
-                            <td>${item.nis}</td>
-                            <td>${item.nama_lengkap}</td>
-                        </tr>
-                    `);
-                            });
-                        } else {
-                            $('#data-nilai-siswa').append(`
-                    <tr>
-                        <td colspan="3">Data tidak ditemukan</td>
-                    </tr>
-                `);
-                        }
-                    },
-                    error: function() {
-                        alert('Terjadi kesalahan. Silakan coba lagi.');
-                    }
-                });
-            });
+            // Panggil fungsi untuk memuat data nilai formatif
+            loadNilai(kodeRombel, kelMapel, idPersonil);
         });
+
+        function loadNilai(kodeRombel, kelMapel, idPersonil) {
+            $.ajax({
+                url: '/gurumapel/penilaian/getnilaiformatif', // Endpoint untuk mendapatkan data nilai
+                type: 'GET',
+                data: {
+                    kode_rombel: kodeRombel,
+                    kel_mapel: kelMapel,
+                    id_personil: idPersonil,
+                },
+                success: function(response) {
+                    const data = response.data;
+                    const jumlahTP = response.jumlahTP;
+
+                    // Mengisi informasi rombel dan mata pelajaran dari data yang diterima
+                    if (data.length > 0) {
+                        $('#rombel-info').text(data[0].rombel || 'Tidak Ada');
+                        $('#mapel-info').text(data[0].mata_pelajaran || 'Tidak Ada');
+                    }
+                    // Buat header tabel dinamis
+                    let tableHeader = `
+                <tr>
+                    <th style="width: 30px;">No.</th>
+                    <th style="width: 100px;">NIS</th>
+                    <th style="width: 200px;">Nama Siswa</th>`;
+
+                    // Tambahkan kolom dinamis untuk TP Isi dan TP Nilai sesuai jumlahTP
+                    for (let i = 1; i <= jumlahTP; i++) {
+                        tableHeader += `
+                    <th style="width: 50px;" class="tp-isi-col" id="tp-isi-${i}">TP Isi ${i}</th>
+                    <th style="width: 50px;" id="tp-nilai-${i}">TP Nilai ${i}</th>`;
+                    }
+
+                    tableHeader += `<th style="width: 80px;">Rerata Formatif</th></tr>`;
+
+                    // Bersihkan tabel sebelum memuat data baru
+                    $('#data-nilai-siswa').html('');
+                    $('#data-nilai-siswa').append('<thead>' + tableHeader + '</thead><tbody>');
+
+                    // Buat body tabel dinamis
+                    let tableBody = '';
+                    data.forEach((row, index) => {
+                        tableBody += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${row.nis}</td>
+                        <td>${row.nama_lengkap}</td>`;
+
+                        // Tambahkan kolom dinamis untuk TP Isi dan TP Nilai
+                        for (let i = 1; i <= jumlahTP; i++) {
+                            tableBody += `
+                        <td class="tp-isi-${i}">${row['tp_isi_' + i] || '-'}</td>
+                        <td>${row['tp_nilai_' + i] || '-'}</td>`;
+                        }
+
+                        tableBody += `
+                        <td>${row.rerata_formatif || '-'}</td>
+                    </tr>`;
+                    });
+
+                    $('#data-nilai-siswa').append(tableBody + '</tbody>');
+
+                    // Menyembunyikan kolom TP Isi dengan id tp-isi-[nomor] setelah kolom ke-5
+                    for (let i = 1; i <= jumlahTP; i++) {
+                        // Menyembunyikan kolom TP Isi dan bukan TP Nilai
+                        $(`#tp-isi-${i}`).css('display', 'none'); // Menyembunyikan header TP Isi
+                        $(`td.tp-isi-${i}`).css('display', 'none'); // Menyembunyikan body TP Isi
+                    }
+                },
+                error: function() {
+                    alert('Terjadi kesalahan saat memuat data nilai.');
+                },
+            });
+        }
     </script>
     <script src="{{ URL::asset('build/libs/dragula/dragula.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/dom-autoscroller/dom-autoscroller.min.js') }}"></script>
