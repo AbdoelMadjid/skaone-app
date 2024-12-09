@@ -198,7 +198,7 @@ class WelcomeController extends Controller
 
         $loginCount = DB::table('users')
             ->select('login_count')
-            ->count();
+            ->sum('login_count');
 
         return view(
             'welcome',
