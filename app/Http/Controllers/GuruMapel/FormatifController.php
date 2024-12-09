@@ -411,8 +411,10 @@ class FormatifController extends Controller
             'tujuanPembelajaran' => $tujuanPembelajaran,
         ];
 
+        // Ganti karakter "/" di $data->mata_pelajaran dengan karakter yang aman untuk nama file
+        $mataPelajaran = str_replace('/', '-', $data->mata_pelajaran);
         // Unduh file Excel
-        $fileName = "Penilaian_Formatif_{$data->mata_pelajaran}_{$kode_rombel}_{$personil->namalengkap}.xlsx";
+        $fileName = "Penilaian_Formatif_{$mataPelajaran}_{$kode_rombel}_{$personil->namalengkap}.xlsx";
         return Excel::download(new PenilaianFormatifExport($params), $fileName);
     }
 

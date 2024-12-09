@@ -398,8 +398,11 @@ class SumatifController extends Controller
             'mata_pelajaran' => $data->mata_pelajaran,
         ];
 
+        // Ganti karakter "/" di $data->mata_pelajaran dengan karakter yang aman untuk nama file
+        $mataPelajaran = str_replace('/', '-', $data->mata_pelajaran);
+
         // Unduh file Excel
-        $fileName = "Penilaian_Sumatif_{$data->mata_pelajaran}_{$kode_rombel}_{$personil->namalengkap}.xlsx";
+        $fileName = "Penilaian_Sumatif_{$mataPelajaran}_{$kode_rombel}_{$personil->namalengkap}.xlsx";
         return Excel::download(new PenilaianSumatifExport($params), $fileName);
     }
 
