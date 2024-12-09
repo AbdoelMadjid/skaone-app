@@ -28,8 +28,8 @@
                 <div class="px-4 mx-n4" data-simplebar style="height: calc(100vh - 368px);">
                     <ul class="to-do-menu list-unstyled" id="projectlist-data">
                         <li>
-                            <a data-bs-toggle="collapse" href="#velzonAdmin" class="nav-link fs-13 active">Deskripsi
-                                Nilai</a>
+                            <a data-bs-toggle="collapse" href="#velzonAdmin" class="nav-link fs-13 active">Pilih Mata
+                                Pelajaran</a>
                             <div class="collapse show" id="velzonAdmin">
                                 <ul class="mb-0 sub-menu list-unstyled ps-3 vstack gap-2 mb-2">
                                     @foreach ($KbmPersonil as $kbm)
@@ -133,9 +133,26 @@
                     </div>
                 </div>
             </div> --}}
-            <div>
-                <h5>Rombel: <span id="rombel-info"></span></h5>
-                <h5>Mata Pelajaran: <span id="mapel-info"></span></h5>
+
+            <div class="card ribbon-box border shadow-none mb-lg-2">
+                <div class="card-body">
+                    <div class="ribbon ribbon-primary round-shape">Data KBM</div>
+                    <div class="ribbon-content mt-5 text-muted">
+                        <!-- Vertical alignment (align-items-center) -->
+                        <div class="row">
+                            <div class="col col-md-7">
+                                <div class="row align-items-center">
+                                    <div class="col-sm-4">Rombongan Belajar</div>
+                                    <div class="col-sm-1">:</div>
+                                    <div class="col-sm-7 text-info"><span id="rombel-info"></span></div>
+                                    <div class="col-sm-4 align-self-start">Mata Pelajaran</div>
+                                    <div class="col-sm-1 align-self-start">:</div>
+                                    <div class="col-sm-7 text-info"><span id="mapel-info"></span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="todo-content position-relative px-4 mx-n4" id="todo-content">
                 <div class="todo-task" id="todo-task">
@@ -148,16 +165,11 @@
                                     <th scope="col">Nama Siswa</th>
                                 </tr>
                             </thead>
-                            <tbody id="data-nilai-siswa">
-
-
-                            </tbody>
+                            <tbody id="data-nilai-siswa"></tbody>
                         </table>
                     </div>
                 </div>
-
             </div>
-
         </div>
     </div>
 @endsection
