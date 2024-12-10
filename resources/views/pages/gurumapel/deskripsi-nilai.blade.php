@@ -36,7 +36,7 @@
                             <div class="col-md-1 mb-3">:</div>
                             <div class="col-md-7 text-info">
                                 <select id="datadeskripsi" class="form-select form-select-sm mb-3">
-                                    <option value="" selected>Pilih CP Terpilih</option>
+                                    <option value="" selected>Pilih Mapel dan Kelas</option>
                                     @foreach ($KbmPersonil as $kbm)
                                         @php
                                             // Hitung jumlah siswa untuk setiap rombel
