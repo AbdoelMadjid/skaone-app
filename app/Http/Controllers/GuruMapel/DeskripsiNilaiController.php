@@ -131,49 +131,56 @@ class DeskripsiNilaiController extends Controller
         $kode_rombel = $request->input('kode_rombel');
         $kel_mapel = $request->input('kel_mapel');
 
-        // Hitung jumlah TP
+        // Ambil jumlah TP dari tabel tujuan_pembelajarans
         $jumlahTP = DB::table('tujuan_pembelajarans')
             ->where('kode_rombel', $kode_rombel)
             ->where('kel_mapel', $kel_mapel)
             ->where('id_personil', $id_personil)
             ->count();
 
-        // Query data nilai formatif dan data siswa
-        /* $data = DB::table('nilai_formatif')
-            ->join('peserta_didiks', 'nilai_formatif.nis', '=', 'peserta_didiks.nis')
-            ->select(
-                'peserta_didiks.nis',
-                'peserta_didiks.nama_lengkap',
-                'nilai_formatif.*'
-            )
-            ->where('nilai_formatif.id_personil', $id_personil)
-            ->where('nilai_formatif.kode_rombel', $kode_rombel)
-            ->where('nilai_formatif.kel_mapel', $kel_mapel)
-            ->get(); */
-
-        $data = DB::table('nilai_formatif')
-            ->join('peserta_didiks', 'nilai_formatif.nis', '=', 'peserta_didiks.nis')
-            ->join('kbm_per_rombels', function ($join) use ($id_personil, $kode_rombel, $kel_mapel) {
-                $join->on('nilai_formatif.kode_rombel', '=', 'kbm_per_rombels.kode_rombel')
-                    ->where('kbm_per_rombels.id_personil', $id_personil)
-                    ->where('kbm_per_rombels.kel_mapel', $kel_mapel);
-            })
-            ->select(
-                'peserta_didiks.nis',
-                'peserta_didiks.nama_lengkap',
-                'nilai_formatif.*',
-                'kbm_per_rombels.rombel',
-                'kbm_per_rombels.mata_pelajaran'
-            )
-            ->where('nilai_formatif.id_personil', $id_personil)
-            ->where('nilai_formatif.kode_rombel', $kode_rombel)
-            ->where('nilai_formatif.kel_mapel', $kel_mapel)
-            ->orderBy('nilai_formatif.nis')
-            ->get();
+        // Jalankan query untuk mendapatkan data siswa beserta nilai formatif dan sumatif
+        $data = DB::select("
+        SELECT
+            personil_sekolahs.gelardepan,
+            personil_sekolahs.namalengkap,
+            personil_sekolahs.gelarbelakang,
+            kbm_per_rombels.kode_rombel,
+            kbm_per_rombels.kel_mapel,
+            kbm_per_rombels.id_personil,
+            kbm_per_rombels.rombel,
+            kbm_per_rombels.mata_pelajaran,
+            peserta_didik_rombels.nis,
+            peserta_didiks.nama_lengkap,
+            nilai_formatif.*,
+            nilai_sumatif.sts,
+            nilai_sumatif.sas,
+            nilai_sumatif.kel_mapel AS kel_mapel_sumatif,
+            nilai_sumatif.rerata_sumatif,
+            ((COALESCE(nilai_formatif.rerata_formatif, 0) + COALESCE(nilai_sumatif.rerata_sumatif, 0)) / 2) AS nilai_na
+        FROM kbm_per_rombels
+        INNER JOIN peserta_didik_rombels
+            ON kbm_per_rombels.kode_rombel = peserta_didik_rombels.rombel_kode
+        INNER JOIN peserta_didiks
+            ON peserta_didik_rombels.nis = peserta_didiks.nis
+        INNER JOIN nilai_formatif
+            ON peserta_didik_rombels.nis = nilai_formatif.nis
+        INNER JOIN personil_sekolahs
+            ON kbm_per_rombels.id_personil = personil_sekolahs.id_personil
+        LEFT JOIN nilai_sumatif
+            ON peserta_didik_rombels.nis = nilai_sumatif.nis
+            AND nilai_sumatif.id_personil = ?
+            AND nilai_sumatif.kode_rombel = ?
+            AND nilai_sumatif.kel_mapel = ?
+        WHERE
+            kbm_per_rombels.id_personil = ?
+            AND kbm_per_rombels.kode_rombel = ?
+            AND kbm_per_rombels.kel_mapel = ?
+        ORDER BY peserta_didik_rombels.nis
+    ", [$id_personil, $kode_rombel, $kel_mapel, $id_personil, $kode_rombel, $kel_mapel]);
 
         return response()->json([
             'data' => $data,
-            'jumlahTP' => $jumlahTP, // Kirim jumlah TP
+            'jumlahTP' => $jumlahTP,
         ]);
     }
 }

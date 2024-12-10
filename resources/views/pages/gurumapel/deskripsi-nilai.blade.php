@@ -191,6 +191,11 @@
                     id_personil: idPersonil,
                 },
                 success: function(response) {
+                    if (response.error) {
+                        alert(response.error); // Menampilkan pesan error dari server
+                        return;
+                    }
+
                     const data = response.data;
                     const jumlahTP = response.jumlahTP;
 
@@ -199,21 +204,28 @@
                         $('#rombel-info').text(data[0].rombel || 'Tidak Ada');
                         $('#mapel-info').text(data[0].mata_pelajaran || 'Tidak Ada');
                     }
+
                     // Buat header tabel dinamis
                     let tableHeader = `
-                <tr>
-                    <th style="width: 30px;">No.</th>
-                    <th style="width: 100px;">NIS</th>
-                    <th style="width: 200px;">Nama Siswa</th>`;
+            <tr>
+                <th style="width: 30px;">No.</th>
+                <th style="width: 100px;">NIS</th>
+                <th style="width: 200px;">Nama Siswa</th>`;
 
                     // Tambahkan kolom dinamis untuk TP Isi dan TP Nilai sesuai jumlahTP
                     for (let i = 1; i <= jumlahTP; i++) {
                         tableHeader += `
-                    <th style="width: 50px;" class="tp-isi-col" id="tp-isi-${i}">TP Isi ${i}</th>
-                    <th style="width: 50px;" id="tp-nilai-${i}">TP Nilai ${i}</th>`;
+                <th style="width: 50px;" id="tp-nilai-${i}">TP ${i}</th>`;
                     }
 
-                    tableHeader += `<th style="width: 80px;">Rerata Formatif</th></tr>`;
+                    tableHeader += `<th style="width: 40px;">RF</th>`;
+                    tableHeader += `
+            <th style="width: 50px;" id="sts">STS</th>
+            <th style="width: 50px;" id="sas">SAS</th>
+            <th style="width: 50px;" id="rs">RS</th>
+            <th style="width: 50px;" id="na">NA</th>
+            </tr>
+        `;
 
                     // Bersihkan tabel sebelum memuat data baru
                     $('#data-nilai-siswa').html('');
@@ -223,34 +235,31 @@
                     let tableBody = '';
                     data.forEach((row, index) => {
                         tableBody += `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${row.nis}</td>
-                        <td>${row.nama_lengkap}</td>`;
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${row.nis}</td>
+                    <td>${row.nama_lengkap}</td>`;
 
                         // Tambahkan kolom dinamis untuk TP Isi dan TP Nilai
                         for (let i = 1; i <= jumlahTP; i++) {
                             tableBody += `
-                        <td class="tp-isi-${i}">${row['tp_isi_' + i] || '-'}</td>
-                        <td>${row['tp_nilai_' + i] || '-'}</td>`;
+                    <td>${row['tp_nilai_' + i] || '-'}</td>`;
                         }
 
                         tableBody += `
-                        <td>${row.rerata_formatif || '-'}</td>
-                    </tr>`;
+                <td>${row.rerata_formatif || '-'}</td>
+                <td>${row.sts || '-'}</td>
+                <td>${row.sas || '-'}</td>
+                <td>${row.rerata_sumatif ? Math.round(Number(row.rerata_sumatif)) : '-'}</td>
+                <td>${Math.round(row.nilai_na) || '-'}</td>
+            </tr>`;
                     });
 
                     $('#data-nilai-siswa').append(tableBody + '</tbody>');
-
-                    // Menyembunyikan kolom TP Isi dengan id tp-isi-[nomor] setelah kolom ke-5
-                    for (let i = 1; i <= jumlahTP; i++) {
-                        // Menyembunyikan kolom TP Isi dan bukan TP Nilai
-                        $(`#tp-isi-${i}`).css('display', 'none'); // Menyembunyikan header TP Isi
-                        $(`td.tp-isi-${i}`).css('display', 'none'); // Menyembunyikan body TP Isi
-                    }
                 },
-                error: function() {
-                    alert('Terjadi kesalahan saat memuat data nilai.');
+                error: function(xhr, status, error) {
+                    alert('Terjadi kesalahan saat memuat data nilai: ' +
+                        error); // Informasi tambahan dari error
                 },
             });
         }
