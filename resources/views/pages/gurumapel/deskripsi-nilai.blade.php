@@ -142,12 +142,34 @@
                         <div class="row">
                             <div class="col col-md-7">
                                 <div class="row align-items-center">
-                                    <div class="col-sm-4">Rombongan Belajar</div>
-                                    <div class="col-sm-1">:</div>
-                                    <div class="col-sm-7 text-info"><span id="rombel-info"></span></div>
-                                    <div class="col-sm-4 align-self-start">Mata Pelajaran</div>
-                                    <div class="col-sm-1 align-self-start">:</div>
-                                    <div class="col-sm-7 text-info"><span id="mapel-info"></span></div>
+                                    <div class="col-md-4">Rombongan Belajar</div>
+                                    <div class="col-md-1">:</div>
+                                    <div class="col-md-7 text-info"><span id="rombel-info"></span></div>
+                                    <div class="col-md-4 align-self-start">Mata Pelajaran</div>
+                                    <div class="col-md-1 align-self-start">:</div>
+                                    <div class="col-md-7 text-info"><span id="mapel-info"></span></div>
+                                </div>
+                            </div>
+                            <div class="col col-md-5">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2">TP</div>
+                                    <div class="col-md-1">:</div>
+                                    <div class="col-md-9 text-info">Tujuan Pembelajaran</div>
+                                    <div class="col-md-2 align-self-start">RF</div>
+                                    <div class="col-md-1 align-self-start">:</div>
+                                    <div class="col-md-9 text-info">Rata-Rata Formatif</div>
+                                    <div class="col-md-2 align-self-start">STS</div>
+                                    <div class="col-md-1 align-self-start">:</div>
+                                    <div class="col-md-9 text-info">Sumatif Tengan Semester</div>
+                                    <div class="col-md-2 align-self-start">SAS</div>
+                                    <div class="col-md-1 align-self-start">:</div>
+                                    <div class="col-md-9 text-info">Sumatif Akhir Semester</div>
+                                    <div class="col-md-2 align-self-start">RS</div>
+                                    <div class="col-md-1 align-self-start">:</div>
+                                    <div class="col-md-9 text-info">Rata-Rata Sumatif</div>
+                                    <div class="col-md-2 align-self-start">NA</div>
+                                    <div class="col-md-1 align-self-start">:</div>
+                                    <div class="col-md-9 text-info">Nilai Akhir</div>
                                 </div>
                             </div>
                         </div>
@@ -236,7 +258,7 @@
                     data.forEach((row, index) => {
                         tableBody += `
                 <tr>
-                    <td>${index + 1}</td>
+                    <td class="bg-primary-subtle text-center">${index + 1}</td>
                     <td>${row.nis}</td>
                     <td>${row.nama_lengkap}</td>`;
 
@@ -247,11 +269,11 @@
                         }
 
                         tableBody += `
-                <td>${row.rerata_formatif || '-'}</td>
+                <td class="bg-primary-subtle text-center">${row.rerata_formatif || '-'}</td>
                 <td>${row.sts || '-'}</td>
                 <td>${row.sas || '-'}</td>
-                <td>${row.rerata_sumatif ? Math.round(Number(row.rerata_sumatif)) : '-'}</td>
-                <td>${Math.round(row.nilai_na) || '-'}</td>
+                <td class="bg-primary-subtle text-center">${row.rerata_sumatif ? Math.round(Number(row.rerata_sumatif)) : '-'}</td>
+                <td class="bg-info-subtle text-center">${Math.round(row.nilai_na) || '-'}</td>
             </tr>`;
                     });
 
