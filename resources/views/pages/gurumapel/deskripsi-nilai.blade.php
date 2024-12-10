@@ -265,13 +265,13 @@
                         // Tambahkan kolom dinamis untuk TP Isi dan TP Nilai
                         for (let i = 1; i <= jumlahTP; i++) {
                             tableBody += `
-                    <td>${row['tp_nilai_' + i] || '-'}</td>`;
+                    <td class="text-center">${row['tp_nilai_' + i] || '-'}</td>`;
                         }
 
                         tableBody += `
                 <td class="bg-primary-subtle text-center">${row.rerata_formatif || '-'}</td>
-                <td>${row.sts || '-'}</td>
-                <td>${row.sas || '-'}</td>
+                <td class="text-center">${row.sts || '-'}</td>
+                <td class="text-center">${row.sas || '-'}</td>
                 <td class="bg-primary-subtle text-center">${row.rerata_sumatif ? Math.round(Number(row.rerata_sumatif)) : '-'}</td>
                 <td class="bg-info-subtle text-center">${Math.round(row.nilai_na) || '-'}</td>
             </tr>`;
