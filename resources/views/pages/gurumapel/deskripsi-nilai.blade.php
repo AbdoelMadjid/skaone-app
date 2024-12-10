@@ -261,13 +261,13 @@
                                 <span style="display: none;">Nilai Tertinggi : ${highest !== null ? `${highest} (${highestTP})` : '-'} </span>
                                 ${highestTP.split(', ').map(tp => {
                                     const tpNumber = tp.match(/\d+/); // Ambil angka dari string "TP n"
-                                    return tpNumber ? `Peserta didik mampu ${row['tp_isi_' + tpNumber[0]] || '(deskripsi tidak tersedia)'}` : '';
+                                    return tpNumber ? `Menunjukkan kemampuan dalam ${row['tp_isi_' + tpNumber[0]] || '(deskripsi tidak tersedia)'}` : '';
                                 }).join('<br>')}<br>
 
                                 <span style="display: none;">Nilai Terendah : ${lowest !== null ? `${lowest} (${lowestTP})` : '-'} </span>
                                 ${lowestTP.split(', ').map(tp => {
                                     const tpNumber = tp.match(/\d+/); // Ambil angka dari string "TP n"
-                                    return tpNumber ? `Peserta didik belum maksimal dalam ${row['tp_isi_' + tpNumber[0]] || '(deskripsi tidak tersedia)'}` : '';
+                                    return tpNumber ? `Masih perlu bimbingan dalam ${row['tp_isi_' + tpNumber[0]] || '(deskripsi tidak tersedia)'}` : '';
                                 }).join('<br>')}
                             </td>
                         </tr>`;
