@@ -479,7 +479,7 @@ class FormatifController extends Controller
                     'kode_rombel' => $kode_rombel,
                     'kel_mapel' => $kel_mapel,
                     'id_personil' => $id_personil,
-                    'nis' => $nis,
+                    'nis' => trim($nis),
                     'tp_isi_1' => $tp_isi_1,
                     'tp_isi_2' => $tp_isi_2,
                     'tp_isi_3' => $tp_isi_3,
