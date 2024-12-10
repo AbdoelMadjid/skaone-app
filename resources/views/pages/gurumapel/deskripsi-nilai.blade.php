@@ -171,7 +171,7 @@
                 <th id="sas">SAS</th>
                 <th id="rs">RS</th>
                 <th id="na">NA</th>
-                <th style="width: 200px;">Semua Nilai</th>
+                <th style="display: none;">Semua Nilai</th>
                 <th>Nilai Tertinggi / Terendah</th>
             </tr>`;
 
@@ -247,21 +247,30 @@
                             `TP ${n.tp}`).join(', ');
 
                         tableBody += `
-                    <td class="bg-primary-subtle text-center">${rf || '-'}</td>
-                    <td class="text-center">${sts || '-'}</td>
-                    <td class="text-center">${sas || '-'}</td>
-                    <td class="bg-primary-subtle text-center">${rs ? Math.round(rs) : '-'}</td>
-                    <td class="bg-info-subtle text-center">${na ? Math.round(na) : '-'}</td>
-                    <td>Semua Nilai Tertinggi: <br>
-                        ${nilaiAtasRerata.map(n => `${n.value} (TP ${n.tp})`).join(', ') || '-'}<br>
-                        Semua Nilai Terendah :<br>
-                        ${nilaiBawahRerata.map(n => `${n.value} (TP ${n.tp})`).join(', ') || '-'}
-                    </td>
-                    <td>
-                        Nilai Tertinggi : ${highest !== null ? `${highest} (${highestTP})` : '-'} <br>
-                        Nilai Terendah : ${lowest !== null ? `${lowest} (${lowestTP})` : '-'}
-                    </td>
-                </tr>`;
+                            <td class="bg-primary-subtle text-center">${rf || '-'}</td>
+                            <td class="text-center">${sts || '-'}</td>
+                            <td class="text-center">${sas || '-'}</td>
+                            <td class="bg-primary-subtle text-center">${rs ? Math.round(rs) : '-'}</td>
+                            <td class="bg-info-subtle text-center">${na ? Math.round(na) : '-'}</td>
+                            <td style="display: none;">Semua Nilai Tertinggi: <br>
+                                ${nilaiAtasRerata.map(n => `${n.value} (TP ${n.tp})`).join(', ') || '-'}<br>
+                                Semua Nilai Terendah :<br>
+                                ${nilaiBawahRerata.map(n => `${n.value} (TP ${n.tp})`).join(', ') || '-'}
+                            </td>
+                            <td>
+                                <span style="display: none;">Nilai Tertinggi : ${highest !== null ? `${highest} (${highestTP})` : '-'} </span>
+                                ${highestTP.split(', ').map(tp => {
+                                    const tpNumber = tp.match(/\d+/); // Ambil angka dari string "TP n"
+                                    return tpNumber ? `Peserta didik mampu ${row['tp_isi_' + tpNumber[0]] || '(deskripsi tidak tersedia)'}` : '';
+                                }).join('<br>')}<br>
+
+                                <span style="display: none;">Nilai Terendah : ${lowest !== null ? `${lowest} (${lowestTP})` : '-'} </span>
+                                ${lowestTP.split(', ').map(tp => {
+                                    const tpNumber = tp.match(/\d+/); // Ambil angka dari string "TP n"
+                                    return tpNumber ? `Peserta didik belum maksimal dalam ${row['tp_isi_' + tpNumber[0]] || '(deskripsi tidak tersedia)'}` : '';
+                                }).join('<br>')}
+                            </td>
+                        </tr>`;
 
                         if (rf) totals.rf += rf;
                         if (sts) totals.sts += sts;
@@ -281,8 +290,8 @@
                     };
 
                     let averageRow = `
-                <tr>
-                    <td colspan="3" class="text-center bg-primary-subtle"><strong>Rata-rata</strong></td>`;
+                        <tr>
+                            <td colspan="3" class="text-center bg-primary-subtle"><strong>Rata-rata</strong></td>`;
                     for (let i = 0; i < jumlahTP; i++) {
                         averageRow +=
                             `<td class="text-center bg-info-subtle">${averages.tp[i].toFixed(2) || '-'}</td>`;
@@ -293,8 +302,7 @@
                 <td class="text-center bg-info-subtle">${averages.sas.toFixed(2) || '-'}</td>
                 <td class="text-center bg-info-subtle">${averages.rs.toFixed(2) || '-'}</td>
                 <td class="text-center bg-info-subtle">${averages.na.toFixed(2) || '-'}</td>
-                <td class="text-center bg-primary-subtle"></td>
-                <td class="text-center bg-primary-subtle"></td>
+                <td colspan="2" class="text-center bg-primary-subtle"></td>
             </tr>`;
 
                     $('#data-nilai-siswa').append(tableBody + averageRow + '</tbody>');
