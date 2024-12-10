@@ -162,10 +162,13 @@ class DeskripsiNilaiController extends Controller
             ON kbm_per_rombels.kode_rombel = peserta_didik_rombels.rombel_kode
         INNER JOIN peserta_didiks
             ON peserta_didik_rombels.nis = peserta_didiks.nis
-        INNER JOIN nilai_formatif
+            INNER JOIN personil_sekolahs
+                ON kbm_per_rombels.id_personil = personil_sekolahs.id_personil
+        LEFT JOIN nilai_formatif
             ON peserta_didik_rombels.nis = nilai_formatif.nis
-        INNER JOIN personil_sekolahs
-            ON kbm_per_rombels.id_personil = personil_sekolahs.id_personil
+            AND nilai_formatif.id_personil = ?
+            AND nilai_formatif.kode_rombel = ?
+            AND nilai_formatif.kel_mapel = ?
         LEFT JOIN nilai_sumatif
             ON peserta_didik_rombels.nis = nilai_sumatif.nis
             AND nilai_sumatif.id_personil = ?
@@ -176,7 +179,7 @@ class DeskripsiNilaiController extends Controller
             AND kbm_per_rombels.kode_rombel = ?
             AND kbm_per_rombels.kel_mapel = ?
         ORDER BY peserta_didik_rombels.nis
-    ", [$id_personil, $kode_rombel, $kel_mapel, $id_personil, $kode_rombel, $kel_mapel]);
+    ", [$id_personil, $kode_rombel, $kel_mapel, $id_personil, $kode_rombel, $kel_mapel, $id_personil, $kode_rombel, $kel_mapel]);
 
         return response()->json([
             'data' => $data,
