@@ -26,6 +26,22 @@ class FormatifDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addColumn('cek_sudahbelum', function ($row) {
+                $dataExists = DB::table('nilai_formatif')
+                    ->where('tahunajaran', $row->tahunajaran)
+                    ->where('tingkat', $row->tingkat)
+                    ->where('ganjilgenap', $row->ganjilgenap)
+                    ->where('semester', $row->semester)
+                    ->where('kode_rombel', $row->kode_rombel)
+                    ->where('kel_mapel', $row->kel_mapel)
+                    ->where('id_personil', $row->id_personil)
+                    ->exists();
+                if (!$dataExists) {
+                    return '<i class="bx bx-message-square-x fs-3 text-danger"></i>';
+                } else {
+                    return '<i class="bx bx-message-square-check fs-3 text-info"></i>';
+                }
+            })
             ->addColumn('jml_siswa', function ($row) {
                 $jumlahSiswa = DB::table('peserta_didik_rombels')
                     ->where('rombel_kode', $row->kode_rombel)
@@ -113,7 +129,7 @@ class FormatifDataTable extends DataTable
                 return $tombol;
             })
             ->addIndexColumn()
-            ->rawColumns(['jml_siswa', 'jumlah_cp', 'nilai_formatif', 'formatif', 'action']);
+            ->rawColumns(['jml_siswa', 'jumlah_cp', 'cek_sudahbelum', 'action']);
     }
 
     /**
@@ -161,6 +177,10 @@ class FormatifDataTable extends DataTable
                 Button::make('print'),
                 Button::make('reset'),
                 Button::make('reload')
+            ])->parameters([
+                'lengthChange' => false, // Menghilangkan dropdown "Show entries"
+                'searching' => false,    // Menghilangkan kotak pencarian
+                'pageLength' => 100,       // Menampilkan 50 baris per halaman
             ]);
     }
 
@@ -177,6 +197,7 @@ class FormatifDataTable extends DataTable
             Column::make('jml_siswa')->title('Jumlah Siswa')->addClass('text-center'),
             Column::make('jumlah_cp')->title('CP /  CP Terpilih / TP')->addClass('text-center'),
             Column::make('kkm')->title('KKM')->addClass('text-center'),
+            Column::make('cek_sudahbelum')->title('Status Input')->addClass('text-center'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
