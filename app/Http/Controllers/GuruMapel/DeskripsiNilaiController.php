@@ -138,6 +138,11 @@ class DeskripsiNilaiController extends Controller
             ->where('id_personil', $id_personil)
             ->count();
 
+        // Ambil jumlah TP dari tabel tujuan_pembelajarans
+        $JmlSiswa = DB::table('peserta_didik_rombels')
+            ->where('rombel_kode', $kode_rombel)
+            ->count();
+
         // Jalankan query untuk mendapatkan data siswa beserta nilai formatif dan sumatif
         $data = DB::select("
             SELECT
@@ -197,6 +202,7 @@ class DeskripsiNilaiController extends Controller
         return response()->json([
             'data' => $data,
             'jumlahTP' => $jumlahTP,
+            'JmlSiswa' => $JmlSiswa,
         ]);
     }
 }

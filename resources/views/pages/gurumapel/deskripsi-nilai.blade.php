@@ -54,9 +54,9 @@
                                                 class="d-flex py-1 align-items-center">
                                                 <div class="flex-grow-1">
                                                     <h5 class="fs-13 mb-0 listname">
-                                                        {{ $kbm->kel_mapel }} - {{ $kbm->mata_pelajaran }} <br>
+                                                        {{ $kbm->mata_pelajaran }} <br>
                                                         <i class="ri-stop-mini-fill align-middle fs-15 text-secondary"></i>
-                                                        {{ $kbm->kode_rombel }} - {{ $kbm->rombel }}
+                                                        {{ $kbm->rombel }}
                                                     </h5>
                                                 </div>
                                                 <div class="flex-shrink-0 ms-2">
@@ -98,43 +98,6 @@
                     </div>
                 </div>
             </div>
-
-            {{-- <div class="p-3 bg-light rounded mb-4">
-                <div class="row g-2">
-                    <div class="col-lg-auto">
-                        <select class="form-control" data-choices data-choices-search-false name="choices-select-sortlist"
-                            id="choices-select-sortlist">
-                            <option value="">Sort</option>
-                            <option value="By ID">By ID</option>
-                            <option value="By Name">By Name</option>
-                        </select>
-                    </div>
-                    <div class="col-lg-auto">
-                        <select class="form-control" data-choices data-choices-search-false name="choices-select-status"
-                            id="choices-select-status">
-                            <option value="">All Tasks</option>
-                            <option value="Completed">Completed</option>
-                            <option value="Inprogress">Inprogress</option>
-                            <option value="Pending">Pending</option>
-                            <option value="New">New</option>
-                        </select>
-                    </div>
-                    <div class="col-lg">
-                        <div class="search-box">
-                            <input type="text" id="searchTaskList" class="form-control search"
-                                placeholder="Search task name">
-                            <i class="ri-search-line search-icon"></i>
-                        </div>
-                    </div>
-                    <div class="col-lg-auto">
-                        <button class="btn btn-primary createTask" type="button" data-bs-toggle="modal"
-                            data-bs-target="#createTask">
-                            <i class="ri-add-fill align-bottom"></i> Add Tasks
-                        </button>
-                    </div>
-                </div>
-            </div> --}}
-
             <div class="card ribbon-box border shadow-none mb-lg-2">
                 <div class="card-body">
                     <div class="ribbon ribbon-primary round-shape">Data KBM</div>
@@ -142,12 +105,22 @@
                         <div class="row">
                             <div class="col col-md-7">
                                 <div class="row align-items-center">
+                                    <div class="col-md-4">Guru Mapel</div>
+                                    <div class="col-md-1">:</div>
+                                    <div class="col-md-7 text-info">
+                                        <span id="gelardepan-info"></span>
+                                        <span id="namaguru-info"></span>,
+                                        <span id="gelarbelakang-info"></span>
+                                    </div>
                                     <div class="col-md-4">Rombongan Belajar</div>
                                     <div class="col-md-1">:</div>
                                     <div class="col-md-7 text-info"><span id="rombel-info"></span></div>
                                     <div class="col-md-4 align-self-start">Mata Pelajaran</div>
                                     <div class="col-md-1 align-self-start">:</div>
                                     <div class="col-md-7 text-info"><span id="mapel-info"></span></div>
+                                    <div class="col-md-4 align-self-start">Jumlah Siswa</div>
+                                    <div class="col-md-1 align-self-start">:</div>
+                                    <div class="col-md-7 text-info"><span id="jmlsiswa-info"></span></div>
                                 </div>
                             </div>
                             <div class="col col-md-5">
@@ -220,34 +193,39 @@
 
                     const data = response.data;
                     const jumlahTP = response.jumlahTP;
+                    const jmlSiswa = response.JmlSiswa;
 
                     // Mengisi informasi rombel dan mata pelajaran dari data yang diterima
                     if (data.length > 0) {
                         $('#rombel-info').text(data[0].rombel || 'Tidak Ada');
                         $('#mapel-info').text(data[0].mata_pelajaran || 'Tidak Ada');
+                        $('#gelardepan-info').text(data[0].gelardepan || '');
+                        $('#namaguru-info').text(data[0].namalengkap || '');
+                        $('#gelarbelakang-info').text(data[0].gelarbelakang || '');
+                        $('#jmlsiswa-info').text(jmlSiswa);
                     }
 
                     // Buat header tabel dinamis
                     let tableHeader = `
-            <tr>
-                <th style="width: 30px;">No.</th>
-                <th style="width: 100px;">NIS</th>
-                <th style="width: 200px;">Nama Siswa</th>`;
+                    <tr>
+                        <th style="width: 30px;">No.</th>
+                        <th style="width: 100px;">NIS</th>
+                        <th style="width: 200px;">Nama Siswa</th>`;
 
                     // Tambahkan kolom dinamis untuk TP Isi dan TP Nilai sesuai jumlahTP
                     for (let i = 1; i <= jumlahTP; i++) {
                         tableHeader += `
-                <th style="width: 50px;" id="tp-nilai-${i}">TP ${i}</th>`;
+                        <th style="width: 50px;" id="tp-nilai-${i}">TP ${i}</th>`;
                     }
 
                     tableHeader += `<th style="width: 40px;">RF</th>`;
                     tableHeader += `
-            <th style="width: 50px;" id="sts">STS</th>
-            <th style="width: 50px;" id="sas">SAS</th>
-            <th style="width: 50px;" id="rs">RS</th>
-            <th style="width: 50px;" id="na">NA</th>
-            </tr>
-        `;
+                        <th style="width: 50px;" id="sts">STS</th>
+                        <th style="width: 50px;" id="sas">SAS</th>
+                        <th style="width: 50px;" id="rs">RS</th>
+                        <th style="width: 50px;" id="na">NA</th>
+                        </tr>
+                    `;
 
                     // Bersihkan tabel sebelum memuat data baru
                     $('#data-nilai-siswa').html('');
@@ -255,29 +233,82 @@
 
                     // Buat body tabel dinamis
                     let tableBody = '';
+                    let totals = {
+                        tp: Array(jumlahTP).fill(0),
+                        rf: 0,
+                        sts: 0,
+                        sas: 0,
+                        rs: 0,
+                        na: 0,
+                    };
+
                     data.forEach((row, index) => {
                         tableBody += `
-                <tr>
-                    <td class="bg-primary-subtle text-center">${index + 1}</td>
-                    <td>${row.nis}</td>
-                    <td>${row.nama_lengkap}</td>`;
+                    <tr>
+                        <td class="bg-primary-subtle text-center">${index + 1}</td>
+                        <td>${row.nis}</td>
+                        <td>${row.nama_lengkap}</td>`;
 
                         // Tambahkan kolom dinamis untuk TP Isi dan TP Nilai
                         for (let i = 1; i <= jumlahTP; i++) {
-                            tableBody += `
-                    <td class="text-center">${row['tp_nilai_' + i] || '-'}</td>`;
+                            const tpNilai = row['tp_nilai_' + i] ? parseFloat(row['tp_nilai_' + i]) :
+                                null;
+                            tableBody += `<td class="text-center">${tpNilai || '-'}</td>`;
+                            if (tpNilai) {
+                                totals.tp[i - 1] += tpNilai;
+                            }
                         }
 
+                        const rf = row.rerata_formatif ? parseFloat(row.rerata_formatif) : null;
+                        const sts = row.sts ? parseFloat(row.sts) : null;
+                        const sas = row.sas ? parseFloat(row.sas) : null;
+                        const rs = row.rerata_sumatif ? parseFloat(row.rerata_sumatif) : null;
+                        const na = row.nilai_na ? parseFloat(row.nilai_na) : null;
+
                         tableBody += `
-                <td class="bg-primary-subtle text-center">${row.rerata_formatif || '-'}</td>
-                <td class="text-center">${row.sts || '-'}</td>
-                <td class="text-center">${row.sas || '-'}</td>
-                <td class="bg-primary-subtle text-center">${row.rerata_sumatif ? Math.round(Number(row.rerata_sumatif)) : '-'}</td>
-                <td class="bg-info-subtle text-center">${Math.round(row.nilai_na) || '-'}</td>
-            </tr>`;
+                    <td class="bg-primary-subtle text-center">${rf || '-'}</td>
+                    <td class="text-center">${sts || '-'}</td>
+                    <td class="text-center">${sas || '-'}</td>
+                    <td class="bg-primary-subtle text-center">${rs ? Math.round(rs) : '-'}</td>
+                    <td class="bg-info-subtle text-center">${na ? Math.round(na) : '-'}</td>
+                </tr>`;
+
+                        // Tambahkan nilai ke total untuk perhitungan rata-rata
+                        if (rf) totals.rf += rf;
+                        if (sts) totals.sts += sts;
+                        if (sas) totals.sas += sas;
+                        if (rs) totals.rs += rs;
+                        if (na) totals.na += na;
                     });
 
-                    $('#data-nilai-siswa').append(tableBody + '</tbody>');
+                    // Hitung rata-rata
+                    const totalSiswa = data.length;
+                    const averages = {
+                        tp: totals.tp.map((tp) => (totalSiswa ? tp / totalSiswa : 0)),
+                        rf: totalSiswa ? totals.rf / totalSiswa : 0,
+                        sts: totalSiswa ? totals.sts / totalSiswa : 0,
+                        sas: totalSiswa ? totals.sas / totalSiswa : 0,
+                        rs: totalSiswa ? totals.rs / totalSiswa : 0,
+                        na: totalSiswa ? totals.na / totalSiswa : 0,
+                    };
+
+                    // Tambahkan baris rata-rata ke tabel
+                    let averageRow = `
+                <tr>
+                    <td colspan="3" class="text-center bg-info-subtle"><strong>Rata-rata</strong></td>`;
+                    for (let i = 0; i < jumlahTP; i++) {
+                        averageRow += `<td class="text-center">${averages.tp[i].toFixed(2) || '-'}</td>`;
+                    }
+                    averageRow += `
+                <td class="text-center">${averages.rf.toFixed(2) || '-'}</td>
+                <td class="text-center">${averages.sts.toFixed(2) || '-'}</td>
+                <td class="text-center">${averages.sas.toFixed(2) || '-'}</td>
+                <td class="text-center">${averages.rs.toFixed(2) || '-'}</td>
+                <td class="text-center">${averages.na.toFixed(2) || '-'}</td>
+                </tr>`;
+
+                    // Tambahkan body dan rata-rata ke tabel
+                    $('#data-nilai-siswa').append(tableBody + averageRow + '</tbody>');
                 },
                 error: function(xhr, status, error) {
                     alert('Terjadi kesalahan saat memuat data nilai: ' +
