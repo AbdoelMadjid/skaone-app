@@ -172,7 +172,7 @@
                 <th id="rs">RS</th>
                 <th id="na">NA</th>
                 <th style="display: none;">Semua Nilai</th>
-                <th>Nilai Tertinggi / Terendah</th>
+                <th>Deskripsi Pencapaian Siswa</th>
             </tr>`;
 
                     $('#data-nilai-siswa').html('');
