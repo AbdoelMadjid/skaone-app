@@ -270,7 +270,6 @@
                                     const tpNumber = tp.match(/\d+/); // Ambil angka dari string "TP n"
                                     return tpNumber ? `Masih perlu bimbingan dalam ${row['tp_isi_' + tpNumber[0]] || '(deskripsi tidak tersedia)'}` : '';
                                 }).join('<br>')}
-
                             </td>
                         </tr>`;
 
