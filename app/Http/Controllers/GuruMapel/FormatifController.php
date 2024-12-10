@@ -151,7 +151,7 @@ class FormatifController extends Controller
                 'kode_rombel' => $data['kode_rombel'],
                 'kel_mapel' => $data['kel_mapel'],
                 'id_personil' => $data['id_personil'],
-                'nis' => $nis,
+                'nis' => trim($nis),
                 'rerata_formatif' => $data["rerata_formatif_$nis"] ?? 0,
             ];
 
@@ -169,7 +169,7 @@ class FormatifController extends Controller
                     'semester' => $data['semester'],
                     'kode_rombel' => $data['kode_rombel'],
                     'kel_mapel' => $data['kel_mapel'],
-                    'nis' => $nis,
+                    'nis' => trim($nis),
                 ],
                 $saveData
             );
@@ -286,7 +286,7 @@ class FormatifController extends Controller
                 'kode_rombel' => $data['kode_rombel'],
                 'kel_mapel' => $data['kel_mapel'],
                 'id_personil' => $data['id_personil'],
-                'nis' => $nis,
+                'nis' => trim($nis),
                 'rerata_formatif' => $data["rerata_formatif_$nis"] ?? 0,
             ];
 
@@ -304,7 +304,7 @@ class FormatifController extends Controller
                     'semester' => $data['semester'],
                     'kode_rombel' => $data['kode_rombel'],
                     'kel_mapel' => $data['kel_mapel'],
-                    'nis' => $nis,
+                    'nis' => trim($nis),
                 ],
                 $saveData
             );
