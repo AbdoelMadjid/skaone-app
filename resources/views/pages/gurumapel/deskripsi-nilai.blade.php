@@ -294,18 +294,19 @@
 
                     // Tambahkan baris rata-rata ke tabel
                     let averageRow = `
-                <tr>
-                    <td colspan="3" class="text-center bg-info-subtle"><strong>Rata-rata</strong></td>`;
+                        <tr>
+                            <td colspan="3" class="text-center bg-primary-subtle"><strong>Rata-rata</strong></td>`;
                     for (let i = 0; i < jumlahTP; i++) {
-                        averageRow += `<td class="text-center">${averages.tp[i].toFixed(2) || '-'}</td>`;
+                        averageRow +=
+                            `<td class="text-center bg-info-subtle">${averages.tp[i].toFixed(2) || '-'}</td>`;
                     }
                     averageRow += `
-                <td class="text-center">${averages.rf.toFixed(2) || '-'}</td>
-                <td class="text-center">${averages.sts.toFixed(2) || '-'}</td>
-                <td class="text-center">${averages.sas.toFixed(2) || '-'}</td>
-                <td class="text-center">${averages.rs.toFixed(2) || '-'}</td>
-                <td class="text-center">${averages.na.toFixed(2) || '-'}</td>
-                </tr>`;
+                            <td class="text-center bg-info-subtle">${averages.rf.toFixed(2) || '-'}</td>
+                            <td class="text-center bg-info-subtle">${averages.sts.toFixed(2) || '-'}</td>
+                            <td class="text-center bg-info-subtle">${averages.sas.toFixed(2) || '-'}</td>
+                            <td class="text-center bg-info-subtle">${averages.rs.toFixed(2) || '-'}</td>
+                            <td class="text-center bg-info-subtle">${averages.na.toFixed(2) || '-'}</td>
+                        </tr>`;
 
                     // Tambahkan body dan rata-rata ke tabel
                     $('#data-nilai-siswa').append(tableBody + averageRow + '</tbody>');
