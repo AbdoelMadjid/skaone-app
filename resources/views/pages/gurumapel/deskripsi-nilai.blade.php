@@ -156,24 +156,24 @@
                     }
 
                     let tableHeader = `
-            <tr>
-                <th style="width: 30px;">No.</th>
-                <th style="width: 100px;">NIS</th>
-                <th style="width: 200px;">Nama Siswa</th>`;
+                        <tr>
+                            <th style="width: 30px;">No.</th>
+                            <th style="width: 100px;">NIS</th>
+                            <th style="width: 200px;">Nama Siswa</th>`;
 
                     for (let i = 1; i <= jumlahTP; i++) {
                         tableHeader += `<th style="width: 50px;" id="tp-nilai-${i}">TP ${i}</th>`;
                     }
 
                     tableHeader += `
-                <th>RF</th>
-                <th id="sts">STS</th>
-                <th id="sas">SAS</th>
-                <th id="rs">RS</th>
-                <th id="na">NA</th>
-                <th style="display: none;">Semua Nilai</th>
-                <th>Deskripsi Pencapaian Siswa</th>
-            </tr>`;
+                            <th>RF</th>
+                            <th id="sts">STS</th>
+                            <th id="sas">SAS</th>
+                            <th id="rs">RS</th>
+                            <th id="na">NA</th>
+                            <th style="display: none;">Semua Nilai</th>
+                            <th>Deskripsi Pencapaian Siswa</th>
+                        </tr>`;
 
                     $('#data-nilai-siswa').html('');
                     $('#data-nilai-siswa').append('<thead>' + tableHeader + '</thead><tbody>');
@@ -195,10 +195,10 @@
                         let nilaiBawahRerata = [];
 
                         tableBody += `
-                <tr>
-                    <td class="bg-primary-subtle text-center">${index + 1}</td>
-                    <td>${row.nis}</td>
-                    <td>${row.nama_lengkap}</td>`;
+                        <tr>
+                            <td class="bg-primary-subtle text-center">${index + 1}</td>
+                            <td>${row.nis}</td>
+                            <td>${row.nama_lengkap}</td>`;
 
                         for (let i = 1; i <= jumlahTP; i++) {
                             const tpNilai = row['tp_nilai_' + i] ? parseFloat(row['tp_nilai_' + i]) :
@@ -259,16 +259,18 @@
                             </td>
                             <td>
                                 <span style="display: none;">Nilai Tertinggi : ${highest !== null ? `${highest} (${highestTP})` : '-'} </span>
+                                <span style="display: none;">Nilai Terendah : ${lowest !== null ? `${lowest} (${lowestTP})` : '-'} </span>
+
                                 ${highestTP.split(', ').map(tp => {
                                     const tpNumber = tp.match(/\d+/); // Ambil angka dari string "TP n"
                                     return tpNumber ? `Menunjukkan kemampuan dalam ${row['tp_isi_' + tpNumber[0]] || '(deskripsi tidak tersedia)'}` : '';
                                 }).join('<br>')}<br>
 
-                                <span style="display: none;">Nilai Terendah : ${lowest !== null ? `${lowest} (${lowestTP})` : '-'} </span>
                                 ${lowestTP.split(', ').map(tp => {
                                     const tpNumber = tp.match(/\d+/); // Ambil angka dari string "TP n"
                                     return tpNumber ? `Masih perlu bimbingan dalam ${row['tp_isi_' + tpNumber[0]] || '(deskripsi tidak tersedia)'}` : '';
                                 }).join('<br>')}
+
                             </td>
                         </tr>`;
 
