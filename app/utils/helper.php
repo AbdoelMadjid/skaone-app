@@ -167,3 +167,36 @@ if (!function_exists('terbilang')) {
         return ucfirst(trim($result));
     }
 }
+
+function formatTanggalIndonesia($tanggal)
+{
+    // Pastikan tanggal valid
+    if (!$tanggal) {
+        return '-';
+    }
+
+    // Daftar nama bulan dalam bahasa Indonesia
+    $bulan = [
+        1 => 'Januari',
+        2 => 'Februari',
+        3 => 'Maret',
+        4 => 'April',
+        5 => 'Mei',
+        6 => 'Juni',
+        7 => 'Juli',
+        8 => 'Agustus',
+        9 => 'September',
+        10 => 'Oktober',
+        11 => 'November',
+        12 => 'Desember',
+    ];
+
+    // Pisahkan tanggal menjadi hari, bulan, dan tahun
+    $tanggalObj = date_create($tanggal);
+    $hari = date_format($tanggalObj, 'd');
+    $bulanIndex = date_format($tanggalObj, 'n');
+    $tahun = date_format($tanggalObj, 'Y');
+
+    // Format tanggal
+    return "{$hari} {$bulan[$bulanIndex]} {$tahun}";
+}
