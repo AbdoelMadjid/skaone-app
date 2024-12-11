@@ -14,10 +14,12 @@
                             <div class="col-sm-7 text-info">{{ $fullName }}</div>
                             <div class="col-sm-4">Rombongan Belajar</div>
                             <div class="col-sm-1">:</div>
-                            <div class="col-sm-7 text-info">{{ $data->kode_rombel }} / {{ $data->rombel }}</div>
+                            <div class="col-sm-7 text-info">{{ $kbmPerRombel->kode_rombel }} /
+                                {{ $kbmPerRombel->rombel }}</div>
                             <div class="col-sm-4 align-self-start">Mata Pelajaran</div>
                             <div class="col-sm-1 align-self-start">:</div>
-                            <div class="col-sm-7 text-info">{{ $data->kel_mapel }} / {{ $data->mata_pelajaran }}</div>
+                            <div class="col-sm-7 text-info">{{ $kbmPerRombel->kel_mapel }} /
+                                {{ $kbmPerRombel->mata_pelajaran }}</div>
                         </div>
                         <p class="mb-0"> </p>
                     </div>

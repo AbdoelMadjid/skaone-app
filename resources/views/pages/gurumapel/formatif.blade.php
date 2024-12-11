@@ -28,6 +28,7 @@
             </div>
         </div>
     </div>
+    @include('pages.gurumapel.formatif-upload-nilai')
 @endsection
 @section('script')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
