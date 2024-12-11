@@ -165,7 +165,7 @@ class SumatifController extends Controller
                 'kode_rombel' => $request->kode_rombel,
                 'kel_mapel' => $request->kel_mapel,
                 'id_personil' => $request->id_personil,
-                'nis' => $nis,
+                'nis' => trim($nis),
                 'sts' => $sts,
                 'sas' => $request->sas[$nis],
                 'rerata_sumatif' => $request->input("rerata_sumatif_$nis"),
@@ -279,7 +279,7 @@ class SumatifController extends Controller
             $nilaiSumatif = NilaiSumatif::where('kode_rombel', $data->kode_rombel)
                 ->where('kel_mapel', $data->kel_mapel)
                 ->where('id_personil', $data->id_personil)
-                ->where('nis', $nis)
+                ->where('nis', trim($nis))
                 ->first();
 
             if ($nilaiSumatif) {
@@ -449,7 +449,7 @@ class SumatifController extends Controller
                     'kode_rombel' => $kode_rombel,
                     'kel_mapel' => $kel_mapel,
                     'id_personil' => $id_personil,
-                    'nis' => $nis,
+                    'nis' => trim($nis),
                     'sts' => $sts,
                     'sas' => $sas,
                     'rerata_sumatif' => $rerata_sumatif,
