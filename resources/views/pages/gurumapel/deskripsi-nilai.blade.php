@@ -99,16 +99,12 @@
             </div>
         </div>
     </div>
-    <div class="card">
-        <!-- end card header -->
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="display table table-bordered dt-responsive" style="width:100%" id="data-nilai-siswa">
-                    <!-- Header dan Body akan diisi oleh AJAX -->
-                </table>
-            </div>
-        </div>
-        <!-- end card body -->
+
+    <div class="table-responsive">
+        <table class="display table table-bordered dt-responsive" style="width:100%" id="data-nilai-siswa">
+            <!-- Header dan Body akan diisi oleh AJAX -->
+        </table>
+    </div>
     </div>
 @endsection
 @section('script')
