@@ -100,7 +100,13 @@ class SumatifDataTable extends DataTable
                             'kode_rombel' => $row->kode_rombel,
                             'kel_mapel' => $row->kel_mapel,
                             'id_personil' => $row->id_personil,
-                        ]) . '">Create</a></li>
+                        ]) . '"><i class="bx bx-edit-alt"></i> Create</a></li>
+                        <li><a href="' . route('gurumapel.penilaian.exportsumatif', ['kode_rombel' => $row->kode_rombel, 'kel_mapel' => $row->kel_mapel, 'id_personil' => $row->id_personil]) . '""
+                                        class="dropdown-item btn btn-soft-primary" tittle="Download Format Nilai Sumatif">
+                                        <i class="bx bx-download"></i> Download</a></li>
+                                <li><button class="dropdown-item btn btn-soft-success" data-bs-toggle="modal"
+                                        data-bs-target="#modalUploadSumatif" tittle="Upload Nilai Sumatif">
+                                        <i class="bx bx-upload"></i> Upload</button></li>
                             </ul>
                         </div>';
                     } else {
