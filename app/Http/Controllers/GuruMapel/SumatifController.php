@@ -399,7 +399,7 @@ class SumatifController extends Controller
         ];
 
         // Ganti karakter "/" di $data->mata_pelajaran dengan karakter yang aman untuk nama file
-        $mataPelajaran = preg_replace('/[\/,&]/', '-', $data->mata_pelajaran);
+        $mataPelajaran = trim(preg_replace('/[^a-zA-Z0-9_\- ]/', '-', $data->mata_pelajaran));
 
         // Unduh file Excel
         $fileName = "Penilaian_Sumatif_{$mataPelajaran}_{$kode_rombel}_{$personil->namalengkap}.xlsx";
