@@ -166,22 +166,48 @@ class CetakRaporController extends Controller
                 ->where('id_personil', $nilai->id_personil)
                 ->count();
 
-            $deskripsi = [];
             $rerataFormatif = $nilai->rerata_formatif;
+            $tpNilai = [];
+            $tpIsi = [];
 
+            // Loop untuk mengumpulkan nilai TP dan isi TP
             for ($i = 1; $i <= $jumlahTP; $i++) {
-                $tpNilai = $nilai->{'tp_nilai_' . $i};
-                $tpIsi = $nilai->{'tp_isi_' . $i};
-
-                if ($tpNilai > $rerataFormatif) {
-                    $deskripsi[] = "Menunjukkan kemampuan dalam $tpIsi";
-                } elseif ($tpNilai < $rerataFormatif) {
-                    $deskripsi[] = "Masih perlu bimbingan dalam $tpIsi";
-                }
+                $tpNilai[$i] = $nilai->{'tp_nilai_' . $i};
+                $tpIsi[$i] = $nilai->{'tp_isi_' . $i};
             }
 
-            $nilai->deskripsi_nilai = implode(', ', $deskripsi);
+            // Pastikan tpNilai tidak kosong sebelum mencari nilai tertinggi dan terendah
+            if (!empty($tpNilai)) {
+                // Cari nilai tertinggi dan terendah
+                $maxValue = max($tpNilai);
+                $minValue = min($tpNilai);
+
+                // TP dengan nilai tertinggi dan terendah
+                $tpMax = array_keys($tpNilai, $maxValue);
+                $tpMin = array_keys($tpNilai, $minValue);
+
+                // Deskripsi nilai berdasarkan nilai TP
+                $deskripsi = [];
+
+                foreach ($tpMax as $tp) {
+                    $deskripsi[] = "Menunjukkan kemampuan dalam {$tpIsi[$tp]}";
+                }
+                foreach ($tpMin as $tp) {
+                    $deskripsi[] = "Masih perlu bimbingan dalam {$tpIsi[$tp]}";
+                }
+
+                // Simpan ke dalam objek data nilai
+                $nilai->nilai_tertinggi = $maxValue;
+                $nilai->nilai_terendah = $minValue;
+                $nilai->deskripsi_nilai = implode(', ', $deskripsi);
+            } else {
+                // Jika tpNilai kosong, set default
+                $nilai->nilai_tertinggi = null;
+                $nilai->nilai_terendah = null;
+                $nilai->deskripsi_nilai = 'Data tidak tersedia';
+            }
         }
+
 
         return view('pages.kurikulum.dokumensiswa.cetak-rapor', [
             'school' => $school,

@@ -108,7 +108,12 @@
                                                     <td>{{ round(($nilai->rerata_formatif + $nilai->rerata_sumatif) / 2) }}
                                                     </td>
                                                     <td style='padding:4px 8px;font-size:12px;'>
-                                                        {{ $nilai->deskripsi_nilai }}</td>
+                                                        <strong>Nilai Tertinggi:</strong>
+                                                        {{ $nilai->nilai_tertinggi }}<br>
+                                                        <strong>Nilai Terendah:</strong>
+                                                        {{ $nilai->nilai_terendah }}<br>
+                                                        {{ $nilai->deskripsi_nilai }}
+                                                    </td>
                                                 </tr>
                                             @endif
                                         @endforeach
@@ -131,7 +136,12 @@
                                                     <td>{{ round(($nilai->rerata_formatif + $nilai->rerata_sumatif) / 2) }}
                                                     </td>
                                                     <td style='padding:4px 8px;font-size:12px;'>
-                                                        {{ $nilai->deskripsi_nilai }}</td>
+                                                        <strong>Nilai Tertinggi:</strong>
+                                                        {{ $nilai->nilai_tertinggi }}<br>
+                                                        <strong>Nilai Terendah:</strong>
+                                                        {{ $nilai->nilai_terendah }}<br>
+                                                        {{ $nilai->deskripsi_nilai }}
+                                                    </td>
                                                 </tr>
                                             @endif
                                         @endforeach
