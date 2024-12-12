@@ -3,10 +3,17 @@
 namespace App\Http\Controllers\Kurikulum\DokumenSiswa;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
 use App\Models\ManajemenSekolah\IdentitasSekolah;
 use App\Models\ManajemenSekolah\KepalaSekolah;
+use App\Models\ManajemenSekolah\KompetensiKeahlian;
+use App\Models\ManajemenSekolah\PesertaDidik;
 use App\Models\ManajemenSekolah\PesertaDidikOrtu;
+use App\Models\ManajemenSekolah\RombonganBelajar;
+use App\Models\ManajemenSekolah\Semester;
+use App\Models\ManajemenSekolah\TahunAjaran;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Milon\Barcode\DNS1D;
 use Milon\Barcode\DNS2D;
@@ -19,11 +26,39 @@ class CetakRaporController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
+        $personal_id = $user->personal_id;
+
+        // Retrieve the active academic year
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+
+        // Check if an active academic year is found
+        if (!$tahunAjaranAktif) {
+            return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
+        }
+
+        // Retrieve the active semester related to the active academic year
+        $semester = Semester::where('status', 'Aktif')
+            ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+            ->first();
+
+        // Check if an active semester is found
+        if (!$semester) {
+            return redirect()->back()->with('error', 'Tidak ada semester aktif.');
+        }
+
+        $kompetensiKeahlianOptions = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
+        $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
+
+        $rombelOptions = RombonganBelajar::where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->pluck('rombel', 'kode_rombel')->toArray();
+
+        $pesertadidikOptions = PesertaDidik::pluck('nama_lengkap', 'nis')->toArray();
 
         //sample
         $nis = "1202215552";
-        $tahunAjaran = "2024-2025";
-        $seMester = "Ganjil";
+        $tahunAjaran = $tahunAjaranAktif->tahunajaran;
+        $seMester = $semester->semester;
 
         // Query untuk mengambil data siswa dan keahlian
         $dataSiswa = DB::table('peserta_didiks')
@@ -230,6 +265,13 @@ class CetakRaporController extends Controller
         }
 
         return view('pages.kurikulum.dokumensiswa.cetak-rapor', [
+            'personal_id' => $personal_id,
+            'tahunAjaranAktif' => $tahunAjaranAktif,
+            'semester' => $semester,
+            'tahunAjaranOptions' => $tahunAjaranOptions,
+            'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
+            'rombelOptions' => $rombelOptions,
+            'pesertadidikOptions' => $pesertadidikOptions,
             'school' => $school,
             'barcodeImage' => $barcodeImage,
             'qrcodeImage' => $qrcodeImage,
@@ -287,5 +329,38 @@ class CetakRaporController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function getRombelOptions(Request $request)
+    {
+        $tahunajaran = $request->tahunajaran;
+        $kode_kk = $request->kode_kk;
+        $tingkat = $request->tingkat;
+
+        $rombelOptions = RombonganBelajar::where('tahunajaran', $tahunajaran)
+            ->where('id_kk', $kode_kk)
+            ->where('tingkat', $tingkat)
+            ->pluck('rombel', 'kode_rombel');
+
+        return response()->json($rombelOptions);
+    }
+
+    public function getPesertaDidikOptions(Request $request)
+    {
+        $tahunajaran = $request->tahunajaran;
+        $kode_kk = $request->kode_kk;
+        $tingkat = $request->tingkat;
+        $kode_rombel = $request->kode_rombel;
+
+        $pesertadidikOptions = DB::table('peserta_didik_rombels')
+            ->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
+            ->select('peserta_didik_rombels.nis', 'peserta_didiks.nama_lengkap')
+            ->where('peserta_didik_rombels.tahun_ajaran', $tahunajaran)
+            ->where('peserta_didik_rombels.kode_kk', $kode_kk)
+            ->where('peserta_didik_rombels.rombel_tingkat', $tingkat)
+            ->where('peserta_didik_rombels.rombel_kode', $kode_rombel)
+            ->get();
+
+        return response()->json($pesertadidikOptions);
     }
 }

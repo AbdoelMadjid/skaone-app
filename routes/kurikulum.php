@@ -71,6 +71,9 @@ Route::middleware('auth')->group(function () {
 
         Route::group(['prefix' => 'dokumentsiswa', 'as' => 'dokumentsiswa.'], function () {
             Route::resource('cetak-rapor', CetakRaporController::class);
+            Route::post('/getrombeloptions', [CetakRaporController::class, 'getRombelOptions'])->name('getrombeloptions');
+            Route::post('/getpesertadidikoptions', [CetakRaporController::class, 'getPesertaDidikOptions'])->name('getpesertadidikoptions');
+
             Route::resource('transkrip-nilai', TranskripNilaiController::class);
             Route::resource('remedial-peserta-didik', RemedialPesertaDidikNilaiController::class);
         });

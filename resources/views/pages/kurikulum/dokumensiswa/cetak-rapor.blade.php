@@ -65,7 +65,7 @@
     @endcomponent
     <form id="createproduct-form" autocomplete="off" class="needs-validation" novalidate>
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body checkout-tab">
 
@@ -151,30 +151,9 @@
 
                                 <div class="tab-pane fade show active" id="pills-finish" role="tabpanel"
                                     aria-labelledby="pills-finish-tab">
-                                    <div class="text-center py-5">
 
-                                        <div class="mb-4">
-                                            <lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop"
-                                                colors="primary:#0ab39c,secondary:#405189"
-                                                style="width:120px;height:120px"></lord-icon>
-                                        </div>
-                                        <h5>Thank you ! Your Order is Completed !</h5>
-                                        <p class="text-muted">You will receive an order confirmation email
-                                            with
-                                            details of your order.</p>
+                                    @include('pages.kurikulum.dokumensiswa.cetak-rapor-pilihdata')
 
-                                        <img src="data:image/png;base64,{{ $qrcodeImage }}" alt="QR Code">
-                                        <h3 class="fw-semibold">Order ID: <a href="/apps_ecommerce_order_details"
-                                                class="text-decoration-underline">VZ2451</a></h3>
-                                        <button class="btn btn-primary mt-3"
-                                            onclick="printContent('printable-area-depan')">Cetak Halaman Depan</button>
-                                        <button class="btn btn-primary mt-3"
-                                            onclick="printContent('printable-area-lampiran')">Cetak Halaman
-                                            Lampiran</button>
-                                        <button class="btn btn-primary mt-3"
-                                            onclick="printContent('printable-area-nilai')">Cetak Halaman
-                                            Nilai</button>
-                                    </div>
                                 </div>
                                 <!-- end tab pane -->
                             </div>
@@ -185,65 +164,12 @@
                 </div>
             </div>
             <!-- end col -->
-
-            <div class="col-lg-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Product Categories</h5>
-                    </div>
-                    <div class="card-body">
-                        <p class="text-muted mb-2"> <a href="#" class="float-end text-decoration-underline">Add
-                                New</a>Select product category</p>
-                        <select class="form-select" id="choices-category-input" name="choices-category-input"
-                            data-choices data-choices-search-false>
-                            <option value="Appliances">Appliances</option>
-                            <option value="Automotive Accessories">Automotive Accessories</option>
-                            <option value="Electronics">Electronics</option>
-                            <option value="Fashion">Fashion</option>
-                            <option value="Furniture">Furniture</option>
-                            <option value="Grocery">Grocery</option>
-                            <option value="Kids">Kids</option>
-                            <option value="Watches">Watches</option>
-                        </select>
-                    </div>
-                    <!-- end card body -->
-                </div>
-                <!-- end card -->
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Product Tags</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="hstack gap-3 align-items-start">
-                            <div class="flex-grow-1">
-                                <input class="form-control" data-choices data-choices-multiple-remove="true"
-                                    placeholder="Enter tags" type="text" value="Cotton" />
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end card body -->
-                </div>
-                <!-- end card -->
-
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Product Short Description</h5>
-                    </div>
-                    <div class="card-body">
-                        <p class="text-muted mb-2">Add short description for product</p>
-                        <textarea class="form-control" placeholder="Must enter minimum of a 100 characters" rows="3"></textarea>
-                    </div>
-                    <!-- end card body -->
-                </div>
-                <!-- end card -->
-
-            </div>
         </div>
         <!-- end row -->
     </form>
 @endsection
 @section('script')
-    {{-- --}}
+    <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
 @endsection
 @section('script-bottom')
     <script>
