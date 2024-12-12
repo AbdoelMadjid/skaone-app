@@ -203,12 +203,20 @@ class CetakRaporController extends Controller
             // Deskripsi nilai berdasarkan nilai TP
             $deskripsi = [];
 
-            foreach ($tpMax as $tp) {
+            /* foreach ($tpMax as $tp) {
                 $deskripsi[] = "Menunjukkan kemampuan dalam {$tpIsi[$tp]} (TP ke-{$tp})";
             }
 
             foreach ($tpMin as $tp) {
                 $deskripsi[] = "Masih perlu bimbingan dalam {$tpIsi[$tp]} (TP ke-{$tp})";
+            } */
+
+            foreach ($tpMax as $tp) {
+                $deskripsi[] = "Menunjukkan kemampuan dalam {$tpIsi[$tp]}";
+            }
+
+            foreach ($tpMin as $tp) {
+                $deskripsi[] = "masih perlu bimbingan dalam {$tpIsi[$tp]}";
             }
 
             // Simpan ke dalam objek data nilai
