@@ -53,7 +53,7 @@
                                     <tr>
                                         <td style='padding: 2px 0px;'>Semester</td>
                                         <td style='padding: 2px 0px;'>:</td>
-                                        <td style='padding: 2px 0px;'></td>
+                                        <td style='padding: 2px 0px;'>{{ $firstNilai->semester }}</td>
                                     </tr>
                                     <tr>
                                         <td style='padding: 2px 0px;'>Tahun Ajaran</td>
@@ -202,7 +202,7 @@
                                 </tr>
                                 <tr>
                                     <td width='125' style='padding: 2px 0px;'>Kelas</td>
-                                    <td width='20' style='padding: 2px 0px;'>:</td>
+                                    <td style='padding: 2px 0px;'>{{ $firstNilai->semester }}</td>
                                     <td style='padding: 2px 0px;'>{{ $dataSiswa->rombel_nama }}</td>
                                 </tr>
                                 <tr>

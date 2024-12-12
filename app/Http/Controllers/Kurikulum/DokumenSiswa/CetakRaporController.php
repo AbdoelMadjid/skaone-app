@@ -104,6 +104,7 @@ class CetakRaporController extends Controller
                 kbm_per_rombels.rombel,
                 kbm_per_rombels.tingkat,
                 kbm_per_rombels.kel_mapel,
+                kbm_per_rombels.semester,
                 mata_pelajarans.mata_pelajaran,
                 mata_pelajarans.kelompok,
                 mata_pelajarans.kode,
@@ -158,6 +159,9 @@ class CetakRaporController extends Controller
                 AND kbm_per_rombels.ganjilgenap ='Ganjil'
             ORDER BY kbm_per_rombels.kel_mapel
         ");
+
+        // Ambil elemen pertama jika hanya satu data yang perlu diakses
+        $firstNilai = $dataNilai[0] ?? null;
 
         foreach ($dataNilai as $nilai) {
             $jumlahTP = DB::table('tujuan_pembelajarans')
@@ -225,9 +229,6 @@ class CetakRaporController extends Controller
             $nilai->deskripsi_nilai = implode(', ', $deskripsi);
         }
 
-
-
-
         return view('pages.kurikulum.dokumensiswa.cetak-rapor', [
             'school' => $school,
             'barcodeImage' => $barcodeImage,
@@ -236,6 +237,7 @@ class CetakRaporController extends Controller
             'siswaOrtu' => $siswaOrtu,
             'kepsekCover' => $kepsekCover,
             'dataNilai' => $dataNilai,
+            'firstNilai' => $firstNilai,
         ]);
     }
 
