@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Style\Protection;
 
@@ -127,9 +128,11 @@ class PenilaianFormatifExport implements FromArray, WithHeadings, ShouldAutoSize
 
         // Tambahkan rumus rata-rata di tiap baris
         for ($row = 2; $row <= $highestRow; $row++) {
+
             // Tentukan kolom awal dan akhir
-            $startColumn = 'S'; // Kolom pertama untuk TP Nilai
-            $endColumn = chr(ord($startColumn) + $jumlahTP - 1); // Kolom terakhir berdasarkan jumlah TP
+            $startColumn = 'S'; // Kolom awal
+            $startIndex = Coordinate::columnIndexFromString($startColumn); // Indeks angka kolom 'S'
+            $endColumn = Coordinate::stringFromColumnIndex($startIndex + $jumlahTP - 1); // Kolom akhir
 
             if (!preg_match('/^[A-Z]+$/', $startColumn) || !preg_match('/^[A-Z]+$/', $endColumn)) {
                 throw new \Exception("Kolom tidak valid: {$startColumn} - {$endColumn}");
