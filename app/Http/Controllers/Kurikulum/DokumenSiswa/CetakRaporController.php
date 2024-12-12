@@ -56,8 +56,10 @@ class CetakRaporController extends Controller
 
         $pesertadidikOptions = PesertaDidik::pluck('nama_lengkap', 'nis')->toArray();
 
+        $dataPilCR = PilihCetakRapor::where('id_personil', $personal_id)->first();
+
         //sample
-        $nis = "1202215552";
+        $niss = "1202215552";
         $tahunAjaran = $tahunAjaranAktif->tahunajaran;
         $seMester = $semester->semester;
 
@@ -77,7 +79,7 @@ class CetakRaporController extends Controller
             ->join('program_keahlians', 'kompetensi_keahlians.id_pk', '=', 'program_keahlians.idpk')
             ->join('bidang_keahlians', 'kompetensi_keahlians.id_bk', '=', 'bidang_keahlians.idbk')
             ->join('peserta_didik_rombels', 'peserta_didiks.nis', '=', 'peserta_didik_rombels.nis')
-            ->where('peserta_didiks.nis', $nis)
+            ->where('peserta_didiks.nis', $niss)
             ->where('peserta_didik_rombels.tahun_ajaran', $tahunAjaran)
             ->first();
 
@@ -87,7 +89,7 @@ class CetakRaporController extends Controller
         }
 
         // Ambil data Orang Tua
-        $siswaOrtu = PesertaDidikOrtu::where('nis', $nis)->first();
+        $siswaOrtu = PesertaDidikOrtu::where('nis', $niss)->first();
 
         // Pastikan data ditemukan
         if (!$siswaOrtu) {
@@ -281,6 +283,7 @@ class CetakRaporController extends Controller
             'kepsekCover' => $kepsekCover,
             'dataNilai' => $dataNilai,
             'firstNilai' => $firstNilai,
+            'dataPilCR' => $dataPilCR,
         ]);
     }
 

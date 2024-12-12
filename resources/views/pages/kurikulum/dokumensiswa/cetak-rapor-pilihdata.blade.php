@@ -5,7 +5,53 @@
             <div class="card-body">
                 <div class="ribbon ribbon-success round-shape">Pilih Data Cetak</div>
                 <h5 class="fs-14 text-end">{{ $personal_id }}</h5>
+
                 <form action="{{ route('kurikulum.dokumentsiswa.cetak-rapor.store') }}" method="post">
+                    @csrf
+                    <div class="row">
+                        <div class="col-md-12">
+                            <x-form.input name="id_personil" value="{{ $personal_id }}" label="ID Personil"
+                                id="id_personil" disabled />
+                        </div>
+                        <div class="col-md-3">
+                            <x-form.select name="tahunajaran" label="Tahun Ajaran" :options="$tahunAjaranOptions"
+                                value="{{ old('tahunajaran', isset($dataPilCR) ? $dataPilCR->tahunajaran : '') }}"
+                                id="tahun_ajaran" />
+                        </div>
+                        <div class="col-md-3">
+                            <x-form.select name="semester" :options="['Ganjil' => 'Ganjil', 'Genap' => 'Genap']"
+                                value="{{ old('semester', isset($dataPilCR) ? $dataPilCR->semester : '') }}"
+                                label="Semester" id="semester" />
+                        </div>
+                        <div class="col-md-4">
+                            <x-form.select name="kode_kk" label="Kompetensi Keahlian" :options="$kompetensiKeahlianOptions"
+                                value="{{ old('kode_kk', isset($dataPilCR) ? $dataPilCR->kode_kk : '') }}"
+                                id="kode_kk" />
+                        </div>
+                        <div class="col-md-2">
+                            <x-form.select name="tingkat" :options="['10' => '10', '11' => '11', '12' => '12']"
+                                value="{{ old('tingkat', isset($dataPilCR) ? $dataPilCR->tingkat : '') }}"
+                                label="Tingkat" id="tingkat" />
+                        </div>
+                        <div class="col-md-4">
+                            <x-form.select name="kode_rombel" :options="$rombelOptions"
+                                value="{{ old('kode_rombel', isset($dataPilCR) ? $dataPilCR->kode_rombel : '') }}"
+                                label="Kode Rombel" id="kode_rombel" />
+                        </div>
+                        <div class="col-md-4">
+                            <x-form.select name="nis" :options="$pesertadidikOptions"
+                                value="{{ old('nis', isset($dataPilCR) ? $dataPilCR->nis : '') }}" label="Peserta Didik"
+                                id="nis" />
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="gap-2 hstack justify-content-end">
+                            <button type="submit" class="btn btn-soft-success">Simpan</button>
+                        </div>
+                    </div>
+                </form>
+
+                {{-- <form action="{{ route('kurikulum.dokumentsiswa.cetak-rapor.store') }}" method="post">
                     @csrf
                     <div class="ribbon-content mt-5">
                         <input type="hidden" name="id_personil" value="{{ $personal_id }}">
@@ -68,7 +114,7 @@
                             </div>
                         </div>
                     </div>
-                </form>
+                </form> --}}
             </div>
         </div>
     </div>
@@ -92,80 +138,3 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        function updateRombelOptions() {
-            const tahunajaran = $('#tahunajaran').val();
-            const kode_kk = $('#kode_kk').val();
-            const tingkat = $('#tingkat').val();
-
-            if (tahunajaran && kode_kk && tingkat) {
-                $.ajax({
-                    url: '{{ route('kurikulum.dokumentsiswa.getrombeloptions') }}',
-                    type: 'POST',
-                    data: {
-                        tahunajaran: tahunajaran,
-                        kode_kk: kode_kk,
-                        tingkat: tingkat,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(data) {
-                        $('#kode_rombel').empty().append(
-                            '<option value="" selected>Pilih Rombel</option>');
-                        $.each(data, function(key, value) {
-                            $('#kode_rombel').append(
-                                `<option value="${key}">${value}</option>`);
-                        });
-                    },
-                    error: function() {
-                        alert('Terjadi kesalahan saat memuat data rombel.');
-                    }
-                });
-            } else {
-                $('#kode_rombel').empty().append('<option value="" selected>Pilih Rombel</option>');
-            }
-        }
-
-        function updatePesertaDidikOptions() {
-            const tahunajaran = $('#tahunajaran').val();
-            const kode_kk = $('#kode_kk').val();
-            const tingkat = $('#tingkat').val();
-            const kode_rombel = $('#kode_rombel').val();
-
-            if (tahunajaran && kode_kk && tingkat && kode_rombel) {
-                $.ajax({
-                    url: '{{ route('kurikulum.dokumentsiswa.getpesertadidikoptions') }}',
-                    type: 'POST',
-                    data: {
-                        tahunajaran: tahunajaran,
-                        kode_kk: kode_kk,
-                        tingkat: tingkat,
-                        kode_rombel: kode_rombel,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(data) {
-                        $('#kode_peserta_didik').empty().append(
-                            '<option value="" selected>Pilih Peserta Didik</option>'
-                        );
-                        $.each(data, function(key, value) {
-                            $('#kode_peserta_didik').append(
-                                `<option value="${value.nis}">${value.nama_lengkap}</option>`
-                            );
-                        });
-                    },
-                    error: function() {
-                        alert('Terjadi kesalahan saat memuat data peserta didik.');
-                    }
-                });
-            } else {
-                $('#kode_peserta_didik').empty().append(
-                    '<option value="" selected>Pilih Peserta Didik</option>'
-                );
-            }
-        }
-
-        $('#tahunajaran, #kode_kk, #tingkat').change(updateRombelOptions);
-        $('#tahunajaran, #kode_kk, #tingkat, #kode_rombel').change(updatePesertaDidikOptions);
-    });
-</script>

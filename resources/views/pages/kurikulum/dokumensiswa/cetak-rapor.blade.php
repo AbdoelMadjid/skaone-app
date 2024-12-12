@@ -169,6 +169,86 @@
 @endsection
 @section('script-bottom')
     <script>
+        $(document).ready(function() {
+            // Fungsi untuk memperbarui opsi Kode Rombel
+            function updateRombelOptions() {
+                const tahunajaran = $('#tahun_ajaran').val();
+                const kode_kk = $('#kode_kk').val();
+                const tingkat = $('#tingkat').val();
+
+                if (tahunajaran && kode_kk && tingkat) {
+                    $.ajax({
+                        url: '{{ route('kurikulum.dokumentsiswa.getrombeloptions') }}',
+                        method: 'GET',
+                        data: {
+                            tahunajaran: tahunajaran,
+                            kode_kk: kode_kk,
+                            tingkat: tingkat,
+                        },
+                        success: function(data) {
+                            $('#kode_rombel').empty().append('<option value="">Pilih Rombel</option>');
+                            $.each(data, function(key, value) {
+                                $('#kode_rombel').append(
+                                    `<option value="${key}">${value}</option>`);
+                            });
+                        },
+                        error: function() {
+                            alert('Terjadi kesalahan saat memuat data rombel.');
+                        },
+                    });
+                } else {
+                    $('#kode_rombel').empty().append('<option value="">Pilih Rombel</option>');
+                }
+            }
+
+            // Fungsi untuk memperbarui opsi Peserta Didik
+            function updatePesertaDidikOptions() {
+                const tahunajaran = $('#tahun_ajaran').val();
+                const kode_kk = $('#kode_kk').val();
+                const tingkat = $('#tingkat').val();
+                const kode_rombel = $('#kode_rombel').val();
+
+                if (tahunajaran && kode_kk && tingkat && kode_rombel) {
+                    $.ajax({
+                        url: '{{ route('kurikulum.dokumentsiswa.getpesertadidikoptions') }}',
+                        method: 'GET',
+                        data: {
+                            tahunajaran: tahunajaran,
+                            kode_kk: kode_kk,
+                            tingkat: tingkat,
+                            kode_rombel: kode_rombel,
+                        },
+                        success: function(data) {
+                            $('#nis').empty().append('<option value="">Pilih Peserta Didik</option>');
+                            $.each(data, function(key, value) {
+                                $('#nis').append(`<option value="${key}">${value}</option>`);
+                            });
+                        },
+                        error: function() {
+                            alert('Terjadi kesalahan saat memuat data peserta didik.');
+                        },
+                    });
+                } else {
+                    $('#nis').empty().append('<option value="">Pilih Peserta Didik</option>');
+                }
+            }
+
+            // Event listeners untuk perubahan nilai
+            $('#tahun_ajaran, #kode_kk, #tingkat').on('change', function() {
+                updateRombelOptions();
+                $('#nis').empty().append('<option value="">Pilih Peserta Didik</option>'); // Reset siswa
+            });
+
+            $('#tahun_ajaran, #kode_kk, #tingkat, #kode_rombel').on('change', function() {
+                updatePesertaDidikOptions();
+            });
+
+            // Panggil fungsi saat halaman dimuat untuk mengisi data saat edit
+            updateRombelOptions();
+            updatePesertaDidikOptions();
+        });
+    </script>
+    <script>
         @if (session('toast_success'))
             showToast('success', '{{ session('toast_success') }}');
         @endif
