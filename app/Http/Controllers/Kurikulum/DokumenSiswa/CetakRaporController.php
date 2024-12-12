@@ -212,16 +212,16 @@ class CetakRaporController extends Controller
             } */
 
             foreach ($tpMax as $tp) {
-                $deskripsi[] = "Menunjukkan kemampuan dalam {$tpIsi[$tp]}";
+                $deskripsi[] = "Menunjukkan kemampuan dalam {$tpIsi[$tp]} (TP ke-{$tp})";
             }
 
             foreach ($tpMin as $tp) {
-                $deskripsi[] = "masih perlu bimbingan dalam {$tpIsi[$tp]}";
+                $deskripsi[] = "<br>" . "Masih perlu bimbingan dalam {$tpIsi[$tp]} (TP ke-{$tp})";
             }
 
             // Simpan ke dalam objek data nilai
-            $nilai->nilai_tertinggi = "NT " . "{$maxValue} (TP ke-" . implode(', TP ke-', $tpMax) . ")";
-            $nilai->nilai_terendah = "NR " . "{$minValue} (TP ke-" . implode(', TP ke-', $tpMin) . ")";
+            $nilai->nilai_tertinggi = "NT : " . "{$maxValue} (TP ke-" . implode(', TP ke-', $tpMax) . ")";
+            $nilai->nilai_terendah = "NR : " . "{$minValue} (TP ke-" . implode(', TP ke-', $tpMin) . ")";
             $nilai->deskripsi_nilai = implode(', ', $deskripsi);
         }
 
