@@ -72,8 +72,9 @@
 
                     <table align='center' width='90%'>
                         <tr>
-                            <td align='center'>
+                            <td style='font-size:16px;text-align:center;'>
                                 <p><strong>LAPORAN HASIL BELAJAR</p></strong>
+
                             </td>
                         </tr>
                         <tr>
@@ -84,6 +85,9 @@
                                             <th style='text-align:center;padding:4px 8px;'><strong>No.</th>
                                             <th style='text-align:center;padding:4px 8px;' width='250'>Mata Pelajaran
                                             </th>
+                                            @for ($i = 1; $i <= $jumlahTP; $i++)
+                                                <th>TP {{ $i }}</th>
+                                            @endfor
                                             <th style='text-align:center;padding:4px 8px;'>Nilai Akhir</th>
                                             <th style='text-align:center;padding:4px 8px;'>Capaian Kompetensi</th>
                                         </tr>
@@ -94,189 +98,54 @@
                                                 <strong>A. Kelompok Mata Pelajaran Umum</strong>
                                             </td>
                                         </tr>
+                                        @foreach ($dataNilai as $key => $nilai)
+                                            @if ($nilai->kelompok === 'A')
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;font-size:12px;'
+                                                        align='center'>{{ $loop->iteration }}</td>
+                                                    <td style='padding:4px 8px;font-size:12px;'>
+                                                        {{ $nilai->mata_pelajaran }},<br>
+                                                        {{ $nilai->gelardepan }} {{ $nilai->namalengkap }}
+                                                        {{ $nilai->gelarbelakang }},
+                                                        <br>Jumlah TP : {{ $jumlahTP }}
+                                                    </td>
+                                                    @for ($i = 1; $i <= $jumlahTP; $i++)
+                                                        <td>
+                                                            {{ $nilai->tp_nilai_[$i] }}
+                                                        </td>
+                                                    @endfor
+                                                    <td>{{ round(($nilai->rerata_formatif + $nilai->rerata_sumatif) / 2) }}
+                                                    </td>
+                                                    <td style='padding:4px 8px;font-size:12px;'>
+                                                        {{ $nilai->deskripsi }} </td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
 
-                                        <tr>
-                                            <td style='text-align:center;padding:4px 8px;font-size:12px;'
-                                                align='center'>1.</td>
-                                            <td style='padding:4px 8px;font-size:12px;'>Nama Mata Pelajaran<br>Nama
-                                                Pengajar</td>
-                                            <td></td>
-                                            <td style='padding:4px 8px;font-size:12px;'>Dari jumlah tujuan pembelajaran
-                                                sebanyak
-                                                $JmlTPA, ketercapaian pembelajaran dalam kategori $QNPADeskA karena
-                                                mendapatkan
-                                                angka
-                                                maksimal sebesar $NMaxTPA Dari jumlah tujuan pembelajaran sebanyak
-                                                $JmlTPA, ketercapaian pembelajaran dalam kategori $QNPADeskA karena
-                                                mendapatkan
-                                                angka
-                                                maksimal sebesar $NMaxTPA </td>
-                                        </tr>
-                                        <tr>
-                                            <td style='text-align:center;padding:4px 8px;font-size:12px;'
-                                                align='center'>2.</td>
-                                            <td style='padding:4px 8px;font-size:12px;'>Nama Mata Pelajaran<br>Nama
-                                                Pengajar</td>
-                                            <td></td>
-                                            <td style='padding:4px 8px;font-size:12px;'>Dari jumlah tujuan pembelajaran
-                                                sebanyak
-                                                $JmlTPA, ketercapaian pembelajaran dalam kategori $QNPADeskA karena
-                                                mendapatkan
-                                                angka
-                                                maksimal sebesar $NMaxTPA Dari jumlah tujuan pembelajaran sebanyak
-                                                $JmlTPA, ketercapaian pembelajaran dalam kategori $QNPADeskA karena
-                                                mendapatkan
-                                                angka
-                                                maksimal sebesar $NMaxTPA Dari jumlah tujuan pembelajaran sebanyak
-                                                $JmlTPA, ketercapaian pembelajaran dalam kategori $QNPADeskA karena
-                                                mendapatkan
-                                                angka
-                                                maksimal sebesar $NMaxTPA </td>
-                                        </tr>
-                                        <tr>
-                                            <td style='text-align:center;padding:4px 8px;font-size:12px;'
-                                                align='center'>3.</td>
-                                            <td style='padding:4px 8px;font-size:12px;'>Nama Mata Pelajaran<br>Nama
-                                                Pengajar</td>
-                                            <td></td>
-                                            <td style='padding:4px 8px;font-size:12px;'>Dari jumlah tujuan pembelajaran
-                                                sebanyak
-                                                $JmlTPA, ketercapaian pembelajaran dalam kategori $QNPADeskA karena
-                                                mendapatkan
-                                                angka
-                                                maksimal sebesar $NMaxTPA </td>
-                                        </tr>
-                                        <tr>
-                                            <td style='text-align:center;padding:4px 8px;font-size:12px;'
-                                                align='center'>4.</td>
-                                            <td style='padding:4px 8px;font-size:12px;'>Nama Mata Pelajaran<br>Nama
-                                                Pengajar</td>
-                                            <td></td>
-                                            <td style='padding:4px 8px;font-size:12px;'>Dari jumlah tujuan pembelajaran
-                                                sebanyak
-                                                $JmlTPA, ketercapaian pembelajaran dalam kategori $QNPADeskA karena
-                                                mendapatkan
-                                                angka
-                                                maksimal sebesar $NMaxTPADari jumlah tujuan pembelajaran
-                                                sebanyak
-                                                $JmlTPA, ketercapaian pembelajaran dalam kategori $QNPADeskA karena
-                                                mendapatkan
-                                                angka
-                                                maksimal sebesar $NMaxTPA Dari jumlah tujuan pembelajaran
-                                                sebanyak
-                                                $JmlTPA, ketercapaian pembelajaran dalam kategori $QNPADeskA karena
-                                                mendapatkan
-                                                angka
-                                                maksimal sebesar $NMaxTPA Dari jumlah tujuan pembelajaran
-                                                sebanyak
-                                                $JmlTPA, ketercapaian pembelajaran dalam kategori $QNPADeskA karena
-                                                mendapatkan
-                                                angka
-                                                maksimal sebesar $NMaxTPA </td>
-                                        </tr>
                                         <tr>
                                             <td colspan='10' style='padding:4px 8px;font-size:14px;'>
                                                 <strong>B. Kelompok Mata Pelajaran Kejuruan</strong>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td style='text-align:center;padding:4px 8px;font-size:12px;'
-                                                align='center'>1.</td>
-                                            <td style='padding:4px 8px;font-size:12px;'>Nama Mata Pelajaran<br>Nama
-                                                Pengajar</td>
-                                            <td></td>
-                                            <td style='padding:4px 8px;font-size:12px;'>Dari jumlah tujuan pembelajaran
-                                                sebanyak
-                                                $JmlTPB, ketercapaian pembelajaran dalam kategori $QNPADeskB karena
-                                                mendapatkan
-                                                angka
-                                                maksimal sebesar $NMaxTPB Dari jumlah tujuan pembelajaran
-                                                sebanyak
-                                                $JmlTPB, ketercapaian pembelajaran dalam kategori $QNPADeskB karena
-                                                mendapatkan
-                                                angka
-                                                maksimal sebesar $NMaxTPBDari jumlah tujuan pembelajaran
-                                                sebanyak
-                                                $JmlTPB, ketercapaian pembelajaran dalam kategori $QNPADeskB karena
-                                                mendapatkan
-                                                angka
-                                                maksimal sebesar $NMaxTPB</td>
-                                        </tr>
-                                        <tr>
-                                            <td style='text-align:center;padding:4px 8px;font-size:12px;'
-                                                align='center'>1.</td>
-                                            <td style='padding:4px 8px;font-size:12px;'>Nama Mata Pelajaran<br>Nama
-                                                Pengajar</td>
-                                            <td></td>
-                                            <td style='padding:4px 8px;font-size:12px;'>Dari jumlah tujuan pembelajaran
-                                                sebanyak
-                                                $JmlTPB, ketercapaian pembelajaran dalam kategori $QNPADeskB karena
-                                                mendapatkan
-                                                angka
-                                                maksimal sebesar $NMaxTPB </td>
-                                        </tr>
-                                        <tr>
-                                            <td style='text-align:center;padding:4px 8px;font-size:12px;'
-                                                align='center'>1.</td>
-                                            <td style='padding:4px 8px;font-size:12px;'>Nama Mata Pelajaran<br>Nama
-                                                Pengajar</td>
-                                            <td></td>
-                                            <td style='padding:4px 8px;font-size:12px;'>Dari jumlah tujuan pembelajaran
-                                                sebanyak
-                                                $JmlTPB, ketercapaian pembelajaran dalam kategori $QNPADeskB karena
-                                                mendapatkan
-                                                angka
-                                                maksimal sebesar $NMaxTPB </td>
-                                        </tr>
-                                        <tr>
-                                            <td style='text-align:center;padding:4px 8px;font-size:12px;'
-                                                align='center'>1.</td>
-                                            <td style='padding:4px 8px;font-size:12px;'>Nama Mata Pelajaran<br>Nama
-                                                Pengajar</td>
-                                            <td></td>
-                                            <td style='padding:4px 8px;font-size:12px;'>Dari jumlah tujuan pembelajaran
-                                                sebanyak
-                                                $JmlTPB, ketercapaian pembelajaran dalam kategori $QNPADeskB karena
-                                                mendapatkan
-                                                angka
-                                                maksimal sebesar $NMaxTPB </td>
-                                        </tr>
-                                        <tr>
-                                            <td style='text-align:center;padding:4px 8px;font-size:12px;'
-                                                align='center'>1.</td>
-                                            <td style='padding:4px 8px;font-size:12px;'>Nama Mata Pelajaran<br>Nama
-                                                Pengajar</td>
-                                            <td></td>
-                                            <td style='padding:4px 8px;font-size:12px;'>Dari jumlah tujuan pembelajaran
-                                                sebanyak
-                                                $JmlTPB Dari jumlah tujuan pembelajaran
-                                                sebanyak
-                                                $JmlTPB Dari jumlah tujuan pembelajaran
-                                                sebanyak
-                                                $JmlTPB Dari jumlah tujuan pembelajaran
-                                                sebanyak
-                                                $JmlTPB Dari jumlah tujuan pembelajaran
-                                                sebanyak
-                                                $JmlTPB </td>
-                                        </tr>
-                                        <tr>
-                                            <td style='text-align:center;padding:4px 8px;font-size:12px;'
-                                                align='center'>1.</td>
-                                            <td style='padding:4px 8px;font-size:12px;'>Nama Mata Pelajaran<br>Nama
-                                                Pengajar</td>
-                                            <td></td>
-                                            <td style='padding:4px 8px;font-size:12px;'>Dari jumlah tujuan pembelajaran
-                                                sebanyak Dari jumlah tujuan pembelajaran
-                                                sebanyak
-                                                $JmlTPB Dari jumlah tujuan pembelajaran
-                                                sebanyak
-                                                $JmlTPB
-                                                $JmlTPB, ketercapaian pembelajaran dalam kategori $QNPADeskB karena
-                                                mendapatkan
-                                                angka
-                                                maksimal sebesar $NMaxTPB </td>
-                                        </tr>
+                                        @foreach ($dataNilai as $key => $nilai)
+                                            @if (in_array($nilai->kelompok, ['B1', 'B2', 'B3', 'B4', 'B5']))
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;font-size:12px;'
+                                                        align='center'>{{ $loop->iteration }}</td>
+                                                    <td style='padding:4px 8px;font-size:12px;'>
+                                                        {{ $nilai->mata_pelajaran }},<br>
+                                                        {{ $nilai->gelardepan }} {{ $nilai->namalengkap }}
+                                                        {{ $nilai->gelarbelakang }},
+                                                    </td>
+                                                    <td>{{ round(($nilai->rerata_formatif + $nilai->rerata_sumatif) / 2) }}
+                                                    </td>
+                                                    <td style='padding:4px 8px;font-size:12px;'>
+                                                        {{ $nilai->deskripsi }} </td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
                                     </tbody>
+
                                 </table>
                             </td>
                         </tr>

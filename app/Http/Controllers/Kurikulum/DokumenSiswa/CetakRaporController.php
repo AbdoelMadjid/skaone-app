@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Milon\Barcode\DNS1D;
 use Milon\Barcode\DNS2D;
+use Illuminate\Support\Facades\Log;
 
 class CetakRaporController extends Controller
 {
@@ -43,7 +44,8 @@ class CetakRaporController extends Controller
             ->where('peserta_didiks.nis', $nis)
             ->where('peserta_didik_rombels.tahun_ajaran', $tahunAjaran)
             ->first();
-        // Pastikan data ditemukan
+
+        // Pastikan data  siswa ditemukan
         if (!$dataSiswa) {
             return redirect()->back()->with('error', 'Data siswa tidak ditemukan.');
         }
@@ -75,6 +77,7 @@ class CetakRaporController extends Controller
         }
 
 
+        // BARCOOOOOOOOOOOOOOOOOOOOOOOOOOOOD
         $barcode = new DNS1D();
         $barcode->setStorPath(public_path('barcode/'));
 
@@ -89,6 +92,140 @@ class CetakRaporController extends Controller
         $qrcodeImage = $qrcode->getBarcodePNG("https://smkn1kadipaten.sch.id/kurikulum/dokumentsiswa/cetak-rapor", 'QRCODE', 5, 5);
 
 
+
+        //nilai-raport eung
+        $dataNilai = DB::select("
+           SELECT
+                kbm_per_rombels.id_personil,
+                personil_sekolahs.gelardepan,
+                personil_sekolahs.namalengkap,
+                personil_sekolahs.gelarbelakang,
+                kbm_per_rombels.kode_rombel,
+                kbm_per_rombels.rombel,
+                kbm_per_rombels.tingkat,
+                kbm_per_rombels.kel_mapel,
+                mata_pelajarans.mata_pelajaran,
+                mata_pelajarans.kelompok,
+                mata_pelajarans.kode,
+                peserta_didik_rombels.nis,
+                peserta_didiks.nama_lengkap,
+                nilai_formatif.tp_isi_1,
+                nilai_formatif.tp_isi_2,
+                nilai_formatif.tp_isi_3,
+                nilai_formatif.tp_isi_4,
+                nilai_formatif.tp_isi_5,
+                nilai_formatif.tp_isi_6,
+                nilai_formatif.tp_isi_7,
+                nilai_formatif.tp_isi_8,
+                nilai_formatif.tp_isi_9,
+                nilai_formatif.tp_nilai_1,
+                nilai_formatif.tp_nilai_2,
+                nilai_formatif.tp_nilai_3,
+                nilai_formatif.tp_nilai_4,
+                nilai_formatif.tp_nilai_5,
+                nilai_formatif.tp_nilai_6,
+                nilai_formatif.tp_nilai_7,
+                nilai_formatif.tp_nilai_8,
+                nilai_formatif.tp_nilai_9,
+                nilai_formatif.rerata_formatif,
+                nilai_sumatif.sts,
+                nilai_sumatif.sas,
+                nilai_sumatif.kel_mapel AS kel_mapel_sumatif,
+                nilai_sumatif.rerata_sumatif,
+                ((COALESCE(nilai_formatif.rerata_formatif, 0) + COALESCE(nilai_sumatif.rerata_sumatif, 0)) / 2) AS nilai_na
+            FROM kbm_per_rombels
+                INNER JOIN peserta_didik_rombels ON kbm_per_rombels.kode_rombel = peserta_didik_rombels.rombel_kode
+                INNER JOIN peserta_didiks ON peserta_didik_rombels.nis = peserta_didiks.nis
+                INNER JOIN personil_sekolahs ON kbm_per_rombels.id_personil=personil_sekolahs.id_personil
+                INNER JOIN mata_pelajarans ON kbm_per_rombels.kel_mapel=mata_pelajarans.kel_mapel
+            LEFT JOIN nilai_formatif ON peserta_didik_rombels.nis = nilai_formatif.nis AND kbm_per_rombels.kel_mapel=nilai_formatif.kel_mapel
+                AND nilai_formatif.nis = '1202215552'
+                AND nilai_formatif.kode_rombel = '202441112-12RPL1'
+                AND nilai_formatif.tingkat= '12'
+                AND nilai_formatif.tahunajaran ='2024-2025'
+                AND nilai_formatif.ganjilgenap='Ganjil'
+            LEFT JOIN nilai_sumatif ON peserta_didik_rombels.nis = nilai_sumatif.nis AND kbm_per_rombels.kel_mapel=nilai_sumatif.kel_mapel
+                AND nilai_sumatif.nis = '1202215552'
+                AND nilai_sumatif.kode_rombel = '202441112-12RPL1'
+                AND nilai_formatif.tingkat= '12'
+                AND nilai_formatif.tahunajaran ='2024-2025'
+                AND nilai_formatif.ganjilgenap='Ganjil'
+            WHERE
+                peserta_didik_rombels.nis = '1202215552'
+                AND kbm_per_rombels.kode_rombel = '202441112-12RPL1'
+                AND kbm_per_rombels.tahunajaran = '2024-2025'
+                AND kbm_per_rombels.tingkat='12'
+                AND kbm_per_rombels.ganjilgenap ='Ganjil'
+            ORDER BY kbm_per_rombels.kel_mapel
+        ");
+
+        // Misal, mengambil elemen pertama dari $dataNilai
+        $nilai = $dataNilai[0];
+
+        // Ambil jumlah TP dari tabel tujuan_pembelajarans
+        $jumlahTP = DB::table('tujuan_pembelajarans')
+            ->where('kode_rombel', $nilai->kode_rombel)
+            ->where('kel_mapel', $nilai->kel_mapel)
+            ->where('id_personil', $nilai->id_personil)
+            ->count();
+
+        // Ambil jumlah TP secara terpisah untuk setiap mata pelajaran
+        $dataNilai = collect($dataNilai)->map(function ($nilai) {
+            $jumlahTP = DB::table('tujuan_pembelajarans')
+                ->where('kode_rombel', $nilai->kode_rombel)
+                ->where('kel_mapel', $nilai->kel_mapel)
+                ->where('id_personil', $nilai->id_personil)
+                ->count();
+
+            // Log jumlah TP untuk debugging
+            Log::info('Jumlah TP untuk ' . $nilai->kel_mapel . ': ' . $jumlahTP);
+
+            // Tambahkan jumlah TP ke objek nilai
+            $nilai->jumlahTP = $jumlahTP;
+
+            // Ambil hanya nilai TP sesuai jumlah TP
+            $tp_nilai = array_slice([
+                $nilai->tp_nilai_1,
+                $nilai->tp_nilai_2,
+                $nilai->tp_nilai_3,
+                $nilai->tp_nilai_4,
+                $nilai->tp_nilai_5,
+                $nilai->tp_nilai_6,
+                $nilai->tp_nilai_7,
+                $nilai->tp_nilai_8,
+                $nilai->tp_nilai_9
+            ], 0, $jumlahTP);
+
+            // Pastikan $tp_nilai tidak kosong
+            if (!empty($tp_nilai)) {
+                // Nilai tertinggi dan terendah
+                $nilaiTertinggi = max($tp_nilai);
+                $nilaiTerendah = min($tp_nilai);
+
+                // TP ke berapa
+                $tpTertinggi = [];
+                $tpTerendah = [];
+
+                foreach ($tp_nilai as $index => $nilai_tp) {
+                    if ($nilai_tp == $nilaiTertinggi) {
+                        $tpTertinggi[] = $index + 1;
+                    }
+                    if ($nilai_tp == $nilaiTerendah) {
+                        $tpTerendah[] = $index + 1;
+                    }
+                }
+
+                $nilai->deskripsi = "Nilai tertinggi: $nilaiTertinggi dari TP " . implode(', ', $tpTertinggi) .
+                    ", Nilai terendah: $nilaiTerendah dari TP " . implode(', ', $tpTerendah);
+            } else {
+                $nilai->deskripsi = "Tidak ada nilai TP.";
+            }
+
+            return $nilai;
+        });
+
+
+
         return view('pages.kurikulum.dokumensiswa.cetak-rapor', [
             'school' => $school,
             'barcodeImage' => $barcodeImage,
@@ -96,6 +233,8 @@ class CetakRaporController extends Controller
             'dataSiswa' => $dataSiswa,
             'siswaOrtu' => $siswaOrtu,
             'kepsekCover' => $kepsekCover,
+            'dataNilai' => $dataNilai,
+            'jumlahTP' => $jumlahTP,
         ]);
     }
 
