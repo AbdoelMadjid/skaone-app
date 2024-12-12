@@ -108,11 +108,9 @@
                                                     <td>{{ round(($nilai->rerata_formatif + $nilai->rerata_sumatif) / 2) }}
                                                     </td>
                                                     <td style='padding:4px 8px;font-size:12px;'>
-                                                        <strong>Nilai Tertinggi:</strong>
-                                                        {{ $nilai->nilai_tertinggi }}<br>
-                                                        <strong>Nilai Terendah:</strong>
-                                                        {{ $nilai->nilai_terendah }}<br>
-                                                        {{ $nilai->deskripsi_nilai }}
+                                                        {{ $nilai->nilai_tertinggi ?? '' }}<br>
+                                                        {{ $nilai->nilai_terendah ?? '' }}<br>
+                                                        {{ $nilai->deskripsi_nilai ?? '' }}
                                                     </td>
                                                 </tr>
                                             @endif
@@ -136,11 +134,9 @@
                                                     <td>{{ round(($nilai->rerata_formatif + $nilai->rerata_sumatif) / 2) }}
                                                     </td>
                                                     <td style='padding:4px 8px;font-size:12px;'>
-                                                        <strong>Nilai Tertinggi:</strong>
-                                                        {{ $nilai->nilai_tertinggi }}<br>
-                                                        <strong>Nilai Terendah:</strong>
-                                                        {{ $nilai->nilai_terendah }}<br>
-                                                        {{ $nilai->deskripsi_nilai }}
+                                                        {{ $nilai->nilai_tertinggi ?? '' }}<br>
+                                                        {{ $nilai->nilai_terendah ?? '' }}<br>
+                                                        {{ $nilai->deskripsi_nilai ?? '' }}
                                                     </td>
                                                 </tr>
                                             @endif

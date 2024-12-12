@@ -176,37 +176,48 @@ class CetakRaporController extends Controller
                 $tpIsi[$i] = $nilai->{'tp_isi_' . $i};
             }
 
-            // Pastikan tpNilai tidak kosong sebelum mencari nilai tertinggi dan terendah
-            if (!empty($tpNilai)) {
-                // Cari nilai tertinggi dan terendah
-                $maxValue = max($tpNilai);
-                $minValue = min($tpNilai);
-
-                // TP dengan nilai tertinggi dan terendah
-                $tpMax = array_keys($tpNilai, $maxValue);
-                $tpMin = array_keys($tpNilai, $minValue);
-
-                // Deskripsi nilai berdasarkan nilai TP
-                $deskripsi = [];
-
-                foreach ($tpMax as $tp) {
-                    $deskripsi[] = "Menunjukkan kemampuan dalam {$tpIsi[$tp]}";
-                }
-                foreach ($tpMin as $tp) {
-                    $deskripsi[] = "Masih perlu bimbingan dalam {$tpIsi[$tp]}";
-                }
-
-                // Simpan ke dalam objek data nilai
-                $nilai->nilai_tertinggi = $maxValue;
-                $nilai->nilai_terendah = $minValue;
-                $nilai->deskripsi_nilai = implode(', ', $deskripsi);
-            } else {
-                // Jika tpNilai kosong, set default
+            // Jika tujuan pembelajaran atau nilai formatif kosong, kosongkan data deskripsi
+            if (empty($tpNilai) || $jumlahTP === 0 || is_null($rerataFormatif)) {
                 $nilai->nilai_tertinggi = null;
                 $nilai->nilai_terendah = null;
-                $nilai->deskripsi_nilai = 'Data tidak tersedia';
+                $nilai->deskripsi_nilai = null;
+                continue;
             }
+
+            // Jika semua TP nilai sama, kosongkan data deskripsi
+            if (count(array_unique($tpNilai)) === 1) {
+                $nilai->nilai_tertinggi = null;
+                $nilai->nilai_terendah = null;
+                $nilai->deskripsi_nilai = null;
+                continue;
+            }
+
+            // Cari nilai tertinggi dan terendah
+            $maxValue = max($tpNilai);
+            $minValue = min($tpNilai);
+
+            // TP dengan nilai tertinggi dan terendah
+            $tpMax = array_keys($tpNilai, $maxValue);
+            $tpMin = array_keys($tpNilai, $minValue);
+
+            // Deskripsi nilai berdasarkan nilai TP
+            $deskripsi = [];
+
+            foreach ($tpMax as $tp) {
+                $deskripsi[] = "Menunjukkan kemampuan dalam {$tpIsi[$tp]} (TP ke-{$tp})";
+            }
+
+            foreach ($tpMin as $tp) {
+                $deskripsi[] = "Masih perlu bimbingan dalam {$tpIsi[$tp]} (TP ke-{$tp})";
+            }
+
+            // Simpan ke dalam objek data nilai
+            $nilai->nilai_tertinggi = "NT " . "{$maxValue} (TP ke-" . implode(', TP ke-', $tpMax) . ")";
+            $nilai->nilai_terendah = "NR " . "{$minValue} (TP ke-" . implode(', TP ke-', $tpMin) . ")";
+            $nilai->deskripsi_nilai = implode(', ', $deskripsi);
         }
+
+
 
 
         return view('pages.kurikulum.dokumensiswa.cetak-rapor', [
