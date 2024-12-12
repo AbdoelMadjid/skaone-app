@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Kurikulum\DokumenSiswa;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
+use App\Models\Kurikulum\DokumenSiswa\PilihCetakRapor;
 use App\Models\ManajemenSekolah\IdentitasSekolah;
 use App\Models\ManajemenSekolah\KepalaSekolah;
 use App\Models\ManajemenSekolah\KompetensiKeahlian;
@@ -296,7 +297,27 @@ class CetakRaporController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'id_personil' => 'required|string',
+            'tahunajaran' => 'required|string',
+            'semester' => 'required|string',
+            'kode_kk' => 'required|string',
+            'tingkat' => 'required|string',
+            'kode_rombel' => 'required|string',
+            'kode_peserta_didik' => 'required|string',
+        ]);
+
+        PilihCetakRapor::create([
+            'id_personil' => $validatedData['id_personil'],
+            'tahunajaran' => $validatedData['tahunajaran'],
+            'semester' => $validatedData['semester'],
+            'kode_kk' => $validatedData['kode_kk'],
+            'tingkat' => $validatedData['tingkat'],
+            'kode_rombel' => $validatedData['kode_rombel'],
+            'nis' => $validatedData['kode_peserta_didik'],
+        ]);
+
+        return redirect()->back()->with('toast_success', 'Data berhasil disimpan!');
     }
 
     /**
