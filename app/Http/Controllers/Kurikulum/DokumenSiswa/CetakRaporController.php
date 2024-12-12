@@ -159,7 +159,7 @@ class CetakRaporController extends Controller
             ORDER BY kbm_per_rombels.kel_mapel
         ");
 
-        // Misal, mengambil elemen pertama dari $dataNilai
+        /* // Misal, mengambil elemen pertama dari $dataNilai
         $nilai = $dataNilai[0];
 
         // Ambil jumlah TP dari tabel tujuan_pembelajarans
@@ -167,9 +167,10 @@ class CetakRaporController extends Controller
             ->where('kode_rombel', $nilai->kode_rombel)
             ->where('kel_mapel', $nilai->kel_mapel)
             ->where('id_personil', $nilai->id_personil)
-            ->count();
+            ->count(); */
 
-        // Ambil jumlah TP secara terpisah untuk setiap mata pelajaran
+
+
         $dataNilai = collect($dataNilai)->map(function ($nilai) {
             $jumlahTP = DB::table('tujuan_pembelajarans')
                 ->where('kode_rombel', $nilai->kode_rombel)
@@ -196,6 +197,19 @@ class CetakRaporController extends Controller
                 $nilai->tp_nilai_9
             ], 0, $jumlahTP);
 
+            // Ambil hanya deskripsi TP sesuai jumlah TP
+            $tp_isi = array_slice([
+                $nilai->tp_isi_1,
+                $nilai->tp_isi_2,
+                $nilai->tp_isi_3,
+                $nilai->tp_isi_4,
+                $nilai->tp_isi_5,
+                $nilai->tp_isi_6,
+                $nilai->tp_isi_7,
+                $nilai->tp_isi_8,
+                $nilai->tp_isi_9
+            ], 0, $jumlahTP);
+
             // Pastikan $tp_nilai tidak kosong
             if (!empty($tp_nilai)) {
                 // Nilai tertinggi dan terendah
@@ -215,8 +229,19 @@ class CetakRaporController extends Controller
                     }
                 }
 
-                $nilai->deskripsi = "Nilai tertinggi: $nilaiTertinggi dari TP " . implode(', ', $tpTertinggi) .
-                    ", Nilai terendah: $nilaiTerendah dari TP " . implode(', ', $tpTerendah);
+                // Deskripsi berdasarkan TP tertinggi dan terendah
+                $deskripsiTertinggi = [];
+                $deskripsiTerendah = [];
+
+                foreach ($tpTertinggi as $tp) {
+                    $deskripsiTertinggi[] = "Menunjukkan kemampuan dalam " . ($tp_isi[$tp - 1] ?? '(deskripsi tidak tersedia)');
+                }
+
+                foreach ($tpTerendah as $tp) {
+                    $deskripsiTerendah[] = "Masih perlu bimbingan dalam " . ($tp_isi[$tp - 1] ?? '(deskripsi tidak tersedia)');
+                }
+
+                $nilai->deskripsi = implode('<br>', $deskripsiTertinggi) . '<br>' . implode('<br>', $deskripsiTerendah);
             } else {
                 $nilai->deskripsi = "Tidak ada nilai TP.";
             }
@@ -234,7 +259,6 @@ class CetakRaporController extends Controller
             'siswaOrtu' => $siswaOrtu,
             'kepsekCover' => $kepsekCover,
             'dataNilai' => $dataNilai,
-            'jumlahTP' => $jumlahTP,
         ]);
     }
 

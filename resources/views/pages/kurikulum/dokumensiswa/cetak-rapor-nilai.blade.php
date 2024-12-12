@@ -85,9 +85,6 @@
                                             <th style='text-align:center;padding:4px 8px;'><strong>No.</th>
                                             <th style='text-align:center;padding:4px 8px;' width='250'>Mata Pelajaran
                                             </th>
-                                            @for ($i = 1; $i <= $jumlahTP; $i++)
-                                                <th>TP {{ $i }}</th>
-                                            @endfor
                                             <th style='text-align:center;padding:4px 8px;'>Nilai Akhir</th>
                                             <th style='text-align:center;padding:4px 8px;'>Capaian Kompetensi</th>
                                         </tr>
@@ -106,18 +103,12 @@
                                                     <td style='padding:4px 8px;font-size:12px;'>
                                                         {{ $nilai->mata_pelajaran }},<br>
                                                         {{ $nilai->gelardepan }} {{ $nilai->namalengkap }}
-                                                        {{ $nilai->gelarbelakang }},
-                                                        <br>Jumlah TP : {{ $jumlahTP }}
+                                                        {{ $nilai->gelarbelakang }}
                                                     </td>
-                                                    @for ($i = 1; $i <= $jumlahTP; $i++)
-                                                        <td>
-                                                            {{ $nilai->tp_nilai_[$i] }}
-                                                        </td>
-                                                    @endfor
                                                     <td>{{ round(($nilai->rerata_formatif + $nilai->rerata_sumatif) / 2) }}
                                                     </td>
                                                     <td style='padding:4px 8px;font-size:12px;'>
-                                                        {{ $nilai->deskripsi }} </td>
+                                                        {!! $nilai->deskripsi !!} </td>
                                                 </tr>
                                             @endif
                                         @endforeach
@@ -140,7 +131,7 @@
                                                     <td>{{ round(($nilai->rerata_formatif + $nilai->rerata_sumatif) / 2) }}
                                                     </td>
                                                     <td style='padding:4px 8px;font-size:12px;'>
-                                                        {{ $nilai->deskripsi }} </td>
+                                                        {!! $nilai->deskripsi !!} </td>
                                                 </tr>
                                             @endif
                                         @endforeach
