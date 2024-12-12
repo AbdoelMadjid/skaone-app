@@ -83,7 +83,7 @@
                                     <thead>
                                         <tr>
                                             <th style='text-align:center;padding:4px 8px;'><strong>No.</th>
-                                            <th style='text-align:center;padding:4px 8px;' width='250'>Mata Pelajaran
+                                            <th style='text-align:center;padding:4px 8px;' width='300'>Mata Pelajaran
                                             </th>
                                             <th style='text-align:center;padding:4px 8px;'>Nilai Akhir</th>
                                             <th style='text-align:center;padding:4px 8px;'>Capaian Kompetensi</th>
@@ -105,7 +105,8 @@
                                                         {{ $nilai->gelardepan }} {{ $nilai->namalengkap }}
                                                         {{ $nilai->gelarbelakang }}
                                                     </td>
-                                                    <td>{{ round(($nilai->rerata_formatif + $nilai->rerata_sumatif) / 2) }}
+                                                    <td class="text-center">
+                                                        {{ round(($nilai->rerata_formatif + $nilai->rerata_sumatif) / 2) }}
                                                     </td>
                                                     <td style='padding:4px 8px;font-size:12px;'>
                                                         {{ $nilai->nilai_tertinggi ?? '' }}<br>
@@ -131,7 +132,8 @@
                                                         {{ $nilai->gelardepan }} {{ $nilai->namalengkap }}
                                                         {{ $nilai->gelarbelakang }},
                                                     </td>
-                                                    <td>{{ round(($nilai->rerata_formatif + $nilai->rerata_sumatif) / 2) }}
+                                                    <td class="text-center">
+                                                        {{ round(($nilai->rerata_formatif + $nilai->rerata_sumatif) / 2) }}
                                                     </td>
                                                     <td style='padding:4px 8px;font-size:12px;'>
                                                         {{ $nilai->nilai_tertinggi ?? '' }}<br>
