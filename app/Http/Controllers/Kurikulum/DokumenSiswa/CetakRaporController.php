@@ -159,97 +159,29 @@ class CetakRaporController extends Controller
             ORDER BY kbm_per_rombels.kel_mapel
         ");
 
-        /* // Misal, mengambil elemen pertama dari $dataNilai
-        $nilai = $dataNilai[0];
-
-        // Ambil jumlah TP dari tabel tujuan_pembelajarans
-        $jumlahTP = DB::table('tujuan_pembelajarans')
-            ->where('kode_rombel', $nilai->kode_rombel)
-            ->where('kel_mapel', $nilai->kel_mapel)
-            ->where('id_personil', $nilai->id_personil)
-            ->count(); */
-
-
-
-        $dataNilai = collect($dataNilai)->map(function ($nilai) {
+        foreach ($dataNilai as $nilai) {
             $jumlahTP = DB::table('tujuan_pembelajarans')
                 ->where('kode_rombel', $nilai->kode_rombel)
                 ->where('kel_mapel', $nilai->kel_mapel)
                 ->where('id_personil', $nilai->id_personil)
                 ->count();
 
-            // Log jumlah TP untuk debugging
-            Log::info('Jumlah TP untuk ' . $nilai->kel_mapel . ': ' . $jumlahTP);
+            $deskripsi = [];
+            $rerataFormatif = $nilai->rerata_formatif;
 
-            // Tambahkan jumlah TP ke objek nilai
-            $nilai->jumlahTP = $jumlahTP;
+            for ($i = 1; $i <= $jumlahTP; $i++) {
+                $tpNilai = $nilai->{'tp_nilai_' . $i};
+                $tpIsi = $nilai->{'tp_isi_' . $i};
 
-            // Ambil hanya nilai TP sesuai jumlah TP
-            $tp_nilai = array_slice([
-                $nilai->tp_nilai_1,
-                $nilai->tp_nilai_2,
-                $nilai->tp_nilai_3,
-                $nilai->tp_nilai_4,
-                $nilai->tp_nilai_5,
-                $nilai->tp_nilai_6,
-                $nilai->tp_nilai_7,
-                $nilai->tp_nilai_8,
-                $nilai->tp_nilai_9
-            ], 0, $jumlahTP);
-
-            // Ambil hanya deskripsi TP sesuai jumlah TP
-            $tp_isi = array_slice([
-                $nilai->tp_isi_1,
-                $nilai->tp_isi_2,
-                $nilai->tp_isi_3,
-                $nilai->tp_isi_4,
-                $nilai->tp_isi_5,
-                $nilai->tp_isi_6,
-                $nilai->tp_isi_7,
-                $nilai->tp_isi_8,
-                $nilai->tp_isi_9
-            ], 0, $jumlahTP);
-
-            // Pastikan $tp_nilai tidak kosong
-            if (!empty($tp_nilai)) {
-                // Nilai tertinggi dan terendah
-                $nilaiTertinggi = max($tp_nilai);
-                $nilaiTerendah = min($tp_nilai);
-
-                // TP ke berapa
-                $tpTertinggi = [];
-                $tpTerendah = [];
-
-                foreach ($tp_nilai as $index => $nilai_tp) {
-                    if ($nilai_tp == $nilaiTertinggi) {
-                        $tpTertinggi[] = $index + 1;
-                    }
-                    if ($nilai_tp == $nilaiTerendah) {
-                        $tpTerendah[] = $index + 1;
-                    }
+                if ($tpNilai > $rerataFormatif) {
+                    $deskripsi[] = "Menunjukkan kemampuan dalam $tpIsi";
+                } elseif ($tpNilai < $rerataFormatif) {
+                    $deskripsi[] = "Masih perlu bimbingan dalam $tpIsi";
                 }
-
-                // Deskripsi berdasarkan TP tertinggi dan terendah
-                $deskripsiTertinggi = [];
-                $deskripsiTerendah = [];
-
-                foreach ($tpTertinggi as $tp) {
-                    $deskripsiTertinggi[] = "Menunjukkan kemampuan dalam " . ($tp_isi[$tp - 1] ?? '(deskripsi tidak tersedia)');
-                }
-
-                foreach ($tpTerendah as $tp) {
-                    $deskripsiTerendah[] = "Masih perlu bimbingan dalam " . ($tp_isi[$tp - 1] ?? '(deskripsi tidak tersedia)');
-                }
-
-                $nilai->deskripsi = implode('<br>', $deskripsiTertinggi) . '<br>' . implode('<br>', $deskripsiTerendah);
-            } else {
-                $nilai->deskripsi = "Tidak ada nilai TP.";
             }
 
-            return $nilai;
-        });
-
-
+            $nilai->deskripsi_nilai = implode(', ', $deskripsi);
+        }
 
         return view('pages.kurikulum.dokumensiswa.cetak-rapor', [
             'school' => $school,

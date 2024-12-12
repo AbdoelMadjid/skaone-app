@@ -108,7 +108,7 @@
                                                     <td>{{ round(($nilai->rerata_formatif + $nilai->rerata_sumatif) / 2) }}
                                                     </td>
                                                     <td style='padding:4px 8px;font-size:12px;'>
-                                                        {!! $nilai->deskripsi !!} </td>
+                                                        {{ $nilai->deskripsi_nilai }}</td>
                                                 </tr>
                                             @endif
                                         @endforeach
@@ -131,7 +131,7 @@
                                                     <td>{{ round(($nilai->rerata_formatif + $nilai->rerata_sumatif) / 2) }}
                                                     </td>
                                                     <td style='padding:4px 8px;font-size:12px;'>
-                                                        {!! $nilai->deskripsi !!} </td>
+                                                        {{ $nilai->deskripsi_nilai }}</td>
                                                 </tr>
                                             @endif
                                         @endforeach
