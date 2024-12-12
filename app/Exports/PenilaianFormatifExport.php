@@ -7,7 +7,6 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
-use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Style\Protection;
 
@@ -128,24 +127,13 @@ class PenilaianFormatifExport implements FromArray, WithHeadings, ShouldAutoSize
 
         // Tambahkan rumus rata-rata di tiap baris
         for ($row = 2; $row <= $highestRow; $row++) {
+            $startColumn = 'S'; // Kolom pertama TP Nilai
+            $endColumn = chr(ord($startColumn) + $jumlahTP - 1); // Kolom terakhir TP Nilai
 
-            // Tentukan kolom awal dan akhir
-            $startColumn = 'S'; // Kolom awal
-            $startIndex = Coordinate::columnIndexFromString($startColumn); // Indeks angka kolom 'S'
-            $endColumn = Coordinate::stringFromColumnIndex($startIndex + $jumlahTP - 1); // Kolom akhir
-
-            if (!preg_match('/^[A-Z]+$/', $startColumn) || !preg_match('/^[A-Z]+$/', $endColumn)) {
-                throw new \Exception("Kolom tidak valid: {$startColumn} - {$endColumn}");
-            }
-
-            // Buat formula
-            $cellFormula = "=IF(SUM({$startColumn}{$row}:{$endColumn}{$row})=0, 0, ROUND(SUM({$startColumn}{$row}:{$endColumn}{$row})/{$jumlahTP}, 0))";
-
-            // Debug formula
-            //dd($cellFormula);
-
-            // Tetapkan nilai formula ke sel
-            $sheet->setCellValue("AB{$row}", $cellFormula);
+            $sheet->setCellValue(
+                "AB{$row}",
+                "=IF(SUM({$startColumn}{$row}:{$endColumn}{$row})=0, 0, ROUND(SUM({$startColumn}{$row}:{$endColumn}{$row})/{$jumlahTP}, 0))"
+            );
         }
 
         // Aktifkan proteksi pada lembar kerja
