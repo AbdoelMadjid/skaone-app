@@ -3,7 +3,7 @@
         <!-- Rounded Ribbon -->
         <div class="card ribbon-box border shadow-none mb-lg-0">
             <div class="card-body">
-                <div class="ribbon ribbon-primary round-shape">Pilih Data Cetak</div>
+                <div class="ribbon ribbon-success round-shape">Pilih Data Cetak</div>
                 <h5 class="fs-14 text-end">{{ $personal_id }}</h5>
                 <div class="ribbon-content mt-5">
                     <div class="row">
@@ -62,7 +62,7 @@
                         </div>
                         <div class="col-lg-12">
                             <div class="gap-2 hstack justify-content-end">
-                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                <button type="submit" class="btn btn-soft-success">Simpan</button>
                                 {{-- <button type="button" class="btn btn-soft-success">Cancel</button> --}}
                             </div>
                         </div>
@@ -74,18 +74,18 @@
     <div class="col-md-4">
         <div class="card ribbon-box border shadow-none mb-lg-0">
             <div class="card-body">
-                <div class="ribbon ribbon-primary round-shape">Primary</div>
+                <div class="ribbon ribbon-success round-shape">Proses Cetak</div>
                 <h5 class="fs-14 text-end">{{ $tahunAjaranAktif->tahunajaran }}
                     {{ $semester->semester }}</h5>
                 <div class="ribbon-content mt-4 text-muted">
-                    <button class="btn btn-primary mt-3" onclick="printContent('printable-area-depan')">Cetak
-                        Halaman Depan</button>
-                    <button class="btn btn-primary mt-3" onclick="printContent('printable-area-lampiran')">Cetak
-                        Halaman
-                        Lampiran</button>
-                    <button class="btn btn-primary mt-3" onclick="printContent('printable-area-nilai')">Cetak
-                        Halaman
-                        Nilai</button>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-soft-info mt-3" onclick="printContent('printable-area-depan')">Cetak
+                            Halaman Depan</button>
+                        <button class="btn btn-soft-info mt-3" onclick="printContent('printable-area-nilai')">Cetak
+                            Halaman Nilai</button>
+                        <button class="btn btn-soft-info mt-3" onclick="printContent('printable-area-lampiran')">Cetak
+                            Halaman Lampiran</button>
+                    </div>
                 </div>
             </div>
         </div>
