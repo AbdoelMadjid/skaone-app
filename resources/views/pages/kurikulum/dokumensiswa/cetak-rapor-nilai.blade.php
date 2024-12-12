@@ -157,6 +157,21 @@
                                                 $JmlTPA, ketercapaian pembelajaran dalam kategori $QNPADeskA karena
                                                 mendapatkan
                                                 angka
+                                                maksimal sebesar $NMaxTPADari jumlah tujuan pembelajaran
+                                                sebanyak
+                                                $JmlTPA, ketercapaian pembelajaran dalam kategori $QNPADeskA karena
+                                                mendapatkan
+                                                angka
+                                                maksimal sebesar $NMaxTPA Dari jumlah tujuan pembelajaran
+                                                sebanyak
+                                                $JmlTPA, ketercapaian pembelajaran dalam kategori $QNPADeskA karena
+                                                mendapatkan
+                                                angka
+                                                maksimal sebesar $NMaxTPA Dari jumlah tujuan pembelajaran
+                                                sebanyak
+                                                $JmlTPA, ketercapaian pembelajaran dalam kategori $QNPADeskA karena
+                                                mendapatkan
+                                                angka
                                                 maksimal sebesar $NMaxTPA </td>
                                         </tr>
                                         <tr>
@@ -175,7 +190,17 @@
                                                 $JmlTPB, ketercapaian pembelajaran dalam kategori $QNPADeskB karena
                                                 mendapatkan
                                                 angka
-                                                maksimal sebesar $NMaxTPB </td>
+                                                maksimal sebesar $NMaxTPB Dari jumlah tujuan pembelajaran
+                                                sebanyak
+                                                $JmlTPB, ketercapaian pembelajaran dalam kategori $QNPADeskB karena
+                                                mendapatkan
+                                                angka
+                                                maksimal sebesar $NMaxTPBDari jumlah tujuan pembelajaran
+                                                sebanyak
+                                                $JmlTPB, ketercapaian pembelajaran dalam kategori $QNPADeskB karena
+                                                mendapatkan
+                                                angka
+                                                maksimal sebesar $NMaxTPB</td>
                                         </tr>
                                         <tr>
                                             <td style='text-align:center;padding:4px 8px;font-size:12px;'
@@ -223,6 +248,14 @@
                                                 Pengajar</td>
                                             <td></td>
                                             <td style='padding:4px 8px;font-size:12px;'>Dari jumlah tujuan pembelajaran
+                                                sebanyak
+                                                $JmlTPB Dari jumlah tujuan pembelajaran
+                                                sebanyak
+                                                $JmlTPB Dari jumlah tujuan pembelajaran
+                                                sebanyak
+                                                $JmlTPB Dari jumlah tujuan pembelajaran
+                                                sebanyak
+                                                $JmlTPB Dari jumlah tujuan pembelajaran
                                                 sebanyak
                                                 $JmlTPB </td>
                                         </tr>
@@ -233,7 +266,11 @@
                                                 Pengajar</td>
                                             <td></td>
                                             <td style='padding:4px 8px;font-size:12px;'>Dari jumlah tujuan pembelajaran
+                                                sebanyak Dari jumlah tujuan pembelajaran
                                                 sebanyak
+                                                $JmlTPB Dari jumlah tujuan pembelajaran
+                                                sebanyak
+                                                $JmlTPB
                                                 $JmlTPB, ketercapaian pembelajaran dalam kategori $QNPADeskB karena
                                                 mendapatkan
                                                 angka
