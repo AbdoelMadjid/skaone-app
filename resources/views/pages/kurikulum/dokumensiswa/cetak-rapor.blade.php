@@ -73,13 +73,13 @@
                         </div>
                         <div class="col-sm-auto">
                             <div class="d-flex gap-1 flex-wrap">
-                                <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal"
-                                    id="create-btn" data-bs-target="#showModal"><i
-                                        class="ri-add-line align-bottom me-1"></i> Create ID</button>
-                                <button type="button" class="btn btn-info"><i
-                                        class="ri-file-download-line align-bottom me-1"></i> Import</button>
-                                <button class="btn btn-soft-danger" id="remove-actions" onClick="deleteMultiple()"><i
-                                        class="ri-delete-bin-2-line"></i></button>
+                                @if ($dataPilCR)
+                                @else
+                                    @can('create kurikulum/dokumentsiswa/cetak-rapor')
+                                        <a class="btn btn-primary action"
+                                            href="{{ route('kurikulum.dokumentsiswa.cetak-rapor.create') }}">Tambah</a>
+                                    @endcan
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -112,37 +112,34 @@
                                 <div class="tab-pane fade active show" id="custom-v-pills-data-cetak" role="tabpanel"
                                     aria-labelledby="custom-v-pills-data-cetak-tab">
                                     <div class="row">
-                                        <div class="col-md-8">
+                                        <div class="col-md-9">
                                             <!-- Rounded Ribbon -->
                                             <div class="card ribbon-box border shadow-none mb-lg-0">
                                                 <div class="card-body">
                                                     <div class="ribbon ribbon-primary round-shape">Pilih data Cetak</div>
                                                     <h5 class="fs-14 text-end"></h5>
                                                     <div class="ribbon-content mt-4 text-muted">
-                                                        <p class="mb-0">Quisque nec turpis at urna dictum luctus.
-                                                            Suspendisse convallis dignissim eros at volutpat. In egestas
-                                                            mattis dui. Aliquam mattis dictum aliquet. Nulla sapien mauris,
-                                                            eleifend et sem ac, commodo dapibus odio.</p>
+                                                        @include('pages.kurikulum.dokumensiswa.cetak-rapor-form')
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <!-- Right Ribbon -->
                                             <div class="card ribbon-box border shadow-none right mb-lg-0">
                                                 <div class="card-body">
                                                     <div class="ribbon ribbon-info round-shape">Cetak</div>
-                                                    <h5 class="fs-14 text-start">data terpilih</h5>
+                                                    <h5 class="fs-14 text-start">{{ $personal_id }}</h5>
                                                     <div class="ribbon-content mt-4 text-muted">
                                                         <div class="d-grid gap-2">
                                                             <button class="btn btn-soft-info mt-2"
-                                                                onclick="printContent('printable-area-depan')">Cetak
+                                                                onclick="printContent('printable-area-depan')">
                                                                 Halaman Depan</button>
                                                             <button class="btn btn-soft-info mt-2"
-                                                                onclick="printContent('printable-area-nilai')">Cetak
+                                                                onclick="printContent('printable-area-nilai')">
                                                                 Halaman Nilai</button>
                                                             <button class="btn btn-soft-info mt-2"
-                                                                onclick="printContent('printable-area-lampiran')">Cetak
+                                                                onclick="printContent('printable-area-lampiran')">
                                                                 Halaman Lampiran</button>
                                                         </div>
                                                     </div>

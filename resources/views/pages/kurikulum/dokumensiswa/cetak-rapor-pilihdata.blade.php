@@ -1,11 +1,3 @@
-<div class="row">
-    <div class="col-md-8">
-        <!-- Rounded Ribbon -->
-        <div class="card ribbon-box border shadow-none mb-lg-0">
-            <div class="card-body">
-                <div class="ribbon ribbon-success round-shape">Pilih Data Cetak</div>
-                <h5 class="fs-14 text-end">{{ $personal_id }}</h5>
-
                 {{-- <form action="{{ route('kurikulum.dokumentsiswa.cetak-rapor.store') }}" method="post">
                     @csrf
                     <div class="row">
@@ -115,62 +107,37 @@
                         </div>
                     </div>
                 </form> --}}
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card ribbon-box border shadow-none mb-lg-0">
-            <div class="card-body">
-                <div class="ribbon ribbon-success round-shape">Proses Cetak</div>
-                <h5 class="fs-14 text-end">{{ $tahunAjaranAktif->tahunajaran }}
-                    {{ $semester->semester }}</h5>
-                <div class="ribbon-content mt-4 text-muted">
-                    <div class="d-grid gap-2">
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                            data-bs-target="#pilihCetak" id="pilihCetakBtn"
-                            title="Distribusikan siswa yang dipilih">Pilih Data</button>
-                        <button class="btn btn-soft-info mt-3" onclick="printContent('printable-area-depan')">Cetak
-                            Halaman Depan</button>
-                        <button class="btn btn-soft-info mt-3" onclick="printContent('printable-area-nilai')">Cetak
-                            Halaman Nilai</button>
-                        <button class="btn btn-soft-info mt-3" onclick="printContent('printable-area-lampiran')">Cetak
-                            Halaman Lampiran</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<script>
-    $(document).ready(function() {
-        $('#tahunajaran, #kode_kk, #tingkat').on('change', function() {
-            var tahunajaran = $('#tahunajaran').val();
-            var kode_kk = $('#kode_kk').val();
-            var tingkat = $('#tingkat').val();
 
-            if (tahunajaran && kode_kk && tingkat) {
-                $.ajax({
-                    url: "{{ route('kurikulum.dokumentsiswa.getrombeloptions') }}",
-                    type: "GET",
-                    data: {
-                        tahunajaran: tahunajaran,
-                        kode_kk: kode_kk,
-                        tingkat: tingkat
-                    },
-                    success: function(data) {
-                        $('#kode_rombel').empty();
-                        $('#kode_rombel').append(
-                            '<option value="" selected>Pilih Rombel</option>');
-                        $.each(data, function(index, item) {
-                            $('#kode_rombel').append('<option value="' + item
-                                .kode_rombel + '">' + item.rombel + '</option>');
+                <script>
+                    $(document).ready(function() {
+                        $('#tahunajaran, #kode_kk, #tingkat').on('change', function() {
+                            var tahunajaran = $('#tahunajaran').val();
+                            var kode_kk = $('#kode_kk').val();
+                            var tingkat = $('#tingkat').val();
+
+                            if (tahunajaran && kode_kk && tingkat) {
+                                $.ajax({
+                                    url: "{{ route('kurikulum.dokumentsiswa.getrombeloptions') }}",
+                                    type: "GET",
+                                    data: {
+                                        tahunajaran: tahunajaran,
+                                        kode_kk: kode_kk,
+                                        tingkat: tingkat
+                                    },
+                                    success: function(data) {
+                                        $('#kode_rombel').empty();
+                                        $('#kode_rombel').append(
+                                            '<option value="" selected>Pilih Rombel</option>');
+                                        $.each(data, function(index, item) {
+                                            $('#kode_rombel').append('<option value="' + item
+                                                .kode_rombel + '">' + item.rombel + '</option>');
+                                        });
+                                    }
+                                });
+                            } else {
+                                $('#kode_rombel').empty();
+                                $('#kode_rombel').append('<option value="" selected>Pilih Rombel</option>');
+                            }
                         });
-                    }
-                });
-            } else {
-                $('#kode_rombel').empty();
-                $('#kode_rombel').append('<option value="" selected>Pilih Rombel</option>');
-            }
-        });
-    });
-</script>
+                    });
+                </script>

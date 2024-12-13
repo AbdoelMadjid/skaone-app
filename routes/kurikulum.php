@@ -71,6 +71,7 @@ Route::middleware('auth')->group(function () {
 
         Route::group(['prefix' => 'dokumentsiswa', 'as' => 'dokumentsiswa.'], function () {
             Route::resource('cetak-rapor', CetakRaporController::class);
+            Route::get('/get-kode-rombel', [CetakRaporController::class, 'getKodeRombel']);
             Route::post('/getrombeloptions', [CetakRaporController::class, 'getRombelOptions'])->name('getrombeloptions');
             Route::post('/getpesertadidikoptions', [CetakRaporController::class, 'getPesertaDidikOptions'])->name('getpesertadidikoptions');
 
