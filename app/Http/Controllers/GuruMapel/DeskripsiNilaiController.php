@@ -197,7 +197,17 @@ class DeskripsiNilaiController extends Controller
             AND kbm_per_rombels.kode_rombel = ?
             AND kbm_per_rombels.kel_mapel = ?
         ORDER BY peserta_didik_rombels.nis
-        ", [$id_personil, $kode_rombel, $kel_mapel, $id_personil, $kode_rombel, $kel_mapel, $id_personil, $kode_rombel, $kel_mapel]);
+        ", [
+            $id_personil,
+            $kode_rombel,
+            $kel_mapel,
+            $id_personil,
+            $kode_rombel,
+            $kel_mapel,
+            $id_personil,
+            $kode_rombel,
+            $kel_mapel
+        ]);
 
         return response()->json([
             'data' => $data,

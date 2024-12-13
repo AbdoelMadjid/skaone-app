@@ -396,13 +396,13 @@
                             <td style='padding:4px 8px;'></td>
                             <td style='padding:4px 8px;'>a. Ayah</td>
                             <td style='padding:4px 8px;'>:</td>
-                            <td style='padding:4px 8px;'>{!! ucwords(strtolower($siswaOrtu->nm_ayah)) !!}</td>
+                            <td style='padding:4px 8px;'>{{-- {!! ucwords(strtolower($siswaOrtu->nm_ayah)) !!} --}}</td>
                         </tr>
                         <tr>
                             <td style='padding:4px 8px;'></td>
                             <td style='padding:4px 8px;'>b. Ibu</td>
                             <td style='padding:4px 8px;'>:</td>
-                            <td style='padding:4px 8px;'>{!! ucwords(strtolower($siswaOrtu->nm_ibu)) !!}</td>
+                            <td style='padding:4px 8px;'>{{-- {!! ucwords(strtolower($siswaOrtu->nm_ibu)) !!} --}}</td>
                         </tr>
                         <tr>
                             <td valign='top' style='padding:4px 8px;'>13.</td>
@@ -414,7 +414,7 @@
                             <td style='padding:4px 8px;'></td>
                             <td style='padding:4px 8px;'>Telepon Orang Tua</td>
                             <td style='padding:4px 8px;'>:</td>
-                            <td style='padding:4px 8px;'>{!! $siswaOrtu->ortu_kontak_telepon !!}</td>
+                            <td style='padding:4px 8px;'>{{-- {!! $siswaOrtu->ortu_kontak_telepon !!} --}}</td>
                         </tr>
                         <tr>
                             <td style='padding:4px 8px;'>14.</td>
@@ -426,13 +426,13 @@
                             <td style='padding:4px 8px;'></td>
                             <td style='padding:4px 8px;'>a. Ayah</td>
                             <td style='padding:4px 8px;'>:</td>
-                            <td style='padding:4px 8px;'>{!! $siswaOrtu->pekerjaan_ayah !!}</td>
+                            <td style='padding:4px 8px;'>{{-- {!! $siswaOrtu->pekerjaan_ayah !!} --}}</td>
                         </tr>
                         <tr>
                             <td style='padding:4px 8px;'></td>
                             <td style='padding:4px 8px;'>a. Ibu</td>
                             <td style='padding:4px 8px;'>:</td>
-                            <td style='padding:4px 8px;'>{!! $siswaOrtu->pekerjaan_ibu !!}</td>
+                            <td style='padding:4px 8px;'>{{-- {!! $siswaOrtu->pekerjaan_ibu !!} --}}</td>
                         </tr>
                         <tr>
                             <td style='padding:4px 8px;'>15.</td>

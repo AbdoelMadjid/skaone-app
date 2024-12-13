@@ -58,8 +58,8 @@ class CetakRaporController extends Controller
         $dataPilCR = PilihCetakRapor::where('id_personil', $personal_id)->first();
 
         //sample
-        $niss = "1202215552";
-        $tahunAjaran = $tahunAjaranAktif->tahunajaran;
+        $niss = $dataPilCR->nis;
+        $tahunAjaran = $dataPilCR->tahunajaran;
         $seMester = $semester->semester;
 
         // Query untuk mengambil data siswa dan keahlian
@@ -88,12 +88,12 @@ class CetakRaporController extends Controller
         }
 
         // Ambil data Orang Tua
-        $siswaOrtu = PesertaDidikOrtu::where('nis', $niss)->first();
+        /*  $siswaOrtu = PesertaDidikOrtu::where('nis', $niss)->first();
 
         // Pastikan data ditemukan
         if (!$siswaOrtu) {
             return redirect()->back()->with('error', 'Data Orang Tua tidak ditemukan.');
-        }
+        } */
 
         // Ambil data identitas sekolah
         $school = IdentitasSekolah::first();
@@ -177,25 +177,41 @@ class CetakRaporController extends Controller
                 INNER JOIN personil_sekolahs ON kbm_per_rombels.id_personil=personil_sekolahs.id_personil
                 INNER JOIN mata_pelajarans ON kbm_per_rombels.kel_mapel=mata_pelajarans.kel_mapel
             LEFT JOIN nilai_formatif ON peserta_didik_rombels.nis = nilai_formatif.nis AND kbm_per_rombels.kel_mapel=nilai_formatif.kel_mapel
-                AND nilai_formatif.nis = '1202215552'
-                AND nilai_formatif.kode_rombel = '202441112-12RPL1'
-                AND nilai_formatif.tingkat= '12'
-                AND nilai_formatif.tahunajaran ='2024-2025'
-                AND nilai_formatif.ganjilgenap='Ganjil'
+                AND nilai_formatif.nis = ?
+                AND nilai_formatif.kode_rombel = ?
+                AND nilai_formatif.tingkat = ?
+                AND nilai_formatif.tahunajaran = ?
+                AND nilai_formatif.ganjilgenap = ?
             LEFT JOIN nilai_sumatif ON peserta_didik_rombels.nis = nilai_sumatif.nis AND kbm_per_rombels.kel_mapel=nilai_sumatif.kel_mapel
-                AND nilai_sumatif.nis = '1202215552'
-                AND nilai_sumatif.kode_rombel = '202441112-12RPL1'
-                AND nilai_formatif.tingkat= '12'
-                AND nilai_formatif.tahunajaran ='2024-2025'
-                AND nilai_formatif.ganjilgenap='Ganjil'
+                AND nilai_sumatif.nis = ?
+                AND nilai_sumatif.kode_rombel = ?
+                AND nilai_formatif.tingkat = ?
+                AND nilai_formatif.tahunajaran = ?
+                AND nilai_formatif.ganjilgenap = ?
             WHERE
-                peserta_didik_rombels.nis = '1202215552'
-                AND kbm_per_rombels.kode_rombel = '202441112-12RPL1'
-                AND kbm_per_rombels.tahunajaran = '2024-2025'
-                AND kbm_per_rombels.tingkat='12'
-                AND kbm_per_rombels.ganjilgenap ='Ganjil'
+                peserta_didik_rombels.nis = ?
+                AND kbm_per_rombels.kode_rombel = ?
+                AND kbm_per_rombels.tingkat = ?
+                AND kbm_per_rombels.tahunajaran = ?
+                AND kbm_per_rombels.ganjilgenap = ?
             ORDER BY kbm_per_rombels.kel_mapel
-        ");
+        ", [
+            $dataPilCR->nis,
+            $dataPilCR->kode_rombel,
+            $dataPilCR->tingkat,
+            $dataPilCR->tahunajaran,
+            $dataPilCR->semester,
+            $dataPilCR->nis,
+            $dataPilCR->kode_rombel,
+            $dataPilCR->tingkat,
+            $dataPilCR->tahunajaran,
+            $dataPilCR->semester,
+            $dataPilCR->nis,
+            $dataPilCR->kode_rombel,
+            $dataPilCR->tingkat,
+            $dataPilCR->tahunajaran,
+            $dataPilCR->semester,
+        ]);
 
         // Ambil elemen pertama jika hanya satu data yang perlu diakses
         $firstNilai = $dataNilai[0] ?? null;
@@ -278,7 +294,7 @@ class CetakRaporController extends Controller
             'barcodeImage' => $barcodeImage,
             'qrcodeImage' => $qrcodeImage,
             'dataSiswa' => $dataSiswa,
-            'siswaOrtu' => $siswaOrtu,
+            //'siswaOrtu' => $siswaOrtu,
             'kepsekCover' => $kepsekCover,
             'dataNilai' => $dataNilai,
             'firstNilai' => $firstNilai,

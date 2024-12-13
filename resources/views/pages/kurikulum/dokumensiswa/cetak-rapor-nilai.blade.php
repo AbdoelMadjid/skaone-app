@@ -202,13 +202,13 @@
                                 </tr>
                                 <tr>
                                     <td width='125' style='padding: 2px 0px;'>Kelas</td>
-                                    <td style='padding: 2px 0px;'>{{ $firstNilai->semester }}</td>
+                                    <td style='padding: 2px 0px;'>:</td>
                                     <td style='padding: 2px 0px;'>{{ $dataSiswa->rombel_nama }}</td>
                                 </tr>
                                 <tr>
                                     <td style='padding: 2px 0px;'>Semester</td>
                                     <td style='padding: 2px 0px;'>:</td>
-                                    <td style='padding: 2px 0px;'></td>
+                                    <td style='padding: 2px 0px;'>{{ $firstNilai->semester }}</td>
                                 </tr>
                                 <tr>
                                     <td style='padding: 2px 0px;'>Tahun Ajaran</td>
@@ -235,17 +235,6 @@
                         <td>
                             <strong>Praktik Kerja Lapangan</strong>
                             <table class='cetak-rapor'>
-                                <tr>
-                                    <th width='7%' style='text-align:center;padding:4px 8px;'>
-                                        <strong>No.
-                                    </th>
-                                    <th style='text-align:center;padding:4px 8px;'>Mitra DU/DI</th>
-                                    <th style='text-align:center;padding:4px 8px;'>Lokasi</th>
-                                    <th style='text-align:center;padding:4px 8px;'>Lamanya (Bulan)</th>
-                                    <th width='25%' style='text-align:center;padding:4px 8px;'>
-                                        Keterangan</strong>
-                                    </th>
-                                </tr>
                                 <tr>
                                     <td style='padding:4px 8px;' valign='top' align='center'>1.</td>
                                     <td style='padding:4px 8px;' valign='top'></td>
