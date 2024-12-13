@@ -73,13 +73,7 @@
                         </div>
                         <div class="col-sm-auto">
                             <div class="d-flex gap-1 flex-wrap">
-                                @if ($dataPilCR)
-                                @else
-                                    @can('create kurikulum/dokumentsiswa/cetak-rapor')
-                                        <a class="btn btn-primary action"
-                                            href="{{ route('kurikulum.dokumentsiswa.cetak-rapor.create') }}">Tambah</a>
-                                    @endcan
-                                @endif
+                                {{-- buat tambah tombol --}}
                             </div>
                         </div>
                     </div>
