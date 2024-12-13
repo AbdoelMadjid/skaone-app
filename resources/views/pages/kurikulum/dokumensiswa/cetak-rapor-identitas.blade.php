@@ -404,11 +404,21 @@
                             <td valign='top' style='padding:4px 8px;'>Alamat Orang Tua</td>
                             <td valign='top' style='padding:4px 8px;'>:</td>
                             <td style='padding:4px 8px;'>
-                                Blok {{ $dataSiswa->ortu_alamat_blok }}, <br>
-                                Desa/Kelurahan {{ $dataSiswa->ortu_alamat_desa }}
-                                Kecamatan {{ $dataSiswa->ortu_alamat_kec }}
-                                Kabupaten {{ $dataSiswa->ortu_alamat_kab }}<br>
-                                Kode Pos : {{ $dataSiswa->ortu_alamat_kodepos }}
+                                @if ($dataSiswa->ortu_alamat_blok)
+                                    Blok {{ $dataSiswa->ortu_alamat_blok }}, <br>
+                                @endif
+                                @if ($dataSiswa->ortu_alamat_desa)
+                                    Desa/Kelurahan {{ $dataSiswa->ortu_alamat_desa }}
+                                @endif
+                                @if ($dataSiswa->ortu_alamat_kec)
+                                    Kecamatan {{ $dataSiswa->ortu_alamat_kec }}<br>
+                                @endif
+                                @if ($dataSiswa->ortu_alamat_kab)
+                                    Kabupaten {{ $dataSiswa->ortu_alamat_kab }}
+                                @endif
+                                @if ($dataSiswa->ortu_alamat_kodepos)
+                                    Kode Pos : {{ $dataSiswa->ortu_alamat_kodepos }}
+                                @endif
                             </td>
                         </tr>
                         <tr>
