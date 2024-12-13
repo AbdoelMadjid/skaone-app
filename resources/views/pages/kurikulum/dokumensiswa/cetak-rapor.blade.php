@@ -188,7 +188,6 @@
     </div>
     <!--end col-->
     </div>
-    @include('pages.kurikulum.dokumensiswa.cetak-rapor-input')
 @endsection
 @section('script')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
