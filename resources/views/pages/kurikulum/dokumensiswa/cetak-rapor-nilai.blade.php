@@ -230,22 +230,6 @@
     <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;'>
         <tr>
             <td align='center' width='50%'>
-                <table align='center' width='90%'>
-                    <tr>
-                        <td>
-                            <strong>Praktik Kerja Lapangan</strong>
-                            <table class='cetak-rapor'>
-                                <tr>
-                                    <td style='padding:4px 8px;' valign='top' align='center'>1.</td>
-                                    <td style='padding:4px 8px;' valign='top'></td>
-                                    <td style='padding:4px 8px;' valign='top'></td>
-                                    <td style='padding:4px 8px;' valign='top'></td>
-                                    <td style='padding:4px 8px;'></td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
                 <p></p>
                 <table align='center' width='90%'>
                     <tr>
