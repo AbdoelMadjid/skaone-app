@@ -118,8 +118,10 @@
                                                 <div class="card-body">
                                                     <div class="ribbon ribbon-primary round-shape">Pilih data Cetak</div>
                                                     <h5 class="fs-14 text-end"></h5>
-                                                    <div class="ribbon-content mt-4 text-muted">
+                                                    <div class="ribbon-content mt-5">
+
                                                         @include('pages.kurikulum.dokumensiswa.cetak-rapor-form')
+
                                                     </div>
                                                 </div>
                                             </div>

@@ -363,17 +363,17 @@ class CetakRaporController extends Controller
         $rombonganBelajar = RombonganBelajar::where('tahunajaran', $tahunAjaran)
             ->where('id_kk', $kodeKk)
             ->where('tingkat', $tingkat)
-            ->get(['rombel', 'kode_rombel']); // Pilih hanya kolom yang diperlukan
+            ->get(['rombel', 'kode_rombel']);
 
         return response()->json($rombonganBelajar);
     }
 
-    public function getPesertaDidikOptions(Request $request)
+    public function getPesertaDidik(Request $request)
     {
-        $tahunajaran = $request->tahunajaran;
-        $kode_kk = $request->kode_kk;
-        $tingkat = $request->tingkat;
-        $kode_rombel = $request->kode_rombel;
+        $tahunajaran = $request->query('tahunajaran');
+        $kode_kk = $request->query('kode_kk');
+        $tingkat = $request->query('tingkat');
+        $kode_rombel = $request->query('kode_rombel');
 
         $pesertadidikOptions = DB::table('peserta_didik_rombels')
             ->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
@@ -382,8 +382,58 @@ class CetakRaporController extends Controller
             ->where('peserta_didik_rombels.kode_kk', $kode_kk)
             ->where('peserta_didik_rombels.rombel_tingkat', $tingkat)
             ->where('peserta_didik_rombels.rombel_kode', $kode_rombel)
-            ->get();
+            ->get(['nama_lengkap', 'nis']);
 
         return response()->json($pesertadidikOptions);
+    }
+
+    public function simpanPilihCetakRapor(Request $request)
+    {
+        // Validasi input
+        $validatedData = $request->validate([
+            'id_personil' => 'required|string',
+            'tahunajaran' => 'required|string',
+            'semester' => 'required|string',
+            'kode_kk' => 'required|string',
+            'tingkat' => 'required|string',
+            'kode_rombel' => 'required|string',
+            'nis' => 'required|string',
+        ]);
+
+        // Cek apakah data sudah ada di tabel titi_mangsas
+        $pilihcetak = DB::table('pilih_cetak_rapors')
+            ->where('id_personil', $request->id_personil)
+            ->first();
+
+        // Jika data sudah ada, lakukan update
+        if ($pilihcetak) {
+            DB::table('pilih_cetak_rapors')
+                ->where('id_personil', $pilihcetak->id_personil)
+                ->update([
+                    'tahunajaran' => $validatedData['tahunajaran'],
+                    'semester' => $validatedData['semester'],
+                    'kode_kk' => $validatedData['kode_kk'],
+                    'tingkat' => $validatedData['tingkat'],
+                    'kode_rombel' => $validatedData['kode_rombel'],
+                    'nis' => $validatedData['nis'],
+                    'updated_at' => now(),
+                ]);
+            return redirect()->back()->with('toast_success', 'Data berhasil diperbarui.');
+        }
+
+        // Jika belum ada, lakukan insert
+        DB::table('pilih_cetak_rapors')->insert([
+            'id_personil' => $validatedData['id_personil'],
+            'tahunajaran' => $validatedData['tahunajaran'],
+            'semester' => $validatedData['semester'],
+            'kode_kk' => $validatedData['kode_kk'],
+            'tingkat' => $validatedData['tingkat'],
+            'kode_rombel' => $validatedData['kode_rombel'],
+            'nis' => $validatedData['nis'],
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->back()->with('toast_success', 'Data berhasil disimpan.');
     }
 }
