@@ -65,189 +65,136 @@
     @endcomponent
     <div class="row">
         <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body checkout-tab">
-
-
-                    <div class="step-arrow-nav mt-n3 mx-n3 mb-3">
-
-                        <ul class="nav nav-pills nav-justified custom-nav" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link fs-15 p-3" id="pills-bill-info-tab" data-bs-toggle="pill"
-                                    data-bs-target="#pills-bill-info" type="button" role="tab"
-                                    aria-controls="pills-bill-info" aria-selected="true"><i
-                                        class=" ri-account-pin-box-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
-                                    Identitas</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link fs-15 p-3" id="pills-bill-address-tab" data-bs-toggle="pill"
-                                    data-bs-target="#pills-bill-address" type="button" role="tab"
-                                    aria-controls="pills-bill-address" aria-selected="false"><i
-                                        class="ri-article-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
-                                    Nilai</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link fs-15 p-3" id="pills-payment-tab" data-bs-toggle="pill"
-                                    data-bs-target="#pills-payment" type="button" role="tab"
-                                    aria-controls="pills-payment" aria-selected="false"><i
-                                        class="ri-bank-card-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>
-                                    Lampiran</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link fs-15 p-3 active" id="pills-finish-tab" data-bs-toggle="pill"
-                                    data-bs-target="#pills-finish" type="button" role="tab"
-                                    aria-controls="pills-finish" aria-selected="false"><i
-                                        class="ri-printer-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i>Cetak
-                                </button>
-                            </li>
-                        </ul>
+            <div class="card" id="orderList">
+                <div class="card-header border-0">
+                    <div class="row align-items-center gy-3">
+                        <div class="col-sm">
+                            <h5 class="card-title mb-0">Cetak Rapor</h5>
+                        </div>
+                        <div class="col-sm-auto">
+                            <div class="d-flex gap-1 flex-wrap">
+                                <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal"
+                                    id="create-btn" data-bs-target="#showModal"><i
+                                        class="ri-add-line align-bottom me-1"></i> Create ID</button>
+                                <button type="button" class="btn btn-info"><i
+                                        class="ri-file-download-line align-bottom me-1"></i> Import</button>
+                                <button class="btn btn-soft-danger" id="remove-actions" onClick="deleteMultiple()"><i
+                                        class="ri-delete-bin-2-line"></i></button>
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="tab-content">
-                        <div class="tab-pane fade" id="pills-bill-info" role="tabpanel"
-                            aria-labelledby="pills-bill-info-tab">
-                            <div>
-                                <h5 class="mb-1">Halaman Depan</h5>
-                                <p class="text-muted mb-4">Cover, Idenitas Sekolah, Identitas Peserta Didik,
-                                    Petunjuk Rapor</p>
-                            </div>
-
-                            <div>
-                                <div id="printable-area-depan">
-                                    @include('pages.kurikulum.dokumensiswa.cetak-rapor-identitas')
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end tab pane -->
-
-                        <div class="tab-pane fade" id="pills-bill-address" role="tabpanel"
-                            aria-labelledby="pills-bill-address-tab">
-                            <div>
-                                <h5 class="mb-1">Isi Raport</h5>
-                                <p class="text-muted mb-4">Laporan Hasil Belajar, Praktik Kerja Lapangan,
-                                    Ekstrakurikuler, Prestasi, Ketidakhadiran</p>
-                            </div>
-
-                            <div id="printable-area-nilai">
-                                @include('pages.kurikulum.dokumensiswa.cetak-rapor-nilai')
-                            </div>
-                        </div>
-                        <!-- end tab pane -->
-
-                        <div class="tab-pane fade" id="pills-payment" role="tabpanel" aria-labelledby="pills-payment-tab">
-                            <div>
-                                <h5 class="mb-1">Lampiran-Lampiran</h5>
-                                <p class="text-muted mb-4">Keterangan Pindah Sekolah, Prestasi yang pernah di capai.
-                                </p>
-                            </div>
-
-                            <div id="printable-area-lampiran">
-                                @include('pages.kurikulum.dokumensiswa.cetak-rapor-lampiran')
-                            </div>
-                        </div>
-                        <!-- end tab pane -->
-
-                        <div class="tab-pane fade show active" id="pills-finish" role="tabpanel"
-                            aria-labelledby="pills-finish-tab">
-
-                            @include('pages.kurikulum.dokumensiswa.cetak-rapor-pilihdata')
-
-                        </div>
-                        <!-- end tab pane -->
-                    </div>
-                    <!-- end tab content -->
                 </div>
-                <!-- end card body -->
+                <div class="card-body pt-2">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="nav nav-pills flex-column nav-pills-tab custom-verti-nav-pills text-center"
+                                role="tablist" aria-orientation="vertical">
+                                <a class="nav-link active show" id="custom-v-pills-data-cetak-tab" data-bs-toggle="pill"
+                                    href="#custom-v-pills-data-cetak" role="tab"
+                                    aria-controls="custom-v-pills-data-cetak" aria-selected="true">
+                                    <i class="ri-printer-line d-block fs-20 mb-1"></i>Data Cetak</a>
+                                <a class="nav-link" id="custom-v-pills-depan-tab" data-bs-toggle="pill"
+                                    href="#custom-v-pills-depan" role="tab" aria-controls="custom-v-pills-depan"
+                                    aria-selected="true">
+                                    <i class="ri-account-pin-box-line d-block fs-20 mb-1"></i>Halaman Depan</a>
+                                <a class="nav-link" id="custom-v-pills-nilai-tab" data-bs-toggle="pill"
+                                    href="#custom-v-pills-nilai" role="tab" aria-controls="custom-v-pills-nilai"
+                                    aria-selected="false">
+                                    <i class="ri-article-line d-block fs-20 mb-1"></i>Daftar Nilai</a>
+                                <a class="nav-link" id="custom-v-pills-lampiran-tab" data-bs-toggle="pill"
+                                    href="#custom-v-pills-lampiran" role="tab" aria-controls="custom-v-pills-lampiran"
+                                    aria-selected="false">
+                                    <i class="ri-bank-card-line d-block fs-20 mb-1"></i>Lampiran</a>
+                            </div>
+                        </div> <!-- end col-->
+                        <div class="col-lg-9">
+                            <div class="tab-content mt-3 mt-lg-0">
+                                <div class="tab-pane fade active show" id="custom-v-pills-data-cetak" role="tabpanel"
+                                    aria-labelledby="custom-v-pills-data-cetak-tab">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <!-- Rounded Ribbon -->
+                                            <div class="card ribbon-box border shadow-none mb-lg-0">
+                                                <div class="card-body">
+                                                    <div class="ribbon ribbon-primary round-shape">Pilih data Cetak</div>
+                                                    <h5 class="fs-14 text-end"></h5>
+                                                    <div class="ribbon-content mt-4 text-muted">
+                                                        <p class="mb-0">Quisque nec turpis at urna dictum luctus.
+                                                            Suspendisse convallis dignissim eros at volutpat. In egestas
+                                                            mattis dui. Aliquam mattis dictum aliquet. Nulla sapien mauris,
+                                                            eleifend et sem ac, commodo dapibus odio.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <!-- Right Ribbon -->
+                                            <div class="card ribbon-box border shadow-none right mb-lg-0">
+                                                <div class="card-body">
+                                                    <div class="ribbon ribbon-info round-shape">Cetak</div>
+                                                    <h5 class="fs-14 text-start">data terpilih</h5>
+                                                    <div class="ribbon-content mt-4 text-muted">
+                                                        <div class="d-grid gap-2">
+                                                            <button class="btn btn-soft-info mt-2"
+                                                                onclick="printContent('printable-area-depan')">Cetak
+                                                                Halaman Depan</button>
+                                                            <button class="btn btn-soft-info mt-2"
+                                                                onclick="printContent('printable-area-nilai')">Cetak
+                                                                Halaman Nilai</button>
+                                                            <button class="btn btn-soft-info mt-2"
+                                                                onclick="printContent('printable-area-lampiran')">Cetak
+                                                                Halaman Lampiran</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div><!--end tab-pane-->
+                                <div class="tab-pane fade" id="custom-v-pills-depan" role="tabpanel"
+                                    aria-labelledby="custom-v-pills-depan-tab">
+                                    <div data-simplebar data-simplebar-auto-hide="false" style="max-height: 380px;"
+                                        class="px-4">
+                                        <div id="printable-area-depan">
+                                            @include('pages.kurikulum.dokumensiswa.cetak-rapor-identitas')
+                                        </div>
+                                    </div>
+                                </div><!--end tab-pane-->
+                                <div class="tab-pane fade" id="custom-v-pills-nilai" role="tabpanel"
+                                    aria-labelledby="custom-v-pills-nilai-tab">
+                                    <div data-simplebar data-simplebar-auto-hide="false" style="max-height: 380px;"
+                                        class="px-4">
+                                        <div id="printable-area-nilai">
+                                            @include('pages.kurikulum.dokumensiswa.cetak-rapor-nilai')
+                                        </div>
+                                    </div>
+                                </div><!--end tab-pane-->
+                                <div class="tab-pane fade" id="custom-v-pills-lampiran" role="tabpanel"
+                                    aria-labelledby="custom-v-pills-lampiran-tab">
+                                    <div data-simplebar data-simplebar-auto-hide="false" style="max-height: 380px;"
+                                        class="px-4">
+                                        <div id="printable-area-lampiran">
+                                            @include('pages.kurikulum.dokumensiswa.cetak-rapor-lampiran')
+                                        </div>
+                                    </div>
+                                </div><!--end tab-pane-->
+                            </div>
+                        </div> <!-- end col-->
+                    </div> <!-- end row-->
+                </div>
             </div>
         </div>
-        <!-- end col -->
+
     </div>
-    <!-- end row -->
+    <!--end col-->
+    </div>
+    @include('pages.kurikulum.dokumensiswa.cetak-rapor-input')
 @endsection
 @section('script')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
 @endsection
 @section('script-bottom')
-    <script>
-        $(document).ready(function() {
-            // Fungsi untuk memperbarui opsi Kode Rombel
-            function updateRombelOptions() {
-                const tahunajaran = $('#tahun_ajaran').val();
-                const kode_kk = $('#kode_kk').val();
-                const tingkat = $('#tingkat').val();
-
-                if (tahunajaran && kode_kk && tingkat) {
-                    $.ajax({
-                        url: '{{ route('kurikulum.dokumentsiswa.getrombeloptions') }}',
-                        method: 'GET',
-                        data: {
-                            tahunajaran: tahunajaran,
-                            kode_kk: kode_kk,
-                            tingkat: tingkat,
-                        },
-                        success: function(data) {
-                            $('#kode_rombel').empty().append('<option value="">Pilih Rombel</option>');
-                            $.each(data, function(key, value) {
-                                $('#kode_rombel').append(
-                                    `<option value="${key}">${value}</option>`);
-                            });
-                        },
-                        error: function() {
-                            alert('Terjadi kesalahan saat memuat data rombel.');
-                        },
-                    });
-                } else {
-                    $('#kode_rombel').empty().append('<option value="">Pilih Rombel</option>');
-                }
-            }
-
-            // Fungsi untuk memperbarui opsi Peserta Didik
-            function updatePesertaDidikOptions() {
-                const tahunajaran = $('#tahun_ajaran').val();
-                const kode_kk = $('#kode_kk').val();
-                const tingkat = $('#tingkat').val();
-                const kode_rombel = $('#kode_rombel').val();
-
-                if (tahunajaran && kode_kk && tingkat && kode_rombel) {
-                    $.ajax({
-                        url: '{{ route('kurikulum.dokumentsiswa.getpesertadidikoptions') }}',
-                        method: 'GET',
-                        data: {
-                            tahunajaran: tahunajaran,
-                            kode_kk: kode_kk,
-                            tingkat: tingkat,
-                            kode_rombel: kode_rombel,
-                        },
-                        success: function(data) {
-                            $('#nis').empty().append('<option value="">Pilih Peserta Didik</option>');
-                            $.each(data, function(key, value) {
-                                $('#nis').append(`<option value="${key}">${value}</option>`);
-                            });
-                        },
-                        error: function() {
-                            alert('Terjadi kesalahan saat memuat data peserta didik.');
-                        },
-                    });
-                } else {
-                    $('#nis').empty().append('<option value="">Pilih Peserta Didik</option>');
-                }
-            }
-
-            // Event listeners untuk perubahan nilai
-            $('#tahun_ajaran, #kode_kk, #tingkat').on('change', function() {
-                updateRombelOptions();
-                $('#nis').empty().append('<option value="">Pilih Peserta Didik</option>'); // Reset siswa
-            });
-
-            $('#tahun_ajaran, #kode_kk, #tingkat, #kode_rombel').on('change', function() {
-                updatePesertaDidikOptions();
-            });
-
-            // Panggil fungsi saat halaman dimuat untuk mengisi data saat edit
-            updateRombelOptions();
-            updatePesertaDidikOptions();
-        });
-    </script>
     <script>
         @if (session('toast_success'))
             showToast('success', '{{ session('toast_success') }}');

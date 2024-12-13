@@ -51,8 +51,7 @@ class CetakRaporController extends Controller
         $kompetensiKeahlianOptions = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
         $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
 
-        $rombelOptions = RombonganBelajar::where('tahunajaran', $tahunAjaranAktif->tahunajaran)
-            ->pluck('rombel', 'kode_rombel')->toArray();
+        $rombonganBelajar = RombonganBelajar::pluck('rombel', 'rombel')->toArray();
 
         $pesertadidikOptions = PesertaDidik::pluck('nama_lengkap', 'nis')->toArray();
 
@@ -273,7 +272,7 @@ class CetakRaporController extends Controller
             'semester' => $semester,
             'tahunAjaranOptions' => $tahunAjaranOptions,
             'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
-            'rombelOptions' => $rombelOptions,
+            'rombonganBelajar' => $rombonganBelajar,
             'pesertadidikOptions' => $pesertadidikOptions,
             'school' => $school,
             'barcodeImage' => $barcodeImage,
@@ -357,16 +356,12 @@ class CetakRaporController extends Controller
 
     public function getRombelOptions(Request $request)
     {
-        $tahunajaran = $request->tahunajaran;
-        $kode_kk = $request->kode_kk;
-        $tingkat = $request->tingkat;
+        $rombels = RombonganBelajar::where('tahunajaran', $request->tahunajaran)
+            ->where('id_kk', $request->kode_kk)
+            ->where('tingkat', $request->tingkat)
+            ->get();
 
-        $rombelOptions = RombonganBelajar::where('tahunajaran', $tahunajaran)
-            ->where('id_kk', $kode_kk)
-            ->where('tingkat', $tingkat)
-            ->pluck('rombel', 'kode_rombel');
-
-        return response()->json($rombelOptions);
+        return response()->json($rombels);
     }
 
     public function getPesertaDidikOptions(Request $request)
