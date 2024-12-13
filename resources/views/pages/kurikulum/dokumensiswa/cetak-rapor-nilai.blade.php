@@ -320,15 +320,13 @@
                         <td>&nbsp;</td>
                         <td>
                             <strong>Catatan Wali Kelas</strong>
-                            <table
-                                style='width:100%;margin: 0 auto;padding: 5px 10px;border-collapse:collapse;border: 1px solid #000;'>
+                            <table class="cetak-rapor">
                                 <tr>
                                     <td height='100' valign='top' style='padding: 5px 10px;'>
-                                        <p>{$Hcatwk['catatan']}</p>
+                                        <p> </p>
                                     </td>
                                 </tr>
                             </table>
-
                         </td>
                     </tr>
                 </table>

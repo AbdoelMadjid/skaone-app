@@ -157,8 +157,6 @@
 
 {{-- IDENTITAS SEKOLAH --}}
 <div id='cetak-sekolah' style='@page {size: A4;} page-break-before: always;'>
-    <img style=' position: absolute; padding: 250px 2px 15px -250px; margin-left:180px;margin-top:215px;'
-        src='img/logosmktrans.png' border='0' alt=''>
     <div class='table-responsive'>
         <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:16px Times New Roman;'>
             <tr>
@@ -203,9 +201,6 @@
                             <td>NPSN</td>
                             <td>:</td>
                             <td>{{ $school->npsn }}</td>
-                        </tr>
-                        <tr>
-                            <td colspan='3'>&nbsp;</td>
                         </tr>
                         <tr>
                             <td colspan='3'>&nbsp;</td>
@@ -396,25 +391,31 @@
                             <td style='padding:4px 8px;'></td>
                             <td style='padding:4px 8px;'>a. Ayah</td>
                             <td style='padding:4px 8px;'>:</td>
-                            <td style='padding:4px 8px;'>{{-- {!! ucwords(strtolower($siswaOrtu->nm_ayah)) !!} --}}</td>
+                            <td style='padding:4px 8px;'>{!! ucwords(strtolower($dataSiswa->nm_ayah)) !!}</td>
                         </tr>
                         <tr>
                             <td style='padding:4px 8px;'></td>
                             <td style='padding:4px 8px;'>b. Ibu</td>
                             <td style='padding:4px 8px;'>:</td>
-                            <td style='padding:4px 8px;'>{{-- {!! ucwords(strtolower($siswaOrtu->nm_ibu)) !!} --}}</td>
+                            <td style='padding:4px 8px;'>{!! ucwords(strtolower($dataSiswa->nm_ibu)) !!}</td>
                         </tr>
                         <tr>
                             <td valign='top' style='padding:4px 8px;'>13.</td>
                             <td valign='top' style='padding:4px 8px;'>Alamat Orang Tua</td>
                             <td valign='top' style='padding:4px 8px;'>:</td>
-                            <td style='padding:4px 8px;'></td>
+                            <td style='padding:4px 8px;'>
+                                Blok {{ $dataSiswa->ortu_alamat_blok }}, <br>
+                                Desa/Kelurahan {{ $dataSiswa->ortu_alamat_desa }}
+                                Kecamatan {{ $dataSiswa->ortu_alamat_kec }}
+                                Kabupaten {{ $dataSiswa->ortu_alamat_kab }}<br>
+                                Kode Pos : {{ $dataSiswa->ortu_alamat_kodepos }}
+                            </td>
                         </tr>
                         <tr>
                             <td style='padding:4px 8px;'></td>
                             <td style='padding:4px 8px;'>Telepon Orang Tua</td>
                             <td style='padding:4px 8px;'>:</td>
-                            <td style='padding:4px 8px;'>{{-- {!! $siswaOrtu->ortu_kontak_telepon !!} --}}</td>
+                            <td style='padding:4px 8px;'>{!! $dataSiswa->ortu_kontak_telepon !!}</td>
                         </tr>
                         <tr>
                             <td style='padding:4px 8px;'>14.</td>
@@ -426,13 +427,13 @@
                             <td style='padding:4px 8px;'></td>
                             <td style='padding:4px 8px;'>a. Ayah</td>
                             <td style='padding:4px 8px;'>:</td>
-                            <td style='padding:4px 8px;'>{{-- {!! $siswaOrtu->pekerjaan_ayah !!} --}}</td>
+                            <td style='padding:4px 8px;'>{!! $dataSiswa->pekerjaan_ayah !!}</td>
                         </tr>
                         <tr>
                             <td style='padding:4px 8px;'></td>
                             <td style='padding:4px 8px;'>a. Ibu</td>
                             <td style='padding:4px 8px;'>:</td>
-                            <td style='padding:4px 8px;'>{{-- {!! $siswaOrtu->pekerjaan_ibu !!} --}}</td>
+                            <td style='padding:4px 8px;'>{!! $dataSiswa->pekerjaan_ibu !!}</td>
                         </tr>
                         <tr>
                             <td style='padding:4px 8px;'>15.</td>

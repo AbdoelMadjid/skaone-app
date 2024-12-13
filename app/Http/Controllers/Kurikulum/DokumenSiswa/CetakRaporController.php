@@ -57,11 +57,6 @@ class CetakRaporController extends Controller
 
         $dataPilCR = PilihCetakRapor::where('id_personil', $personal_id)->first();
 
-        //sample
-        $niss = $dataPilCR->nis;
-        $tahunAjaran = $dataPilCR->tahunajaran;
-        $seMester = $semester->semester;
-
         // Query untuk mengambil data siswa dan keahlian
         $dataSiswa = DB::table('peserta_didiks')
             ->select(
@@ -73,13 +68,29 @@ class CetakRaporController extends Controller
                 'peserta_didik_rombels.rombel_tingkat',
                 'peserta_didik_rombels.rombel_kode',
                 'peserta_didik_rombels.rombel_nama',
+                'peserta_didik_ortus.status',
+                'peserta_didik_ortus.nm_ayah',
+                'peserta_didik_ortus.nm_ibu',
+                'peserta_didik_ortus.pekerjaan_ayah',
+                'peserta_didik_ortus.pekerjaan_ibu',
+                'peserta_didik_ortus.ortu_alamat_blok',
+                'peserta_didik_ortus.ortu_alamat_norumah',
+                'peserta_didik_ortus.ortu_alamat_rt',
+                'peserta_didik_ortus.ortu_alamat_rw',
+                'peserta_didik_ortus.ortu_alamat_desa',
+                'peserta_didik_ortus.ortu_alamat_kec',
+                'peserta_didik_ortus.ortu_alamat_kab',
+                'peserta_didik_ortus.ortu_alamat_kodepos',
+                'peserta_didik_ortus.ortu_kontak_telepon',
+                'peserta_didik_ortus.ortu_kontak_email',
             )
             ->join('kompetensi_keahlians', 'peserta_didiks.kode_kk', '=', 'kompetensi_keahlians.idkk')
             ->join('program_keahlians', 'kompetensi_keahlians.id_pk', '=', 'program_keahlians.idpk')
             ->join('bidang_keahlians', 'kompetensi_keahlians.id_bk', '=', 'bidang_keahlians.idbk')
             ->join('peserta_didik_rombels', 'peserta_didiks.nis', '=', 'peserta_didik_rombels.nis')
-            ->where('peserta_didiks.nis', $niss)
-            ->where('peserta_didik_rombels.tahun_ajaran', $tahunAjaran)
+            ->leftJoin('peserta_didik_ortus', 'peserta_didiks.nis', '=', 'peserta_didik_ortus.nis')
+            ->where('peserta_didiks.nis', $dataPilCR->nis)
+            ->where('peserta_didik_rombels.tahun_ajaran', $dataPilCR->tahunajaran)
             ->first();
 
         // Pastikan data  siswa ditemukan
@@ -88,13 +99,19 @@ class CetakRaporController extends Controller
         }
 
         // Ambil data Orang Tua
-        /*  $siswaOrtu = PesertaDidikOrtu::where('nis', $niss)->first();
+        /* $siswaOrtu = PesertaDidikOrtu::where('nis', $dataPilCR->nis)->first();
 
-        // Pastikan data ditemukan
+        // Jika tidak ada data orang tua, beri nilai default
         if (!$siswaOrtu) {
-            return redirect()->back()->with('error', 'Data Orang Tua tidak ditemukan.');
-        } */
-
+            $siswaOrtu = (object) [
+                'nm_ayah' => 'Data Ayah Tidak Tersedia',
+                'nm_ibu' => 'Data Ibu Tidak Tersedia',
+                'ortu_kontak_telepon' => 'Tidak Diketahui',
+                'pekerjaan_ayah' => 'Tidak Diketahui',
+                'pekerjaan_ibu' => 'Tidak Diketahui',
+            ];
+        }
+ */
         // Ambil data identitas sekolah
         $school = IdentitasSekolah::first();
 
