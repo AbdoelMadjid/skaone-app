@@ -422,7 +422,7 @@
                                         <table width='100%'>
                                             <tr>
                                                 <td>
-                                                    {!! $titiMangsa->alamat ?? 'Titimangsa isi terlebih dahulu' !!}, {!! formatTanggalIndonesia($titiMangsa->titimangsa ?? '') !!} <br>
+                                                    {!! ucwords(strtolower($titiMangsa->alamat)) ?? 'Titimangsa isi terlebih dahulu' !!}, {!! formatTanggalIndonesia($titiMangsa->titimangsa ?? '') !!} <br>
                                                     Wali Kelas,
                                                     <p>&nbsp;</p>
                                                     <p>&nbsp;</p>
