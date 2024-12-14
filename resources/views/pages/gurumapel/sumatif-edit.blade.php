@@ -102,8 +102,8 @@
                                             <input type="text" class="rerata_sumatif"
                                                 name="rerata_sumatif_{{ $siswa->nis }}"
                                                 id="rerata_sumatif_{{ $siswa->nis }}"
-                                                value="{{ number_format(($siswa->sts + $siswa->sas) / 2, 0) }}" readonly
-                                                style="width: 75px; text-align: center;" />
+                                                value="{{ number_format((intval($siswa->sts) + intval($siswa->sas)) / 2, 0) }}"
+                                                readonly style="width: 75px; text-align: center;" />
                                         </td>
                                     </tr>
                                 @endforeach
