@@ -428,7 +428,7 @@
                                                     <p>&nbsp;</p>
                                                     <strong>
                                                         {!! $waliKelas->gelardepan !!}
-                                                        {!! $waliKelas->namalengkap !!},
+                                                        {!! strtoupper(strtolower($waliKelas->namalengkap)) !!},
                                                         {!! $waliKelas->gelarbelakang !!}
                                                     </strong><br>
                                                     NIP. {!! $waliKelas->nip !!}
