@@ -133,7 +133,7 @@
                                             <div class="card ribbon-box border shadow-none right mb-lg-0">
                                                 <div class="card-body">
                                                     <div class="ribbon ribbon-info round-shape">Cetak</div>
-                                                    <h5 class="fs-14 text-start">{{ $personal_id }}</h5>
+                                                    <h5 class="fs-14 text-start"></h5>
                                                     <div class="ribbon-content mt-4 text-muted">
                                                         <div class="d-grid gap-2">
                                                             <button class="btn btn-soft-info mt-2"
