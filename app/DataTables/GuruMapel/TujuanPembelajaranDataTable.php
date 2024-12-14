@@ -64,7 +64,7 @@ class TujuanPembelajaranDataTable extends DataTable
                     '<br><br>[' . $row->tp_no . '] <strong>Deskripsi rendah</strong>: ' . $row->tp_desk_rendah . ' ' . $row->tp_isi;
 
                 $editData = '
-                    <form action="' . route('gurumapel.datangajar.updatetujuanpembelajaran', ['id' => $row->id]) . '" method="POST">
+                     <form class="update-tp-form" data-id="' . $row->id . '">
                         ' . csrf_field() . '
                         <textarea class="form-control edit-tp-textarea" name="tp_isi" id="tp_isi_' . $row->id . '" rows="5" style="display: none;">' . $row->tp_isi . '</textarea>
                         <div class="gap-2 hstack justify-content-end mt-3">

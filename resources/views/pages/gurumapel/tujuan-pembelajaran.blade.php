@@ -427,6 +427,36 @@
                 $(this).closest('form').find('button[type="submit"]').show(); // Tampilkan tombol Submit
             });
 
+            $(document).on('submit', '.update-tp-form', function(e) {
+                e.preventDefault(); // Cegah reload halaman
+
+                var form = $(this);
+                var id = form.data('id'); // Ambil ID dari atribut data-id
+                var url = `/gurumapel/datangajar/updatetujuanpembelajaran/${id}`; // URL sesuai route
+                var data = form.serialize(); // Serialisasi data form
+
+                $.ajax({
+                    url: url,
+                    type: 'POST', // Gunakan POST meskipun method disimulasikan sebagai PUT
+                    data: data,
+                    success: function(response) {
+                        // Tampilkan notifikasi sukses (opsional)
+                        showToast('success', 'Data berhasil diperbarui!');
+
+                        $('#tujuanpembelajaran-table').DataTable().ajax.reload(null, false);
+
+                        // Sembunyikan textarea dan kembalikan tombol Edit
+                        form.find('.edit-tp-textarea').hide();
+                        form.find('.submit-tp-button').hide();
+                        form.find('.edit-tp-button').show();
+                    },
+                    error: function(xhr) {
+                        // Tampilkan pesan error
+                        showToast('error', 'Terjadi kesalahan: ' + xhr.responseText);
+                    }
+                });
+            });
+
             handleDataTableEvents(datatable);
             handleAction(datatable)
             handleDelete(datatable)
