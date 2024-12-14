@@ -14,6 +14,7 @@ use App\Models\ManajemenSekolah\RombonganBelajar;
 use App\Models\ManajemenSekolah\Semester;
 use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Models\WaliKelas\Ekstrakurikuler;
+use App\Models\WaliKelas\PrestasiSiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -128,6 +129,13 @@ class CetakRaporController extends Controller
             ->where('kode_rombel', $dataPilCR->kode_rombel)
             ->first();
 
+        $catatanWaliKelas = DB::table('catatan_wali_kelas')
+            ->where('tahunajaran', $dataPilCR->tahunajaran)
+            ->where('ganjilgenap', $dataPilCR->semester)
+            ->where('kode_rombel', $dataPilCR->kode_rombel)
+            ->where('nis', $dataPilCR->nis)
+            ->first();
+
         $absensiSiswa = DB::table('absensi_siswas')
             ->where('nis', $dataPilCR->nis)
             ->where('tahunajaran', $dataPilCR->tahunajaran)
@@ -135,6 +143,11 @@ class CetakRaporController extends Controller
             ->where('kode_rombel', $dataPilCR->kode_rombel)
             ->first();
 
+        $prestasiSiswas = PrestasiSiswa::where('kode_rombel', $dataPilCR->kode_rombel)
+            ->where('tahunajaran', $dataPilCR->tahunajaran)
+            ->where('ganjilgenap', $dataPilCR->semester)
+            ->where('nis', $dataPilCR->nis)
+            ->get();
 
         // Fetch data based on filters
         $ekstrakurikulers = Ekstrakurikuler::where('kode_rombel', $dataPilCR->kode_rombel)
@@ -374,6 +387,8 @@ class CetakRaporController extends Controller
             'titiMangsa' => $titiMangsa,
             'absensiSiswa' => $absensiSiswa,
             'activities' => $activities,
+            'catatanWaliKelas' => $catatanWaliKelas,
+            'prestasiSiswas' => $prestasiSiswas,
         ]);
     }
 

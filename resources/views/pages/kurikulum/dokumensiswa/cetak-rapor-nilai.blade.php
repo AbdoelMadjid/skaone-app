@@ -18,7 +18,7 @@
                                     <tr>
                                         <td style='padding: 2px 0px;'>NIS / NISN</td>
                                         <td style='padding: 2px 0px;'>:</td>
-                                        <td style='padding: 2px 0px;'>{!! $dataSiswa->nis !!}/{!! $dataSiswa->nisn !!}
+                                        <td style='padding: 2px 0px;'>{!! $dataSiswa->nis !!} / {!! $dataSiswa->nisn !!}
                                         </td>
                                     </tr>
                                     <tr>
@@ -176,7 +176,7 @@
                                 <tr>
                                     <td style='padding: 2px 0px;'>NIS / NISN</td>
                                     <td style='padding: 2px 0px;'>:</td>
-                                    <td style='padding: 2px 0px;'>{!! $dataSiswa->nis !!}/{!! $dataSiswa->nisn !!}</td>
+                                    <td style='padding: 2px 0px;'>{!! $dataSiswa->nis !!} / {!! $dataSiswa->nisn !!}</td>
                                 </tr>
                                 <tr>
                                     <td width='125' style='padding: 2px 0px;'>Nama Sekolah</td>
@@ -279,16 +279,48 @@
                                         Prestasi</th>
                                     <th style='text-align:center;padding:4px 8px;'>Keterangan</strong></th>
                                 </tr>
-                                <tr>
-                                    <td style='padding:4px 8px;' class='text-center'>1.</td>
-                                    <td style='padding:4px 8px;' valign='top'></td>
-                                    <td style='padding:4px 8px;' valign='top'></td>
-                                </tr>
-                                <tr>
-                                    <td style='padding:4px 8px;' class='text-center'>2.</td>
-                                    <td style='padding:4px 8px;' valign='top'></td>
-                                    <td style='padding:4px 8px;' valign='top'></td>
-                                </tr>
+                                @forelse ($prestasiSiswas as $index => $prestasi)
+                                    <tr>
+                                        <td class='text-center'>{{ $index + 1 }}</td>
+                                        <td>{{ $prestasi->jenis }}</td>
+                                        <td>
+                                            <table class="no-border">
+                                                <tr>
+                                                    <td>Tingkat</td>
+                                                    <td>{{ $prestasi->tingkat }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Juara Ke</td>
+                                                    <td>{{ $prestasi->juarake }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Nama Lomba</td>
+                                                    <td>{{ $prestasi->namalomba }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Tgl Pelaksanaan</td>
+                                                    <td>{{ $prestasi->tanggal }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Tempat Pelaksanaan</td>
+                                                    <td> {{ $prestasi->tempat }}</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td style='padding:4px 8px;' class='text-center'>1.</td>
+                                        <td style='padding:4px 8px;' valign='top'></td>
+                                        <td style='padding:4px 8px;' valign='top'></td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding:4px 8px;' class='text-center'>2.</td>
+                                        <td style='padding:4px 8px;' valign='top'></td>
+                                        <td style='padding:4px 8px;' valign='top'></td>
+                                    </tr>
+                                @endforelse
+
                             </table>
                         </td>
                     </tr>
@@ -351,7 +383,7 @@
                             <table class="cetak-rapor">
                                 <tr>
                                     <td height='100' valign='top' style='padding: 5px 10px;'>
-                                        <p> </p>
+                                        <p> {!! $catatanWaliKelas->catatan ?? '' !!}</p>
                                     </td>
                                 </tr>
                             </table>

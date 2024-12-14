@@ -41,7 +41,15 @@
         }
 
         .no-border {
-            border: none;
+            border: 0 !important;
+            border-collapse: collapse !important;
+        }
+
+        .cetak-rapor .no-border,
+        .cetak-rapor .no-border th,
+        .cetak-rapor .no-border td {
+            border: none !important;
+            /* Hapus border secara eksplisit */
         }
 
         .text-center {
