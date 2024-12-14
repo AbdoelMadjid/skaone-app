@@ -60,8 +60,20 @@ class TujuanPembelajaranDataTable extends DataTable
                 return $row->kode_cp . '<br><em>Data tidak ditemukan</em>';
             })
             ->addColumn('desk', function ($row) {
-                return '<strong>Deskripsi tinggi</strong>: ' . $row->tp_desk_tinggi . ' ' . $row->tp_isi .
-                    '<br><br><strong>Deskripsi rendah</strong>: ' . $row->tp_desk_rendah . ' ' . $row->tp_isi; // Menampilkan jumlah siswa di kolom
+                $deskripsiNilai = '[' . $row->tp_no . '] <strong>Deskripsi tinggi</strong>: ' . $row->tp_desk_tinggi . ' ' . $row->tp_isi .
+                    '<br><br>[' . $row->tp_no . '] <strong>Deskripsi rendah</strong>: ' . $row->tp_desk_rendah . ' ' . $row->tp_isi;
+
+                $editData = '
+                    <form action="' . route('gurumapel.datangajar.updatetujuanpembelajaran', ['id' => $row->id]) . '" method="POST">
+                        ' . csrf_field() . '
+                        <textarea class="form-control edit-tp-textarea" name="tp_isi" id="tp_isi_' . $row->id . '" rows="5" style="display: none;">' . $row->tp_isi . '</textarea>
+                        <div class="gap-2 hstack justify-content-end mt-3">
+                            <button class="btn btn-soft-danger edit-tp-button" data-target="#tp_isi_' . $row->id . '" type="button">Edit</button>
+                            <button type="submit" class="btn btn-soft-success" style="display: none;">Submit</button>
+                        </div>
+                    </form>';
+
+                return $deskripsiNilai . '<br><br><br>' . $editData;
             })
             ->addColumn('action', function ($row) {
                 $actions = $this->basicActions($row);

@@ -52,6 +52,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/savetujuanpembelajaran', [TujuanPembelajaranController::class, 'saveTujuanPembelajaran'])->name('savetujuanpembelajaran');
             Route::get('/checktujuanpembelajaran', [TujuanPembelajaranController::class, 'checkTujuanPembelajaran'])->name('checktujuanpembelajaran');
             Route::post('/hapustujuanpembelajaran', [TujuanPembelajaranController::class, 'hapusTujuanPembelajaran'])->name('hapustujuanpembelajaran');
+            Route::post('/updatetujuanpembelajaran/{id}', [TujuanPembelajaranController::class, 'updateTujuanPembelajaran'])->name('updatetujuanpembelajaran');
         });
 
         Route::group(['prefix' => 'penilaian', 'as' => 'penilaian.'], function () {

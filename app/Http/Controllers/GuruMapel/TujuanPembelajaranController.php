@@ -308,4 +308,25 @@ class TujuanPembelajaranController extends Controller
         return redirect()->route('gurumapel.datangajar.tujuan-pembelajaran.index')
             ->with('toast_success', 'Tujuan Pembelajaran berhasil disimpan.');
     }
+
+    public function updateTujuanPembelajaran(Request $request, $id)
+    {
+        // Validasi data
+        $validatedData = $request->validate([
+            'tp_isi' => 'required|string|max:255',
+        ]);
+
+        // Cari record berdasarkan ID
+        $row = TujuanPembelajaran::find($id);
+
+        if ($row) {
+            // Update data
+            $row->tp_isi = $validatedData['tp_isi'];
+            $row->save(); // Simpan perubahan
+
+            return redirect()->back()->with('success', 'Data berhasil diperbarui!');
+        }
+
+        return redirect()->back()->with('error', 'Data tidak ditemukan!');
+    }
 }

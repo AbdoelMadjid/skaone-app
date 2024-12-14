@@ -418,6 +418,15 @@
                 $('#judul-tp').hide();
             });
 
+            $(document).on('click', '.edit-tp-button', function() {
+                var targetTextarea = $(this).data('target'); // Ambil ID dari atribut data-target
+                $(targetTextarea).show(); // Tampilkan textarea
+
+                // Ubah tombol menjadi submit
+                $(this).hide(); // Sembunyikan tombol Edit
+                $(this).closest('form').find('button[type="submit"]').show(); // Tampilkan tombol Submit
+            });
+
             handleDataTableEvents(datatable);
             handleAction(datatable)
             handleDelete(datatable)
