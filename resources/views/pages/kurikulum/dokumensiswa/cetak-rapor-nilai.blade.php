@@ -343,7 +343,6 @@
                                     </td>
                                 </tr>
                             </table><br>
-                            {$SemesterGenap}
                             <table width='100%'>
                                 <tr>
                                     <td width='45%' valign='top'>
@@ -363,37 +362,44 @@
                                         <table width='100%'>
                                             <tr>
                                                 <td>
-                                                    Kadipaten, ....... <br>
+                                                    {!! $titiMangsa->alamat ?? 'Titimangsa isi terlebih dahulu' !!}, {!! formatTanggalIndonesia($titiMangsa->titimangsa ?? '') !!} <br>
                                                     Wali Kelas,
                                                     <p>&nbsp;</p>
                                                     <p>&nbsp;</p>
-                                                    <strong>Nama Wali Kelas</strong><br>
-                                                    NIP Wali kelas
+                                                    <strong>
+                                                        {!! $waliKelas->gelardepan !!}
+                                                        {!! $waliKelas->namalengkap !!},
+                                                        {!! $waliKelas->gelarbelakang !!}
+                                                    </strong><br>
+                                                    NIP. {!! $waliKelas->nip !!}
                                                 </td>
                                             </tr>
                                         </table>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td colspan='3'>
-                                        <table width='100%'>
-                                            <tr>
-                                                <td width='35%'>&nbsp;</td>
-                                                <td>
-                                                    <p>&nbsp;</p>
-                                                    Mengetahui :<br>
-                                                    Kepala Sekolah,
-                                                    <br><br><br><br>
-                                                    <strong>Nama Kepsek</strong><br>
-                                                    NIP. 1976 ...
-                                                    <p>&nbsp;</p>
-                                                </td>
-                                                <td></td>
-                                            </tr>
-                                        </table>
+                                @if ($dataPilCR->semester == 'Ganjil')
+                                @else
+                                    <tr>
+                                        <td colspan='3'>
+                                            <table width='100%'>
+                                                <tr>
+                                                    <td width='35%'>&nbsp;</td>
+                                                    <td>
+                                                        <p>&nbsp;</p>
+                                                        Mengetahui :<br>
+                                                        Kepala Sekolah,
+                                                        <br><br><br><br>
+                                                        <strong>{!! $kepsekttd->nama !!}</strong><br>
+                                                        NIP. {!! $kepsekttd->nip !!}
+                                                        <p>&nbsp;</p>
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                            </table>
 
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
+                                @endif
                             </table>
                         </td>
                     </tr>

@@ -30,34 +30,26 @@ class CetakRaporController extends Controller
         $user = Auth::user();
         $personal_id = $user->personal_id;
 
-        // Retrieve the active academic year
         $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
 
-        // Check if an active academic year is found
         if (!$tahunAjaranAktif) {
             return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
         }
 
-        // Retrieve the active semester related to the active academic year
         $semester = Semester::where('status', 'Aktif')
             ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
             ->first();
 
-        // Check if an active semester is found
         if (!$semester) {
             return redirect()->back()->with('error', 'Tidak ada semester aktif.');
         }
 
         $kompetensiKeahlianOptions = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
         $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
-
         $rombonganBelajar = RombonganBelajar::pluck('rombel', 'kode_rombel')->toArray();
-
         $pesertadidikOptions = PesertaDidik::pluck('nama_lengkap', 'nis')->toArray();
-
         $dataPilCR = PilihCetakRapor::where('id_personil', $personal_id)->first();
 
-        // Query untuk mengambil data siswa dan keahlian
         $dataSiswa = DB::table('peserta_didiks')
             ->select(
                 'peserta_didiks.*',
@@ -93,26 +85,10 @@ class CetakRaporController extends Controller
             ->where('peserta_didik_rombels.tahun_ajaran', $dataPilCR->tahunajaran)
             ->first();
 
-        // Pastikan data  siswa ditemukan
         if (!$dataSiswa) {
             return redirect()->back()->with('error', 'Data siswa tidak ditemukan.');
         }
 
-        // Ambil data Orang Tua
-        /* $siswaOrtu = PesertaDidikOrtu::where('nis', $dataPilCR->nis)->first();
-
-        // Jika tidak ada data orang tua, beri nilai default
-        if (!$siswaOrtu) {
-            $siswaOrtu = (object) [
-                'nm_ayah' => 'Data Ayah Tidak Tersedia',
-                'nm_ibu' => 'Data Ibu Tidak Tersedia',
-                'ortu_kontak_telepon' => 'Tidak Diketahui',
-                'pekerjaan_ayah' => 'Tidak Diketahui',
-                'pekerjaan_ibu' => 'Tidak Diketahui',
-            ];
-        }
- */
-        // Ambil data identitas sekolah
         $school = IdentitasSekolah::first();
 
         // Pastikan data ditemukan
@@ -120,15 +96,44 @@ class CetakRaporController extends Controller
             return redirect()->back()->with('error', 'Data sekolah tidak ditemukan.');
         }
 
-        // Ambil data identitas sekolah
         $kepsekCover = KepalaSekolah::where('tahunajaran', $dataSiswa->thnajaran_masuk)
             ->where('semester', 'Ganjil')
             ->first();
 
-        // Pastikan data ditemukan
         if (!$kepsekCover) {
             return redirect()->back()->with('error', 'Data sekolah tidak ditemukan.');
         }
+
+        $kepsekttd = KepalaSekolah::where('tahunajaran', $dataPilCR->tahunajaran)
+            ->where('semester', $dataPilCR->semester)
+            ->first();
+
+        if (!$kepsekttd) {
+            return redirect()->back()->with('error', 'Data sekolah tidak ditemukan.');
+        }
+
+        $waliKelas = DB::table('wali_kelas')
+            ->select(
+                'wali_kelas.*',
+                'personil_sekolahs.nip',
+                'personil_sekolahs.gelardepan',
+                'personil_sekolahs.namalengkap',
+                'personil_sekolahs.gelarbelakang'
+            )
+            ->join('personil_sekolahs', 'wali_kelas.wali_kelas', '=', 'personil_sekolahs.id_personil')
+            ->where('wali_kelas.tahunajaran', $dataPilCR->tahunajaran)
+            ->where('wali_kelas.kode_rombel', $dataPilCR->kode_rombel)
+            ->first();
+
+        if (!$waliKelas) {
+            return redirect()->back()->with('error', 'Data sekolah tidak ditemukan.');
+        }
+
+        $titiMangsa = DB::table('titi_mangsas')
+            ->where('tahunajaran', $dataPilCR->tahunajaran)
+            ->where('ganjilgenap', $dataPilCR->semester)
+            ->where('kode_rombel', $dataPilCR->kode_rombel)
+            ->first();
 
 
         // BARCOOOOOOOOOOOOOOOOOOOOOOOOOOOOD
@@ -144,8 +149,6 @@ class CetakRaporController extends Controller
         // Generate QR Code
         $qrcode = new DNS2D();
         $qrcodeImage = $qrcode->getBarcodePNG("https://smkn1kadipaten.sch.id/kurikulum/dokumentsiswa/cetak-rapor", 'QRCODE', 5, 5);
-
-
 
         //nilai-raport eung
         $dataNilai = DB::select("
@@ -316,6 +319,9 @@ class CetakRaporController extends Controller
             'dataNilai' => $dataNilai,
             'firstNilai' => $firstNilai,
             'dataPilCR' => $dataPilCR,
+            'kepsekttd' => $kepsekttd,
+            'waliKelas' => $waliKelas,
+            'titiMangsa' => $titiMangsa,
         ]);
     }
 
