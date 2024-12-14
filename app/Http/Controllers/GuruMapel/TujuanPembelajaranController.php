@@ -309,7 +309,7 @@ class TujuanPembelajaranController extends Controller
             ->with('toast_success', 'Tujuan Pembelajaran berhasil disimpan.');
     }
 
-    public function updateTujuanPembelajaran(Request $request, $id)
+    /* public function updateTujuanPembelajaran(Request $request, $id)
     {
         // Validasi data
         $validatedData = $request->validate([
@@ -328,5 +328,41 @@ class TujuanPembelajaranController extends Controller
         }
 
         return redirect()->back()->with('error', 'Data tidak ditemukan!');
+    } */
+
+    public function updateTujuanPembelajaran(Request $request, $id)
+    {
+        // Validasi data input
+        $validatedData = $request->validate([
+            'tp_isi' => 'required|string|max:255',
+        ]);
+
+        // Cari record tujuan pembelajaran berdasarkan ID
+        $tujuanPembelajaran = TujuanPembelajaran::find($id);
+
+        if ($tujuanPembelajaran) {
+            // Update kolom tp_isi di tabel tujuan_pembelajarans
+            $tujuanPembelajaran->tp_isi = $validatedData['tp_isi'];
+            $tujuanPembelajaran->save();
+
+            // Identifikasi kolom yang perlu diperbarui di nilai_formatif
+            $tpNo = $tujuanPembelajaran->tp_no; // Misalnya tp_no = 1
+            $tpColumn = "tp_isi_$tpNo"; // Contoh: tp_isi_1
+
+            // Update tabel nilai_formatif
+            DB::table('nilai_formatif')
+                ->where('tahunajaran', $tujuanPembelajaran->tahunajaran)
+                ->where('ganjilgenap', $tujuanPembelajaran->ganjilgenap)
+                ->where('semester', $tujuanPembelajaran->semester)
+                ->where('tingkat', $tujuanPembelajaran->tingkat)
+                ->where('kode_rombel', $tujuanPembelajaran->kode_rombel)
+                ->where('kel_mapel', $tujuanPembelajaran->kel_mapel)
+                ->where('id_personil', $tujuanPembelajaran->id_personil)
+                ->update([$tpColumn => $validatedData['tp_isi']]);
+
+            return response()->json(['message' => 'Data berhasil diperbarui!']);
+        }
+
+        return response()->json(['message' => 'Data tidak ditemukan!'], 404);
     }
 }
