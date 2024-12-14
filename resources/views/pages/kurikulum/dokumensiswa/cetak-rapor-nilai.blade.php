@@ -101,16 +101,17 @@
                                                     <td style='text-align:center;padding:4px 8px;font-size:12px;'
                                                         align='center'>{{ $loop->iteration }}</td>
                                                     <td style='padding:4px 8px;font-size:12px;'>
-                                                        {{ $nilai->mata_pelajaran }},<br>
-                                                        {{ $nilai->gelardepan }} {{ $nilai->namalengkap }}
+                                                        <strong>{{ $nilai->mata_pelajaran }}</strong><br>
+                                                        {{ $nilai->gelardepan }}
+                                                        {{ ucwords(strtolower($nilai->namalengkap)) }},
                                                         {{ $nilai->gelarbelakang }}
                                                     </td>
                                                     <td class="text-center">
                                                         {{ round(($nilai->rerata_formatif + $nilai->rerata_sumatif) / 2) }}
                                                     </td>
                                                     <td style='padding:4px 8px;font-size:12px;'>
-                                                        {{ $nilai->nilai_tertinggi ?? '' }}<br>
-                                                        {{ $nilai->nilai_terendah ?? '' }}<br>
+                                                        {{--  {{ $nilai->nilai_tertinggi ?? '' }}<br>
+                                                        {{ $nilai->nilai_terendah ?? '' }}<br> --}}
                                                         {!! $nilai->deskripsi_nilai ?? '' !!}
                                                     </td>
                                                 </tr>
@@ -128,16 +129,17 @@
                                                     <td style='text-align:center;padding:4px 8px;font-size:12px;'
                                                         align='center'>{{ $loop->iteration }}</td>
                                                     <td style='padding:4px 8px;font-size:12px;'>
-                                                        {{ $nilai->mata_pelajaran }},<br>
-                                                        {{ $nilai->gelardepan }} {{ $nilai->namalengkap }}
-                                                        {{ $nilai->gelarbelakang }},
+                                                        <strong>{{ $nilai->mata_pelajaran }}</strong><br>
+                                                        {{ $nilai->gelardepan }}
+                                                        {{ ucwords(strtolower($nilai->namalengkap)) }},
+                                                        {{ $nilai->gelarbelakang }}
                                                     </td>
                                                     <td class="text-center">
                                                         {{ round(($nilai->rerata_formatif + $nilai->rerata_sumatif) / 2) }}
                                                     </td>
                                                     <td style='padding:4px 8px;font-size:12px;'>
-                                                        {{ $nilai->nilai_tertinggi ?? '' }}<br>
-                                                        {{ $nilai->nilai_terendah ?? '' }}<br>
+                                                        {{-- {{ $nilai->nilai_tertinggi ?? '' }}<br>
+                                                        {{ $nilai->nilai_terendah ?? '' }}<br> --}}
                                                         {!! $nilai->deskripsi_nilai ?? '' !!}
                                                     </td>
                                                 </tr>
@@ -244,16 +246,21 @@
                                         Ekstrakurikuler</th>
                                     <th style='text-align:center;padding:4px 8px;'>Keterangan</strong></th>
                                 </tr>
-                                <tr>
-                                    <td style='padding:4px 8px;' valign='top' align='center'>1.</td>
-                                    <td style='padding:4px 8px;' valign='top'></td>
-                                    <td style='padding:4px 8px;' valign='top'></td>
-                                </tr>
-                                <tr>
-                                    <td style='padding:4px 8px;' valign='top' align='center'>2.</td>
-                                    <td style='padding:4px 8px;' valign='top'></td>
-                                    <td style='padding:4px 8px;' valign='top'></td>
-                                </tr>
+                                @forelse ($activities as $index => $activity)
+                                    <tr>
+                                        <td style='padding:4px 8px;' valign='top' class='text-center'>
+                                            {{ $index + 1 }}.
+                                        </td>
+                                        <td style='padding:4px 8px;'>{{ $activity['activity'] }}</td>
+                                        <td style='padding:4px 8px;'>{{ $activity['description'] }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td style='padding:4px 8px;' class='text-center'>1.</td>
+                                        <td style='padding:4px 8px;'></td>
+                                        <td style='padding:4px 8px;'></td>
+                                    </tr>
+                                @endforelse
                             </table>
                         </td>
                     </tr>
@@ -273,12 +280,12 @@
                                     <th style='text-align:center;padding:4px 8px;'>Keterangan</strong></th>
                                 </tr>
                                 <tr>
-                                    <td style='padding:4px 8px;' valign='top' align='center'>1.</td>
+                                    <td style='padding:4px 8px;' class='text-center'>1.</td>
                                     <td style='padding:4px 8px;' valign='top'></td>
                                     <td style='padding:4px 8px;' valign='top'></td>
                                 </tr>
                                 <tr>
-                                    <td style='padding:4px 8px;' valign='top' align='center'>2.</td>
+                                    <td style='padding:4px 8px;' class='text-center'>2.</td>
                                     <td style='padding:4px 8px;' valign='top'></td>
                                     <td style='padding:4px 8px;' valign='top'></td>
                                 </tr>
@@ -289,36 +296,57 @@
                 <p></p>
                 <table align='center' width='90%'>
                     <tr>
-                        <td>
+                        <td width='30%'>
+                            @php
+                                $sakit = $absensiSiswa->sakit ?? 0;
+                                $izin = $absensiSiswa->izin ?? 0;
+                                $alfa = $absensiSiswa->alfa ?? 0;
+                                $jmlhabsen = $sakit + $izin + $alfa;
+                            @endphp
                             <strong>Ketidakhadiran</strong>
                             <table class="cetak-rapor">
                                 <tr>
-                                    <td style='text-align:center;padding:4px 8px;'>1.</td>
+                                    <th width='7%' style='text-align:center;padding:4px 8px;'>
+                                        <strong>No.
+                                    </th>
+                                    <th width='50%' style='text-align:center;padding:4px 8px;'>Keterangan</th>
+                                    <th style='text-align:center;padding:4px 8px;'>Jumlah</strong></th>
+                                </tr>
+                                <tr>
+                                    <td style='text-align:center;padding:4px 8px;width:10px;'>1.</td>
                                     <td style='padding:4px 8px;'>Sakit</td>
-                                    <td style='text-align:center;padding:4px 8px;'>{$absensakit}</td>
+                                    <td style='text-align:center;padding:4px 8px;'>
+                                        {{ $sakit }}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td style='text-align:center;padding:4px 8px;'>2.</td>
                                     <td style='padding:4px 8px;'>Izin</td>
-                                    <td style='text-align:center;padding:4px 8px;'>{$absenizin}</td>
+                                    <td style='text-align:center;padding:4px 8px;'>
+                                        {{ $izin }}
+                                    </td>
+
                                 </tr>
                                 <tr>
                                     <td style='text-align:center;padding:4px 8px;'>3.</td>
                                     <td style='padding:4px 8px;'>Alfa</td>
-                                    <td style='text-align:center;padding:4px 8px;'>{$absenalfa}</td>
+                                    <td style='text-align:center;padding:4px 8px;'>
+                                        {{ $alfa }}
+                                    </td>
+
                                 </tr>
                                 <tr>
                                     <td style='text-align:center;padding:4px 8px;' colspan='2' align='center'>
-                                        <strong>Jumlah</strong>
+                                        <strong>Total</strong>
                                     </td>
                                     <td style='text-align:center;padding:4px 8px;'>
-                                        <strong>{$jmlabseni}</strong>
+                                        <strong>{{ $jmlhabsen }}</strong>
                                     </td>
                                 </tr>
                             </table>
                         </td>
                         <td>&nbsp;</td>
-                        <td>
+                        <td valign="top">
                             <strong>Catatan Wali Kelas</strong>
                             <table class="cetak-rapor">
                                 <tr>
@@ -338,7 +366,7 @@
                             <table
                                 style='width:100%;margin: 0 auto;padding: 5px 10px;border-collapse:collapse;border: 1px solid #000;'>
                                 <tr>
-                                    <td height='40' valign='top' style='padding: 5px 10px;'>
+                                    <td height='60' valign='top' style='padding: 5px 10px;'>
                                         <p>&nbsp;</p>
                                     </td>
                                 </tr>

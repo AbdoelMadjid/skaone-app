@@ -13,6 +13,7 @@ use App\Models\ManajemenSekolah\PesertaDidikOrtu;
 use App\Models\ManajemenSekolah\RombonganBelajar;
 use App\Models\ManajemenSekolah\Semester;
 use App\Models\ManajemenSekolah\TahunAjaran;
+use App\Models\WaliKelas\Ekstrakurikuler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -47,7 +48,12 @@ class CetakRaporController extends Controller
         $kompetensiKeahlianOptions = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
         $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
         $rombonganBelajar = RombonganBelajar::pluck('rombel', 'kode_rombel')->toArray();
-        $pesertadidikOptions = PesertaDidik::pluck('nama_lengkap', 'nis')->toArray();
+        $pesertadidikOptions = PesertaDidik::select('nis', 'nama_lengkap')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [$item->nis => $item->nis . ' - ' . $item->nama_lengkap];
+            })
+            ->toArray();
         $dataPilCR = PilihCetakRapor::where('id_personil', $personal_id)->first();
 
         $dataSiswa = DB::table('peserta_didiks')
@@ -91,26 +97,17 @@ class CetakRaporController extends Controller
 
         $school = IdentitasSekolah::first();
 
-        // Pastikan data ditemukan
-        if (!$school) {
-            return redirect()->back()->with('error', 'Data sekolah tidak ditemukan.');
-        }
-
         $kepsekCover = KepalaSekolah::where('tahunajaran', $dataSiswa->thnajaran_masuk)
             ->where('semester', 'Ganjil')
             ->first();
 
-        if (!$kepsekCover) {
+        /* if (!$kepsekCover) {
             return redirect()->back()->with('error', 'Data sekolah tidak ditemukan.');
-        }
+        } */
 
         $kepsekttd = KepalaSekolah::where('tahunajaran', $dataPilCR->tahunajaran)
             ->where('semester', $dataPilCR->semester)
             ->first();
-
-        if (!$kepsekttd) {
-            return redirect()->back()->with('error', 'Data sekolah tidak ditemukan.');
-        }
 
         $waliKelas = DB::table('wali_kelas')
             ->select(
@@ -125,15 +122,68 @@ class CetakRaporController extends Controller
             ->where('wali_kelas.kode_rombel', $dataPilCR->kode_rombel)
             ->first();
 
-        if (!$waliKelas) {
-            return redirect()->back()->with('error', 'Data sekolah tidak ditemukan.');
-        }
-
         $titiMangsa = DB::table('titi_mangsas')
             ->where('tahunajaran', $dataPilCR->tahunajaran)
             ->where('ganjilgenap', $dataPilCR->semester)
             ->where('kode_rombel', $dataPilCR->kode_rombel)
             ->first();
+
+        $absensiSiswa = DB::table('absensi_siswas')
+            ->where('nis', $dataPilCR->nis)
+            ->where('tahunajaran', $dataPilCR->tahunajaran)
+            ->where('ganjilgenap', $dataPilCR->semester)
+            ->where('kode_rombel', $dataPilCR->kode_rombel)
+            ->first();
+
+
+        // Fetch data based on filters
+        $ekstrakurikulers = Ekstrakurikuler::where('kode_rombel', $dataPilCR->kode_rombel)
+            ->where('tahunajaran', $dataPilCR->tahunajaran)
+            ->where('ganjilgenap', $dataPilCR->semester)
+            ->where('nis', $dataPilCR->nis)
+            ->get();
+
+        // Prepare data for view
+        $activities = [];
+
+        foreach ($ekstrakurikulers as $ekstra) {
+            if (!empty($ekstra->wajib)) {
+                $activities[] = [
+                    'activity' => $ekstra->wajib,
+                    'description' => $ekstra->wajib_desk,
+                ];
+            }
+
+            if (!empty($ekstra->pilihan1)) {
+                $activities[] = [
+                    'activity' => $ekstra->pilihan1,
+                    'description' => $ekstra->pilihan1_desk,
+                ];
+            }
+
+            if (!empty($ekstra->pilihan2)) {
+                $activities[] = [
+                    'activity' => $ekstra->pilihan2,
+                    'description' => $ekstra->pilihan2_desk,
+                ];
+            }
+
+            if (!empty($ekstra->pilihan3)) {
+                $activities[] = [
+                    'activity' => $ekstra->pilihan3,
+                    'description' => $ekstra->pilihan3_desk,
+                ];
+            }
+
+            if (!empty($ekstra->pilihan4)) {
+                $activities[] = [
+                    'activity' => $ekstra->pilihan4,
+                    'description' => $ekstra->pilihan4_desk,
+                ];
+            }
+        }
+
+
 
 
         // BARCOOOOOOOOOOOOOOOOOOOOOOOOOOOOD
@@ -322,6 +372,8 @@ class CetakRaporController extends Controller
             'kepsekttd' => $kepsekttd,
             'waliKelas' => $waliKelas,
             'titiMangsa' => $titiMangsa,
+            'absensiSiswa' => $absensiSiswa,
+            'activities' => $activities,
         ]);
     }
 

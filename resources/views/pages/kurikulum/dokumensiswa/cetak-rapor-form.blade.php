@@ -136,7 +136,7 @@
                     data.forEach(item => {
                         const option = document.createElement('option');
                         option.value = item.nis;
-                        option.textContent = item.nama_lengkap;
+                        option.textContent = `${item.nis} - ${item.nama_lengkap}`;
 
                         // Set the selected option if it's the initial load and the nis matches
                         if (initialLoad && item.nis === selectedNis) {
