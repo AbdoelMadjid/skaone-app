@@ -328,7 +328,7 @@
                                             @endif
                                         </td>
                                         <td class='text-center'>
-                                            {{ (number_format($rerataFormatif, 2) + number_format($rerataSumatif, 2)) / 2 }}
+                                            {{ number_format((number_format($rerataFormatif, 2) + number_format($rerataSumatif, 2)) / 2, 2) }}
                                         </td>
                                     </tr>
                                 @endforeach
