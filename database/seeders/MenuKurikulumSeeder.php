@@ -61,7 +61,10 @@ class MenuKurikulumSeeder extends Seeder
         $sm = $mm->subMenus()->create(['name' => 'Dokumen Guru', 'url' => $mm->url . '/dokumenguru', 'category' => $mm->category]);
         $this->attachMenupermission($sm, ['read'], ['admin']);
 
-        $csm = $sm->subMenus()->create(['name' => 'Absensi', 'url' => $sm->url . '/absensi', 'category' => $sm->category]);
+        $csm = $sm->subMenus()->create(['name' => 'Per Guru', 'url' => $sm->url . '/ngajar-per-guru', 'category' => $sm->category]);
+        $this->attachMenupermission($csm, ['create', 'read', 'update', 'delete'], ['admin']);
+
+        $csm = $sm->subMenus()->create(['name' => 'Per Rombel', 'url' => $sm->url . '/ngajar-per-rombel', 'category' => $sm->category]);
         $this->attachMenupermission($csm, ['create', 'read', 'update', 'delete'], ['admin']);
 
         $csm = $sm->subMenus()->create(['name' => 'Arsip', 'url' => $sm->url . '/arsip', 'category' => $sm->category]);
@@ -75,7 +78,16 @@ class MenuKurikulumSeeder extends Seeder
         $csm = $sm->subMenus()->create(['name' => 'Cetak Rapor', 'url' => $sm->url . '/cetak-rapor', 'category' => $sm->category]);
         $this->attachMenupermission($csm, ['create', 'read', 'update', 'delete'], ['admin']);
 
+        $csm = $sm->subMenus()->create(['name' => 'Rapor P5', 'url' => $sm->url . '/rapor-p-lima', 'category' => $sm->category]);
+        $this->attachMenupermission($csm, ['create', 'read', 'update', 'delete'], ['admin']);
+
+        $csm = $sm->subMenus()->create(['name' => 'Rapor PKL', 'url' => $sm->url . '/rapor-pkl', 'category' => $sm->category]);
+        $this->attachMenupermission($csm, ['create', 'read', 'update', 'delete'], ['admin']);
+
         $csm = $sm->subMenus()->create(['name' => 'Transkrip Nilai', 'url' => $sm->url . '/transkrip-nilai', 'category' => $sm->category]);
+        $this->attachMenupermission($csm, ['create', 'read', 'update', 'delete'], ['admin']);
+
+        $csm = $sm->subMenus()->create(['name' => 'Ijazah', 'url' => $sm->url . '/ijazah', 'category' => $sm->category]);
         $this->attachMenupermission($csm, ['create', 'read', 'update', 'delete'], ['admin']);
 
         $csm = $sm->subMenus()->create(['name' => 'Remedial Peserta Didik', 'url' => $sm->url . '/remedial-peserta-didik', 'category' => $sm->category]);

@@ -52,7 +52,7 @@ class MenuGuruMapelSeeder extends Seeder
         $csm = $sm->subMenus()->create(['name' => 'Deskripsi Nilai', 'url' => $sm->url . '/deskripsi-nilai', 'category' => $sm->category]);
         $this->attachMenupermission($csm, ['create', 'read', 'update', 'delete'], ['gmapel']);
 
-        $sm = $mm->subMenus()->create(['name' => 'Absensi Siswa', 'url' => $mm->url . '/absensi-siswa', 'category' => $mm->category]);
+        $sm = $mm->subMenus()->create(['name' => 'Ujian Sumatif', 'url' => $mm->url . '/ujian-sumatif', 'category' => $mm->category]);
         $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['gmapel']);
 
         $sm = $mm->subMenus()->create(['name' => 'Ajuan Remedial', 'url' => $mm->url . '/ajuan-remedial', 'category' => $mm->category]);

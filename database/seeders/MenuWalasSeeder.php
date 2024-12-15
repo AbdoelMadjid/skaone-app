@@ -40,10 +40,10 @@ class MenuWalasSeeder extends Seeder
         $sm = $mm->subMenus()->create(['name' => 'Prestasi Siswa', 'url' => $mm->url . '/prestasi-siswa', 'category' => $mm->category]);
         $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['walas']);
 
-        $sm = $mm->subMenus()->create(['name' => 'Praktek Kerja', 'url' => $mm->url . '/praktek-kerja', 'category' => $mm->category]);
+        $sm = $mm->subMenus()->create(['name' => 'Catatan Wali Kelas', 'url' => $mm->url . '/catatan-wali-kelas', 'category' => $mm->category]);
         $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['walas']);
 
-        $sm = $mm->subMenus()->create(['name' => 'Catatan Wali Kelas', 'url' => $mm->url . '/catatan-wali-kelas', 'category' => $mm->category]);
+        $sm = $mm->subMenus()->create(['name' => 'Rapor Peserta Didik', 'url' => $mm->url . '/rapor-peserta-didik', 'category' => $mm->category]);
         $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['walas']);
     }
 }
