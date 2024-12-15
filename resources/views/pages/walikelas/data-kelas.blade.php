@@ -75,7 +75,7 @@
             <div class="card ribbon-box border shadow-none mb-lg-4">
                 <div class="card-body">
                     <div class="ribbon ribbon-info round-shape mt-2">Identitas Wali Kelas</div>
-                    <h5 class="fs-14 text-end">Rounded Ribbon</h5>
+                    <h5 class="fs-14 text-end"></h5>
                     <div class="ribbon-content mt-5">
                         {{-- Menampilkan tahun ajaran dan semester aktif --}}
                         @if ($tahunAjaranAktif)
@@ -150,7 +150,7 @@
                             Tambah
                         @endif TitiMangsa
                     </div>
-                    <h5 class="fs-14 text-end">Rounded Ribbon</h5>
+                    <h5 class="fs-14 text-end"></h5>
                     <div class="ribbon-content mt-5">
                         <form action="{{ route('walikelas.data-kelas.simpantitimangsa') }}" method="post">
                             @csrf
@@ -190,11 +190,36 @@
                     </div>
                 </div>
             </div>
+        </div><!-- end col -->
 
+        <div class="col-xl-7 col-md-7">
+            <!-- Rounded Ribbon -->
+            <div class="card ribbon-box border shadow-none mb-lg-4">
+                <div class="card-body">
+                    <div class="ribbon ribbon-info round-shape mt-2">Data Siswa {{ $waliKelas->rombel }}</div>
+                    <h5 class="text-end">
+                        <a href="{{ route('walikelas.downloadpdfdatasiswa') }}" class="btn btn-soft-info btn-sm">Download
+                            PDF</a>
+                    </h5>
+                    <div class="ribbon-content mt-3">
+                        <div class="text-center"><!-- Vertical alignment (align-items-center) -->
+                            <div id="loading-spinner" class="spinner-grow text-primary" role="status">
+                                <span class="sr-only">Loading...</span>
+
+                            </div>
+                        </div>
+                        <div id="loading-spinner-2" class="text-center"><br>Sedang memuat data...</div>
+                        <div id="grid-container-akunsiswa" class="table-card gridjs-border-none"></div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- end col -->
+
+        <div class="col-xl-12 col-md-12">
             <div class="card ribbon-box border shadow-none mb-lg-4">
                 <div class="card-body">
                     <div class="ribbon ribbon-info round-shape mt-2">Data Pengajar {{ $waliKelas->rombel }}</div>
-                    <h5 class="fs-14 text-end">Rounded Ribbon</h5>
+                    <h5 class="fs-14 text-end"></h5>
                     <div class="ribbon-content mt-5">
                         <table class="table " style="no border">
                             <thead>
@@ -202,6 +227,10 @@
                                     <th>No.</th>
                                     <th>Mata Pelajaran</th>
                                     <th>Nama Pengajar</th>
+                                    <th>KKM</th>
+                                    <th>Nilai Formatif</th>
+                                    <th>Nilai Sumatif</th>
+                                    <th>Nilai Akhir</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -233,6 +262,74 @@
                                                 Tidak ada pengajar
                                             @endif
                                         </td>
+                                        <td class='text-center'>{{ $kbm->kkm }}</td>
+                                        <td class='text-center'>
+                                            @php
+                                                $cekFormatif = DB::table('nilai_formatif')
+                                                    ->where('tahunajaran', $kbm->tahunajaran)
+                                                    ->where('ganjilgenap', $kbm->ganjilgenap)
+                                                    ->where('semester', $kbm->semester)
+                                                    ->where('tingkat', $kbm->tingkat)
+                                                    ->where('kode_rombel', $kbm->kode_rombel)
+                                                    ->where('kel_mapel', $kbm->kel_mapel)
+                                                    ->where('id_personil', $kbm->id_personil)
+                                                    ->count();
+                                                $rerataFormatif = DB::table('nilai_formatif')
+                                                    ->where('tahunajaran', $kbm->tahunajaran)
+                                                    ->where('ganjilgenap', $kbm->ganjilgenap)
+                                                    ->where('semester', $kbm->semester)
+                                                    ->where('tingkat', $kbm->tingkat)
+                                                    ->where('kode_rombel', $kbm->kode_rombel)
+                                                    ->where('kel_mapel', $kbm->kel_mapel)
+                                                    ->where('id_personil', $kbm->id_personil)
+                                                    ->avg('rerata_formatif');
+                                            @endphp
+                                            @if ($cekFormatif)
+                                                <i class="bx bx-message-square-check fs-3 text-info"></i>
+                                                <p class="mb-0">Jumlah Siswa: {{ $cekFormatif }}</p>
+                                                <p class="mb-0">Rata-rata nilai formatif:
+                                                    <strong>{{ number_format($rerataFormatif, 2) }}</strong>
+                                                </p>
+                                            @else
+                                                <i class="bx bx-message-square-x fs-3 text-danger"></i>
+                                                <p class="mb-0 text-danger">Data tidak ditemukan.</p>
+                                            @endif
+                                        </td>
+                                        <td class='text-center'>
+                                            @php
+                                                $cekSumatif = DB::table('nilai_sumatif')
+                                                    ->where('tahunajaran', $kbm->tahunajaran)
+                                                    ->where('ganjilgenap', $kbm->ganjilgenap)
+                                                    ->where('semester', $kbm->semester)
+                                                    ->where('tingkat', $kbm->tingkat)
+                                                    ->where('kode_rombel', $kbm->kode_rombel)
+                                                    ->where('kel_mapel', $kbm->kel_mapel)
+                                                    ->where('id_personil', $kbm->id_personil)
+                                                    ->count();
+                                                $rerataSumatif = DB::table('nilai_sumatif')
+                                                    ->where('tahunajaran', $kbm->tahunajaran)
+                                                    ->where('ganjilgenap', $kbm->ganjilgenap)
+                                                    ->where('semester', $kbm->semester)
+                                                    ->where('tingkat', $kbm->tingkat)
+                                                    ->where('kode_rombel', $kbm->kode_rombel)
+                                                    ->where('kel_mapel', $kbm->kel_mapel)
+                                                    ->where('id_personil', $kbm->id_personil)
+                                                    ->avg('rerata_sumatif');
+                                            @endphp
+                                            @if ($cekSumatif)
+                                                <i class="bx bx-message-square-check fs-3 text-info"></i>
+                                                <p class="mb-0">Jumlah Siswa: {{ $cekSumatif }}</p>
+                                                <p class="mb-0">Rata-rata nilai sumatif:
+                                                    <strong>{{ number_format($rerataSumatif, 2) }}</strong>
+                                                </p>
+                                            @else
+                                                <i class="bx bx-message-square-x fs-3 text-danger"></i>
+                                                <p class="mb-0 text-danger">Data tidak ditemukan.</p>
+                                            @endif
+                                        </td>
+                                        <td class='text-center'>
+                                            {{ (number_format($rerataFormatif, 2) + number_format($rerataSumatif, 2)) / 2 }}
+                                        </td>
                                     </tr>
                                 @endforeach
                                 @if ($kbmData->isEmpty())
@@ -245,30 +342,7 @@
                     </div>
                 </div>
             </div>
-        </div><!-- end col -->
-
-        <div class="col-xl-7 col-md-7">
-            <!-- Rounded Ribbon -->
-            <div class="card ribbon-box border shadow-none mb-lg-4">
-                <div class="card-body">
-                    <div class="ribbon ribbon-primary round-shape mt-2">Data Siswa {{ $waliKelas->rombel }}</div>
-                    <h5 class="text-end">
-                        <a href="{{ route('walikelas.downloadpdfdatasiswa') }}" class="btn btn-soft-info btn-sm">Download
-                            PDF</a>
-                    </h5>
-                    <div class="ribbon-content mt-5">
-                        <div class="text-center"><!-- Vertical alignment (align-items-center) -->
-                            <div id="loading-spinner" class="spinner-grow text-primary" role="status">
-                                <span class="sr-only">Loading...</span>
-
-                            </div>
-                        </div>
-                        <div id="loading-spinner-2" class="text-center"><br>Sedang memuat data...</div>
-                        <div id="grid-container-akunsiswa" class="table-card gridjs-border-none"></div>
-                    </div>
-                </div>
-            </div>
-        </div><!-- end col -->
+        </div>
     </div><!-- end row -->
 @endsection
 @section('script')
