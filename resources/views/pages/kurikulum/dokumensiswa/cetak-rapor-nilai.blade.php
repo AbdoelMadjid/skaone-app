@@ -135,7 +135,7 @@
                                                         {{ $nilai->gelarbelakang }}
                                                     </td>
                                                     <td class="text-center">
-                                                        {{ round(($nilai->rerata_formatif + $nilai->rerata_sumatif) / 2) }}
+                                                        {{ round(((float) $nilai->rerata_formatif + (float) $nilai->rerata_sumatif) / 2) }}
                                                     </td>
                                                     <td style='padding:4px 8px;font-size:12px;'>
                                                         {{-- {{ $nilai->nilai_tertinggi ?? '' }}<br>
