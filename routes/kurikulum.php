@@ -8,7 +8,12 @@ use App\Http\Controllers\Kurikulum\DataKBM\MataPelajaranPerJurusanController;
 use App\Http\Controllers\Kurikulum\DataKBM\PesertaDidikRombelController;
 use App\Http\Controllers\Kurikulum\DokumenGuru\AbsensiGuruController;
 use App\Http\Controllers\Kurikulum\DokumenGuru\ArsipGuruController;
+use App\Http\Controllers\Kurikulum\DokumenGuru\PerGuruController;
+use App\Http\Controllers\Kurikulum\DokumenGuru\PerRombelController;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\CetakRaporController;
+use App\Http\Controllers\Kurikulum\DokumenSiswa\IjazahController;
+use App\Http\Controllers\Kurikulum\DokumenSiswa\RaporPklController;
+use App\Http\Controllers\Kurikulum\DokumenSiswa\RaporPLimaController;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\RemedialPesertaDidikNilaiController;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\TranskripNilaiController;
 use App\Http\Controllers\Kurikulum\PerangkatKurikulum\PengumumanController;
@@ -65,7 +70,8 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::group(['prefix' => 'dokumenguru', 'as' => 'dokumenguru.'], function () {
-            Route::resource('absensi', AbsensiGuruController::class);
+            Route::resource('ngajar-per-guru', PerGuruController::class);
+            Route::resource('ngajar-per-rombel', PerRombelController::class);
             Route::resource('arsip', ArsipGuruController::class);
         });
 
@@ -76,6 +82,9 @@ Route::middleware('auth')->group(function () {
             Route::post('/simpanpilihcetakrapor', [CetakRaporController::class, 'simpanPilihCetakRapor'])
                 ->name('simpanpilihcetakrapor');
 
+            Route::resource('ijazah', IjazahController::class);
+            Route::resource('rapor-pkl', RaporPklController::class);
+            Route::resource('rapor-p-lima', RaporPLimaController::class);
             Route::resource('transkrip-nilai', TranskripNilaiController::class);
             Route::resource('remedial-peserta-didik', RemedialPesertaDidikNilaiController::class);
         });

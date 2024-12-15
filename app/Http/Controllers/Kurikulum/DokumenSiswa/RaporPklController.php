@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\WaliKelas;
+namespace App\Http\Controllers\Kurikulum\DokumenSiswa;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class PraktekKerjaController extends Controller
+class RaporPklController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('pages.walikelas.praktek-kerja');
+        return view('pages.kurikulum.dokumensiswa.rapor-pkl');
     }
 
     /**

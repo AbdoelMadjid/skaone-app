@@ -446,8 +446,8 @@ return [
     'kbm-peserta-didik' => 'KBM Peserta Didik',
     'transkrip-peserta-didik' => 'Transkrip Peserta Didik',
 
-    'per-guru' => 'Per Guru',
-    'per-rombel' => 'Per Rombel',
+    'per-guru' => 'Ngajar Per Guru',
+    'per-rombel' => 'Ngajar Per Rombel',
     'ijazah' => 'Ijazah',
     'rapor-p5' => 'Rapor P5',
     'rapor-pkl' => 'Rapor PKL',

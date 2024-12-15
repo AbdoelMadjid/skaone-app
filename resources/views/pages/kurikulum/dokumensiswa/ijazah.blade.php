@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    @lang('translation.absensi')
+    @lang('translation.ijazah')
 @endsection
 @section('css')
     {{-- --}}
@@ -11,7 +11,7 @@
             @lang('translation.kurikulum')
         @endslot
         @slot('li_2')
-            @lang('translation.dokumenguru')
+            @lang('translation.dokumensiswa')
         @endslot
     @endcomponent
     <div class="row">

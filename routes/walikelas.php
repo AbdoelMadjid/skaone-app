@@ -6,8 +6,8 @@ use App\Http\Controllers\WaliKelas\CatatanWalikelasController;
 use App\Http\Controllers\WaliKelas\DataKelasController;
 use App\Http\Controllers\WaliKelas\EkstrakurikulerController;
 use App\Http\Controllers\WaliKelas\IdentitasSiswaController;
-use App\Http\Controllers\WaliKelas\PraktekKerjaController;
 use App\Http\Controllers\WaliKelas\PrestasiSiswaController;
+use App\Http\Controllers\WaliKelas\RaporPesertaDidikController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,7 +42,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/ekstrakulikuler/{id}/save-eskul-pilihan4', [EkstrakurikulerController::class, 'saveEskulPilihan4'])->name('ekstrakulikuler.save-eskul-pilihan4');
         //Route::post('/ekstrakulikuler/save-penilaian-eskul', [WaliKelasController::class, 'savePenilaianEskul']);
         Route::resource('prestasi-siswa', PrestasiSiswaController::class);
-        Route::resource('praktek-kerja', PraktekKerjaController::class);
+        Route::resource('rapor-peserta-didik', RaporPesertaDidikController::class);
         Route::resource('catatan-wali-kelas', CatatanWalikelasController::class);
         Route::post('/catatan-wali-kelas/generatecatatanwalikelas', [CatatanWalikelasController::class, 'generatecatatanwalikelas'])->name('catatan-wali-kelas.generatecatatanwalikelas');
         Route::post('/catatan-wali-kelas/update-catatan', [CatatanWalikelasController::class, 'updateCatatan']);

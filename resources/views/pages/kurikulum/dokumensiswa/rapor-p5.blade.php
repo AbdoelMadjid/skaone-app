@@ -1,14 +1,17 @@
 @extends('layouts.master')
 @section('title')
-    @lang('translation.praktek-kerja')
+    @lang('translation.rapor-p5')
 @endsection
 @section('css')
-    {{--  --}}
+    {{-- --}}
 @endsection
 @section('content')
     @component('layouts.breadcrumb')
         @slot('li_1')
-            @lang('translation.walikelas')
+            @lang('translation.kurikulum')
+        @endslot
+        @slot('li_2')
+            @lang('translation.dokumensiswa')
         @endslot
     @endcomponent
     <div class="row">
@@ -37,7 +40,7 @@
     </div>
 @endsection
 @section('script')
-    {{--  --}}
+    {{-- --}}
 @endsection
 @section('script-bottom')
     <script src="{{ URL::asset('build/js/app.js') }}"></script>

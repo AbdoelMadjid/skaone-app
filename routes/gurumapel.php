@@ -9,10 +9,9 @@ use App\Http\Controllers\GuruMapel\DataKbmController;
 use App\Http\Controllers\GuruMapel\DeskripsiNilaiController;
 use App\Http\Controllers\GuruMapel\DetailDataKbmController;
 use App\Http\Controllers\GuruMapel\FormatifController;
-use App\Http\Controllers\GuruMapel\MateriAjarController;
-use App\Http\Controllers\GuruMapel\PenilaianController;
 use App\Http\Controllers\GuruMapel\SumatifController;
 use App\Http\Controllers\GuruMapel\TujuanPembelajaranController;
+use App\Http\Controllers\GuruMapel\UjianSumatifController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -74,7 +73,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/getnilaiformatif', [DeskripsiNilaiController::class, 'getNilaiFormatif'])->name('getnilaiformatif');
         });
 
-        Route::resource('absensi-siswa', AbsensiSiswaGmapelController::class);
+        Route::resource('ujian-sumatif', UjianSumatifController::class);
         Route::resource('ajuan-remedial', AjuanRemedialController::class);
         Route::resource('arsip-kbm', ArsipKbmGmapelController::class);
     });

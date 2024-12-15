@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Kurikulum\DokumenGuru;
+namespace App\Http\Controllers\Kurikulum\DokumenSiswa;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class AbsensiGuruController extends Controller
+class IjazahController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('pages.kurikulum.dokumenguru.absensi-guru');
+        return view('pages.kurikulum.dokumensiswa.ijazah');
     }
 
     /**

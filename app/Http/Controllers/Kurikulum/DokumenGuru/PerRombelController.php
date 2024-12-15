@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\GuruMapel;
+namespace App\Http\Controllers\Kurikulum\DokumenGuru;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class AbsensiSiswaGmapelController extends Controller
+class PerRombelController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('pages.gurumapel.absensi-siswa');
+        return view('pages.kurikulum.dokumenguru.per-rombel');
     }
 
     /**
