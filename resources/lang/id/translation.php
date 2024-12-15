@@ -245,8 +245,8 @@ return [
     "users" => "Users",
 
     //tools
-    "app-support" => "Dukugan Aplikasi",
-    "appsupport" => "Dukugan Aplikasi",
+    "app-support" => "Dukungan Aplikasi",
+    "appsupport" => "Dukungan Aplikasi",
     "app-profil" => "Profil Aplikasi",
     "app-fitur" => "Fitur Aplikasi",
     "impor-data-master" => "Impor Data Master",

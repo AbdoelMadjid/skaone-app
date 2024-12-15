@@ -83,7 +83,7 @@
                                     <thead>
                                         <tr>
                                             <th style='text-align:center;padding:4px 8px;'><strong>No.</th>
-                                            <th style='text-align:center;padding:4px 8px;' width='300'>Mata Pelajaran
+                                            <th style='text-align:center;padding:4px 8px;' width='200'>Mata Pelajaran
                                             </th>
                                             <th style='text-align:center;padding:4px 8px;'>Nilai Akhir</th>
                                             <th style='text-align:center;padding:4px 8px;'>Capaian Kompetensi</th>
