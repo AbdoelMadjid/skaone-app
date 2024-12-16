@@ -3,7 +3,6 @@
 namespace App\DataTables\Kurikulum\DokumenGuru;
 
 use App\Models\Kurikulum\DataKBM\KbmPerRombel;
-use App\Models\ManajemenSekolah\PersonilSekolah;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
@@ -14,7 +13,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class NgajarPerGuruDataTable extends DataTable
+class NgajarPerRombelDataTable extends DataTable
 {
     use DatatableHelper;
     /**
@@ -25,20 +24,12 @@ class NgajarPerGuruDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('nama_pengajar', function ($row) {
-                // Fetch the corresponding element based on kode_cp and Praktek Kerja Industri
-                $namaPengajar = PersonilSekolah::where('id_personil', $row->id_personil)
-                    ->value('namalengkap');
-
-                return $namaPengajar;
-            })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
                 return view('action', compact('actions'));
             })
-            ->addIndexColumn()
-            ->rawColumns(['nama_pengajar', 'action']);
+            ->addIndexColumn();
     }
 
     /**
@@ -55,7 +46,7 @@ class NgajarPerGuruDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('ngajarperguru-table')
+            ->setTableId('ngajarperrombel-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             //->dom('Bfrtip')
@@ -82,9 +73,13 @@ class NgajarPerGuruDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
+            Column::make('kode_mapel_rombel')->title('Kode Mapel Rombel'),
+            Column::make('tahunajaran')->title('Thn Ajaran')->addClass('text-center'),
+            Column::make('semester'),
             Column::make('rombel')->title('Rombel')->addClass('text-center'),
             Column::make('mata_pelajaran')->title('Nama Mapel'),
-            Column::make('nama_pengajar')->title('Guru Pengajar'),
+            Column::make('kkm')->title('KKM')->addClass('text-center'),
+            Column::make('id_personil')->title('Guru Pengajar'),
             /*  Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
@@ -98,6 +93,6 @@ class NgajarPerGuruDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'NgajarPerGuru_' . date('YmdHis');
+        return 'NgajarPerRombel_' . date('YmdHis');
     }
 }

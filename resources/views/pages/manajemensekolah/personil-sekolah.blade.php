@@ -42,7 +42,7 @@
                 <div class="card-body border-bottom-dashed border-bottom">
                     <form>
                         <div class="row g-3">
-                            <div class="col-xl-6">
+                            <div class="col-lg">
                                 <div class="search-box">
                                     <input type="text" class="form-control search"
                                         placeholder="Search Nama Lengkap Personil ....">
@@ -50,34 +50,30 @@
                                 </div>
                             </div>
                             <!--end col-->
-                            <div class="col-xl-6">
-                                <div class="row g-3">
-                                    <div class="col-sm-6">
-                                        <div>
-                                            <select class="form-control" data-plugin="choices" data-choices
-                                                data-choices-search-false name="choices-single-default" id="idJenis">
-                                                <option value="all" selected>Pilih Jenis Personil</option>
-                                                @foreach ($jenisPersonilOptions as $jenis)
-                                                    <option value="{{ $jenis }}">{{ $jenis }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-sm-6">
-                                        <div>
-                                            <select class="form-control" data-plugin="choices" data-choices
-                                                data-choices-search-false name="choices-single-default" id="idStatus">
-                                                <option value="all" selected>Pilih Status</option>
-                                                @foreach ($statusOptions as $status)
-                                                    <option value="{{ $status }}">{{ $status }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
+                            <div class="col-lg-auto">
+                                <div>
+                                    <select class="form-control" data-plugin="choices" data-choices
+                                        data-choices-search-false name="choices-single-default" id="idJenis">
+                                        <option value="all" selected>Pilih Jenis Personil</option>
+                                        @foreach ($jenisPersonilOptions as $jenis)
+                                            <option value="{{ $jenis }}">{{ $jenis }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
+                            <!--end col-->
+                            <div class="col-lg-auto">
+                                <div>
+                                    <select class="form-control" data-plugin="choices" data-choices
+                                        data-choices-search-false name="choices-single-default" id="idStatus">
+                                        <option value="all" selected>Pilih Status</option>
+                                        @foreach ($statusOptions as $status)
+                                            <option value="{{ $status }}">{{ $status }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <!--end col-->
                         </div>
                         <!--end row-->
                     </form>

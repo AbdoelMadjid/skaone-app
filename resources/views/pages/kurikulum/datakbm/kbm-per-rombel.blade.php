@@ -63,53 +63,46 @@
                 <div class="card-body border-bottom-dashed border-bottom">
                     <form>
                         <div class="row g-3">
-                            <div class="col-xl-6">
+                            <div class="col-lg">
                                 <div class="search-box">
                                     <input type="text" class="form-control search"
-                                        placeholder="Search Nama Lengkap Siswa ....">
+                                        placeholder="Search Nama Mata Pelajaran ....">
                                     <i class="ri-search-line search-icon"></i>
                                 </div>
                             </div>
+                            <div class="col-lg-auto">
+                                <div>
+                                    <select class="form-control" data-plugin="choices" data-choices
+                                        data-choices-search-false name="choices-single-default" id="idThnAjaran">
+                                        <option value="all" selected>Pilih Tahun Ajaran</option>
+                                        @foreach ($tahunAjaranOptions as $thnajar)
+                                            <option value="{{ $thnajar }}">{{ $thnajar }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                             <!--end col-->
-                            <div class="col-xl-6">
-                                <div class="row g-3">
-                                    <div class="col-sm-4">
-                                        <div>
-                                            <select class="form-control" data-plugin="choices" data-choices
-                                                data-choices-search-false name="choices-single-default" id="idThnAjaran">
-                                                <option value="all" selected>Pilih Tahun Ajaran</option>
-                                                @foreach ($tahunAjaranOptions as $thnajar)
-                                                    <option value="{{ $thnajar }}">{{ $thnajar }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-sm-5">
-                                        <div>
-                                            <select class="form-control" data-plugin="choices" data-choices
-                                                data-choices-search-false name="choices-single-default" id="idKodeKK">
-                                                <option value="all" selected>Pilih Kompetensi Keahlian</option>
-                                                @foreach ($kompetensiKeahlianOptions as $id => $kode_kk)
-                                                    <option value="{{ $id }}">{{ $kode_kk }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-sm-3">
-                                        <div>
-                                            <select class="form-control" data-plugin="choices" data-choices
-                                                data-choices-search-false name="choices-single-default" id="idRombel"
-                                                disabled>
-                                                <option value="all" selected>Pilih Rombel</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                            <div class="col-lg-auto">
+                                <div>
+                                    <select class="form-control" data-plugin="choices" data-choices
+                                        data-choices-search-false name="choices-single-default" id="idKodeKK">
+                                        <option value="all" selected>Pilih Kompetensi Keahlian</option>
+                                        @foreach ($kompetensiKeahlianOptions as $id => $kode_kk)
+                                            <option value="{{ $id }}">{{ $kode_kk }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <!--end col-->
+                            <div class="col-lg-auto">
+                                <div>
+                                    <select class="form-control" data-plugin="choices" data-choices
+                                        data-choices-search-false name="choices-single-default" id="idRombel" disabled>
+                                        <option value="all" selected>Pilih Rombel</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
-                        <!--end row-->
                     </form>
                 </div>
                 <div class="card-body">

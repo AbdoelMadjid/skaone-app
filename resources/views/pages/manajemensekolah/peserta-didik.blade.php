@@ -43,7 +43,7 @@
                     </div>
                     <form>
                         <div class="row g-3">
-                            <div class="col-xl-6">
+                            <div class="col-lg">
                                 <div class="search-box">
                                     <input type="text" class="form-control search"
                                         placeholder="Search Nama Peserta Didik ....">
@@ -51,51 +51,48 @@
                                 </div>
                             </div>
                             <!--end col-->
-                            <div class="col-xl-6">
-                                <div class="row g-3">
-                                    <div class="col-sm-5">
-                                        <div>
-                                            <select class="form-control" data-plugin="choices" data-choices
-                                                data-choices-search-false name="choices-single-default" id="idKK">
-                                                <option value="all" selected>Pilih Kompetensi Keahlian</option>
-                                                @foreach ($kompetensiKeahlian as $id => $kk)
-                                                    <option value="{{ $id }}">{{ $kk }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-sm-3">
-                                        <div>
-                                            <select class="form-control" data-plugin="choices" data-choices
-                                                data-choices-search-false name="choices-single-default" id="idJenkel">
-                                                <option value="all" selected>Pilih Jenis Kelamin</option>
-                                                @foreach ($jenkelOptions as $jenkel)
-                                                    <option value="{{ $jenkel }}">{{ $jenkel }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
 
-                                    <div class="col-sm-2">
-                                        <div>
-                                            <a href="{{ route('pdexportExcel') }}" class="btn btn-primary w-100">Unduh</a>
-                                            {{-- <button type="button" class="btn btn-primary w-100"
-                                                title="Import">Unduh</button> --}}
-                                            {{-- <button type="button" class="btn btn-primary w-100" id="filterButton"> <i
-                                                    class="ri-equalizer-fill me-2 align-bottom"></i>Filters</button> --}}
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <div>
-                                            <button type="button" class="btn btn-primary  w-100" data-bs-toggle="modal"
-                                                data-bs-target="#importModal">Unggah</button>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
+                            <div class="col-lg-auto">
+                                <div>
+                                    <select class="form-control" data-plugin="choices" data-choices
+                                        data-choices-search-false name="choices-single-default" id="idKK">
+                                        <option value="all" selected>Pilih Kompetensi Keahlian</option>
+                                        @foreach ($kompetensiKeahlian as $id => $kk)
+                                            <option value="{{ $id }}">{{ $kk }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
+                            <!--end col-->
+                            <div class="col-lg-auto">
+                                <div>
+                                    <select class="form-control" data-plugin="choices" data-choices
+                                        data-choices-search-false name="choices-single-default" id="idJenkel">
+                                        <option value="all" selected>Pilih Jenis Kelamin</option>
+                                        @foreach ($jenkelOptions as $jenkel)
+                                            <option value="{{ $jenkel }}">{{ $jenkel }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <!--end col-->
+
+                            <div class="col-lg-auto">
+                                <div>
+                                    <a href="{{ route('pdexportExcel') }}" class="btn btn-primary w-100">Unduh</a>
+                                    {{-- <button type="button" class="btn btn-primary w-100"
+                                                title="Import">Unduh</button> --}}
+                                    {{-- <button type="button" class="btn btn-primary w-100" id="filterButton"> <i
+                                                    class="ri-equalizer-fill me-2 align-bottom"></i>Filters</button> --}}
+                                </div>
+                            </div>
+                            <div class="col-lg-auto">
+                                <div>
+                                    <button type="button" class="btn btn-primary  w-100" data-bs-toggle="modal"
+                                        data-bs-target="#importModal">Unggah</button>
+                                </div>
+                            </div>
+                            <!--end col-->
                         </div>
                         <!--end row-->
                     </form>

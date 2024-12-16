@@ -2,17 +2,28 @@
 
 namespace App\Http\Controllers\Kurikulum\DokumenGuru;
 
+use App\DataTables\Kurikulum\DokumenGuru\NgajarPerRombelDataTable;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PerRombelController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(NgajarPerRombelDataTable $ngajarPerRombelDataTable)
     {
-        return view('pages.kurikulum.dokumenguru.per-rombel');
+        // Ambil data dari database
+        $dataKelas = DB::table('rombongan_belajars')
+            ->join('kompetensi_keahlians', 'rombongan_belajars.id_kk', '=', 'kompetensi_keahlians.idkk')
+            ->select('rombongan_belajars.rombel', 'kompetensi_keahlians.nama_kk')
+            ->get()
+            ->groupBy('nama_kk'); // Kelompokkan berdasarkan nama_kk
+
+        return $ngajarPerRombelDataTable->render('pages.kurikulum.dokumenguru.per-rombel', [
+            'dataKelas' => $dataKelas,
+        ]);
     }
 
     /**
