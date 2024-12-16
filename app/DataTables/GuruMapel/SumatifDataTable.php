@@ -104,9 +104,20 @@ class SumatifDataTable extends DataTable
                         <li><a href="' . route('gurumapel.penilaian.exportsumatif', ['kode_rombel' => $row->kode_rombel, 'kel_mapel' => $row->kel_mapel, 'id_personil' => $row->id_personil]) . '""
                                         class="dropdown-item btn btn-soft-primary" tittle="Download Format Nilai Sumatif">
                                         <i class="bx bx-download"></i> Download</a></li>
-                                <li><button class="dropdown-item btn btn-soft-success" data-bs-toggle="modal"
-                                        data-bs-target="#modalUploadSumatif" tittle="Upload Nilai Sumatif">
-                                        <i class="bx bx-upload"></i> Upload</button></li>
+                                <li>
+                                <button class="dropdown-item btn btn-soft-success" data-bs-toggle="modal"
+                                        data-bs-target="#modalUploadSumatif"
+                                        data-kode-rombel="' . $row->kode_rombel . '"
+                                        data-rombel="' . $row->rombel . '"
+                                        data-kel-mapel="' . $row->kel_mapel . '"
+                                        data-nama-mapel="' . $row->mata_pelajaran . '"
+                                        data-id-personil="' . $row->id_personil . '"
+                                        data-gelar-depan="' . $row->gelardepan . '"
+                                        data-nama-lengkap="' . $row->namalengkap . '"
+                                        data-gelar-belakang="' . $row->gelarbelakang . '"
+                                                tittle="Upload Nilai Sumatif">
+                                        <i class="bx bx-upload"></i> Upload</button>
+                                </li>
                             </ul>
                         </div>';
                     } else {
@@ -151,19 +162,25 @@ class SumatifDataTable extends DataTable
         $user = Auth::user();
         $personal_id = $user->personal_id;
 
-        // Cek apakah user memiliki role 'gmapel'
+        $query = $model->newQuery();
+
+        /* // Cek apakah user memiliki role 'gmapel'
         if ($user->hasRole('gmapel')) {
             // Ambil data berdasarkan id_personil yang sesuai dengan personal_id user yang sedang login
-            return $model->newQuery()
-                ->where('id_personil', $personal_id);
-        }
+            $query->where('id_personil', $personal_id);
+        } */
 
-        return $model->newQuery()->orderBy('tingkat', 'asc')
-            ->orderBy('semester', 'asc')
-            ->orderBy('kel_mapel', 'asc');
+        // Join dengan tabel PersonilSekolah
+        $query->join('personil_sekolahs', 'personil_sekolahs.id_personil', '=', 'kbm_per_rombels.id_personil')
+            ->select(
+                'kbm_per_rombels.*', // Semua kolom dari tabel kbm_per_rombels
+                'personil_sekolahs.gelardepan', // Kolom tambahan dari tabel personil_sekolahs
+                'personil_sekolahs.namalengkap', // Kolom tambahan (jika ada) dari tabel personil_sekolahs
+                'personil_sekolahs.gelarbelakang',
+            )
+            ->where('kbm_per_rombels.id_personil', $personal_id);
 
-        // Jika user tidak memiliki role 'gmapel', kembalikan query kosong atau hentikan
-        return $model->newQuery()->whereNull('id'); // Mengembalikan query yang tidak akan mengembalikan data
+        return $query; // Mengembalikan query yang tidak akan mengembalikan data
     }
 
     /**

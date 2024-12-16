@@ -12,24 +12,35 @@
 
                             <div class="col-sm-4">Kode Rombel</div>
                             <div class="col-sm-1">:</div>
-                            <div class="col-sm-7 text-info">
+                            <div class="col-sm-7 text-danger">
                                 [ <span id="kodeRombel"></span> ]
-                                <span id="romBel"></span>
                             </div>
-
-                            <div class="col-sm-4">Kelompok Mapel</div>
+                            <div class="col-sm-4">Rombel</div>
                             <div class="col-sm-1">:</div>
                             <div class="col-sm-7 text-info">
+                                <span id="romBel"></span>
+                            </div>
+                            <div class="col-sm-4">Kelompok Mapel</div>
+                            <div class="col-sm-1">:</div>
+                            <div class="col-sm-7 text-danger">
                                 [ <span id="kelMapel"></span> ]
+                            </div>
+                            <div class="col-sm-4">Mata Pelajaran</div>
+                            <div class="col-sm-1">:</div>
+                            <div class="col-sm-7 text-info">
                                 <span id="namaMapel"></span>
                             </div>
 
                             <div class="col-sm-4">ID Personil</div>
                             <div class="col-sm-1">:</div>
-                            <div class="col-sm-7 text-info">
+                            <div class="col-sm-7 text-danger">
                                 [ <span id="idPersonil"></span> ]
+                            </div>
+                            <div class="col-sm-4">Guru Mapel</div>
+                            <div class="col-sm-1">:</div>
+                            <div class="col-sm-7 text-info">
                                 <span id="gelarDepan"></span>
-                                <span id="namaLengkap"></span>
+                                <span id="namaLengkap"></span>,
                                 <span id="gelarBelakang"></span>
                             </div>
                         </div>
@@ -70,33 +81,34 @@
             </form>
         </div>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const modalUpload = document.getElementById('modalUploadFormatif');
-            modalUpload.addEventListener('show.bs.modal', function(event) {
-                // Tombol yang memicu modal
-                const button = event.relatedTarget;
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modalUpload = document.getElementById('modalUploadFormatif');
+        modalUpload.addEventListener('show.bs.modal', function(event) {
+            // Tombol yang memicu modal
+            const button = event.relatedTarget;
 
-                // Ambil data dari atribut data-*
-                const kodeRombel = button.getAttribute('data-kode-rombel');
-                const romBel = button.getAttribute('data-rombel');
-                const kelMapel = button.getAttribute('data-kel-mapel');
-                const namaMapel = button.getAttribute('data-nama-mapel');
-                const idPersonil = button.getAttribute('data-id-personil');
-                const gelarDepan = button.getAttribute('data-gelar-depan');
-                const namaLengkap = button.getAttribute('data-nama-lengkap');
-                const gelarBelakang = button.getAttribute('data-gelar-belakang');
+            // Ambil data dari atribut data-*
+            const kodeRombel = button.getAttribute('data-kode-rombel');
+            const romBel = button.getAttribute('data-rombel');
+            const kelMapel = button.getAttribute('data-kel-mapel');
+            const namaMapel = button.getAttribute('data-nama-mapel');
+            const idPersonil = button.getAttribute('data-id-personil');
+            const gelarDepan = button.getAttribute('data-gelar-depan');
+            const namaLengkap = button.getAttribute('data-nama-lengkap');
+            const gelarBelakang = button.getAttribute('data-gelar-belakang');
 
-                // Update konten modal
-                modalUpload.querySelector('#kodeRombel').textContent = kodeRombel;
-                modalUpload.querySelector('#romBel').textContent = romBel;
-                modalUpload.querySelector('#kelMapel').textContent = kelMapel;
-                modalUpload.querySelector('#namaMapel').textContent = namaMapel;
-                modalUpload.querySelector('#idPersonil').textContent = idPersonil;
-                modalUpload.querySelector('#gelarDepan').textContent = gelarDepan;
-                modalUpload.querySelector('#namaLengkap').textContent = namaLengkap;
-                modalUpload.querySelector('#gelarBelakang').textContent = gelarBelakang;
+            // Update konten modal
+            modalUpload.querySelector('#kodeRombel').textContent = kodeRombel;
+            modalUpload.querySelector('#romBel').textContent = romBel;
+            modalUpload.querySelector('#kelMapel').textContent = kelMapel;
+            modalUpload.querySelector('#namaMapel').textContent = namaMapel;
+            modalUpload.querySelector('#idPersonil').textContent = idPersonil;
+            modalUpload.querySelector('#gelarDepan').textContent = gelarDepan;
+            modalUpload.querySelector('#namaLengkap').textContent = namaLengkap;
+            modalUpload.querySelector('#gelarBelakang').textContent = gelarBelakang;
 
-            });
         });
-    </script>
+    });
+</script>
