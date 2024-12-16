@@ -358,7 +358,7 @@ class CetakRaporController extends Controller
             }
 
             foreach ($tpMin as $tp) {
-                $deskripsi[] = "<br>" . "Masih perlu bimbingan dalam {$tpIsi[$tp]} (TP ke-{$tp})";
+                $deskripsi[] = "Masih perlu bimbingan dalam {$tpIsi[$tp]} (TP ke-{$tp})";
             }
 
             // Simpan ke dalam objek data nilai
