@@ -146,15 +146,18 @@
                                             @endif
                                         @endforeach
                                     </tbody>
-
                                 </table>
                             </td>
                         </tr>
-                        <!-- <tr><td height='100%'>&nbsp;</td></tr> -->
+                        <tr>
+                            <td colspan="4">catatan : angka yang ada di kolom capaian kompetensi merupakan nomor
+                                Tujuan Pembelajaran </td>
+                        </tr>
                     </table>
                 </td>
             </tr>
         </table>
+
     </div>
 </div>
 <div id='cetak-hal2' style='@page {size: A4;} page-break-before: always;'>
