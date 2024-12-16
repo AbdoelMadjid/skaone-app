@@ -156,6 +156,7 @@ class DeskripsiNilaiController extends Controller
             kbm_per_rombels.mata_pelajaran,
             peserta_didik_rombels.nis,
             peserta_didiks.nama_lengkap,
+            nilai_formatif.id,
             nilai_formatif.tp_isi_1,
             nilai_formatif.tp_isi_2,
             nilai_formatif.tp_isi_3,

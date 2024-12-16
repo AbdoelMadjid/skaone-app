@@ -154,6 +154,7 @@
                     let tableHeader = `
                         <tr>
                             <th style="width: 30px;">No.</th>
+                            <th style="width: 30px;">ID Base</th>
                             <th style="width: 100px;">NIS</th>
                             <th style="width: 200px;">Nama Siswa</th>`;
 
@@ -193,6 +194,7 @@
                         tableBody += `
                         <tr>
                             <td class="bg-primary-subtle text-center">${index + 1}</td>
+                            <td>${row.id}</td>
                             <td>${row.nis}</td>
                             <td>${row.nama_lengkap}</td>`;
 
