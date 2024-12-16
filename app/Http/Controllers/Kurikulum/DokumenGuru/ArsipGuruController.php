@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Kurikulum\DokumenGuru;
 
 use App\Http\Controllers\Controller;
+use App\Models\ManajemenSekolah\PersonilSekolah;
 use Illuminate\Http\Request;
 
 class ArsipGuruController extends Controller
@@ -12,7 +13,25 @@ class ArsipGuruController extends Controller
      */
     public function index()
     {
-        return view('pages.kurikulum.dokumenguru.arsip-guru');
+        $PersonilOptions = PersonilSekolah::get()
+            ->filter(function ($item) {
+                // Filter out items without 'id_personil' or other fields
+                return isset($item->id_personil);
+            })
+            ->mapWithKeys(function ($item) {
+                return [
+                    $item->id_personil => [
+                        'gelarbelakang' => $item->gelarbelakang ?? '',
+                        'gelardepan' => $item->gelardepan ?? '',
+                        'nip' => $item->nip ?? '',
+                        'namalengkap' => $item->namalengkap ?? 'Nama Tidak Diketahui', // Tambahkan properti jika perlu
+                    ],
+                ];
+            })
+            ->toArray();
+
+
+        return view('pages.kurikulum.dokumenguru.arsip-guru', compact('PersonilOptions'));
     }
 
     /**
