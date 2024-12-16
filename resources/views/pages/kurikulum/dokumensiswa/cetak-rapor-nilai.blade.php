@@ -109,7 +109,7 @@
                                                     <td class="text-center">
                                                         {{ round(((float) $nilai->rerata_formatif + (float) $nilai->rerata_sumatif) / 2) }}
                                                     </td>
-                                                    <td style='padding:4px 8px;font-size:12px;'>
+                                                    <td style='padding:4px 8px;font-size:12px;text-align:justify;'>
                                                         {{--  {{ $nilai->nilai_tertinggi ?? '' }}<br>
                                                         {{ $nilai->nilai_terendah ?? '' }}<br> --}}
                                                         {!! $nilai->deskripsi_nilai ?? '' !!}
@@ -137,7 +137,7 @@
                                                     <td class="text-center">
                                                         {{ round(((float) $nilai->rerata_formatif + (float) $nilai->rerata_sumatif) / 2) }}
                                                     </td>
-                                                    <td style='padding:4px 8px;font-size:12px;'>
+                                                    <td style='padding:4px 8px;font-size:12px;text-align:justify;'>
                                                         {{-- {{ $nilai->nilai_tertinggi ?? '' }}<br>
                                                         {{ $nilai->nilai_terendah ?? '' }}<br> --}}
                                                         {!! $nilai->deskripsi_nilai ?? '' !!}
