@@ -329,17 +329,17 @@
                                 <tr>
                                     <td width='45%'>Nama Siswa</td>
                                     <td width='5%'>=</td>
-                                    <td>{$HBioSis['nm_siswa']}</td>
+                                    <td>{!! strtoupper($dataSiswa->nama_lengkap) !!}</td>
                                 </tr>
                                 <tr>
                                     <td>Nomor Induk/NISN</td>
                                     <td>=</td>
-                                    <td>{$HBioSis['nis']} / {$HBioSis['nisn']}</td>
+                                    <td>{!! $dataSiswa->nis !!} / {!! $dataSiswa->nisn !!}</td>
                                 </tr>
                                 <tr>
                                     <td>Nama Sekolah</td>
                                     <td>=</td>
-                                    <td>{$HIS['nm_sekolah']}</td>
+                                    <td>{{ $school->nama_sekolah }}</td>
                                 </tr>
                             </table>
                             <p>&nbsp;</p>
@@ -354,14 +354,14 @@
                                     <td style='text-align:center;padding:4px 8px;' valign='top'>1.</td>
                                     <td style='padding:4px 8px;' valign='top'>INTRA KURIKULER</td>
                                     <td style='padding:4px 8px;'>
-                                        <ol>$DPIntra</ol>
+                                        <ol></ol>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style='text-align:center;padding:4px 8px;' valign='top'>2.</td>
                                     <td style='padding:4px 8px;' valign='top'>EKSTRA KURIKULER</td>
                                     <td style='padding:4px 8px;'>
-                                        <ol>$DPEkstra</ol>
+                                        <ol></ol>
                                     </td>
                                 </tr>
                                 <tr>
