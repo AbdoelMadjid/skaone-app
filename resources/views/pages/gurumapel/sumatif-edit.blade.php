@@ -146,28 +146,46 @@
                 rerataSumatifInput.value = rerataSumatif.toFixed(0); // Format dengan 2 desimal
 
                 // Validasi nilai STS
-                if (stsValue < kkm || stsValue > 100) {
+                if (stsInput.value.trim() === "" || isNaN(stsValue)) {
+                    // Jika nilai STS kosong atau NaN
+                    stsInput.style.backgroundColor = 'yellow';
+                    stsInput.style.color = 'black';
+                } else if (stsValue < kkm || stsValue > 100) {
+                    // Jika nilai STS kurang dari KKM atau lebih dari 100
                     stsInput.style.backgroundColor = 'red';
                     stsInput.style.color = 'white';
                 } else {
+                    // Jika nilai STS valid
                     stsInput.style.backgroundColor = '';
                     stsInput.style.color = '';
                 }
 
                 // Validasi nilai SAS
-                if (sasValue < kkm || sasValue > 100) {
+                if (sasInput.value.trim() === "" || isNaN(sasValue)) {
+                    // Jika nilai SAS kosong atau NaN
+                    sasInput.style.backgroundColor = 'yellow';
+                    sasInput.style.color = 'black';
+                } else if (sasValue < kkm || sasValue > 100) {
+                    // Jika nilai SAS kurang dari KKM atau lebih dari 100
                     sasInput.style.backgroundColor = 'red';
                     sasInput.style.color = 'white';
                 } else {
+                    // Jika nilai SAS valid
                     sasInput.style.backgroundColor = '';
                     sasInput.style.color = '';
                 }
 
                 // Validasi rerata sumatif
-                if (rerataSumatif < kkm || rerataSumatif > 100) {
+                if (rerataSumatifInput.value.trim() === "" || isNaN(rerataSumatif)) {
+                    // Jika rerata sumatif kosong atau NaN
+                    rerataSumatifInput.style.backgroundColor = 'yellow';
+                    rerataSumatifInput.style.color = 'black';
+                } else if (rerataSumatif < kkm || rerataSumatif > 100) {
+                    // Jika rerata sumatif kurang dari KKM atau lebih dari 100
                     rerataSumatifInput.style.backgroundColor = 'red';
                     rerataSumatifInput.style.color = 'white';
                 } else {
+                    // Jika rerata sumatif valid
                     rerataSumatifInput.style.backgroundColor = '';
                     rerataSumatifInput.style.color = '';
                 }
@@ -189,37 +207,52 @@
                 const sasInput = document.getElementById(`sas[${siswaNis}]`);
                 const rerataSumatifInput = document.getElementById(`rerata_sumatif_${siswaNis}`);
 
-                // Ambil nilai STS dan SAS
+                // Ambil nilai STS, SAS, dan rerata sumatif langsung dari input
                 const stsValue = parseFloat(stsInput.value) || 0;
                 const sasValue = parseFloat(sasInput.value) || 0;
-
-                // Hitung rata-rata sumatif
-                const rerataSumatif = (stsValue + sasValue) / 2;
-                rerataSumatifInput.value = rerataSumatif.toFixed(0); // Format dengan 0 desimal
+                const rerataSumatif = parseFloat(rerataSumatifInput.value) || 0; // Nilai dari database
 
                 // Validasi nilai STS
-                if (stsValue < kkm || stsValue > 100) {
+                if (stsInput.value.trim() === "" || isNaN(stsValue)) {
+                    // Jika nilai STS kosong atau NaN
+                    stsInput.style.backgroundColor = 'yellow';
+                    stsInput.style.color = 'black';
+                } else if (stsValue < kkm || stsValue > 100) {
+                    // Jika nilai STS kurang dari KKM atau lebih dari 100
                     stsInput.style.backgroundColor = 'red';
                     stsInput.style.color = 'white';
                 } else {
+                    // Jika nilai STS valid
                     stsInput.style.backgroundColor = '';
                     stsInput.style.color = '';
                 }
 
                 // Validasi nilai SAS
-                if (sasValue < kkm || sasValue > 100) {
+                if (sasInput.value.trim() === "" || isNaN(sasValue)) {
+                    // Jika nilai SAS kosong atau NaN
+                    sasInput.style.backgroundColor = 'yellow';
+                    sasInput.style.color = 'black';
+                } else if (sasValue < kkm || sasValue > 100) {
+                    // Jika nilai SAS kurang dari KKM atau lebih dari 100
                     sasInput.style.backgroundColor = 'red';
                     sasInput.style.color = 'white';
                 } else {
+                    // Jika nilai SAS valid
                     sasInput.style.backgroundColor = '';
                     sasInput.style.color = '';
                 }
 
                 // Validasi rerata sumatif
-                if (rerataSumatif < kkm || rerataSumatif > 100) {
+                if (rerataSumatifInput.value.trim() === "" || isNaN(rerataSumatif)) {
+                    // Jika rerata sumatif kosong atau NaN
+                    rerataSumatifInput.style.backgroundColor = 'yellow';
+                    rerataSumatifInput.style.color = 'black';
+                } else if (rerataSumatif < kkm || rerataSumatif > 100) {
+                    // Jika rerata sumatif kurang dari KKM atau lebih dari 100
                     rerataSumatifInput.style.backgroundColor = 'red';
                     rerataSumatifInput.style.color = 'white';
                 } else {
+                    // Jika rerata sumatif valid
                     rerataSumatifInput.style.backgroundColor = '';
                     rerataSumatifInput.style.color = '';
                 }

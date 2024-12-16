@@ -196,25 +196,12 @@
                     input.style.color = ''; // Reset warna teks
                 }
 
-                // Hitung rata-rata untuk setiap siswa
-                let totalNilai = 0;
-                let validCount = 0; // Hitung jumlah nilai valid untuk rata-rata
-                for (let i = 1; i <= jumlahTP; i++) {
-                    const nilaiInput = document.getElementById(`tp_nilai_${siswaNis}_${i}`);
-                    const nilaiTP = parseFloat(nilaiInput.value);
-                    if (!isNaN(nilaiTP)) {
-                        totalNilai += nilaiTP;
-                        validCount++;
-                    }
-                }
-
+                // Ambil nilai rerata_formatif langsung
                 const rerataInput = document.getElementById(`rerata_formatif_${siswaNis}`);
-                const rerataValue = validCount > 0 ? (totalNilai / validCount).toFixed(0) :
-                    ""; // Hitung rata-rata jika ada nilai valid
-                rerataInput.value = rerataValue;
+                const rerataValue = parseFloat(rerataInput.value);
 
-                // Validasi rerata_formatif jika kurang dari KKM
-                if (rerataValue === "" || rerataValue < kkm || rerataValue > 100) {
+                // Validasi rerata_formatif jika kurang dari KKM atau lebih dari 100
+                if (isNaN(rerataValue) || rerataValue < kkm || rerataValue > 100) {
                     rerataInput.style.backgroundColor = 'red'; // Ubah warna latar belakang menjadi merah
                     rerataInput.style.color = 'white'; // Ubah warna teks menjadi putih
                 } else {
@@ -223,6 +210,7 @@
                 }
             });
         }
+
 
         // Jalankan validasi saat halaman selesai dimuat
         document.addEventListener('DOMContentLoaded', validateInputs);
