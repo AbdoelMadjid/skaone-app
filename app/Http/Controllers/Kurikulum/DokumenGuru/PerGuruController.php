@@ -2,61 +2,17 @@
 
 namespace App\Http\Controllers\Kurikulum\DokumenGuru;
 
-use App\DataTables\Kurikulum\DokumenGuru\NgajarPerGuruDataTable;
 use App\Http\Controllers\Controller;
-use App\Models\ManajemenSekolah\KompetensiKeahlian;
-use App\Models\ManajemenSekolah\PersonilSekolah;
-use App\Models\ManajemenSekolah\RombonganBelajar;
-use App\Models\ManajemenSekolah\Semester;
-use App\Models\ManajemenSekolah\TahunAjaran;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class PerGuruController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(NgajarPerGuruDataTable $ngajarPerGuruDataTable)
+    public function index()
     {
-        $user = Auth::user();
-        $id_login = $user->personal_id;
-
-        // Ambil semua personil yang memiliki jenispersonil 'Guru', kecuali yang sedang login
-        $personils = PersonilSekolah::where('jenispersonil', 'Guru')
-            ->where('id_personil', '!=', $id_login)
-            ->orderBy('namalengkap') // Mengurutkan berdasarkan nama lengkap
-            ->pluck('namalengkap', 'id_personil')
-            ->toArray();
-
-        // Ambil tahun ajaran yang aktif
-        $tahunAjaran = TahunAjaran::where('status', 'Aktif')->first();
-
-        // Periksa jika tidak ada tahun ajaran aktif
-        if (!$tahunAjaran) {
-            return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
-        }
-
-        // Ambil semester yang aktif berdasarkan tahun ajaran yang aktif
-        $semester = Semester::where('status', 'Aktif')
-            ->where('tahun_ajaran_id', $tahunAjaran->id) // Pastikan mengacu pada tahun ajaran yang aktif
-            ->first();
-
-        // Periksa jika tidak ada semester aktif
-        if (!$semester) {
-            return redirect()->back()->with('error', 'Tidak ada semester aktif.');
-        }
-
-        // Ambil semua tahun ajaran untuk dropdown
-        $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
-
-        return $ngajarPerGuruDataTable->render('pages.kurikulum.dokumenguru.per-guru', [
-            'personils' => $personils,
-            'tahunAjaranOptions' => $tahunAjaranOptions,
-            'semester' => $semester,
-            'tahunAjaran' => $tahunAjaran,
-        ]);
+        return view('pages.kurikulum.dokumenguru.per-guru');
     }
 
     /**
