@@ -81,7 +81,12 @@
                         </div>
                         <div class="col-sm-auto">
                             <div class="d-flex gap-1 flex-wrap">
-                                {{-- buat tambah tombol --}}
+                                @if ($personal_id == 'Pgw_0016')
+                                    <button type="button" class="btn btn-info" data-bs-toggle="modal"
+                                        data-bs-target="#tambahPilihCetakRapor"><i
+                                            class="ri-file-download-line align-bottom me-1"></i>
+                                        Tambah</button>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -186,10 +191,8 @@
                 </div>
             </div>
         </div>
-
     </div>
-    <!--end col-->
-    </div>
+    @include('pages.kurikulum.dokumensiswa.cetak-rapor-tambah-form')
 @endsection
 @section('script')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>

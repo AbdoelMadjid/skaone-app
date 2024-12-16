@@ -8,6 +8,7 @@ use App\Models\Kurikulum\DokumenSiswa\PilihCetakRapor;
 use App\Models\ManajemenSekolah\IdentitasSekolah;
 use App\Models\ManajemenSekolah\KepalaSekolah;
 use App\Models\ManajemenSekolah\KompetensiKeahlian;
+use App\Models\ManajemenSekolah\PersonilSekolah;
 use App\Models\ManajemenSekolah\PesertaDidik;
 use App\Models\ManajemenSekolah\PesertaDidikOrtu;
 use App\Models\ManajemenSekolah\RombonganBelajar;
@@ -49,6 +50,7 @@ class CetakRaporController extends Controller
         $kompetensiKeahlianOptions = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
         $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
         $rombonganBelajar = RombonganBelajar::pluck('rombel', 'kode_rombel')->toArray();
+        $personilSekolah = PersonilSekolah::pluck('namalengkap', 'id_personil')->toArray();
         $pesertadidikOptions = PesertaDidik::select('nis', 'nama_lengkap')
             ->get()
             ->mapWithKeys(function ($item) {
@@ -389,6 +391,7 @@ class CetakRaporController extends Controller
             'activities' => $activities,
             'catatanWaliKelas' => $catatanWaliKelas,
             'prestasiSiswas' => $prestasiSiswas,
+            'personilSekolah' => $personilSekolah,
         ]);
     }
 
