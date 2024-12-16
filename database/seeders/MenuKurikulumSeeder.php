@@ -61,12 +61,6 @@ class MenuKurikulumSeeder extends Seeder
         $sm = $mm->subMenus()->create(['name' => 'Dokumen Guru', 'url' => $mm->url . '/dokumenguru', 'category' => $mm->category]);
         $this->attachMenupermission($sm, ['read'], ['admin']);
 
-        $csm = $sm->subMenus()->create(['name' => 'Per Guru', 'url' => $sm->url . '/ngajar-per-guru', 'category' => $sm->category]);
-        $this->attachMenupermission($csm, ['create', 'read', 'update', 'delete'], ['admin']);
-
-        $csm = $sm->subMenus()->create(['name' => 'Per Rombel', 'url' => $sm->url . '/ngajar-per-rombel', 'category' => $sm->category]);
-        $this->attachMenupermission($csm, ['create', 'read', 'update', 'delete'], ['admin']);
-
         $csm = $sm->subMenus()->create(['name' => 'Arsip', 'url' => $sm->url . '/arsip', 'category' => $sm->category]);
         $this->attachMenupermission($csm, ['read'], ['admin']);
         // end childmenu dokumen guru
