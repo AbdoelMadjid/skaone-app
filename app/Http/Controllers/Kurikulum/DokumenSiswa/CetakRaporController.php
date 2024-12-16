@@ -354,11 +354,11 @@ class CetakRaporController extends Controller
             } */
 
             foreach ($tpMax as $tp) {
-                $deskripsi[] = "Menunjukkan kemampuan dalam {$tpIsi[$tp]} (TP ke-{$tp})";
+                $deskripsi[] = "Menunjukkan kemampuan dalam {$tpIsi[$tp]}<sup>[{$tp}]</sup>";
             }
 
             foreach ($tpMin as $tp) {
-                $deskripsi[] = "Masih perlu bimbingan dalam {$tpIsi[$tp]} (TP ke-{$tp})";
+                $deskripsi[] = "Masih perlu bimbingan dalam {$tpIsi[$tp]}<sup>[{$tp}]</sup>";
             }
 
             // Simpan ke dalam objek data nilai
