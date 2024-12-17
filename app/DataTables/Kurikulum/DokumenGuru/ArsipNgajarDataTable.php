@@ -69,13 +69,157 @@ class ArsipNgajarDataTable extends DataTable
 
                 return $row->id_personil . '<em>Data tidak ditemukan</em>';
             })
-            ->addColumn('action', function ($row) {
-                // Menggunakan basicActions untuk menghasilkan action buttons
-                $actions = $this->basicActions($row);
-                return view('action', compact('actions'));
+            ->addColumn('actionformatif', function ($row) {
+                $jumlahTP = DB::table('tujuan_pembelajarans')
+                    ->where('kode_rombel', $row->kode_rombel)
+                    ->where('kel_mapel', $row->kel_mapel)
+                    ->count();
+
+                $dataExists = DB::table('nilai_formatif')
+                    ->where('tahunajaran', $row->tahunajaran)
+                    ->where('tingkat', $row->tingkat)
+                    ->where('ganjilgenap', $row->ganjilgenap)
+                    ->where('semester', $row->semester)
+                    ->where('kode_rombel', $row->kode_rombel)
+                    ->where('kel_mapel', $row->kel_mapel)
+                    ->where('id_personil', $row->id_personil)
+                    ->exists();
+
+                if ($jumlahTP > 0) {
+                    if (!$dataExists) {
+                        $tombol = '
+                        <div class="btn-group dropstart">
+                            <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
+                                class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                <li><a class="dropdown-item" href="' . route('gurumapel.penilaian.formatif.create', [
+                            'kode_rombel' => $row->kode_rombel,
+                            'kel_mapel' => $row->kel_mapel,
+                            'id_personil' => $row->id_personil,
+                        ]) . '"><i class="bx bx-edit-alt"></i> Create</a></li>
+                        <li><a href="' . route('gurumapel.penilaian.exportformatif', ['kode_rombel' => $row->kode_rombel, 'kel_mapel' => $row->kel_mapel, 'id_personil' => $row->id_personil]) . '"
+                                        class="dropdown-item btn btn-soft-primary" tittle="Download Format Nilai Formatif"><i class="bx bx-download"></i> Download</a></li>
+                                        <li>
+                                        <button class="dropdown-item btn btn-soft-success"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modalUploadFormatif"
+                                                data-kode-rombel="' . $row->kode_rombel . '"
+                                                data-rombel="' . $row->rombel . '"
+                                                data-kel-mapel="' . $row->kel_mapel . '"
+                                                data-nama-mapel="' . $row->mata_pelajaran . '"
+                                                data-id-personil="' . $row->id_personil . '"
+                                                data-gelar-depan="' . $row->gelardepan . '"
+                                                data-nama-lengkap="' . $row->namalengkap . '"
+                                                data-gelar-belakang="' . $row->gelarbelakang . '"
+                                                title="Upload Nilai Formatif">
+                                            <i class="bx bx-upload"></i> Upload
+                                        </button>
+                                        </li>
+                            </ul>
+                        </div>';
+                    } else {
+                        $tombol = '
+                        <div class="btn-group dropstart">
+                            <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
+                                class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                <li><a class="dropdown-item" href="' . route('gurumapel.penilaian.formatif.edit', [
+                            'kode_rombel' => $row->kode_rombel,
+                            'kel_mapel' => $row->kel_mapel,
+                            'id_personil' => $row->id_personil,
+                        ]) . '">Edit</a></li>
+                            </ul>
+                        </div>';
+                    }
+                } else {
+                    $tombol = '
+                        <div class="btn-group dropstart">
+                            <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
+                                class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                <li><span class="dropdown-item">Anda pingin ngisi nilai? <br>Isi TP dulu bro !!!</span></li>
+                            </ul>
+                        </div>';
+                }
+
+                return $tombol;
+            })
+            ->addColumn('actionsumatif', function ($row) {
+                $jumlahTP = DB::table('tujuan_pembelajarans')
+                    ->where('kode_rombel', $row->kode_rombel)
+                    ->where('kel_mapel', $row->kel_mapel)
+                    ->count();
+
+                $dataExists = DB::table('nilai_sumatif')
+                    ->where('tahunajaran', $row->tahunajaran)
+                    ->where('tingkat', $row->tingkat)
+                    ->where('ganjilgenap', $row->ganjilgenap)
+                    ->where('semester', $row->semester)
+                    ->where('kode_rombel', $row->kode_rombel)
+                    ->where('kel_mapel', $row->kel_mapel)
+                    ->where('id_personil', $row->id_personil)
+                    ->exists();
+
+                if ($jumlahTP > 0) {
+                    if (!$dataExists) {
+                        $tombol = '
+                        <div class="btn-group dropstart">
+                            <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
+                                class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                <li><a class="dropdown-item" href="' . route('gurumapel.penilaian.sumatif.create', [
+                            'kode_rombel' => $row->kode_rombel,
+                            'kel_mapel' => $row->kel_mapel,
+                            'id_personil' => $row->id_personil,
+                        ]) . '"><i class="bx bx-edit-alt"></i> Create</a></li>
+                        <li><a href="' . route('gurumapel.penilaian.exportsumatif', ['kode_rombel' => $row->kode_rombel, 'kel_mapel' => $row->kel_mapel, 'id_personil' => $row->id_personil]) . '""
+                                        class="dropdown-item btn btn-soft-primary" tittle="Download Format Nilai Sumatif">
+                                        <i class="bx bx-download"></i> Download</a></li>
+                                <li>
+                                <button class="dropdown-item btn btn-soft-success" data-bs-toggle="modal"
+                                        data-bs-target="#modalUploadSumatif"
+                                        data-kode-rombel="' . $row->kode_rombel . '"
+                                        data-rombel="' . $row->rombel . '"
+                                        data-kel-mapel="' . $row->kel_mapel . '"
+                                        data-nama-mapel="' . $row->mata_pelajaran . '"
+                                        data-id-personil="' . $row->id_personil . '"
+                                        data-gelar-depan="' . $row->gelardepan . '"
+                                        data-nama-lengkap="' . $row->namalengkap . '"
+                                        data-gelar-belakang="' . $row->gelarbelakang . '"
+                                                tittle="Upload Nilai Sumatif">
+                                        <i class="bx bx-upload"></i> Upload</button>
+                                </li>
+                            </ul>
+                        </div>';
+                    } else {
+                        $tombol = '
+                        <div class="btn-group dropstart">
+                            <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
+                                class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                <li><a class="dropdown-item" href="' . route('gurumapel.penilaian.sumatif.edit', [
+                            'kode_rombel' => $row->kode_rombel,
+                            'kel_mapel' => $row->kel_mapel,
+                            'id_personil' => $row->id_personil,
+                        ]) . '">Edit</a></li>
+                            </ul>
+                        </div>';
+                    }
+                } else {
+                    $tombol = '
+                        <div class="btn-group dropstart">
+                            <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
+                                class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                <li><span class="dropdown-item">Anda pingin ngisi nilai? <br>Isi TP dulu bro !!!</span></li>
+                            </ul>
+                        </div>';
+                }
+
+                return $tombol;
             })
             ->addIndexColumn()
-            ->rawColumns(['namaguru', 'cek_sudahbelum', 'action']);
+            ->rawColumns(['namaguru', 'cek_sudahbelum', 'actionformatif', 'actionsumatif']);
     }
 
     /**
@@ -150,11 +294,18 @@ class ArsipNgajarDataTable extends DataTable
             Column::make('mata_pelajaran')->title('Nama Mapel'),
             Column::make('namaguru')->title('Guru Mapel'),
             Column::make('cek_sudahbelum')->title('Cek Formatif'),
-            /* Column::computed('action')
+            Column::computed('actionformatif')
                 ->exportable(false)
                 ->printable(false)
+                ->title('Formatif')
                 ->width(60)
-                ->addClass('text-center'), */
+                ->addClass('text-center'),
+            Column::computed('actionsumatif')
+                ->exportable(false)
+                ->printable(false)
+                ->title('Sumatif')
+                ->width(60)
+                ->addClass('text-center'),
         ];
     }
 
