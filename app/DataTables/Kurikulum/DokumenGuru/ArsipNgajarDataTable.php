@@ -5,6 +5,7 @@ namespace App\DataTables\Kurikulum\DokumenGuru;
 use App\Models\Kurikulum\DataKBM\KbmPerRombel;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -24,12 +25,26 @@ class ArsipNgajarDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addColumn('namaguru', function ($row) {
+                $personilSekolah = DB::table('personil_sekolahs')
+                    ->where('id_personil', $row->id_personil)
+                    ->select('gelardepan', 'namalengkap', 'gelarbelakang') // Ambil semua field yang diperlukan
+                    ->first();
+
+                if ($personilSekolah) {
+                    return $row->id_personil . '<br>' .
+                        $personilSekolah->gelardepan . $personilSekolah->namalengkap . ',' . $personilSekolah->gelarbelakang;
+                }
+
+                return $row->id_personil . '<em>Data tidak ditemukan</em>';
+            })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
                 return view('action', compact('actions'));
             })
-            ->addIndexColumn();
+            ->addIndexColumn()
+            ->rawColumns(['namaguru', 'action']);
     }
 
     /**
@@ -105,6 +120,7 @@ class ArsipNgajarDataTable extends DataTable
             Column::make('rombel')->title('Rombel')->addClass('text-center'),
             Column::make('mata_pelajaran')->title('Nama Mapel'),
             Column::make('kkm')->title('KKM')->addClass('text-center'),
+            Column::make('namaguru')->title('Guru Mapel'),
             /* Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
