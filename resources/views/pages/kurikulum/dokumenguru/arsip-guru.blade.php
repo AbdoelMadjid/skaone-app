@@ -3,8 +3,25 @@
     @lang('translation.arsip')
 @endsection
 @section('css')
-    <link href="{{ URL::asset('build/libs/nouislider/nouislider.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ URL::asset('build/libs/gridjs/theme/mermaid.min.css') }}">
+    <link href="{{ URL::asset('build/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
+    <style>
+        .list-rombel-wrapper {
+            display: none;
+            /* Sembunyikan dropdown sementara */
+        }
+
+        .list-gurumapel-wrapper {
+            display: none;
+            /* Sembunyikan dropdown sementara */
+        }
+
+        .loading-message {
+            display: block;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
 @endsection
 @section('content')
     @component('layouts.breadcrumb')
@@ -16,336 +33,43 @@
         @endslot
     @endcomponent
     <div class="row">
-        <div class="col-xl-3 col-lg-4">
-            <div class="card">
-                <div class="card-header">
-                    <div class="d-flex mb-3">
-                        <div class="flex-grow-1">
-                            <h5 class="fs-16">Filters</h5>
-                        </div>
-                        <div class="flex-shrink-0">
-                            <a href="#" class="text-decoration-underline" id="clearall">Clear All</a>
-                        </div>
-                    </div>
-
-                    <div class="filter-choices-input">
-                        <select class="form-select mb-3" aria-label="Default select example">
-                            <option value="">Pilih Filter</option>
-                            <option value="gurumapel">Guru Mata Pelajaran</option>
-                            <option value="rombel">Rombongan Belajar</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="accordion accordion-flush filter-accordion">
-
-                    <div class="card-body border-bottom">
-                        <div>
-                            <p class="text-muted text-uppercase fs-12 fw-medium mb-2">Products</p>
-                            <ul class="list-unstyled mb-0 filter-list">
-                                <li>
-                                    <a href="#" class="d-flex py-1 align-items-center">
-                                        <div class="flex-grow-1">
-                                            <h5 class="fs-13 mb-0 listname">Grocery</h5>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="d-flex py-1 align-items-center">
-                                        <div class="flex-grow-1">
-                                            <h5 class="fs-13 mb-0 listname">Fashion</h5>
-                                        </div>
-                                        <div class="flex-shrink-0 ms-2">
-                                            <span class="badge bg-light text-muted">5</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="d-flex py-1 align-items-center">
-                                        <div class="flex-grow-1">
-                                            <h5 class="fs-13 mb-0 listname">Watches</h5>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="d-flex py-1 align-items-center">
-                                        <div class="flex-grow-1">
-                                            <h5 class="fs-13 mb-0 listname">Electronics</h5>
-                                        </div>
-                                        <div class="flex-shrink-0 ms-2">
-                                            <span class="badge bg-light text-muted">5</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="d-flex py-1 align-items-center">
-                                        <div class="flex-grow-1">
-                                            <h5 class="fs-13 mb-0 listname">Furniture</h5>
-                                        </div>
-                                        <div class="flex-shrink-0 ms-2">
-                                            <span class="badge bg-light text-muted">6</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="d-flex py-1 align-items-center">
-                                        <div class="flex-grow-1">
-                                            <h5 class="fs-13 mb-0 listname">Automotive Accessories</h5>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="d-flex py-1 align-items-center">
-                                        <div class="flex-grow-1">
-                                            <h5 class="fs-13 mb-0 listname">Appliances</h5>
-                                        </div>
-                                        <div class="flex-shrink-0 ms-2">
-                                            <span class="badge bg-light text-muted">7</span>
-                                        </div>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#" class="d-flex py-1 align-items-center">
-                                        <div class="flex-grow-1">
-                                            <h5 class="fs-13 mb-0 listname">Kids</h5>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="card-body border-bottom">
-                        <p class="text-muted text-uppercase fs-12 fw-medium mb-4">Price</p>
-
-                        <div id="product-price-range"></div>
-                        <div class="formCost d-flex gap-2 align-items-center mt-3">
-                            <input class="form-control form-control-sm" type="text" id="minCost" value="0" />
-                            <span class="fw-semibold text-muted">to</span> <input class="form-control form-control-sm"
-                                type="text" id="maxCost" value="1000" />
-                        </div>
-                    </div>
-
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="flush-headingBrands">
-                            <button class="accordion-button bg-transparent shadow-none" type="button"
-                                data-bs-toggle="collapse" data-bs-target="#flush-collapseBrands" aria-expanded="true"
-                                aria-controls="flush-collapseBrands">
-                                <span class="text-muted text-uppercase fs-12 fw-medium">Brands</span> <span
-                                    class="badge bg-success rounded-pill align-middle ms-1 filter-badge"></span>
-                            </button>
-                        </h2>
-
-                        <div id="flush-collapseBrands" class="accordion-collapse collapse show"
-                            aria-labelledby="flush-headingBrands">
-                            <div class="accordion-body text-body pt-0">
-                                <div class="search-box search-box-sm">
-                                    <input type="text" class="form-control bg-light border-0" id="searchBrandsList"
-                                        placeholder="Search Brands...">
-                                    <i class="ri-search-line search-icon"></i>
-                                </div>
-                                <div class="d-flex flex-column gap-2 mt-3 filter-check">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="Boat"
-                                            id="productBrandRadio5" checked>
-                                        <label class="form-check-label" for="productBrandRadio5">Boat</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="OnePlus"
-                                            id="productBrandRadio4">
-                                        <label class="form-check-label" for="productBrandRadio4">OnePlus</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="Realme"
-                                            id="productBrandRadio3">
-                                        <label class="form-check-label" for="productBrandRadio3">Realme</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="Sony"
-                                            id="productBrandRadio2">
-                                        <label class="form-check-label" for="productBrandRadio2">Sony</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="JBL"
-                                            id="productBrandRadio1" checked>
-                                        <label class="form-check-label" for="productBrandRadio1">JBL</label>
-                                    </div>
-
-                                    <div>
-                                        <button type="button"
-                                            class="btn btn-link text-decoration-none text-uppercase fw-medium p-0">1,235
-                                            More</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end accordion-item -->
-
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="flush-headingDiscount">
-                            <button class="accordion-button bg-transparent shadow-none collapsed" type="button"
-                                data-bs-toggle="collapse" data-bs-target="#flush-collapseDiscount" aria-expanded="true"
-                                aria-controls="flush-collapseDiscount">
-                                <span class="text-muted text-uppercase fs-12 fw-medium">Discount</span> <span
-                                    class="badge bg-success rounded-pill align-middle ms-1 filter-badge"></span>
-                            </button>
-                        </h2>
-                        <div id="flush-collapseDiscount" class="accordion-collapse collapse"
-                            aria-labelledby="flush-headingDiscount">
-                            <div class="accordion-body text-body pt-1">
-                                <div class="d-flex flex-column gap-2 filter-check">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="50% or more"
-                                            id="productdiscountRadio6">
-                                        <label class="form-check-label" for="productdiscountRadio6">50% or more</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="40% or more"
-                                            id="productdiscountRadio5">
-                                        <label class="form-check-label" for="productdiscountRadio5">40% or more</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="30% or more"
-                                            id="productdiscountRadio4">
-                                        <label class="form-check-label" for="productdiscountRadio4">
-                                            30% or more
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="20% or more"
-                                            id="productdiscountRadio3" checked>
-                                        <label class="form-check-label" for="productdiscountRadio3">
-                                            20% or more
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="10% or more"
-                                            id="productdiscountRadio2">
-                                        <label class="form-check-label" for="productdiscountRadio2">
-                                            10% or more
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="Less than 10%"
-                                            id="productdiscountRadio1">
-                                        <label class="form-check-label" for="productdiscountRadio1">
-                                            Less than 10%
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end accordion-item -->
-
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="flush-headingRating">
-                            <button class="accordion-button bg-transparent shadow-none collapsed" type="button"
-                                data-bs-toggle="collapse" data-bs-target="#flush-collapseRating" aria-expanded="false"
-                                aria-controls="flush-collapseRating">
-                                <span class="text-muted text-uppercase fs-12 fw-medium">Rating</span> <span
-                                    class="badge bg-success rounded-pill align-middle ms-1 filter-badge"></span>
-                            </button>
-                        </h2>
-
-                        <div id="flush-collapseRating" class="accordion-collapse collapse"
-                            aria-labelledby="flush-headingRating">
-                            <div class="accordion-body text-body">
-                                <div class="d-flex flex-column gap-2 filter-check">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="4 & Above Star"
-                                            id="productratingRadio4" checked>
-                                        <label class="form-check-label" for="productratingRadio4">
-                                            <span class="text-muted">
-                                                <i class="mdi mdi-star text-warning"></i>
-                                                <i class="mdi mdi-star text-warning"></i>
-                                                <i class="mdi mdi-star text-warning"></i>
-                                                <i class="mdi mdi-star text-warning"></i>
-                                                <i class="mdi mdi-star"></i>
-                                            </span> 4 & Above
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="3 & Above Star"
-                                            id="productratingRadio3">
-                                        <label class="form-check-label" for="productratingRadio3">
-                                            <span class="text-muted">
-                                                <i class="mdi mdi-star text-warning"></i>
-                                                <i class="mdi mdi-star text-warning"></i>
-                                                <i class="mdi mdi-star text-warning"></i>
-                                                <i class="mdi mdi-star"></i>
-                                                <i class="mdi mdi-star"></i>
-                                            </span> 3 & Above
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="2 & Above Star"
-                                            id="productratingRadio2">
-                                        <label class="form-check-label" for="productratingRadio2">
-                                            <span class="text-muted">
-                                                <i class="mdi mdi-star text-warning"></i>
-                                                <i class="mdi mdi-star text-warning"></i>
-                                                <i class="mdi mdi-star"></i>
-                                                <i class="mdi mdi-star"></i>
-                                                <i class="mdi mdi-star"></i>
-                                            </span> 2 & Above
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="1 Star"
-                                            id="productratingRadio1">
-                                        <label class="form-check-label" for="productratingRadio1">
-                                            <span class="text-muted">
-                                                <i class="mdi mdi-star text-warning"></i>
-                                                <i class="mdi mdi-star"></i>
-                                                <i class="mdi mdi-star"></i>
-                                                <i class="mdi mdi-star"></i>
-                                                <i class="mdi mdi-star"></i>
-                                            </span> 1
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end accordion-item -->
-                </div>
-            </div>
-            <!-- end card -->
-        </div>
-        <!-- end col -->
 
         <div class="col-xl-9 col-lg-8">
             <div>
                 <div class="card">
-                    <div class="card-header border-0">
-                        <div class="row gy-3">
-                            <div class="col-lg">
-                                <div class="search-box">
-                                    <input type="text" class="form-control search bg-light border-light"
-                                        id="searchJob" autocomplete="off" placeholder="Search for jobs or companies...">
-                                    <i class="ri-search-line search-icon"></i>
+                    <div class="card-body border border-dashed border-end-0 border-start-0">
+                        <form>
+                            <div class="row g-3">
+                                <div class="col-xxl-4 col-sm-6">
+                                    <div class="search-box">
+                                        <input type="text" class="form-control search"
+                                            placeholder="Search for order ID, customer, order status or something...">
+                                        <i class="ri-search-line search-icon"></i>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <div class="col-xxl-5 col-sm-4">
+                                    <div class="filter-choices-input">
+                                        <div class="loading-message">Memuat data...</div>
+                                        <div class="list-gurumapel-wrapper">
+                                            <select class="form-control list-gurumapel" name="gurumapel"
+                                                style="width: 100%;" disabled></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <div class="col-xxl-3 col-sm-4">
+                                    <div class="filter-choices-input">
+                                        <div class="loading-message">Memuat data...</div>
+                                        <div class="list-rombel-wrapper">
+                                            <select class="form-control list-rombel" name="rombel" style="width: 100%;"
+                                                disabled></select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-lg-auto">
-                                <div class="input-light">
-                                    <select class="form-control" data-choices data-choices-search-false
-                                        name="choices-single-default" id="idPiihMapel">
-                                        <option value="" selected>Pilih Guru Mapel</option>
-                                        @foreach ($PersonilOptions as $key => $item)
-                                            <option value="{{ $key }}" data-id-personil="{{ $key }}"
-                                                data-gelar-depan="{{ $item['gelardepan'] }}"
-                                                data-gelar-belakang="{{ $item['gelarbelakang'] }}">
-                                                {{ $item['gelardepan'] }} {{ $item['namalengkap'] }},
-                                                {{ $item['gelarbelakang'] }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
+                            <!--end row-->
+                        </form>
                     </div>
                 </div>
                 <div class="card">
@@ -354,8 +78,8 @@
                             <div class="col">
                                 <ul class="nav nav-tabs-custom card-header-tabs border-bottom-0" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active fw-semibold" data-bs-toggle="tab"
-                                            href="#productnav-all" role="tab">
+                                        <a class="nav-link active fw-semibold" data-bs-toggle="tab" href="#productnav-all"
+                                            role="tab">
                                             All <span
                                                 class="badge bg-danger-subtle text-danger align-middle rounded-pill ms-1">12</span>
                                         </a>
@@ -391,7 +115,7 @@
 
                         <div class="tab-content text-muted">
                             <div class="tab-pane active" id="productnav-all" role="tabpanel">
-                                <div id="table-product-list-all" class="table-card gridjs-border-none"></div>
+
                             </div>
                             <!-- end tab pane -->
 
@@ -419,44 +143,167 @@
             </div>
         </div>
         <!-- end col -->
-    </div>
-    <!-- end row -->
 
-
-    <!-- removeItemModal -->
-    <div id="removeItemModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        id="btn-close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mt-2 text-center">
-                        <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
-                            colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
-                        <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                            <h4>Are you Sure ?</h4>
-                            <p class="text-muted mx-4 mb-0">Are you Sure You want to Remove this Product ?</p>
+        <div class="col-xl-3 col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex mb-3">
+                        <div class="flex-grow-1">
+                            <h5 class="fs-16">Filters</h5>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <a href="#" class="text-decoration-underline" id="clearall">Clear All</a>
                         </div>
                     </div>
-                    <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                        <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn w-sm btn-danger " id="delete-product">Yes, Delete It!</button>
+
+                    <div class="filter-choices-input">
+                        <select class="form-select mb-3 filter-selector" aria-label="Default select example">
+                            <option value="">Pilih Filter</option>
+                            <option value="gurumapel">Guru Mata Pelajaran</option>
+                            <option value="rombel">Rombongan Belajar</option>
+                        </select>
                     </div>
                 </div>
-
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+            </div>
+        </div>
+        <!-- end col -->
+    </div>
+    <!-- end row -->
 @endsection
 @section('script')
-    <script src="{{ URL::asset('build/libs/nouislider/nouislider.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/wnumb/wNumb.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/gridjs/gridjs.umd.js') }}"></script>
-    <script src="https://unpkg.com/gridjs/plugins/selection/dist/selection.umd.js"></script>
+    <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/select2/js/select2.min.js') }}"></script>
 
+    <script>
+        $(document).ready(function() {
+            // Inisialisasi Select2 untuk Guru Mapel
+            $(".list-gurumapel").select2({
+                placeholder: "Pilih Guru Mapel",
+            });
 
-    <script src="{{ URL::asset('build/js/pages/ecommerce-product-list.init.js') }}"></script>
+            // Inisialisasi Select2 untuk Rombel
+            $(".list-rombel").select2({
+                placeholder: "Pilih Rombongan Belajar",
+            });
+
+            // Event handler untuk perubahan dropdown filter
+            $(".filter-selector").on("change", function() {
+                var selectedValue = $(this).val();
+
+                // Reset semua dropdown ke disabled
+                $(".list-gurumapel").prop("disabled", true);
+                $(".list-rombel").prop("disabled", true);
+
+                // Kembali ke opsi default ("All") untuk dropdown yang dinonaktifkan
+                $(".list-gurumapel").val("All").trigger("change");
+                $(".list-rombel").val("All").trigger("change");
+
+                // Aktifkan dropdown sesuai pilihan
+                if (selectedValue === "gurumapel") {
+                    $(".list-gurumapel").prop("disabled", false);
+                } else if (selectedValue === "rombel") {
+                    $(".list-rombel").prop("disabled", false);
+                }
+            });
+
+            // Simulasi Memuat Data untuk Guru Mapel
+            // Fetch data
+            $.ajax({
+                url: '/kurikulum/dokumenguru/get-guru', // Endpoint backend
+                method: 'GET',
+                success: function(data) {
+                    // Tambahkan opsi "Pilih Guru Mapel"
+                    var options = [{
+                            id: 'All',
+                            text: 'Pilih Guru Mapel'
+                        }, // Opsi pertama dengan value All
+                    ];
+
+                    // Tambahkan data guru ke dalam opsi
+                    data.forEach(function(guru) {
+                        options.push({
+                            id: guru.id_personil,
+                            text: `${guru.gelardepan ? guru.gelardepan + ' ' : ''}${guru.namalengkap}${guru.gelarbelakang ? ', ' + guru.gelarbelakang : ''}`
+                        });
+                    });
+
+                    // Masukkan data ke dalam dropdown
+                    $(".list-gurumapel").select2({
+                        data: options,
+                        placeholder: "Pilih Guru",
+                    });
+
+                    // Tampilkan dropdown setelah data selesai dimuat
+                    $(".loading-message").hide();
+                    $(".list-gurumapel-wrapper").fadeIn();
+                },
+                error: function(error) {
+                    console.error('Error fetching data:', error);
+
+                    // Tampilkan pesan error dan sembunyikan dropdown
+                    $(".loading-message").text("Gagal memuat data.");
+                    $(".list-gurumapel-wrapper").hide();
+                }
+            });
+
+            // Simulasi Memuat Data untuk Rombel
+            $.ajax({
+                url: '/kurikulum/dokumenguru/get-rombel',
+                method: 'GET',
+                beforeSend: function() {
+                    // Pastikan dropdown tersembunyi saat data belum siap
+                    $(".list-rombel-wrapper").hide();
+                    $(".loading-message").show();
+                },
+                success: function(data) {
+                    // Clear existing options
+                    $(".list-rombel").empty();
+
+                    // Add default option
+                    $(".list-rombel").append(
+                        $("<option>", {
+                            value: "All",
+                            text: "Pilih Rombel"
+                        })
+                    );
+
+                    // Loop through grouped data
+                    $.each(data, function(id_kk, rombels) {
+                        const groupLabel = rombels[0]?.nama_kk || 'Unknown';
+
+                        // Create optgroup
+                        const optgroup = $("<optgroup>", {
+                            label: groupLabel
+                        });
+
+                        // Add options to the optgroup
+                        rombels.forEach(function(rombel) {
+                            optgroup.append(
+                                $("<option>", {
+                                    value: rombel.kode_rombel,
+                                    text: rombel.rombel
+                                })
+                            );
+                        });
+
+                        // Append optgroup to the select
+                        $(".list-rombel").append(optgroup);
+                    });
+
+                    // Tampilkan dropdown setelah data selesai dimuat
+                    $(".loading-message").hide();
+                    $(".list-rombel-wrapper").fadeIn();
+                },
+                error: function(error) {
+                    console.error('Error fetching data:', error);
+                    $(".loading-message").text('Gagal memuat data.');
+                }
+            });
+        });
+    </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

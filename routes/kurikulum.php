@@ -70,9 +70,10 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::group(['prefix' => 'dokumenguru', 'as' => 'dokumenguru.'], function () {
-            Route::resource('ngajar-per-guru', PerGuruController::class);
-            Route::resource('ngajar-per-rombel', PerRombelController::class);
             Route::resource('arsip', ArsipGuruController::class);
+            Route::get('/get-guru', [ArsipGuruController::class, 'getGuru']);
+            Route::get('/get-rombel', [ArsipGuruController::class, 'getRombel']);
+            Route::get('/get-kbm', [ArsipGuruController::class, 'getKbmData']);
         });
 
         Route::group(['prefix' => 'dokumentsiswa', 'as' => 'dokumentsiswa.'], function () {
