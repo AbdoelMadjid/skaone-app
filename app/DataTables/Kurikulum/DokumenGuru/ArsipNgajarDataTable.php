@@ -114,11 +114,8 @@ class ArsipNgajarDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
-            Column::make('tahunajaran')->title('Thn Ajaran')->addClass('text-center'),
-            Column::make('ganjilgenap')->addClass('text-center'),
             Column::make('rombel')->title('Rombel')->addClass('text-center'),
             Column::make('mata_pelajaran')->title('Nama Mapel'),
-            Column::make('kkm')->title('KKM')->addClass('text-center'),
             Column::make('namaguru')->title('Guru Mapel'),
             /* Column::computed('action')
                 ->exportable(false)
