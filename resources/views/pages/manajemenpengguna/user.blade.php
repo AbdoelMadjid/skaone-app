@@ -20,10 +20,32 @@
             <div class="card">
                 <div class="card-header d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @lang('translation.users')</h5>
-                    <div>
-                        @can('create manajemenpengguna/users')
-                            <a class="btn btn-primary action" href="{{ route('manajemenpengguna.users.create') }}">Add</a>
-                        @endcan
+                    <div></div>
+                </div>
+                <div class="card-header">
+                    <div class="row justify-content-between gy-3">
+                        <div class="col-lg-3">
+                            <div class="search-box">
+                                <input type="text" class="form-control search" placeholder="Search for name user...">
+                                <i class="ri-search-line search-icon"></i>
+                            </div>
+                        </div>
+                        <div class="col-lg-auto">
+                            <div class="d-md-flex text-nowrap gap-2">
+                                @can('create manajemenpengguna/users')
+                                    <a class="btn btn-soft-info action" href="{{ route('manajemenpengguna.users.create') }}"> <i
+                                            class="ri-add-fill me-1 align-bottom"></i> Add User</a>
+                                @endcan
+                                <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown"
+                                    aria-expanded="false" class="btn btn-soft-info"><i class="ri-more-2-fill"></i></button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                    <li><a class="dropdown-item" href="#">All</a></li>
+                                    <li><a class="dropdown-item" href="#">Last Week</a></li>
+                                    <li><a class="dropdown-item" href="#">Last Month</a></li>
+                                    <li><a class="dropdown-item" href="#">Last Year</a></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -91,6 +113,30 @@
 @section('script-bottom')
     <script>
         const datatable = 'user-table';
+
+        $(document).ready(function() {
+            const table = $("#user-table").DataTable();
+
+            // Fungsi debounce untuk mengurangi frekuensi reload
+            function debounce(func, delay) {
+                let timer;
+                return function() {
+                    const context = this;
+                    const args = arguments;
+                    clearTimeout(timer);
+                    timer = setTimeout(() => func.apply(context, args), delay);
+                };
+            }
+
+            // Event pencarian
+            $(".search-box .search").on(
+                "input",
+                debounce(function() {
+                    table.ajax.reload(); // Reload tabel saat pencarian berubah
+                }, 300)
+            );
+        });
+
         // Fungsi showToast dari user
         $(document).on('click', '.switch-account-link', function(e) {
             e.preventDefault();

@@ -96,29 +96,28 @@ class PesertaDidikDataTable extends DataTable
      */
     public function query(PesertaDidik $model): QueryBuilder
     {
-        $query = $model->newQuery();
+        $query = $model->newQuery()
+            ->select([
+                'peserta_didiks.*',
+                DB::raw('CONCAT(peserta_didiks.kode_kk, " - ", kompetensi_keahlians.singkatan) as kode_kk_singkatan_kk'),
+            ])
+            ->join('kompetensi_keahlians', 'peserta_didiks.kode_kk', '=', 'kompetensi_keahlians.idkk')
+            ->orderBy('peserta_didiks.nis', 'asc');
 
-        // Ambil parameter filter dari request
-        if (request()->has('search') && !empty(request('search'))) {
-            $query->where('nama_lengkap', 'like', '%' . request('search') . '%');
+        // Filter pencarian nama lengkap
+        if (request()->has('search') && request('search')) {
+            $query->where('peserta_didiks.nama_lengkap', 'like', '%' . request('search') . '%');
         }
 
-        if (request()->has('kodeKK') && request('kodeKK') != 'all') {
-            $query->where('kode_kk', request('kodeKK'));
+        // Filter kompetensi keahlian
+        if (request()->has('kodeKK') && request('kodeKK') !== 'all') {
+            $query->where('peserta_didiks.kode_kk', request('kodeKK'));
         }
 
-        if (request()->has('jenkelSiswa') && request('jenkelSiswa') != 'all') {
-            $query->where('jenis_kelamin', request('jenkelSiswa'));
+        // Filter jenis kelamin
+        if (request()->has('jenkelSiswa') && request('jenkelSiswa') !== 'all') {
+            $query->where('peserta_didiks.jenis_kelamin', request('jenkelSiswa'));
         }
-
-        $query->select('peserta_didiks.*')->orderBy('nis', 'asc');
-
-        $query->select(['id', 'kode_kk'])->select([
-            'peserta_didiks.*',
-            DB::raw('CONCAT(peserta_didiks.kode_kk, " - ", kompetensi_keahlians.singkatan) as kode_kk_singkatan_kk'),
-            // Pastikan tabel 'kompetensi_keahlians' terkait dengan model 'ProgramKeahlian'
-        ])
-            ->join('kompetensi_keahlians', 'peserta_didiks.kode_kk', '=', 'kompetensi_keahlians.idkk');
 
         return $query;
     }

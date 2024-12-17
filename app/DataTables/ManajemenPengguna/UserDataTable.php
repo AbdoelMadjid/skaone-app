@@ -74,9 +74,16 @@ class UserDataTable extends DataTable
      */
     public function query(User $model): QueryBuilder
     {
-        return $model->newQuery()
+        $query = $model->newQuery()
             ->select('users.*') // Tidak perlu join karena personal_id dan nis ada di tabel users
-            ->with('roles'); // Memuat relasi roles
+            ->with('roles');    // Memuat relasi roles
+
+        // Tambahkan filter pencarian berdasarkan nama
+        if (request()->filled('searchName')) {
+            $query->where('name', 'like', '%' . request('searchName') . '%');
+        }
+
+        return $query;
     }
 
     /**
@@ -87,11 +94,13 @@ class UserDataTable extends DataTable
         return $this->builder()
             ->setTableId('user-table')
             ->columns($this->getColumns())
-            ->minifiedAjax()
-            //->dom('Bfrtip')
+            ->minifiedAjax('', null, [
+                'searchName' => 'function() { return $(".search-box .search").val(); }',
+            ])
             ->orderBy(1)->parameters([
-                'lengthChange' => false, // Menghilangkan dropdown "Show entries"
-                'pageLength' => 30,       // Menampilkan 50 baris per halaman
+                'lengthChange' => false,
+                'searching' => false,
+                'pageLength' => 30,
             ]);
     }
 

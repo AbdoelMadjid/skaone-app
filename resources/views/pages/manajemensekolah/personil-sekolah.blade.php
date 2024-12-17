@@ -49,11 +49,9 @@
                                     <i class="ri-search-line search-icon"></i>
                                 </div>
                             </div>
-                            <!--end col-->
                             <div class="col-lg-auto">
                                 <div>
-                                    <select class="form-control" data-plugin="choices" data-choices
-                                        data-choices-search-false name="choices-single-default" id="idJenis">
+                                    <select class="form-control" id="idJenis">
                                         <option value="all" selected>Pilih Jenis Personil</option>
                                         @foreach ($jenisPersonilOptions as $jenis)
                                             <option value="{{ $jenis }}">{{ $jenis }}</option>
@@ -61,11 +59,9 @@
                                     </select>
                                 </div>
                             </div>
-                            <!--end col-->
                             <div class="col-lg-auto">
                                 <div>
-                                    <select class="form-control" data-plugin="choices" data-choices
-                                        data-choices-search-false name="choices-single-default" id="idStatus">
+                                    <select class="form-control" id="idStatus">
                                         <option value="all" selected>Pilih Status</option>
                                         @foreach ($statusOptions as $status)
                                             <option value="{{ $status }}">{{ $status }}</option>
@@ -175,7 +171,7 @@
             }
         }
 
-        function handleFilterAndReload(tableId) {
+        /* function handleFilterAndReload(tableId) {
             var table = $('#' + tableId).DataTable();
 
             // Trigger saat mengetik di input pencarian
@@ -194,10 +190,17 @@
                 data.jenisPersonil = $('#idJenis').val(); // Ambil nilai dari dropdown idKK
                 data.statusPersonil = $('#idStatus').val(); // Ambil nilai dari dropdown idJenkel
             });
-        }
+        } */
 
         // Inisialisasi DataTable
         $(document).ready(function() {
+            const table = $("#personilsekolah-table").DataTable();
+
+            // Event pencarian dan filter
+            $(".search, #idJenis, #idStatus").on("change keyup", function() {
+                table.ajax.reload();
+            });
+
 
             $('#simpanakunPersonilBtn').on('click', function() {
                 let selectedIds = [];
@@ -238,7 +241,6 @@
 
             handleCheckbokPersonil(datatable); // Handle checkbox selections
             handleDataTableEvents(datatable);
-            handleFilterAndReload(datatable); // Panggil fungsi setelah DataTable diinisialisasi
             handleAction(datatable);
             handleDelete(datatable);
         });

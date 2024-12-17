@@ -85,26 +85,25 @@ class PersonilSekolahDataTable extends DataTable
      */
     public function query(PersonilSekolah $model): QueryBuilder
     {
-        $query = $model->newQuery();
+        $query = $model->newQuery()
+            ->select('personil_sekolahs.*', 'users.login_count')
+            ->join('users', 'personil_sekolahs.id_personil', '=', 'users.personal_id')
+            ->orderBy('personil_sekolahs.id', 'asc');
 
-        // Ambil parameter filter dari request
-        if (request()->has('search') && !empty(request('search'))) {
-            $query->where('namalengkap', 'like', '%' . request('search') . '%');
+        // Filter pencarian nama lengkap
+        if (request()->has('search') && request('search')) {
+            $query->where('personil_sekolahs.namalengkap', 'like', '%' . request('search') . '%');
         }
 
+        // Filter jenis personil
         if (request()->has('jenisPersonil') && request('jenisPersonil') != 'all') {
-            $query->where('jenispersonil', request('jenisPersonil'));
+            $query->where('personil_sekolahs.jenispersonil', request('jenisPersonil'));
         }
 
+        // Filter status personil
         if (request()->has('statusPersonil') && request('statusPersonil') != 'all') {
-            $query->where('aktif', request('statusPersonil'));
+            $query->where('personil_sekolahs.aktif', request('statusPersonil'));
         }
-
-        //$query->select('personil_sekolahs.*')->orderBy('id', 'asc');
-
-        $query = PersonilSekolah::select('personil_sekolahs.*', 'users.login_count')
-            ->join('users', 'personil_sekolahs.id_personil', '=', 'users.personal_id')->orderBy('id', 'asc');
-
 
         return $query;
     }
@@ -118,12 +117,11 @@ class PersonilSekolahDataTable extends DataTable
             ->setTableId('personilsekolah-table')
             ->columns($this->getColumns())
             ->ajax([
-                'data' =>
-                'function(d) {
+                'data' => 'function(d) {
                     d.search = $(".search").val();
                     d.jenisPersonil = $("#idJenis").val();
                     d.statusPersonil = $("#idStatus").val();
-                }'
+                }',
             ])
             //->dom('Bfrtip')
             ->orderBy(1)

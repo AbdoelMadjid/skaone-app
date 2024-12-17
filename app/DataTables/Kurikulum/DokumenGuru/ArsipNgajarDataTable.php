@@ -135,7 +135,7 @@ class ArsipNgajarDataTable extends DataTable
             ])->parameters([
                 'lengthChange' => false, // Menghilangkan dropdown "Show entries"
                 'searching' => false,    // Menghilangkan kotak pencarian
-                'pageLength' => 50,       // Menampilkan 50 baris per halaman
+                'pageLength' => 100,       // Menampilkan 50 baris per halaman
             ]);
     }
 
