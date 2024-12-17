@@ -21,6 +21,12 @@
                     <h5 class="card-title mb-0 flex-grow-1">Tambah Nilai @yield('title') - {{ $fullName }}</h5>
                     <div>
                         <a class="btn btn-soft-info" href="{{ route('gurumapel.penilaian.sumatif.index') }}">Kembali</a>
+                        @if (auth()->check() &&
+                                auth()->user()->hasAnyRole(['master']))
+                            <button class="btn btn-soft-info" onclick="window.history.back();">
+                                Kembali Ke Arsip
+                            </button>
+                        @endif
                     </div>
                 </div>
                 <div class="card-body">

@@ -25,7 +25,12 @@
                             <i class="ri-delete-bin-2-line"></i>
                         </button>
                         <a class="btn btn-soft-info" href="{{ route('gurumapel.penilaian.formatif.index') }}">Kembali</a>
-
+                        @if (auth()->check() &&
+                                auth()->user()->hasAnyRole(['master']))
+                            <button class="btn btn-soft-info" onclick="window.history.back();">
+                                Kembali Ke Arsip
+                            </button>
+                        @endif
                     </div>
                 </div>
                 <div class="card-body">
