@@ -32,143 +32,57 @@
             @lang('translation.dokumenguru')
         @endslot
     @endcomponent
-    <div class="row">
 
-        <div class="col-xl-9 col-lg-8">
-            <div>
-                <div class="card">
-                    <div class="card-body border border-dashed border-end-0 border-start-0">
-                        <form>
-                            <div class="row g-3">
-                                <div class="col-xxl-4 col-sm-6">
-                                    <div class="search-box">
-                                        <input type="text" class="form-control search"
-                                            placeholder="Search for order ID, customer, order status or something...">
-                                        <i class="ri-search-line search-icon"></i>
-                                    </div>
-                                </div>
-                                <!--end col-->
-                                <div class="col-xxl-5 col-sm-4">
-                                    <div class="filter-choices-input">
-                                        <div class="loading-message">Memuat data...</div>
-                                        <div class="list-gurumapel-wrapper">
-                                            <select class="form-control list-gurumapel" name="gurumapel"
-                                                style="width: 100%;" disabled></select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--end col-->
-                                <div class="col-xxl-3 col-sm-4">
-                                    <div class="filter-choices-input">
-                                        <div class="loading-message">Memuat data...</div>
-                                        <div class="list-rombel-wrapper">
-                                            <select class="form-control list-rombel" name="rombel" style="width: 100%;"
-                                                disabled></select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--end row-->
-                        </form>
+    <div class="card">
+        <div class="card-body">
+            <form>
+                <div class="row g-3">
+                    <div class="col-lg">
+                        <select class="form-control mb-3" name="tahunajaran" id="tahunajaran" required>
+                            <option value="" selected>Pilih TA</option>
+                            @foreach ($tahunAjaran as $tahunajaran => $thajar)
+                                <option value="{{ $tahunajaran }}">{{ $thajar }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <ul class="nav nav-tabs-custom card-header-tabs border-bottom-0" role="tablist">
-                                    <li class="nav-item">
-                                        <a class="nav-link active fw-semibold" data-bs-toggle="tab" href="#productnav-all"
-                                            role="tab">
-                                            All <span
-                                                class="badge bg-danger-subtle text-danger align-middle rounded-pill ms-1">12</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#productnav-published"
-                                            role="tab">
-                                            Published <span
-                                                class="badge bg-danger-subtle text-danger align-middle rounded-pill ms-1">5</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#productnav-draft"
-                                            role="tab">
-                                            Draft
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-auto">
-                                <div id="selection-element">
-                                    <div class="my-n1 d-flex align-items-center text-muted">
-                                        Select <div id="select-content" class="text-body fw-semibold px-1"></div> Result
-                                        <button type="button" class="btn btn-link link-danger p-0 ms-3"
-                                            data-bs-toggle="modal" data-bs-target="#removeItemModal">Remove</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="col-lg-auto">
+                        <select class="form-control mb-3" name="semester" id="semester" required>
+                            <option value="" selected>Pilih Semester</option>
+                            <option value="Ganjil">Ganjil</option>
+                            <option value="Genap">Genap</option>
+                        </select>
                     </div>
-                    <!-- end card header -->
-                    <div class="card-body">
-
-                        <div class="tab-content text-muted">
-                            <div class="tab-pane active" id="productnav-all" role="tabpanel">
-
-                            </div>
-                            <!-- end tab pane -->
-
-                            <div class="tab-pane" id="productnav-published" role="tabpanel">
-                                <div id="table-product-list-published" class="table-card gridjs-border-none"></div>
-                            </div>
-                            <!-- end tab pane -->
-
-                            <div class="tab-pane" id="productnav-draft" role="tabpanel">
-                                <div class="py-4 text-center">
-                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
-                                        colors="primary:#405189,secondary:#0ab39c" style="width:72px;height:72px">
-                                    </lord-icon>
-                                    <h5 class="mt-4">Sorry! No Result Found</h5>
-                                </div>
-                            </div>
-                            <!-- end tab pane -->
-                        </div>
-                        <!-- end tab content -->
-
-                    </div>
-                    <!-- end card body -->
-                </div>
-                <!-- end card -->
-            </div>
-        </div>
-        <!-- end col -->
-
-        <div class="col-xl-3 col-lg-4">
-            <div class="card">
-                <div class="card-header">
-                    <div class="d-flex mb-3">
-                        <div class="flex-grow-1">
-                            <h5 class="fs-16">Filters</h5>
-                        </div>
-                        <div class="flex-shrink-0">
-                            <a href="#" class="text-decoration-underline" id="clearall">Clear All</a>
-                        </div>
-                    </div>
-
-                    <div class="filter-choices-input">
-                        <select class="form-select mb-3 filter-selector" aria-label="Default select example">
+                    <div class="col-lg-auto">
+                        <select class="form-select mb-3 filter-selector" aria-label="Default select example" name="filter"
+                            id="filter" required>
                             <option value="">Pilih Filter</option>
                             <option value="gurumapel">Guru Mata Pelajaran</option>
                             <option value="rombel">Rombongan Belajar</option>
                         </select>
                     </div>
+                    <div class="col-xxl-4 col-sm-4">
+                        <div class="loading-message">Memuat data...</div>
+                        <div class="list-gurumapel-wrapper">
+                            <select class="form-control list-gurumapel" name="gurumapel" id="gurumapel" style="width: 100%;"
+                                disabled></select>
+                        </div>
+                    </div>
+                    <div class="col-xxl-3 col-sm-4">
+                        <div class="loading-message">Memuat data...</div>
+                        <div class="list-rombel-wrapper">
+                            <select class="form-control list-rombel" name="rombel" id="rombel" style="width: 100%;"
+                                disabled></select>
+                        </div>
+                    </div>
                 </div>
+            </form>
+        </div>
+        <div class="card-body">
+            <div class="table-card">
+                {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
             </div>
         </div>
-        <!-- end col -->
     </div>
-    <!-- end row -->
 @endsection
 @section('script')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
@@ -178,17 +92,21 @@
     <script src="{{ URL::asset('build/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/select2/js/select2.min.js') }}"></script>
 
+    {!! $dataTable->scripts() !!}
+@endsection
+@section('script-bottom')
     <script>
+        const datatable = 'arsipngajar-table';
+
         $(document).ready(function() {
-            // Inisialisasi Select2 untuk Guru Mapel
-            $(".list-gurumapel").select2({
-                placeholder: "Pilih Guru Mapel",
+
+            const table = $("#arsipngajar-table").DataTable();
+
+            // Reload tabel setiap dropdown filter berubah
+            $(".form-control").on("change", function() {
+                table.ajax.reload();
             });
 
-            // Inisialisasi Select2 untuk Rombel
-            $(".list-rombel").select2({
-                placeholder: "Pilih Rombongan Belajar",
-            });
 
             // Event handler untuk perubahan dropdown filter
             $(".filter-selector").on("change", function() {
@@ -208,6 +126,11 @@
                 } else if (selectedValue === "rombel") {
                     $(".list-rombel").prop("disabled", false);
                 }
+            });
+
+            // Inisialisasi Select2 untuk Guru Mapel
+            $(".list-gurumapel").select2({
+                placeholder: "Pilih Guru Mapel",
             });
 
             // Simulasi Memuat Data untuk Guru Mapel
@@ -248,6 +171,11 @@
                     $(".loading-message").text("Gagal memuat data.");
                     $(".list-gurumapel-wrapper").hide();
                 }
+            });
+
+            // Inisialisasi Select2 untuk Rombel
+            $(".list-rombel").select2({
+                placeholder: "Pilih Rombongan Belajar",
             });
 
             // Simulasi Memuat Data untuk Rombel

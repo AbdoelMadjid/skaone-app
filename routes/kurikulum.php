@@ -73,7 +73,6 @@ Route::middleware('auth')->group(function () {
             Route::resource('arsip', ArsipGuruController::class);
             Route::get('/get-guru', [ArsipGuruController::class, 'getGuru']);
             Route::get('/get-rombel', [ArsipGuruController::class, 'getRombel']);
-            Route::get('/get-kbm', [ArsipGuruController::class, 'getKbmData']);
         });
 
         Route::group(['prefix' => 'dokumentsiswa', 'as' => 'dokumentsiswa.'], function () {
