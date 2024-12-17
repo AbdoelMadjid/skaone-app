@@ -33,7 +33,7 @@ class ArsipNgajarDataTable extends DataTable
 
                 if ($personilSekolah) {
                     return $row->id_personil . '<br>' .
-                        $personilSekolah->gelardepan . $personilSekolah->namalengkap . ',' . $personilSekolah->gelarbelakang;
+                        $personilSekolah->gelardepan . $personilSekolah->namalengkap . ', ' . $personilSekolah->gelarbelakang;
                 }
 
                 return $row->id_personil . '<em>Data tidak ditemukan</em>';
