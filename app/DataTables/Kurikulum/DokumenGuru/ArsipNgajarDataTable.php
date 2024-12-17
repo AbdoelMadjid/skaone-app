@@ -25,6 +25,38 @@ class ArsipNgajarDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addColumn('cek_sudahbelum', function ($row) {
+                $dataExistsFormatif = DB::table('nilai_formatif')
+                    ->where('tahunajaran', $row->tahunajaran)
+                    ->where('tingkat', $row->tingkat)
+                    ->where('ganjilgenap', $row->ganjilgenap)
+                    ->where('semester', $row->semester)
+                    ->where('kode_rombel', $row->kode_rombel)
+                    ->where('kel_mapel', $row->kel_mapel)
+                    ->where('id_personil', $row->id_personil)
+                    ->exists();
+                if (!$dataExistsFormatif) {
+                    $CekFormatif = '<i class="bx bx-message-square-x fs-3 text-danger"></i>';
+                } else {
+                    $CekFormatif = '<i class="bx bx-message-square-check fs-3 text-info"></i>';
+                }
+                $dataExistsSumatif = DB::table('nilai_sumatif')
+                    ->where('tahunajaran', $row->tahunajaran)
+                    ->where('tingkat', $row->tingkat)
+                    ->where('ganjilgenap', $row->ganjilgenap)
+                    ->where('semester', $row->semester)
+                    ->where('kode_rombel', $row->kode_rombel)
+                    ->where('kel_mapel', $row->kel_mapel)
+                    ->where('id_personil', $row->id_personil)
+                    ->exists();
+                if (!$dataExistsSumatif) {
+                    $CekSumatif = '<i class="bx bx-message-square-x fs-3 text-danger"></i>';
+                } else {
+                    $CekSumatif = '<i class="bx bx-message-square-check fs-3 text-info"></i>';
+                }
+
+                return 'Nilai Formatif = ' . $CekFormatif . '<br>Nilai Sumatif = ' . $CekSumatif;
+            })
             ->addColumn('namaguru', function ($row) {
                 $personilSekolah = DB::table('personil_sekolahs')
                     ->where('id_personil', $row->id_personil)
@@ -43,7 +75,7 @@ class ArsipNgajarDataTable extends DataTable
                 return view('action', compact('actions'));
             })
             ->addIndexColumn()
-            ->rawColumns(['namaguru', 'action']);
+            ->rawColumns(['namaguru', 'cek_sudahbelum', 'action']);
     }
 
     /**
@@ -117,6 +149,7 @@ class ArsipNgajarDataTable extends DataTable
             Column::make('rombel')->title('Rombel')->addClass('text-center'),
             Column::make('mata_pelajaran')->title('Nama Mapel'),
             Column::make('namaguru')->title('Guru Mapel'),
+            Column::make('cek_sudahbelum')->title('Cek Formatif'),
             /* Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
