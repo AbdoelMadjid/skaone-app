@@ -150,8 +150,14 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4">catatan : angka yang ada di kolom capaian kompetensi merupakan nomor
-                                Tujuan Pembelajaran </td>
+                            <td colspan="4">
+                                <span style='font:8px Times New Roman;'>{{ $dataSiswa->tahun_ajaran }}
+                                    / {{ $firstNilai->semester }} - {!! strtoupper($dataSiswa->nama_lengkap) !!}
+                                    [{!! $dataSiswa->nis !!}
+                                    {!! $dataSiswa->nisn !!}]</span>
+                                <br>
+                                catatan : angka yang ada di kolom capaian kompetensi merupakan nomor Tujuan Pembelajaran
+                            </td>
                         </tr>
                     </table>
                 </td>
@@ -179,7 +185,8 @@
                                 <tr>
                                     <td style='padding: 2px 0px;'>NIS / NISN</td>
                                     <td style='padding: 2px 0px;'>:</td>
-                                    <td style='padding: 2px 0px;'>{!! $dataSiswa->nis !!} / {!! $dataSiswa->nisn !!}</td>
+                                    <td style='padding: 2px 0px;'>{!! $dataSiswa->nis !!} / {!! $dataSiswa->nisn !!}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td width='125' style='padding: 2px 0px;'>Nama Sekolah</td>
