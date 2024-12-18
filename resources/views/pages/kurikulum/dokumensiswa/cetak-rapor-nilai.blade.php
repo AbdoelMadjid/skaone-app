@@ -97,11 +97,28 @@
                                         </tr>
                                         @foreach ($dataNilai as $key => $nilai)
                                             @if ($nilai->kelompok === 'A')
+                                                @php
+                                                    // Cek dan sesuaikan nama mata pelajaran berdasarkan agama siswa
+                                                    if (
+                                                        $nilai->mata_pelajaran ===
+                                                        'Pendidikan Agama Islam dan Budi Pekerti'
+                                                    ) {
+                                                        if ($dataSiswa->agama === 'Protestan') {
+                                                            $mataPelajaran = 'Pendidikan Agama Kristen Protestan';
+                                                        } elseif ($dataSiswa->agama === 'Katolik') {
+                                                            $mataPelajaran = 'Pendidikan Agama Kristen Katolik';
+                                                        } else {
+                                                            $mataPelajaran = 'Pendidikan Agama Islam dan Budi Pekerti';
+                                                        }
+                                                    } else {
+                                                        $mataPelajaran = $nilai->mata_pelajaran;
+                                                    }
+                                                @endphp
                                                 <tr>
                                                     <td style='text-align:center;padding:4px 8px;font-size:12px;'
                                                         align='center'>{{ $loop->iteration }}</td>
                                                     <td style='padding:4px 8px;font-size:12px;'>
-                                                        <strong>{{ $nilai->mata_pelajaran }}</strong><br>
+                                                        <strong>{{ $mataPelajaran }}</strong><br>
                                                         {{ $nilai->gelardepan }}
                                                         {{ ucwords(strtolower($nilai->namalengkap)) }},
                                                         {{ $nilai->gelarbelakang }}
