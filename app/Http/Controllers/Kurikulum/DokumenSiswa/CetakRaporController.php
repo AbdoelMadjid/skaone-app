@@ -203,7 +203,7 @@ class CetakRaporController extends Controller
         $angkaSemester = null;
 
         if ($dataPilCR->semester == 'Ganjil') {
-            switch ($dataPilCR->tahun) {
+            switch ($dataPilCR->tingkat) {
                 case 10:
                     $angkaSemester = 1;
                     break;
@@ -217,7 +217,7 @@ class CetakRaporController extends Controller
                     $angkaSemester = 'Invalid year for Ganjil';
             }
         } elseif ($dataPilCR->semester == 'Genap') {
-            switch ($dataPilCR->tahun) {
+            switch ($dataPilCR->tingkat) {
                 case 10:
                     $angkaSemester = 2;
                     break;
