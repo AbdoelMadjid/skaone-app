@@ -57,6 +57,7 @@ class CetakRaporController extends Controller
                 return [$item->nis => $item->nis . ' - ' . $item->nama_lengkap];
             })
             ->toArray();
+
         $dataPilCR = PilihCetakRapor::where('id_personil', $personal_id)->first();
 
         $dataSiswa = DB::table('peserta_didiks')
@@ -199,7 +200,39 @@ class CetakRaporController extends Controller
         }
 
 
+        $angkaSemester = null;
 
+        if ($dataPilCR->semester == 'Ganjil') {
+            switch ($dataPilCR->tahun) {
+                case 10:
+                    $angkaSemester = 1;
+                    break;
+                case 11:
+                    $angkaSemester = 3;
+                    break;
+                case 12:
+                    $angkaSemester = 5;
+                    break;
+                default:
+                    $angkaSemester = 'Invalid year for Ganjil';
+            }
+        } elseif ($dataPilCR->semester == 'Genap') {
+            switch ($dataPilCR->tahun) {
+                case 10:
+                    $angkaSemester = 2;
+                    break;
+                case 11:
+                    $angkaSemester = 4;
+                    break;
+                case 12:
+                    $angkaSemester = 6;
+                    break;
+                default:
+                    $angkaSemester = 'Invalid year for Genap';
+            }
+        } else {
+            $angkaSemester = 'Invalid semester type';
+        }
 
         // BARCOOOOOOOOOOOOOOOOOOOOOOOOOOOOD
         $barcode = new DNS1D();
@@ -227,6 +260,7 @@ class CetakRaporController extends Controller
                 kbm_per_rombels.tingkat,
                 kbm_per_rombels.kel_mapel,
                 kbm_per_rombels.semester,
+                kbm_per_rombels.ganjilgenap,
                 mata_pelajarans.mata_pelajaran,
                 mata_pelajarans.kelompok,
                 mata_pelajarans.kode,
@@ -392,6 +426,7 @@ class CetakRaporController extends Controller
             'catatanWaliKelas' => $catatanWaliKelas,
             'prestasiSiswas' => $prestasiSiswas,
             'personilSekolah' => $personilSekolah,
+            'angkaSemester' => $angkaSemester,
         ]);
     }
 

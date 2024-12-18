@@ -53,7 +53,7 @@
                                     <tr>
                                         <td style='padding: 2px 0px;'>Semester</td>
                                         <td style='padding: 2px 0px;'>:</td>
-                                        <td style='padding: 2px 0px;'>{{ $firstNilai->semester }}</td>
+                                        <td style='padding: 2px 0px;'>{{ $angkaSemester }}</td>
                                     </tr>
                                     <tr>
                                         <td style='padding: 2px 0px;'>Tahun Ajaran</td>
@@ -237,7 +237,7 @@
                                 <tr>
                                     <td style='padding: 2px 0px;'>Semester</td>
                                     <td style='padding: 2px 0px;'>:</td>
-                                    <td style='padding: 2px 0px;'>{{ $firstNilai->semester }}</td>
+                                    <td style='padding: 2px 0px;'>{{ $angkaSemester }}</td>
                                 </tr>
                                 <tr>
                                     <td style='padding: 2px 0px;'>Tahun Ajaran</td>
