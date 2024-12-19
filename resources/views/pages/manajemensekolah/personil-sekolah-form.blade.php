@@ -57,8 +57,9 @@
                 'Keluar' => 'Keluar',
             ]" value="{{ old('Aktif', $data->aktif) }}"
                 label="Status Personil" />
+
             <div class="row">
-                <div class="col-md-7">
+                <div class="col-md-12">
                     <x-form.input name="photo" type="file" label="Photo" onchange="previewImage(event)" />
                 </div>
                 <div class="col-md-5">
@@ -69,6 +70,9 @@
             </div>
         </div>
     </div>
+    <br>
+    <h5 class="text-danger">Alamat Tempat Tinggal </h5>
+    <hr>
     <div class="row">
         <div class="col-md-4">
             <x-form.input name="alamat_blok" value="{{ $data->alamat_blok }}" label="Alamat Blok" />
@@ -102,6 +106,9 @@
             <x-form.input name="alamat_kodepos" value="{{ $data->alamat_kodepos }}" label="Kode Pos" />
         </div>
     </div>
+    <br>
+    <h5 class="text-danger">Setting Profil</h5>
+    <hr>
     <div class="row">
         <div class="col-md-12">
             <x-form.input type="file" name="bg_profil" label="Background Profil" />
