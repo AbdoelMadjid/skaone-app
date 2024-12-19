@@ -47,9 +47,12 @@
                                     <i class="ri-search-line search-icon"></i>
                                 </div>
                             </div>
+                            <!--end col-->
+
                             <div class="col-lg-auto">
                                 <div>
-                                    <select class="form-control" id="idKK">
+                                    <select class="form-control" data-plugin="choices" data-choices
+                                        data-choices-search-false name="choices-single-default" id="idKK">
                                         <option value="all" selected>Pilih Kompetensi Keahlian</option>
                                         @foreach ($kompetensiKeahlian as $id => $kk)
                                             <option value="{{ $id }}">{{ $kk }}</option>
@@ -57,9 +60,11 @@
                                     </select>
                                 </div>
                             </div>
+                            <!--end col-->
                             <div class="col-lg-auto">
                                 <div>
-                                    <select class="form-control" id="idJenkel">
+                                    <select class="form-control" data-plugin="choices" data-choices
+                                        data-choices-search-false name="choices-single-default" id="idJenkel">
                                         <option value="all" selected>Pilih Jenis Kelamin</option>
                                         @foreach ($jenkelOptions as $jenkel)
                                             <option value="{{ $jenkel }}">{{ $jenkel }}</option>
@@ -181,7 +186,7 @@
             }
         }
 
-        /* function handleFilterAndReload(tableId) {
+        function handleFilterAndReload(tableId) {
             var table = $('#' + tableId).DataTable();
 
             // Trigger saat mengetik di input pencarian
@@ -200,17 +205,17 @@
                 data.jenisPersonil = $('#idKK').val(); // Ambil nilai dari dropdown idKK
                 data.statusPersonil = $('#idJenkel').val(); // Ambil nilai dari dropdown idJenkel
             });
-        } */
+        }
 
         // Inisialisasi DataTable
         $(document).ready(function() {
-            const table = $("#pesertadidik-table").DataTable();
+            /* const table = $("#pesertadidik-table").DataTable();
 
-            // Event pencarian dan filter
-            $(".search, #idKK, #idJenkel").on("change keyup", function() {
-                table.ajax.reload();
-            });
-
+                        // Event pencarian dan filter
+                        $(".search, #idKK, #idJenkel").on("change keyup", function() {
+                            table.ajax.reload();
+                        });
+             */
 
             $('#distribusiSiswaBtn').on('click', function() {
                 let selectedIds = [];
