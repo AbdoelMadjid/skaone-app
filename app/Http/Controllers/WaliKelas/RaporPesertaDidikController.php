@@ -78,7 +78,13 @@ class RaporPesertaDidikController extends Controller
                 ->where('peserta_didik_rombels.tahun_ajaran', $tahunAjaranAktif->tahunajaran)
                 ->where('peserta_didik_rombels.rombel_kode', $waliKelas->kode_rombel)
                 ->where('peserta_didik_rombels.rombel_tingkat', $waliKelas->tingkat)
-                ->select('peserta_didik_rombels.nis', 'peserta_didiks.nama_lengkap', 'peserta_didiks.kontak_email')
+                ->select(
+                    'peserta_didik_rombels.nis',
+                    'peserta_didiks.nama_lengkap',
+                    'peserta_didiks.jenis_kelamin',
+                    'peserta_didiks.foto',
+                    'peserta_didiks.kontak_email'
+                )
                 ->get();
         } else {
             $kbmData = collect(); // Jika wali kelas tidak ditemukan, kirim koleksi kosong
@@ -151,9 +157,21 @@ class RaporPesertaDidikController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $nis)
     {
-        //
+
+        // Ambil data siswa berdasarkan NIS
+        $siswa = DB::table('peserta_didiks')
+            ->where('nis', $nis)
+            ->first();
+
+        // Jika data siswa ditemukan
+        if ($siswa) {
+            return view('pages.walikelas.rapor-peserta-didik-detail', compact('siswa'))->render(); // Render hanya bagian detail
+        }
+
+        // Jika data siswa tidak ditemukan
+        return response()->json(['message' => 'Data siswa tidak ditemukan'], 404);
     }
 
     /**
@@ -178,5 +196,21 @@ class RaporPesertaDidikController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function getDetailSiswa($nis)
+    {
+        // Ambil data siswa berdasarkan NIS
+        $siswa = DB::table('peserta_didiks')
+            ->where('nis', $nis)
+            ->first();
+
+        // Jika data siswa tidak ditemukan, kirimkan pesan error
+        /*  if (!$siswa) {
+            return response()->json(['message' => 'Data tidak ditemukan'], 404);
+        } */
+        dd($siswa); // Cek apakah data siswa ada
+        // Jika data siswa ditemukan, tampilkan detail siswa dalam format HTML
+        return view('pages.walikelas.rapor-peserta-didik-detail', compact('siswa'))->render();
     }
 }
