@@ -75,14 +75,25 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
+                    // Fungsi untuk memformat angka dengan tanda ribuan
+                    const formatNumber = (number) => {
+                        return parseInt(number).toLocaleString('en-US');
+                    };
+
                     // Update pengguna aktif
-                    $('#active-user').attr('data-target', data.activeUsersCount).text(data.activeUsersCount);
+                    $('#active-user')
+                        .attr('data-target', data.activeUsersCount)
+                        .text(formatNumber(data.activeUsersCount));
 
                     // Update login hari ini
-                    $('#login-today').attr('data-target', data.loginTodayCount).text(data.loginTodayCount);
+                    $('#login-today')
+                        .attr('data-target', data.loginTodayCount)
+                        .text(formatNumber(data.loginTodayCount));
 
                     // Update total login
-                    $('#login-count').attr('data-target', data.loginCount).text(data.loginCount);
+                    $('#login-count')
+                        .attr('data-target', data.loginCount)
+                        .text(formatNumber(data.loginCount));
                 },
                 error: function(error) {
                     console.error('Error fetching real-time stats:', error);
