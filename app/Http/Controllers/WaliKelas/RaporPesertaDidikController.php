@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\WaliKelas;
 
 use App\Http\Controllers\Controller;
+use App\Models\ManajemenSekolah\IdentitasSekolah;
 use App\Models\ManajemenSekolah\TahunAjaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -160,14 +161,91 @@ class RaporPesertaDidikController extends Controller
     public function show(string $nis)
     {
 
-        // Ambil data siswa berdasarkan NIS
-        $siswa = DB::table('peserta_didiks')
-            ->where('nis', $nis)
+        // Ambil user yang sedang login
+        $user = auth()->user();
+
+        // Ambil tahun ajaran yang aktif
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')
+            ->with(['semesters' => function ($query) {
+                $query->where('status', 'Aktif');
+            }])
             ->first();
 
+        // Pastikan tahun ajaran aktif ada sebelum melanjutkan
+        if (!$tahunAjaranAktif) {
+            return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
+        }
+
+        // Ambil wali kelas berdasarkan personal_id dari user yang sedang login dan tahun ajaran aktif
+        $waliKelas = DB::table('rombongan_belajars')
+            ->select(
+                'rombongan_belajars.*',
+                'personil_sekolahs.id_personil',
+                'personil_sekolahs.nip',
+                'personil_sekolahs.gelardepan',
+                'personil_sekolahs.namalengkap',
+                'personil_sekolahs.gelarbelakang'
+            )
+            ->join('personil_sekolahs', 'rombongan_belajars.wali_kelas', '=', 'personil_sekolahs.id_personil')
+            ->where('rombongan_belajars.wali_kelas', $user->personal_id)
+            ->where('rombongan_belajars.tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->first();
+
+
+        $kbmData = DB::table('kbm_per_rombels')
+            ->where('kode_rombel', $waliKelas->kode_rombel)
+            ->first();
+
+        $dataSiswa = DB::table('peserta_didiks')
+            ->select(
+                'peserta_didiks.*',
+                'bidang_keahlians.nama_bk',
+                'program_keahlians.nama_pk',
+                'kompetensi_keahlians.nama_kk',
+                'peserta_didik_rombels.tahun_ajaran',
+                'peserta_didik_rombels.rombel_tingkat',
+                'peserta_didik_rombels.rombel_kode',
+                'peserta_didik_rombels.rombel_nama',
+                'peserta_didik_ortus.status',
+                'peserta_didik_ortus.nm_ayah',
+                'peserta_didik_ortus.nm_ibu',
+                'peserta_didik_ortus.pekerjaan_ayah',
+                'peserta_didik_ortus.pekerjaan_ibu',
+                'peserta_didik_ortus.ortu_alamat_blok',
+                'peserta_didik_ortus.ortu_alamat_norumah',
+                'peserta_didik_ortus.ortu_alamat_rt',
+                'peserta_didik_ortus.ortu_alamat_rw',
+                'peserta_didik_ortus.ortu_alamat_desa',
+                'peserta_didik_ortus.ortu_alamat_kec',
+                'peserta_didik_ortus.ortu_alamat_kab',
+                'peserta_didik_ortus.ortu_alamat_kodepos',
+                'peserta_didik_ortus.ortu_kontak_telepon',
+                'peserta_didik_ortus.ortu_kontak_email',
+            )
+            ->join('kompetensi_keahlians', 'peserta_didiks.kode_kk', '=', 'kompetensi_keahlians.idkk')
+            ->join('program_keahlians', 'kompetensi_keahlians.id_pk', '=', 'program_keahlians.idpk')
+            ->join('bidang_keahlians', 'kompetensi_keahlians.id_bk', '=', 'bidang_keahlians.idbk')
+            ->join('peserta_didik_rombels', 'peserta_didiks.nis', '=', 'peserta_didik_rombels.nis')
+            ->leftJoin('peserta_didik_ortus', 'peserta_didiks.nis', '=', 'peserta_didik_ortus.nis')
+            ->where('peserta_didiks.nis', $nis)
+            ->where('peserta_didik_rombels.tahun_ajaran', $waliKelas->tahunajaran)
+            ->first();
+
+        $school = IdentitasSekolah::first();
+
+        $listMapel = DB::table('kbm_per_rombels')
+            ->where('kode_rombel', $dataSiswa->rombel_kode)
+            ->get();
+
         // Jika data siswa ditemukan
-        if ($siswa) {
-            return view('pages.walikelas.rapor-peserta-didik-detail', compact('siswa'))->render(); // Render hanya bagian detail
+        if ($dataSiswa) {
+            return view('pages.walikelas.rapor-peserta-didik-detail', compact(
+                'dataSiswa',
+                'waliKelas',
+                'kbmData',
+                'school',
+                'listMapel'
+            ))->render(); // Render hanya bagian detail
         }
 
         // Jika data siswa tidak ditemukan
@@ -196,21 +274,5 @@ class RaporPesertaDidikController extends Controller
     public function destroy(string $id)
     {
         //
-    }
-
-    public function getDetailSiswa($nis)
-    {
-        // Ambil data siswa berdasarkan NIS
-        $siswa = DB::table('peserta_didiks')
-            ->where('nis', $nis)
-            ->first();
-
-        // Jika data siswa tidak ditemukan, kirimkan pesan error
-        /*  if (!$siswa) {
-            return response()->json(['message' => 'Data tidak ditemukan'], 404);
-        } */
-        dd($siswa); // Cek apakah data siswa ada
-        // Jika data siswa ditemukan, tampilkan detail siswa dalam format HTML
-        return view('pages.walikelas.rapor-peserta-didik-detail', compact('siswa'))->render();
     }
 }
