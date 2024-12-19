@@ -116,6 +116,7 @@ class CetakRaporController extends Controller
         $waliKelas = DB::table('wali_kelas')
             ->select(
                 'wali_kelas.*',
+                'personil_sekolahs.id_personil',
                 'personil_sekolahs.nip',
                 'personil_sekolahs.gelardepan',
                 'personil_sekolahs.namalengkap',

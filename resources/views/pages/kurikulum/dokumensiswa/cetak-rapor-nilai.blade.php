@@ -463,8 +463,26 @@
                                                 <td>
                                                     {!! ucwords(strtolower($titiMangsa->alamat ?? 'titimangsa isi terlebih dahulu')) !!}, {!! formatTanggalIndonesia($titiMangsa->titimangsa ?? '') !!} <br>
                                                     Wali Kelas,
-                                                    <p>&nbsp;</p>
-                                                    <p>&nbsp;</p>
+                                                    @php
+                                                        if ($waliKelas->id_personil == 'Pgw_0021') {
+                                                            $ttdawlas =
+                                                                '<br><img style="position: relative;z-index: 1;top: 0px;right: -10" src="' .
+                                                                URL::asset('images/ttdwalas/mira.png') .
+                                                                '" width="194" height="98" border="0" alt=""><br>';
+                                                        } elseif ($waliKelas->id_personil == 'Pgw_0031') {
+                                                            $ttdawlas =
+                                                                '<br><img style="position: relative;z-index: 1;top: -10px;right: -2" src="' .
+                                                                URL::asset('images/ttdwalas/dedeh.png') .
+                                                                '" width="194" height="98" border="0" alt=""><br>';
+                                                        } else {
+                                                            $ttdawlas = '
+                                                            <p>&nbsp;</p>
+                                                            <p>&nbsp;</p>';
+                                                        }
+                                                    @endphp
+
+                                                    {!! $ttdawlas !!}
+
                                                     <strong>
                                                         {!! $waliKelas->gelardepan !!}
                                                         {!! strtoupper(strtolower($waliKelas->namalengkap)) !!},
