@@ -134,8 +134,8 @@ class AbsensiSiswaDataTable extends DataTable
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center align-middle')->width(50),
             Column::make('nis')->title('NIS')->addClass('text-center align-middle'),
             Column::make('nama_lengkap')->title('Nama Lengkap')->addClass('align-middle'),
-            Column::make('izin')->title('Izin')->width(50),
             Column::make('sakit')->title('Sakit')->width(50),
+            Column::make('izin')->title('Izin')->width(50),
             Column::make('alfa')->title('Alfa')->width(50),
             Column::make('jmlhabsen')->title('Jumlah Absen')->addClass('text-center align-middle')->width(50),
             /*  Column::computed('action')
