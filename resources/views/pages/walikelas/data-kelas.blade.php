@@ -214,8 +214,46 @@
                 </div>
             </div>
         </div><!-- end col -->
-
-        <div class="col-xl-12 col-md-12">
+    </div>
+    <div class="row">
+        <div class="col-xl-5">
+            <div class="card ribbon-box border shadow-none mb-lg-4">
+                <div class="card-body">
+                    <div class="ribbon ribbon-info round-shape mt-2">Rangking {{ $waliKelas->rombel }}</div>
+                    <h5 class="text-end">
+                        <a href="{{ route('walikelas.downloadrankingsiswa') }}" class="btn btn-soft-info btn-sm">Download
+                            Ranking</a>
+                    </h5>
+                    <div class="ribbon-content mt-5">
+                        <table class="table table-bordered table-striped mt-3">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>No.</th>
+                                    <th>NIS</th>
+                                    <th>Nama Lengkap</th>
+                                    <th>Nilai Rata-Rata</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($nilaiRataSiswa as $key => $nilai)
+                                    <tr>
+                                        <td>{{ $key + 1 }}</td>
+                                        <td>{{ $nilai->nis }}</td>
+                                        <td>{{ $nilai->nama_lengkap }}</td>
+                                        <td class='text-center'>{{ $nilai->nil_rata_siswa }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="text-center">Tidak ada data</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-7">
             <div class="card ribbon-box border shadow-none mb-lg-4">
                 <div class="card-body">
                     <div class="ribbon ribbon-info round-shape mt-2">Data Pengajar {{ $waliKelas->rombel }}</div>

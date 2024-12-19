@@ -95,6 +95,32 @@ class DataKelasController extends Controller
             ->where('ganjilgenap', $semesterAktif)
             ->first();
 
+        $nilaiRataSiswa = DB::select("
+            SELECT
+                pd.nis,
+                pd.nama_lengkap,
+                ROUND(AVG(COALESCE(((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2), 0)), 2) AS nil_rata_siswa
+            FROM
+                peserta_didik_rombels pr
+            INNER JOIN
+                peserta_didiks pd ON pr.nis = pd.nis
+            INNER JOIN
+                kbm_per_rombels kr ON pr.rombel_kode = kr.kode_rombel
+            LEFT JOIN
+                nilai_formatif nf ON pr.nis = nf.nis AND kr.kel_mapel = nf.kel_mapel
+            LEFT JOIN
+                nilai_sumatif ns ON pr.nis = ns.nis AND kr.kel_mapel = ns.kel_mapel
+            WHERE
+                pr.rombel_kode = ?
+            GROUP BY
+                pd.nis, pd.nama_lengkap
+            ORDER BY
+                nil_rata_siswa DESC
+        ", [
+            $waliKelas->kode_rombel
+        ]);
+
+
         // Kirim data ke view
         return view(
             'pages.walikelas.data-kelas',
@@ -105,7 +131,8 @@ class DataKelasController extends Controller
                 'semesterAngka',
                 'titimangsa',
                 'kbmData',
-                'siswaData'
+                'siswaData',
+                'nilaiRataSiswa'
             )
         );
     }
@@ -335,5 +362,78 @@ class DataKelasController extends Controller
 
         // Download file
         return $dompdf->stream("data-siswa-{$waliKelas->kode_rombel}.pdf");
+    }
+
+    public function downloadPDFRanking()
+    {
+        $user = auth()->user();
+
+        // Ambil data yang sama seperti di view
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')
+            ->with(['semesters' => function ($query) {
+                $query->where('status', 'Aktif');
+            }])
+            ->first();
+
+        if (!$tahunAjaranAktif) {
+            return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
+        }
+
+        $waliKelas = DB::table('rombongan_belajars')
+            ->where('wali_kelas', $user->personal_id)
+            ->where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->first();
+
+        if (!$waliKelas) {
+            return redirect()->back()->with('error', 'Data wali kelas tidak ditemukan.');
+        }
+
+        $siswaData = DB::table('peserta_didik_rombels')
+            ->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
+            ->where('peserta_didik_rombels.tahun_ajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('peserta_didik_rombels.rombel_kode', $waliKelas->kode_rombel)
+            ->select('peserta_didik_rombels.nis', 'peserta_didiks.nama_lengkap', 'peserta_didiks.kontak_email')
+            ->get();
+
+        $personil = DB::table('personil_sekolahs')
+            ->where('id_personil', $waliKelas->wali_kelas)
+            ->first();
+
+        $nilaiRataSiswa = DB::select("
+            SELECT
+                pd.nis,
+                pd.nama_lengkap,
+                ROUND(AVG(COALESCE(((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2), 0)), 2) AS nil_rata_siswa
+            FROM
+                peserta_didik_rombels pr
+            INNER JOIN
+                peserta_didiks pd ON pr.nis = pd.nis
+            INNER JOIN
+                kbm_per_rombels kr ON pr.rombel_kode = kr.kode_rombel
+            LEFT JOIN
+                nilai_formatif nf ON pr.nis = nf.nis AND kr.kel_mapel = nf.kel_mapel
+            LEFT JOIN
+                nilai_sumatif ns ON pr.nis = ns.nis AND kr.kel_mapel = ns.kel_mapel
+            WHERE
+                pr.rombel_kode = ?
+            GROUP BY
+                pd.nis, pd.nama_lengkap
+            ORDER BY
+                nil_rata_siswa DESC
+        ", [
+            $waliKelas->kode_rombel
+        ]);
+
+        // Load view PDF
+        $html = view('pages.walikelas.data-ranking-siswa-pdf', compact('siswaData', 'waliKelas', 'personil', 'nilaiRataSiswa'))->render();
+
+        // Generate PDF
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        // Download file
+        return $dompdf->stream("data-ranking-siswa-{$waliKelas->kode_rombel}.pdf");
     }
 }
