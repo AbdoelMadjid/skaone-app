@@ -224,14 +224,14 @@
                         <a href="{{ route('walikelas.downloadrankingsiswa') }}" class="btn btn-soft-info btn-sm">Download
                             Ranking</a>
                     </h5>
-                    <div class="ribbon-content mt-5">
-                        <table class="table table-bordered table-striped mt-3">
+                    <div class="ribbon-content mt-4">
+                        <table class="table table-bordered table-striped">
                             <thead class="table-dark">
                                 <tr>
                                     <th>No.</th>
                                     <th>NIS</th>
                                     <th>Nama Lengkap</th>
-                                    <th>Nilai Rata-Rata</th>
+                                    <th>Rata-Rata</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -263,11 +263,9 @@
                             <thead>
                                 <tr>
                                     <th>No.</th>
-                                    <th>Mata Pelajaran</th>
-                                    <th>Nama Pengajar</th>
+                                    <th>Mata Pelajaran / Nama Pengajar</th>
                                     <th>KKM</th>
-                                    <th>Nilai Formatif</th>
-                                    <th>Nilai Sumatif</th>
+                                    <th>Nilai</th>
                                     <th>Nilai Akhir</th>
                                 </tr>
                             </thead>
@@ -275,8 +273,7 @@
                                 @foreach ($kbmData as $index => $kbm)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $kbm->mata_pelajaran }}</td>
-                                        <td>
+                                        <td>{{ $kbm->mata_pelajaran }} <br>
                                             @if ($kbm->id_personil)
                                                 @php
                                                     // Ambil data pengajar
@@ -301,7 +298,7 @@
                                             @endif
                                         </td>
                                         <td class='text-center'>{{ $kbm->kkm }}</td>
-                                        <td class='text-center'>
+                                        <td>
                                             @php
                                                 $cekFormatif = DB::table('nilai_formatif')
                                                     ->where('tahunajaran', $kbm->tahunajaran)
@@ -322,18 +319,7 @@
                                                     ->where('id_personil', $kbm->id_personil)
                                                     ->avg('rerata_formatif');
                                             @endphp
-                                            @if ($cekFormatif)
-                                                <i class="bx bx-message-square-check fs-3 text-info"></i>
-                                                <p class="mb-0">Jumlah Siswa: {{ $cekFormatif }}</p>
-                                                <p class="mb-0">Rata-rata nilai formatif:
-                                                    <strong>{{ number_format($rerataFormatif, 2) }}</strong>
-                                                </p>
-                                            @else
-                                                <i class="bx bx-message-square-x fs-3 text-danger"></i>
-                                                <p class="mb-0 text-danger">Data tidak ditemukan.</p>
-                                            @endif
-                                        </td>
-                                        <td class='text-center'>
+
                                             @php
                                                 $cekSumatif = DB::table('nilai_sumatif')
                                                     ->where('tahunajaran', $kbm->tahunajaran)
@@ -354,10 +340,21 @@
                                                     ->where('id_personil', $kbm->id_personil)
                                                     ->avg('rerata_sumatif');
                                             @endphp
+                                            @if ($cekFormatif)
+                                                Formatif : <i class="bx bx-message-square-check fs-3 text-info"></i>
+                                                <p class="mb-0">Jumlah Siswa: {{ $cekFormatif }}</p>
+                                                <p class="mb-0">Rata-rata:
+                                                    <strong>{{ number_format($rerataFormatif, 2) }}</strong>
+                                                </p>
+                                            @else
+                                                <i class="bx bx-message-square-x fs-3 text-danger"></i>
+                                                <p class="mb-0 text-danger">Data tidak ditemukan.</p>
+                                            @endif
+                                            <hr>
                                             @if ($cekSumatif)
-                                                <i class="bx bx-message-square-check fs-3 text-info"></i>
+                                                Sumatif : <i class="bx bx-message-square-check fs-3 text-info"></i>
                                                 <p class="mb-0">Jumlah Siswa: {{ $cekSumatif }}</p>
-                                                <p class="mb-0">Rata-rata nilai sumatif:
+                                                <p class="mb-0">Rata-rata:
                                                     <strong>{{ number_format($rerataSumatif, 2) }}</strong>
                                                 </p>
                                             @else
