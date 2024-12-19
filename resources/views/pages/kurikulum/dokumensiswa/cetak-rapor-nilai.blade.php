@@ -104,14 +104,28 @@
                                                         'Pendidikan Agama Islam dan Budi Pekerti'
                                                     ) {
                                                         if ($dataSiswa->agama === 'Protestan') {
-                                                            $mataPelajaran = 'Pendidikan Agama Kristen Protestan';
+                                                            $mataPelajaran =
+                                                                'Pendidikan Agama Kristen Protestan dan Budi Pekerti';
+                                                            $guruMapel = 'Pendeta';
                                                         } elseif ($dataSiswa->agama === 'Katolik') {
-                                                            $mataPelajaran = 'Pendidikan Agama Kristen Katolik';
+                                                            $mataPelajaran =
+                                                                'Pendidikan Agama Kristen Katolik dan Budi Pekerti';
+                                                            $guruMapel = 'Pendeta';
                                                         } else {
                                                             $mataPelajaran = 'Pendidikan Agama Islam dan Budi Pekerti';
+                                                            $guruMapel =
+                                                                $nilai->gelardepan .
+                                                                ucwords(strtolower($nilai->namalengkap)) .
+                                                                ', ' .
+                                                                $nilai->gelarbelakang;
                                                         }
                                                     } else {
                                                         $mataPelajaran = $nilai->mata_pelajaran;
+                                                        $guruMapel =
+                                                            $nilai->gelardepan .
+                                                            ucwords(strtolower($nilai->namalengkap)) .
+                                                            ', ' .
+                                                            $nilai->gelarbelakang;
                                                     }
                                                 @endphp
                                                 <tr>
@@ -119,9 +133,7 @@
                                                         align='center'>{{ $loop->iteration }}</td>
                                                     <td style='padding:4px 8px;font-size:12px;'>
                                                         <strong>{{ $mataPelajaran }}</strong><br>
-                                                        {{ $nilai->gelardepan }}
-                                                        {{ ucwords(strtolower($nilai->namalengkap)) }},
-                                                        {{ $nilai->gelarbelakang }}
+                                                        $guruMapel
                                                     </td>
                                                     <td class="text-center">
                                                         {{ round(((float) $nilai->rerata_formatif + (float) $nilai->rerata_sumatif) / 2) }}
