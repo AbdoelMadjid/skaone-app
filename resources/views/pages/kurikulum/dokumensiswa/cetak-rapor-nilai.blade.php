@@ -181,7 +181,7 @@
                         <tr>
                             <td colspan="4">
                                 <span style='font:8px Times New Roman;'>{{ $dataSiswa->tahun_ajaran }}
-                                    / {{ $firstNilai->semester }} - {!! strtoupper($dataSiswa->nama_lengkap) !!}
+                                    / {{ $angkaSemester }} - {!! strtoupper($dataSiswa->nama_lengkap) !!}
                                     [{!! $dataSiswa->nis !!}
                                     {!! $dataSiswa->nisn !!}]</span>
                                 <br>
