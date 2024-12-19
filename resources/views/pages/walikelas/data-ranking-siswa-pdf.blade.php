@@ -54,8 +54,8 @@
             <tbody>
                 @forelse ($nilaiRataSiswa as $key => $nilai)
                     <tr>
-                        <td>{{ $key + 1 }}</td>
-                        <td>{{ $nilai->nis }}</td>
+                        <td class='text-center'>{{ $key + 1 }}.</td>
+                        <td class='text-center'>{{ $nilai->nis }}</td>
                         <td>{{ $nilai->nama_lengkap }}</td>
                         <td class='text-center'>{{ $nilai->nil_rata_siswa }}</td>
                     </tr>
