@@ -133,7 +133,7 @@
                                                         align='center'>{{ $loop->iteration }}</td>
                                                     <td style='padding:4px 8px;font-size:12px;'>
                                                         <strong>{{ $mataPelajaran }}</strong><br>
-                                                        $guruMapel
+                                                        {{ $guruMapel }}
                                                     </td>
                                                     <td class="text-center">
                                                         {{ round(((float) $nilai->rerata_formatif + (float) $nilai->rerata_sumatif) / 2) }}
