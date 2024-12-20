@@ -233,9 +233,223 @@ class RaporPesertaDidikController extends Controller
 
         $school = IdentitasSekolah::first();
 
-        $listMapel = DB::table('kbm_per_rombels')
-            ->where('kode_rombel', $dataSiswa->rombel_kode)
-            ->get();
+        // Inisialisasi $mataPelajaranNilai sebagai array kosong
+        $mataPelajaranNilai = [];
+
+
+        /* $dataNilai = DB::select("
+            SELECT
+                peserta_didik_rombels.nis,
+                peserta_didiks.nama_lengkap,
+                kbm_per_rombels.kel_mapel,
+                mata_pelajarans.kelompok,
+                mata_pelajarans.mata_pelajaran,
+                kbm_per_rombels.id_personil,
+                peserta_didik_rombels.rombel_kode,
+                personil_sekolahs.gelardepan,
+                personil_sekolahs.namalengkap,
+                personil_sekolahs.gelarbelakang,
+                nilai_formatif.tp_isi_1,
+                nilai_formatif.tp_isi_2,
+                nilai_formatif.tp_isi_3,
+                nilai_formatif.tp_isi_4,
+                nilai_formatif.tp_isi_5,
+                nilai_formatif.tp_isi_6,
+                nilai_formatif.tp_isi_7,
+                nilai_formatif.tp_isi_8,
+                nilai_formatif.tp_isi_9,
+                nilai_formatif.tp_nilai_1,
+                nilai_formatif.tp_nilai_2,
+                nilai_formatif.tp_nilai_3,
+                nilai_formatif.tp_nilai_4,
+                nilai_formatif.tp_nilai_5,
+                nilai_formatif.tp_nilai_6,
+                nilai_formatif.tp_nilai_7,
+                nilai_formatif.tp_nilai_8,
+                nilai_formatif.tp_nilai_9,
+                nilai_formatif.rerata_formatif,
+                nilai_sumatif.sts,
+                nilai_sumatif.sas,
+                nilai_sumatif.kel_mapel AS kel_mapel_sumatif,
+                nilai_sumatif.rerata_sumatif,
+                ((COALESCE(nilai_formatif.rerata_formatif, 0) + COALESCE(nilai_sumatif.rerata_sumatif, 0)) / 2) AS nilai_na
+            FROM peserta_didik_rombels
+            INNER JOIN peserta_didiks ON peserta_didik_rombels.nis = peserta_didiks.nis
+            INNER JOIN kbm_per_rombels ON peserta_didik_rombels.rombel_kode = kbm_per_rombels.kode_rombel
+            INNER JOIN personil_sekolahs ON kbm_per_rombels.id_personil = personil_sekolahs.id_personil
+            INNER JOIN mata_pelajarans ON kbm_per_rombels.kel_mapel = mata_pelajarans.kel_mapel
+            LEFT JOIN nilai_formatif ON peserta_didik_rombels.nis = nilai_formatif.nis AND kbm_per_rombels.kel_mapel = nilai_formatif.kel_mapel
+            LEFT JOIN nilai_sumatif ON peserta_didik_rombels.nis = nilai_sumatif.nis AND kbm_per_rombels.kel_mapel = nilai_sumatif.kel_mapel
+            WHERE peserta_didik_rombels.rombel_kode = ?
+              AND peserta_didik_rombels.nis = ?
+            ORDER BY kbm_per_rombels.kel_mapel
+        ", [
+            $waliKelas->kode_rombel,
+            $dataSiswa->nis
+        ]); */
+
+        $dataNilai = DB::select("
+           SELECT
+                kbm_per_rombels.id_personil,
+                personil_sekolahs.gelardepan,
+                personil_sekolahs.namalengkap,
+                personil_sekolahs.gelarbelakang,
+                kbm_per_rombels.kode_rombel,
+                kbm_per_rombels.rombel,
+                kbm_per_rombels.tingkat,
+                kbm_per_rombels.kel_mapel,
+                kbm_per_rombels.semester,
+                kbm_per_rombels.ganjilgenap,
+                mata_pelajarans.mata_pelajaran,
+                mata_pelajarans.kelompok,
+                mata_pelajarans.kode,
+                peserta_didik_rombels.nis,
+                peserta_didiks.nama_lengkap,
+                nilai_formatif.tp_isi_1,
+                nilai_formatif.tp_isi_2,
+                nilai_formatif.tp_isi_3,
+                nilai_formatif.tp_isi_4,
+                nilai_formatif.tp_isi_5,
+                nilai_formatif.tp_isi_6,
+                nilai_formatif.tp_isi_7,
+                nilai_formatif.tp_isi_8,
+                nilai_formatif.tp_isi_9,
+                nilai_formatif.tp_nilai_1,
+                nilai_formatif.tp_nilai_2,
+                nilai_formatif.tp_nilai_3,
+                nilai_formatif.tp_nilai_4,
+                nilai_formatif.tp_nilai_5,
+                nilai_formatif.tp_nilai_6,
+                nilai_formatif.tp_nilai_7,
+                nilai_formatif.tp_nilai_8,
+                nilai_formatif.tp_nilai_9,
+                nilai_formatif.rerata_formatif,
+                nilai_sumatif.sts,
+                nilai_sumatif.sas,
+                nilai_sumatif.kel_mapel AS kel_mapel_sumatif,
+                nilai_sumatif.rerata_sumatif,
+                ((COALESCE(nilai_formatif.rerata_formatif, 0) + COALESCE(nilai_sumatif.rerata_sumatif, 0)) / 2) AS nilai_na
+            FROM kbm_per_rombels
+                INNER JOIN peserta_didik_rombels ON kbm_per_rombels.kode_rombel = peserta_didik_rombels.rombel_kode
+                INNER JOIN peserta_didiks ON peserta_didik_rombels.nis = peserta_didiks.nis
+                INNER JOIN personil_sekolahs ON kbm_per_rombels.id_personil=personil_sekolahs.id_personil
+                INNER JOIN mata_pelajarans ON kbm_per_rombels.kel_mapel=mata_pelajarans.kel_mapel
+            LEFT JOIN nilai_formatif ON peserta_didik_rombels.nis = nilai_formatif.nis AND kbm_per_rombels.kel_mapel=nilai_formatif.kel_mapel
+                AND nilai_formatif.nis = ?
+                AND nilai_formatif.kode_rombel = ?
+                AND nilai_formatif.tingkat = ?
+                AND nilai_formatif.tahunajaran = ?
+                AND nilai_formatif.ganjilgenap = ?
+            LEFT JOIN nilai_sumatif ON peserta_didik_rombels.nis = nilai_sumatif.nis AND kbm_per_rombels.kel_mapel=nilai_sumatif.kel_mapel
+                AND nilai_sumatif.nis = ?
+                AND nilai_sumatif.kode_rombel = ?
+                AND nilai_formatif.tingkat = ?
+                AND nilai_formatif.tahunajaran = ?
+                AND nilai_formatif.ganjilgenap = ?
+            WHERE
+                peserta_didik_rombels.nis = ?
+                AND kbm_per_rombels.kode_rombel = ?
+                AND kbm_per_rombels.tingkat = ?
+                AND kbm_per_rombels.tahunajaran = ?
+                AND kbm_per_rombels.ganjilgenap = ?
+            ORDER BY kbm_per_rombels.kel_mapel
+        ", [
+            $dataSiswa->nis,
+            $kbmData->kode_rombel,
+            $kbmData->tingkat,
+            $kbmData->tahunajaran,
+            $kbmData->ganjilgenap,
+
+            $dataSiswa->nis,
+            $kbmData->kode_rombel,
+            $kbmData->tingkat,
+            $kbmData->tahunajaran,
+            $kbmData->ganjilgenap,
+
+            $dataSiswa->nis,
+            $kbmData->kode_rombel,
+            $kbmData->tingkat,
+            $kbmData->tahunajaran,
+            $kbmData->ganjilgenap,
+        ]);
+
+        foreach ($dataNilai as $nilai) {
+            $jumlahTP = DB::table('tujuan_pembelajarans')
+                ->where('kode_rombel', $nilai->kode_rombel)
+                ->where('kel_mapel', $nilai->kel_mapel)
+                ->where('id_personil', $nilai->id_personil)
+                ->count();
+
+            $rerataFormatif = $nilai->rerata_formatif;
+            $tpNilai = [];
+            $tpIsi = [];
+
+            // Loop untuk mengumpulkan nilai TP dan isi TP
+            for ($i = 1; $i <= $jumlahTP; $i++) {
+                $tpNilai[$i] = $nilai->{'tp_nilai_' . $i};
+                $tpIsi[$i] = $nilai->{'tp_isi_' . $i};
+            }
+
+            // Jika tujuan pembelajaran atau nilai formatif kosong, kosongkan data deskripsi
+            if (
+                empty($tpNilai) ||
+                $jumlahTP === 0 ||
+                is_null($rerataFormatif)
+            ) {
+                $nilai->nilai_tertinggi = null;
+                $nilai->nilai_terendah = null;
+                $nilai->deskripsi_nilai = null;
+                continue;
+            }
+
+            // Jika semua TP nilai sama, kosongkan data deskripsi
+            if (count(array_unique($tpNilai)) === 1) {
+                $nilai->nilai_tertinggi = null;
+                $nilai->nilai_terendah = null;
+                $nilai->deskripsi_nilai = null;
+                continue;
+            }
+
+            // Cari nilai tertinggi dan terendah
+            $maxValue = max($tpNilai);
+            $minValue = min($tpNilai);
+
+            // TP dengan nilai tertinggi dan terendah
+            $tpMax = array_keys($tpNilai, $maxValue);
+            $tpMin = array_keys($tpNilai, $minValue);
+
+            // Deskripsi nilai berdasarkan nilai TP
+            $deskripsi = [];
+
+            /* foreach ($tpMax as $tp) {
+            $deskripsi[] = "Menunjukkan kemampuan dalam {$tpIsi[$tp]} (TP ke-{$tp})";
+        }
+
+        foreach ($tpMin as $tp) {
+            $deskripsi[] = "Masih perlu bimbingan dalam {$tpIsi[$tp]} (TP ke-{$tp})";
+        } */
+
+            foreach ($tpMax as $tp) {
+                $deskripsi[] = "Menunjukkan kemampuan dalam {$tpIsi[$tp]}<sup>[{$tp}]</sup>";
+            }
+
+            foreach ($tpMin as $tp) {
+                $deskripsi[] = "Masih perlu bimbingan dalam {$tpIsi[$tp]}<sup>[{$tp}]</sup>";
+            }
+
+            // Simpan ke dalam objek data nilai
+            $nilai->nilai_tertinggi =
+                'NT : ' .
+                "{$maxValue} (TP ke-" .
+                implode(', TP ke-', $tpMax) .
+                ')';
+            $nilai->nilai_terendah =
+                'NR : ' .
+                "{$minValue} (TP ke-" .
+                implode(', TP ke-', $tpMin) .
+                ')';
+            $nilai->deskripsi_nilai = implode(', ', $deskripsi);
+        }
 
         // Jika data siswa ditemukan
         if ($dataSiswa) {
@@ -244,7 +458,7 @@ class RaporPesertaDidikController extends Controller
                 'waliKelas',
                 'kbmData',
                 'school',
-                'listMapel'
+                'dataNilai'
             ))->render(); // Render hanya bagian detail
         }
 

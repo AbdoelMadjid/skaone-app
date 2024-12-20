@@ -94,25 +94,80 @@
                                                 <strong>A. Kelompok Mata Pelajaran Umum</strong>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>
-
-                                            </td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
+                                        @foreach ($dataNilai as $key => $nilai)
+                                            @if ($nilai->kelompok === 'A')
+                                                @php
+                                                    // Cek dan sesuaikan nama mata pelajaran berdasarkan agama siswa
+                                                    if (
+                                                        $nilai->mata_pelajaran ===
+                                                        'Pendidikan Agama Islam dan Budi Pekerti'
+                                                    ) {
+                                                        if ($dataSiswa->agama === 'Protestan') {
+                                                            $mataPelajaran =
+                                                                'Pendidikan Agama Kristen Protestan dan Budi Pekerti';
+                                                            $guruMapel = 'Pendeta';
+                                                        } elseif ($dataSiswa->agama === 'Katolik') {
+                                                            $mataPelajaran =
+                                                                'Pendidikan Agama Kristen Katolik dan Budi Pekerti';
+                                                            $guruMapel = 'Pendeta';
+                                                        } else {
+                                                            $mataPelajaran = 'Pendidikan Agama Islam dan Budi Pekerti';
+                                                            $guruMapel =
+                                                                $nilai->gelardepan .
+                                                                ucwords(strtolower($nilai->namalengkap)) .
+                                                                ', ' .
+                                                                $nilai->gelarbelakang;
+                                                        }
+                                                    } else {
+                                                        $mataPelajaran = $nilai->mata_pelajaran;
+                                                        $guruMapel =
+                                                            $nilai->gelardepan .
+                                                            ucwords(strtolower($nilai->namalengkap)) .
+                                                            ', ' .
+                                                            $nilai->gelarbelakang;
+                                                    }
+                                                @endphp
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;font-size:12px;'
+                                                        align='center'>{{ $loop->iteration }}</td>
+                                                    <td style='padding:4px 8px;font-size:12px;'>
+                                                        <strong>{{ $mataPelajaran }}</strong><br>
+                                                        {{ $guruMapel }}
+                                                    </td>
+                                                    <td class="text-center">
+                                                        {{ round(((float) $nilai->rerata_formatif + (float) $nilai->rerata_sumatif) / 2) }}
+                                                    </td>
+                                                    <td style='padding:4px 8px;font-size:12px;text-align:justify;'>
+                                                        {!! $nilai->deskripsi_nilai ?? '' !!}
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
                                         <tr>
                                             <td colspan='10' style='padding:4px 8px;font-size:14px;'>
                                                 <strong>B. Kelompok Mata Pelajaran Kejuruan</strong>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
+                                        @foreach ($dataNilai as $key => $nilai)
+                                            @if (in_array($nilai->kelompok, ['B1', 'B2', 'B3', 'B4', 'B5']))
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;font-size:12px;'
+                                                        align='center'>{{ $loop->iteration }}</td>
+                                                    <td style='padding:4px 8px;font-size:12px;'>
+                                                        <strong>{{ $nilai->mata_pelajaran }}</strong><br>
+                                                        {{ $nilai->gelardepan }}
+                                                        {{ ucwords(strtolower($nilai->namalengkap)) }},
+                                                        {{ $nilai->gelarbelakang }}
+                                                    </td>
+                                                    <td class="text-center">
+                                                        {{ round(((float) $nilai->rerata_formatif + (float) $nilai->rerata_sumatif) / 2) }}<br>
+                                                    </td>
+                                                    <td style='padding:4px 8px;font-size:12px;text-align:justify;'>
+                                                        {!! $nilai->deskripsi_nilai ?? '' !!}
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </td>
