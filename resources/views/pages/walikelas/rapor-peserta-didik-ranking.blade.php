@@ -1,9 +1,3 @@
-<div class="col-lg-12">
-    <div class="gap-2 hstack justify-content-end mb-4">
-        <a href="{{ route('walikelas.downloadrankingsiswa') }}" class="btn btn-soft-info btn-sm">Download
-            Ranking</a>
-    </div>
-</div>
 <table class="table table-bordered table-striped">
     <thead class="table-dark">
         <tr>

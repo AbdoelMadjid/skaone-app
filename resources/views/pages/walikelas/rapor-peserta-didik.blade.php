@@ -3,6 +3,7 @@
     @lang('translation.rapor-peserta-didik')
 @endsection
 @section('css')
+    <link href="{{ URL::asset('build/libs/dragula/dragula.min.css') }}" rel="stylesheet" type="text/css" />
     <style>
         .cetak-rapor {
             border-collapse: collapse;
@@ -63,22 +64,59 @@
     </style>
 @endsection
 @section('content')
-    @component('layouts.breadcrumb')
-        @slot('li_1')
-            @lang('translation.walikelas')
-        @endslot
-    @endcomponent
-    <div class="row">
-        <div class="col-lg-12">
+    <div class="chat-wrapper d-lg-flex gap-1 mx-n4 mt-n4 p-1">
+        <div class="file-manager-sidebar">
+            <div class="p-4 d-flex flex-column h-100">
+                <div class="mb-3">
+                    Peserta Didik {{ $waliKelas->rombel }}
+                </div>
 
-            <div class="card">
-                <div class="card-header align-items-xl-center d-xl-flex">
-                    <p class="text-muted flex-grow-1 mb-xl-0">
-                        Rombel : {{ $waliKelas->rombel }} [{{ $waliKelas->kode_rombel }}]<br>
+                <div class="px-4 mx-n4" data-simplebar style="height: calc(100vh - 468px);">
+                    <div class="vstack gap-3 to-do-menu list-unstyled">
+                        @foreach ($siswaData as $index => $siswa)
+                            <div class="row align-items-center g-3">
+                                <div class="col-auto">
+                                    <div class="avatar-sm p-1 py-2 h-auto bg-info-subtle rounded-3 pilih-siswa">
+                                        <div class="text-center">
+                                            <h5 class="mb-0">{{ $index + 1 }}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <h5 class="text-muted mt-0 mb-1 fs-13">{{ $siswa->nis }}
+                                    </h5>
+                                    <a href="#" class="text-reset fs-14 mb-0 detail-link"
+                                        data-nis="{{ $siswa->nis }}">
+                                        {{ $siswa->nama_lengkap }}
+                                    </a>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
+
+                <div class="mt-auto text-center">
+                    <img src="{{ URL::asset('build/images/task.png') }}" alt="Task" class="img-fluid" />
+                </div>
+            </div>
+        </div>
+        <!--end side content-->
+        <div class="file-manager-content w-100 p-4 pb-0">
+            <div class="row mb-4">
+                <div class="col-auto order-1 d-block d-lg-none">
+                    <button type="button" class="btn btn-soft-success btn-icon btn-sm fs-16 file-menu-btn">
+                        <i class="ri-menu-2-fill align-bottom"></i>
+                    </button>
+                </div>
+                <div class="col-sm order-3 order-sm-2 mt-3 mt-sm-0">
+                    <span class="fw-semibold mb-0">Rombel : {{ $waliKelas->rombel }} [{{ $waliKelas->kode_rombel }}]<br>
                         Wali Kelas : {{ $personil->gelardepan }} {{ $personil->namalengkap }}
-                        {{ $personil->gelarbelakang }}
-                    </p>
-                    <div class="flex-shrink-0">
+                        {{ $personil->gelarbelakang }}</span>
+                </div>
+
+                <div class="col-auto order-2 order-sm-3 ms-auto">
+                    <div class="hstack gap-2">
                         <ul class="nav nav-pills card-header-pills" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" data-bs-toggle="tab" href="#nilai" role="tab">
@@ -97,30 +135,45 @@
                             </li>
                         </ul>
                     </div>
-                </div><!-- end card header -->
-                <div class="card-body">
-                    <!-- Tab panes -->
-
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="nilai" role="tabpanel">
-                            @include('pages.walikelas.rapor-peserta-didik-nilai')
+                </div>
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane active" id="nilai" role="tabpanel">
+                    <div class="px-4 mx-n4" data-simplebar style="height: calc(110vh - 326px);">
+                        <div class="table-responsive" id="siswa-detail">
+                            silakan pilih peserta didik
                         </div>
-                        <div class="tab-pane" id="pengajar" role="tabpanel">
+                    </div>
+                </div>
+                <div class="tab-pane" id="pengajar" role="tabpanel">
+                    <div class="px-4 mx-n4" data-simplebar style="height: calc(110vh - 326px);">
+                        <div class="table-responsive">
                             @include('pages.walikelas.rapor-peserta-didik-pengajar')
                         </div>
-                        {{-- TAB RANKING --}}
-                        <div class="tab-pane" id="ranking" role="tabpanel">
+                    </div>
+                </div>
+                <div class="tab-pane" id="ranking" role="tabpanel">
+                    <div class="col-lg-12">
+                        <div class="gap-2 hstack justify-content-end mb-4">
+                            <a href="{{ route('walikelas.downloadrankingsiswa') }}"
+                                class="btn btn-soft-info btn-sm">Download
+                                Ranking</a>
+                        </div>
+                    </div>
+                    <div class="px-4 mx-n4" data-simplebar style="height: calc(100vh - 336px);">
+                        <div class="table-responsive">
                             @include('pages.walikelas.rapor-peserta-didik-ranking')
                         </div>
                     </div>
-                </div><!-- end card-body -->
-            </div><!-- end card -->
+                </div>
+            </div>
         </div>
-        <!--end col-->
     </div>
 @endsection
 @section('script')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/dragula/dragula.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/dom-autoscroller/dom-autoscroller.min.js') }}"></script>
     <script>
         $(document).on('click', '.detail-link', function(e) {
             e.preventDefault(); // Mencegah reload halaman
