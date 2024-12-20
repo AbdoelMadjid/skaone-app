@@ -67,11 +67,21 @@
     <div class="chat-wrapper d-lg-flex gap-1 mx-n4 mt-n4 p-1">
         <div class="file-manager-sidebar">
             <div class="p-4 d-flex flex-column h-100">
-                <div class="mb-3">
+                <div class="card-body text-center">
+                    <div class="position-relative d-inline-block">
+                        <img src="https://smkn1kadipaten.sch.id/build/images/users/avatar-10.jpg" alt=""
+                            class="avatar-lg rounded-circle img-thumbnail">
+                        <span class="contact-active position-absolute rounded-circle bg-success"><span
+                                class="visually-hidden"></span>
+                    </div>
+                    <h5 class="mt-4 mb-1">Tonya Noble</h5>
+                    <p class="text-muted">Nesta Technologies</p>
+                </div>
+                <div class="mb-3 mt-4">
                     Pilih Peserta Didik {{ $waliKelas->rombel }}
                 </div>
 
-                <div class="px-4 mx-n4" data-simplebar style="height: calc(100vh - 468px);">
+                <div class="px-4 mx-n4" data-simplebar style="height: calc(110vh - 568px);">
                     <div class="vstack gap-3 to-do-menu list-unstyled">
                         @foreach ($siswaData as $index => $siswa)
                             <div class="row align-items-center g-3">
@@ -93,11 +103,6 @@
                             </div>
                         @endforeach
                     </div>
-                </div>
-
-
-                <div class="mt-auto text-center">
-                    <img src="{{ URL::asset('build/images/task.png') }}" alt="Task" class="img-fluid" />
                 </div>
             </div>
         </div>
