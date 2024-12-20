@@ -68,7 +68,7 @@
         <div class="file-manager-sidebar">
             <div class="p-4 d-flex flex-column h-100">
                 <div class="mb-3">
-                    Peserta Didik {{ $waliKelas->rombel }}
+                    Pilih Peserta Didik {{ $waliKelas->rombel }}
                 </div>
 
                 <div class="px-4 mx-n4" data-simplebar style="height: calc(100vh - 468px);">
