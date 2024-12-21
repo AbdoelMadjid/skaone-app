@@ -30,6 +30,7 @@
                     <table class="table">
                         <thead>
                             <tr>
+                                <th>No.</th>
                                 <th>Nama</th>
                                 <th>Email</th>
                                 <th>Role</th>
@@ -37,8 +38,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($loginRecords as $record)
+                            @forelse ($loginRecords as $index => $record)
                                 <tr>
+                                    <td class='text-center'>{{ $index + 1 }}.</td>
                                     <td>{{ $record->user->name }}</td>
                                     <td>{{ $record->user->email }}</td>
                                     <td>{{ $record->user->getRoleNames()->join(', ') }}</td>

@@ -90,6 +90,15 @@ class HomeController extends Controller
             ->orderBy(DB::raw('DAY(tanggallahir)'), 'asc') // Urutkan berdasarkan hari dalam bulan
             ->get();
 
+        $loginsPerDay = DB::table('login_records')
+            ->select(DB::raw('DATE(login_at) as date'), DB::raw('COUNT(*) as count'))
+            ->groupBy('date')
+            ->orderBy('date', 'asc')
+            ->get();
+
+        $dates = $loginsPerDay->pluck('date')->toArray();
+        $counts = $loginsPerDay->pluck('count')->toArray();
+
         return view('dashboard', compact(
             'activeUsers',
             'activeUsersCount',
@@ -107,6 +116,9 @@ class HomeController extends Controller
             'sudahSakit',
             'sudahIzin',
             'ulangTahun',
+            'loginsPerDay',
+            'dates',
+            'counts',
         ));
     }
 
