@@ -261,43 +261,10 @@
             <div class="card-body">
                 <div class="ribbon ribbon-info round-shape">Statistik Login</div>
                 <div class="ribbon-content mt-5 text-muted">
-                    <canvas id="loginChart" width="400" height="200"></canvas>
+                    <div id="login_chart_realtime" data-colors='["--vz-info"]' class="apex-charts" dir="ltr">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script>
-    const ctx = document.getElementById('loginChart').getContext('2d');
-    const loginChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: @json($dates), // Tanggal login
-            datasets: [{
-                label: 'Logins per Day',
-                data: @json($counts), // Jumlah login
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 2,
-                fill: false
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Date'
-                    }
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Number of Logins'
-                    },
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-</script>

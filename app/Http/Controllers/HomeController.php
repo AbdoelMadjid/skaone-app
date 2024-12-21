@@ -96,30 +96,33 @@ class HomeController extends Controller
             ->orderBy('date', 'asc')
             ->get();
 
-        $dates = $loginsPerDay->pluck('date')->toArray();
-        $counts = $loginsPerDay->pluck('count')->toArray();
+        $data = $loginsPerDay->map(function ($item) {
+            return [
+                'x' => $item->date, // Tanggal dalam format datetime
+                'y' => $item->count // Jumlah login
+            ];
+        });
 
-        return view('dashboard', compact(
-            'activeUsers',
-            'activeUsersCount',
-            'loginTodayCount',
-            'jumlahPersonil',
-            'jumlahPD',
-            'loginCount',
-            'aingPengguna',
-            'userLoginHariiniPersonil',
-            'userLoginHariiniSiswa',
-            'totalHadir',
-            'totalSakit',
-            'totalIzin',
-            'sudahHadir',
-            'sudahSakit',
-            'sudahIzin',
-            'ulangTahun',
-            'loginsPerDay',
-            'dates',
-            'counts',
-        ));
+        return view('dashboard', [
+            'activeUsers' => $activeUsers,
+            'activeUsersCount' => $activeUsersCount,
+            'loginTodayCount' => $loginTodayCount,
+            'jumlahPersonil' => $jumlahPersonil,
+            'jumlahPD' => $jumlahPD,
+            'loginCount' => $loginCount,
+            'aingPengguna' => $aingPengguna,
+            'userLoginHariiniPersonil' => $userLoginHariiniPersonil,
+            'userLoginHariiniSiswa' => $userLoginHariiniSiswa,
+            'totalHadir' => $totalHadir,
+            'totalSakit' => $totalSakit,
+            'totalIzin' => $totalIzin,
+            'sudahHadir' => $sudahHadir,
+            'sudahSakit' => $sudahSakit,
+            'sudahIzin' => $sudahIzin,
+            'ulangTahun' => $ulangTahun,
+            // Semua variabel lainnya
+            'chartData' => $data, // Tambahkan di sini
+        ]);
     }
 
     // HomeController.php

@@ -68,6 +68,8 @@
     <script src="{{ URL::asset('build/libs/apexcharts/apexcharts.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/counterup2/1.0.7/index.js"></script>
+    <script src="https://img.themesbrand.com/velzon/apexchart-js/stock-prices.js"></script>
+    {{--     <script src="{{ URL::asset('build/js/pages/apexcharts-line.init.js') }}"></script> --}}
     <script>
         function fetchRealTimeStats() {
             $.ajax({
@@ -230,6 +232,93 @@
             'total-izin',
             ['btn-hadir', 'btn-sakit']
         );
+    </script>
+    <script>
+        function getChartColorsArray(chartId) {
+            if (document.getElementById(chartId) !== null) {
+                var colors = document.getElementById(chartId).getAttribute("data-colors");
+                if (colors) {
+                    colors = JSON.parse(colors);
+                    return colors.map(function(value) {
+                        var newValue = value.replace(" ", "");
+                        if (newValue.indexOf(",") === -1) {
+                            var color = getComputedStyle(document.documentElement).getPropertyValue(newValue);
+                            if (color) return color;
+                            else return newValue;;
+                        } else {
+                            var val = value.split(',');
+                            if (val.length == 2) {
+                                var rgbaColor = getComputedStyle(document.documentElement).getPropertyValue(val[0]);
+                                rgbaColor = "rgba(" + rgbaColor + "," + val[1] + ")";
+                                return rgbaColor;
+                            } else {
+                                return newValue;
+                            }
+                        }
+                    });
+                }
+            }
+        }
+
+        var linechartrealtimeColors = getChartColorsArray("login_chart_realtime");
+        if (linechartrealtimeColors) {
+
+            const chartData = @json($chartData);
+
+            var options = {
+                series: [{
+                    data: chartData
+                }],
+                chart: {
+                    id: 'realtime',
+                    height: 350,
+                    type: 'line',
+                    animations: {
+                        enabled: true,
+                        easing: 'linear',
+                        dynamicAnimation: {
+                            speed: 1000
+                        }
+                    },
+                    toolbar: {
+                        show: false
+                    },
+                    zoom: {
+                        enabled: false
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'smooth'
+                },
+                title: {
+                    text: 'Dynamic Updating Chart',
+                    align: 'left',
+                    style: {
+                        fontWeight: 500,
+                    },
+                },
+                markers: {
+                    size: 0
+                },
+                colors: linechartrealtimeColors,
+                xaxis: {
+                    type: 'datetime',
+                    range: 28 * 24 * 60 * 60 * 1000,
+                },
+                yaxis: {
+                    max: Math.max(...chartData.map(d => d.y)) + 10 // Y-axis menyesuaikan
+                },
+                legend: {
+                    show: false
+                },
+            };
+
+            var charts = new ApexCharts(document.querySelector("#login_chart_realtime"), options);
+            charts.render();
+        }
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection
