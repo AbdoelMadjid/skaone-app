@@ -19,9 +19,9 @@
                                         <div class="bg-overlay"></div>
                                         <div class="position-relative h-100 d-flex flex-column">
                                             <div class="mb-4">
-                                                <a href="/" class="d-block">
-                                                    <img src="{{ URL::asset('images/sakola/logo-footer.png') }}"
-                                                        alt="" height="60">
+                                                <a href="/dashboard" class="d-block">
+                                                    <img src="{{ URL::asset('images/sakola/logo.png') }}" alt=""
+                                                        height="60">
                                                 </a>
                                             </div>
                                             <div class="mt-auto">
@@ -42,19 +42,16 @@
                                                     </div>
                                                     <div class="carousel-inner text-center text-white-50 pb-5">
                                                         <div class="carousel-item active">
-                                                            <p class="fs-15 fst-italic">" Ilmu adalah harta yang tidak akan
-                                                                pernah habis, jadi selalu tanamkan dalam diri untuk terus
-                                                                belajar "</p>
+                                                            <p class="fs-15 fst-italic">" Great! Clean code, clean design,
+                                                                easy for customization. Thanks very much! "</p>
                                                         </div>
                                                         <div class="carousel-item">
-                                                            <p class="fs-15 fst-italic">" Kesempatan tak akan datang dua
-                                                                kali, maka perbanyak belajar untuk mendapatkan ilmu yang
-                                                                lebih luas "</p>
+                                                            <p class="fs-15 fst-italic">" The theme is really great with an
+                                                                amazing customer support."</p>
                                                         </div>
                                                         <div class="carousel-item">
-                                                            <p class="fs-15 fst-italic">" Belajar adalah pintu menuju
-                                                                kesuksesan, sementara malas adalah jalan menuju kegagalan "
-                                                            </p>
+                                                            <p class="fs-15 fst-italic">" Great! Clean code, clean design,
+                                                                easy for customization. Thanks very much! "</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -182,7 +179,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="text-center">
-                            <p class="mb-0">&copy;
+                            <p class="mb-0 text-muted">&copy;
                                 {{ $profileApp->app_tahun ?? '' }}
                                 <script>
                                     document.write(new Date().getFullYear())
