@@ -4,7 +4,10 @@ namespace App\Http\Controllers\WaliKelas;
 
 use App\Http\Controllers\Controller;
 use App\Models\ManajemenSekolah\IdentitasSekolah;
+use App\Models\ManajemenSekolah\KepalaSekolah;
 use App\Models\ManajemenSekolah\TahunAjaran;
+use App\Models\WaliKelas\Ekstrakurikuler;
+use App\Models\WaliKelas\PrestasiSiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -233,6 +236,83 @@ class RaporPesertaDidikController extends Controller
 
         $school = IdentitasSekolah::first();
 
+        $kepsekttd = KepalaSekolah::where('tahunajaran', $kbmData->tahunajaran)
+            ->where('semester', $kbmData->ganjilgenap)
+            ->first();
+
+        $titiMangsa = DB::table('titi_mangsas')
+            ->where('tahunajaran', $kbmData->tahunajaran)
+            ->where('ganjilgenap', $kbmData->ganjilgenap)
+            ->where('kode_rombel', $kbmData->kode_rombel)
+            ->first();
+
+        $catatanWaliKelas = DB::table('catatan_wali_kelas')
+            ->where('tahunajaran', $kbmData->tahunajaran)
+            ->where('ganjilgenap', $kbmData->ganjilgenap)
+            ->where('kode_rombel', $kbmData->kode_rombel)
+            ->where('nis', $dataSiswa->nis)
+            ->first();
+
+        $absensiSiswa = DB::table('absensi_siswas')
+            ->where('nis', $dataSiswa->nis)
+            ->where('tahunajaran', $kbmData->tahunajaran)
+            ->where('ganjilgenap', $kbmData->ganjilgenap)
+            ->where('kode_rombel', $kbmData->kode_rombel)
+            ->first();
+
+        $prestasiSiswas = PrestasiSiswa::where('kode_rombel', $kbmData->kode_rombel)
+            ->where('tahunajaran', $kbmData->tahunajaran)
+            ->where('ganjilgenap', $kbmData->ganjilgenap)
+            ->where('nis', $dataSiswa->nis)
+            ->get();
+
+        // Fetch data based on filters
+        $ekstrakurikulers = Ekstrakurikuler::where('kode_rombel', $kbmData->kode_rombel)
+            ->where('tahunajaran', $kbmData->tahunajaran)
+            ->where('ganjilgenap', $kbmData->ganjilgenap)
+            ->where('nis', $dataSiswa->nis)
+            ->get();
+
+        // Prepare data for view
+        $activities = [];
+
+        foreach ($ekstrakurikulers as $ekstra) {
+            if (!empty($ekstra->wajib)) {
+                $activities[] = [
+                    'activity' => $ekstra->wajib,
+                    'description' => $ekstra->wajib_desk,
+                ];
+            }
+
+            if (!empty($ekstra->pilihan1)) {
+                $activities[] = [
+                    'activity' => $ekstra->pilihan1,
+                    'description' => $ekstra->pilihan1_desk,
+                ];
+            }
+
+            if (!empty($ekstra->pilihan2)) {
+                $activities[] = [
+                    'activity' => $ekstra->pilihan2,
+                    'description' => $ekstra->pilihan2_desk,
+                ];
+            }
+
+            if (!empty($ekstra->pilihan3)) {
+                $activities[] = [
+                    'activity' => $ekstra->pilihan3,
+                    'description' => $ekstra->pilihan3_desk,
+                ];
+            }
+
+            if (!empty($ekstra->pilihan4)) {
+                $activities[] = [
+                    'activity' => $ekstra->pilihan4,
+                    'description' => $ekstra->pilihan4_desk,
+                ];
+            }
+        }
+
         // Inisialisasi $mataPelajaranNilai sebagai array kosong
         $mataPelajaranNilai = [];
 
@@ -458,7 +538,14 @@ class RaporPesertaDidikController extends Controller
                 'waliKelas',
                 'kbmData',
                 'school',
-                'dataNilai'
+                'dataNilai',
+                'kepsekttd',
+                'titiMangsa',
+                'catatanWaliKelas',
+                'absensiSiswa',
+                'prestasiSiswas',
+                'ekstrakurikulers',
+                'activities',
             ))->render(); // Render hanya bagian detail
         }
 
