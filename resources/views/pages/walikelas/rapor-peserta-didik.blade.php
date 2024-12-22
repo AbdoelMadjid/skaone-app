@@ -69,7 +69,7 @@
             <div class="p-4 d-flex flex-column h-100">
                 <div class="card-body text-center">
                     <div class="position-relative d-inline-block" id="foto-siswa-container">
-                        <img id="foto-siswa" src="/build/images/users/avatar-10.jpg" alt=""
+                        <img id="foto-siswa" src="/images/user-dummy-img.jpg" alt=""
                             class="avatar-lg rounded-circle img-thumbnail">
                         <span class="contact-active position-absolute rounded-circle bg-success">
                             <span class="visually-hidden"></span>
@@ -230,21 +230,33 @@
                     $('#nama-siswa').text(response.nama_lengkap);
                     $('#nis-siswa').text(response.nis);
 
-                    // Perbarui foto siswa
+                    // Periksa apakah file foto ada
                     if (response.foto) {
-                        $('#foto-siswa').attr('src', '/images/peserta_didik/' + response.foto);
+                        $.ajax({
+                            url: '/images/peserta_didik/' + response.foto,
+                            method: 'HEAD', // Memeriksa keberadaan file tanpa memuatnya
+                            success: function() {
+                                $('#foto-siswa').attr('src', '/images/peserta_didik/' +
+                                    response.foto);
+                            },
+                            error: function() {
+                                $('#foto-siswa').attr('src',
+                                    '/images/user-dummy-img.jpg'
+                                ); // Default jika file tidak ada
+                            }
+                        });
                     } else {
                         $('#foto-siswa').attr('src',
-                            '/build/images/users/avatar-10.jpg'); // Default jika foto tidak ada
+                            '/images/user-dummy-img.jpg'); // Default jika foto tidak ada di database
                     }
                 },
                 error: function(xhr) {
                     $('#nama-siswa').text("Siswa tidak ditemukan.");
                     $('#nis-siswa').text("");
-                    $('#foto-siswa').attr('src',
-                        '/build/images/users/avatar-10.jpg'); // Kembali ke default
+                    $('#foto-siswa').attr('src', '/images/user-dummy-img.jpg'); // Kembali ke default
                 }
             });
+
 
             // AJAX request
             $.ajax({
