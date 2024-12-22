@@ -145,7 +145,34 @@
             </div>
             <div class="tab-content">
                 <div class="tab-pane active" id="nilai" role="tabpanel">
-                    <div class="px-4 mx-n4" data-simplebar style="height: calc(110vh - 326px);">
+                    <ul class="nav nav-tabs nav-tabs-custom nav-success nav-justified mb-3" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#cover" role="tab">
+                                Cover
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#identsekolah" role="tab">
+                                Identitas
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#nilairapor" role="tab">
+                                Nilai Rapor
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#activitas" role="tab">
+                                Aktivitas Siswa
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#lampiran1" role="tab">
+                                Lampiran
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="px-4 mx-n4" data-simplebar style="height: calc(110vh - 356px);">
                         <div class="table-responsive" id="siswa-detail">
                             silakan pilih peserta didik
                         </div>
@@ -221,6 +248,10 @@
                 method: "GET",
                 success: function(response) {
                     $('#siswa-detail').html(response); // Render detail siswa
+                    // Kembali ke tab default (Cover)
+                    var defaultTab = new bootstrap.Tab(document.querySelector(
+                        '.nav-link[href="#cover"]'));
+                    defaultTab.show();
                 },
                 error: function(xhr) {
                     $('#siswa-detail').html(

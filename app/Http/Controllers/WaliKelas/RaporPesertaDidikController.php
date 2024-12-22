@@ -9,6 +9,8 @@ use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Models\WaliKelas\Ekstrakurikuler;
 use App\Models\WaliKelas\PrestasiSiswa;
 use Illuminate\Http\Request;
+use Milon\Barcode\DNS1D;
+use Milon\Barcode\DNS2D;
 use Illuminate\Support\Facades\DB;
 
 class RaporPesertaDidikController extends Controller
@@ -236,6 +238,10 @@ class RaporPesertaDidikController extends Controller
 
         $school = IdentitasSekolah::first();
 
+        $kepsekCover = KepalaSekolah::where('tahunajaran', $dataSiswa->thnajaran_masuk)
+            ->where('semester', 'Ganjil')
+            ->first();
+
         $kepsekttd = KepalaSekolah::where('tahunajaran', $kbmData->tahunajaran)
             ->where('semester', $kbmData->ganjilgenap)
             ->first();
@@ -313,60 +319,20 @@ class RaporPesertaDidikController extends Controller
             }
         }
 
-        // Inisialisasi $mataPelajaranNilai sebagai array kosong
-        $mataPelajaranNilai = [];
+        // BARCOOOOOOOOOOOOOOOOOOOOOOOOOOOOD
+        $barcode = new DNS1D();
+        $barcode->setStorPath(public_path('barcode/'));
 
+        // URL yang ingin dijadikan barcode
+        $url = "https://smkn1kadipaten.sch.id";
 
-        /* $dataNilai = DB::select("
-            SELECT
-                peserta_didik_rombels.nis,
-                peserta_didiks.nama_lengkap,
-                kbm_per_rombels.kel_mapel,
-                mata_pelajarans.kelompok,
-                mata_pelajarans.mata_pelajaran,
-                kbm_per_rombels.id_personil,
-                peserta_didik_rombels.rombel_kode,
-                personil_sekolahs.gelardepan,
-                personil_sekolahs.namalengkap,
-                personil_sekolahs.gelarbelakang,
-                nilai_formatif.tp_isi_1,
-                nilai_formatif.tp_isi_2,
-                nilai_formatif.tp_isi_3,
-                nilai_formatif.tp_isi_4,
-                nilai_formatif.tp_isi_5,
-                nilai_formatif.tp_isi_6,
-                nilai_formatif.tp_isi_7,
-                nilai_formatif.tp_isi_8,
-                nilai_formatif.tp_isi_9,
-                nilai_formatif.tp_nilai_1,
-                nilai_formatif.tp_nilai_2,
-                nilai_formatif.tp_nilai_3,
-                nilai_formatif.tp_nilai_4,
-                nilai_formatif.tp_nilai_5,
-                nilai_formatif.tp_nilai_6,
-                nilai_formatif.tp_nilai_7,
-                nilai_formatif.tp_nilai_8,
-                nilai_formatif.tp_nilai_9,
-                nilai_formatif.rerata_formatif,
-                nilai_sumatif.sts,
-                nilai_sumatif.sas,
-                nilai_sumatif.kel_mapel AS kel_mapel_sumatif,
-                nilai_sumatif.rerata_sumatif,
-                ((COALESCE(nilai_formatif.rerata_formatif, 0) + COALESCE(nilai_sumatif.rerata_sumatif, 0)) / 2) AS nilai_na
-            FROM peserta_didik_rombels
-            INNER JOIN peserta_didiks ON peserta_didik_rombels.nis = peserta_didiks.nis
-            INNER JOIN kbm_per_rombels ON peserta_didik_rombels.rombel_kode = kbm_per_rombels.kode_rombel
-            INNER JOIN personil_sekolahs ON kbm_per_rombels.id_personil = personil_sekolahs.id_personil
-            INNER JOIN mata_pelajarans ON kbm_per_rombels.kel_mapel = mata_pelajarans.kel_mapel
-            LEFT JOIN nilai_formatif ON peserta_didik_rombels.nis = nilai_formatif.nis AND kbm_per_rombels.kel_mapel = nilai_formatif.kel_mapel
-            LEFT JOIN nilai_sumatif ON peserta_didik_rombels.nis = nilai_sumatif.nis AND kbm_per_rombels.kel_mapel = nilai_sumatif.kel_mapel
-            WHERE peserta_didik_rombels.rombel_kode = ?
-              AND peserta_didik_rombels.nis = ?
-            ORDER BY kbm_per_rombels.kel_mapel
-        ", [
-            $waliKelas->kode_rombel,
-            $dataSiswa->nis
-        ]); */
+        // Generate barcode dalam format PNG
+        $barcodeImage = $barcode->getBarcodePNG($url, 'C128', 1, 33);
+
+        // Generate QR Code
+        $qrcode = new DNS2D();
+        $qrcodeImage = $qrcode->getBarcodePNG("https://smkn1kadipaten.sch.id/kurikulum/dokumentsiswa/cetak-rapor", 'QRCODE', 5, 5);
+
 
         $dataNilai = DB::select("
            SELECT
@@ -540,12 +506,15 @@ class RaporPesertaDidikController extends Controller
                 'school',
                 'dataNilai',
                 'kepsekttd',
+                'kepsekCover',
                 'titiMangsa',
                 'catatanWaliKelas',
                 'absensiSiswa',
                 'prestasiSiswas',
                 'ekstrakurikulers',
                 'activities',
+                'barcodeImage',
+                'qrcodeImage',
             ))->render(); // Render hanya bagian detail
         }
 
