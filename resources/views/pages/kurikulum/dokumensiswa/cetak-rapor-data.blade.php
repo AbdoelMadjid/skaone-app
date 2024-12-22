@@ -3,170 +3,165 @@
         <div class="message-list-content mx-n4 px-4 message-list-scroll">
             <div id="printable-area-cover">
                 <div id='cetak-cover' style='@page {size: A4;}'>
-                    <div class='table-responsive'>
-                        <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;'>
-                            <tr>
-                                <td><img src="data:image/png;base64,{{ $barcodeImage }}" alt="Barcode"></td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td style='font-size:22px;text-align:center;'><strong>LAPORAN CAPAIAN KOMPETENSI
-                                        SISWA</strong>
-                                    </th>
-                            </tr>
-                            <tr>
-                                <td style='font-size:22px;text-align:center;'><strong>SEKOLAH MENENGAH KEJURUAN</strong>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style='font-size:22px;text-align:center;'><strong>( SMK )</strong></td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td style='font-size:16px;'>
-                                    <table align='center'>
-                                        <tr>
-                                            <td>Bidang Keahlian</td>
-                                            <td width='5%' align='center'>:</td>
-                                            <td>{{ $dataSiswa->nama_bk }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Program Keahlian</td>
-                                            <td width='5%' align='center'>:</td>
-                                            <td>{{ $dataSiswa->nama_pk }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Kompetensi Keahlian</td>
-                                            <td width='5%' align='center'>:</td>
-                                            <td>{{ $dataSiswa->nama_kk }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Nama Sekolah</td>
-                                            <td width='5%' align='center'>:</td>
-                                            <td>{{ $school->nama_sekolah }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td valign='top'>Alamat Sekolah</td>
-                                            <td width='5%' align='center' valign='top'>:</td>
-                                            <td>
-                                                {{ $school->alamat_jalan }}
-                                                @if ($school->alamat_no)
-                                                    No. {{ $school->alamat_no }}
-                                                @endif
-                                                Blok {{ $school->alamat_blok }},
-                                                Desa/Kelurahan {{ $school->alamat_desa }}<br>
-                                                Kode Pos : {{ $school->alamat_kodepos }}
-                                                Telp. {{ $school->alamat_telepon }}
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td align=center><img src="{{ URL::asset('build/images/tutwurihandayani.png') }}"
-                                        alt="" height="250"></td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td style='font-size:16px;text-align:center;'>Nama Siswa</td>
-                            </tr>
-                            <tr>
-                                <td style='font-size:18px;text-align:center;'><strong>{!! $dataSiswa->nama_lengkap !!}</strong>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style='font-size:16px;text-align:center;'>NIS : {{ $dataSiswa->nis }}</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td style='font-size:16px;text-align:center;'><strong>KEMENTRIAN PENDIDIKAN DAN
-                                        KEBUDAYAAN</strong>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style='font-size:16px;text-align:center;'><strong>REPUBLIK INDONESIA</strong></td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                        </table>
-                    </div>
+                    <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;'>
+                        <tr>
+                            <td><img src="data:image/png;base64,{{ $barcodeImage }}" alt="Barcode"></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td style='font-size:22px;text-align:center;'><strong>LAPORAN CAPAIAN KOMPETENSI
+                                    SISWA</strong>
+                                </th>
+                        </tr>
+                        <tr>
+                            <td style='font-size:22px;text-align:center;'><strong>SEKOLAH MENENGAH KEJURUAN</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style='font-size:22px;text-align:center;'><strong>( SMK )</strong></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td style='font-size:16px;'>
+                                <table align='center'>
+                                    <tr>
+                                        <td>Bidang Keahlian</td>
+                                        <td width='5%' align='center'>:</td>
+                                        <td>{{ $dataSiswa->nama_bk }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Program Keahlian</td>
+                                        <td width='5%' align='center'>:</td>
+                                        <td>{{ $dataSiswa->nama_pk }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kompetensi Keahlian</td>
+                                        <td width='5%' align='center'>:</td>
+                                        <td>{{ $dataSiswa->nama_kk }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nama Sekolah</td>
+                                        <td width='5%' align='center'>:</td>
+                                        <td>{{ $school->nama_sekolah }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td valign='top'>Alamat Sekolah</td>
+                                        <td width='5%' align='center' valign='top'>:</td>
+                                        <td>
+                                            {{ $school->alamat_jalan }}
+                                            @if ($school->alamat_no)
+                                                No. {{ $school->alamat_no }}
+                                            @endif
+                                            Blok {{ $school->alamat_blok }},
+                                            Desa/Kelurahan {{ $school->alamat_desa }}<br>
+                                            Kode Pos : {{ $school->alamat_kodepos }}
+                                            Telp. {{ $school->alamat_telepon }}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td align=center><img src="{{ URL::asset('build/images/tutwurihandayani.png') }}"
+                                    alt="" height="250"></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td style='font-size:16px;text-align:center;'>Nama Siswa</td>
+                        </tr>
+                        <tr>
+                            <td style='font-size:18px;text-align:center;'><strong>{!! $dataSiswa->nama_lengkap !!}</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style='font-size:16px;text-align:center;'>NIS : {{ $dataSiswa->nis }}</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td style='font-size:16px;text-align:center;'><strong>KEMENTRIAN PENDIDIKAN DAN
+                                    KEBUDAYAAN</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style='font-size:16px;text-align:center;'><strong>REPUBLIK INDONESIA</strong></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table>
                 </div>
             </div>
-            <p class="mt-4">&nbsp;</p>
-            <p class="mt-4">&nbsp;</p>
-            <p class="mt-4">&nbsp;</p>
         </div>
     </div>
     <div class="tab-pane fade" id="identsekolah" role="tabpanel" aria-labelledby="identsekolah-tab">
@@ -174,129 +169,127 @@
             {{-- IDENTITAS SEKOLAH --}}
             <div id="printable-area-identitas">
                 <div id='cetak-sekolah' style='@page {size: A4;}'>
-                    <div class='table-responsive'>
-                        <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:16px Times New Roman;'>
-                            <tr>
-                                <td class='text-center'>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td style='font-size:18px;text-align:center;'><strong>RAPOR SISWA</strong></td>
-                            </tr>
-                            <tr>
-                                <td style='font-size:18px;text-align:center;'><strong>SEKOLAH MENENGAH KEJURUAN</strong>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style='font-size:18px;text-align:center;'><strong>( SMK )</strong></td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td align='center' width='50%'>
-                                    <table align='center'>
-                                        <tr>
-                                            <td width='200'>Nama Sekolah</td>
-                                            <td width='25'>:</td>
-                                            <td>{{ $school->nama_sekolah }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan='3'>&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td>NPSN</td>
-                                            <td>:</td>
-                                            <td>{{ $school->npsn }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan='3'>&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td valign='top'>Alamat Sekolah</td>
-                                            <td valign='top'>:</td>
-                                            <td valign='top'>{{ $school->alamat_jalan }}
-                                                @if ($school->alamat_no)
-                                                    No. {{ $school->alamat_no }}
-                                                @endif
-                                                Blok {{ $school->alamat_blok }}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan='3'>&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td valign='top'></td>
-                                            <td valign='top'></td>
-                                            <td valign='top'>Kode Pos : {{ $school->alamat_kodepos }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan='3'>&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Kelurahan</td>
-                                            <td>:</td>
-                                            <td>{{ $school->alamat_desa }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan='3'>&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Kecamatan</td>
-                                            <td>:</td>
-                                            <td>{{ $school->alamat_kec }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan='3'>&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Kota/Kabupaten</td>
-                                            <td>:</td>
-                                            <td>{{ $school->alamat_kab }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan='3'>&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Provinsi</td>
-                                            <td>:</td>
-                                            <td>{{ $school->alamat_provinsi }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan='3'>&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Web Site</td>
-                                            <td>:</td>
-                                            <td>{{ $school->alamat_website }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan='3'>&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Email</td>
-                                            <td>:</td>
-                                            <td>{{ $school->alamat_email }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan='3'>&nbsp;</td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
+                    <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:16px Times New Roman;'>
+                        <tr>
+                            <td class='text-center'>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td style='font-size:18px;text-align:center;'><strong>RAPOR SISWA</strong></td>
+                        </tr>
+                        <tr>
+                            <td style='font-size:18px;text-align:center;'><strong>SEKOLAH MENENGAH KEJURUAN</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style='font-size:18px;text-align:center;'><strong>( SMK )</strong></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td align='center' width='50%'>
+                                <table align='center'>
+                                    <tr>
+                                        <td width='200'>Nama Sekolah</td>
+                                        <td width='25'>:</td>
+                                        <td>{{ $school->nama_sekolah }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan='3'>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td>NPSN</td>
+                                        <td>:</td>
+                                        <td>{{ $school->npsn }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan='3'>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td valign='top'>Alamat Sekolah</td>
+                                        <td valign='top'>:</td>
+                                        <td valign='top'>{{ $school->alamat_jalan }}
+                                            @if ($school->alamat_no)
+                                                No. {{ $school->alamat_no }}
+                                            @endif
+                                            Blok {{ $school->alamat_blok }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan='3'>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td valign='top'></td>
+                                        <td valign='top'></td>
+                                        <td valign='top'>Kode Pos : {{ $school->alamat_kodepos }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan='3'>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kelurahan</td>
+                                        <td>:</td>
+                                        <td>{{ $school->alamat_desa }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan='3'>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kecamatan</td>
+                                        <td>:</td>
+                                        <td>{{ $school->alamat_kec }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan='3'>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kota/Kabupaten</td>
+                                        <td>:</td>
+                                        <td>{{ $school->alamat_kab }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan='3'>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Provinsi</td>
+                                        <td>:</td>
+                                        <td>{{ $school->alamat_provinsi }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan='3'>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Web Site</td>
+                                        <td>:</td>
+                                        <td>{{ $school->alamat_website }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan='3'>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email</td>
+                                        <td>:</td>
+                                        <td>{{ $school->alamat_email }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan='3'>&nbsp;</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
                 <p class="mt-4">&nbsp;</p>
                 <p class="mt-4">&nbsp;</p>
@@ -304,464 +297,458 @@
 
                 {{-- IDENITTAS SISWA --}}
                 <div id='cetak-identsiswa' style='@page {size: A4;} page-break-before: always;'>
-                    <img style=' position: absolute; padding: 250px 2px 15px -250px; margin-left:180px;margin-top:215px;'
-                        src='img/logosmktrans.png' border='0' alt=''>
-                    <div class='table-responsive'>
-                        <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:14px Times New Roman;'>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td style='font-size:18px;text-align:center;'><strong>KETERANGAN TENTANG DIRI
-                                        SISWA</strong>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td align='center' width='50%'>
-                                    <table width:'500'>
-                                        <tr>
-                                            <td width='35' style='padding:4px 8px;'>1.</td>
-                                            <td width='200' style='padding:4px 8px;'>Nama Siswa Lengkap</td>
-                                            <td width='25' style='padding:4px 8px;'>:</td>
-                                            <td style='padding:4px 8px;'>{!! $dataSiswa->nama_lengkap !!}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style='padding:4px 8px;'>2.</td>
-                                            <td style='padding:4px 8px;'>Nomor Induk/NISN</td>
-                                            <td style='padding:4px 8px;'>:</td>
-                                            <td style='padding:4px 8px;'>
-                                                {!! $dataSiswa->nis !!}/{!! $dataSiswa->nisn !!}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style='padding:4px 8px;'>3.</td>
-                                            <td style='padding:4px 8px;'>Tempat, Tanggal Lahir</td>
-                                            <td style='padding:4px 8px;'>:</td>
-                                            <td style='padding:4px 8px;'>{!! ucwords(strtolower($dataSiswa->tempat_lahir)) !!},
-                                                {!! formatTanggalIndonesia($dataSiswa->tanggal_lahir) !!}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style='padding:4px 8px;'>4.</td>
-                                            <td style='padding:4px 8px;'>Jenis Kelamin</td>
-                                            <td style='padding:4px 8px;'>:</td>
-                                            <td style='padding:4px 8px;'>{!! $dataSiswa->jenis_kelamin !!}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style='padding:4px 8px;'>5.</td>
-                                            <td style='padding:4px 8px;'>Agama</td>
-                                            <td style='padding:4px 8px;'>:</td>
-                                            <td style='padding:4px 8px;'>{!! $dataSiswa->agama !!}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style='padding:4px 8px;'>6.</td>
-                                            <td style='padding:4px 8px;'>Status dalam Keluarga</td>
-                                            <td style='padding:4px 8px;'>:</td>
-                                            <td style='padding:4px 8px;'>{!! $dataSiswa->status_dalam_kel !!}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style='padding:4px 8px;'>7.</td>
-                                            <td style='padding:4px 8px;'>Anak ke</td>
-                                            <td style='padding:4px 8px;'>:</td>
-                                            <td style='padding:4px 8px;'>{!! $dataSiswa->anak_ke !!}</td>
-                                        </tr>
-                                        <tr>
-                                            <td valign='top' style='padding:4px 8px;'>8.</td>
-                                            <td valign='top' style='padding:4px 8px;'>Alamat Siswa</td>
-                                            <td valign='top' style='padding:4px 8px;'>:</td>
-                                            <td style='padding:4px 8px;'>{!! $dataSiswa->status_dalam_kel !!}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style='padding:4px 8px;'>9.</td>
-                                            <td style='padding:4px 8px;'>Nomor Telepon Rumah</td>
-                                            <td style='padding:4px 8px;'>:</td>
-                                            <td style='padding:4px 8px;'>{!! $dataSiswa->kontak_telepon !!}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style='padding:4px 8px;'>10.</td>
-                                            <td style='padding:4px 8px;'>Sekolah Asal</td>
-                                            <td style='padding:4px 8px;'>:</td>
-                                            <td style='padding:4px 8px;'>{!! $dataSiswa->sekolah_asal !!}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style='padding:4px 8px;'>11.</td>
-                                            <td style='padding:4px 8px;'>Diterima di sekolah ini</td>
-                                            <td style='padding:4px 8px;'>:</td>
-                                            <td style='padding:4px 8px;'></td>
-                                        </tr>
-                                        <tr>
-                                            <td style='padding:4px 8px;'></td>
-                                            <td style='padding:4px 8px;'>Di kelas</td>
-                                            <td style='padding:4px 8px;'>:</td>
-                                            <td style='padding:4px 8px;'>{!! $dataSiswa->diterima_kelas !!}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style='padding:4px 8px;'></td>
-                                            <td style='padding:4px 8px;'>Pada Tanggal</td>
-                                            <td style='padding:4px 8px;'>:</td>
-                                            <td style='padding:4px 8px;'>{!! formatTanggalIndonesia($dataSiswa->diterima_tanggal) !!}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style='padding:4px 8px;'>12.</td>
-                                            <td style='padding:4px 8px;'>Nama Orang Tua</td>
-                                            <td style='padding:4px 8px;'>:</td>
-                                            <td style='padding:4px 8px;'></td>
-                                        </tr>
-                                        <tr>
-                                            <td style='padding:4px 8px;'></td>
-                                            <td style='padding:4px 8px;'>a. Ayah</td>
-                                            <td style='padding:4px 8px;'>:</td>
-                                            <td style='padding:4px 8px;'>{!! ucwords(strtolower($dataSiswa->nm_ayah)) !!}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style='padding:4px 8px;'></td>
-                                            <td style='padding:4px 8px;'>b. Ibu</td>
-                                            <td style='padding:4px 8px;'>:</td>
-                                            <td style='padding:4px 8px;'>{!! ucwords(strtolower($dataSiswa->nm_ibu)) !!}</td>
-                                        </tr>
-                                        <tr>
-                                            <td valign='top' style='padding:4px 8px;'>13.</td>
-                                            <td valign='top' style='padding:4px 8px;'>Alamat Orang Tua</td>
-                                            <td valign='top' style='padding:4px 8px;'>:</td>
-                                            <td style='padding:4px 8px;'>
-                                                @if ($dataSiswa->ortu_alamat_blok)
-                                                    Blok {{ $dataSiswa->ortu_alamat_blok }}, <br>
-                                                @endif
-                                                @if ($dataSiswa->ortu_alamat_desa)
-                                                    Desa/Kelurahan {{ $dataSiswa->ortu_alamat_desa }}
-                                                @endif
-                                                @if ($dataSiswa->ortu_alamat_kec)
-                                                    Kecamatan {{ $dataSiswa->ortu_alamat_kec }}<br>
-                                                @endif
-                                                @if ($dataSiswa->ortu_alamat_kab)
-                                                    Kabupaten {{ $dataSiswa->ortu_alamat_kab }}
-                                                @endif
-                                                @if ($dataSiswa->ortu_alamat_kodepos)
-                                                    Kode Pos : {{ $dataSiswa->ortu_alamat_kodepos }}
-                                                @endif
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style='padding:4px 8px;'></td>
-                                            <td style='padding:4px 8px;'>Telepon Orang Tua</td>
-                                            <td style='padding:4px 8px;'>:</td>
-                                            <td style='padding:4px 8px;'>{!! $dataSiswa->ortu_kontak_telepon !!}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style='padding:4px 8px;'>14.</td>
-                                            <td style='padding:4px 8px;'>Pekerjaan Orang Tua</td>
-                                            <td style='padding:4px 8px;'>:</td>
-                                            <td style='padding:4px 8px;'></td>
-                                        </tr>
-                                        <tr>
-                                            <td style='padding:4px 8px;'></td>
-                                            <td style='padding:4px 8px;'>a. Ayah</td>
-                                            <td style='padding:4px 8px;'>:</td>
-                                            <td style='padding:4px 8px;'>{!! $dataSiswa->pekerjaan_ayah !!}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style='padding:4px 8px;'></td>
-                                            <td style='padding:4px 8px;'>a. Ibu</td>
-                                            <td style='padding:4px 8px;'>:</td>
-                                            <td style='padding:4px 8px;'>{!! $dataSiswa->pekerjaan_ibu !!}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style='padding:4px 8px;'>15.</td>
-                                            <td style='padding:4px 8px;'>Nama Wali Siswa</td>
-                                            <td style='padding:4px 8px;'>:</td>
-                                            <td style='padding:4px 8px;'></td>
-                                        </tr>
-                                        <tr>
-                                            <td valign='top' style='padding:4px 8px;'>16.</td>
-                                            <td valign='top' style='padding:4px 8px;'>Alamat Wali Siswa</td>
-                                            <td valign='top' style='padding:4px 8px;'>:</td>
-                                            <td style='padding:4px 8px;'></td>
-                                        </tr>
-                                        <tr>
-                                            <td style='padding:4px 8px;'>17.</td>
-                                            <td style='padding:4px 8px;'>Pekerjaan Wali Siswa</td>
-                                            <td style='padding:4px 8px;'>:</td>
-                                            <td style='padding:4px 8px;'></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan='4'>&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td style='padding:4px 8px;'></td>
-                                            <td style='padding:4px 8px;'></td>
-                                            <td style='padding:4px 8px;'></td>
-                                            <td style='padding:4px 8px;'>
-                                                Kadipaten, {!! formatTanggalIndonesia($dataSiswa->diterima_tanggal) !!}<br>
-                                                Kepala Sekolah,
-                                                <p>&nbsp;</p>
-                                                <p>&nbsp;</p>
-                                                <strong>{!! $kepsekCover->nama !!}</strong><br>
-                                                NIP. {!! $kepsekCover->nip !!}
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
+                    <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:14px Times New Roman;'>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td style='font-size:18px;text-align:center;'><strong>KETERANGAN TENTANG DIRI
+                                    SISWA</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td align='center' width='50%'>
+                                <table width:'500'>
+                                    <tr>
+                                        <td width='35' style='padding:4px 8px;'>1.</td>
+                                        <td width='200' style='padding:4px 8px;'>Nama Siswa Lengkap</td>
+                                        <td width='25' style='padding:4px 8px;'>:</td>
+                                        <td style='padding:4px 8px;'>{!! $dataSiswa->nama_lengkap !!}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding:4px 8px;'>2.</td>
+                                        <td style='padding:4px 8px;'>Nomor Induk/NISN</td>
+                                        <td style='padding:4px 8px;'>:</td>
+                                        <td style='padding:4px 8px;'>
+                                            {!! $dataSiswa->nis !!}/{!! $dataSiswa->nisn !!}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding:4px 8px;'>3.</td>
+                                        <td style='padding:4px 8px;'>Tempat, Tanggal Lahir</td>
+                                        <td style='padding:4px 8px;'>:</td>
+                                        <td style='padding:4px 8px;'>{!! ucwords(strtolower($dataSiswa->tempat_lahir)) !!},
+                                            {!! formatTanggalIndonesia($dataSiswa->tanggal_lahir) !!}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding:4px 8px;'>4.</td>
+                                        <td style='padding:4px 8px;'>Jenis Kelamin</td>
+                                        <td style='padding:4px 8px;'>:</td>
+                                        <td style='padding:4px 8px;'>{!! $dataSiswa->jenis_kelamin !!}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding:4px 8px;'>5.</td>
+                                        <td style='padding:4px 8px;'>Agama</td>
+                                        <td style='padding:4px 8px;'>:</td>
+                                        <td style='padding:4px 8px;'>{!! $dataSiswa->agama !!}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding:4px 8px;'>6.</td>
+                                        <td style='padding:4px 8px;'>Status dalam Keluarga</td>
+                                        <td style='padding:4px 8px;'>:</td>
+                                        <td style='padding:4px 8px;'>{!! $dataSiswa->status_dalam_kel !!}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding:4px 8px;'>7.</td>
+                                        <td style='padding:4px 8px;'>Anak ke</td>
+                                        <td style='padding:4px 8px;'>:</td>
+                                        <td style='padding:4px 8px;'>{!! $dataSiswa->anak_ke !!}</td>
+                                    </tr>
+                                    <tr>
+                                        <td valign='top' style='padding:4px 8px;'>8.</td>
+                                        <td valign='top' style='padding:4px 8px;'>Alamat Siswa</td>
+                                        <td valign='top' style='padding:4px 8px;'>:</td>
+                                        <td style='padding:4px 8px;'>{!! $dataSiswa->status_dalam_kel !!}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding:4px 8px;'>9.</td>
+                                        <td style='padding:4px 8px;'>Nomor Telepon Rumah</td>
+                                        <td style='padding:4px 8px;'>:</td>
+                                        <td style='padding:4px 8px;'>{!! $dataSiswa->kontak_telepon !!}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding:4px 8px;'>10.</td>
+                                        <td style='padding:4px 8px;'>Sekolah Asal</td>
+                                        <td style='padding:4px 8px;'>:</td>
+                                        <td style='padding:4px 8px;'>{!! $dataSiswa->sekolah_asal !!}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding:4px 8px;'>11.</td>
+                                        <td style='padding:4px 8px;'>Diterima di sekolah ini</td>
+                                        <td style='padding:4px 8px;'>:</td>
+                                        <td style='padding:4px 8px;'></td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding:4px 8px;'></td>
+                                        <td style='padding:4px 8px;'>Di kelas</td>
+                                        <td style='padding:4px 8px;'>:</td>
+                                        <td style='padding:4px 8px;'>{!! $dataSiswa->diterima_kelas !!}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding:4px 8px;'></td>
+                                        <td style='padding:4px 8px;'>Pada Tanggal</td>
+                                        <td style='padding:4px 8px;'>:</td>
+                                        <td style='padding:4px 8px;'>{!! formatTanggalIndonesia($dataSiswa->diterima_tanggal) !!}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding:4px 8px;'>12.</td>
+                                        <td style='padding:4px 8px;'>Nama Orang Tua</td>
+                                        <td style='padding:4px 8px;'>:</td>
+                                        <td style='padding:4px 8px;'></td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding:4px 8px;'></td>
+                                        <td style='padding:4px 8px;'>a. Ayah</td>
+                                        <td style='padding:4px 8px;'>:</td>
+                                        <td style='padding:4px 8px;'>{!! ucwords(strtolower($dataSiswa->nm_ayah)) !!}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding:4px 8px;'></td>
+                                        <td style='padding:4px 8px;'>b. Ibu</td>
+                                        <td style='padding:4px 8px;'>:</td>
+                                        <td style='padding:4px 8px;'>{!! ucwords(strtolower($dataSiswa->nm_ibu)) !!}</td>
+                                    </tr>
+                                    <tr>
+                                        <td valign='top' style='padding:4px 8px;'>13.</td>
+                                        <td valign='top' style='padding:4px 8px;'>Alamat Orang Tua</td>
+                                        <td valign='top' style='padding:4px 8px;'>:</td>
+                                        <td style='padding:4px 8px;'>
+                                            @if ($dataSiswa->ortu_alamat_blok)
+                                                Blok {{ $dataSiswa->ortu_alamat_blok }}, <br>
+                                            @endif
+                                            @if ($dataSiswa->ortu_alamat_desa)
+                                                Desa/Kelurahan {{ $dataSiswa->ortu_alamat_desa }}
+                                            @endif
+                                            @if ($dataSiswa->ortu_alamat_kec)
+                                                Kecamatan {{ $dataSiswa->ortu_alamat_kec }}<br>
+                                            @endif
+                                            @if ($dataSiswa->ortu_alamat_kab)
+                                                Kabupaten {{ $dataSiswa->ortu_alamat_kab }}
+                                            @endif
+                                            @if ($dataSiswa->ortu_alamat_kodepos)
+                                                Kode Pos : {{ $dataSiswa->ortu_alamat_kodepos }}
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding:4px 8px;'></td>
+                                        <td style='padding:4px 8px;'>Telepon Orang Tua</td>
+                                        <td style='padding:4px 8px;'>:</td>
+                                        <td style='padding:4px 8px;'>{!! $dataSiswa->ortu_kontak_telepon !!}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding:4px 8px;'>14.</td>
+                                        <td style='padding:4px 8px;'>Pekerjaan Orang Tua</td>
+                                        <td style='padding:4px 8px;'>:</td>
+                                        <td style='padding:4px 8px;'></td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding:4px 8px;'></td>
+                                        <td style='padding:4px 8px;'>a. Ayah</td>
+                                        <td style='padding:4px 8px;'>:</td>
+                                        <td style='padding:4px 8px;'>{!! $dataSiswa->pekerjaan_ayah !!}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding:4px 8px;'></td>
+                                        <td style='padding:4px 8px;'>a. Ibu</td>
+                                        <td style='padding:4px 8px;'>:</td>
+                                        <td style='padding:4px 8px;'>{!! $dataSiswa->pekerjaan_ibu !!}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding:4px 8px;'>15.</td>
+                                        <td style='padding:4px 8px;'>Nama Wali Siswa</td>
+                                        <td style='padding:4px 8px;'>:</td>
+                                        <td style='padding:4px 8px;'></td>
+                                    </tr>
+                                    <tr>
+                                        <td valign='top' style='padding:4px 8px;'>16.</td>
+                                        <td valign='top' style='padding:4px 8px;'>Alamat Wali Siswa</td>
+                                        <td valign='top' style='padding:4px 8px;'>:</td>
+                                        <td style='padding:4px 8px;'></td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding:4px 8px;'>17.</td>
+                                        <td style='padding:4px 8px;'>Pekerjaan Wali Siswa</td>
+                                        <td style='padding:4px 8px;'>:</td>
+                                        <td style='padding:4px 8px;'></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan='4'>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding:4px 8px;'></td>
+                                        <td style='padding:4px 8px;'></td>
+                                        <td style='padding:4px 8px;'></td>
+                                        <td style='padding:4px 8px;'>
+                                            Kadipaten, {!! formatTanggalIndonesia($dataSiswa->diterima_tanggal) !!}<br>
+                                            Kepala Sekolah,
+                                            <p>&nbsp;</p>
+                                            <p>&nbsp;</p>
+                                            <strong>{!! $kepsekCover->nama !!}</strong><br>
+                                            NIP. {!! $kepsekCover->nip !!}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
                 <p class="mt-4">&nbsp;</p>
                 <p class="mt-4">&nbsp;</p>
                 <p class="mt-4">&nbsp;</p>
                 {{-- PETUNJUK --}}
                 <div id='cetak-petunjuk' style='@page {size: A4;} page-break-before: always;'>
-                    <div class='table-responsive'>
-                        <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:14px Times New Roman;'>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td style='font-size:18px;text-align:center;'><strong>PETUNJUK PENGISIAN</strong></td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td align='center' width='50%'>
-                                    <table align='center' width='80%'>
-                                        <tr>
-                                            <td>
-                                                <table>
-                                                    <tr>
-                                                        <td valign='top' style='padding:3px 6px;'>1.</td>
-                                                        <td align='justify' style='padding:3px 6px;'>Rapor merupakan
-                                                            ringkasan
-                                                            hasil
-                                                            penilaian terhadap seluruh aktivitas pembelajaran yang
-                                                            dilakukan
-                                                            siswa
-                                                            dalam
-                                                            kurun waktu tertentu;</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign='top' style='padding:3px 6px;'>2.</td>
-                                                        <td align='justify' style='padding:3px 6px;'>Rapor
-                                                            dipergunakan
-                                                            selama
-                                                            siswa
-                                                            yang bersangkutan mengikuti seluruh program pembelajaran di
-                                                            Sekolah
-                                                            Menengah
-                                                            Kejuruan tersebut;</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign='top' style='padding:3px 6px;'>3.</td>
-                                                        <td align='justify' style='padding:3px 6px;'>Identitas Sekolah
-                                                            diisi
-                                                            dengan
-                                                            data yang sesuai dengan keberadaan Sekolah Menengah
-                                                            Kejuruan;
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign='top' style='padding:3px 6px;'>4.</td>
-                                                        <td align='justify' style='padding:3px 6px;'>Keterangan
-                                                            tentang
-                                                            diri
-                                                            Siswa
-                                                            diisi lengkap;</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign='top' style='padding:3px 6px;'>5.</td>
-                                                        <td align='justify' style='padding:3px 6px;'>Rapor harus
-                                                            dilengkapi
-                                                            dengan
-                                                            pas
-                                                            foto berwarna (3 x 4) dan pengisiannya dilakukan oleh Wali
-                                                            Kelas;
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign='top' style='padding:3px 6px;'>6.</td>
-                                                        <td align='justify' style='padding:3px 6px;'>Deskripsi sikap
-                                                            spiritual
-                                                            diambil
-                                                            dari hasil observasi terutama pada mata pelajaran Pendidikan
-                                                            Agama
-                                                            dan
-                                                            Budi
-                                                            pekerti, dan PPKn;</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign='top' style='padding:3px 6px;'>7.</td>
-                                                        <td align='justify' style='padding:3px 6px;'>Deskripsi sikap
-                                                            sosial
-                                                            diambil
-                                                            dari hasil observasi pada semua mata pelajaran;</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign='top' style='padding:3px 6px;'>8.</td>
-                                                        <td align='justify' style='padding:3px 6px;'>Deskripsi pada
-                                                            kompetensi
-                                                            sikap
-                                                            ditulis dengan kalimat positif untuk aspek yang sangat baik
-                                                            atau
-                                                            Cukup
-                                                            baik;
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign='top' style='padding:3px 6px;'>9.</td>
-                                                        <td align='justify' style='padding:3px 6px;'>Capaian siswa
-                                                            dalam
-                                                            kompetensi
-                                                            pengetahuan dan kompetensi keterampilan ditulis dalam bentuk
-                                                            angka,
-                                                            predikat
-                                                            dan deskripsi untuk masing-masing mata pelajaran;</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign='top' style='padding:3px 6px;'>10.</td>
-                                                        <td align='justify' style='padding:3px 6px;'>Predikat ditulis
-                                                            dalam
-                                                            bentuk
-                                                            huruf sesuai kriteria;</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign='top' style='padding:3px 6px;'>11.</td>
-                                                        <td align='justify' style='padding:3px 6px;'>Kolom KB
-                                                            (Ketuntasan
-                                                            Belajar)
-                                                            merupakan acuan bagi kriteria kenaikan kelas sehingga wali
-                                                            kelas
-                                                            wajib
-                                                            menerangkan konsekuensi ketuntasan belajar tersebut kepada
-                                                            orang
-                                                            tua/wali;
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign='top' style='padding:3px 6px;'>12.</td>
-                                                        <td align='justify' style='padding:3px 6px;'>Deskripsi pada
-                                                            kompetensi
-                                                            pengetahuan dan kompetensi keterampilan ditulis dengan
-                                                            kalimat
-                                                            positif
-                                                            sesuai capaian tertinggi dan terendah yang diperoleh siswa.
-                                                            Apabila
-                                                            capaian
-                                                            kompetensi dasar yang diperoleh dalam muatan pelajaran itu
-                                                            sama,
-                                                            kolom
-                                                            deskripsi ditulis berdasarkan capaian yang diperoleh;</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign='top' style='padding:3px 6px;'>13.</td>
-                                                        <td align='justify' style='padding:3px 6px;'>Laporan Praktik
-                                                            Kerja
-                                                            Lapangan
-                                                            diisi berdasarkan kegiatan praktik kerja yang diikuti oleh
-                                                            siswa
-                                                            di
-                                                            industri/perusahaan mitra;</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign='top' style='padding:3px 6px;'>14.</td>
-                                                        <td align='justify' style='padding:3px 6px;'>Laporan
-                                                            Ekstrakurikuler
-                                                            diisi
-                                                            berdasarkan kegiatan ekstrakurikuler yang diikuti oleh
-                                                            siswa;
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign='top' style='padding:3px 6px;'>15.</td>
-                                                        <td align='justify' style='padding:3px 6px;'>Saran-saran wali
-                                                            kelas
-                                                            diisi
-                                                            berdasarkan kegiatan yang perlu mendapatkan perhatian siswa;
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign='top' style='padding:3px 6px;'>16.</td>
-                                                        <td align='justify' style='padding:3px 6px;'>Prestasi diisi
-                                                            dengan
-                                                            prestasi
-                                                            yang dicapai oleh siswa dalam bidang akademik dan non
-                                                            akademik;
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign='top' style='padding:3px 6px;'>17.</td>
-                                                        <td align='justify' style='padding:3px 6px;'>Ketidakhadiran
-                                                            diisi
-                                                            dengan
-                                                            data
-                                                            akumulasi ketidakhadiran siswa karena sakit, izin, atau
-                                                            tanpa
-                                                            keterangan
-                                                            selama satu semester.</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign='top' style='padding:3px 6px;'>18.</td>
-                                                        <td align='justify' style='padding:3px 6px;'>Tanggapan orang
-                                                            tua/wali
-                                                            adalah
-                                                            tanggapan atas pencapaian hasil belajar siswa;</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign='top' style='padding:3px 6px;'>19.</td>
-                                                        <td align='justify' style='padding:3px 6px;'>Keterangan pindah
-                                                            keluar
-                                                            sekolah
-                                                            diisi dengan alasan kepindahan. Sedangkan pindah masuk diisi
-                                                            dengan
-                                                            sekolah
-                                                            asal.</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign='top' style='padding:3px 6px;'>21.</td>
-                                                        <td align='justify' style='padding:3px 6px;'>Predikat capaian
-                                                            kompetensi :
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign='top' style='padding:3px 6px;'></td>
-                                                        <td align='justify' style='padding:3px 6px;'>Sangat Baik (A) :
-                                                            86
-                                                            -
-                                                            100
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign='top' style='padding:3px 6px;'></td>
-                                                        <td align='justify' style='padding:3px 6px;'>Baik (B) : 71 -
-                                                            85
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign='top' style='padding:3px 6px;'></td>
-                                                        <td align='justify' style='padding:3px 6px;'>Cukup (C) : 56 -
-                                                            70
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign='top' style='padding:3px 6px;'></td>
-                                                        <td align='justify' style='padding:3px 6px;'>Kurang (D) : 0 -
-                                                            55
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
+                    <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:14px Times New Roman;'>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td style='font-size:18px;text-align:center;'><strong>PETUNJUK PENGISIAN</strong></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td align='center' width='50%'>
+                                <table align='center' width='80%'>
+                                    <tr>
+                                        <td>
+                                            <table>
+                                                <tr>
+                                                    <td valign='top' style='padding:3px 6px;'>1.</td>
+                                                    <td align='justify' style='padding:3px 6px;'>Rapor merupakan
+                                                        ringkasan
+                                                        hasil
+                                                        penilaian terhadap seluruh aktivitas pembelajaran yang
+                                                        dilakukan
+                                                        siswa
+                                                        dalam
+                                                        kurun waktu tertentu;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign='top' style='padding:3px 6px;'>2.</td>
+                                                    <td align='justify' style='padding:3px 6px;'>Rapor
+                                                        dipergunakan
+                                                        selama
+                                                        siswa
+                                                        yang bersangkutan mengikuti seluruh program pembelajaran di
+                                                        Sekolah
+                                                        Menengah
+                                                        Kejuruan tersebut;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign='top' style='padding:3px 6px;'>3.</td>
+                                                    <td align='justify' style='padding:3px 6px;'>Identitas Sekolah
+                                                        diisi
+                                                        dengan
+                                                        data yang sesuai dengan keberadaan Sekolah Menengah
+                                                        Kejuruan;
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign='top' style='padding:3px 6px;'>4.</td>
+                                                    <td align='justify' style='padding:3px 6px;'>Keterangan
+                                                        tentang
+                                                        diri
+                                                        Siswa
+                                                        diisi lengkap;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign='top' style='padding:3px 6px;'>5.</td>
+                                                    <td align='justify' style='padding:3px 6px;'>Rapor harus
+                                                        dilengkapi
+                                                        dengan
+                                                        pas
+                                                        foto berwarna (3 x 4) dan pengisiannya dilakukan oleh Wali
+                                                        Kelas;
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign='top' style='padding:3px 6px;'>6.</td>
+                                                    <td align='justify' style='padding:3px 6px;'>Deskripsi sikap
+                                                        spiritual
+                                                        diambil
+                                                        dari hasil observasi terutama pada mata pelajaran Pendidikan
+                                                        Agama
+                                                        dan
+                                                        Budi
+                                                        pekerti, dan PPKn;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign='top' style='padding:3px 6px;'>7.</td>
+                                                    <td align='justify' style='padding:3px 6px;'>Deskripsi sikap
+                                                        sosial
+                                                        diambil
+                                                        dari hasil observasi pada semua mata pelajaran;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign='top' style='padding:3px 6px;'>8.</td>
+                                                    <td align='justify' style='padding:3px 6px;'>Deskripsi pada
+                                                        kompetensi
+                                                        sikap
+                                                        ditulis dengan kalimat positif untuk aspek yang sangat baik
+                                                        atau
+                                                        Cukup
+                                                        baik;
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign='top' style='padding:3px 6px;'>9.</td>
+                                                    <td align='justify' style='padding:3px 6px;'>Capaian siswa
+                                                        dalam
+                                                        kompetensi
+                                                        pengetahuan dan kompetensi keterampilan ditulis dalam bentuk
+                                                        angka,
+                                                        predikat
+                                                        dan deskripsi untuk masing-masing mata pelajaran;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign='top' style='padding:3px 6px;'>10.</td>
+                                                    <td align='justify' style='padding:3px 6px;'>Predikat ditulis
+                                                        dalam
+                                                        bentuk
+                                                        huruf sesuai kriteria;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign='top' style='padding:3px 6px;'>11.</td>
+                                                    <td align='justify' style='padding:3px 6px;'>Kolom KB
+                                                        (Ketuntasan
+                                                        Belajar)
+                                                        merupakan acuan bagi kriteria kenaikan kelas sehingga wali
+                                                        kelas
+                                                        wajib
+                                                        menerangkan konsekuensi ketuntasan belajar tersebut kepada
+                                                        orang
+                                                        tua/wali;
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign='top' style='padding:3px 6px;'>12.</td>
+                                                    <td align='justify' style='padding:3px 6px;'>Deskripsi pada
+                                                        kompetensi
+                                                        pengetahuan dan kompetensi keterampilan ditulis dengan
+                                                        kalimat
+                                                        positif
+                                                        sesuai capaian tertinggi dan terendah yang diperoleh siswa.
+                                                        Apabila
+                                                        capaian
+                                                        kompetensi dasar yang diperoleh dalam muatan pelajaran itu
+                                                        sama,
+                                                        kolom
+                                                        deskripsi ditulis berdasarkan capaian yang diperoleh;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign='top' style='padding:3px 6px;'>13.</td>
+                                                    <td align='justify' style='padding:3px 6px;'>Laporan Praktik
+                                                        Kerja
+                                                        Lapangan
+                                                        diisi berdasarkan kegiatan praktik kerja yang diikuti oleh
+                                                        siswa
+                                                        di
+                                                        industri/perusahaan mitra;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign='top' style='padding:3px 6px;'>14.</td>
+                                                    <td align='justify' style='padding:3px 6px;'>Laporan
+                                                        Ekstrakurikuler
+                                                        diisi
+                                                        berdasarkan kegiatan ekstrakurikuler yang diikuti oleh
+                                                        siswa;
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign='top' style='padding:3px 6px;'>15.</td>
+                                                    <td align='justify' style='padding:3px 6px;'>Saran-saran wali
+                                                        kelas
+                                                        diisi
+                                                        berdasarkan kegiatan yang perlu mendapatkan perhatian siswa;
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign='top' style='padding:3px 6px;'>16.</td>
+                                                    <td align='justify' style='padding:3px 6px;'>Prestasi diisi
+                                                        dengan
+                                                        prestasi
+                                                        yang dicapai oleh siswa dalam bidang akademik dan non
+                                                        akademik;
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign='top' style='padding:3px 6px;'>17.</td>
+                                                    <td align='justify' style='padding:3px 6px;'>Ketidakhadiran
+                                                        diisi
+                                                        dengan
+                                                        data
+                                                        akumulasi ketidakhadiran siswa karena sakit, izin, atau
+                                                        tanpa
+                                                        keterangan
+                                                        selama satu semester.</td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign='top' style='padding:3px 6px;'>18.</td>
+                                                    <td align='justify' style='padding:3px 6px;'>Tanggapan orang
+                                                        tua/wali
+                                                        adalah
+                                                        tanggapan atas pencapaian hasil belajar siswa;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign='top' style='padding:3px 6px;'>19.</td>
+                                                    <td align='justify' style='padding:3px 6px;'>Keterangan pindah
+                                                        keluar
+                                                        sekolah
+                                                        diisi dengan alasan kepindahan. Sedangkan pindah masuk diisi
+                                                        dengan
+                                                        sekolah
+                                                        asal.</td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign='top' style='padding:3px 6px;'>21.</td>
+                                                    <td align='justify' style='padding:3px 6px;'>Predikat capaian
+                                                        kompetensi :
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign='top' style='padding:3px 6px;'></td>
+                                                    <td align='justify' style='padding:3px 6px;'>Sangat Baik (A) :
+                                                        86
+                                                        -
+                                                        100
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign='top' style='padding:3px 6px;'></td>
+                                                    <td align='justify' style='padding:3px 6px;'>Baik (B) : 71 -
+                                                        85
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign='top' style='padding:3px 6px;'></td>
+                                                    <td align='justify' style='padding:3px 6px;'>Cukup (C) : 56 -
+                                                        70
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign='top' style='padding:3px 6px;'></td>
+                                                    <td align='justify' style='padding:3px 6px;'>Kurang (D) : 0 -
+                                                        55
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
             <p class="mt-4">&nbsp;</p>
@@ -772,225 +759,216 @@
         <div class="message-list-content mx-n4 px-4 message-list-scroll">
             <div id="printable-area-nilai">
                 <div id='cetak-hal1' style='@page {size: A4;}'>
-                    <div class='table-responsive'>
-                        <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;'>
-                            <tr>
-                                <td align='center' width='50%'>
-                                    <table align='center' width='90%'>
-                                        <tr>
-                                            <td colspan='2'>&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td valign='top'>
-                                                <table>
-                                                    <tr>
-                                                        <td style='padding: 2px 0px;'>Nama Siswa</td>
-                                                        <td style='padding: 2px 0px;'>:</td>
-                                                        <td style='padding: 2px 0px;'>
-                                                            <strong>{!! strtoupper($dataSiswa->nama_lengkap) !!}</strong>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='padding: 2px 0px;'>NIS / NISN</td>
-                                                        <td style='padding: 2px 0px;'>:</td>
-                                                        <td style='padding: 2px 0px;'>{!! $dataSiswa->nis !!} /
-                                                            {!! $dataSiswa->nisn !!}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td width='125' style='padding: 2px 0px;'>Nama Sekolah</td>
-                                                        <td width='20' style='padding: 2px 0px;'>:</td>
-                                                        <td style='padding: 2px 0px;'>{{ $school->nama_sekolah }}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='padding: 2px 0px;'>Alamat</td>
-                                                        <td style='padding: 2px 0px;'>:</td>
-                                                        <td style='padding: 2px 0px;'>{{ $school->alamat_jalan }}
-                                                            @if ($school->alamat_no)
-                                                                No. {{ $school->alamat_no }}
-                                                            @endif
-                                                            {{ $school->alamat_kec }} {{ $school->alamat_kab }}
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                            <td valign='top'>
-                                                <table>
-                                                    <tr>
-                                                        <td width='125' style='padding: 2px 0px;'>Kompetensi
-                                                            Keahlian
-                                                        </td>
-                                                        <td width='20' style='padding: 2px 0px;'>:</td>
-                                                        <td style='padding: 2px 0px;'>{{ $dataSiswa->nama_kk }}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td width='125' style='padding: 2px 0px;'>Kelas</td>
-                                                        <td width='20' style='padding: 2px 0px;'>:</td>
-                                                        <td style='padding: 2px 0px;'>{{ $dataSiswa->rombel_nama }}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='padding: 2px 0px;'>Semester</td>
-                                                        <td style='padding: 2px 0px;'>:</td>
-                                                        <td style='padding: 2px 0px;'>{{ $angkaSemester }}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='padding: 2px 0px;'>Tahun Ajaran</td>
-                                                        <td style='padding: 2px 0px;'>:</td>
-                                                        <td style='padding: 2px 0px;'>{{ $dataSiswa->tahun_ajaran }}
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan='2'>
-                                                <hr>
-                                            </td>
-                                        </tr>
-                                    </table>
+                    <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;'>
+                        <tr>
+                            <td align='center' width='50%'>
+                                <table align='center' width='90%'>
+                                    <tr>
+                                        <td colspan='2'>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td valign='top'>
+                                            <table>
+                                                <tr>
+                                                    <td style='padding: 2px 0px;'>Nama Siswa</td>
+                                                    <td style='padding: 2px 0px;'>:</td>
+                                                    <td style='padding: 2px 0px;'>
+                                                        <strong>{!! strtoupper($dataSiswa->nama_lengkap) !!}</strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='padding: 2px 0px;'>NIS / NISN</td>
+                                                    <td style='padding: 2px 0px;'>:</td>
+                                                    <td style='padding: 2px 0px;'>{!! $dataSiswa->nis !!} /
+                                                        {!! $dataSiswa->nisn !!}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td width='125' style='padding: 2px 0px;'>Nama Sekolah</td>
+                                                    <td width='20' style='padding: 2px 0px;'>:</td>
+                                                    <td style='padding: 2px 0px;'>{{ $school->nama_sekolah }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='padding: 2px 0px;'>Alamat</td>
+                                                    <td style='padding: 2px 0px;'>:</td>
+                                                    <td style='padding: 2px 0px;'>{{ $school->alamat_jalan }}
+                                                        @if ($school->alamat_no)
+                                                            No. {{ $school->alamat_no }}
+                                                        @endif
+                                                        {{ $school->alamat_kec }} {{ $school->alamat_kab }}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td valign='top'>
+                                            <table>
+                                                <tr>
+                                                    <td width='125' style='padding: 2px 0px;'>Kompetensi
+                                                        Keahlian
+                                                    </td>
+                                                    <td width='20' style='padding: 2px 0px;'>:</td>
+                                                    <td style='padding: 2px 0px;'>{{ $dataSiswa->nama_kk }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td width='125' style='padding: 2px 0px;'>Kelas</td>
+                                                    <td width='20' style='padding: 2px 0px;'>:</td>
+                                                    <td style='padding: 2px 0px;'>{{ $dataSiswa->rombel_nama }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='padding: 2px 0px;'>Semester</td>
+                                                    <td style='padding: 2px 0px;'>:</td>
+                                                    <td style='padding: 2px 0px;'>{{ $angkaSemester }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='padding: 2px 0px;'>Tahun Ajaran</td>
+                                                    <td style='padding: 2px 0px;'>:</td>
+                                                    <td style='padding: 2px 0px;'>{{ $dataSiswa->tahun_ajaran }}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan='2'>
+                                            <hr>
+                                        </td>
+                                    </tr>
+                                </table>
 
-                                    <table align='center' width='90%'>
-                                        <tr>
-                                            <td style='font-size:16px;text-align:center;'>
-                                                <p><strong>LAPORAN HASIL BELAJAR</p></strong>
+                                <table align='center' width='90%'>
+                                    <tr>
+                                        <td style='font-size:16px;text-align:center;'>
+                                            <p><strong>LAPORAN HASIL BELAJAR</p></strong>
 
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align='center'>
-                                                <table class='cetak-rapor'>
-                                                    <thead>
-                                                        <tr>
-                                                            <th style='text-align:center;padding:4px 8px;'><strong>No.
-                                                            </th>
-                                                            <th style='text-align:center;padding:4px 8px;'
-                                                                width='200'>
-                                                                Mata
-                                                                Pelajaran
-                                                            </th>
-                                                            <th style='text-align:center;padding:4px 8px;'>Nilai Akhir
-                                                            </th>
-                                                            <th style='text-align:center;padding:4px 8px;'>Capaian
-                                                                Kompetensi
-                                                            </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td colspan='10'
-                                                                style='padding:4px 8px;font-size:12px;'>
-                                                                <strong>A. Kelompok Mata Pelajaran Umum</strong>
-                                                            </td>
-                                                        </tr>
-                                                        @foreach ($dataNilai as $key => $nilai)
-                                                            @if ($nilai->kelompok === 'A')
-                                                                @php
-                                                                    // Cek dan sesuaikan nama mata pelajaran berdasarkan agama siswa
-                                                                    if (
-                                                                        $nilai->mata_pelajaran ===
-                                                                        'Pendidikan Agama Islam dan Budi Pekerti'
-                                                                    ) {
-                                                                        if ($dataSiswa->agama === 'Protestan') {
-                                                                            $mataPelajaran =
-                                                                                'Pendidikan Agama Kristen Protestan dan Budi Pekerti';
-                                                                            $guruMapel = 'Pendeta';
-                                                                        } elseif ($dataSiswa->agama === 'Katolik') {
-                                                                            $mataPelajaran =
-                                                                                'Pendidikan Agama Kristen Katolik dan Budi Pekerti';
-                                                                            $guruMapel = 'Pendeta';
-                                                                        } else {
-                                                                            $mataPelajaran =
-                                                                                'Pendidikan Agama Islam dan Budi Pekerti';
-                                                                            $guruMapel =
-                                                                                $nilai->gelardepan .
-                                                                                ucwords(
-                                                                                    strtolower($nilai->namalengkap),
-                                                                                ) .
-                                                                                ', ' .
-                                                                                $nilai->gelarbelakang;
-                                                                        }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align='center'>
+                                            <table class='cetak-rapor'>
+                                                <thead>
+                                                    <tr>
+                                                        <th style='text-align:center;padding:4px 8px;'><strong>No.
+                                                        </th>
+                                                        <th style='text-align:center;padding:4px 8px;' width='200'>
+                                                            Mata
+                                                            Pelajaran
+                                                        </th>
+                                                        <th style='text-align:center;padding:4px 8px;'>Nilai Akhir
+                                                        </th>
+                                                        <th style='text-align:center;padding:4px 8px;'>Capaian
+                                                            Kompetensi
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan='10' style='padding:4px 8px;font-size:12px;'>
+                                                            <strong>A. Kelompok Mata Pelajaran Umum</strong>
+                                                        </td>
+                                                    </tr>
+                                                    @foreach ($dataNilai as $key => $nilai)
+                                                        @if ($nilai->kelompok === 'A')
+                                                            @php
+                                                                // Cek dan sesuaikan nama mata pelajaran berdasarkan agama siswa
+                                                                if (
+                                                                    $nilai->mata_pelajaran ===
+                                                                    'Pendidikan Agama Islam dan Budi Pekerti'
+                                                                ) {
+                                                                    if ($dataSiswa->agama === 'Protestan') {
+                                                                        $mataPelajaran =
+                                                                            'Pendidikan Agama Kristen Protestan dan Budi Pekerti';
+                                                                        $guruMapel = 'Pendeta';
+                                                                    } elseif ($dataSiswa->agama === 'Katolik') {
+                                                                        $mataPelajaran =
+                                                                            'Pendidikan Agama Kristen Katolik dan Budi Pekerti';
+                                                                        $guruMapel = 'Pendeta';
                                                                     } else {
-                                                                        $mataPelajaran = $nilai->mata_pelajaran;
+                                                                        $mataPelajaran =
+                                                                            'Pendidikan Agama Islam dan Budi Pekerti';
                                                                         $guruMapel =
                                                                             $nilai->gelardepan .
                                                                             ucwords(strtolower($nilai->namalengkap)) .
                                                                             ', ' .
                                                                             $nilai->gelarbelakang;
                                                                     }
-                                                                @endphp
-                                                                <tr>
-                                                                    <td style='text-align:center;padding:4px 8px;font-size:12px;'
-                                                                        align='center'>{{ $loop->iteration }}</td>
-                                                                    <td style='padding:4px 8px;font-size:12px;'>
-                                                                        <strong>{{ $mataPelajaran }}</strong><br>
-                                                                        {{ $guruMapel }}
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        {{ round(((float) $nilai->rerata_formatif + (float) $nilai->rerata_sumatif) / 2) }}
-                                                                    </td>
-                                                                    <td
-                                                                        style='padding:4px 8px;font-size:12px;text-align:justify;'>
-                                                                        {{--  {{ $nilai->nilai_tertinggi ?? '' }}<br>
+                                                                } else {
+                                                                    $mataPelajaran = $nilai->mata_pelajaran;
+                                                                    $guruMapel =
+                                                                        $nilai->gelardepan .
+                                                                        ucwords(strtolower($nilai->namalengkap)) .
+                                                                        ', ' .
+                                                                        $nilai->gelarbelakang;
+                                                                }
+                                                            @endphp
+                                                            <tr>
+                                                                <td style='text-align:center;padding:4px 8px;font-size:12px;'
+                                                                    align='center'>{{ $loop->iteration }}</td>
+                                                                <td style='padding:4px 8px;font-size:12px;'>
+                                                                    <strong>{{ $mataPelajaran }}</strong><br>
+                                                                    {{ $guruMapel }}
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    {{ round(((float) $nilai->rerata_formatif + (float) $nilai->rerata_sumatif) / 2) }}
+                                                                </td>
+                                                                <td
+                                                                    style='padding:4px 8px;font-size:12px;text-align:justify;'>
+                                                                    {{--  {{ $nilai->nilai_tertinggi ?? '' }}<br>
                                                             {{ $nilai->nilai_terendah ?? '' }}<br> --}}
-                                                                        {!! $nilai->deskripsi_nilai ?? '' !!}
-                                                                    </td>
-                                                                </tr>
-                                                            @endif
-                                                        @endforeach
+                                                                    {!! $nilai->deskripsi_nilai ?? '' !!}
+                                                                </td>
+                                                            </tr>
+                                                        @endif
+                                                    @endforeach
 
-                                                        <tr>
-                                                            <td colspan='10'
-                                                                style='padding:4px 8px;font-size:14px;'>
-                                                                <strong>B. Kelompok Mata Pelajaran Kejuruan</strong>
-                                                            </td>
-                                                        </tr>
-                                                        @foreach ($dataNilai as $key => $nilai)
-                                                            @if (in_array($nilai->kelompok, ['B1', 'B2', 'B3', 'B4', 'B5']))
-                                                                <tr>
-                                                                    <td style='text-align:center;padding:4px 8px;font-size:12px;'
-                                                                        align='center'>{{ $loop->iteration }}</td>
-                                                                    <td style='padding:4px 8px;font-size:12px;'>
-                                                                        <strong>{{ $nilai->mata_pelajaran }}</strong><br>
-                                                                        {{ $nilai->gelardepan }}
-                                                                        {{ ucwords(strtolower($nilai->namalengkap)) }},
-                                                                        {{ $nilai->gelarbelakang }}
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        {{ round(((float) $nilai->rerata_formatif + (float) $nilai->rerata_sumatif) / 2) }}
-                                                                    </td>
-                                                                    <td
-                                                                        style='padding:4px 8px;font-size:12px;text-align:justify;'>
-                                                                        {{-- {{ $nilai->nilai_tertinggi ?? '' }}<br>
+                                                    <tr>
+                                                        <td colspan='10' style='padding:4px 8px;font-size:14px;'>
+                                                            <strong>B. Kelompok Mata Pelajaran Kejuruan</strong>
+                                                        </td>
+                                                    </tr>
+                                                    @foreach ($dataNilai as $key => $nilai)
+                                                        @if (in_array($nilai->kelompok, ['B1', 'B2', 'B3', 'B4', 'B5']))
+                                                            <tr>
+                                                                <td style='text-align:center;padding:4px 8px;font-size:12px;'
+                                                                    align='center'>{{ $loop->iteration }}</td>
+                                                                <td style='padding:4px 8px;font-size:12px;'>
+                                                                    <strong>{{ $nilai->mata_pelajaran }}</strong><br>
+                                                                    {{ $nilai->gelardepan }}
+                                                                    {{ ucwords(strtolower($nilai->namalengkap)) }},
+                                                                    {{ $nilai->gelarbelakang }}
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    {{ round(((float) $nilai->rerata_formatif + (float) $nilai->rerata_sumatif) / 2) }}
+                                                                </td>
+                                                                <td
+                                                                    style='padding:4px 8px;font-size:12px;text-align:justify;'>
+                                                                    {{-- {{ $nilai->nilai_tertinggi ?? '' }}<br>
                                                             {{ $nilai->nilai_terendah ?? '' }}<br> --}}
-                                                                        {!! $nilai->deskripsi_nilai ?? '' !!}
-                                                                    </td>
-                                                                </tr>
-                                                            @endif
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="4">
-                                                <span
-                                                    style='font:10px Times New Roman;'>{{ $dataSiswa->tahun_ajaran }}
-                                                    / {{ $angkaSemester }} - {!! strtoupper($dataSiswa->nama_lengkap) !!}
-                                                    [{!! $dataSiswa->nis !!}
-                                                    {!! $dataSiswa->nisn !!}]</span>
-                                                <br>
-                                                catatan : angka yang ada di kolom capaian kompetensi merupakan nomor
-                                                Tujuan
-                                                Pembelajaran
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-
-                    </div>
+                                                                    {!! $nilai->deskripsi_nilai ?? '' !!}
+                                                                </td>
+                                                            </tr>
+                                                        @endif
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">
+                                            <span style='font:10px Times New Roman;'>{{ $dataSiswa->tahun_ajaran }}
+                                                / {{ $angkaSemester }} - {!! strtoupper($dataSiswa->nama_lengkap) !!}
+                                                [{!! $dataSiswa->nis !!}
+                                                {!! $dataSiswa->nisn !!}]</span>
+                                            <br>
+                                            catatan : angka yang ada di kolom capaian kompetensi merupakan nomor
+                                            Tujuan
+                                            Pembelajaran
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
                 <p class="mt-4">&nbsp;</p>
                 <p class="mt-4">&nbsp;</p>
@@ -1352,333 +1330,329 @@
         <div class="message-list-content mx-n4 px-4 message-list-scroll">
             <div id="printable-area-lampiran">
                 <div id='cetak-keluar' style='@page {size: A4;}'>
-                    <div class='table-responsive'>
-                        <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;'>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td style='font-size:18px;text-align:center;'><strong>KETERANGAN PINDAH
-                                        SEKOLAH</strong>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td align='center' width='50%'>
-                                    <table align='center' width='90%'>
-                                        <tr>
-                                            <td>
-                                                <p>Nama Siswa : <strong>{!! strtoupper($dataSiswa->nama_lengkap) !!}</strong></p>
-                                                <table class='cetak-rapor'>
-                                                    <tr>
-                                                        <th colspan='4' style='text-align:center;padding:4px 4px;'>
-                                                            KELUAR
-                                                        </th>
-                                                    </tr>
-                                                    <tr>
-                                                        <th width='100' style='text-align:center;padding:4px 8px;'>
-                                                            <strong>Tanggal
-                                                        </th>
-                                                        <th style='text-align:center;padding:4px 8px;'>Kelas yang di
-                                                            tinggal
-                                                        </th>
-                                                        <th style='text-align:center;padding:4px 8px;'>Sebab-sebab
-                                                            Keluar
-                                                            atau
-                                                            Permintaan (tertulis)</th>
-                                                        <th width='25%' style='text-align:center;padding:4px 8px;'>
-                                                            Tanda
-                                                            Tangan
-                                                            Kepala Sekolah, Stempel Sekolah, dan Tanda Tangan Orang
-                                                            Tua/Wali</strong>
-                                                        </th>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='padding:4px 8px;'></td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                        <td style='padding:4px 8px;'>
-                                                            ..............................,
-                                                            ............................<br>
-                                                            Kepala Sekolah,
-                                                            <p>&nbsp;</p>
-                                                            <p>&nbsp;</p>
-                                                            .............................................................<br>
-                                                            NIP. ....................................................
-                                                            <hr>
-                                                            Orang Tua / Wali,
-                                                            <p>&nbsp;</p>
-                                                            <p>&nbsp;</p>
-                                                            .............................................................<br>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='padding:4px 8px;'></td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                        <td style='padding:4px 8px;'>
-                                                            ..............................,
-                                                            ............................<br>
-                                                            Kepala Sekolah,
-                                                            <p>&nbsp;</p>
-                                                            <p>&nbsp;</p>
-                                                            .............................................................<br>
-                                                            NIP. ....................................................
-                                                            <hr>
-                                                            Orang Tua / Wali,
-                                                            <p>&nbsp;</p>
-                                                            <p>&nbsp;</p>
-                                                            .............................................................<br>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='padding:4px 8px;'></td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                        <td style='padding:4px 8px;'>
-                                                            ..............................,
-                                                            ............................<br>
-                                                            Kepala Sekolah,
-                                                            <p>&nbsp;</p>
-                                                            <p>&nbsp;</p>
-                                                            .............................................................<br>
-                                                            NIP. ....................................................
-                                                            <hr>
-                                                            Orang Tua / Wali,
-                                                            <p>&nbsp;</p>
-                                                            <p>&nbsp;</p>
-                                                            .............................................................<br>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
+                    <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;'>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td style='font-size:18px;text-align:center;'><strong>KETERANGAN PINDAH
+                                    SEKOLAH</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td align='center' width='50%'>
+                                <table align='center' width='90%'>
+                                    <tr>
+                                        <td>
+                                            <p>Nama Siswa : <strong>{!! strtoupper($dataSiswa->nama_lengkap) !!}</strong></p>
+                                            <table class='cetak-rapor'>
+                                                <tr>
+                                                    <th colspan='4' style='text-align:center;padding:4px 4px;'>
+                                                        KELUAR
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th width='100' style='text-align:center;padding:4px 8px;'>
+                                                        <strong>Tanggal
+                                                    </th>
+                                                    <th style='text-align:center;padding:4px 8px;'>Kelas yang di
+                                                        tinggal
+                                                    </th>
+                                                    <th style='text-align:center;padding:4px 8px;'>Sebab-sebab
+                                                        Keluar
+                                                        atau
+                                                        Permintaan (tertulis)</th>
+                                                    <th width='25%' style='text-align:center;padding:4px 8px;'>
+                                                        Tanda
+                                                        Tangan
+                                                        Kepala Sekolah, Stempel Sekolah, dan Tanda Tangan Orang
+                                                        Tua/Wali</strong>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <td style='padding:4px 8px;'></td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                    <td style='padding:4px 8px;'>
+                                                        ..............................,
+                                                        ............................<br>
+                                                        Kepala Sekolah,
+                                                        <p>&nbsp;</p>
+                                                        <p>&nbsp;</p>
+                                                        .............................................................<br>
+                                                        NIP. ....................................................
+                                                        <hr>
+                                                        Orang Tua / Wali,
+                                                        <p>&nbsp;</p>
+                                                        <p>&nbsp;</p>
+                                                        .............................................................<br>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='padding:4px 8px;'></td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                    <td style='padding:4px 8px;'>
+                                                        ..............................,
+                                                        ............................<br>
+                                                        Kepala Sekolah,
+                                                        <p>&nbsp;</p>
+                                                        <p>&nbsp;</p>
+                                                        .............................................................<br>
+                                                        NIP. ....................................................
+                                                        <hr>
+                                                        Orang Tua / Wali,
+                                                        <p>&nbsp;</p>
+                                                        <p>&nbsp;</p>
+                                                        .............................................................<br>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='padding:4px 8px;'></td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                    <td style='padding:4px 8px;'>
+                                                        ..............................,
+                                                        ............................<br>
+                                                        Kepala Sekolah,
+                                                        <p>&nbsp;</p>
+                                                        <p>&nbsp;</p>
+                                                        .............................................................<br>
+                                                        NIP. ....................................................
+                                                        <hr>
+                                                        Orang Tua / Wali,
+                                                        <p>&nbsp;</p>
+                                                        <p>&nbsp;</p>
+                                                        .............................................................<br>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
                 <p class="mt-4">&nbsp;</p>
                 <div id='cetak-masuk' style='@page {size: A4;} page-break-before: always;'>
-                    <div class='table-responsive'>
-                        <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;'>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td style='font-size:18px;text-align:center;'><strong>KETERANGAN PINDAH
-                                        SEKOLAH</strong>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td align='center' width='50%'>
-                                    <table align='center' width='90%'>
-                                        <tr>
-                                            <td>
-                                                <p>Nama Siswa : <strong>{!! strtoupper($dataSiswa->nama_lengkap) !!}</strong></p>
-                                                <table class='cetak-rapor'>
-                                                    <tr>
-                                                        <th style='text-align:center;padding:4px 8px;'><strong>NO.</th>
-                                                        <th colspan='3' style='text-align:center;padding:4px 8px;'>
-                                                            MASUK</strong>
-                                                        </th>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'>1.</td>
-                                                        <td width='25%' style='padding:4px 8px;'>Nama Siswa</td>
-                                                        <td width='45%' style='padding:4px 8px;'></td>
-                                                        <td rowspan='7' style='padding:4px 8px;' valign='top'>
-                                                            ..............................,
-                                                            ............................<br>
-                                                            Kepala Sekolah,
-                                                            <p>&nbsp;</p>
-                                                            <p>&nbsp;</p>
-                                                            .............................................................<br>
-                                                            NIP. ....................................................
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'>2.</td>
-                                                        <td style='padding:4px 8px;'>Nomor Induk</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'>3.</td>
-                                                        <td style='padding:4px 8px;'>Nama Sekolah</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'>4.</td>
-                                                        <td style='padding:4px 8px;'>Masuk di Sekolah ini</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'></td>
-                                                        <td style='padding:4px 8px;'>a. Tanggal</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'></td>
-                                                        <td style='padding:4px 8px;'>b. Di Kelas</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'>5.</td>
-                                                        <td style='padding:4px 8px;'>Tahun Pelajaran</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'>1.</td>
-                                                        <td style='padding:4px 8px;'>Nama Siswa</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                        <td rowspan='7' style='padding:4px 8px;' valign='top'>
-                                                            ..............................,
-                                                            ............................<br>
-                                                            Kepala Sekolah,
-                                                            <p>&nbsp;</p>
-                                                            <p>&nbsp;</p>
-                                                            .............................................................<br>
-                                                            NIP. ....................................................
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'>2.</td>
-                                                        <td style='padding:4px 8px;'>Nomor Induk</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'>3.</td>
-                                                        <td style='padding:4px 8px;'>Nama Sekolah</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'>4.</td>
-                                                        <td style='padding:4px 8px;'>Masuk di Sekolah ini</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'></td>
-                                                        <td style='padding:4px 8px;'>a. Tanggal</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'></td>
-                                                        <td style='padding:4px 8px;'>b. Di Kelas</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'>5.</td>
-                                                        <td style='padding:4px 8px;'>Tahun Pelajaran</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'>1.</td>
-                                                        <td style='padding:4px 8px;'>Nama Siswa</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                        <td rowspan='7' style='padding:4px 8px;' valign='top'>
-                                                            ..............................,
-                                                            ............................<br>
-                                                            Kepala Sekolah,
-                                                            <p>&nbsp;</p>
-                                                            <p>&nbsp;</p>
-                                                            .............................................................<br>
-                                                            NIP. ....................................................
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'>2.</td>
-                                                        <td style='padding:4px 8px;'>Nomor Induk</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'>3.</td>
-                                                        <td style='padding:4px 8px;'>Nama Sekolah</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'>4.</td>
-                                                        <td style='padding:4px 8px;'>Masuk di Sekolah ini</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'></td>
-                                                        <td style='padding:4px 8px;'>a. Tanggal</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'></td>
-                                                        <td style='padding:4px 8px;'>b. Di Kelas</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'>5.</td>
-                                                        <td style='padding:4px 8px;'>Tahun Pelajaran</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'>1.</td>
-                                                        <td style='padding:4px 8px;'>Nama Siswa</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                        <td rowspan='7' style='padding:4px 8px;' valign='top'>
-                                                            ..............................,
-                                                            ............................<br>
-                                                            Kepala Sekolah,
-                                                            <p>&nbsp;</p>
-                                                            <p>&nbsp;</p>
-                                                            .............................................................<br>
-                                                            NIP. ....................................................
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'>2.</td>
-                                                        <td style='padding:4px 8px;'>Nomor Induk</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'>3.</td>
-                                                        <td style='padding:4px 8px;'>Nama Sekolah</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'>4.</td>
-                                                        <td style='padding:4px 8px;'>Masuk di Sekolah ini</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'></td>
-                                                        <td style='padding:4px 8px;'>a. Tanggal</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'></td>
-                                                        <td style='padding:4px 8px;'>b. Di Kelas</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style='text-align:center;padding:4px 8px;'>5.</td>
-                                                        <td style='padding:4px 8px;'>Tahun Pelajaran</td>
-                                                        <td style='padding:4px 8px;'></td>
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
+                    <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;'>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td style='font-size:18px;text-align:center;'><strong>KETERANGAN PINDAH
+                                    SEKOLAH</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td align='center' width='50%'>
+                                <table align='center' width='90%'>
+                                    <tr>
+                                        <td>
+                                            <p>Nama Siswa : <strong>{!! strtoupper($dataSiswa->nama_lengkap) !!}</strong></p>
+                                            <table class='cetak-rapor'>
+                                                <tr>
+                                                    <th style='text-align:center;padding:4px 8px;'><strong>NO.</th>
+                                                    <th colspan='3' style='text-align:center;padding:4px 8px;'>
+                                                        MASUK</strong>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'>1.</td>
+                                                    <td width='25%' style='padding:4px 8px;'>Nama Siswa</td>
+                                                    <td width='45%' style='padding:4px 8px;'></td>
+                                                    <td rowspan='7' style='padding:4px 8px;' valign='top'>
+                                                        ..............................,
+                                                        ............................<br>
+                                                        Kepala Sekolah,
+                                                        <p>&nbsp;</p>
+                                                        <p>&nbsp;</p>
+                                                        .............................................................<br>
+                                                        NIP. ....................................................
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'>2.</td>
+                                                    <td style='padding:4px 8px;'>Nomor Induk</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'>3.</td>
+                                                    <td style='padding:4px 8px;'>Nama Sekolah</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'>4.</td>
+                                                    <td style='padding:4px 8px;'>Masuk di Sekolah ini</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'></td>
+                                                    <td style='padding:4px 8px;'>a. Tanggal</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'></td>
+                                                    <td style='padding:4px 8px;'>b. Di Kelas</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'>5.</td>
+                                                    <td style='padding:4px 8px;'>Tahun Pelajaran</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'>1.</td>
+                                                    <td style='padding:4px 8px;'>Nama Siswa</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                    <td rowspan='7' style='padding:4px 8px;' valign='top'>
+                                                        ..............................,
+                                                        ............................<br>
+                                                        Kepala Sekolah,
+                                                        <p>&nbsp;</p>
+                                                        <p>&nbsp;</p>
+                                                        .............................................................<br>
+                                                        NIP. ....................................................
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'>2.</td>
+                                                    <td style='padding:4px 8px;'>Nomor Induk</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'>3.</td>
+                                                    <td style='padding:4px 8px;'>Nama Sekolah</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'>4.</td>
+                                                    <td style='padding:4px 8px;'>Masuk di Sekolah ini</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'></td>
+                                                    <td style='padding:4px 8px;'>a. Tanggal</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'></td>
+                                                    <td style='padding:4px 8px;'>b. Di Kelas</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'>5.</td>
+                                                    <td style='padding:4px 8px;'>Tahun Pelajaran</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'>1.</td>
+                                                    <td style='padding:4px 8px;'>Nama Siswa</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                    <td rowspan='7' style='padding:4px 8px;' valign='top'>
+                                                        ..............................,
+                                                        ............................<br>
+                                                        Kepala Sekolah,
+                                                        <p>&nbsp;</p>
+                                                        <p>&nbsp;</p>
+                                                        .............................................................<br>
+                                                        NIP. ....................................................
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'>2.</td>
+                                                    <td style='padding:4px 8px;'>Nomor Induk</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'>3.</td>
+                                                    <td style='padding:4px 8px;'>Nama Sekolah</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'>4.</td>
+                                                    <td style='padding:4px 8px;'>Masuk di Sekolah ini</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'></td>
+                                                    <td style='padding:4px 8px;'>a. Tanggal</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'></td>
+                                                    <td style='padding:4px 8px;'>b. Di Kelas</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'>5.</td>
+                                                    <td style='padding:4px 8px;'>Tahun Pelajaran</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'>1.</td>
+                                                    <td style='padding:4px 8px;'>Nama Siswa</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                    <td rowspan='7' style='padding:4px 8px;' valign='top'>
+                                                        ..............................,
+                                                        ............................<br>
+                                                        Kepala Sekolah,
+                                                        <p>&nbsp;</p>
+                                                        <p>&nbsp;</p>
+                                                        .............................................................<br>
+                                                        NIP. ....................................................
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'>2.</td>
+                                                    <td style='padding:4px 8px;'>Nomor Induk</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'>3.</td>
+                                                    <td style='padding:4px 8px;'>Nama Sekolah</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'>4.</td>
+                                                    <td style='padding:4px 8px;'>Masuk di Sekolah ini</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'></td>
+                                                    <td style='padding:4px 8px;'>a. Tanggal</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'></td>
+                                                    <td style='padding:4px 8px;'>b. Di Kelas</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align:center;padding:4px 8px;'>5.</td>
+                                                    <td style='padding:4px 8px;'>Tahun Pelajaran</td>
+                                                    <td style='padding:4px 8px;'></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
                 <p class="mt-4">&nbsp;</p>
                 <div id='cetak-prestasi' style='@page {size: A4;} page-break-before: always;'>
