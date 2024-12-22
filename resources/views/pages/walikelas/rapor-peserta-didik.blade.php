@@ -68,14 +68,15 @@
         <div class="file-manager-sidebar">
             <div class="p-4 d-flex flex-column h-100">
                 <div class="card-body text-center">
-                    <div class="position-relative d-inline-block">
-                        <img src="https://smkn1kadipaten.sch.id/build/images/users/avatar-10.jpg" alt=""
+                    <div class="position-relative d-inline-block" id="foto-siswa-container">
+                        <img id="foto-siswa" src="/build/images/users/avatar-10.jpg" alt=""
                             class="avatar-lg rounded-circle img-thumbnail">
-                        <span class="contact-active position-absolute rounded-circle bg-success"><span
-                                class="visually-hidden"></span>
+                        <span class="contact-active position-absolute rounded-circle bg-success">
+                            <span class="visually-hidden"></span>
+                        </span>
                     </div>
-                    <h5 class="mt-4 mb-1">Tonya Noble</h5>
-                    <p class="text-muted">Nesta Technologies</p>
+                    <h5 class="mt-4 mb-1" id='nama-siswa'> </h5>
+                    <p class="text-muted" id='nis-siswa'> </p>
                 </div>
                 <div class="mb-3 mt-4">
                     Pilih Peserta Didik {{ $waliKelas->rombel }}
@@ -188,6 +189,31 @@
             $('.pilih-siswa').removeClass('bg-danger-subtle').addClass('bg-info-subtle'); // Reset semua
             $(this).closest('.row').find('.pilih-siswa').removeClass('bg-info-subtle').addClass(
                 'bg-danger-subtle'); // Highlight yang dipilih
+
+            // AJAX request
+            $.ajax({
+                url: "/walikelas/rapor-peserta-didik/detail-peserta-didik/" + nis,
+                method: "GET",
+                success: function(response) {
+                    // Perbarui nama dan NIS di halaman
+                    $('#nama-siswa').text(response.nama_lengkap);
+                    $('#nis-siswa').text(response.nis);
+
+                    // Perbarui foto siswa
+                    if (response.foto) {
+                        $('#foto-siswa').attr('src', '/images/peserta_didik/' + response.foto);
+                    } else {
+                        $('#foto-siswa').attr('src',
+                            '/build/images/users/avatar-10.jpg'); // Default jika foto tidak ada
+                    }
+                },
+                error: function(xhr) {
+                    $('#nama-siswa').text("Siswa tidak ditemukan.");
+                    $('#nis-siswa').text("");
+                    $('#foto-siswa').attr('src',
+                        '/build/images/users/avatar-10.jpg'); // Kembali ke default
+                }
+            });
 
             // AJAX request
             $.ajax({
