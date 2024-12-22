@@ -525,6 +525,66 @@
             var chart = new ApexCharts(document.querySelector("#custom_datalabels_bar_tingkat_tahunajaran"), options);
             chart.render();
         }
+
+        var linechartrealtimeColors = getChartColorsArray("login_chart_realtime");
+        if (linechartrealtimeColors) {
+
+            const chartData = @json($chartData);
+
+            var options = {
+                series: [{
+                    data: chartData
+                }],
+                chart: {
+                    id: 'realtime',
+                    height: 350,
+                    type: 'line',
+                    animations: {
+                        enabled: true,
+                        easing: 'linear',
+                        dynamicAnimation: {
+                            speed: 1000
+                        }
+                    },
+                    toolbar: {
+                        show: false
+                    },
+                    zoom: {
+                        enabled: false
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'smooth'
+                },
+                title: {
+                    text: 'Dynamic Updating Chart',
+                    align: 'left',
+                    style: {
+                        fontWeight: 500,
+                    },
+                },
+                markers: {
+                    size: 0
+                },
+                colors: linechartrealtimeColors,
+                xaxis: {
+                    type: 'datetime',
+                    range: 28 * 24 * 60 * 60 * 1000,
+                },
+                yaxis: {
+                    max: Math.max(...chartData.map(d => d.y)) + 10 // Y-axis menyesuaikan
+                },
+                legend: {
+                    show: false
+                },
+            };
+
+            var charts = new ApexCharts(document.querySelector("#login_chart_realtime"), options);
+            charts.render();
+        }
     </script>
     <script src="{{ URL::asset('build/libs/swiper/swiper-bundle.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/glightbox/js/glightbox.min.js') }}"></script>

@@ -200,38 +200,53 @@ class WelcomeController extends Controller
             ->select('login_count')
             ->sum('login_count');
 
+
+        $loginsPerDay = DB::table('login_records')
+            ->select(DB::raw('DATE(login_at) as date'), DB::raw('COUNT(*) as count'))
+            ->groupBy('date')
+            ->orderBy('date', 'asc')
+            ->get();
+
+        $data = $loginsPerDay->map(function ($item) {
+            return [
+                'x' => $item->date, // Tanggal dalam format datetime
+                'y' => $item->count // Jumlah login
+            ];
+        });
+
         return view(
             'welcome',
-            compact(
-                'photoSlides',
-                'teamPengembang',
-                'dataPersonil',
-                'totalGuruLakiLaki',
-                'totalGuruPerempuan',
-                'totalTataUsahaLakiLaki',
-                'totalTataUsahaPerempuan',
-                'dataUsia',
-                'totalPersonil',
-                'thnajaranMasuk',
-                'dataByKodeKK',
-                'pesertaDidikCategories',
-                'pesertaDidikSeries',
-                'activeUsers',
-                'userLoginHariini',
-                'loginTodayCount',
-                'totalLogin',
-                'categoryGalery',
-                'galleries',
-                'tahunAjaran',
-                'semester',
-                'jumlahSiswaPerKK',
-                'totalSiswaPerKK',
-                'jumlahPersonil',
-                'jumlahPD',
-                'jumlahKelas',
-                'loginCount',
-                'activeUsersCount',
-            )
+            [
+                'photoSlides' => $photoSlides,
+                'teamPengembang' => $teamPengembang,
+                'dataPersonil' => $dataPersonil,
+                'totalGuruLakiLaki' => $totalGuruLakiLaki,
+                'totalGuruPerempuan' => $totalGuruPerempuan,
+                'totalTataUsahaLakiLaki' => $totalTataUsahaLakiLaki,
+                'totalTataUsahaPerempuan' => $totalTataUsahaPerempuan,
+                'dataUsia' => $dataUsia,
+                'totalPersonil' => $totalPersonil,
+                'thnajaranMasuk' => $thnajaranMasuk,
+                'dataByKodeKK' => $dataByKodeKK,
+                'pesertaDidikCategories' => $pesertaDidikCategories,
+                'pesertaDidikSeries' => $pesertaDidikSeries,
+                'activeUsers' => $activeUsers,
+                'userLoginHariini' => $userLoginHariini,
+                'loginTodayCount' => $loginTodayCount,
+                'totalLogin' => $totalLogin,
+                'categoryGalery' => $categoryGalery,
+                'galleries' => $galleries,
+                'tahunAjaran' => $tahunAjaran,
+                'semester' => $semester,
+                'jumlahSiswaPerKK' => $jumlahSiswaPerKK,
+                'totalSiswaPerKK' => $totalSiswaPerKK,
+                'jumlahPersonil' => $jumlahPersonil,
+                'jumlahPD' => $jumlahPD,
+                'jumlahKelas' => $jumlahKelas,
+                'loginCount' => $loginCount,
+                'activeUsersCount' => $activeUsersCount,
+                'chartData' => $data, // Tambahkan di sini
+            ]
         );
     }
 }
