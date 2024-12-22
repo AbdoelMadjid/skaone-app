@@ -174,7 +174,11 @@
                     </ul>
                     <div class="px-4 mx-n4" data-simplebar style="height: calc(110vh - 356px);">
                         <div class="table-responsive" id="siswa-detail">
-                            silakan pilih peserta didik
+                            <div class="alert alert-primary alert-dismissible alert-label-icon rounded-label fade show"
+                                role="alert">
+                                <i class="ri-user-smile-line label-icon"></i><strong>Mohon di perhatikan !!</strong> -
+                                Silakan pilih peserta didik dulu
+                            </div>
                         </div>
                     </div>
                 </div>
