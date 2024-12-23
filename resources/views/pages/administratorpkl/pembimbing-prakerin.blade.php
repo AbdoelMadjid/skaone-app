@@ -32,6 +32,32 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    {{-- <h1>Daftar Pembimbing dan Siswa</h1>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Pembimbing</th>
+                                <th>Daftar Siswa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php $no = 1; @endphp
+                            @foreach ($groupedData as $id_personil => $rows)
+                                <tr>
+                                    <td>{{ $no++ }}</td>
+                                    <td>{{ $rows->first()->guru }}</td>
+                                    <td>
+                                        <ul>
+                                            @foreach ($rows as $row)
+                                                <li>{{ $row->siswa }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table> --}}
                     {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
                 </div>
             </div>

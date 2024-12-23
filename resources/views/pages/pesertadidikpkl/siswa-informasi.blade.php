@@ -51,7 +51,7 @@
                     <div class="card overflow-hidden">
                         <div class="card-body bg-marketplace d-flex">
                             <div class="flex-grow-1">
-                                <h4 class="fs-18 lh-base mb-3">Pembimbing : </h4>
+                                <h4 class="fs-18 lh-base mb-3">Guru PKL : </h4>
                                 <h4 class="fs-22 fw-semibold ff-secondary mb-0">
                                     @if ($data->isNotEmpty())
                                         @foreach ($data as $item)

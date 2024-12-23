@@ -5,8 +5,11 @@ namespace App\DataTables\AdministratorPkl;
 use App\Models\AdministratorPkl\PembimbingPrakerin;
 use App\Models\AdministratorPkl\PenempatanPrakerin;
 use App\Models\ManajemenSekolah\PersonilSekolah;
+use App\Models\User;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -26,32 +29,73 @@ class PembimbingPrakerinDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('namalengkap', function ($row) {
-                // Ambil data namalengkap dari tabel personil_sekolahs berdasarkan id_personil
-                $personil = PersonilSekolah::where('id_personil', $row->id_personil)->first();
-                return $personil ? $personil->namalengkap : '-'; // Mengembalikan namalengkap jika ditemukan, atau '-' jika tidak ditemukan
+            ->addColumn('guru', function ($row) {
+                return $row->guru; // Nama pembimbing
             })
-            ->addColumn('peserta_info', function ($row) {
-                // Ambil data berdasarkan id_penempatan yang ada di baris
-                $penempatanPrakerin = PenempatanPrakerin::join('peserta_didiks', 'penempatan_prakerins.nis', '=', 'peserta_didiks.nis')
+            ->addColumn('siswa', function ($row) {
+                // Ambil data siswa berdasarkan id_personil
+                $penempatans = DB::table('pembimbing_prakerins')
+                    ->join('penempatan_prakerins', 'pembimbing_prakerins.id_penempatan', '=', 'penempatan_prakerins.id')
+                    ->join('peserta_didiks', 'penempatan_prakerins.nis', '=', 'peserta_didiks.nis')
                     ->join('peserta_didik_rombels', 'penempatan_prakerins.nis', '=', 'peserta_didik_rombels.nis')
                     ->join('perusahaans', 'penempatan_prakerins.id_dudi', '=', 'perusahaans.id')
-                    ->where('penempatan_prakerins.id', $row->id_penempatan)
-                    ->select('penempatan_prakerins.nis', 'peserta_didiks.nama_lengkap', 'peserta_didik_rombels.rombel_nama', 'perusahaans.nama')
-                    ->first();
+                    ->where('pembimbing_prakerins.id_personil', $row->id_personil)
+                    ->get([
+                        'penempatan_prakerins.nis',
+                        'peserta_didiks.nama_lengkap',
+                        'peserta_didik_rombels.rombel_nama',
+                        'penempatan_prakerins.kode_kk',
+                        'perusahaans.nama',
+                        'penempatan_prakerins.id'
+                    ]);
 
-                // Jika data ditemukan, kembalikan format yang diinginkan
-                if ($penempatanPrakerin) {
-                    return $penempatanPrakerin->nis . ' - ' . $penempatanPrakerin->nama_lengkap . ' (' . $penempatanPrakerin->rombel_nama . ') - ' . $penempatanPrakerin->nama;
+                // Jika tidak ada data siswa, kembalikan teks default
+                if ($penempatans->isEmpty()) {
+                    return 'Siswa belum ada yang ditempatkan';
                 }
 
-                return '-'; // Jika tidak ditemukan
+                // Bangun daftar siswa dalam format <ul><li>
+                $nisList = '<ul>';
+                foreach ($penempatans as $penempatan) {
+                    $deleteButton = '';
+                    $user = User::find(Auth::user()->id);
+
+                    // Tampilkan tombol delete hanya untuk role tertentu
+                    if ($user->hasAnyRole(['master', 'kaproditkj', 'kaprodirpl', 'kaprodibd', 'kaprodimp', 'kaprodiak'])) {
+                        $deleteButton = "<button class='btn btn-soft-danger btn-sm delete-siswa'
+                data-id='{$penempatan->id}'
+                onclick='confirmDelete({$penempatan->id})'><i
+                    class='ri-delete-bin-2-line'></i></button>";
+                    }
+
+                    // Tentukan warna badge berdasarkan kode_kk
+                    $badgetype = match ($penempatan->kode_kk) {
+                        '421' => 'warning',
+                        '411' => 'danger',
+                        '811' => 'info',
+                        '821' => 'success',
+                        '833' => 'secondary',
+                        default => 'primary',
+                    };
+
+                    $nisList .= "<li>
+                        {$penempatan->nis} -
+                        {$penempatan->nama_lengkap} -
+                        <span class='badge bg-$badgetype'>{$penempatan->rombel_nama}</span>
+                        {$penempatan->nama} -
+                        $deleteButton
+                    </li>";
+                }
+                $nisList .= '</ul>';
+
+                return $nisList;
             })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
                 return view('action', compact('actions'));
             })
+            ->rawColumns(['siswa', 'action'])
             ->addIndexColumn();
     }
 
@@ -60,7 +104,11 @@ class PembimbingPrakerinDataTable extends DataTable
      */
     public function query(PembimbingPrakerin $model): QueryBuilder
     {
-        return $model->newQuery()->orderBy('id_personil', 'asc');
+        return $model->newQuery()
+            ->join('personil_sekolahs', 'pembimbing_prakerins.id_personil', '=', 'personil_sekolahs.id_personil')
+            ->select('pembimbing_prakerins.id_personil', 'personil_sekolahs.namalengkap as guru')
+            ->distinct() // Pastikan hanya satu entri per guru
+            ->orderBy('personil_sekolahs.namalengkap');
     }
 
     /**
@@ -92,13 +140,13 @@ class PembimbingPrakerinDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
-            Column::make('namalengkap')->title('Pembimbing'),
-            Column::make('peserta_info')->title('Penempatan'),
-            Column::computed('action')
+            Column::make('guru')->title('Pembimbing'),
+            Column::make('siswa')->title('Daftar Siswa')
+            /* Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
                 ->width(60)
-                ->addClass('text-center'),
+                ->addClass('text-center'), */
         ];
     }
 
