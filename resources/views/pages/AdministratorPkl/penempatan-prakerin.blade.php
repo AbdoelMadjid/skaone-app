@@ -27,7 +27,7 @@
                                 href="{{ route('administratorpkl.penempatan-prakerin.create') }}">Add</a>
                         @endcan --}}
                         <a class="btn btn-primary action"
-                            href="{{ route('administratorpkl.penempatan-prakerin.create') }}">Penempatan Siswa</a>
+                            href="{{ route('administratorpkl.penempatan-prakerin.create') }}">Penempatan Peeserta</a>
                     </div>
                 </div>
                 <div class="card-body">

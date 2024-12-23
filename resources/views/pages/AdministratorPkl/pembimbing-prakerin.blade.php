@@ -28,7 +28,7 @@
                         @endcan --}}
 
                         <a class="btn btn-primary action"
-                            href="{{ route('administratorpkl.pembimbing-prakerin.create') }}">Tambah Pembimbing</a>
+                            href="{{ route('administratorpkl.pembimbing-prakerin.create') }}">Tambah Guru PKL</a>
                     </div>
                 </div>
                 <div class="card-body">
