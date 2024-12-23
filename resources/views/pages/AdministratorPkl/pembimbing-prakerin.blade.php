@@ -22,10 +22,12 @@
                 <div class="card-header d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @yield('title')</h5>
                     <div>
-                        @can('create administratorpkl/pembimbing-prakerin')
+                        {{--  @can('create administratorpkl/pembimbing-prakerin')
                             <a class="btn btn-primary action"
                                 href="{{ route('administratorpkl.pembimbing-prakerin.create') }}">Add</a>
-                        @endcan
+                        @endcan --}}
+                        <a class="btn btn-primary action"
+                            href="{{ route('administratorpkl.pembimbing-prakerin.create') }}">Add</a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -49,7 +51,7 @@
 @section('script-bottom')
     <script>
         const datatable = 'pembimbingprakerin-table';
-        
+
         handleDataTableEvents(datatable);
         handleAction(datatable, function(res) {
             select2Init();
