@@ -40,7 +40,7 @@ class PenempatanPrakerinDataTable extends DataTable
                     return 'Siswa belum ada yang ditempatkan';
                 }
 
-                $nisList = '<ul>';
+                $nisList = '<ol>';
                 foreach ($penempatans as $penempatan) {
                     $deleteButton = '';
                     $user = User::find(Auth::user()->id);
@@ -66,7 +66,7 @@ class PenempatanPrakerinDataTable extends DataTable
                         $deleteButton
                     </li>";
                 }
-                $nisList .= '</ul>';
+                $nisList .= '</ol>';
 
                 return $nisList;
             })
