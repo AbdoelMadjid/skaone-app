@@ -100,6 +100,10 @@ class AbsensiBimbinganDataTable extends DataTable
                 Button::make('print'),
                 Button::make('reset'),
                 Button::make('reload')
+            ])->parameters([
+                'lengthChange' => false, // Menghilangkan dropdown "Show entries"
+                'searching' => false,    // Menghilangkan kotak pencarian
+                'pageLength' => 36,       // Menampilkan 50 baris per halaman
             ]);
     }
 
