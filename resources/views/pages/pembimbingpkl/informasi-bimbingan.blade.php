@@ -141,7 +141,7 @@
                                                 @foreach ($siswa->jurnal_per_elemen as $jurnal)
                                                     <div
                                                         class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                                                        <p class="fw-medium fs-11 mb-0"><i
+                                                        <p class="fw-medium fs-10 mb-0"><i
                                                                 class="ri-checkbox-blank-circle-fill text-success align-middle me-2"></i>
                                                             <strong>{{ $jurnal['element'] }}</strong>
                                                         </p>
