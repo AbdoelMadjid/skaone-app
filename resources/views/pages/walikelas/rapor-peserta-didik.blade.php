@@ -238,9 +238,9 @@
             var nis = $(this).data('nis');
 
             // Ubah background elemen yang dipilih
-            $('.pilih-siswa').removeClass('bg-danger-subtle').addClass('bg-info-subtle'); // Reset semua
+            $('.pilih-siswa').removeClass('bg-info').addClass('bg-info-subtle'); // Reset semua
             $(this).closest('.row').find('.pilih-siswa').removeClass('bg-info-subtle').addClass(
-                'bg-danger-subtle'); // Highlight yang dipilih
+                'bg-info'); // Highlight yang dipilih
 
             // AJAX request
             $.ajax({
