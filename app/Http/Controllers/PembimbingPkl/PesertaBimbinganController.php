@@ -17,7 +17,7 @@ class PesertaBimbinganController extends Controller
     public function index(PesertaTerbimbingDataTable $pesertaTerbimbingDataTable)
     {
         // Mengambil id_personil dari user yang sedang login
-        return $pesertaTerbimbingDataTable->render("pages.PembimbingPkl.peserta-prakerin");
+        return $pesertaTerbimbingDataTable->render("pages.pembimbingpkl.peserta-prakerin");
     }
 
     /**
