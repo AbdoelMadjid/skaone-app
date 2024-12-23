@@ -123,7 +123,7 @@
 
                 <div class="col-auto order-2 order-sm-3 ms-auto">
                     <div class="hstack gap-2">
-                        <ul class="nav nav-pills card-header-pills" role="tablist">
+                        <ul class="nav nav-pills card-header-pills nav-info bg-light" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" data-bs-toggle="tab" href="#nilai" role="tab">
                                     Rapor
@@ -145,7 +145,7 @@
             </div>
             <div class="tab-content">
                 <div class="tab-pane active" id="nilai" role="tabpanel">
-                    <ul class="nav nav-tabs nav-tabs-custom nav-success nav-justified mb-3" role="tablist">
+                    <ul class="nav nav-tabs nav-tabs-custom nav-info nav-justified mb-3" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" data-bs-toggle="tab" href="#cover" role="tab">
                                 Cover
