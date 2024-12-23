@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::group(['prefix' => 'kaprodipkl', 'as' => 'kaprodipkl.'], function () {
+        Route::resource('pembimbing-prakerin', PembimbingPrakerinController::class);
         Route::resource('peserta-prakerin', PesertaPrakerinController::class);
         Route::resource('penempatan-prakerin', PenempatanPrakerinController::class);
         Route::resource('modul-ajar', ModulAjarController::class);

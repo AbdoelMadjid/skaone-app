@@ -27,6 +27,7 @@ class PembimbingPrakerinController extends Controller
     {
         $existingPembimbingPrakerinIds = PembimbingPrakerin::pluck('id_penempatan')->toArray();
 
+
         $pesertaPrakerinOptions = PenempatanPrakerin::join('peserta_didiks', 'penempatan_prakerins.nis', '=', 'peserta_didiks.nis')
             ->join('peserta_didik_rombels', 'penempatan_prakerins.nis', '=', 'peserta_didik_rombels.nis')
             ->join('perusahaans', 'penempatan_prakerins.id_dudi', '=', 'perusahaans.id')

@@ -55,6 +55,9 @@ class MenuPklSeeder extends Seeder
         $sm = $mm->subMenus()->create(['name' => 'Peserta Prakerin', 'url' => $mm->url . '/peserta-prakerin', 'category' => $mm->category]);
         $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['kaprodiak', 'kaprodibd', 'kaprodimp', 'kaprodirpl', 'kaproditkj']);
 
+        $sm = $mm->subMenus()->create(['name' => 'Pembimbing', 'url' => $mm->url . '/pembimbing-prakerin', 'category' => $mm->category]);
+        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['kaprodiak', 'kaprodibd', 'kaprodimp', 'kaprodirpl', 'kaproditkj']);
+
         $sm = $mm->subMenus()->create(['name' => 'Penempatan', 'url' => $mm->url . '/penempatan-prakerin', 'category' => $mm->category]);
         $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['kaprodiak', 'kaprodibd', 'kaprodimp', 'kaprodirpl', 'kaproditkj']);
 
