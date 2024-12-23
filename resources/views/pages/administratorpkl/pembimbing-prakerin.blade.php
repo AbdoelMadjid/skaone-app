@@ -32,32 +32,6 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    {{-- <h1>Daftar Pembimbing dan Siswa</h1>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Pembimbing</th>
-                                <th>Daftar Siswa</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php $no = 1; @endphp
-                            @foreach ($groupedData as $id_personil => $rows)
-                                <tr>
-                                    <td>{{ $no++ }}</td>
-                                    <td>{{ $rows->first()->guru }}</td>
-                                    <td>
-                                        <ul>
-                                            @foreach ($rows as $row)
-                                                <li>{{ $row->siswa }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table> --}}
                     {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
                 </div>
             </div>
@@ -78,6 +52,40 @@
 @section('script-bottom')
     <script>
         const datatable = 'pembimbingprakerin-table';
+
+        function confirmDelete(id) {
+            // Use SweetAlert for confirmation
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Anda tidak akan bisa mengembalikan ini!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Send AJAX request to delete the student
+                    $.ajax({
+                        url: '{{ route('administratorpkl.pembimbing-prakerin.destroy', '') }}/' +
+                            id, // Adjust the URL
+                        type: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}' // Include CSRF token
+                        },
+                        success: function(response) {
+                            showToast('success', 'Siswa berhasil dihapus!'); // Notify success
+                            $('#pembimbingprakerin-table').DataTable().ajax
+                                .reload(); // Reload the datatable
+                        },
+                        error: function(xhr) {
+                            console.error(xhr.responseText);
+                            showToast('error', 'Gagal menghapus siswa.'); // Notify error
+                        }
+                    });
+                }
+            });
+        }
 
         handleDataTableEvents(datatable);
         handleAction(datatable, function(res) {

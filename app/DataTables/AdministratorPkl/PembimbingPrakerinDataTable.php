@@ -32,6 +32,16 @@ class PembimbingPrakerinDataTable extends DataTable
             ->addColumn('guru', function ($row) {
                 return $row->guru; // Nama pembimbing
             })
+            ->addColumn('jumlah_siswa', function ($row) {
+                // Hitung jumlah siswa berdasarkan id_personil
+                $jumlahSiswa = DB::table('pembimbing_prakerins')
+                    ->join('penempatan_prakerins', 'pembimbing_prakerins.id_penempatan', '=', 'penempatan_prakerins.id')
+                    ->join('peserta_didiks', 'penempatan_prakerins.nis', '=', 'peserta_didiks.nis')
+                    ->where('pembimbing_prakerins.id_personil', $row->id_personil)
+                    ->count();
+
+                return $jumlahSiswa; // Mengembalikan jumlah siswa
+            })
             ->addColumn('siswa', function ($row) {
                 // Ambil data siswa berdasarkan id_personil
                 $penempatans = DB::table('pembimbing_prakerins')
@@ -46,7 +56,9 @@ class PembimbingPrakerinDataTable extends DataTable
                         'peserta_didik_rombels.rombel_nama',
                         'penempatan_prakerins.kode_kk',
                         'perusahaans.nama',
-                        'penempatan_prakerins.id'
+                        'pembimbing_prakerins.id',
+                        'perusahaans.id as idpersh',
+                        'penempatan_prakerins.id as idpenemp'
                     ]);
 
                 // Jika tidak ada data siswa, kembalikan teks default
@@ -79,11 +91,13 @@ class PembimbingPrakerinDataTable extends DataTable
                     };
 
                     $nisList .= "<li>
-                        {$penempatan->nis} -
-                        {$penempatan->nama_lengkap} -
+                        [{$penempatan->idpenemp}-{$penempatan->id}] {$penempatan->nis} -
+                        <strong><span class='text-$badgetype'>{$penempatan->nama_lengkap}</span></strong> -
                         <span class='badge bg-$badgetype'>{$penempatan->rombel_nama}</span>
-                        {$penempatan->nama} -
                         $deleteButton
+                        <br>
+                        {$penempatan->idpersh} -
+                        {$penempatan->nama}
                     </li>";
                 }
                 $nisList .= '</ul>';
@@ -108,7 +122,7 @@ class PembimbingPrakerinDataTable extends DataTable
             ->join('personil_sekolahs', 'pembimbing_prakerins.id_personil', '=', 'personil_sekolahs.id_personil')
             ->select('pembimbing_prakerins.id_personil', 'personil_sekolahs.namalengkap as guru')
             ->distinct() // Pastikan hanya satu entri per guru
-            ->orderBy('personil_sekolahs.namalengkap');
+            ->orderBy('pembimbing_prakerins.id_personil');
     }
 
     /**
@@ -141,6 +155,7 @@ class PembimbingPrakerinDataTable extends DataTable
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('guru')->title('Pembimbing'),
+            Column::make('jumlah_siswa')->title('Jumlah Siswa')->addClass('text-center'),
             Column::make('siswa')->title('Daftar Siswa')
             /* Column::computed('action')
                 ->exportable(false)
