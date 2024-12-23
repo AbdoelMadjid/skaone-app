@@ -3,6 +3,7 @@
     @lang('translation.cetak-rapor')
 @endsection
 @section('css')
+    <link href="{{ URL::asset('build/libs/dragula/dragula.min.css') }}" rel="stylesheet" type="text/css" />
     <style>
         .cetak-rapor {
             border-collapse: collapse;
@@ -188,7 +189,7 @@
                         </div>
                     </div>
                     <div class="px-4 mx-n4" data-simplebar style="height: calc(110vh - 356px);">
-                        <div class="table-responsive" id="siswa-detail">
+                        <div id="siswa-detail">
                             <div class="alert alert-primary alert-dismissible alert-label-icon rounded-label fade show mt-4"
                                 role="alert">
                                 <i class="ri-user-smile-line label-icon"></i><strong>Mohon di perhatikan !!</strong> -
@@ -207,8 +208,33 @@
 @endsection
 @section('script')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/dragula/dragula.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/dom-autoscroller/dom-autoscroller.min.js') }}"></script>
+
+    <script src="{{ URL::asset('build/js/pages/todo.init.js') }}"></script>
 @endsection
 @section('script-bottom')
+    <script>
+        var isShowMenu = false;
+        var emailMenuSidebar = document.getElementsByClassName('file-manager-sidebar');
+        Array.from(document.querySelectorAll(".file-menu-btn")).forEach(function(item) {
+            item.addEventListener("click", function() {
+                Array.from(emailMenuSidebar).forEach(function(elm) {
+                    elm.classList.add("menubar-show");
+                    isShowMenu = true;
+                });
+            });
+        });
+
+        window.addEventListener('click', function(e) {
+            if (document.querySelector(".file-manager-sidebar").classList.contains('menubar-show')) {
+                if (!isShowMenu) {
+                    document.querySelector(".file-manager-sidebar").classList.remove("menubar-show");
+                }
+                isShowMenu = false;
+            }
+        });
+    </script>
     <script>
         @if (session('toast_success'))
             showToast('success', '{{ session('toast_success') }}');

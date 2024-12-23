@@ -212,6 +212,27 @@
     <script src="{{ URL::asset('build/libs/dragula/dragula.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/dom-autoscroller/dom-autoscroller.min.js') }}"></script>
     <script>
+        var isShowMenu = false;
+        var emailMenuSidebar = document.getElementsByClassName('file-manager-sidebar');
+        Array.from(document.querySelectorAll(".file-menu-btn")).forEach(function(item) {
+            item.addEventListener("click", function() {
+                Array.from(emailMenuSidebar).forEach(function(elm) {
+                    elm.classList.add("menubar-show");
+                    isShowMenu = true;
+                });
+            });
+        });
+
+        window.addEventListener('click', function(e) {
+            if (document.querySelector(".file-manager-sidebar").classList.contains('menubar-show')) {
+                if (!isShowMenu) {
+                    document.querySelector(".file-manager-sidebar").classList.remove("menubar-show");
+                }
+                isShowMenu = false;
+            }
+        });
+    </script>
+    <script>
         $(document).on('click', '.detail-link', function(e) {
             e.preventDefault(); // Mencegah reload halaman
             var nis = $(this).data('nis');
