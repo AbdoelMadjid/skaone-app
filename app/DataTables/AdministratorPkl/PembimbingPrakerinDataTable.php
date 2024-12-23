@@ -67,7 +67,7 @@ class PembimbingPrakerinDataTable extends DataTable
                 }
 
                 // Bangun daftar siswa dalam format <ul><li>
-                $nisList = '<ul>';
+                $nisList = '<ol>';
                 foreach ($penempatans as $penempatan) {
                     $deleteButton = '';
                     $user = User::find(Auth::user()->id);
@@ -75,9 +75,9 @@ class PembimbingPrakerinDataTable extends DataTable
                     // Tampilkan tombol delete hanya untuk role tertentu
                     if ($user->hasAnyRole(['master', 'kaproditkj', 'kaprodirpl', 'kaprodibd', 'kaprodimp', 'kaprodiak'])) {
                         $deleteButton = "<button class='btn btn-soft-danger btn-sm delete-siswa'
-                data-id='{$penempatan->id}'
-                onclick='confirmDelete({$penempatan->id})'><i
-                    class='ri-delete-bin-2-line'></i></button>";
+                        data-id='{$penempatan->id}'
+                        onclick='confirmDelete({$penempatan->id})'><i
+                        class='ri-delete-bin-2-line'></i></button>";
                     }
 
                     // Tentukan warna badge berdasarkan kode_kk
@@ -91,16 +91,15 @@ class PembimbingPrakerinDataTable extends DataTable
                     };
 
                     $nisList .= "<li>
-                        [{$penempatan->idpenemp}-{$penempatan->id}] {$penempatan->nis} -
+                        [{$penempatan->id}-{$penempatan->idpenemp}] {$penempatan->nis} -
                         <strong><span class='text-$badgetype'>{$penempatan->nama_lengkap}</span></strong> -
                         <span class='badge bg-$badgetype'>{$penempatan->rombel_nama}</span>
                         $deleteButton
                         <br>
-                        {$penempatan->idpersh} -
-                        {$penempatan->nama}
+                        <i class='text-muted'>({$penempatan->idpersh}) {$penempatan->nama}</i>
                     </li>";
                 }
-                $nisList .= '</ul>';
+                $nisList .= '</ol>';
 
                 return $nisList;
             })
