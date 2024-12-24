@@ -9,6 +9,8 @@ use App\Http\Requests\AdministratorPkl\PembimbingPrakerinRequest;
 use App\Models\AdministratorPkl\PenempatanPrakerin;
 use App\Models\ManajemenSekolah\PersonilSekolah;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Dompdf\Dompdf;
 use Illuminate\Support\Facades\DB;
 
 class PembimbingPrakerinController extends Controller
@@ -18,6 +20,9 @@ class PembimbingPrakerinController extends Controller
      */
     public function index(PembimbingPrakerinDataTable $pembimbingPrakerinDataTable)
     {
+
+
+
         return $pembimbingPrakerinDataTable->render('pages.administratorpkl.pembimbing-prakerin');
     }
 
@@ -126,5 +131,41 @@ class PembimbingPrakerinController extends Controller
         $pembimbingPrakerin->delete();
 
         return responseSuccessDelete();
+    }
+
+    public function downloadPDF()
+    {
+        // Query data pembimbing dan siswa
+        $data = DB::table('pembimbing_prakerins')
+            ->join('personil_sekolahs', 'pembimbing_prakerins.id_personil', '=', 'personil_sekolahs.id_personil')
+            ->join('penempatan_prakerins', 'pembimbing_prakerins.id_penempatan', '=', 'penempatan_prakerins.id')
+            ->join('peserta_didik_rombels', 'penempatan_prakerins.nis', '=', 'peserta_didik_rombels.nis')
+            ->join('perusahaans', 'penempatan_prakerins.id_dudi', '=', 'perusahaans.id')
+            ->join('peserta_didiks', 'penempatan_prakerins.nis', '=', 'peserta_didiks.nis')
+            ->select(
+                'personil_sekolahs.namalengkap as guru',
+                'peserta_didiks.nama_lengkap as siswa',
+                'peserta_didiks.nis',
+                'peserta_didik_rombels.rombel_nama',
+                'perusahaans.nama as nama_perusahaan',
+                'pembimbing_prakerins.id_personil'
+            )
+            ->orderBy('pembimbing_prakerins.id_personil')
+            ->get();
+
+        // Kelompokkan siswa berdasarkan pembimbing
+        $groupedData = $data->groupBy('id_personil');
+
+        // Load view PDF
+        $html = view('pages.administratorpkl.pembimbing-prakerin-pdf', compact('groupedData'))->render();
+
+        // Generate PDF
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        // Download file
+        return $dompdf->stream("Daftar Guru PKL 2024-2025.pdf");
     }
 }

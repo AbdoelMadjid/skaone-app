@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/simpanpesertaprakerin', [PesertaPrakerinController::class, 'simpanPesertaPrakerin'])->name('simpanPesertaPrakerin');
         Route::resource('penempatan-prakerin', PenempatanPrakerinController::class);
         Route::resource('pembimbing-prakerin', PembimbingPrakerinController::class);
+        Route::get('/downloadpembprakerin', [PembimbingPrakerinController::class, 'downloadPDF'])->name('downloadpembprakerin');
         Route::resource('informasi-prakerin', InformasiAdministratorController::class);
     });
 

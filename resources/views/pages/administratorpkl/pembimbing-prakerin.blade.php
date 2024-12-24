@@ -26,8 +26,9 @@
                             <a class="btn btn-primary action"
                                 href="{{ route('administratorpkl.pembimbing-prakerin.create') }}">Add</a>
                         @endcan --}}
-
-                        <a class="btn btn-primary action"
+                        <a href="{{ route('administratorpkl.downloadpembprakerin') }}" class="btn btn-soft-info">Download
+                            PDF</a>
+                        <a class="btn btn-soft-primary action"
                             href="{{ route('administratorpkl.pembimbing-prakerin.create') }}">Tambah Guru PKL</a>
                     </div>
                 </div>
