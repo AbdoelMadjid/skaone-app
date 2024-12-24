@@ -48,6 +48,8 @@ class MonitoringPrakerinDataTable extends DataTable
     {
 
         $query = $model->newQuery();
+        // Ambil id_personil dari user yang sedang login
+        $idPersonil = auth()->user()->personal_id;
 
         $query->select(
             'monitoring_prakerins.*',
@@ -55,7 +57,8 @@ class MonitoringPrakerinDataTable extends DataTable
             'personil_sekolahs.namalengkap as pembimbing_namalengkap'
         )
             ->join('perusahaans', 'monitoring_prakerins.id_perusahaan', '=', 'perusahaans.id')
-            ->join('personil_sekolahs', 'monitoring_prakerins.id_personil', '=', 'personil_sekolahs.id_personil');
+            ->join('personil_sekolahs', 'monitoring_prakerins.id_personil', '=', 'personil_sekolahs.id_personil')
+            ->where('monitoring_prakerins.id_personil', $idPersonil);
 
         return $query;
     }
