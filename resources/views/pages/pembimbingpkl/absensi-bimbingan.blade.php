@@ -20,10 +20,10 @@
                 <div class="card-header d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @yield('title')</h5>
                     <div>
-                        @can('create pembimbingpkl/absensi-bimbingan')
+                        {{-- @can('create pembimbingpkl/absensi-bimbingan')
                             <a class="btn btn-primary action" href="{{ route('pembimbingpkl.absensi-bimbingan.create') }}">Tambah
                                 Absensi</a>
-                        @endcan
+                        @endcan --}}
                     </div>
                 </div>
                 <div class="row">
@@ -219,8 +219,8 @@
                                                                                 </tr>
                                                                             @empty
                                                                                 <tr>
-                                                                                    <td colspan="2"
-                                                                                        class="text-center">Tidak ada
+                                                                                    <td colspan="2" class="text-center">
+                                                                                        Tidak ada
                                                                                         riwayat absensi.</td>
                                                                                 </tr>
                                                                             @endforelse
