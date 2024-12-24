@@ -80,7 +80,8 @@
                                                                             {!! $siswa->nama_lengkap !!}
                                                                         </h5>
                                                                         <p class="text-muted fs-13 mb-3">
-                                                                            {{ $siswa->rombel_nama }}</p>
+                                                                            {{ $siswa->nis }} - {{ $siswa->rombel_nama }}
+                                                                        </p>
                                                                         <h5 class="fs-17 mt-3 mb-2">
                                                                             {!! $siswa->nama !!}
                                                                         </h5>
@@ -158,12 +159,9 @@
                                                                     <div class="card">
                                                                         <div class="card-header">Tambah Absensi</div>
                                                                         <div class="card-body">
+                                                                            <input type="text" name="nis"
+                                                                                value="{{ $siswa->nis }}">
                                                                             <div class="row mt-3">
-                                                                                <div class="col-md-12">
-                                                                                    <input type="hidden" name="nis"
-                                                                                        id="nis"
-                                                                                        value="{{ $siswa->nis }}">
-                                                                                </div>
                                                                                 <div class="col-md-4">
                                                                                     <x-form.input type="date"
                                                                                         name="tanggal"

@@ -7,6 +7,7 @@ use App\Models\PembimbingPkl\AbsensiPembimbingPkl;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PembimbingPkl\AbsensiPembimbingPklRequest;
 use App\Models\PesertaDidikPkl\AbsensiSiswaPkl;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -207,14 +208,22 @@ class AbsensiPembimbingPklController extends Controller
     }
 
     // Fungsi untuk menyimpan absensi
-    public function simpanAbsensi(AbsensiPembimbingPklRequest $request)
+    public function simpanAbsensi(Request $request)
     {
-        // Menyimpan data absensi siswa
-        $absensiPembimbingPkl = new AbsensiSiswaPkl();
-        $absensiPembimbingPkl->nis = $request->nis;
-        $absensiPembimbingPkl->tanggal = $request->tanggal;
-        $absensiPembimbingPkl->status = $request->status;
-        $absensiPembimbingPkl->save();
+        // Validasi data yang diterima
+        // Validasi data yang diterima
+        $validated = $request->validate([
+            'nis' => 'required|string',
+            'tanggal' => 'required|date',
+            'status' => 'required|in:HADIR,SAKIT,IZIN,ALFA',
+        ]);
+
+        // Simpan data menggunakan create()
+        AbsensiSiswaPkl::create([
+            'nis' => $validated['nis'],
+            'tanggal' => $validated['tanggal'],
+            'status' => $validated['status'],
+        ]);
 
         // Setelah berhasil disimpan, kembalikan respons sukses
         return redirect()->back()->with('success', 'Absensi berhasil disimpan');
