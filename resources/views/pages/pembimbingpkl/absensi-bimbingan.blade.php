@@ -30,7 +30,7 @@
                     <div class="col-xl-12">
                         <div class="card">
                             <div class="card-body form-steps">
-                                <form class="vertical-navs-step">
+                                <div class="vertical-navs-step">
                                     <div class="row gy-5">
                                         <div class="col-lg-4">
                                             <div class="nav flex-column custom-nav nav-pills" role="tablist"
@@ -50,7 +50,6 @@
                                                     </button>
                                                 @endforeach
                                             </div>
-                                            <!-- end nav -->
                                         </div> <!-- end col-->
                                         <div class="col-lg-8">
                                             <div class="tab-content">
@@ -103,7 +102,6 @@
                                                                                         <strong>HADIR:</strong>
                                                                                     </p>
                                                                                     <div>
-
                                                                                         <span
                                                                                             class="text-success fw-medium fs-12">{{ $siswa->jumlah_hadir }}
                                                                                             Hari</span>
@@ -116,7 +114,6 @@
                                                                                         <strong>SAKIT:</strong>
                                                                                     </p>
                                                                                     <div>
-
                                                                                         <span
                                                                                             class="text-success fw-medium fs-12">{{ $siswa->jumlah_sakit }}
                                                                                             Hari</span>
@@ -129,7 +126,6 @@
                                                                                         <strong>IZIN:</strong>
                                                                                     </p>
                                                                                     <div>
-
                                                                                         <span
                                                                                             class="text-success fw-medium fs-12">{{ $siswa->jumlah_izin }}
                                                                                             Hari</span>
@@ -142,7 +138,6 @@
                                                                                         <strong>ALFA:</strong>
                                                                                     </p>
                                                                                     <div>
-
                                                                                         <span
                                                                                             class="text-success fw-medium fs-12">{{ $siswa->jumlah_alfa }}
                                                                                             Hari</span>
@@ -159,7 +154,7 @@
                                                                     <div class="card">
                                                                         <div class="card-header">Tambah Absensi</div>
                                                                         <div class="card-body">
-                                                                            <input type="text" name="nis"
+                                                                            <input type="hidden" name="nis"
                                                                                 value="{{ $siswa->nis }}">
                                                                             <div class="row mt-3">
                                                                                 <div class="col-md-4">
@@ -192,7 +187,7 @@
                                                             @php
                                                                 $riwayat_absensi = DB::table('absensi_siswa_pkls')
                                                                     ->select('nis', 'tanggal', 'status')
-                                                                    ->where('nis', $siswa->nis) // Mengambil riwayat absensi berdasarkan nis siswa
+                                                                    ->where('nis', $siswa->nis)
                                                                     ->orderBy('tanggal', 'desc')
                                                                     ->get();
                                                             @endphp
@@ -201,8 +196,7 @@
                                                                     class="d-flex justify-content-between align-items-center mb-3">
                                                                     <h5 class="fs-14 text-primary mb-0"><i
                                                                             class="ri-calendar-fill align-middle me-2"></i>
-                                                                        Riwayat Absen
-                                                                    </h5>
+                                                                        Riwayat Absen</h5>
                                                                     <span
                                                                         class="badge bg-danger rounded-pill">{{ $siswa->jumlah_hadir }}</span>
                                                                 </div>
@@ -215,7 +209,6 @@
                                                                                 <th>Status</th>
                                                                             </tr>
                                                                         </thead>
-
                                                                         <tbody>
                                                                             @forelse ($riwayat_absensi as $absensi)
                                                                                 <tr>
@@ -227,9 +220,8 @@
                                                                             @empty
                                                                                 <tr>
                                                                                     <td colspan="2"
-                                                                                        class="text-center">
-                                                                                        Tidak ada riwayat absensi.
-                                                                                    </td>
+                                                                                        class="text-center">Tidak ada
+                                                                                        riwayat absensi.</td>
                                                                                 </tr>
                                                                             @endforelse
                                                                         </tbody>
@@ -242,23 +234,21 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <!-- end col -->
                             </div>
-                            <!-- end col -->
+                            <!-- end row -->
                         </div>
-                        <!-- end row -->
-                        </form>
                     </div>
                 </div>
                 <!-- end -->
+                <div class="card-body">
+                    {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+                </div>
             </div>
             <!-- end col -->
+
         </div>
-        <div class="card-body">
-            {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
-        </div>
-    </div>
-    </div>
-    <!--end col-->
     </div>
 @endsection
 @section('script')
