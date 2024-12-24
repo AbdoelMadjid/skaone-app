@@ -205,4 +205,18 @@ class AbsensiPembimbingPklController extends Controller
     {
         //
     }
+
+    // Fungsi untuk menyimpan absensi
+    public function simpanAbsensi(AbsensiPembimbingPklRequest $request)
+    {
+        // Menyimpan data absensi siswa
+        $absensiPembimbingPkl = new AbsensiSiswaPkl();
+        $absensiPembimbingPkl->nis = $request->nis;
+        $absensiPembimbingPkl->tanggal = $request->tanggal;
+        $absensiPembimbingPkl->status = $request->status;
+        $absensiPembimbingPkl->save();
+
+        // Setelah berhasil disimpan, kembalikan respons sukses
+        return redirect()->back()->with('success', 'Absensi berhasil disimpan');
+    }
 }

@@ -56,6 +56,9 @@ Route::middleware('auth')->group(function () {
         Route::resource('peserta-prakerin', PesertaBimbinganController::class);
         Route::resource('validasi-jurnal', ValidasiJurnalController::class);
         Route::resource('absensi-bimbingan', AbsensiPembimbingPklController::class);
+        // web.php
+        Route::post('/absensi-bimbingan/simpanabsensi', [AbsensiPembimbingPklController::class, 'simpanAbsensi'])->name('absensi-bimbingan.simpanabsensi');
+
         Route::resource('penilaian-bimbingan', PenilaianBimbinganController::class);
         Route::resource('monitoring-prakerin', MonitoringPrakerinController::class);
         Route::resource('pesan-prakerin', PesanPrakerinController::class);
