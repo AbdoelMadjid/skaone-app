@@ -58,6 +58,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('absensi-bimbingan', AbsensiPembimbingPklController::class);
         // web.php
         Route::post('/absensi-bimbingan/simpanabsensi', [AbsensiPembimbingPklController::class, 'simpanAbsensi'])->name('absensi-bimbingan.simpanabsensi');
+        Route::delete('/absensi-bimbingan/deleteabsensi/{id}', [AbsensiPembimbingPklController::class, 'destroy'])->name('absensi-bimbingan.deleteabsensi');
+        Route::put('/absensi-bimbingan/{absensi}', [AbsensiPembimbingPklController::class, 'update'])->name('absensi-bimbingan.update');
 
         Route::resource('penilaian-bimbingan', PenilaianBimbinganController::class);
         Route::resource('monitoring-prakerin', MonitoringPrakerinController::class);

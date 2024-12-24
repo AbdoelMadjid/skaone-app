@@ -194,17 +194,29 @@ class AbsensiPembimbingPklController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(AbsensiPembimbingPklRequest $request, AbsensiPembimbingPkl $absensiPembimbingPkl)
+    public function update(Request $request, $id)
     {
-        //
+        $absensi = AbsensiSiswaPkl::findOrFail($id);
+        $absensi->status = $request->status;
+        $absensi->save();
+
+        return redirect()->back()->with('toast_success', 'Status absensi berhasil diperbarui');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(AbsensiPembimbingPkl $absensiPembimbingPkl)
+    public function destroy($id)
     {
-        //
+        // Hapus data absensi berdasarkan ID
+        $absensi = DB::table('absensi_siswa_pkls')->where('id', $id)->first();
+
+        if ($absensi) {
+            DB::table('absensi_siswa_pkls')->where('id', $id)->delete();
+            return redirect()->back()->with('toast_success', 'Riwayat absensi berhasil dihapus!');
+        } else {
+            return redirect()->back()->with('error', 'Data tidak ditemukan.');
+        }
     }
 
     // Fungsi untuk menyimpan absensi
@@ -226,6 +238,6 @@ class AbsensiPembimbingPklController extends Controller
         ]);
 
         // Setelah berhasil disimpan, kembalikan respons sukses
-        return redirect()->back()->with('success', 'Absensi berhasil disimpan');
+        return redirect()->back()->with('toast_success', 'Absensi berhasil disimpan');
     }
 }

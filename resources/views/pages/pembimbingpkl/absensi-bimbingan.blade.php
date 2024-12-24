@@ -32,7 +32,7 @@
                             <div class="card-body form-steps">
                                 <div class="vertical-navs-step">
                                     <div class="row gy-5">
-                                        <div class="col-lg-4">
+                                        <div class="col-lg-3">
                                             <div class="nav flex-column custom-nav nav-pills" role="tablist"
                                                 aria-orientation="vertical">
                                                 @foreach ($data as $index => $siswa)
@@ -51,7 +51,7 @@
                                                 @endforeach
                                             </div>
                                         </div> <!-- end col-->
-                                        <div class="col-lg-8">
+                                        <div class="col-lg-9">
                                             <div class="tab-content">
                                                 @foreach ($data as $index => $siswa)
                                                     <div class="tab-pane fade {{ $index === 0 ? 'show active' : '' }}"
@@ -59,7 +59,7 @@
                                                         aria-labelledby="v-pills-bill-{!! $siswa->nis !!}-tab">
 
                                                         <div class="row">
-                                                            <div class="col-md-8">
+                                                            <div class="col-md-7">
                                                                 <div class="card text-center">
                                                                     <div class="card-body p-4 bg-info-subtle">
                                                                         @if ($siswa->foto == 'siswacowok.png')
@@ -186,12 +186,12 @@
                                                             </div>
                                                             @php
                                                                 $riwayat_absensi = DB::table('absensi_siswa_pkls')
-                                                                    ->select('nis', 'tanggal', 'status')
+                                                                    ->select('id', 'nis', 'tanggal', 'status')
                                                                     ->where('nis', $siswa->nis)
                                                                     ->orderBy('tanggal', 'asc')
                                                                     ->get();
                                                             @endphp
-                                                            <div class="col-md-4">
+                                                            <div class="col-md-5">
                                                                 <div
                                                                     class="d-flex justify-content-between align-items-center mb-3">
                                                                     <h5 class="fs-14 text-primary mb-0"><i
@@ -205,21 +205,50 @@
                                                                     <table class="table table-bordered">
                                                                         <thead>
                                                                             <tr>
+                                                                                <th>ID</th>
                                                                                 <th>Tanggal</th>
                                                                                 <th>Status</th>
+                                                                                <th>Action</th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
                                                                             @forelse ($riwayat_absensi as $absensi)
                                                                                 <tr>
+                                                                                    <td>{{ $absensi->id }}
+                                                                                    </td>
                                                                                     <td>{{ \Carbon\Carbon::parse($absensi->tanggal)->format('d-m-Y') }}
                                                                                     </td>
                                                                                     <td>{{ ucfirst(strtolower($absensi->status)) }}
                                                                                     </td>
+                                                                                    <td class='text-center'>
+                                                                                        <button
+                                                                                            class="btn btn-soft-warning btn-sm"
+                                                                                            data-bs-toggle="modal"
+                                                                                            data-bs-target="#editModal"
+                                                                                            data-id="{{ $absensi->id }}"
+                                                                                            data-status="{{ $absensi->status }}">
+                                                                                            <i class='ri-edit-2-line'></i>
+                                                                                        </button>
+                                                                                        <!-- Tombol delete -->
+                                                                                        <form
+                                                                                            action="{{ route('pembimbingpkl.absensi-bimbingan.deleteabsensi', $absensi->id) }}"
+                                                                                            method="POST"
+                                                                                            style="display:inline;">
+                                                                                            @csrf
+                                                                                            @method('DELETE')
+                                                                                            <button type="submit"
+                                                                                                class="btn btn-soft-danger btn-sm delete-btn">
+                                                                                                <i
+                                                                                                    class='ri-delete-bin-2-line'></i>
+                                                                                            </button>
+                                                                                        </form>
+
+                                                                                    </td>
                                                                                 </tr>
                                                                             @empty
                                                                                 <tr>
-                                                                                    <td colspan="2" class="text-center">
+                                                                                    <td colspan="2"
+                                                                                        class="text-center">
                                                                                         Tidak ada
                                                                                         riwayat absensi.</td>
                                                                                 </tr>
@@ -250,6 +279,36 @@
 
         </div>
     </div>
+    <!-- Modal untuk Edit Status -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Status Absensi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('pembimbingpkl.absensi-bimbingan.update', ['absensi' => 'absensiId']) }}"
+                    method="POST" id="editAbsensiForm">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body">
+                        <label for="status" class="form-label">Status Kehadiran</label>
+                        <select class="form-select mb-3" name="status" aria-label="Default select example">
+                            <option selected>Pilih Status Kehadiran</option>
+                            <option value="HADIR">HADIR</option>
+                            <option value="SAKIT">SAKIT</option>
+                            <option value="IZIN">IZIN</option>
+                            <option value="ALFA">ALFA</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('script')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
@@ -263,6 +322,11 @@
 @section('script-bottom')
     <script>
         const datatable = 'absensibimbingan-table';
+
+        @if (session('toast_success'))
+            showToast('success', '{{ session('toast_success') }}');
+        @endif
+
         // Simpan tab yang aktif ke localStorage saat diklik
         function setActiveTab(nis) {
             localStorage.setItem('activeTab', nis);
@@ -278,6 +342,50 @@
                     tab.show();
                 }
             }
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Menambahkan event listener pada tombol Edit
+            const editButtons = document.querySelectorAll('[data-bs-toggle="modal"]');
+
+            editButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Ambil data dari tombol yang diklik
+                    const absensiId = this.getAttribute('data-id');
+                    const status = this.getAttribute('data-status');
+
+                    // Ganti URL form action dengan absensi ID yang sesuai
+                    const formAction = document.getElementById('editAbsensiForm');
+                    formAction.action = formAction.action.replace('absensiId', absensiId);
+
+                    // Set status pada select di dalam modal
+                    const statusSelect = document.getElementById('status');
+                    statusSelect.value = status; // Sesuaikan dengan status yang ada di tombol
+                });
+            });
+        });
+
+        document.querySelectorAll('.delete-btn').forEach(function(button) {
+            button.addEventListener('click', function(e) {
+                e.preventDefault(); // Mencegah form dikirim langsung
+
+                // Menampilkan SweetAlert2 confirmation dialog
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Anda tidak akan bisa mengembalikan ini!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Jika diklik "Ya, hapus", kirimkan form
+                        this.closest('form').submit();
+                    }
+                });
+            });
         });
         handleDataTableEvents(datatable);
         handleAction(datatable)
