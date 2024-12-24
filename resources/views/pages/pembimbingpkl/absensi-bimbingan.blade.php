@@ -188,7 +188,7 @@
                                                                 $riwayat_absensi = DB::table('absensi_siswa_pkls')
                                                                     ->select('nis', 'tanggal', 'status')
                                                                     ->where('nis', $siswa->nis)
-                                                                    ->orderBy('tanggal', 'desc')
+                                                                    ->orderBy('tanggal', 'asc')
                                                                     ->get();
                                                             @endphp
                                                             <div class="col-md-4">
