@@ -75,8 +75,7 @@
                         },
                         success: function(response) {
                             showToast('success', 'Siswa berhasil dihapus!'); // Notify success
-                            $('#pembimbingprakerin-table').DataTable().ajax
-                                .reload(); // Reload the datatable
+                            $('#pembimbingprakerin-table').DataTable().ajax.reload(null, false);
                         },
                         error: function(xhr) {
                             console.error(xhr.responseText);
