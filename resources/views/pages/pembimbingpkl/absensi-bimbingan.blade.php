@@ -32,7 +32,7 @@
                             <div class="card-body form-steps">
                                 <form class="vertical-navs-step">
                                     <div class="row gy-5">
-                                        <div class="col-lg-3">
+                                        <div class="col-lg-4">
                                             <div class="nav flex-column custom-nav nav-pills" role="tablist"
                                                 aria-orientation="vertical">
                                                 @foreach ($data as $index => $siswa)
@@ -52,7 +52,7 @@
                                             </div>
                                             <!-- end nav -->
                                         </div> <!-- end col-->
-                                        <div class="col-lg-9">
+                                        <div class="col-lg-8">
                                             <div class="tab-content">
                                                 @foreach ($data as $index => $siswa)
                                                     <div class="tab-pane fade {{ $index === 0 ? 'show active' : '' }}"
