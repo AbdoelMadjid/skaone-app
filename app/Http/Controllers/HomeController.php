@@ -103,6 +103,14 @@ class HomeController extends Controller
             ];
         });
 
+        $mesharini = Carbon::today()->toDateString();
+        $message = DB::table('daily_messages')->where('date', $mesharini)->value('message');
+
+        // Jika pesan tidak ditemukan, gunakan pesan default
+        if (!$message) {
+            $message = 'Start your day with gratitude and watch how it transforms.';
+        }
+
         return view('dashboard', [
             'activeUsers' => $activeUsers,
             'activeUsersCount' => $activeUsersCount,
@@ -122,6 +130,7 @@ class HomeController extends Controller
             'ulangTahun' => $ulangTahun,
             // Semua variabel lainnya
             'chartData' => $data, // Tambahkan di sini
+            'message' => $message, // Tambahkan di sini
         ]);
     }
 
