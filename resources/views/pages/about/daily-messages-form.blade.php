@@ -1,4 +1,4 @@
-<x-form.modal size="lg" title="{{ __('translation.daily-messages') }}" action="{{ $action ?? null }}">
+<x-form.modal size="sm" title="{{ __('translation.daily-messages') }}" action="{{ $action ?? null }}">
     @if ($data->id)
         @method('put')
     @endif
