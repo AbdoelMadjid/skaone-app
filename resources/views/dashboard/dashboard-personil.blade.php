@@ -2,7 +2,7 @@
     <div class="col-lg-12">
         <div class="card overflow-hidden shadow-none">
             <div class="card-body bg-primary text-white fw-semibold d-flex">
-                <marquee class="fs-14">
+                <marquee class="fs-14" onmouseover="this.stop();" onmouseout="this.start();">
                     {{ $message }}
                 </marquee>
             </div>
