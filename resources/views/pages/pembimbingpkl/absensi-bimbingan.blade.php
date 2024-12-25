@@ -226,7 +226,7 @@
                                                                                         @endphp
 
                                                                                         <span
-                                                                                            class="{{ $dayOfWeek == 6 || $dayOfWeek == 0 ? 'text-danger' : '' }}">
+                                                                                            class="{{ $dayOfWeek == 0 ? 'text-danger' : ($dayOfWeek == 6 ? 'text-primary' : '') }}">
                                                                                             {{ $formattedDate }}
                                                                                         </span>
                                                                                     </td>
