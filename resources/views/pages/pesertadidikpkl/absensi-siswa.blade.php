@@ -254,6 +254,11 @@
                                 otherButton.disabled = true; // Nonaktifkan tombol lain
                             }
                         });
+
+                        // Reload halaman setelah absensi berhasil
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000); // Tambahkan sedikit jeda agar notifikasi terlihat
                     })
                     .catch(error => {
                         console.error('Error:', error);
