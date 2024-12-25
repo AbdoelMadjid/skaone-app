@@ -49,7 +49,7 @@ class PesanPesertaPrakerinDataTable extends DataTable
                         $statusbaca = "<i class='ri-check-double-fill text-info fs-3'></i>";
                     }
                     $pesanTabel .= '<tr>';
-                    $pesanTabel .= '<td>' . $item->created_at->translatedFormat('l, d F Y') . '<br>"<i class="text-info">' . htmlspecialchars($item->message) . '</i>"</td>';
+                    $pesanTabel .= '<td>' . $item->created_at->translatedFormat('l, d F Y') . '<br><i class="text-info">"' . htmlspecialchars($item->message) . '"</i></td>';
                     $pesanTabel .= '<td>' . $statusbaca . ' </td>';
                     $pesanTabel .= '</tr>';
                 }
@@ -80,7 +80,7 @@ class PesanPesertaPrakerinDataTable extends DataTable
                         $pesanTabel .= '<a href="#" class="baca-pesan" data-id="' . $item->id . '" data-message="' . htmlspecialchars($item->message) . '"><span class="badge bg-info">Baca Pesan</span></a>';
                     } else {
                         // Tampilkan isi pesan jika sudah dibaca
-                        $pesanTabel .= '"<i class="text-info">' . htmlspecialchars($item->message) . '</i>"';
+                        $pesanTabel .= '<i class="text-info">"' . htmlspecialchars($item->message) . '"</i>';
                     }
 
                     $pesanTabel .= '</td>';
