@@ -49,8 +49,7 @@ class PesanPesertaPrakerinDataTable extends DataTable
                         $statusbaca = "<i class='ri-check-double-fill text-info fs-3'></i>";
                     }
                     $pesanTabel .= '<tr>';
-                    $pesanTabel .= '<td width="125">' . $item->created_at->format('d-m-Y H:i') . '</td>';
-                    $pesanTabel .= '<td>' . htmlspecialchars($item->message) . '</td>';
+                    $pesanTabel .= '<td>' . $item->created_at->translatedFormat('l, d F Y') . '<br>"<i class="text-info">' . htmlspecialchars($item->message) . '</i>"</td>';
                     $pesanTabel .= '<td>' . $statusbaca . ' </td>';
                     $pesanTabel .= '</tr>';
                 }
@@ -74,15 +73,14 @@ class PesanPesertaPrakerinDataTable extends DataTable
 
                 foreach ($isipesans as $item) {
                     $pesanTabel .= '<tr>';
-                    $pesanTabel .= '<td width="125">' . $item->created_at->format('d-m-Y H:i') . '</td>';
-                    $pesanTabel .= '<td>';
+                    $pesanTabel .= '<td width="125">' . $item->created_at->translatedFormat('l, d F Y') . '<br>';
 
                     if ($item->read_status === "BELUM") {
                         // Tampilkan link jika pesan belum dibaca
                         $pesanTabel .= '<a href="#" class="baca-pesan" data-id="' . $item->id . '" data-message="' . htmlspecialchars($item->message) . '"><span class="badge bg-info">Baca Pesan</span></a>';
                     } else {
                         // Tampilkan isi pesan jika sudah dibaca
-                        $pesanTabel .= htmlspecialchars($item->message);
+                        $pesanTabel .= '"<i class="text-info">' . htmlspecialchars($item->message) . '</i>"';
                     }
 
                     $pesanTabel .= '</td>';
