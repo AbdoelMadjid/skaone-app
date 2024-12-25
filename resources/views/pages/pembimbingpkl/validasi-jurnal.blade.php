@@ -20,10 +20,10 @@
                 <div class="card-header d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @yield('title')</h5>
                     <div>
-                        @can('create pesertadidikpkl/jurnal-siswa')
+                        {{--  @can('create pesertadidikpkl/jurnal-siswa')
                             <a class="btn btn-primary action" href="{{ route('pesertadidikpkl.jurnal-siswa.create') }}">Buat
                                 Jurnal Siswa</a>
-                        @endcan
+                        @endcan --}}
                     </div>
                 </div>
                 <div class="card-body">

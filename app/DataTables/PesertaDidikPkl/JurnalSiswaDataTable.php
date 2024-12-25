@@ -64,10 +64,10 @@ class JurnalSiswaDataTable extends DataTable
             })
             ->addColumn('validasi', function ($row) {
                 if ($row->validasi === "Belum") {
-                    $badgevalidasi = "<h3><span class='badge bg-danger'>not yet validated</span></h3>";
+                    $badgevalidasi = "<h5><span class='badge bg-danger'>belum di validasi</span></h5>";
                 } else {
                     // Jika file tidak ditemukan, gunakan foto default berdasarkan jenis kelamin
-                    $badgevalidasi = "<h3><span class='badge bg-primary'>has been validated</span></h3>";
+                    $badgevalidasi = "<h5><span class='badge bg-primary'>sudah di validasi</span></h5>";
                 }
 
                 return $badgevalidasi;
