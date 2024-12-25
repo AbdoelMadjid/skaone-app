@@ -43,14 +43,12 @@ class ValidasiJurnalDataTable extends DataTable
                 }
 
                 // Mengembalikan tag img dengan path gambar
-                return '<img src="' . $gamabrPath . '" alt="Foto" width="250" />';
+                return '<img src="' . $gamabrPath . '" alt="Foto" width="200" />';
             })
-            ->addColumn('tanggal_kirim', function ($row) {
-                return Carbon::parse($row->tanggal_kirim)
+            ->addColumn('jurnal_siswa', function ($row) {
+                $tglkirim = Carbon::parse($row->tanggal_kirim)
                     ->locale('id') // Mengatur bahasa ke Indonesia
-                    ->translatedFormat('d F Y');
-            })
-            ->addColumn('element', function ($row) {
+                    ->translatedFormat('l, d F Y');
                 // Ambil data `element` dari tabel `capaian_pembelajarans` berdasarkan `kode_cp`
                 $element = DB::table('capaian_pembelajarans')
                     ->where('kode_cp', $row->element)
@@ -60,11 +58,15 @@ class ValidasiJurnalDataTable extends DataTable
                     ->where('id', $row->id_tp)
                     ->value('isi_tp'); // Ambil hanya kolom isi_tp
 
-                return '<strong>ELement:</strong> <br>' . $element . '<br><br><strong>Tujuan Pembelajaran:</strong> <br>' . $isiTp;
+                return
+                    '<strong>Tamggal:</strong> <br>' . $tglkirim .
+                    '<br><br><strong>ELement:</strong> <br>' . $element .
+                    '<br><br><strong>Tujuan Pembelajaran:</strong> <br>' . $isiTp .
+                    '<br><br><strong>Keterangan:</strong> <br>' . $row->keterangan;
             })
             ->addColumn('identitas_peserta', function ($row) {
                 // Ambil data `element` dari tabel `capaian_pembelajarans` berdasarkan `kode_cp`
-                $identitas_pesertaPrakerin = $row->nama_lengkap . '<br>' .  $row->rombel_nama . '<br>' . $row->nama;
+                $identitas_pesertaPrakerin = $row->nama_lengkap . ' [' .  $row->rombel_nama . ']<br>' . $row->nama;
 
                 return $identitas_pesertaPrakerin;
             })
@@ -97,7 +99,7 @@ class ValidasiJurnalDataTable extends DataTable
                 return view('action', compact('actions'));
             })
             ->addIndexColumn()
-            ->rawColumns(['tanggal_kirim', 'element', 'identitas_peserta', 'validasi', 'gambar', 'action']);
+            ->rawColumns(['jurnal_siswa', 'identitas_peserta', 'validasi', 'gambar', 'action']);
     }
 
     /**
@@ -107,7 +109,7 @@ class ValidasiJurnalDataTable extends DataTable
     {
         $id_personil = auth()->user()->personal_id; // Ambil NIS dari user yang sedang login
 
-        return $model->newQuery()
+        $query = $model->newQuery()
             ->select('jurnal_pkls.*', 'peserta_didiks.nama_lengkap', 'peserta_didik_rombels.rombel_nama', 'perusahaans.nama')
             ->join('penempatan_prakerins', 'jurnal_pkls.id_penempatan', '=', 'penempatan_prakerins.id')
             ->join('peserta_didiks', 'penempatan_prakerins.nis', '=', 'peserta_didiks.nis')
@@ -117,6 +119,16 @@ class ValidasiJurnalDataTable extends DataTable
             ->join('perusahaans', 'penempatan_prakerins.id_dudi', '=', 'perusahaans.id')
             ->join('kompetensi_keahlians', 'penempatan_prakerins.kode_kk', '=', 'kompetensi_keahlians.idkk')
             ->where('pembimbing_prakerins.id_personil', $id_personil);
+
+        if (request()->has('idpenempatan') && request('idpenempatan') != 'all') {
+            $query->where('jurnal_pkls.id_penempatan', request('idpenempatan'));
+        }
+
+        if (request()->has('validasi') && request('validasi') != 'all') {
+            $query->where('jurnal_pkls.validasi', request('validasi'));
+        }
+
+        return $query;
     }
 
     /**
@@ -127,7 +139,12 @@ class ValidasiJurnalDataTable extends DataTable
         return $this->builder()
             ->setTableId('validasijurnal-table')
             ->columns($this->getColumns())
-            ->minifiedAjax()
+            ->ajax([
+                'data' => 'function(d) {
+                    d.idpenempatan = $("#idPenempatan").val();
+                    d.validasi = $("#idvalidasi").val();
+                }',
+            ])
             //->dom('Bfrtip')
             ->orderBy(1)
             ->selectStyleSingle()
@@ -153,9 +170,7 @@ class ValidasiJurnalDataTable extends DataTable
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('identitas_peserta')->title('Identitas Peserta Prakerin'),
-            Column::make('tanggal_kirim')->title('Tgl Kirim'),
-            Column::make('element')->title('Element & Tujuan Pembelajaran')->width(300),
-            Column::make('keterangan')->title('Keterangan'),
+            Column::make('jurnal_siswa')->title('Jurnal Siswa')->width(300),
             Column::make('gambar')->title('Gambar'),
             Column::make('validasi')->title('Validasi'),
             Column::computed('action')

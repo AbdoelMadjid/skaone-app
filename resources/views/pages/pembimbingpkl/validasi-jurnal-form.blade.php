@@ -33,7 +33,7 @@
             <div class="mb-3">
                 <label for="exampleFormControlTextarea1" class="form-label">Keterangan</label>
                 <textarea id="exampleFormControlTextarea1" class="form-control" name="keterangan" aria-label="With textarea"
-                    rows="10">{{ $data->keterangan }}</textarea>
+                    rows="10" readonly>{{ $data->keterangan }}</textarea>
             </div>
         </div>
         <div class="col-md-6">
@@ -42,7 +42,7 @@
             </div>
             <div class="col-md-6">
                 <img id="image-preview"
-                    src="{{ $data->gambar && file_exists(base_path('images/jurnal-pkl/' . $data->gambar)) ? asset('images/jurnal-pkl/' . $data->gambar) : asset('images/sakola/ujikom2.jpg') }}"
+                    src="{{ $data->gambar && file_exists(base_path('images/jurnal-pkl/' . $data->gambar)) ? asset('images/jurnal-pkl/' . $data->gambar) : asset('images/noimagejurnal.jpg') }}"
                     width="250" alt="Photo" />
             </div>
         </div>

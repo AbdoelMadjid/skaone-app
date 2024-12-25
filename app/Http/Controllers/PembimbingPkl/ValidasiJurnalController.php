@@ -9,7 +9,9 @@ use App\Models\Kurikulum\DataKBM\CapaianPembelajaran;
 use App\Models\PembimbingPkl\ValidasiJurnal;
 use App\Models\PesertaDidikPkl\JurnalPkl;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\AssignOp\Concat;
 
 class ValidasiJurnalController extends Controller
 {
@@ -18,7 +20,45 @@ class ValidasiJurnalController extends Controller
      */
     public function index(ValidasiJurnalDataTable $validasiJurnalDataTable)
     {
-        return $validasiJurnalDataTable->render("pages.pembimbingpkl.validasi-jurnal");
+        $personal_id = Auth::user()->personal_id;
+
+        $data = DB::table('pembimbing_prakerins')
+            ->join('personil_sekolahs', 'pembimbing_prakerins.id_personil', '=', 'personil_sekolahs.id_personil')
+            ->join('penempatan_prakerins', 'pembimbing_prakerins.id_penempatan', '=', 'penempatan_prakerins.id')
+            ->join('perusahaans', 'penempatan_prakerins.id_dudi', '=', 'perusahaans.id')
+            ->join('peserta_didiks', 'penempatan_prakerins.nis', '=', 'peserta_didiks.nis')
+            ->join('peserta_didik_rombels', function ($join) {
+                $join->on('penempatan_prakerins.tahunajaran', '=', 'peserta_didik_rombels.tahun_ajaran')
+                    ->on('penempatan_prakerins.nis', '=', 'peserta_didik_rombels.nis');
+            })
+            ->select(
+                'pembimbing_prakerins.id_personil',
+                'personil_sekolahs.gelardepan',
+                'personil_sekolahs.namalengkap',
+                'personil_sekolahs.gelarbelakang',
+                'personil_sekolahs.kontak_hp',
+                'personil_sekolahs.photo',
+                'pembimbing_prakerins.id_penempatan',
+                'penempatan_prakerins.id_dudi',
+                'perusahaans.nama',
+                'perusahaans.alamat',
+                'penempatan_prakerins.nis',
+                'peserta_didiks.nama_lengkap',
+                'peserta_didiks.foto',
+                'peserta_didik_rombels.rombel_nama'
+            )
+            ->where('pembimbing_prakerins.id_personil', $personal_id)
+            ->get();
+
+        // Membentuk array dengan nama peserta_didiks.nama_lengkap sebagai label,
+        // dan pembimbing_prakerins.id_penempatan sebagai value
+        $optionsArray = $data->mapWithKeys(function ($item) {
+            return [
+                $item->id_penempatan => $item->nama_lengkap
+            ];
+        })->toArray();
+
+        return $validasiJurnalDataTable->render("pages.pembimbingpkl.validasi-jurnal", compact('optionsArray'));
     }
 
     /**

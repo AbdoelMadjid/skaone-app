@@ -26,6 +26,32 @@
                         @endcan --}}
                     </div>
                 </div>
+                <div class="card-body border-bottom-dashed border-bottom">
+                    <form>
+                        <div class="row g-3">
+                            <div class="col-lg-auto ms-auto">
+                                <div>
+                                    <select class="form-control" id="idPenempatan">
+                                        <option value="all" selected>Pilih Peserta Terbimbing</option>
+                                        @foreach ($optionsArray as $id => $nama)
+                                            <option value="{{ $id }}">{{ $nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <!--end col-->
+                            <div class="col-lg-auto">
+                                <div>
+                                    <select class="form-control" id="idvalidasi">
+                                        <option value="all" selected>Validasi</option>
+                                        <option value="Sudah">Sudah</option>
+                                        <option value="Belum">Belum</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
                 <div class="card-body">
                     {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
                 </div>
@@ -47,9 +73,21 @@
     <script>
         const datatable = 'validasijurnal-table';
 
-        handleDataTableEvents(datatable);
-        handleAction(datatable)
-        handleDelete(datatable)
+        $(document).ready(function() {
+            const table = $("#validasijurnal-table").DataTable();
+
+            // Event pencarian dan filter
+            $("#idPenempatan, #idvalidasi").on("change keyup", function() {
+                table.ajax.reload();
+            });
+
+
+            $('#' + datatable).DataTable(); // Pastikan DataTable diinisialisasi
+
+            handleDataTableEvents(datatable);
+            handleAction(datatable);
+            handleDelete(datatable);
+        });
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection
