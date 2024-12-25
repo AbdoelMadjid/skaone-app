@@ -14,139 +14,150 @@
             @lang('translation.pesertadidikpkl')
         @endslot
     @endcomponent
+    <!-- Rounded Ribbon -->
     <div class="row">
-        <div class="col-xxl-3 col-lg-6">
-            <div class="card pricing-box">
-                <div class="card-body bg-light m-2 p-4">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="flex-grow-1">
-                            <h5 class="mb-0 fw-semibold">Hadir</h5>
-                        </div>
-                        <div class="ms-auto">
-                            <h2 class="month mb-0" id="total-hadir">{{ $totalHadir ?? 0 }}
-                                <small class="fs-13 text-muted">kali</small>
-                            </h2>
-                        </div>
-                    </div>
-
-                    <p class="text-muted">Jika anda hadir, silakan klik tombol di bawah ini untuk mencatat kehadiran.</p>
-
-                    <div class="mt-3 pt-2">
-                        <button id="btn-hadir" class="btn btn-info w-100" data-nis="{{ auth()->user()->nis }}"
-                            {{ $sudahHadir ? 'disabled' : '' }}>
-                            {{ $sudahHadir ? 'Sudah Absen Hadir' : 'Hadir' }}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xxl-3 col-lg-6">
-            <div class="card pricing-box">
-                <div class="card-body bg-light m-2 p-4">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="flex-grow-1">
-                            <h5 class="mb-0 fw-semibold">Sakit</h5>
-                        </div>
-                        <div class="ms-auto">
-                            <h2 class="month mb-0" id="total-sakit">{{ $totalSakit ?? 0 }}
-                                <small class="fs-13 text-muted">kali</small>
-                            </h2>
-                        </div>
-                    </div>
-
-                    <p class="text-muted">Jika anda sakit, silakan klik tombol di bawah ini untuk mencatat status sakit.</p>
-
-                    <div class="mt-3 pt-2">
-                        <button id="btn-sakit" class="btn btn-success w-100" data-nis="{{ auth()->user()->nis }}"
-                            {{ $sudahSakit ? 'disabled' : '' }}>
-                            {{ $sudahSakit ? 'Sudah Absen Sakit' : 'Sakit' }}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xxl-3 col-lg-6">
-            <div class="card pricing-box">
-                <div class="card-body bg-light m-2 p-4">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="flex-grow-1">
-                            <h5 class="mb-0 fw-semibold">Izin</h5>
-                        </div>
-                        <div class="ms-auto">
-                            <h2 class="month mb-0" id="total-izin">{{ $totalIzin ?? 0 }}
-                                <small class="fs-13 text-muted">kali</small>
-                            </h2>
-                        </div>
-                    </div>
-
-                    <p class="text-muted">Jika anda izin, silakan klik tombol di bawah ini untuk mencatat status izin.</p>
-
-                    <div class="mt-3 pt-2">
-                        <button id="btn-izin" class="btn btn-warning w-100" data-nis="{{ auth()->user()->nis }}"
-                            {{ $sudahIzin ? 'disabled' : '' }}>
-                            {{ $sudahIzin ? 'Sudah Absen Izin' : 'Izin' }}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xxl-3 col-lg-6">
-            <div class="card pricing-box">
-                <div class="card-body bg-light m-2 p-4">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="flex-grow-1">
-                            <h5 class="mb-0 fw-semibold">Alfa</h5>
-                        </div>
-                        <div class="ms-auto">
-                            <h2 class="month mb-0">0 <small class="fs-13 text-muted">kali</small></h2>
-                        </div>
-                    </div>
-
-                    <p class="text-muted">Jika anda Alfa, akan di tambahkan oleh pembimbing pkl anda. </p>
-
-                    <div class="mt-3 pt-2">
-                        <a href="javascript:void(0);" class="btn btn-danger disabled w-100">Alfa</a>
-                    </div>
-                </div>
-            </div>
-        </div><!--end col-->
-    </div><!--end row-->
-    <div class="row">
-        <div class="col-xl-6 col-md-6">
-            <div class="card">
-                <div class="card-header bg-primary-subtle">
-                    <h4 class="card-title mb-0">Riwayat Absensi </h4>
-                </div><!-- end card header -->
-                <div class="card-body bg-info-subtle">
-                    @if ($dataAbsensi->isEmpty())
-                        <p>No users have logged in today.</p>
-                    @else
+        <div class="col-xxl-8 col-lg-8">
+            <div class="card ribbon-box border shadow-none mb-lg-4 card-height-100">
+                <div class="card-body">
+                    <div class="ribbon ribbon-primary round-shape">Ngabsen</div>
+                    <h5 class="fs-14 text-end"></h5>
+                    <div class="ribbon-content mt-4 text-muted">
                         <div class="row">
-                            @foreach ($dataAbsensi->chunk(2) as $riwayatAbsen)
-                                <div class="row">
-                                    @foreach ($riwayatAbsen as $ngabsen)
-                                        <div class="col-md-6">
-                                            <div
-                                                class="d-flex justify-content-between border-bottom border-bottom-dashed py-0">
-                                                <p class="fw-medium mb-0"><i
-                                                        class="ri-checkbox-blank-circle-fill text-success align-middle me-2"></i>
-                                                    {{ $ngabsen->tanggal }}</p>
-                                                <div>
-                                                    <span
-                                                        class="text-success fw-medium fs-12">{{ $ngabsen->status }}</span>
-                                                </div>
-                                            </div><!-- end -->
-                                        </div><!-- end col -->
-                                    @endforeach
-                                </div><!-- end row -->
-                            @endforeach
+                            <div class="col-xxl-6 col-lg-6">
+                                <div class="card pricing-box">
+                                    <div class="card-body bg-light m-2 p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="flex-grow-1">
+                                                <h5 class="mb-0 fw-semibold">Hadir</h5>
+                                            </div>
+                                            <div class="ms-auto">
+                                                <h2 class="month mb-0" id="total-hadir">{{ $totalHadir ?? 0 }}
+                                                    <small class="fs-13 text-muted">kali</small>
+                                                </h2>
+                                            </div>
+                                        </div>
+
+                                        <p class="text-muted">Jika anda hadir, silakan klik tombol di bawah ini untuk
+                                            mencatat kehadiran.</p>
+
+                                        <div class="mt-3 pt-2">
+                                            <button id="btn-hadir" class="btn btn-info w-100"
+                                                data-nis="{{ auth()->user()->nis }}" {{ $sudahHadir ? 'disabled' : '' }}>
+                                                {{ $sudahHadir ? 'Sudah Absen Hadir' : 'Hadir' }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-6 col-lg-6">
+                                <div class="card pricing-box">
+                                    <div class="card-body bg-light m-2 p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="flex-grow-1">
+                                                <h5 class="mb-0 fw-semibold">Sakit</h5>
+                                            </div>
+                                            <div class="ms-auto">
+                                                <h2 class="month mb-0" id="total-sakit">{{ $totalSakit ?? 0 }}
+                                                    <small class="fs-13 text-muted">kali</small>
+                                                </h2>
+                                            </div>
+                                        </div>
+
+                                        <p class="text-muted">Jika anda sakit, silakan klik tombol di bawah ini untuk
+                                            mencatat status sakit.</p>
+
+                                        <div class="mt-3 pt-2">
+                                            <button id="btn-sakit" class="btn btn-success w-100"
+                                                data-nis="{{ auth()->user()->nis }}" {{ $sudahSakit ? 'disabled' : '' }}>
+                                                {{ $sudahSakit ? 'Sudah Absen Sakit' : 'Sakit' }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    @endif
-                </div><!-- end card-body -->
-            </div><!-- end card -->
+                        <div class="row">
+                            <div class="col-xxl-6 col-lg-6">
+                                <div class="card pricing-box">
+                                    <div class="card-body bg-light m-2 p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="flex-grow-1">
+                                                <h5 class="mb-0 fw-semibold">Izin</h5>
+                                            </div>
+                                            <div class="ms-auto">
+                                                <h2 class="month mb-0" id="total-izin">{{ $totalIzin ?? 0 }}
+                                                    <small class="fs-13 text-muted">kali</small>
+                                                </h2>
+                                            </div>
+                                        </div>
+
+                                        <p class="text-muted">Jika anda izin, silakan klik tombol di bawah ini untuk
+                                            mencatat status izin.</p>
+
+                                        <div class="mt-3 pt-2">
+                                            <button id="btn-izin" class="btn btn-warning w-100"
+                                                data-nis="{{ auth()->user()->nis }}" {{ $sudahIzin ? 'disabled' : '' }}>
+                                                {{ $sudahIzin ? 'Sudah Absen Izin' : 'Izin' }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-6 col-lg-6">
+                                <div class="card pricing-box">
+                                    <div class="card-body bg-light m-2 p-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="flex-grow-1">
+                                                <h5 class="mb-0 fw-semibold">Alfa</h5>
+                                            </div>
+                                            <div class="ms-auto">
+                                                <h2 class="month mb-0">0 <small class="fs-13 text-muted">kali</small></h2>
+                                            </div>
+                                        </div>
+
+                                        <p class="text-muted">Jika anda Alfa, akan di tambahkan oleh pembimbing pkl anda.
+                                        </p>
+
+                                        <div class="mt-3 pt-2">
+                                            <a href="javascript:void(0);" class="btn btn-danger disabled w-100">Alfa</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xxl-4 col-lg-4">
+            <!-- Rounded Ribbon -->
+            <div class="card ribbon-box border shadow-none mb-lg-2 card-height-100">
+                <div class="card-body">
+                    <div class="ribbon ribbon-primary round-shape">Riwayat Absensi</div>
+                    <h5 class="fs-14 text-end">Jumlah Hadir : {{ $totalHadir }} x</h5>
+                    <div class="ribbon-content mt-4 text-muted">
+                        <div data-simplebar style="height: 400px;">
+                            @if ($dataAbsensi->isEmpty())
+                                <p>No users have logged in today.</p>
+                            @else
+                                @foreach ($dataAbsensi as $ngabsen)
+                                    <div class="d-flex justify-content-between border-bottom border-bottom-dashed py-0">
+                                        <p class="fw-medium mb-0"><i
+                                                class="ri-checkbox-blank-circle-fill text-success align-middle me-2"></i>
+                                            {{ \Carbon\Carbon::parse($ngabsen->tanggal)->translatedFormat('l, d F Y') }}
+                                        </p>
+                                        <div>
+                                            <span class="text-success fw-medium fs-12">{{ $ngabsen->status }}</span>
+                                        </div>
+                                    </div><!-- end -->
+                                @endforeach
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

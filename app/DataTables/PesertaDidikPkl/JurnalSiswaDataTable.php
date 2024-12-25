@@ -45,12 +45,12 @@ class JurnalSiswaDataTable extends DataTable
                 // Mengembalikan tag img dengan path gambar
                 return '<img src="' . $gamabrPath . '" alt="Foto" width="250" />';
             })
-            ->addColumn('tanggal_kirim', function ($row) {
-                return Carbon::parse($row->tanggal_kirim)
+            ->addColumn('jurnal_siswa', function ($row) {
+
+                $tglKirim = Carbon::parse($row->tanggal_kirim)
                     ->locale('id') // Mengatur bahasa ke Indonesia
-                    ->translatedFormat('d F Y');
-            })
-            ->addColumn('element', function ($row) {
+                    ->translatedFormat('l, d F Y');
+
                 // Ambil data `element` dari tabel `capaian_pembelajarans` berdasarkan `kode_cp`
                 $element = DB::table('capaian_pembelajarans')
                     ->where('kode_cp', $row->element)
@@ -60,14 +60,18 @@ class JurnalSiswaDataTable extends DataTable
                     ->where('id', $row->id_tp)
                     ->value('isi_tp'); // Ambil hanya kolom isi_tp
 
-                return '<strong>ELement:</strong> <br>' . $element . '<br><br><strong>Tujuan Pembelajaran:</strong> <br>' . $isiTp;
+                return
+                    '<strong>Tgl Kirim:</strong> <br>' . $tglKirim .
+                    '<br><br><strong>ELement:</strong> <br>' . $element .
+                    '<br><br><strong>Tujuan Pembelajaran:</strong> <br>' . $isiTp .
+                    '<br><br><strong>Keterangan:</strong> <br>' . $row->keterangan;
             })
             ->addColumn('validasi', function ($row) {
                 if ($row->validasi === "Belum") {
-                    $badgevalidasi = "<h5><span class='badge bg-danger'>belum di validasi</span></h5>";
+                    $badgevalidasi = "<h5><span class='badge bg-danger'>Belum</span></h5>";
                 } else {
                     // Jika file tidak ditemukan, gunakan foto default berdasarkan jenis kelamin
-                    $badgevalidasi = "<h5><span class='badge bg-primary'>sudah di validasi</span></h5>";
+                    $badgevalidasi = "<h5><span class='badge bg-primary'>Sudah</span></h5>";
                 }
 
                 return $badgevalidasi;
@@ -80,7 +84,7 @@ class JurnalSiswaDataTable extends DataTable
                 return view('action', compact('actions'));
             })
             ->addIndexColumn()
-            ->rawColumns(['tanggal_kirim', 'element',  'validasi', 'gambar', 'action']);
+            ->rawColumns(['jurnal_siswa',  'validasi', 'gambar', 'action']);
     }
 
     /**
@@ -131,10 +135,8 @@ class JurnalSiswaDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
-            Column::make('tanggal_kirim')->title('Tgl Kirim'),
-            Column::make('element')->title('Element & Tujuan Pembelajaran')->width(300),
-            Column::make('keterangan')->title('Keterangan'),
-            Column::make('gambar')->title('Gambar'),
+            Column::make('jurnal_siswa')->title('Jurnal')->width('60%'),
+            Column::make('gambar')->title('Gambar')->addClass('text-center'),
             Column::make('validasi')->title('Validasi'),
             /* Column::computed('action')
                 ->exportable(false)

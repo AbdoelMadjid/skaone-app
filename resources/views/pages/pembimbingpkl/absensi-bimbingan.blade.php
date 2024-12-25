@@ -205,7 +205,6 @@
                                                                     <table class="table table-bordered">
                                                                         <thead>
                                                                             <tr>
-                                                                                <th>ID</th>
                                                                                 <th>Tanggal</th>
                                                                                 <th>Status</th>
                                                                                 <th>Action</th>
@@ -214,9 +213,22 @@
                                                                         <tbody>
                                                                             @forelse ($riwayat_absensi as $absensi)
                                                                                 <tr>
-                                                                                    <td>{{ $absensi->id }}
-                                                                                    </td>
-                                                                                    <td>{{ \Carbon\Carbon::parse($absensi->tanggal)->format('d-m-Y') }}
+                                                                                    <td>
+                                                                                        @php
+                                                                                            $dayOfWeek = \Carbon\Carbon::parse(
+                                                                                                $absensi->tanggal,
+                                                                                            )->dayOfWeek;
+                                                                                            $formattedDate = \Carbon\Carbon::parse(
+                                                                                                $absensi->tanggal,
+                                                                                            )->translatedFormat(
+                                                                                                'l, d-m-Y',
+                                                                                            );
+                                                                                        @endphp
+
+                                                                                        <span
+                                                                                            class="{{ $dayOfWeek == 6 || $dayOfWeek == 0 ? 'text-danger' : '' }}">
+                                                                                            {{ $formattedDate }}
+                                                                                        </span>
                                                                                     </td>
                                                                                     <td>{{ ucfirst(strtolower($absensi->status)) }}
                                                                                     </td>

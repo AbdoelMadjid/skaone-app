@@ -49,7 +49,7 @@ class AbsensiSiswaPklController extends Controller
             ->where('status', 'IZIN')
             ->exists();
 
-        $dataAbsensi = AbsensiSiswaPkl::where('nis', $nis)
+        $dataAbsensi = AbsensiSiswaPkl::where('nis', $nis)->orderBy('tanggal', 'asc')
             ->get();
 
         return view("pages.pesertadidikpkl.absensi-siswa", [
