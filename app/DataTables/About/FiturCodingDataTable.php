@@ -67,7 +67,7 @@ class FiturCodingDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false),
+            Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('judul')->width('20%'),
             Column::make('deskripsi')->width('35%'),
             Column::make('contoh'),

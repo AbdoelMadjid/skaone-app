@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\About\AboutController;
+use App\Http\Controllers\About\DailyMessagesController;
 use App\Http\Controllers\About\FiturCodingController;
 use App\Http\Controllers\About\GaleryController;
 use App\Http\Controllers\About\KumpulanFaqController;
@@ -106,6 +107,8 @@ Route::group(['prefix' => 'about', 'as' => 'about.'], function () {
     Route::resource('photo-slides', PhotoSlideController::class);
     Route::resource('galery', GaleryController::class);
     Route::resource('photo-jurusan', PhotoJurusanController::class);
+    Route::resource('photo-jurusan', PhotoJurusanController::class);
+    Route::resource('daily-messages', DailyMessagesController::class);
 });
 
 // Kelompok rute untuk profil, hanya dapat diakses oleh pengguna yang sudah terotentikasi

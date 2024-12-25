@@ -326,6 +326,7 @@ return [
 
     "fitur-coding" => "Fitur Coding",
     "team-pengembang" => "Tim Pengembang",
+    "daily-messages" => "Daily Messages",
 
     "profil-pengguna" => "Profil Pengguna",
     "PENGGUNA" => "Pengguna",

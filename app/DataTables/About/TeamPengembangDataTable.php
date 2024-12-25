@@ -93,7 +93,7 @@ class TeamPengembangDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false),
+            Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('namalengkap')->title('Nama Lengkap'),
             Column::make('jeniskelamin')->title('Jenis Kelamin'),
             Column::make('jabatan'),

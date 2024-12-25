@@ -2,7 +2,7 @@
 
 namespace App\DataTables\About;
 
-use App\Models\About\KumpulanFaq;
+use App\Models\About\DailyMessages;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
@@ -13,7 +13,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class KumpulanFaqDataTable extends DataTable
+class DailyMessagesDataTable extends DataTable
 {
     use DatatableHelper;
     /**
@@ -34,7 +34,7 @@ class KumpulanFaqDataTable extends DataTable
     /**
      * Get the query source of dataTable.
      */
-    public function query(KumpulanFaq $model): QueryBuilder
+    public function query(DailyMessages $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -45,7 +45,7 @@ class KumpulanFaqDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('kumpulanfaq-table')
+            ->setTableId('dailymessages-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             //->dom('Bfrtip')
@@ -68,9 +68,8 @@ class KumpulanFaqDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
-            Column::make('kategori'),
-            Column::make('pertanyaan'),
-            Column::make('jawaban'),
+            Column::make('date')->width('20%'),
+            Column::make('message')->width('80%'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
@@ -84,6 +83,6 @@ class KumpulanFaqDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'KumpulanFaq_' . date('YmdHis');
+        return 'DailyMessages_' . date('YmdHis');
     }
 }

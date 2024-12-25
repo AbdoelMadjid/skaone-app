@@ -24,6 +24,9 @@
                 <li>
                     <a href="{{ route('about.photo-jurusan.index') }}" class="dropdown-item">Photo Jurusan</a>
                 </li>
+                <li>
+                    <a href="{{ route('about.daily-messages.index') }}" class="dropdown-item">Daily Messages</a>
+                </li>
                 {{-- <li><a class="dropdown-item" href="#">Search Settings</a></li>
                 <li><a class="dropdown-item" href="#">Advanced Search</a></li>
                 <li><a class="dropdown-item" href="#">Search History</a></li>
