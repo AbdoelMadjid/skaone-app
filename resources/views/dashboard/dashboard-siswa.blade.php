@@ -1,4 +1,4 @@
-<div class="alert alert-warning alert-dismissible alert-additional fade show mb-2" role="alert">
+{{-- <div class="alert alert-warning alert-dismissible alert-additional fade show mb-2" role="alert">
     <div class="alert-body">
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         <div class="d-flex">
@@ -14,4 +14,4 @@
     <div class="alert-content">
         <p class="mb-0">Scripting & Desing by. Abdul Madjid, S.Pd., M.Pd.</p>
     </div>
-</div>
+</div> --}}

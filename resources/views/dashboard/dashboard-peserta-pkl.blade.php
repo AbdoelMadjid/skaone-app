@@ -1,4 +1,15 @@
 <div class="row">
+    <div class="col-lg-12">
+        <div class="card overflow-hidden shadow-none">
+            <div class="card-body bg-primary text-white fw-semibold d-flex">
+                <marquee class="fs-14">
+                    {{ $message }}
+                </marquee>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
     <div class="col-xxl-3 col-lg-6">
         <div class="card pricing-box">
             <div class="card-body bg-light m-2 p-4">
