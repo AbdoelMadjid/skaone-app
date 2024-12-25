@@ -36,7 +36,7 @@ class DailyMessagesDataTable extends DataTable
      */
     public function query(DailyMessages $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->orderBy('date', 'asc');
     }
 
     /**
@@ -58,6 +58,13 @@ class DailyMessagesDataTable extends DataTable
                 Button::make('print'),
                 Button::make('reset'),
                 Button::make('reload')
+            ])->parameters([
+                'deferRender' => true,
+                'serverSide' => true,
+                'processing' => true,
+                'lengthChange' => false, // Menghilangkan dropdown "Show entries"
+                'searching' => true,    // Menghilangkan kotak pencarian
+                'pageLength' => 50,       // Menampilkan 50 baris per halaman
             ]);
     }
 
