@@ -57,22 +57,43 @@ class BackupDbController extends Controller
 
         foreach ($tables as $table) {
             $fileName = $backupDir . "/backup-{$table}.sql";
+            $sqlContent = '';
 
-            $command = sprintf(
-                'mysqldump --user=%s --password=%s --host=%s %s %s > %s',
-                escapeshellarg(env('DB_USERNAME')),
-                escapeshellarg(env('DB_PASSWORD')),
-                escapeshellarg(env('DB_HOST')),
-                escapeshellarg(env('DB_DATABASE')),
-                escapeshellarg($table),
-                escapeshellarg($fileName)
-            );
+            try {
+                // Ambil struktur tabel
+                $columns = DB::getSchemaBuilder()->getColumnListing($table);
+                $createTableQuery = "DROP TABLE IF EXISTS `{$table}`;\n";
+                $createTableQuery .= "CREATE TABLE `{$table}` (\n";
 
-            exec($command, $output, $returnVar);
+                // Ambil detail kolom
+                foreach ($columns as $column) {
+                    $columnDetails = DB::select("SHOW COLUMNS FROM `{$table}` LIKE '{$column}'")[0];
+                    $createTableQuery .= "`{$column}` {$columnDetails->Type},\n";
+                }
 
-            if ($returnVar === 0) {
+                $createTableQuery = rtrim($createTableQuery, ",\n") . "\n);";
+
+                // Menambahkan CREATE TABLE query ke SQL content
+                $sqlContent .= $createTableQuery . "\n\n";
+
+                // Ambil data dari tabel dan buat query INSERT
+                $rows = DB::table($table)->get();
+                foreach ($rows as $row) {
+                    $values = [];
+                    foreach ($columns as $column) {
+                        $values[] = $this->quoteValue($row->$column);
+                    }
+                    $insertQuery = "INSERT INTO `{$table}` (`" . implode('`, `', $columns) . "`) VALUES (" . implode(', ', $values) . ");\n";
+                    $sqlContent .= $insertQuery;
+                }
+
+                // Simpan hasil SQL ke file
+                file_put_contents($fileName, $sqlContent);
+
+                // Tandai backup berhasil
                 $successful[] = $table;
-            } else {
+            } catch (\Exception $e) {
+                // Jika ada error, tandai sebagai gagal
                 $failed[] = $table;
             }
         }
@@ -86,6 +107,20 @@ class BackupDbController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    // Fungsi untuk mengutip nilai agar aman untuk SQL
+    private function quoteValue($value)
+    {
+        if (is_null($value)) {
+            return 'NULL';
+        }
+
+        if (is_bool($value)) {
+            return $value ? 'TRUE' : 'FALSE';
+        }
+
+        return '"' . addslashes($value) . '"';
     }
 
     public function deleteBackupFile($fileName)
