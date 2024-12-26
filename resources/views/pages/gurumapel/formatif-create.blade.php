@@ -32,10 +32,10 @@
                                         <i class="bx bx-upload"></i> Upload</button></li>
                             </ul>
                         </div> --}}
-                        <a class="btn btn-soft-info" href="{{ route('gurumapel.penilaian.formatif.index') }}">Kembali</a>
+                        <a class="btn btn-soft-primary" href="{{ route('gurumapel.penilaian.formatif.index') }}">Kembali</a>
                         @if (auth()->check() &&
                                 auth()->user()->hasAnyRole(['master']))
-                            <button class="btn btn-soft-info" onclick="window.history.back();">
+                            <button class="btn btn-soft-primary" onclick="window.history.back();">
                                 Kembali Ke Arsip
                             </button>
                         @endif

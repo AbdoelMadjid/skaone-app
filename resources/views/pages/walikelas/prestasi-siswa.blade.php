@@ -19,7 +19,8 @@
                     </h5>
                     <div>
                         @can('create walikelas/prestasi-siswa')
-                            <a class="btn btn-primary action" href="{{ route('walikelas.prestasi-siswa.create') }}">Add</a>
+                            <a class="btn btn-soft-primary action"
+                                href="{{ route('walikelas.prestasi-siswa.create') }}">Tambah</a>
                         @endcan
                     </div>
                 </div>

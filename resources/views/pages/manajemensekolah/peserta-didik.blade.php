@@ -22,17 +22,16 @@
                         </div>
                         <div class="col-sm-auto">
                             <div class="d-flex flex-wrap align-items-start gap-2">
-                                @can('create manajemensekolah/peserta-didik')
-                                    <a class="btn btn-success add-btn action"
-                                        href="{{ route('manajemensekolah.peserta-didik.create') }}"><i
-                                            class="ri-add-line align-bottom me-1"></i> Add Peserta Didik</a>
-                                @endcan
-                                <a class="btn btn-primary add-btn"
+                                <a class="btn btn-soft-primary add-btn"
                                     href="{{ route('kurikulum.datakbm.peserta-didik-rombel.index') }}"><i
                                         class="ri-user-line align-bottom me-1"></i> Per Rombel</a>
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                <button type="button" class="btn btn-soft-danger" data-bs-toggle="modal"
                                     data-bs-target="#distribusiSiswa" id="distribusiSiswaBtn"
                                     title="Distribusikan siswa yang dipilih" disabled>Distribusi Rombel</button>
+                                @can('create manajemensekolah/peserta-didik')
+                                    <a class="btn btn-soft-primary add-btn action"
+                                        href="{{ route('manajemensekolah.peserta-didik.create') }}">Tambah</a>
+                                @endcan
                             </div>
                         </div>
                     </div>
@@ -76,7 +75,7 @@
 
                             <div class="col-lg-auto">
                                 <div>
-                                    <a href="{{ route('pdexportExcel') }}" class="btn btn-primary w-100">Unduh</a>
+                                    <a href="{{ route('pdexportExcel') }}" class="btn btn-soft-primary w-100">Unduh</a>
                                     {{-- <button type="button" class="btn btn-primary w-100"
                                                 title="Import">Unduh</button> --}}
                                     {{-- <button type="button" class="btn btn-primary w-100" id="filterButton"> <i
@@ -85,7 +84,7 @@
                             </div>
                             <div class="col-lg-auto">
                                 <div>
-                                    <button type="button" class="btn btn-primary  w-100" data-bs-toggle="modal"
+                                    <button type="button" class="btn btn-soft-primary  w-100" data-bs-toggle="modal"
                                         data-bs-target="#importModal">Unggah</button>
                                 </div>
                             </div>

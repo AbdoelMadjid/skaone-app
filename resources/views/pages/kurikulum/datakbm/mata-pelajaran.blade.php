@@ -22,16 +22,17 @@
                 <div class="card-header d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @lang('translation.mata-pelajaran')</h5>
                     <div>
-                        <a href="{{ route('mapelexportExcel') }}" class="btn btn-success">Download</a>
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importModal">
+                        <a href="{{ route('mapelexportExcel') }}" class="btn btn-soft-primary">Download</a>
+                        <button type="button" class="btn btn-soft-primary" data-bs-toggle="modal"
+                            data-bs-target="#importModal">
                             Import
                         </button>
-                        <a class="btn btn-primary"
+                        <a class="btn btn-soft-primary"
                             href="{{ route('kurikulum.datakbm.mata-pelajaran-perjurusan.index') }}">Mapel
                             Per Jurusan</a>
                         @can('create kurikulum/datakbm/mata-pelajaran')
-                            <a class="btn btn-primary action"
-                                href="{{ route('kurikulum.datakbm.mata-pelajaran.create') }}">Add</a>
+                            <a class="btn btn-soft-primary action"
+                                href="{{ route('kurikulum.datakbm.mata-pelajaran.create') }}">Tambah</a>
                         @endcan
 
                     </div>

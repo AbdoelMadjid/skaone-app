@@ -33,11 +33,12 @@
                         <div class="col-lg-auto">
                             <div class="d-md-flex text-nowrap gap-2">
                                 @can('create manajemenpengguna/users')
-                                    <a class="btn btn-soft-info action" href="{{ route('manajemenpengguna.users.create') }}"> <i
-                                            class="ri-add-fill me-1 align-bottom"></i> Add User</a>
+                                    <a class="btn btn-soft-primary action" href="{{ route('manajemenpengguna.users.create') }}">
+                                        <i class="ri-add-fill me-1 align-bottom"></i> Add User</a>
                                 @endcan
                                 <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown"
-                                    aria-expanded="false" class="btn btn-soft-info"><i class="ri-more-2-fill"></i></button>
+                                    aria-expanded="false" class="btn btn-soft-primary"><i
+                                        class="ri-more-2-fill"></i></button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
                                     <li><a class="dropdown-item" href="#">All</a></li>
                                     <li><a class="dropdown-item" href="#">Last Week</a></li>

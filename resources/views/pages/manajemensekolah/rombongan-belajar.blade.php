@@ -23,9 +23,8 @@
                         <div class="col-sm-auto">
                             <div class="d-flex flex-wrap align-items-start gap-2">
                                 @can('create manajemensekolah/rombongan-belajar')
-                                    <a class="btn btn-success add-btn action"
-                                        href="{{ route('manajemensekolah.rombongan-belajar.create') }}"><i
-                                            class="ri-add-line align-bottom me-1"></i> Add Rombel</a>
+                                    <a class="btn btn-soft-primary add-btn action"
+                                        href="{{ route('manajemensekolah.rombongan-belajar.create') }}">Tambah</a>
                                 @endcan
                             </div>
                         </div>

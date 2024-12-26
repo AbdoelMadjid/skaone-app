@@ -22,17 +22,17 @@
                 <div class="card-header d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @yield('title')</h5>
                     <div>
-                        @can('create administratorpkl/peserta-prakerin')
-                            <a class="btn btn-primary action"
-                                href="{{ route('administratorpkl.peserta-prakerin.create') }}">Add</a>
-                        @endcan
                         @if (auth()->check() &&
                                 auth()->user()->hasAnyRole(['master', 'adminpkl']))
-                            <button type="button" class="btn btn-info" data-bs-toggle="modal"
+                            <button type="button" class="btn btn-soft-primary" data-bs-toggle="modal"
                                 data-bs-target="#distribusiPeserta" id="distribusiPesertaBtn"
                                 title="Distribusikan Peserta Prakerin">Distribusi
                                 Peserta</button>
                         @endif
+                        @can('create administratorpkl/peserta-prakerin')
+                            <a class="btn btn-soft-primary action"
+                                href="{{ route('administratorpkl.peserta-prakerin.create') }}">Tambah</a>
+                        @endcan
                     </div>
                 </div>
                 <div class="card-body">

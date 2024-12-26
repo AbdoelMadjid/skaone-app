@@ -21,7 +21,7 @@
                     <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @yield('title')</h5>
                     <div>
                         @can('create pembimbingpkl/monitoring-prakerin')
-                            <a class="btn btn-primary action"
+                            <a class="btn btn-soft-primary action"
                                 href="{{ route('pembimbingpkl.monitoring-prakerin.create') }}">Tambah</a>
                         @endcan
                     </div>

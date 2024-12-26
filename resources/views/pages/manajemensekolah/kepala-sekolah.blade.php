@@ -20,8 +20,8 @@
                     <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @lang('translation.kepala-sekolah')</h5>
                     <div>
                         @can('create manajemensekolah/timmanajemen/kepala-sekolah')
-                            <a class="btn btn-primary action"
-                                href="{{ route('manajemensekolah.timmanajemen.kepala-sekolah.create') }}">Add</a>
+                            <a class="btn btn-soft-primary action"
+                                href="{{ route('manajemensekolah.timmanajemen.kepala-sekolah.create') }}">Tambah</a>
                         @endcan
                     </div>
                 </div>

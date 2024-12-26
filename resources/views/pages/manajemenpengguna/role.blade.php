@@ -17,7 +17,7 @@
                     <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @lang('translation.role')</h5>
                     <div>
                         @can('create manajemenpengguna/roles')
-                            <a class="btn btn-primary action" href="{{ route('manajemenpengguna.roles.create') }}">Add</a>
+                            <a class="btn btn-soft-primary action" href="{{ route('manajemenpengguna.roles.create') }}">Tambah</a>
                         @endcan
                     </div>
                 </div>

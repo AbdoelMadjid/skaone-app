@@ -54,8 +54,7 @@
                                             class="ri-add-line align-bottom me-1"></i> Add KBM Per Rombel</a>
                                 @endcan --}}
                                 <a href="{{ route('kurikulum.datakbm.mata-pelajaran-perjurusan.index') }}"
-                                    class="btn btn-info">Mata
-                                    Pelajaran</a>
+                                    class="btn btn-soft-primary">Mata Pelajaran</a>
                             </div>
                         </div>
                     </div>

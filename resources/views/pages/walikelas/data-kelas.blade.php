@@ -74,7 +74,7 @@
         <div class="col-xl-5">
             <div class="card ribbon-box border shadow-none mb-lg-4">
                 <div class="card-body">
-                    <div class="ribbon ribbon-info round-shape mt-2">Identitas Wali Kelas</div>
+                    <div class="ribbon ribbon-primary round-shape mt-2">Identitas Wali Kelas</div>
                     <h5 class="fs-14 text-end"></h5>
                     <div class="ribbon-content mt-5">
                         {{-- Menampilkan tahun ajaran dan semester aktif --}}
@@ -143,7 +143,7 @@
 
             <div class="card ribbon-box border shadow-none mb-lg-4">
                 <div class="card-body">
-                    <div class="ribbon ribbon-info round-shape mt-2">
+                    <div class="ribbon ribbon-primary round-shape mt-2">
                         @if ($titimangsa)
                             Update
                         @else
@@ -177,7 +177,7 @@
                             </div>
                             <div class="card-footer">
                                 <div class="gap-2 hstack justify-content-end">
-                                    <button type="submit" class="btn btn-soft-info">
+                                    <button type="submit" class="btn btn-soft-primary">
                                         @if ($titimangsa)
                                             Update
                                         @else
@@ -196,9 +196,10 @@
             <!-- Rounded Ribbon -->
             <div class="card ribbon-box border shadow-none mb-lg-4">
                 <div class="card-body">
-                    <div class="ribbon ribbon-info round-shape mt-2">Data Siswa {{ $waliKelas->rombel }}</div>
+                    <div class="ribbon ribbon-primary round-shape mt-2">Data Siswa {{ $waliKelas->rombel }}</div>
                     <h5 class="text-end">
-                        <a href="{{ route('walikelas.downloadpdfdatasiswa') }}" class="btn btn-soft-info btn-sm">Download
+                        <a href="{{ route('walikelas.downloadpdfdatasiswa') }}"
+                            class="btn btn-soft-primary btn-sm">Download
                             PDF</a>
                     </h5>
                     <div class="ribbon-content mt-3">

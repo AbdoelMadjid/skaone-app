@@ -21,7 +21,7 @@
                         @if (!$ekstrakulikulerExists)
                             <form action="{{ route('walikelas.ekstrakulikuler.generateeskul') }}" method="POST">
                                 @csrf
-                                <button type="submit" class="btn btn-primary">Generate Eskul</button>
+                                <button type="submit" class="btn btn-soft-primary">Generate Eskul</button>
                             </form>
                         @else
                             <div></div>

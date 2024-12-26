@@ -22,7 +22,7 @@
                             <form action="{{ route('walikelas.catatan-wali-kelas.generatecatatanwalikelas') }}"
                                 method="POST">
                                 @csrf
-                                <button type="submit" class="btn btn-primary">Generate Catatan Wali Kelas</button>
+                                <button type="submit" class="btn btn-soft-primary">Generate Catatan Wali Kelas</button>
                             </form>
                         @else
                             <div></div>

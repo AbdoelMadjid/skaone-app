@@ -21,7 +21,7 @@
                         @if (!$absensiExists)
                             <form action="{{ route('walikelas.absensi-siswa.generateabsensi') }}" method="POST">
                                 @csrf
-                                <button type="submit" class="btn btn-primary">Generate Absensi</button>
+                                <button type="submit" class="btn btn-soft-primary">Generate Absensi</button>
                             </form>
                         @else
                             <div></div>

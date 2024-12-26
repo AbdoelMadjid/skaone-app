@@ -26,7 +26,7 @@
                             <a class="btn btn-primary action"
                                 href="{{ route('administratorpkl.penempatan-prakerin.create') }}">Add</a>
                         @endcan --}}
-                        <a class="btn btn-primary action"
+                        <a class="btn btn-soft-primary action"
                             href="{{ route('administratorpkl.penempatan-prakerin.create') }}">Penempatan Peeserta</a>
                     </div>
                 </div>

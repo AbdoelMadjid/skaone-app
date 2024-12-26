@@ -19,11 +19,12 @@
                 <div class="card-header d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @yield('title')</h5>
                     <div>
-                        @can('create administratorpkl/perusahaan')
-                            <a class="btn btn-primary action" href="{{ route('administratorpkl.perusahaan.create') }}">Add</a>
-                        @endcan
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        <button type="button" class="btn btn-soft-primary" data-bs-toggle="modal"
                             data-bs-target="#importModal">Unggah</button>
+                        @can('create administratorpkl/perusahaan')
+                            <a class="btn btn-soft-primary action"
+                                href="{{ route('administratorpkl.perusahaan.create') }}">Tambah</a>
+                        @endcan
                     </div>
                 </div>
                 <div class="card-body">

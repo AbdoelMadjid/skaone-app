@@ -59,7 +59,7 @@ class PersonilSekolahDataTable extends DataTable
                 }
 
                 // Mengembalikan tag img dengan path gambar
-                return '<img src="' . $logoPath . '" alt="Photo" width="150" class="rounded-circle avatar-lg img-thumbnail user-profile-image" />';
+                return '<img src="' . $logoPath . '" alt="Photo" width="150" class="rounded-circle avatar-lg" />';
             })
             ->addColumn('login_count', function ($row) {
                 // Pastikan kolom login_count tersedia dalam query
@@ -157,7 +157,6 @@ class PersonilSekolahDataTable extends DataTable
             Column::make('jeniskelamin')->title('Jenis Kelamin')->addClass('text-center'),
             Column::computed('tempat_tanggal_lahir')->title('Tempat/Tanggal Lahir'),
             Column::make('jenispersonil')->title('Jenis Personil')->addClass('text-center'),
-            Column::make('aktif')->title('Status')->addClass('text-center'),
             Column::make('login_count')->title('Jumla Login')->addClass('text-center'),
             Column::make('photo')->addClass('text-center'),
             Column::computed('action')

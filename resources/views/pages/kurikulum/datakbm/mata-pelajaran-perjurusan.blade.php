@@ -22,10 +22,12 @@
                 <div class="card-header d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @lang('translation.mata-pelajaran')</h5>
                     <div>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#distribusiMapel"
-                            id="distribusiMapelBtn" title="Distribusikan Mapel yang dipilih" disabled>Distribusi
+                        <button type="button" class="btn btn-soft-primary" data-bs-toggle="modal"
+                            data-bs-target="#distribusiMapel" id="distribusiMapelBtn" title="Distribusikan Mapel yang dipilih"
+                            disabled>Distribusi
                             Mapel</button>
-                        <a class="btn btn-primary" href="{{ route('kurikulum.datakbm.mata-pelajaran.index') }}">Kembali</a>
+                        <a class="btn btn-soft-primary"
+                            href="{{ route('kurikulum.datakbm.mata-pelajaran.index') }}">Kembali</a>
                     </div>
                 </div>
                 <div class="card-body border-bottom-dashed border-bottom">

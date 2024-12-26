@@ -20,7 +20,7 @@
                     <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @yield('title')</h5>
                     <div>
                         @can('create kaprodipkl/modul-ajar')
-                            <a class="btn btn-primary action" href="{{ route('kaprodipkl.modul-ajar.create') }}">Add</a>
+                            <a class="btn btn-soft-primary action" href="{{ route('kaprodipkl.modul-ajar.create') }}">Tambah</a>
                         @endcan
                     </div>
                 </div>

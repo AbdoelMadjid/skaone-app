@@ -111,7 +111,7 @@
         <div class="file-manager-content w-100 p-4 pb-0">
             <div class="row mb-4">
                 <div class="col-auto order-1 d-block d-lg-none">
-                    <button type="button" class="btn btn-soft-success btn-icon btn-sm fs-16 file-menu-btn">
+                    <button type="button" class="btn btn-soft-primary btn-icon btn-sm fs-16 file-menu-btn">
                         <i class="ri-menu-2-fill align-bottom"></i>
                     </button>
                 </div>
@@ -123,7 +123,7 @@
 
                 <div class="col-auto order-2 order-sm-3 ms-auto">
                     <div class="hstack gap-2">
-                        <ul class="nav nav-pills card-header-pills nav-info bg-light" role="tablist">
+                        <ul class="nav nav-pills card-header-pills nav-primary bg-light" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" data-bs-toggle="tab" href="#nilai" role="tab">
                                     Rapor
@@ -193,7 +193,7 @@
                     <div class="col-lg-12">
                         <div class="gap-2 hstack justify-content-end mb-4">
                             <a href="{{ route('walikelas.downloadrankingsiswa') }}"
-                                class="btn btn-soft-info btn-sm">Download
+                                class="btn btn-soft-primary btn-sm">Download
                                 Ranking</a>
                         </div>
                     </div>

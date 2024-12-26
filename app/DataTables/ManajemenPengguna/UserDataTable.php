@@ -29,7 +29,7 @@ class UserDataTable extends DataTable
                 return $user->roles->pluck('name')->implode(', '); // Gabungkan nama role dengan koma
             })
             ->addColumn('reset_password', function ($row) {
-                return '<button type="button" class="btn btn-warning btn-reset-password" data-id="' . $row->id . '">Reset Password</button>';
+                return '<button type="button" class="btn btn-soft-danger btn-sm btn-reset-password" data-id="' . $row->id . '">Reset Password</button>';
             })
             ->addColumn('id_combined', function ($row) {
                 // Cek apakah personal_id atau nis ada
@@ -54,7 +54,7 @@ class UserDataTable extends DataTable
                     $options .= "<option value='{$id}'>{$name}</option>"; // No 'selected' attribute
                 }
 
-                return "<select class='form-control select-role-add' data-user-id='{$user->id}'>
+                return "<select class='form-control form-control-sm select-role-add' data-user-id='{$user->id}'>
                             <option value='' disabled selected>-- Select Role --</option>
                             {$options}
                         </select>";

@@ -22,19 +22,18 @@
                         </div>
                         <div class="col-sm-auto">
                             <div class="d-flex flex-wrap align-items-start gap-2">
-                                @can('create manajemensekolah/personil-sekolah')
-                                    <a class="btn btn-success add-btn action"
-                                        href="{{ route('manajemensekolah.personil-sekolah.create') }}"><i
-                                            class="ri-add-line align-bottom me-1"></i> Add Personil</a>
-                                @endcan
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                <button type="button" class="btn btn-soft-danger" data-bs-toggle="modal"
                                     data-bs-target="#simpanakunPersonil" id="simpanakunPersonilBtn"
                                     title="Buat Akun Terpilih" disabled>Buat Akun Personil</button>
-                                <a href="{{ route('ps_exportExcel') }}" class="btn btn-info"><i
+                                <a href="{{ route('ps_exportExcel') }}" class="btn btn-soft-primary"><i
                                         class="ri-file-upload-line align-bottom me-1"></i> Unduh</a>
-                                <button type="button" class="btn btn-info" data-bs-toggle="modal"
+                                <button type="button" class="btn btn-soft-primary" data-bs-toggle="modal"
                                     data-bs-target="#importModal"><i class="ri-file-download-line align-bottom me-1"></i>
                                     Unggah</button>
+                                @can('create manajemensekolah/personil-sekolah')
+                                    <a class="btn btn-soft-primary add-btn action"
+                                        href="{{ route('manajemensekolah.personil-sekolah.create') }}">Tambah</a>
+                                @endcan
                             </div>
                         </div>
                     </div>

@@ -26,9 +26,10 @@
                 <div class="card-header d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @yield('title') - {{ $fullName }}</h5>
                     <div>
-                        <button type="button" class="btn btn-soft-info" data-bs-toggle="modal" data-bs-target="#buatMateriAjar"
-                            id="buatMateriAjarBtn" title="Buat Tujuan Pembelajaran">Tambah Tujuan Pembelajaran</button>
-                        <button class="btn btn-soft-warning" type="button" data-bs-toggle="collapse"
+                        <button type="button" class="btn btn-soft-primary" data-bs-toggle="modal"
+                            data-bs-target="#buatMateriAjar" id="buatMateriAjarBtn" title="Buat Tujuan Pembelajaran">Tambah
+                            Tujuan Pembelajaran</button>
+                        <button class="btn btn-soft-primary" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseWithicon2" aria-expanded="false" aria-controls="collapseWithicon2"
                             title="Cek Tujuan Pembelajaran">
                             <i class="ri-filter-2-line"></i>

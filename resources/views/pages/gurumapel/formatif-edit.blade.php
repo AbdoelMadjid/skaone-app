@@ -24,10 +24,10 @@
                             data-kel-mapel="{{ $data->kel_mapel }}" data-id-personil="{{ $data->id_personil }}">
                             <i class="ri-delete-bin-2-line"></i>
                         </button>
-                        <a class="btn btn-soft-info" href="{{ route('gurumapel.penilaian.formatif.index') }}">Kembali</a>
+                        <a class="btn btn-soft-primary" href="{{ route('gurumapel.penilaian.formatif.index') }}">Kembali</a>
                         @if (auth()->check() &&
                                 auth()->user()->hasAnyRole(['master']))
-                            <button class="btn btn-soft-info" onclick="window.history.back();">
+                            <button class="btn btn-soft-primary" onclick="window.history.back();">
                                 Kembali Ke Arsip
                             </button>
                         @endif
