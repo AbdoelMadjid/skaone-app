@@ -91,6 +91,9 @@ class AppProfilDataTable extends DataTable
                 Button::make('print'),
                 Button::make('reset'),
                 Button::make('reload')
+            ])->parameters([
+                'lengthChange' => false, // Menghilangkan dropdown "Show entries"
+                'searching' => false,    // Menghilangkan kotak pencarian
             ]);
     }
 
@@ -100,7 +103,6 @@ class AppProfilDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('app_nama'),
             Column::make('app_deskripsi'),
             Column::make('app_tahun')->addClass('text-center'),

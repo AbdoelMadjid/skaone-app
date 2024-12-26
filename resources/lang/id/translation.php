@@ -455,5 +455,7 @@ return [
     'rapor-peserta-didik' => 'Rapor Peserta Didik',
     'ujian-sumatif' => 'Ujian Sumatif',
 
+    'daftar' => 'Daftar',
+
 
 ];

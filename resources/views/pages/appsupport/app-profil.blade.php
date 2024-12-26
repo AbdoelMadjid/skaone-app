@@ -15,9 +15,9 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
-                    <div class="card-header d-flex align-items-center">
-                        <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @lang('translation.app-profil')</h5>
-                    </div>
+                    {{-- <div class="card-header d-flex align-items-center">
+                        <h5 class="card-title mb-0 flex-grow-1">@lang('translation.app-profil')</h5>
+                    </div> --}}
                     <div class="card-body">
                         {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
                     </div>

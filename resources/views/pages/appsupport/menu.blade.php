@@ -14,13 +14,17 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @lang('translation.menu')</h5>
+                    <h5 class="card-title mb-0 flex-grow-1">@yield('title')</h5>
                     <div>
                         @can('create appsupport/menu')
-                            <a class="btn btn-primary action" href="{{ route('appsupport.menu.create') }}">Add</a>
+                            <a class="btn btn-soft-info btn-icon action" href="{{ route('appsupport.menu.create') }}"
+                                data-bs-toggle="tooltip" data-bs-placement="left" title="Tambah Menu"><i
+                                    class="ri-add-line fs-16"></i></a>
                         @endcan
                         @can('sort appsupport/menu')
-                            <a class="btn btn-info sort" href="{{ route('appsupport.menu.sort') }}">Sort Menu</a>
+                            <a class="btn btn-soft-success btn-icon sort" href="{{ route('appsupport.menu.sort') }}"
+                                data-bs-toggle="tooltip" data-bs-placement="left" title="Sort Menu"><i
+                                    class="ri-sort-asc fs-16"></i></a>
                         @endcan
                     </div>
                 </div>
