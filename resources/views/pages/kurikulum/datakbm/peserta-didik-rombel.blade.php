@@ -83,6 +83,17 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-lg-auto">
+                                <div>
+                                    <select class="form-control" data-plugin="choices" data-choices
+                                        data-choices-search-false name="choices-single-default" id="idTingkat">
+                                        <option value="all" selected>Pilih Tingkat</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                    </select>
+                                </div>
+                            </div>
                             <!--end col-->
                             <div class="col-lg-auto">
                                 <div>
@@ -129,7 +140,7 @@
                 table.search(searchValue).draw(); // Lakukan pencarian dan gambar ulang tabel
             });
 
-            $('#idThnAjaran, #idKodeKK, #idRombel').on('change', function() {
+            $('#idThnAjaran, #idKodeKK, #idTingkat, #idRombel').on('change', function() {
                 table.ajax.reload(null, false); // Reload tabel saat dropdown berubah
             });
 
@@ -137,6 +148,7 @@
             table.on('preXhr.dt', function(e, settings, data) {
                 data.thajarSiswa = $('#idThnAjaran').val(); // Ambil nilai dari dropdown idKK
                 data.kodeKKSiswa = $('#idKodeKK').val(); // Ambil nilai dari dropdown idJenkel
+                data.tingkatSiswa = $('#idTingkat').val(); // Ambil nilai dari dropdown idJenkel
                 data.rombelSiswa = $('#idRombel').val(); // Ambil nilai dari dropdown idJenkel
             });
         }
@@ -145,27 +157,29 @@
         function checkDisableRombel() {
             var tahunAjaran = $('#idThnAjaran').val();
             var kodeKK = $('#idKodeKK').val();
+            var tingKat = $('#idTingkat').val();
 
             // Jika salah satu dari Tahun Ajaran atau Kompetensi Keahlian belum dipilih
-            if (tahunAjaran === 'all' || kodeKK === 'all') {
+            if (tahunAjaran === 'all' || kodeKK === 'all' || tingKat === 'all') {
                 // Disable dropdown Rombel
                 $('#idRombel').attr('disabled', true);
                 $('#idRombel').empty().append('<option value="all" selected>Rombel</option>'); // Kosongkan pilihan Rombel
             } else {
                 // Jika sudah dipilih keduanya, enable dropdown Rombel dan muat datanya
                 $('#idRombel').attr('disabled', false);
-                loadRombelData(tahunAjaran, kodeKK); // Panggil AJAX untuk load data
+                loadRombelData(tahunAjaran, kodeKK, tingKat); // Panggil AJAX untuk load data
             }
         }
 
         // Function untuk load data rombel sesuai pilihan Tahun Ajaran dan Kompetensi Keahlian
-        function loadRombelData(tahunAjaran, kodeKK) {
+        function loadRombelData(tahunAjaran, kodeKK, tingKat) {
             $.ajax({
                 url: "{{ route('kurikulum.datakbm.getRombel') }}", // Route untuk request data rombel
                 type: "GET",
                 data: {
                     tahun_ajaran: tahunAjaran,
-                    kode_kk: kodeKK
+                    kode_kk: kodeKK,
+                    tingkat: tingKat
                 },
                 success: function(data) {
                     console.log('Response dari server:', data); // Cek apakah response data sudah benar
@@ -195,140 +209,13 @@
         $(document).ready(function() {
 
             // Event listener ketika dropdown Tahun Ajaran atau Kompetensi Keahlian berubah
-            $('#idThnAjaran, #idKodeKK').on('change', function() {
+            $('#idThnAjaran, #idKodeKK, #idTingkat').on('change', function() {
                 checkDisableRombel(); // Panggil fungsi untuk mengecek apakah Rombel harus di-disable
             });
 
             // Cek status Rombel saat halaman pertama kali dimuat
             checkDisableRombel();
 
-            /* $('#tahunajaran, #kode_kk, #tingkat').on('change', function() {
-                                                            // Clear table whenever any of the dropdowns change
-                                                            $('#selected_datasiswa_tbody').empty();
-
-                                                            var tahunajaran = $('#tahunajaran').val();
-                                                            var kode_kk = $('#kode_kk').val();
-                                                            var tingkat = $('#tingkat').val();
-
-                                                            if (tahunajaran && kode_kk && tingkat) {
-                                                                $.ajax({
-                                                                    url: "{{ route('kurikulum.datakbm.get-rombels') }}",
-                                                                    type: "GET",
-                                                                    data: {
-                                                                        tahunajaran: tahunajaran,
-                                                                        kode_kk: kode_kk,
-                                                                        tingkat: tingkat
-                                                                    },
-                                                                    success: function(data) {
-                                                                        $('#checkbox-kode-rombel').empty();
-                                                                        $('#checkbox-rombel').empty();
-                                                                        $('#jmlsiswa-rombel').empty();
-
-                                                                        $.each(data, function(index, item) {
-                                                                            $('#checkbox-kode-rombel').append(`
-            <div class="form-check form-switch form-check-inline">
-                <input class="form-check-input kode_rombel_checkbox"
-                       type="checkbox"
-                       name="kode_rombel[]"
-                       value="${item.kode_rombel}"
-                       id="kode_rombel_${item.kode_rombel}">
-                <label class="form-check-label" for="kode_rombel_${item.kode_rombel}">
-                    ${item.kode_rombel}
-                </label>
-            </div><br>
-        `);
-                                                                            $('#checkbox-rombel').append(`
-            <div class="form-check form-switch form-check-inline">
-                <input class="form-check-input rombel_checkbox"
-                       type="checkbox"
-                       name="rombel[]"
-                       value="${item.rombel}"
-                       id="rombel_${item.kode_rombel}">
-                <label class="form-check-label" for="rombel_${item.kode_rombel}">
-                    ${item.rombel}
-                </label>
-            </div><br>
-        `);
-                                                                            $('#jmlsiswa-rombel').append(
-                                                                                `${item.rombel}: ${item.jumlah_siswa}<br>`);
-                                                                        });
-
-                                                                        $('.kode_rombel_checkbox').on('change', function() {
-                                                                            var rombel = $(this).val();
-                                                                            if ($(this).is(':checked')) {
-                                                                                $('#rombel_' + rombel).prop('checked', true);
-                                                                                fetchSelectedSiswaData([
-                                                                                    rombel
-                                                                                ]); // Fetch data for the selected rombel
-                                                                            } else {
-                                                                                $('#rombel_' + rombel).prop('checked', false);
-                                                                                $('#selected_datasiswa_tbody tr[data-rombel="' +
-                                                                                        rombel + '"]')
-                                                                                    .remove();
-                                                                            }
-                                                                        });
-
-                                                                        $('#check_all').on('change', function() {
-                                                                            var isChecked = $(this).is(':checked');
-                                                                            $('.kode_rombel_checkbox').each(function() {
-                                                                                $(this).prop('checked', isChecked);
-                                                                                var rombel = $(this).val();
-                                                                                $('#rombel_' + rombel).prop('checked',
-                                                                                    isChecked);
-                                                                                if (isChecked) {
-                                                                                    fetchSelectedSiswaData([
-                                                                                        rombel
-                                                                                    ]); // Fetch data if all are checked
-                                                                                } else {
-                                                                                    $('#selected_datasiswa_tbody')
-                                                                                        .empty(); // Clear the table if unchecked
-                                                                                }
-                                                                            });
-                                                                        });
-                                                                    }
-                                                                });
-                                                            } else {
-                                                                // Clear the rombel checkboxes and table if dropdown values are incomplete
-                                                                $('#checkbox-kode-rombel').empty();
-                                                                $('#checkbox-rombel').empty();
-                                                                $('#jmlsiswa-rombel').empty();
-                                                                $('#selected_datasiswa_tbody').empty();
-                                                            }
-                                                        }); */
-
-            /* function fetchSelectedSiswaData(rombels) {
-                                                                $.ajax({
-                                                                    url: "{{ route('kurikulum.datakbm.get-student-data') }}", // Define this route in your controller
-                                                                    type: "POST",
-                                                                    data: {
-                                                                        rombels: rombels,
-                                                                        _token: "{{ csrf_token() }}"
-                                                                    },
-                                                                    success: function(data) {
-                                                                        // Clear existing rows to avoid duplicate numbering on re-fetch
-                                                                        $('#selected_datasiswa_tbody').empty();
-
-                                                                        if (data.length > 0) {
-                                                                            $('#selected_datasiswa_list').show(); // Show table when there is data
-
-                                                                            $.each(data, function(index, item) {
-                                                                                $('#selected_datasiswa_tbody').append(`
-            <tr data-rombel="${item.kode_rombel}">
-                <td>${index + 1}</td> <!-- No. Column -->
-                <td>${item.rombel}</td>
-            <td>${item.nis}</td>
-            <td>${item.nama_siswa}</td>
-            <td>${item.foto}</td>
-            <td>${item.email}</td>
-            </tr>
-        `);
-                                                                            });
-                                                                        } else {
-                                                                            $('#selected_datasiswa_list').hide(); // Hide table if no data
-                                                                        }
-                                                                    }
-                                                                });
-                                                            } */
             $('#tahunajaran, #kode_kk, #tingkat').on('change', function() {
                 // Clear table whenever any of the dropdowns change
                 $('#selected_datasiswa_tbody').empty();

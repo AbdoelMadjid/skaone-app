@@ -55,6 +55,10 @@ class PesertaDidikRombelDataTable extends DataTable
             $query->where('tahun_ajaran', request('thAjar'));
         }
 
+        if (request()->has('tingKat') && request('tingKat') != 'all') {
+            $query->where('peserta_didik_rombels.rombel_tingkat', request('tingKat'));
+        }
+
         if (request()->has('kodeKK') && request('kodeKK') != 'all') {
             $query->where('peserta_didik_rombels.kode_kk', request('kodeKK'));
         }
@@ -95,6 +99,7 @@ class PesertaDidikRombelDataTable extends DataTable
                     d.search = $(".search").val();
                     d.thAjar = $("#idThnAjaran").val();
                     d.kodeKK = $("#idKodeKK").val();
+                    d.tingKat = $("#idTingkat").val();
                     d.romBel = $("#idRombel").val();
                 }'
             ])

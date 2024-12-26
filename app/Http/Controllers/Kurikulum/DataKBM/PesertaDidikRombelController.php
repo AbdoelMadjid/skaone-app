@@ -213,10 +213,12 @@ class PesertaDidikRombelController extends Controller
     {
         $tahunAjaran = $request->get('tahun_ajaran');
         $kodeKK = $request->get('kode_kk');
+        $tingKat = $request->get('tingkat');
 
         // Mengambil data rombongan belajar sesuai tahun ajaran dan kompetensi keahlian
         $rombonganBelajar = RombonganBelajar::where('tahunajaran', $tahunAjaran)
             ->where('id_kk', $kodeKK)
+            ->where('tingkat', $tingKat)
             ->pluck('rombel', 'kode_rombel'); // Mengambil kolom rombel dan kode_rombel
 
         return response()->json($rombonganBelajar); // Mengembalikan data sebagai JSON
