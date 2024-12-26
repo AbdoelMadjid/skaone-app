@@ -68,7 +68,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex align-items-center">
-                    <h5 class="card-title">Backup Database</h5>
+                    <h5 class="card-title">Download hasil Backup Database</h5>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered">
@@ -126,7 +126,7 @@
             // Inisialisasi DataTable
             var table = $('#tables-list').DataTable({
                 dom: 'Bfrtip',
-                pageLength: 25
+                //pageLength: 10
                 // Pengaturan lainnya...
             });
             // Ketika nama tabel diklik, toggle checkbox yang sesuai
