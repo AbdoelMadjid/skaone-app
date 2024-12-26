@@ -36,74 +36,49 @@ class BackupDbController extends Controller
             return redirect()->back()->with('error', 'Tidak ada tabel yang dipilih.');
         }
 
-        $availableTables = array_map(
-            fn($table) => current((array) $table),
-            DB::select('SHOW TABLES')
-        );
-
-        foreach ($tables as $table) {
-            if (!in_array($table, $availableTables)) {
-                return redirect()->back()->with('error', "Tabel '$table' tidak valid.");
-            }
-        }
-
         $backupDir = storage_path('backups/' . now()->format('Y-m-d'));
         if (!is_dir($backupDir)) {
             mkdir($backupDir, 0755, true);
         }
 
-        $successful = [];
-        $failed = [];
-
         foreach ($tables as $table) {
             $fileName = $backupDir . "/backup-{$table}.sql";
-            $sqlContent = '';
 
             try {
-                // Ambil struktur tabel
-                $columns = DB::getSchemaBuilder()->getColumnListing($table);
-                $createTableQuery = "DROP TABLE IF EXISTS `{$table}`;\n";
-                $createTableQuery .= "CREATE TABLE `{$table}` (\n";
+                // Generate CREATE TABLE statement
+                $createTableQuery = DB::select("SHOW CREATE TABLE `$table`")[0]->{'Create Table'};
 
-                // Ambil detail kolom
-                foreach ($columns as $column) {
-                    $columnDetails = DB::select("SHOW COLUMNS FROM `{$table}` LIKE '{$column}'")[0];
-                    $createTableQuery .= "`{$column}` {$columnDetails->Type},\n";
+                // Get data from the table
+                $data = DB::table($table)->get();
+                $columns = Schema::getColumnListing($table);
+
+                // Generate INSERT INTO statement
+                $insertValues = [];
+                foreach ($data as $row) {
+                    $values = array_map(
+                        fn($value) => is_null($value) ? 'NULL' : "'" . addslashes($value) . "'",
+                        (array) $row
+                    );
+                    $insertValues[] = '(' . implode(', ', $values) . ')';
                 }
 
-                $createTableQuery = rtrim($createTableQuery, ",\n") . "\n);";
+                $insertQuery = sprintf(
+                    "INSERT INTO `%s` (`%s`) VALUES\n%s;",
+                    $table,
+                    implode('`, `', $columns),
+                    implode(",\n", $insertValues)
+                );
 
-                // Menambahkan CREATE TABLE query ke SQL content
-                $sqlContent .= $createTableQuery . "\n\n";
+                // Combine CREATE TABLE and INSERT statements
+                $sqlContent = $createTableQuery . ";\n\n--\n-- Dumping data for table `$table`\n--\n\n" . $insertQuery;
 
-                // Ambil data dari tabel dan buat query INSERT
-                $rows = DB::table($table)->get();
-                foreach ($rows as $row) {
-                    $values = [];
-                    foreach ($columns as $column) {
-                        $values[] = $this->quoteValue($row->$column);
-                    }
-                    $insertQuery = "INSERT INTO `{$table}` (`" . implode('`, `', $columns) . "`) VALUES (" . implode(', ', $values) . ");\n";
-                    $sqlContent .= $insertQuery;
-                }
-
-                // Simpan hasil SQL ke file
+                // Save to file
                 file_put_contents($fileName, $sqlContent);
 
-                // Tandai backup berhasil
-                $successful[] = $table;
+                session()->flash('toast_success', "Backup berhasil untuk tabel: $table");
             } catch (\Exception $e) {
-                // Jika ada error, tandai sebagai gagal
-                $failed[] = $table;
+                session()->flash('error', "Backup gagal untuk tabel: $table. Error: " . $e->getMessage());
             }
-        }
-
-        if (!empty($successful)) {
-            session()->flash('toast_success', 'Backup berhasil untuk tabel: ' . implode(', ', $successful));
-        }
-
-        if (!empty($failed)) {
-            session()->flash('error', 'Backup gagal untuk tabel: ' . implode(', ', $failed));
         }
 
         return redirect()->back();
