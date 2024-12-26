@@ -1,11 +1,7 @@
 @foreach ($kompetensiArray as $kompetensi => $data)
-    <div class="d-flex align-items-center py-2">
+    <div class="d-flex align-items-center py-3">
         <div class="flex-shrink-0 me-3">
-            <div class="avatar-xs">
-                <div class="avatar-title bg-light rounded-circle text-muted fs-16">
-                    {{ $kompetensi }}
-                </div>
-            </div>
+            {{ $kompetensi }} ({{ $kompetensiArray[$kompetensi]['total'] }})
         </div>
         <div class="flex-grow-1">
             <div class="progress animated-progress custom-progress progress-label">
