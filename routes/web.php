@@ -157,6 +157,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('referensi', ReferensiController::class);
         Route::resource('backup-db', BackupDbController::class);
         Route::post('/backup-db/process', [BackupDbController::class, 'backupSelectedTables'])->name('backup-db.process');
+        Route::delete('/backup-db/delete/{fileName}', [BackupDbController::class, 'deleteBackupFile'])->name('backup-db.delete');
 
         Route::resource('impor-data-master', ImporDataMasterController::class);
         Route::resource('ekspor-data-master', EksporDataMasterController::class);

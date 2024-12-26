@@ -90,6 +90,13 @@
                                     <td>
                                         <a href="{{ asset('storage/backups/' . now()->format('Y-m-d') . '/' . $file) }}"
                                             class="btn btn-info btn-sm" download>Download</a>
+                                        <!-- Tombol Hapus -->
+                                        <form action="{{ route('appsupport.backup-db.delete', $file) }}" method="POST"
+                                            style="display:inline-block;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach

@@ -88,6 +88,17 @@ class BackupDbController extends Controller
         return redirect()->back();
     }
 
+    public function deleteBackupFile($fileName)
+    {
+        $filePath = storage_path('backups/' . now()->format('Y-m-d') . '/' . $fileName);
+
+        if (file_exists($filePath)) {
+            unlink($filePath);  // Menghapus file
+            return redirect()->back()->with('toast_success', 'File backup berhasil dihapus.');
+        }
+
+        return redirect()->back()->with('error', 'File tidak ditemukan.');
+    }
     /**
      * Show the form for creating a new resource.
      */
