@@ -1,0 +1,58 @@
+-- MySQL dump 10.13  Distrib 5.7.33, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: web-skaone
+-- ------------------------------------------------------
+-- Server version	8.0.30
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `galeries`
+--
+
+DROP TABLE IF EXISTS `galeries`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `galeries` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `category` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `likes` int NOT NULL DEFAULT '0',
+  `comments` int NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `galeries`
+--
+
+LOCK TABLES `galeries` WRITE;
+/*!40000 ALTER TABLE `galeries` DISABLE KEYS */;
+INSERT INTO `galeries` VALUES (11,'1730178850.jpg','Tersenyum Manis','EBAH HABIBAH','Siswa',0,0,'2024-10-28 22:14:11','2024-10-28 22:14:11'),(12,'1730178913.jpg','Rehat Sejenak','EBAH HABIBAH','Siswa',0,0,'2024-10-28 22:15:13','2024-10-28 22:15:13'),(13,'1730178956.jpg','Kegiatan Keagamaan','EBAH HABIBAH','Event',0,0,'2024-10-28 22:15:56','2024-10-28 22:15:56'),(14,'1730178992.jpg','Berkesenian','FEBBY MUCHAMAD DARMADI','Event',0,0,'2024-10-28 22:16:32','2024-10-28 22:16:32'),(15,'1730179060.jpg','Berkumpul dan tersenyum','FEBBY MUCHAMAD DARMADI','Siswa',0,0,'2024-10-28 22:17:40','2024-10-28 22:17:40'),(16,'1730179132.jpg','Salam Sapa Senyum','FEBBY MUCHAMAD DARMADI','Intermezo',0,0,'2024-10-28 22:18:52','2024-10-28 22:18:52'),(17,'1730180439.jpg','Praktek Siswa','ABDUL MADJID','KBM Kita',0,0,'2024-10-28 22:40:43','2024-10-28 22:40:43'),(18,'1730198247.jpg','Eskul Karate','FEBBY MUCHAMAD DARMADI','Eskul',0,0,'2024-10-29 03:37:27','2024-10-29 03:37:27'),(19,'1730198279.jpg','Eskul Pramuka','FEBBY MUCHAMAD DARMADI','Eskul',0,0,'2024-10-29 03:38:00','2024-10-29 03:38:00'),(20,'1730198304.jpg','Eskul Pasbraka','FEBBY MUCHAMAD DARMADI','Eskul',0,0,'2024-10-29 03:38:24','2024-10-29 03:38:24'),(21,'1730198321.jpg','Eskul PKS','FEBBY MUCHAMAD DARMADI','Eskul',0,0,'2024-10-29 03:38:41','2024-10-29 03:38:41'),(22,'1730198350.jpg','Kegiatan Keagamaan','FEBBY MUCHAMAD DARMADI','Event',0,0,'2024-10-29 03:39:10','2024-10-29 03:39:10'),(23,'1730198444.jpg','Upacara Bendera','EBAH HABIBAH','Guru Hebat',0,0,'2024-10-29 03:40:44','2024-10-29 03:40:44'),(24,'1730198515.jpg','Kewirausahaan','EBAH HABIBAH','Event',0,0,'2024-10-29 03:41:55','2024-10-29 03:41:55');
+/*!40000 ALTER TABLE `galeries` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2024-12-26 11:41:20

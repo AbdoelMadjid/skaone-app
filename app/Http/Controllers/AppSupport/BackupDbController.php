@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AppSupport\BackupDbRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class BackupDbController extends Controller
 {
@@ -28,31 +29,56 @@ class BackupDbController extends Controller
             return redirect()->back()->with('error', 'Tidak ada tabel yang dipilih.');
         }
 
+        $availableTables = array_map(
+            fn($table) => current((array) $table),
+            DB::select('SHOW TABLES')
+        );
+
         foreach ($tables as $table) {
-            $count = DB::table($table)->count();
-
-            if ($count == 0) {
-                // Informasi bahwa tabel kosong (jika diperlukan)
-                continue;
+            if (!in_array($table, $availableTables)) {
+                return redirect()->back()->with('error', "Tabel '$table' tidak valid.");
             }
+        }
 
-            // Lanjutkan dengan proses backup meskipun kosong
-            $fileName = storage_path("app/backup-{$table}.sql");
+        $backupDir = storage_path('backups/' . now()->format('Y-m-d'));
+        if (!is_dir($backupDir)) {
+            mkdir($backupDir, 0755, true);
+        }
+
+        $successful = [];
+        $failed = [];
+
+        foreach ($tables as $table) {
+            $fileName = $backupDir . "/backup-{$table}.sql";
 
             $command = sprintf(
                 'mysqldump --user=%s --password=%s --host=%s %s %s > %s',
-                env('DB_USERNAME'),
-                env('DB_PASSWORD'),
-                env('DB_HOST'),
-                env('DB_DATABASE'),
-                $table,
-                $fileName
+                escapeshellarg(env('DB_USERNAME')),
+                escapeshellarg(env('DB_PASSWORD')),
+                escapeshellarg(env('DB_HOST')),
+                escapeshellarg(env('DB_DATABASE')),
+                escapeshellarg($table),
+                escapeshellarg($fileName)
             );
 
-            exec($command);
+            exec($command, $output, $returnVar);
+
+            if ($returnVar === 0) {
+                $successful[] = $table;
+            } else {
+                $failed[] = $table;
+            }
         }
 
-        return redirect()->back()->with('success', 'Backup berhasil dibuat untuk tabel yang dipilih.');
+        if (!empty($successful)) {
+            session()->flash('toast_success', 'Backup berhasil untuk tabel: ' . implode(', ', $successful));
+        }
+
+        if (!empty($failed)) {
+            session()->flash('error', 'Backup gagal untuk tabel: ' . implode(', ', $failed));
+        }
+
+        return redirect()->back();
     }
 
     /**
