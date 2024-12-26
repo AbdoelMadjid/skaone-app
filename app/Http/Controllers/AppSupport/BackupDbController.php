@@ -17,8 +17,15 @@ class BackupDbController extends Controller
     public function index()
     {
         $tables = DB::select('SHOW TABLES');
+        // Mendapatkan daftar file .sql yang sudah di-backup
 
-        return view('pages.appsupport.backup-db', compact('tables'));
+        $backupFiles = collect(scandir(storage_path('backups/' . now()->format('Y-m-d'))))
+            ->filter(function ($file) {
+                return pathinfo($file, PATHINFO_EXTENSION) === 'sql';
+            })
+            ->values();
+
+        return view('pages.appsupport.backup-db', compact('tables', 'backupFiles'));
     }
 
     public function backupSelectedTables(Request $request)

@@ -64,6 +64,41 @@
             <!--end col-->
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header d-flex align-items-center">
+                    <h5 class="card-title">Backup Database</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama File</th>
+                                <th>Ukuran</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($backupFiles as $index => $file)
+                                <tr>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $file }}</td>
+                                    <td>{{ number_format(filesize(storage_path('backups/' . now()->format('Y-m-d') . '/' . $file)) / 1024, 2) }}
+                                        KB</td>
+                                    <td>
+                                        <a href="{{ asset('storage/backups/' . now()->format('Y-m-d') . '/' . $file) }}"
+                                            class="btn btn-info btn-sm" download>Download</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('script')
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
