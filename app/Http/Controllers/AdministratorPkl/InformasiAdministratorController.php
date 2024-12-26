@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\AdministratorPkl;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -11,104 +12,58 @@ class InformasiAdministratorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Query untuk menghitung jumlah HADIR berdasarkan singkatan
-        $dataHadir = DB::table('absensi_siswa_pkls')
+        $selectedDate = $request->input('tanggal', Carbon::today());
+        $selectedDate = Carbon::parse($selectedDate);
+
+        // Ambil data absensi untuk tanggal yang dipilih
+        $kompetensiData = DB::table('absensi_siswa_pkls')
             ->join('peserta_didiks', 'absensi_siswa_pkls.nis', '=', 'peserta_didiks.nis')
             ->join('kompetensi_keahlians', 'peserta_didiks.kode_kk', '=', 'kompetensi_keahlians.idkk')
             ->select(
-                'kompetensi_keahlians.singkatan as category',
-                DB::raw('COUNT(absensi_siswa_pkls.status) as jumlah')
+                'kompetensi_keahlians.singkatan',
+                DB::raw('COUNT(CASE WHEN absensi_siswa_pkls.status = "HADIR" THEN 1 END) as hadir'),
+                DB::raw('COUNT(absensi_siswa_pkls.nis) as total')
             )
-            ->where('absensi_siswa_pkls.status', 'HADIR')
+            ->whereDate('absensi_siswa_pkls.tanggal', $selectedDate)
             ->groupBy('kompetensi_keahlians.singkatan')
             ->get();
 
-        // Memisahkan data menjadi categories dan series
-        $categories = $dataHadir->pluck('category')->toArray();
-        $seriesData = $dataHadir->pluck('jumlah')->toArray();
+        // Array default kompetensi jika data kosong
+        $kompetensiArray = [
+            'RPL' => ['total' => 122, 'hadir' => 0],
+            'TKJ' => ['total' => 136, 'hadir' => 0],
+            'BD' => ['total' => 47, 'hadir' => 0],
+            'MP' => ['total' => 168, 'hadir' => 0],
+            'AK' => ['total' => 138, 'hadir' => 0],
+        ];
 
+        // Proses hasil query dan masukkan ke array kompetensi
+        foreach ($kompetensiData as $data) {
+            if (array_key_exists($data->singkatan, $kompetensiArray)) {
+                $kompetensiArray[$data->singkatan]['hadir'] = $data->hadir;
+            }
+        }
 
-        // Query untuk jumlah HADIR berdasarkan kompetensi keahlian dan tanggal
-        $dataHadirByKK = DB::table('absensi_siswa_pkls')
-            ->join('peserta_didiks', 'absensi_siswa_pkls.nis', '=', 'peserta_didiks.nis')
-            ->join('kompetensi_keahlians', 'peserta_didiks.kode_kk', '=', 'kompetensi_keahlians.idkk')
-            ->select(
-                'kompetensi_keahlians.singkatan as kompetensi',
-                DB::raw('DATE(absensi_siswa_pkls.tanggal) as tanggal'),
-                DB::raw('COUNT(absensi_siswa_pkls.status) as jumlah')
-            )
-            ->where('absensi_siswa_pkls.status', 'HADIR')
-            ->groupBy('kompetensi', DB::raw('DATE(absensi_siswa_pkls.tanggal)'))
-            ->orderBy('tanggal', 'ASC')
-            ->get();
+        // Hitung persentase kehadiran
+        foreach ($kompetensiArray as $kompetensi => $data) {
+            $persentase = ($data['hadir'] / $data['total']) * 100;
+            $kompetensiArray[$kompetensi]['persentase'] = round($persentase, 2);
+        }
 
-        // Kelompokkan data berdasarkan kompetensi
-        $groupedData = $dataHadirByKK->groupBy('kompetensi')->map(function ($items) {
-            return $items->map(function ($item) {
-                return [
-                    'x' => $item->tanggal, // Tanggal
-                    'y' => $item->jumlah   // Jumlah HADIR
-                ];
-            });
-        });
+        // Cek apakah request AJAX atau bukan
+        if ($request->ajax()) {
+            return view('pages.administratorpkl._kompetensi-data', compact('kompetensiArray'));
+        }
 
-
-        // Query untuk data kolom (jumlah hadir per kompetensi per hari)
-        $dataColumn = DB::table('absensi_siswa_pkls')
-            ->join('peserta_didiks', 'absensi_siswa_pkls.nis', '=', 'peserta_didiks.nis')
-            ->join('kompetensi_keahlians', 'peserta_didiks.kode_kk', '=', 'kompetensi_keahlians.idkk')
-            ->select(
-                'kompetensi_keahlians.singkatan as kompetensi',
-                DB::raw('DATE(absensi_siswa_pkls.tanggal) as tanggal'),
-                DB::raw('COUNT(absensi_siswa_pkls.status) as jumlah_hadir')
-            )
-            ->where('absensi_siswa_pkls.status', 'HADIR')
-            ->groupBy('kompetensi', DB::raw('DATE(absensi_siswa_pkls.tanggal)'))
-            ->orderBy('tanggal', 'ASC')
-            ->get();
-
-        // Query untuk data garis (contoh: total siswa per hari)
-        $dataLine = DB::table('absensi_siswa_pkls')
-            ->select(
-                DB::raw('DATE(tanggal) as tanggal'),
-                DB::raw('COUNT(DISTINCT nis) as total_siswa_hadir')
-            )
-            ->where('status', 'HADIR')
-            ->groupBy(DB::raw('DATE(tanggal)'))
-            ->orderBy('tanggal', 'ASC')
-            ->get();
-
-        // Kelompokkan data kolom berdasarkan kompetensi
-        $groupedColumnData = $dataColumn->groupBy('kompetensi')->map(function ($items) {
-            return $items->map(function ($item) {
-                return [
-                    'x' => $item->tanggal,
-                    'y' => $item->jumlah_hadir
-                ];
-            });
-        });
-
-        // Format data garis
-        $lineData = $dataLine->map(function ($item) {
-            return [
-                'x' => $item->tanggal,
-                'y' => $item->total_siswa_hadir
-            ];
-        });
-
-        return view(
-            'pages.administratorpkl.informasi-administrator',
-            compact(
-                'categories',
-                'seriesData',
-                'groupedData',
-                'groupedColumnData',
-                'lineData'
-            )
-        );
+        // Jika bukan AJAX, return halaman biasa
+        return view('pages.administratorpkl.informasi-administrator', [
+            'kompetensiArray' => $kompetensiArray,
+            'selectedDate' => $selectedDate
+        ]);
     }
+
 
     /**
      * Show the form for creating a new resource.
