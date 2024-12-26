@@ -126,7 +126,7 @@
             // Inisialisasi DataTable
             var table = $('#tables-list').DataTable({
                 dom: 'Bfrtip',
-                //pageLength: 10
+                pageLength: 20
                 // Pengaturan lainnya...
             });
             // Ketika nama tabel diklik, toggle checkbox yang sesuai
