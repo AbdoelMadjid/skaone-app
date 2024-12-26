@@ -2,6 +2,7 @@
 /node_modules
 /images
 /storage/*.key
+/storage/backups
 /vendor
 offline.html
 .env
