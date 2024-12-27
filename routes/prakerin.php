@@ -50,6 +50,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('peserta-prakerin', PesertaPrakerinController::class);
         Route::resource('penempatan-prakerin', PenempatanPrakerinController::class);
         Route::resource('modul-ajar', ModulAjarController::class);
+        Route::resource('informasi-prakerin', InformasiAdministratorController::class);
     });
 
     Route::group(['prefix' => 'pembimbingpkl', 'as' => 'pembimbingpkl.'], function () {

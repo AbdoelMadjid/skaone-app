@@ -34,7 +34,7 @@
                     <!-- Tempat untuk menampilkan data -->
                     <div id="kompetensiData">
                         @foreach ($kompetensiArray as $kompetensi => $data)
-                            <div class="d-flex align-items-center py-3">
+                            <div class="d-flex align-items-start text-muted mb-4">
                                 <div class="flex-shrink-0 me-3">
                                     {{ $kompetensi }} ({{ $kompetensiArray[$kompetensi]['total'] }})
                                 </div>
