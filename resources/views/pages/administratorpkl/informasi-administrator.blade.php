@@ -80,6 +80,25 @@
                 });
             });
         });
+
+        function updateProgress() {
+            const url = "{{ route('administratorpkl.informasi-prakerin.index') }}";
+
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function(response) {
+                    // Replace the content of the progress container with the new data
+                    $('#kompetensi-progress').html(response);
+                },
+                error: function(xhr) {
+                    console.error("Error fetching progress data:", xhr.responseText);
+                }
+            });
+        }
+
+        // Refresh data every 10 seconds
+        setInterval(updateProgress, 10000);
     </script>
 @endsection
 @section('script-bottom')
