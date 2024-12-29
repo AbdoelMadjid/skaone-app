@@ -166,4 +166,26 @@ class User extends Authenticatable
     {
         return $this->hasMany(LoginRecord::class);
     }
+
+    public function chats()
+    {
+        return $this->hasMany(Chat::class, 'user_id');
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Chat::class, 'user_id');
+    }
+
+    // Relasi ke channel yang dibuat oleh user
+    public function channels()
+    {
+        return $this->hasMany(Channel::class, 'creator_id');
+    }
+
+    // Relasi ke channel yang diikuti oleh user
+    public function joinedChannels()
+    {
+        return $this->belongsToMany(Channel::class, 'channel_user');
+    }
 }
