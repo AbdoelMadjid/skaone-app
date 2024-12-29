@@ -16,7 +16,7 @@ class ChatSeeder extends Seeder
     {
         // User ID 27 dan ID 72 (anggap ini adalah ID pengguna yang aktif)
         $userId = 27;
-        $recipientId = 93;
+        $recipientId = 72;
 
         // Percakapan acak antara 27 dan 72
         $messages = [
