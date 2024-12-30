@@ -203,47 +203,35 @@ File: Chat init js
         // Event untuk daftar pengguna (direct messages)
         document.querySelectorAll("#userList li").forEach(function (item) {
             item.addEventListener("click", function () {
+                // Update chat type
                 currentSelectedChat = "users";
                 updateSelectedChat();
-                currentChatId = "users-chat";
 
-                // Ambil username
-                var contactId = item.getAttribute("id");
-                var username = item.querySelector(".text-truncate").textContent.trim();
-                document.querySelector(".user-chat-topbar .text-truncate .username").textContent = username;
-                document.querySelector(".profile-offcanvas .username").textContent = username;
+                // Ambil informasi dari elemen
+                var contactName = item.querySelector(".text-truncate.mb-0").textContent.trim();
+                var avatarImg = item.querySelector(".avatar-xxs img");
+                var initialsElement = item.querySelector(".avatar-title");
 
-                // Cek avatar
-                var avatarImg = item.querySelector(".chat-user-img img");
+                // Update nama pengguna
+                document.querySelector(".user-chat-topbar .username").textContent = contactName;
+                document.querySelector(".profile-offcanvas .username").textContent = contactName;
+
+                // Perbarui avatar di tampilan
                 if (avatarImg && avatarImg.getAttribute("src")) {
-                    var userProfile = avatarImg.getAttribute("src");
-                    document.querySelector(".user-chat-topbar .avatar-xs").setAttribute("src", userProfile);
-                    document.querySelector(".profile-offcanvas .avatar-lg").setAttribute("src", userProfile);
+                    var contactImg = avatarImg.getAttribute("src");
+                    document.querySelector(".user-own-img").innerHTML = `<img src="${contactImg}" class="rounded-circle avatar-xs" alt="">`;
+                    document.querySelector(".profile-offcanvas .profile-img").innerHTML = `<img src="${contactImg}" class="rounded-circle avatar-xs" alt="">`;
+                } else if (initialsElement) {
+                    var initials = initialsElement.textContent.trim();
+                    document.querySelector(".user-own-img").innerHTML = `<span class="avatar-title rounded-circle bg-primary fs-10" style="width: 24px; height: 24px;">${initials}</span>`;
+                    document.querySelector(".profile-offcanvas .profile-img").innerHTML = `<span class="avatar-title rounded-circle bg-primary fs-10" style="width: 24px; height: 24px;">${initials}</span>`;
                 } else {
-                    // Jika tidak ada avatar, gunakan inisial
-                    var initialsElement = item.querySelector(".avatar-title");
-                    if (initialsElement) {
-                        var initials = initialsElement.textContent.trim();
-                        document.querySelector(".user-chat-topbar .avatar-xs").outerHTML = `<span class="avatar-title rounded-circle bg-primary fs-10">${initials}</span>`;
-                        document.querySelector(".profile-offcanvas .avatar-lg").outerHTML = `<span class="avatar-title rounded-circle bg-primary fs-10">${initials}</span>`;
-                    } else {
-                        // Fallback ke dummy image
-                        document.querySelector(".user-chat-topbar .avatar-xs").setAttribute("src", dummyUserImage);
-                        document.querySelector(".profile-offcanvas .avatar-lg").setAttribute("src", dummyUserImage);
-                    }
+                    // Fallback jika avatar dan inisial tidak ada
+                    document.querySelector(".user-own-img").innerHTML = `<img src="${dummyUserImage}" class="rounded-circle avatar-xs" alt="">`;
+                    document.querySelector(".profile-offcanvas .profile-img").innerHTML = `<img src="${dummyUserImage}" class="rounded-circle avatar-xs" alt="">`;
                 }
 
-                // Ubah avatar di percakapan
-                var conversationImg = document.getElementById("users-conversation");
-                conversationImg.querySelectorAll(".left .chat-avatar img").forEach(function (chatAvatarImg) {
-                    if (avatarImg && avatarImg.getAttribute("src")) {
-                        chatAvatarImg.setAttribute("src", avatarImg.getAttribute("src"));
-                    } else {
-                        chatAvatarImg.setAttribute("src", dummyUserImage);
-                    }
-                });
-
-                // Tutup reply card jika aktif
+                // Jika sedang membalas pesan, tutup replyCard
                 if (isreplyMessage === true) {
                     isreplyMessage = false;
                     document.querySelector(".replyCard").classList.remove("show");
