@@ -15,11 +15,13 @@
                     </div>
                     <div class="flex-shrink-0">
                         <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="bottom" title="Add Contact">
-
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-soft-success btn-sm">
-                                <i class="ri-add-line align-bottom"></i>
-                            </button>
+                            @if (auth()->check() &&
+                                    auth()->user()->hasAnyRole(['master']))
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-soft-success btn-sm">
+                                    <i class="ri-add-line align-bottom"></i>
+                                </button>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -90,10 +92,10 @@
                                                     <div class="flex-grow-1 overflow-hidden">
                                                         <h5 class="text-truncate mb-0 fs-16"><a class="text-reset username"
                                                                 data-bs-toggle="offcanvas" href="#userProfileCanvasExample"
-                                                                aria-controls="userProfileCanvasExample">Lisa Parker</a>
+                                                                aria-controls="userProfileCanvasExample"></a>
                                                         </h5>
                                                         <p class="text-truncate text-muted fs-14 mb-0 userStatus">
-                                                            <small>Online</small>
+                                                            <small></small>
                                                         </p>
                                                     </div>
                                                 </div>

@@ -4,11 +4,13 @@
     </div>
     <div class="flex-shrink-0">
         <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="bottom" title="New Message">
-
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-soft-success btn-sm shadow-none">
-                <i class="ri-add-line align-bottom"></i>
-            </button>
+            @if (auth()->check() &&
+                    auth()->user()->hasAnyRole(['master']))
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-soft-success btn-sm shadow-none">
+                    <i class="ri-add-line align-bottom"></i>
+                </button>
+            @endif
         </div>
     </div>
 </div>
@@ -57,6 +59,6 @@
             @endforeach
         </ul>
     @else
-        <p>Belum ada chat yang dilakukan.</p>
+        <p class="ms-4">No Chat</p>
     @endif
 </div>
