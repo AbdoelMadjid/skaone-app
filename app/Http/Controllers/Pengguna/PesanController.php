@@ -75,7 +75,13 @@ class PesanController extends Controller
         });
 
         // Daftar grup
-        $channels = Channel::with('user', 'users')->get();
+        //$channels = Channel::with('user', 'users')->get();
+        $channels = Channel::with('user', 'users')
+            ->where('creator_id', $currentUserId) // Channel yang dibuat oleh user
+            ->orWhereHas('users', function ($query) use ($currentUserId) {
+                $query->where('user_id', $currentUserId); // Channel yang diikuti oleh user
+            })
+            ->get();
 
         $contacts = User::where('id', '!=', $currentUserId)
             ->orderBy('name') // Urutkan data berdasarkan nama
