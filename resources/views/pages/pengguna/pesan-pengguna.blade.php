@@ -83,7 +83,7 @@
                                                 <div class="d-flex align-items-center">
                                                     <div
                                                         class="flex-shrink-0 chat-user-img online user-own-img align-self-center me-3 ms-0">
-                                                        <img src="{{ URL::asset('build/images/users/avatar-2.jpg') }}"
+                                                        <img src="{{ URL::asset('build/images/users/user-dummy-img.jpg') }}"
                                                             class="rounded-circle avatar-xs" alt="">
                                                         <span class="user-status"></span>
                                                     </div>
@@ -162,13 +162,13 @@
                             </div>
                             <!-- end chat user head -->
                             <div class="chat-conversation p-3 p-lg-4 " id="chat-conversation" data-simplebar>
-                                <div id="elmLoader">
+                                {{-- <div id="elmLoader">
                                     <div class="spinner-border text-primary avatar-sm" role="status">
                                         <span class="visually-hidden">Loading...</span>
                                     </div>
-                                </div>
-                                <ul class="list-unstyled chat-conversation-list" id="users-conversation">
-
+                                </div> --}}
+                                <ul class="chat-conversation-list">
+                                    @include('pages.pengguna.pesan-pengguna-isi-chat')
                                 </ul>
                                 <!-- end chat-conversation-list -->
                             </div>
