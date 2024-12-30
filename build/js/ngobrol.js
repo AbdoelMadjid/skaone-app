@@ -62,38 +62,56 @@ File: Chat init js
 
     function contactList() {
         document.querySelectorAll(".sort-contact ul li").forEach(function (item) {
-            item.addEventListener("click", function (event) {
+            item.addEventListener("click", function () {
                 currentSelectedChat = "users";
                 updateSelectedChat();
-                var contactName = item.querySelector("li .contactlist-name").innerHTML;
-                document.querySelector(".user-chat-topbar .text-truncate .username").innerHTML = contactName;
-                document.querySelector(".profile-offcanvas .username").innerHTML = contactName;
 
-                if (isreplyMessage == true) {
+                // Ambil nama kontak
+                var contactName = item.querySelector(".contactlist-name").textContent.trim();
+                document.querySelector(".user-chat-topbar .text-truncate .username").textContent = contactName;
+                document.querySelector(".profile-offcanvas .username").textContent = contactName;
+
+                // Cek keberadaan avatar
+                var avatarImg = item.querySelector(".avatar-xxs img");
+                if (avatarImg && avatarImg.getAttribute("src")) {
+                    // Jika avatar ada, gunakan gambar avatar
+                    var contactImg = avatarImg.getAttribute("src");
+                    document.querySelector(".user-own-img").innerHTML = `<img src="${contactImg}" class="rounded-circle avatar-xs" alt="">`;
+                    document.querySelector(".profile-offcanvas .profile-img").innerHTML = `<img src="${contactImg}" class="rounded-circle avatar-xs" alt="">`;
+                } else {
+                    // Jika avatar tidak ada, gunakan inisial
+                    var initialsElement = item.querySelector(".avatar-title");
+                    if (initialsElement) {
+                        var initials = initialsElement.textContent.trim();
+                        document.querySelector(".user-own-img").innerHTML = `<span class="avatar-title rounded-circle bg-primary fs-15">${initials}</span>`;
+                        document.querySelector(".profile-offcanvas .profile-img").innerHTML = `<span class="avatar-title rounded-circle bg-primary fs-10">${initials}</span>`;
+                    } else {
+                        // Jika tidak ada inisial atau avatar, fallback ke gambar dummy
+                        document.querySelector(".user-own-img").innerHTML = `<img src="${dummyUserImage}" class="rounded-circle avatar-xs" alt="">`;
+                        document.querySelector(".profile-offcanvas .profile-img").innerHTML = `<img src="${dummyUserImage}" class="rounded-circle avatar-xs" alt="">`;
+                    }
+                }
+
+                // Ubah gambar di percakapan (jika ada)
+                var conversationImg = document.getElementById("users-conversation");
+                conversationImg.querySelectorAll(".left .chat-avatar img").forEach(function (chatAvatarImg) {
+                    if (avatarImg && avatarImg.getAttribute("src")) {
+                        chatAvatarImg.setAttribute("src", avatarImg.getAttribute("src"));
+                    } else {
+                        chatAvatarImg.setAttribute("src", dummyUserImage);
+                    }
+                });
+
+                // Jika sedang membalas pesan, tutup replyCard
+                if (isreplyMessage === true) {
                     isreplyMessage = false;
                     document.querySelector(".replyCard").classList.remove("show");
                 }
-
-                if (item.querySelector(".align-items-center").querySelector(".avatar-xxs img")) {
-                    var contactImg = item.querySelector(".align-items-center").querySelector(".avatar-xxs .rounded-circle").getAttribute("src");
-                    document.querySelector(".user-own-img .avatar-xs").setAttribute("src", contactImg);
-                    document.querySelector(".profile-offcanvas .profile-img").setAttribute("src", contactImg);
-                } else {
-                    document.querySelector(".user-own-img .avatar-xs").setAttribute("src", dummyUserImage);
-                    document.querySelector(".profile-offcanvas .profile-img").setAttribute("src", dummyUserImage);
-                }
-                var conversationImg = document.getElementById("users-conversation");
-                conversationImg.querySelectorAll(".left .chat-avatar").forEach(function (item3) {
-                    if (contactImg) {
-                        item3.querySelector("img").setAttribute("src", contactImg);
-                    } else {
-                        item3.querySelector("img").setAttribute("src", dummyUserImage);
-                    }
-                });
-                window.stop();
             });
         });
     }
+
+
 
     function updateSelectedChat() {
         if (currentSelectedChat == "users") {
@@ -107,15 +125,6 @@ File: Chat init js
         }
     }
     updateSelectedChat();
-
-
-    // GLightbox Popup
-    function updateLightbox() {
-        var lightbox = GLightbox({
-            selector: ".popup-img",
-            title: false,
-        });
-    }
 
     // // Scroll to Bottom
     function scrollToBottom(id) {
