@@ -1093,6 +1093,6 @@
     <script src="{{ URL::asset('build/libs/fg-emoji-picker/fgEmojiPicker.js') }}"></script>
 
     <!-- chat init js -->
-    <script src="{{ URL::asset('build/js/chat.aing.js') }}"></script>
+    <script src="{{ URL::asset('build/js/ngobrol.js') }}"></script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection
