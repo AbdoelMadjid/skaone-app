@@ -11,13 +11,11 @@ class Channel extends Model
 
     protected $fillable = ['name', 'creator_id', 'messagecount'];
 
-    // Relasi ke user (pembuat channel)
     public function user()
     {
         return $this->belongsTo(User::class, 'creator_id');
     }
 
-    // Relasi ke user (anggota channel)
     public function users()
     {
         return $this->belongsToMany(User::class, 'channel_user');

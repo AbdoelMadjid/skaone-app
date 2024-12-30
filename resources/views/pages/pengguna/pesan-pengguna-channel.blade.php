@@ -24,13 +24,18 @@
                         </div>
                         <div class="flex-grow-1 overflow-hidden">
                             <p class="text-truncate mb-0">{{ $channel->name }}</p>
-                            <small>Created by: {{ $channel->user->name }}</small>
-                        </div>
-                        <div>
-                            @if ($channel->messagecount)
-                                <span
-                                    class="badge bg-dark-subtle text-body rounded p-1">{{ $channel->messagecount }}</span>
-                            @endif
+                            <small id="created">
+                                Created by:
+                                @php
+                                    $creatorName = $channel->user->name ?? 'Unknown';
+                                    $initials = implode(
+                                        '',
+                                        array_map(fn($word) => strtoupper($word[0]), explode(' ', $creatorName)),
+                                    );
+                                    echo $initials;
+                                @endphp
+                            </small>
+                            <small id="count-member">Members: {{ $channel->users->count() }}</small>
                         </div>
                     </div>
                 </a>

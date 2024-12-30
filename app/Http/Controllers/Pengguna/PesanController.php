@@ -95,52 +95,6 @@ class PesanController extends Controller
         return view('pages.pengguna.pesan-pengguna', compact('chats', 'channels', 'contacts', 'chatPartner', 'chatPartners'));
     }
 
-    public function getChatDetails(Request $request)
-    {
-        $id = $request->id;
-        $type = $request->type;
-
-        $html = '';
-        if ($type === 'direct-message') {
-            $user = User::find($id);
-
-            $nameParts = explode(' ', $user->name);
-            $initials = strtoupper(substr($nameParts[0], 0, 1));
-            if (isset($nameParts[1])) {
-                $initials .= strtoupper(substr($nameParts[1], 0, 1));
-            }
-
-            $avatar = !empty($user->avatar) && file_exists(public_path('images/thumbnail/' . $user->avatar))
-                ? '<img src="' . asset('images/thumbnail/' . $user->avatar) . '" class="rounded-circle avatar-xs" alt="' . $user->name . '">'
-                : '<span class="avatar-title rounded-circle bg-primary fs-10">' . $initials . '</span>';
-
-            $statusClass = $user->status === 'online' ? 'online' : 'offline';
-
-            $html = view('pages.pengguna.chat-header', compact('avatar', 'user', 'statusClass'))->render();
-        } elseif ($type === 'channel') {
-            $channel = Channel::with('user')->find($id);
-
-            $html = view('pages.pengguna.channel-header', compact('channel'))->render();
-        } elseif ($type === 'contact') {
-            $contact = User::find($id);
-
-            $nameParts = explode(' ', $contact->name);
-            $initials = strtoupper(substr($nameParts[0], 0, 1));
-            if (isset($nameParts[1])) {
-                $initials .= strtoupper(substr($nameParts[1], 0, 1));
-            }
-
-            $avatar = !empty($contact->avatar) && file_exists(public_path('images/thumbnail/' . $contact->avatar))
-                ? '<img src="' . asset('images/thumbnail/' . $contact->avatar) . '" class="rounded-circle avatar-xs" alt="' . $contact->name . '">'
-                : '<span class="avatar-title rounded-circle bg-primary fs-10">' . $initials . '</span>';
-
-            $html = view('pages.pengguna.contact-header', compact('avatar', 'contact'))->render();
-        }
-
-        return response()->json(['html' => $html]);
-    }
-
-
     /**
      * Show the form for creating a new resource.
      */

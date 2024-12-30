@@ -177,13 +177,13 @@ class User extends Authenticatable
         return $this->hasMany(Chat::class, 'user_id');
     }
 
-    // Relasi ke channel yang dibuat oleh user
-    public function channels()
+    // Relasi dengan channel yang user buat
+    public function createdChannels()
     {
         return $this->hasMany(Channel::class, 'creator_id');
     }
 
-    // Relasi ke channel yang diikuti oleh user
+    // Relasi dengan channel di mana user adalah anggota
     public function joinedChannels()
     {
         return $this->belongsToMany(Channel::class, 'channel_user');
