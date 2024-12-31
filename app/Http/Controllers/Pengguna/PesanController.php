@@ -7,6 +7,7 @@ use App\Models\Channel;
 use App\Models\Chat;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PesanController extends Controller
 {
@@ -99,6 +100,20 @@ class PesanController extends Controller
             });
 
         return view('pages.pengguna.pesan-pengguna', compact('chats', 'channels', 'contacts', 'chatPartner', 'chatPartners'));
+    }
+
+    public function getChatMessages($id)
+    {
+        $userId = Auth::id();
+
+        $messages = Chat::where(function ($query) use ($userId, $id) {
+            $query->where('user_id', $userId)->where('recipient_id', $id);
+        })->orWhere(function ($query) use ($userId, $id) {
+            $query->where('user_id', $id)->where('recipient_id', $userId);
+        })->orderBy('created_at', 'asc')->get();
+
+        // Debug data before returning
+        return response()->json(['messages' => $messages]);
     }
 
     /**

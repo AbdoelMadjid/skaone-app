@@ -4,6 +4,46 @@
 @endsection
 @section('css')
     <link rel="stylesheet" href="{{ URL::asset('build/libs/glightbox/css/glightbox.min.css') }}">
+    <style>
+        .chat-conversation-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .chat-conversation-list .sent {
+            text-align: right;
+        }
+
+        .chat-conversation-list .received {
+            text-align: left;
+        }
+
+        .chat-conversation-list .message {
+            display: inline-block;
+            padding: 10px 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            max-width: 70%;
+        }
+
+        .chat-conversation-list .sent .message {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .chat-conversation-list .received .message {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .chat-conversation-list .timestamp {
+            font-size: 0.8em;
+            color: #888;
+            display: block;
+            margin-top: 5px;
+        }
+    </style>
 @endsection
 @section('content')
     <div class="chat-wrapper d-lg-flex gap-1 mx-n4 mt-n4 p-1">
@@ -170,7 +210,7 @@
                                     </div>
                                 </div> --}}
                                 <ul class="chat-conversation-list">
-                                    @include('pages.pengguna.pesan-pengguna-isi-chat')
+                                    {{-- @include('pages.pengguna.pesan-pengguna-isi-chat') --}}
                                 </ul>
                                 <!-- end chat-conversation-list -->
                             </div>
@@ -349,6 +389,41 @@
     @include('pages.pengguna.offcanvas-chat-profil')
 @endsection
 @section('script')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userList = document.querySelectorAll('.unread-msg-user');
+            const loggedInUserId = {{ auth()->id() }}; // Ambil ID pengguna yang sedang login
+
+            userList.forEach(user => {
+                user.addEventListener('click', function() {
+                    const contactId = this.closest('li').id.replace('contact-id-', '');
+                    fetchChatMessages(contactId);
+                });
+            });
+
+            function fetchChatMessages(contactId) {
+                fetch(`/profilpengguna/chats/${contactId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const chatList = document.querySelector('.chat-conversation-list');
+                        chatList.innerHTML = data.messages.map(message => `
+                        <li class="${message.sender_id === loggedInUserId ? 'sent' : 'received'}">
+                            <div class="message">
+                                <p>${message.last_message || 'No content available'}</p>
+                                <span class="timestamp">${new Date(message.last_message_at).toLocaleString('en-US', {
+                                    dateStyle: 'short',
+                                    timeStyle: 'short',
+                                })}</span>
+                            </div>
+                        </li>
+                    `).join('');
+                    })
+                    .catch(error => console.error('Error fetching chat messages:', error));
+            }
+        });
+    </script>
+
+
     <script src="{{ URL::asset('build/libs/glightbox/js/glightbox.min.js') }}"></script>
 
     <!-- fgEmojiPicker js -->

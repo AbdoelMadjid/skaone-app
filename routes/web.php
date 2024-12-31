@@ -134,6 +134,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('password-pengguna', GantiPasswordController::class);
         Route::post('password-pengguna', [GantiPasswordController::class, 'updatePassword'])->name('update-password');
         Route::resource('pesan-pengguna', PesanController::class);
+        Route::get('/chats/{id}', [PesanController::class, 'getChatMessages']);
     });
 
     Route::group(['prefix' => 'manajemenpengguna', 'as' => 'manajemenpengguna.'], function () {
