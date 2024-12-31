@@ -102,18 +102,34 @@ class PesanController extends Controller
         return view('pages.pengguna.pesan-pengguna', compact('chats', 'channels', 'contacts', 'chatPartner', 'chatPartners'));
     }
 
+    // Controller
     public function getChatMessages($id)
     {
-        $userId = Auth::id();
+        $loggedInUserId = auth()->id();
 
-        $messages = Chat::where(function ($query) use ($userId, $id) {
-            $query->where('user_id', $userId)->where('recipient_id', $id);
-        })->orWhere(function ($query) use ($userId, $id) {
-            $query->where('user_id', $id)->where('recipient_id', $userId);
-        })->orderBy('created_at', 'asc')->get();
+        // Mengambil pesan antara pengguna yang login dengan partner chat
+        $messages = Chat::where(function ($query) use ($loggedInUserId, $id) {
+            $query->where('user_id', $loggedInUserId)
+                ->where('recipient_id', $id);
+        })->orWhere(function ($query) use ($loggedInUserId, $id) {
+            $query->where('user_id', $id)
+                ->where('recipient_id', $loggedInUserId);
+        })
+            ->with(['user:id,name', 'recipient:id,name'])
+            ->orderBy('last_message_at', 'asc')  // Urutkan berdasarkan waktu
+            ->get();
 
-        // Debug data before returning
-        return response()->json(['messages' => $messages]);
+        return response()->json([
+            'messages' => $messages->map(function ($message) use ($loggedInUserId) {
+                return [
+                    'id' => $message->id,
+                    'sender_id' => $message->user_id,
+                    'sender_name' => $message->user_id == $loggedInUserId ? 'You' : $message->user->name,
+                    'last_message' => $message->last_message,
+                    'last_message_at' => $message->last_message_at,
+                ];
+            }),
+        ]);
     }
 
     /**

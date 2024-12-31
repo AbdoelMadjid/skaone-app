@@ -5,44 +5,7 @@
 @section('css')
     <link rel="stylesheet" href="{{ URL::asset('build/libs/glightbox/css/glightbox.min.css') }}">
     <style>
-        .chat-conversation-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
 
-        .chat-conversation-list .sent {
-            text-align: right;
-        }
-
-        .chat-conversation-list .received {
-            text-align: left;
-        }
-
-        .chat-conversation-list .message {
-            display: inline-block;
-            padding: 10px 15px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            max-width: 70%;
-        }
-
-        .chat-conversation-list .sent .message {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .chat-conversation-list .received .message {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        .chat-conversation-list .timestamp {
-            font-size: 0.8em;
-            color: #888;
-            display: block;
-            margin-top: 5px;
-        }
     </style>
 @endsection
 @section('content')
@@ -392,7 +355,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const userList = document.querySelectorAll('.unread-msg-user');
-            const loggedInUserId = {{ auth()->id() }}; // Ambil ID pengguna yang sedang login
+            const loggedInUserId = {{ auth()->id() }}; // ID pengguna yang sedang login
 
             userList.forEach(user => {
                 user.addEventListener('click', function() {
@@ -406,24 +369,67 @@
                     .then(response => response.json())
                     .then(data => {
                         const chatList = document.querySelector('.chat-conversation-list');
-                        chatList.innerHTML = data.messages.map(message => `
-                        <li class="${message.sender_id === loggedInUserId ? 'sent' : 'received'}">
-                            <div class="message">
-                                <p>${message.last_message || 'No content available'}</p>
-                                <span class="timestamp">${new Date(message.last_message_at).toLocaleString('en-US', {
-                                    dateStyle: 'short',
-                                    timeStyle: 'short',
-                                })}</span>
-                            </div>
-                        </li>
-                    `).join('');
+                        chatList.innerHTML = ''; // Bersihkan chat sebelumnya
+
+                        data.messages.forEach(message => {
+                            const isSentByUser = message.sender_id === loggedInUserId;
+                            const messageClass = isSentByUser ? 'right' : 'left';
+                            const senderName = message.sender_name || 'Unknown';
+
+                            const messageHtml = `
+                            <li class="chat-list ${messageClass}" id="chat-list-${message.id}">
+                                <div class="conversation-list">
+                                    <div class="user-chat-content">
+                                        <div class="ctext-wrap">
+                                            <div class="ctext-wrap-content">
+                                                <p class="mb-0 ctext-content">${message.last_message || ''}</p>
+                                            </div>
+                                            <div class="dropdown align-self-start message-box-drop">
+                                                <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    <i class="ri-more-2-fill"></i>
+                                                </a>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item reply-message" href="#"><i
+                                                            class="ri-reply-line me-2 text-muted align-bottom"></i>Reply</a>
+                                                    <a class="dropdown-item" href="#"><i
+                                                            class="ri-share-line me-2 text-muted align-bottom"></i>Forward</a>
+                                                    <a class="dropdown-item copy-message" href="#"><i
+                                                            class="ri-file-copy-line me-2 text-muted align-bottom"></i>Copy</a>
+                                                    <a class="dropdown-item" href="#"><i
+                                                            class="ri-bookmark-line me-2 text-muted align-bottom"></i>Bookmark</a>
+                                                    <a class="dropdown-item delete-item" href="#"><i
+                                                            class="ri-delete-bin-5-line me-2 text-muted align-bottom"></i>Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="conversation-name">
+                                            <small class="text-muted time">
+                                                ${new Date(message.last_message_at).toLocaleTimeString('en-US', {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit',
+                                                })}
+                                            </small>
+                                            ${
+                                                isSentByUser
+                                                    ? '<span class="text-success check-message-icon"><i class="bx bx-check"></i></span>'
+                                                    : `<span class="sender-name">${senderName}</span>`
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        `;
+
+                            chatList.insertAdjacentHTML('beforeend', messageHtml);
+                        });
                     })
                     .catch(error => console.error('Error fetching chat messages:', error));
             }
         });
     </script>
 
-
+    <!-- chat app js -->
     <script src="{{ URL::asset('build/libs/glightbox/js/glightbox.min.js') }}"></script>
 
     <!-- fgEmojiPicker js -->
