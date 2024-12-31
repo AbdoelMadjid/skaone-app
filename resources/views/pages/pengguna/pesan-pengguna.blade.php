@@ -379,50 +379,121 @@
                             const messageClass = isSentByUser ? 'right' : 'left';
                             const senderName = message.sender_name || 'Unknown';
 
+                            // Mengambil URL avatar pengirim
+                            const senderAvatar = message.sender_avatar ||
+                                'default-avatar.png'; // Gambar default jika tidak ada avatar
+
+                            // Memeriksa apakah pesan ini adalah pesan yang diteruskan
+                            const isRedirected = message.is_redirected ||
+                                false; // Cek apakah pesan diteruskan
+                            const redirectedMessage = isRedirected ? `
+                        <div class="redirected-message">
+                            <p class="text-muted">This message has been forwarded.</p>
+                        </div>
+                    ` : '';
+
+                            // Fungsi untuk membangun pesan
                             const messageHtml = `
-            <li class="chat-list ${messageClass}" id="chat-list-${message.id}">
-                <div class="conversation-list">
-                    <div class="user-chat-content">
-                        <div class="ctext-wrap">
-                            <div class="ctext-wrap-content">
-                                <p class="mb-0 ctext-content">${message.last_message || ''}</p>
-                            </div>
-                            <div class="dropdown align-self-start message-box-drop">
-                                <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">
-                                    <i class="ri-more-2-fill"></i>
-                                </a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item reply-message" href="#"><i
-                                            class="ri-reply-line me-2 text-muted align-bottom"></i>Reply</a>
-                                    <a class="dropdown-item" href="#"><i
-                                            class="ri-share-line me-2 text-muted align-bottom"></i>Forward</a>
-                                    <a class="dropdown-item copy-message" href="#"><i
-                                            class="ri-file-copy-line me-2 text-muted align-bottom"></i>Copy</a>
-                                    <a class="dropdown-item" href="#"><i
-                                            class="ri-bookmark-line me-2 text-muted align-bottom"></i>Bookmark</a>
-                                    <a class="dropdown-item delete-item" href="#"><i
-                                            class="ri-delete-bin-5-line me-2 text-muted align-bottom"></i>Delete</a>
+                    <li class="chat-list ${messageClass}" id="chat-list-${message.id}">
+                        <div class="conversation-list">
+                            <div class="user-chat-content">
+                                <div class="d-flex align-items-center">
+                                    <!-- Avatar Pengirim -->
+                                    <div class="avatar-sm me-2">
+                                        <img src="${senderAvatar}" alt="User Avatar" class="rounded-circle avatar-sm">
+                                    </div>
+                                    <div class="ctext-wrap">
+                                        <!-- Menampilkan pesan teks -->
+                                        ${message.last_message ? `
+                                                        <div class="ctext-wrap-content">
+                                                            <p class="mb-0 ctext-content">${message.last_message}</p>
+                                                        </div>
+                                                    ` : ''}
+
+                                        <!-- Menampilkan gambar jika ada -->
+                                        ${message.has_images && message.has_images.length > 0 ? `
+                                                        <div class="message-img mb-0">
+                                                            ${message.has_images.map(img => `
+                                                    <div class="message-img-list">
+                                                        <div>
+                                                            <a class="popup-img d-inline-block" href="${img}">
+                                                                <img src="${img}" alt="" class="rounded border">
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                `).join('')}
+                                                        </div>
+                                                    ` : ''}
+
+                                        <!-- Menampilkan file jika ada -->
+                                        ${message.has_files && message.has_files.length > 0 ? `
+                                                        <div class="ctext-wrap-content">
+                                                            <div class="p-3 border-primary border rounded-3">
+                                                                <div class="d-flex align-items-center attached-file">
+                                                                    <div class="flex-shrink-0 avatar-sm me-3 ms-0 attached-file-avatar">
+                                                                        <div class="avatar-title bg-primary-subtle text-primary rounded-circle font-size-20">
+                                                                            <i class="ri-attachment-2"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="flex-grow-1 overflow-hidden">
+                                                                        <div class="text-start">
+                                                                            <h5 class="font-size-14 mb-1">design-phase-1-approved.pdf</h5>
+                                                                            <p class="text-muted text-truncate font-size-13 mb-0">12.5 MB</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="flex-shrink-0 ms-4">
+                                                                        <div class="d-flex gap-2 font-size-20 d-flex align-items-start">
+                                                                            <div>
+                                                                                <a href="#" class="text-muted">
+                                                                                    <i class="bx bxs-download"></i>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    ` : ''}
+
+                                        <!-- Dropdown untuk opsi pesan -->
+                                        ${message.has_dropDown ? `
+                                                        <div class="dropdown align-self-start message-box-drop">
+                                                            <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">
+                                                                <i class="ri-more-2-fill"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item reply-message" href="#"><i
+                                                                        class="ri-reply-line me-2 text-muted align-bottom"></i>Reply</a>
+                                                                <a class="dropdown-item" href="#"><i
+                                                                        class="ri-share-line me-2 text-muted align-bottom"></i>Forward</a>
+                                                                <a class="dropdown-item copy-message" href="#"><i
+                                                                        class="ri-file-copy-line me-2 text-muted align-bottom"></i>Copy</a>
+                                                                <a class="dropdown-item" href="#"><i
+                                                                        class="ri-bookmark-line me-2 text-muted align-bottom"></i>Bookmark</a>
+                                                                <a class="dropdown-item delete-item" href="#"><i
+                                                                        class="ri-delete-bin-5-line me-2 text-muted align-bottom"></i>Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    ` : ''}
+                                    </div>
                                 </div>
+                                <div class="conversation-name">
+                                    <small class="text-muted time">
+                                        ${new Date(message.last_message_at).toLocaleTimeString('en-US', {
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                        })}
+                                    </small>
+                                    ${isSentByUser
+                                        ? '<span class="text-success check-message-icon"><i class="bx bx-check"></i></span>'
+                                        : `<span class="sender-name">${senderName}</span>`}
+                                </div>
+                                ${redirectedMessage} <!-- Menampilkan pesan yang diteruskan -->
                             </div>
                         </div>
-                        <div class="conversation-name">
-                            <small class="text-muted time">
-                                ${new Date(message.last_message_at).toLocaleTimeString('en-US', {
-                                    hour: '2-digit',
-                                    minute: '2-digit',
-                                })}
-                            </small>
-                            ${
-                                isSentByUser
-                                    ? '<span class="text-success check-message-icon"><i class="bx bx-check"></i></span>'
-                                    : `<span class="sender-name">${senderName}</span>`
-                            }
-                        </div>
-                    </div>
-                </div>
-            </li>
-        `;
+                    </li>
+                `;
 
                             chatList.insertAdjacentHTML('beforeend', messageHtml);
                         });
