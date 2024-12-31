@@ -84,6 +84,7 @@ class ValidasiJurnalController extends Controller
     {
         $id_personil = auth()->user()->personal_id; // Ambil NIS dari user yang sedang login
 
+        // Get related penempatan_prakerins data using the id_penempatan from ValidasiJurnal
         $penempatan = DB::table('penempatan_prakerins')
             ->select(
                 'penempatan_prakerins.id',
@@ -102,20 +103,22 @@ class ValidasiJurnalController extends Controller
             ->join('perusahaans', 'penempatan_prakerins.id_dudi', '=', 'perusahaans.id')
             ->join('kompetensi_keahlians', 'penempatan_prakerins.kode_kk', '=', 'kompetensi_keahlians.idkk')
             ->where('pembimbing_prakerins.id_personil', $id_personil)
-            ->first(); // Mengambil satu data
+            ->where('penempatan_prakerins.id', $validasiJurnal->id_penempatan) // Match the id_penempatan from ValidasiJurnal
+            ->first();
 
+        // Get Capaian Pembelajaran (elemenCPOptions)
         $elemenCPOptions = CapaianPembelajaran::where('nama_matapelajaran', 'Praktek Kerja Industri')
             ->pluck('element', 'kode_cp')
             ->toArray();
 
-        // Ambil data isi_tp dari tabel modul_ajars berdasarkan id_tp
+        // Get Tujuan Pembelajaran from modul_ajars
         $isiTp = DB::table('modul_ajars')
-            ->where('id', $validasiJurnal->id_tp) // id_tp dari tabel jurnal_pkls
-            ->value('isi_tp'); // Ambil kolom isi_tp
+            ->where('id', $validasiJurnal->id_tp)
+            ->value('isi_tp');
 
         return view('pages.pembimbingpkl.validasi-jurnal-form', [
             'data' => $validasiJurnal,
-            'penempatan' => $penempatan,
+            'penempatan' => $penempatan,  // Pass penempatan data to the view
             'elemenCPOptions' => $elemenCPOptions,
             'isi_tp' => $isiTp,
         ]);
