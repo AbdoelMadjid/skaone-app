@@ -371,55 +371,58 @@
                         const chatList = document.querySelector('.chat-conversation-list');
                         chatList.innerHTML = ''; // Bersihkan chat sebelumnya
 
-                        data.messages.forEach(message => {
+                        // Balikkan urutan pesan jika Anda ingin yang terbaru di bawah
+                        const messages = data.messages.reverse();
+
+                        messages.forEach(message => {
                             const isSentByUser = message.sender_id === loggedInUserId;
                             const messageClass = isSentByUser ? 'right' : 'left';
                             const senderName = message.sender_name || 'Unknown';
 
                             const messageHtml = `
-                            <li class="chat-list ${messageClass}" id="chat-list-${message.id}">
-                                <div class="conversation-list">
-                                    <div class="user-chat-content">
-                                        <div class="ctext-wrap">
-                                            <div class="ctext-wrap-content">
-                                                <p class="mb-0 ctext-content">${message.last_message || ''}</p>
-                                            </div>
-                                            <div class="dropdown align-self-start message-box-drop">
-                                                <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    <i class="ri-more-2-fill"></i>
-                                                </a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item reply-message" href="#"><i
-                                                            class="ri-reply-line me-2 text-muted align-bottom"></i>Reply</a>
-                                                    <a class="dropdown-item" href="#"><i
-                                                            class="ri-share-line me-2 text-muted align-bottom"></i>Forward</a>
-                                                    <a class="dropdown-item copy-message" href="#"><i
-                                                            class="ri-file-copy-line me-2 text-muted align-bottom"></i>Copy</a>
-                                                    <a class="dropdown-item" href="#"><i
-                                                            class="ri-bookmark-line me-2 text-muted align-bottom"></i>Bookmark</a>
-                                                    <a class="dropdown-item delete-item" href="#"><i
-                                                            class="ri-delete-bin-5-line me-2 text-muted align-bottom"></i>Delete</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="conversation-name">
-                                            <small class="text-muted time">
-                                                ${new Date(message.last_message_at).toLocaleTimeString('en-US', {
-                                                    hour: '2-digit',
-                                                    minute: '2-digit',
-                                                })}
-                                            </small>
-                                            ${
-                                                isSentByUser
-                                                    ? '<span class="text-success check-message-icon"><i class="bx bx-check"></i></span>'
-                                                    : `<span class="sender-name">${senderName}</span>`
-                                            }
-                                        </div>
-                                    </div>
+            <li class="chat-list ${messageClass}" id="chat-list-${message.id}">
+                <div class="conversation-list">
+                    <div class="user-chat-content">
+                        <div class="ctext-wrap">
+                            <div class="ctext-wrap-content">
+                                <p class="mb-0 ctext-content">${message.last_message || ''}</p>
+                            </div>
+                            <div class="dropdown align-self-start message-box-drop">
+                                <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    <i class="ri-more-2-fill"></i>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item reply-message" href="#"><i
+                                            class="ri-reply-line me-2 text-muted align-bottom"></i>Reply</a>
+                                    <a class="dropdown-item" href="#"><i
+                                            class="ri-share-line me-2 text-muted align-bottom"></i>Forward</a>
+                                    <a class="dropdown-item copy-message" href="#"><i
+                                            class="ri-file-copy-line me-2 text-muted align-bottom"></i>Copy</a>
+                                    <a class="dropdown-item" href="#"><i
+                                            class="ri-bookmark-line me-2 text-muted align-bottom"></i>Bookmark</a>
+                                    <a class="dropdown-item delete-item" href="#"><i
+                                            class="ri-delete-bin-5-line me-2 text-muted align-bottom"></i>Delete</a>
                                 </div>
-                            </li>
-                        `;
+                            </div>
+                        </div>
+                        <div class="conversation-name">
+                            <small class="text-muted time">
+                                ${new Date(message.last_message_at).toLocaleTimeString('en-US', {
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                })}
+                            </small>
+                            ${
+                                isSentByUser
+                                    ? '<span class="text-success check-message-icon"><i class="bx bx-check"></i></span>'
+                                    : `<span class="sender-name">${senderName}</span>`
+                            }
+                        </div>
+                    </div>
+                </div>
+            </li>
+        `;
 
                             chatList.insertAdjacentHTML('beforeend', messageHtml);
                         });

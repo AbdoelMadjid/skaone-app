@@ -116,7 +116,7 @@ class PesanController extends Controller
                 ->where('recipient_id', $loggedInUserId);
         })
             ->with(['user:id,name', 'recipient:id,name'])
-            ->orderBy('last_message_at', 'asc')  // Urutkan berdasarkan waktu
+            ->orderBy('last_message_at', 'desc')  // Urutkan berdasarkan waktu
             ->get();
 
         return response()->json([
