@@ -194,7 +194,7 @@ class AbsensiPembimbingPklController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function updateAbsensi(Request $request, $id)
     {
         $absensi = AbsensiSiswaPkl::findOrFail($id);
         $absensi->status = $request->status;

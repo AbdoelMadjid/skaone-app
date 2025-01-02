@@ -299,7 +299,7 @@
                     <h5 class="modal-title" id="editModalLabel">Edit Status Absensi</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ route('pembimbingpkl.absensi-bimbingan.update', ['absensi' => 'absensiId']) }}"
+                <form action="{{ route('pembimbingpkl.absensi-bimbingan.updateabsensi', ['absensi' => 'absensiId']) }}"
                     method="POST" id="editAbsensiForm">
                     @csrf
                     @method('PUT')

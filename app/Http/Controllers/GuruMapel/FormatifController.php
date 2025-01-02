@@ -77,7 +77,7 @@ class FormatifController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create($kode_rombel, $kel_mapel, $id_personil)
+    public function createNilai($kode_rombel, $kel_mapel, $id_personil)
     {
         // Cari data berdasarkan parameter
         $data = KbmPerRombel::where('kode_rombel', $kode_rombel)
@@ -175,7 +175,7 @@ class FormatifController extends Controller
             );
         }
 
-        return redirect()->route('gurumapel.penilaian.formatif.edit', [
+        return redirect()->route('gurumapel.penilaian.formatif.editNilai', [
             'kode_rombel' => $data['kode_rombel'],
             'kel_mapel' => $data['kel_mapel'],
             'id_personil' => $data['id_personil'],
@@ -193,7 +193,7 @@ class FormatifController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($kode_rombel, $kel_mapel, $id_personil)
+    public function editNilai($kode_rombel, $kel_mapel, $id_personil)
     {
         // Cari data berdasarkan parameter
         $data = KbmPerRombel::where('kode_rombel', $kode_rombel)
@@ -310,7 +310,7 @@ class FormatifController extends Controller
             );
         }
 
-        return redirect()->route('gurumapel.penilaian.formatif.edit', [
+        return redirect()->route('gurumapel.penilaian.formatif.editNilai', [
             'kode_rombel' => $data['kode_rombel'],
             'kel_mapel' => $data['kel_mapel'],
             'id_personil' => $data['id_personil'],

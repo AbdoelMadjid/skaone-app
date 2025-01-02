@@ -77,7 +77,7 @@ class SumatifController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create($kode_rombel, $kel_mapel, $id_personil)
+    public function createNilai($kode_rombel, $kel_mapel, $id_personil)
     {
         // Cari data berdasarkan parameter
         $data = KbmPerRombel::where('kode_rombel', $kode_rombel)
@@ -172,7 +172,7 @@ class SumatifController extends Controller
             ]);
         }
 
-        return redirect()->route('gurumapel.penilaian.sumatif.edit', [
+        return redirect()->route('gurumapel.penilaian.sumatif.editNilai', [
             'kode_rombel' => $request->kode_rombel,
             'kel_mapel' => $request->kel_mapel,
             'id_personil' => $request->id_personil,
@@ -192,7 +192,7 @@ class SumatifController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($kode_rombel, $kel_mapel, $id_personil)
+    public function editNilai($kode_rombel, $kel_mapel, $id_personil)
     {
         $data = KbmPerRombel::where('kode_rombel', $kode_rombel)
             ->where('kel_mapel', $kel_mapel)
@@ -301,7 +301,7 @@ class SumatifController extends Controller
             }
         }
 
-        return redirect()->route('gurumapel.penilaian.sumatif.edit', [
+        return redirect()->route('gurumapel.penilaian.sumatif.editNilai', [
             'kode_rombel' => $data->kode_rombel,
             'kel_mapel' => $data->kel_mapel,
             'id_personil' => $data->id_personil,

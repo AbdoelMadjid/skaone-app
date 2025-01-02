@@ -95,7 +95,7 @@ class FormatifDataTable extends DataTable
                             <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
                                 class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
-                                <li><a class="dropdown-item" href="' . route('gurumapel.penilaian.formatif.create', [
+                                <li><a class="dropdown-item" href="' . route('gurumapel.penilaian.formatif.createNilai', [
                             'kode_rombel' => $row->kode_rombel,
                             'kel_mapel' => $row->kel_mapel,
                             'id_personil' => $row->id_personil,
@@ -126,7 +126,7 @@ class FormatifDataTable extends DataTable
                             <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
                                 class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
-                                <li><a class="dropdown-item" href="' . route('gurumapel.penilaian.formatif.edit', [
+                                <li><a class="dropdown-item" href="' . route('gurumapel.penilaian.formatif.editNilai', [
                             'kode_rombel' => $row->kode_rombel,
                             'kel_mapel' => $row->kel_mapel,
                             'id_personil' => $row->id_personil,

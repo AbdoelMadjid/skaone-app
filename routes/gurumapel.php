@@ -56,15 +56,15 @@ Route::middleware('auth')->group(function () {
 
         Route::group(['prefix' => 'penilaian', 'as' => 'penilaian.'], function () {
             Route::resource('formatif', FormatifController::class);
-            Route::get('formatif/create/{kode_rombel}/{kel_mapel}/{id_personil}', [FormatifController::class, 'create'])->name('formatif.create');
-            Route::get('formatif/edit/{kode_rombel}/{kel_mapel}/{id_personil}', [FormatifController::class, 'edit'])->name('formatif.edit');
+            Route::get('formatif/createNilai/{kode_rombel}/{kel_mapel}/{id_personil}', [FormatifController::class, 'createNilai'])->name('formatif.createNilai');
+            Route::get('formatif/editNilai/{kode_rombel}/{kel_mapel}/{id_personil}', [FormatifController::class, 'editNilai'])->name('formatif.editNilai');
             Route::post('/hapusnilaiformatif', [FormatifController::class, 'hapusNilaiFormatif'])->name('hapusnilaiformatif');
             Route::get('/exportformatif', [FormatifController::class, 'exportExcelFormatif'])->name('exportformatif');
             Route::post('/uploadformatif', [FormatifController::class, 'uploadNilaiFormatif'])->name('uploadformatif');
 
             Route::resource('sumatif', SumatifController::class);
-            Route::get('sumatif/create/{kode_rombel}/{kel_mapel}/{id_personil}', [SumatifController::class, 'create'])->name('sumatif.create');
-            Route::get('sumatif/edit/{kode_rombel}/{kel_mapel}/{id_personil}', [SumatifController::class, 'edit'])->name('sumatif.edit');
+            Route::get('sumatif/createNilai/{kode_rombel}/{kel_mapel}/{id_personil}', [SumatifController::class, 'createNilai'])->name('sumatif.createNilai');
+            Route::get('sumatif/editNilai/{kode_rombel}/{kel_mapel}/{id_personil}', [SumatifController::class, 'editNilai'])->name('sumatif.editNilai');
             Route::post('/hapusnilaisumatif', [SumatifController::class, 'hapusNilaiSumatif'])->name('hapusnilaisumatif');
             Route::get('/exportsumatif', [SumatifController::class, 'exportExcelSumatif'])->name('exportsumatif');
             Route::post('/uploadsumatif', [SumatifController::class, 'uploadNilaiSumatif'])->name('uploadsumatif');
