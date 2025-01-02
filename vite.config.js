@@ -9,15 +9,15 @@ import path from 'path';
 const folder = {
     src: "resources/", // source files
     src_assets: "resources/", // source assets files
-    dist: "public/", // build files
-    dist_assets: "public/build/" //build assets files
+    dist: "/", // build files
+    dist_assets: "build/" //build assets files
 };
 
 export default vite.defineConfig({
     build: {
         manifest: true,
         rtl: true,
-        outDir: 'public/build/',
+        outDir: 'build/',
         cssCodeSplit: true,
         rollupOptions: {
             output: {
