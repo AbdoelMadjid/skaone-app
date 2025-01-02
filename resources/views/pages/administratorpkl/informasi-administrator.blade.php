@@ -20,7 +20,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @yield('title') Real Time Daftar Hadir</h5>
+                    <h5 class="card-title mb-0 flex-grow-1">Bagan Daftar Hadir Per Hari</h5>
                     <div>
                         <form id="tanggalForm">
                             <input class="form-control" type="date" id="tanggal" name="tanggal"
