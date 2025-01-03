@@ -38,7 +38,7 @@
                                     <img src="{{ URL::asset('images/siswacewek.png') }}" alt="User Avatar"
                                         class="rounded-circle avatar-xl img-thumbnail user-profile-image">
                                 @else
-                                    <img src="{{ URL::asset('images/peserta_didik/' . $data->first()->foto) }}"
+                                    <img src="{{ URL::asset('images/thumbnail/' . $data->first()->foto) }}"
                                         alt="User Avatar" class="rounded-circle avatar-xl img-thumbnail user-profile-image">
                                 @endif
                             @else
@@ -67,7 +67,7 @@
                                     {{ $data->isNotEmpty() ? $data->first()->kontak_hp : 'Data tidak ditemukan' }}
                                 </div>
                             </div>
-                            <img src="{{ $data->isNotEmpty() && $data->first()->photo ? URL::asset('images/personil/' . $data->first()->photo) : URL::asset('images/user-dummy-img.jpg') }}"
+                            <img src="{{ $data->isNotEmpty() && $data->first()->photo ? URL::asset('images/thumbnail/' . $data->first()->photo) : URL::asset('images/user-dummy-img.jpg') }}"
                                 alt="User Avatar" class="rounded-circle avatar-xl img-thumbnail user-profile-image">
                         </div>
                     </div>
