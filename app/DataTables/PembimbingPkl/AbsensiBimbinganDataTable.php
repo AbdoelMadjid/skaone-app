@@ -26,8 +26,99 @@ class AbsensiBimbinganDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('absensi', function ($row) {
+                $keteranganAbsensi =
+                    'Hadir : ' . $row->hadir . '<br>
+                    Izin : ' . $row->izin . '<br>
+                    Sakit : ' . $row->sakit . '<br>
+                    Alfa : ' . $row->alfa . '<br>';
+
                 $absensitotal = $row->sakit + $row->izin + $row->alfa;
-                return $absensitotal;
+                return $keteranganAbsensi . '<br> Absensi : ' . $absensitotal;
+            })
+            // Menambahkan kolom untuk rekapitulasi per bulan
+            ->addColumn('rekap_desember', function ($row) {
+                $absensi_bulanan = DB::table('absensi_siswa_pkls')
+                    ->select(
+                        DB::raw("SUM(CASE WHEN status = 'HADIR' THEN 1 ELSE 0 END) as jumlah_hadir"),
+                        DB::raw("SUM(CASE WHEN status = 'SAKIT' THEN 1 ELSE 0 END) as jumlah_sakit"),
+                        DB::raw("SUM(CASE WHEN status = 'IZIN' THEN 1 ELSE 0 END) as jumlah_izin"),
+                        DB::raw("SUM(CASE WHEN status = 'ALFA' THEN 1 ELSE 0 END) as jumlah_alfa")
+                    )
+                    ->where('nis', $row->nis)
+                    ->whereMonth('tanggal', 12) // Bulan Desember
+                    ->whereYear('tanggal', 2024) // Tahun 2024
+                    ->first();
+
+                return $absensi_bulanan
+                    ? 'Hadir : ' . $absensi_bulanan->jumlah_hadir . ' <br>
+                       Izin : ' . $absensi_bulanan->jumlah_izin . ' <br>
+                       Sakit : ' . $absensi_bulanan->jumlah_sakit . ' <br>
+                       Alfa : ' . $absensi_bulanan->jumlah_alfa . ' <br>
+                       <br> Absensi : ' . ($absensi_bulanan->jumlah_izin + $absensi_bulanan->jumlah_sakit + $absensi_bulanan->jumlah_alfa)
+                    : 'Hadir : 0 <br> Izin : 0 <br>Sakit : 0 <br>Alfa : 0';
+            })
+            ->addColumn('rekap_januari', function ($row) {
+                $absensi_bulanan = DB::table('absensi_siswa_pkls')
+                    ->select(
+                        DB::raw("SUM(CASE WHEN status = 'HADIR' THEN 1 ELSE 0 END) as jumlah_hadir"),
+                        DB::raw("SUM(CASE WHEN status = 'SAKIT' THEN 1 ELSE 0 END) as jumlah_sakit"),
+                        DB::raw("SUM(CASE WHEN status = 'IZIN' THEN 1 ELSE 0 END) as jumlah_izin"),
+                        DB::raw("SUM(CASE WHEN status = 'ALFA' THEN 1 ELSE 0 END) as jumlah_alfa")
+                    )
+                    ->where('nis', $row->nis)
+                    ->whereMonth('tanggal', 1) // Bulan Januari
+                    ->whereYear('tanggal', 2025) // Tahun 2025
+                    ->first();
+
+                return $absensi_bulanan
+                    ? 'Hadir : ' . $absensi_bulanan->jumlah_hadir . ' <br>
+                       Izin : ' . $absensi_bulanan->jumlah_izin . ' <br>
+                       Sakit : ' . $absensi_bulanan->jumlah_sakit . ' <br>
+                       Alfa : ' . $absensi_bulanan->jumlah_alfa . ' <br>
+                       <br> Absensi : ' . ($absensi_bulanan->jumlah_izin + $absensi_bulanan->jumlah_sakit + $absensi_bulanan->jumlah_alfa)
+                    : 'Hadir : 0 <br> Izin : 0 <br>Sakit : 0 <br>Alfa : 0';
+            })
+            ->addColumn('rekap_februari', function ($row) {
+                $absensi_bulanan = DB::table('absensi_siswa_pkls')
+                    ->select(
+                        DB::raw("SUM(CASE WHEN status = 'HADIR' THEN 1 ELSE 0 END) as jumlah_hadir"),
+                        DB::raw("SUM(CASE WHEN status = 'SAKIT' THEN 1 ELSE 0 END) as jumlah_sakit"),
+                        DB::raw("SUM(CASE WHEN status = 'IZIN' THEN 1 ELSE 0 END) as jumlah_izin"),
+                        DB::raw("SUM(CASE WHEN status = 'ALFA' THEN 1 ELSE 0 END) as jumlah_alfa")
+                    )
+                    ->where('nis', $row->nis)
+                    ->whereMonth('tanggal', 2) // Bulan Februari
+                    ->whereYear('tanggal', 2025) // Tahun 2025
+                    ->first();
+
+                return $absensi_bulanan
+                    ? 'Hadir : ' . $absensi_bulanan->jumlah_hadir . ' <br>
+                       Izin : ' . $absensi_bulanan->jumlah_izin . ' <br>
+                       Sakit : ' . $absensi_bulanan->jumlah_sakit . ' <br>
+                       Alfa : ' . $absensi_bulanan->jumlah_alfa . ' <br>
+                       <br> Absensi : ' . ($absensi_bulanan->jumlah_izin + $absensi_bulanan->jumlah_sakit + $absensi_bulanan->jumlah_alfa)
+                    : 'Hadir : 0 <br> Izin : 0 <br>Sakit : 0 <br>Alfa : 0';
+            })
+            ->addColumn('rekap_maret', function ($row) {
+                $absensi_bulanan = DB::table('absensi_siswa_pkls')
+                    ->select(
+                        DB::raw("SUM(CASE WHEN status = 'HADIR' THEN 1 ELSE 0 END) as jumlah_hadir"),
+                        DB::raw("SUM(CASE WHEN status = 'SAKIT' THEN 1 ELSE 0 END) as jumlah_sakit"),
+                        DB::raw("SUM(CASE WHEN status = 'IZIN' THEN 1 ELSE 0 END) as jumlah_izin"),
+                        DB::raw("SUM(CASE WHEN status = 'ALFA' THEN 1 ELSE 0 END) as jumlah_alfa")
+                    )
+                    ->where('nis', $row->nis)
+                    ->whereMonth('tanggal', 3) // Bulan Maret
+                    ->whereYear('tanggal', 2025) // Tahun 2025
+                    ->first();
+
+                return $absensi_bulanan
+                    ? 'Hadir : ' . $absensi_bulanan->jumlah_hadir . ' <br>
+                       Izin : ' . $absensi_bulanan->jumlah_izin . ' <br>
+                       Sakit : ' . $absensi_bulanan->jumlah_sakit . ' <br>
+                       Alfa : ' . $absensi_bulanan->jumlah_alfa . ' <br>
+                       <br> Absensi : ' . ($absensi_bulanan->jumlah_izin + $absensi_bulanan->jumlah_sakit + $absensi_bulanan->jumlah_alfa)
+                    : 'Hadir : 0 <br> Izin : 0 <br>Sakit : 0 <br>Alfa : 0';
             })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
@@ -35,7 +126,7 @@ class AbsensiBimbinganDataTable extends DataTable
                 return view('action', compact('actions'));
             })
             ->addIndexColumn()
-            ->rawColumns(['absensi', 'action']);
+            ->rawColumns(['absensi', 'rekap_desember', 'rekap_januari', 'rekap_februari', 'rekap_maret', 'action']);
     }
 
     /**
@@ -78,7 +169,9 @@ class AbsensiBimbinganDataTable extends DataTable
                 'penempatan_prakerins.id_dudi',
                 'penempatan_prakerins.id_dudi',
                 'perusahaans.nama'
-            );
+            )
+            ->orderBy('peserta_didik_rombels.rombel_nama')
+            ->orderBy('penempatan_prakerins.nis');
     }
 
     /**
@@ -118,11 +211,11 @@ class AbsensiBimbinganDataTable extends DataTable
             Column::make('nama_lengkap')->title('Nama Peserta Didik'),
             Column::make('rombel_nama')->title('Rombel'),
             Column::make('nama_perusahaan')->title('Perusahaan')->width(300),
-            Column::make('hadir')->title('Hadir')->addClass('text-center align-middle'),
-            Column::make('sakit')->title('Sakit')->addClass('text-center align-middle'),
-            Column::make('izin')->title('Izin')->addClass('text-center align-middle'),
-            Column::make('alfa')->title('Alfa')->addClass('text-center align-middle'),
-            Column::make('absensi')->title('Absensi')->addClass('text-center align-middle'),
+            Column::make('rekap_desember')->title('Desember')->width(200),
+            Column::make('rekap_januari')->title('Januari')->width(200),
+            Column::make('rekap_februari')->title('Februari')->width(200),
+            Column::make('rekap_maret')->title('Maret')->width(200),
+            Column::make('absensi')->title('Total Absensi')->width(200),
             /* Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
