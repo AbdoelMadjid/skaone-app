@@ -177,11 +177,11 @@ class ProfilPenggunaController extends Controller
         if ($request->hasFile('profile_image')) {
             // Hapus gambar dan thumbnail lama jika ada
             if ($personil->photo) {
-                $oldImagePath = base_path('images/personil/' . $personil->photo);
+                //$oldImagePath = base_path('images/personil/' . $personil->photo);
                 $oldThumbnailPath = base_path('images/thumbnail/' . $personil->photo);
-                if (file_exists($oldImagePath)) {
+                /* if (file_exists($oldImagePath)) {
                     unlink($oldImagePath);
-                }
+                } */
                 if (file_exists($oldThumbnailPath)) {
                     unlink($oldThumbnailPath);
                 }
@@ -208,8 +208,8 @@ class ProfilPenggunaController extends Controller
             })->save($destinationPathThumbnail . '/' . $personilName);
 
             // Simpan gambar asli di `public/images/personil`
-            $destinationPath = base_path('images/personil');
-            $personilFile->move($destinationPath, $personilName);
+            //$destinationPath = base_path('images/personil');
+            //$personilFile->move($destinationPath, $personilName);
 
             // Perbarui nama file gambar di database
             $personil->photo = $personilName;

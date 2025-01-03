@@ -31,12 +31,12 @@ class JurnalSiswaDataTable extends DataTable
                 $defaultPhotoPath = asset('images/noimagejurnal.jpg');
 
                 // Tentukan path foto dari database
-                $imagePath = base_path('images/jurnal-pkl/' . $row->gambar);
+                $imagePath = base_path('images/thumbnail/' . $row->gambar);
                 $gamabrPath = '';
 
                 // Cek apakah file foto ada di folder 'images/personil'
                 if ($row->gambar && file_exists($imagePath)) {
-                    $gamabrPath = asset('images/jurnal-pkl/' . $row->gambar);
+                    $gamabrPath = asset('images/thumbnail/' . $row->gambar);
                 } else {
                     // Jika file tidak ditemukan, gunakan foto default berdasarkan jenis kelamin
                     $gamabrPath = $defaultPhotoPath;

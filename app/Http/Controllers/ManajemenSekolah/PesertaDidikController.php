@@ -93,7 +93,7 @@ class PesertaDidikController extends Controller
         $pesertaDidik = new PesertaDidik($request->except(['foto']));
 
         // Check if a new icon is uploaded
-        if ($request->hasFile('foto')) {
+        /* if ($request->hasFile('foto')) {
             // Delete the old icon if it exists
             if ($pesertaDidik->foto) {
                 $oldIconPath = base_path('images/peserta_didik' . $pesertaDidik->foto);
@@ -106,6 +106,31 @@ class PesertaDidikController extends Controller
             $pesertaDidikName = time() . '_' . $pesertaDidikFile->getClientOriginalName();
             $pesertaDidikFile->move(base_path('images/peserta_didik'), $pesertaDidikName);
             $pesertaDidik->foto = $pesertaDidikName;
+        } */
+
+        if ($request->hasFile('foto')) {
+            // Upload dan proses file gambar
+            $image = $request->file('foto');
+            $imageName = 'pd_' . time() . '.' . $image->extension();
+
+            // Membuat dan menyimpan thumbnail di `public/images/thumbnail`
+            $destinationPathThumbnail = base_path('images/thumbnail');
+            $img = Image::make($image->path());
+
+            // Tentukan persentase ukuran yang diinginkan (misalnya 50% dari ukuran asli)
+            $percentage = 50; // 50% dari ukuran asli
+
+            // Hitung dimensi baru berdasarkan persentase
+            $newWidth = $img->width() * ($percentage / 100);
+            $newHeight = $img->height() * ($percentage / 100);
+
+            // Resize dengan persentase
+            $img->resize($newWidth, $newHeight, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save($destinationPathThumbnail . '/' . $imageName);
+
+            // Menyimpan nama file ke database
+            $pesertaDidik->foto = $imageName;
         }
 
         $pesertaDidik->save();
@@ -161,11 +186,11 @@ class PesertaDidikController extends Controller
         if ($request->hasFile('foto')) {
             // Hapus foto lama dan thumbnail jika ada
             if ($pesertaDidik->foto) {
-                $oldImagePath = base_path('images/peserta_didik/' . $pesertaDidik->foto);
+                //$oldImagePath = base_path('images/peserta_didik/' . $pesertaDidik->foto);
                 $oldThumbnailPath = base_path('images/thumbnail/' . $pesertaDidik->foto);
-                if (file_exists($oldImagePath)) {
+                /* if (file_exists($oldImagePath)) {
                     unlink($oldImagePath);
-                }
+                } */
                 if (file_exists($oldThumbnailPath)) {
                     unlink($oldThumbnailPath);
                 }
@@ -183,8 +208,8 @@ class PesertaDidikController extends Controller
             })->save($thumbnailPath . '/' . $imageName);
 
             // Simpan foto asli di `images/peserta_didik`
-            $destinationPath = base_path('images/peserta_didik');
-            $imageFile->move($destinationPath, $imageName);
+            //$destinationPath = base_path('images/peserta_didik');
+            //$imageFile->move($destinationPath, $imageName);
 
             $isPhotoUpdated = true; // Tandai bahwa foto diperbarui
         }

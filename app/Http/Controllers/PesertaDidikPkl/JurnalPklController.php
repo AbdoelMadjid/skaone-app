@@ -81,7 +81,7 @@ class JurnalPklController extends Controller
             $img = Image::make($image->path());
 
             // Tentukan persentase ukuran yang diinginkan (misalnya 50% dari ukuran asli)
-            $percentage = 50; // 50% dari ukuran asli
+            $percentage = 40; // 50% dari ukuran asli
 
             // Hitung dimensi baru berdasarkan persentase
             $newWidth = $img->width() * ($percentage / 100);
@@ -91,10 +91,6 @@ class JurnalPklController extends Controller
             $img->resize($newWidth, $newHeight, function ($constraint) {
                 $constraint->aspectRatio();
             })->save($destinationPathThumbnail . '/' . $imageName);
-
-            // Menyimpan file gambar asli di `public/images/galery`
-            $destinationPath = base_path('images/jurnal-pkl');
-            $image->move($destinationPath, $imageName);
 
             // Menyimpan nama file ke database
             $jurnalPkl->gambar = $imageName;

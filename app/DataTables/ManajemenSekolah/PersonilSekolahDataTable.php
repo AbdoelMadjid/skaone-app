@@ -47,12 +47,12 @@ class PersonilSekolahDataTable extends DataTable
                     : asset('images/gurucewek.png');
 
                 // Tentukan path foto dari database
-                $imagePath = base_path('images/personil/' . $row->photo);
+                $imagePath = base_path('images/thumbnail/' . $row->photo);
                 $logoPath = '';
 
                 // Cek apakah file foto ada di folder 'images/personil'
                 if ($row->photo && file_exists($imagePath)) {
-                    $logoPath = asset('images/personil/' . $row->photo);
+                    $logoPath = asset('images/thumbnail/' . $row->photo);
                 } else {
                     // Jika file tidak ditemukan, gunakan foto default berdasarkan jenis kelamin
                     $logoPath = $defaultPhotoPath;

@@ -162,11 +162,11 @@ class IdentitasSiswaController extends Controller
         if ($request->hasFile('foto')) {
             // Hapus foto lama dan thumbnail jika ada
             if ($identitasSiswa->foto) {
-                $oldImagePath = base_path('images/peserta_didik/' . $identitasSiswa->foto);
+                //$oldImagePath = base_path('images/peserta_didik/' . $identitasSiswa->foto);
                 $oldThumbnailPath = base_path('images/thumbnail/' . $identitasSiswa->foto);
-                if (file_exists($oldImagePath)) {
+                /* if (file_exists($oldImagePath)) {
                     unlink($oldImagePath);
-                }
+                } */
                 if (file_exists($oldThumbnailPath)) {
                     unlink($oldThumbnailPath);
                 }
@@ -184,8 +184,8 @@ class IdentitasSiswaController extends Controller
             })->save($thumbnailPath . '/' . $imageName);
 
             // Simpan foto asli di `images/peserta_didik`
-            $destinationPath = base_path('images/peserta_didik');
-            $imageFile->move($destinationPath, $imageName);
+            //$destinationPath = base_path('images/peserta_didik');
+            //$imageFile->move($destinationPath, $imageName);
 
             $isPhotoUpdated = true; // Tandai bahwa foto diperbarui
         }
