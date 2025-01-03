@@ -276,10 +276,10 @@
                     // Periksa apakah file foto ada
                     if (response.foto) {
                         $.ajax({
-                            url: '/images/peserta_didik/' + response.foto,
+                            url: '/images/thumbnail/' + response.foto,
                             method: 'HEAD', // Memeriksa keberadaan file tanpa memuatnya
                             success: function() {
-                                $('#foto-siswa').attr('src', '/images/peserta_didik/' +
+                                $('#foto-siswa').attr('src', '/images/thumbnail/' +
                                     response.foto);
                             },
                             error: function() {
