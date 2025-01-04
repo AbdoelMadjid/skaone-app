@@ -481,7 +481,6 @@ class AbsensiBimbinganDataTable extends DataTable
                 'peserta_didiks.nama_lengkap',
                 'peserta_didik_rombels.rombel_nama',
                 'penempatan_prakerins.id_dudi',
-                'penempatan_prakerins.id_dudi',
                 'perusahaans.nama'
             )
             ->orderBy('peserta_didik_rombels.rombel_nama')
