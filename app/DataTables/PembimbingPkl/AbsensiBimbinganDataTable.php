@@ -25,6 +25,13 @@ class AbsensiBimbinganDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addColumn('identitas_peserta', function ($row) {
+                // Ambil data `element` dari tabel `capaian_pembelajarans` berdasarkan `kode_cp`
+                $identitas_pesertaPrakerin = '<strong>' . $row->nama_lengkap . '</strong>
+                <br> NIS : ' .  $row->nis . '<br> Kelas : ' .  $row->rombel_nama . '<br><br><strong>Tempat Prakerin :</strong><br><span class="text-info">' . $row->nama_perusahaan . '</span>';
+
+                return $identitas_pesertaPrakerin;
+            })
             ->addColumn('absensi', function ($row) {
                 $absensiBulan = '
                     <div
@@ -415,7 +422,15 @@ class AbsensiBimbinganDataTable extends DataTable
                 return view('action', compact('actions'));
             })
             ->addIndexColumn()
-            ->rawColumns(['absensi', 'rekap_desember', 'rekap_januari', 'rekap_februari', 'rekap_maret', 'action']);
+            ->rawColumns([
+                'identitas_peserta',
+                'absensi',
+                'rekap_desember',
+                'rekap_januari',
+                'rekap_februari',
+                'rekap_maret',
+                'action'
+            ]);
     }
 
     /**
@@ -496,15 +511,12 @@ class AbsensiBimbinganDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
-            Column::make('nis')->title('NIS'),
-            Column::make('nama_lengkap')->title('Nama Peserta Didik'),
-            Column::make('rombel_nama')->title('Rombel'),
-            Column::make('nama_perusahaan')->title('Perusahaan')->width(300),
-            Column::make('rekap_desember')->title('Desember')->width(200),
-            Column::make('rekap_januari')->title('Januari')->width(200),
-            Column::make('rekap_februari')->title('Februari')->width(200),
-            Column::make('rekap_maret')->title('Maret')->width(200),
-            Column::make('absensi')->title('Total Absensi')->width(200),
+            Column::make('identitas_peserta')->title('Identitas Peserta')->width(400),
+            Column::make('rekap_desember')->title('Desember')->width(150),
+            Column::make('rekap_januari')->title('Januari')->width(150),
+            Column::make('rekap_februari')->title('Februari')->width(150),
+            Column::make('rekap_maret')->title('Maret')->width(150),
+            Column::make('absensi')->title('Total Absensi')->width(150),
             /* Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
