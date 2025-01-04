@@ -228,7 +228,7 @@
                                     <thead>
                                         <tr>
                                             <th class="align-middle">No</th>
-                                            <th class="align-middle">Tanggal Kirim</th>
+                                            <th class="align-middle" width="100">Tanggal Kirim</th>
                                             <th class="align-middle">Element</th>
                                             <th class="align-middle">Isi TP</th>
                                             <th class="align-middle">Validasi</th>

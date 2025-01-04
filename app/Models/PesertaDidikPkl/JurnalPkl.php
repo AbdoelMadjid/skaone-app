@@ -17,5 +17,6 @@ class JurnalPkl extends Model
         'keterangan',
         'gambar',
         'validasi',
+        'komentar',
     ];
 }

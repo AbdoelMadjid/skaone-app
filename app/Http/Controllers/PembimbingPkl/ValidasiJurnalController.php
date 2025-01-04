@@ -152,4 +152,43 @@ class ValidasiJurnalController extends Controller
         $validasiJurnal->delete();
         return responseSuccessDelete();
     }
+
+    public function tambahKomentar(Request $request, $id)
+    {
+        // Validasi data input
+        $validatedData = $request->validate([
+            'komentar' => 'required|string|max:255',
+        ]);
+
+        // Cari record tujuan pembelajaran berdasarkan ID
+        $validasiJurnal = ValidasiJurnal::find($id);
+
+        if ($validasiJurnal) {
+            // Update kolom tp_isi di tabel tujuan_pembelajarans
+            $validasiJurnal->komentar = $validatedData['komentar'];
+            $validasiJurnal->save();
+
+            return response()->json(['message' => 'Komentar sukses di tambahkan!']);
+        }
+
+        return response()->json(['message' => 'Data tidak ditemukan!'], 404);
+    }
+
+    public function validasiJurnal(Request $request, $id)
+    {
+        $validasiJurnal = ValidasiJurnal::findOrFail($id);
+        $validasiJurnal->validasi = $request->input('validasi');
+        $validasiJurnal->save();
+
+        return response()->json(['message' => 'Validasi berhasil diperbarui']);
+    }
+
+    public function validasiJurnalTolak(Request $request, $id)
+    {
+        $validasiJurnal = ValidasiJurnal::findOrFail($id);
+        $validasiJurnal->validasi = $request->input('validasi');
+        $validasiJurnal->save();
+
+        return response()->json(['message' => 'Validasi berhasil diperbarui']);
+    }
 }

@@ -17,8 +17,8 @@
                 id="tgl_kirim" />
         </div>
         <div class="col-md-8">
-            <x-form.select name="element" label="Element CP" :options="$elemenCPOptions" value="{{ $data->element }}"
-                id="element" onchange="updateTujuanPembelajaran(this.value)" />
+            <x-form.select name="element" label="Element Capaian Pembelajaran" :options="$elemenCPOptions"
+                value="{{ $data->element }}" id="element" onchange="updateTujuanPembelajaran(this.value)" />
         </div>
     </div>
     <div class="row">
@@ -44,11 +44,12 @@
             </div>
             <div class="col-md-6">
                 <img id="image-preview"
-                    src="{{ $data->gambar && file_exists(base_path('images/jurnal-pkl/' . $data->gambar)) ? asset('images/jurnal-pkl/' . $data->gambar) : asset('images/noimagejurnal.jpg') }}"
+                    src="{{ $data->gambar && file_exists(base_path('images/thumbnail/' . $data->gambar)) ? asset('images/thumbnail/' . $data->gambar) : asset('images/noimagejurnal.jpg') }}"
                     width="250" alt="Photo" />
             </div>
         </div>
         <input type="hidden" name="validasi" value="Belum">
+        <input type="hidden" name="komentar" value="{{ $data->komentar }}">
     </div>
 </x-form.modal>
 <script>

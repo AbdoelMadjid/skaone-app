@@ -58,11 +58,26 @@ class ValidasiJurnalDataTable extends DataTable
                     ->where('id', $row->id_tp)
                     ->value('isi_tp'); // Ambil hanya kolom isi_tp
 
+                $IsiKomentar = "";
+                if ($row->validasi === "Tolak") {
+                    $IsiKomentar = '
+                    <br><br><strong>Komentar :</strong> <br><span class="text-danger"><strong>' . $row->komentar . '</strong></span><br>
+                        <form class="update-tp-form mt-4" data-id="' . $row->id . '">
+                        ' . csrf_field() . '
+                        <textarea class="form-control edit-tp-textarea" name="komentar" id="komentar_' . $row->id . '" rows="5" style="display: none;">' . $row->komentar . '</textarea>
+                        <div class="gap-2 hstack justify-content-end mt-3">
+                            <button class="btn btn-soft-danger edit-tp-button" data-target="#komentar_' . $row->id . '" type="button">Tambah Komentar</button>
+                            <button type="submit" class="btn btn-soft-success" style="display: none;">Submit</button>
+                        </div>
+                    </form>';
+                }
+
                 return
                     '<strong>Tamggal:</strong> <br>' . $tglkirim .
                     '<br><br><strong>ELement:</strong> <br>' . $element .
                     '<br><br><strong>Tujuan Pembelajaran:</strong> <br>' . $isiTp .
-                    '<br><br><strong>Keterangan:</strong> <br>' . $row->keterangan;
+                    '<br><br><strong>Keterangan:</strong> <br>' . $row->keterangan .
+                    '' . $IsiKomentar;
             })
             ->addColumn('identitas_peserta', function ($row) {
                 // Ambil data `element` dari tabel `capaian_pembelajarans` berdasarkan `kode_cp`
@@ -72,26 +87,40 @@ class ValidasiJurnalDataTable extends DataTable
             })
             ->addColumn('validasi', function ($row) {
                 if ($row->validasi === "Belum") {
-                    $badgevalidasi = "<span class='badge bg-danger'>Belum</span>";
+                    $badgevalidasi = "<h4><span class='badge bg-danger'>Belum</span></h4>";
+                } else if ($row->validasi === "Sudah") {
+                    $badgevalidasi = "<h4><span class='badge bg-primary'>Sudah</span></h4>";
                 } else {
-                    // Jika file tidak ditemukan, gunakan foto default berdasarkan jenis kelamin
-                    $badgevalidasi = "<span class='badge bg-primary'>Sudah</span>";;
+                    $badgevalidasi = "<h4><span class='badge bg-warning'>Tolak</span></h4>
+                    <span class='fs-10'>Silakan isi komentar alasan kenapa di tolak</span>";
                 }
 
-                return $badgevalidasi;
-            })
-            /* ->addColumn('validasi', function ($row) {
-                $checked = $row->validasi === 'Sudah' ? 'checked' : '';
-                return "
-                    <div class='form-check form-switch'>
-                        <input
-                            type='checkbox'
-                            class='form-check-input'
-                            id='validasiSwitch-{$row->id}'
-                            $checked
-                            onchange='saveValidasi(this, {$row->id})'>
+                $checkedValidasi = $row->validasi === "Sudah" ? "checked" : "";
+
+                $checkedValidasiTolak = $row->validasi === "Tolak" ? "checked" : "";
+
+                $tombolValidasiSetuju = "
+                <span>Terima</span><br>
+                    <div class='form-check form-switch form-switch-lg d-inline-flex align-items-center justify-content-center ms-4' dir='ltr'>
+                        <input type='checkbox' class='form-check-input text-center validasi-checkbox'
+                            data-id='{$row->id}' {$checkedValidasi}>
                     </div>";
-            }) */
+
+                $tombolValidasiTolak = "
+                    <span>Tolak</span><br>
+                    <div class='form-check form-switch form-switch-warning form-switch-lg d-inline-flex align-items-center justify-content-center ms-4' dir='ltr'>
+                        <input type='checkbox' class='form-check-input text-center validasi-tolak-checkbox'
+                            data-id='{$row->id}' {$checkedValidasiTolak}>
+                    </div>";
+
+                return "<div class='text-center'>
+                    $tombolValidasiSetuju
+                    <hr>
+                    $tombolValidasiTolak
+                    <hr>
+                    <span>Status Validasi</span><br> $badgevalidasi <hr>
+                </div>";
+            })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
@@ -172,12 +201,12 @@ class ValidasiJurnalDataTable extends DataTable
             Column::make('identitas_peserta')->title('Identitas Peserta Prakerin'),
             Column::make('jurnal_siswa')->title('Jurnal Siswa')->width(300),
             Column::make('gambar')->title('Gambar'),
-            Column::make('validasi')->title('Validasi'),
-            Column::computed('action')
+            Column::make('validasi')->title('Validasi')->addClass('text-center'),
+            /*  Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
                 ->width(60)
-                ->addClass('text-center'),
+                ->addClass('text-center'), */
         ];
     }
 

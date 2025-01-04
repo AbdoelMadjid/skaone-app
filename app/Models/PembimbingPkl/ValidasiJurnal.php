@@ -17,5 +17,6 @@ class ValidasiJurnal extends Model
         'keterangan',
         'gambar',
         'validasi',
+        'komentar'
     ];
 }

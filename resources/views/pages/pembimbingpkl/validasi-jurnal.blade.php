@@ -43,9 +43,10 @@
                             <div class="col-lg-auto">
                                 <div>
                                     <select class="form-control" id="idvalidasi">
-                                        <option value="all" selected>Validasi</option>
+                                        <option value="all" selected>Status Validasi</option>
                                         <option value="Sudah">Sudah</option>
                                         <option value="Belum">Belum</option>
+                                        <option value="Tolak">Tolak</option>
                                     </select>
                                 </div>
                             </div>
@@ -81,6 +82,124 @@
                 table.ajax.reload();
             });
 
+            $(document).on('click', '.edit-tp-button', function() {
+                var targetTextarea = $(this).data('target'); // Ambil ID dari atribut data-target
+                $(targetTextarea).show(); // Tampilkan textarea
+
+                // Ubah tombol menjadi submit
+                $(this).hide(); // Sembunyikan tombol Edit
+                $(this).closest('form').find('button[type="submit"]').show(); // Tampilkan tombol Submit
+            });
+
+            $(document).on('submit', '.update-tp-form', function(e) {
+                e.preventDefault(); // Cegah reload halaman
+
+                var form = $(this);
+                var id = form.data('id'); // Ambil ID dari atribut data-id
+                var url = `/pembimbingpkl/validasi-jurnal/tambahkomentar/${id}`; // URL sesuai route
+                var data = form.serialize(); // Serialisasi data form
+
+                $.ajax({
+                    url: url,
+                    type: 'POST', // Gunakan POST meskipun method disimulasikan sebagai PUT
+                    data: data,
+                    success: function(response) {
+                        // Tampilkan notifikasi sukses (opsional)
+                        showToast('success', 'Komentar sukses di tambahkan!');
+
+                        $('#validasijurnal-table').DataTable().ajax.reload(null, false);
+
+                        // Sembunyikan textarea dan kembalikan tombol Edit
+                        form.find('.edit-tp-textarea').hide();
+                        form.find('.submit-tp-button').hide();
+                        form.find('.edit-tp-button').show();
+                    },
+                    error: function(xhr) {
+                        // Tampilkan pesan error
+                        showToast('error', 'Terjadi kesalahan: ' + xhr.responseText);
+                    }
+                });
+            });
+
+            $(document).on('change', '.validasi-checkbox', function() {
+                const checkbox = $(this);
+                const id = checkbox.data('id');
+                const validasiValue = checkbox.is(':checked') ? 'Sudah' : 'Belum';
+
+                // Kirim data ke server menggunakan fetch atau jQuery AJAX
+                $.ajax({
+                    url: `/pembimbingpkl/updateValidasi/${id}`,
+                    type: 'PUT',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    },
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        validasi: validasiValue
+                    }),
+                    success: function(response) {
+                        // Perbarui badge
+                        const badge = checkbox.closest('td').find('span.badge');
+                        badge.removeClass('bg-danger bg-primary')
+                            .addClass(validasiValue === 'Sudah' ? 'bg-primary' : 'bg-danger')
+                            .text(validasiValue);
+
+                        $('#validasijurnal-table').DataTable().ajax.reload(null, false);
+
+                        // Tampilkan pesan sukses
+                        showToast('success', 'Validasi berhasil diperbarui.');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+
+                        // Tampilkan pesan error
+                        showToast('error', 'Terjadi kesalahan, coba lagi.');
+
+                        // Kembalikan status checkbox jika gagal
+                        checkbox.prop('checked', !checkbox.is(':checked'));
+                    }
+                });
+            });
+
+            $(document).on('change', '.validasi-tolak-checkbox', function() {
+                const checkbox = $(this);
+                const id = checkbox.data('id');
+                const validasiValue = checkbox.is(':checked') ? 'Tolak' : 'Belum';
+
+                // Kirim data ke server menggunakan fetch atau jQuery AJAX
+                $.ajax({
+                    url: `/pembimbingpkl/updateValidasiTolak/${id}`,
+                    type: 'PUT',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    },
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        validasi: validasiValue
+                    }),
+                    success: function(response) {
+                        // Perbarui badge
+                        const badge = checkbox.closest('td').find('span.badge');
+                        badge.removeClass('bg-danger bg-warning')
+                            .addClass(validasiValue === 'Tolak' ? 'bg-warning' : 'bg-danger')
+                            .text(validasiValue);
+
+                        $('#validasijurnal-table').DataTable().ajax.reload(null, false);
+
+                        // Tampilkan pesan sukses
+                        showToast('success', 'Validasi berhasil diperbarui.');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+
+                        // Tampilkan pesan error
+                        showToast('error', 'Terjadi kesalahan, coba lagi.');
+
+                        // Kembalikan status checkbox jika gagal
+                        checkbox.prop('checked', !checkbox.is(':checked'));
+                    }
+                });
+            });
 
             $('#' + datatable).DataTable(); // Pastikan DataTable diinisialisasi
 

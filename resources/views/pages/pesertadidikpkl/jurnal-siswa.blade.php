@@ -69,7 +69,51 @@
             }
         }
 
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('editJurnalModal');
+            modal.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
 
+                const id = button.getAttribute('data-id');
+                const tanggalKirim = button.getAttribute('data-tanggal_kirim');
+                const element = button.getAttribute('data-element');
+                const idTp = button.getAttribute('data-id_tp');
+                const keterangan = button.getAttribute('data-keterangan');
+                const gambar = button.getAttribute('data-gambar');
+                const penempatan = button.getAttribute('data-penempatan');
+
+                // Isi form dengan data
+                modal.querySelector('#tanggal_kirim').value = tanggalKirim;
+                modal.querySelector('#element').value = element;
+                modal.querySelector('#id_tp').value = idTp;
+                modal.querySelector('#keterangan').value = keterangan;
+                modal.querySelector('#penempatan').value = penempatan;
+
+                // Update action form
+                const form = modal.querySelector('#editJurnalForm');
+                form.action = `/pesertadidikpkl/jurnal-siswa/${id}`;
+
+                // Update image preview
+                const imagePreview = modal.querySelector('#image-preview');
+                if (gambar) {
+                    imagePreview.src = `/images/thumbnail/${gambar}`;
+                } else {
+                    imagePreview.src = '{{ asset('images/noimagejurnal.jpg') }}';
+                }
+            });
+        });
+
+        function previewImage(event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('image-preview');
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
 
         handleDataTableEvents(datatable);
         handleAction(datatable)

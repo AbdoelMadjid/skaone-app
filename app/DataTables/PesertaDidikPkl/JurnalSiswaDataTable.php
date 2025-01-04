@@ -60,18 +60,27 @@ class JurnalSiswaDataTable extends DataTable
                     ->where('id', $row->id_tp)
                     ->value('isi_tp'); // Ambil hanya kolom isi_tp
 
+                $IsiKomentar = "";
+                if ($row->validasi === "Tolak") {
+                    $IsiKomentar = '
+                    <br><br><strong>Komentar Guru PKL :</strong> <br><span class="text-info"><strong>' . $row->komentar . '</strong></span><br><br><br>';
+                }
+
                 return
-                    '<strong>Tgl Kirim:</strong> <br>' . $tglKirim .
+                    '<strong>ID Jurnal :</strong> <br>' . $row->id .
+                    '<br><br><strong>Tgl Kirim:</strong> <br>' . $tglKirim .
                     '<br><br><strong>ELement:</strong> <br>' . $element .
                     '<br><br><strong>Tujuan Pembelajaran:</strong> <br>' . $isiTp .
-                    '<br><br><strong>Keterangan:</strong> <br>' . $row->keterangan;
+                    '<br><br><strong>Keterangan:</strong> <br>' . $row->keterangan .
+                    $IsiKomentar;
             })
             ->addColumn('validasi', function ($row) {
                 if ($row->validasi === "Belum") {
-                    $badgevalidasi = "<h5><span class='badge bg-danger'>Belum</span></h5>";
+                    $badgevalidasi = "<h5><span class='badge bg-danger'>Belum di Validasi</span></h5>";
+                } else if ($row->validasi === "Sudah") {
+                    $badgevalidasi = "<h5><span class='badge bg-primary'>DI TERIMA</span></h5>";
                 } else {
-                    // Jika file tidak ditemukan, gunakan foto default berdasarkan jenis kelamin
-                    $badgevalidasi = "<h5><span class='badge bg-primary'>Sudah</span></h5>";
+                    $badgevalidasi = "<h5><span class='badge badge-gradient-warning'>Di tolak</span></h5><span class=' badge badge-warning fs-10 text-danger'>Silakan cek Komentar Guru PKL</span>";
                 }
 
                 return $badgevalidasi;
@@ -80,7 +89,7 @@ class JurnalSiswaDataTable extends DataTable
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
                 unset($actions['Delete']);
-                unset($actions['Edit']);
+                //unset($actions['Edit']);
                 return view('action', compact('actions'));
             })
             ->addIndexColumn()
@@ -137,8 +146,8 @@ class JurnalSiswaDataTable extends DataTable
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('jurnal_siswa')->title('Jurnal')->width('60%'),
             Column::make('gambar')->title('Gambar')->addClass('text-center'),
-            Column::make('validasi')->title('Validasi'),
-            /* Column::computed('action')
+            Column::make('validasi')->title('Validasi')->addClass('text-center'),
+            /*  Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
                 ->width(60)
