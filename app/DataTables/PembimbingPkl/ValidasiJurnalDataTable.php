@@ -81,7 +81,7 @@ class ValidasiJurnalDataTable extends DataTable
             })
             ->addColumn('identitas_peserta', function ($row) {
                 // Ambil data `element` dari tabel `capaian_pembelajarans` berdasarkan `kode_cp`
-                $identitas_pesertaPrakerin = $row->nama_lengkap . ' [' .  $row->rombel_nama . ']<br>' . $row->nama;
+                $identitas_pesertaPrakerin = '<strong>' . $row->nama_lengkap . '</strong><br> Kelas : ' .  $row->rombel_nama . '<br><br><strong>Tempat Prakerin :</strong><br><span class="text-info">' . $row->nama . '</span>';
 
                 return $identitas_pesertaPrakerin;
             })
