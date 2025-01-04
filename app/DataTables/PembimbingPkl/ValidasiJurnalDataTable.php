@@ -187,7 +187,7 @@ class ValidasiJurnalDataTable extends DataTable
             ])->parameters([
                 'lengthChange' => false, // Menghilangkan dropdown "Show entries"
                 'searching' => false,    // Menghilangkan kotak pencarian
-                'pageLength' => 80,       // Menampilkan 50 baris per halaman
+                'pageLength' => 40,       // Menampilkan 50 baris per halaman
             ]);
     }
 
