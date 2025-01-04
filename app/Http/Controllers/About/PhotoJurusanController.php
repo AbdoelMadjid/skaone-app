@@ -62,8 +62,8 @@ class PhotoJurusanController extends Controller
             })->save($destinationPathThumbnail . '/' . $imageName);
 
             // Menyimpan file gambar asli di `public/images/galery`
-            $destinationPath = base_path('images/gambarjurusan');
-            $image->move($destinationPath, $imageName);
+            //$destinationPath = base_path('images/gambarjurusan');
+            //$image->move($destinationPath, $imageName);
 
             // Menyimpan nama file ke database
             $photoJurusan->image = $imageName;
@@ -109,11 +109,11 @@ class PhotoJurusanController extends Controller
         if ($request->hasFile('image')) {
             // Hapus gambar dan thumbnail lama jika ada
             if ($photoJurusan->image) {
-                $oldImagePath = base_path('images/gambarjurusan/' . $photoJurusan->image);
+                //$oldImagePath = base_path('images/gambarjurusan/' . $photoJurusan->image);
                 $oldThumbnailPath = base_path('images/thumbnail/' . $photoJurusan->image);
-                if (file_exists($oldImagePath)) {
+                /* if (file_exists($oldImagePath)) {
                     unlink($oldImagePath);
-                }
+                } */
                 if (file_exists($oldThumbnailPath)) {
                     unlink($oldThumbnailPath);
                 }
@@ -140,8 +140,8 @@ class PhotoJurusanController extends Controller
             })->save($destinationPathThumbnail . '/' . $imageName);
 
             // Simpan gambar asli di `public/images/galery`
-            $destinationPath = base_path('images/gambarjurusan');
-            $imageFile->move($destinationPath, $imageName);
+            //$destinationPath = base_path('images/gambarjurusan');
+            //$imageFile->move($destinationPath, $imageName);
 
             // Perbarui nama file gambar di database
             $photoJurusan->image = $imageName;
@@ -161,7 +161,7 @@ class PhotoJurusanController extends Controller
     {
         // Hapus file image dan thumbnail jika ada
         if ($photoJurusan->image) {
-            $imagePath = base_path('images/gambarjurusan/' . $photoJurusan->image);
+            $imagePath = base_path('images/thumbnail/' . $photoJurusan->image);
 
             // Periksa dan hapus file gambar asli
             if (file_exists($imagePath)) {

@@ -72,8 +72,8 @@ class GaleryController extends Controller
             })->save($destinationPathThumbnail . '/' . $imageName);
 
             // Menyimpan file gambar asli di `public/images/galery`
-            $destinationPath = base_path('images/galery');
-            $image->move($destinationPath, $imageName);
+            //$destinationPath = base_path('images/galery');
+            //$image->move($destinationPath, $imageName);
 
             // Menyimpan nama file ke database
             $gallery->image = $imageName;
@@ -128,11 +128,11 @@ class GaleryController extends Controller
         if ($request->hasFile('image')) {
             // Hapus gambar dan thumbnail lama jika ada
             if ($galery->image) {
-                $oldImagePath = base_path('images/galery/' . $galery->image);
+                //$oldImagePath = base_path('images/galery/' . $galery->image);
                 $oldThumbnailPath = base_path('images/thumbnail/' . $galery->image);
-                if (file_exists($oldImagePath)) {
+                /* if (file_exists($oldImagePath)) {
                     unlink($oldImagePath);
-                }
+                } */
                 if (file_exists($oldThumbnailPath)) {
                     unlink($oldThumbnailPath);
                 }
@@ -159,8 +159,8 @@ class GaleryController extends Controller
             })->save($destinationPathThumbnail . '/' . $galeryName);
 
             // Simpan gambar asli di `public/images/galery`
-            $destinationPath = base_path('images/galery');
-            $galeryFile->move($destinationPath, $galeryName);
+            //$destinationPath = base_path('images/galery');
+            //$galeryFile->move($destinationPath, $galeryName);
 
             // Perbarui nama file gambar di database
             $galery->image = $galeryName;
@@ -180,13 +180,13 @@ class GaleryController extends Controller
     {
         // Hapus file gambar dan thumbnail jika ada
         if ($galery->image) {
-            $imagePath = base_path('images/galery/' . $galery->image);
+            //$imagePath = base_path('images/galery/' . $galery->image);
             $thumbnailPath = base_path('images/thumbnail/' . $galery->image);
 
             // Periksa dan hapus file gambar asli
-            if (file_exists($imagePath)) {
+            /* if (file_exists($imagePath)) {
                 unlink($imagePath);
-            }
+            } */
 
             // Periksa dan hapus file thumbnail
             if (file_exists($thumbnailPath)) {

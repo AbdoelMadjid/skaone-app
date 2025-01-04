@@ -63,8 +63,8 @@ class TeamPengembangController extends Controller
             })->save($destinationPathThumbnail . '/' . $imageName);
 
             // Menyimpan file gambar asli di `public/images/galery`
-            $destinationPath = base_path('images/team');
-            $image->move($destinationPath, $imageName);
+            //$destinationPath = base_path('images/team');
+            //$image->move($destinationPath, $imageName);
 
             // Menyimpan nama file ke database
             $teamPengembang->photo = $imageName;
@@ -108,11 +108,11 @@ class TeamPengembangController extends Controller
         if ($request->hasFile('photo')) {
             // Hapus gambar dan thumbnail lama jika ada
             if ($teamPengembang->photo) {
-                $oldImagePath = base_path('images/team/' . $teamPengembang->photo);
+                //$oldImagePath = base_path('images/team/' . $teamPengembang->photo);
                 $oldThumbnailPath = base_path('images/thumbnail/' . $teamPengembang->photo);
-                if (file_exists($oldImagePath)) {
+                /* if (file_exists($oldImagePath)) {
                     unlink($oldImagePath);
-                }
+                } */
                 if (file_exists($oldThumbnailPath)) {
                     unlink($oldThumbnailPath);
                 }
@@ -139,8 +139,8 @@ class TeamPengembangController extends Controller
             })->save($destinationPathThumbnail . '/' . $imageName);
 
             // Simpan gambar asli di `public/images/galery`
-            $destinationPath = base_path('images/team');
-            $imageFile->move($destinationPath, $imageName);
+            //$destinationPath = base_path('images/team');
+            //$imageFile->move($destinationPath, $imageName);
 
             // Perbarui nama file gambar di database
             $teamPengembang->photo = $imageName;
@@ -157,6 +157,22 @@ class TeamPengembangController extends Controller
      */
     public function destroy(TeamPengembang $teamPengembang)
     {
+        // Hapus file gambar dan thumbnail jika ada
+        if ($teamPengembang->image) {
+            //$imagePath = base_path('images/galery/' . $galery->image);
+            $thumbnailPath = base_path('images/thumbnail/' . $teamPengembang->image);
+
+            // Periksa dan hapus file gambar asli
+            /* if (file_exists($imagePath)) {
+                unlink($imagePath);
+            } */
+
+            // Periksa dan hapus file thumbnail
+            if (file_exists($thumbnailPath)) {
+                unlink($thumbnailPath);
+            }
+        }
+
         $teamPengembang->delete();
 
         return responseSuccessDelete();
