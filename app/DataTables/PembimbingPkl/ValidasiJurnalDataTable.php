@@ -198,10 +198,10 @@ class ValidasiJurnalDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
-            Column::make('identitas_peserta')->title('Identitas Peserta Prakerin'),
-            Column::make('jurnal_siswa')->title('Jurnal Siswa')->width(300),
+            Column::make('identitas_peserta')->title('Identitas Peserta Prakerin')->width(200),
+            Column::make('jurnal_siswa')->title('Jurnal Siswa')->width(500),
             Column::make('gambar')->title('Gambar'),
-            Column::make('validasi')->title('Validasi')->addClass('text-center'),
+            Column::make('validasi')->title('Validasi')->addClass('text-center')->width(150),
             /*  Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
