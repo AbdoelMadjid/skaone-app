@@ -25,21 +25,6 @@ class AbsensiBimbinganDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('identitas_peserta', function ($row) {
-                // Ambil data `element` dari tabel `capaian_pembelajarans` berdasarkan `kode_cp`
-                $identitas_pesertaPrakerin = '<strong>' . $row->nama_lengkap .
-                    '</strong><br> NIS : ' .  $row->nis .
-                    '</strong><br> Kelas : ' .  $row->rombel_nama;
-
-                return $identitas_pesertaPrakerin;
-            })
-            ->addColumn('identitas_perusahaan', function ($row) {
-                // Ambil data `element` dari tabel `capaian_pembelajarans` berdasarkan `kode_cp`
-                $idenPerusahaan = '<strong>' . $row->nama_perusahaan . '</strong><br>
-            Alamat : ' .  $row->alamat_perusahaan;
-
-                return $idenPerusahaan;
-            })
             ->addColumn('absensi', function ($row) {
                 $absensiBulan = '
                     <div
@@ -430,16 +415,7 @@ class AbsensiBimbinganDataTable extends DataTable
                 return view('action', compact('actions'));
             })
             ->addIndexColumn()
-            ->rawColumns([
-                'identitas_peserta',
-                'identitas_perusahaan',
-                'absensi',
-                'rekap_desember',
-                'rekap_januari',
-                'rekap_februari',
-                'rekap_maret',
-                'action'
-            ]);
+            ->rawColumns(['absensi', 'rekap_desember', 'rekap_januari', 'rekap_februari', 'rekap_maret', 'action']);
     }
 
     /**
@@ -466,7 +442,6 @@ class AbsensiBimbinganDataTable extends DataTable
                 'peserta_didik_rombels.rombel_nama',
                 'penempatan_prakerins.id_dudi',
                 'perusahaans.nama as nama_perusahaan',
-                'perusahaans.alamat as alamat_perusahaan',
                 DB::raw('SUM(CASE WHEN absensi_siswa_pkls.status = "HADIR" THEN 1 ELSE 0 END) as hadir'),
                 DB::raw('SUM(CASE WHEN absensi_siswa_pkls.status = "SAKIT" THEN 1 ELSE 0 END) as sakit'),
                 DB::raw('SUM(CASE WHEN absensi_siswa_pkls.status = "IZIN" THEN 1 ELSE 0 END) as izin'),
@@ -480,6 +455,7 @@ class AbsensiBimbinganDataTable extends DataTable
                 'penempatan_prakerins.nis',
                 'peserta_didiks.nama_lengkap',
                 'peserta_didik_rombels.rombel_nama',
+                'penempatan_prakerins.id_dudi',
                 'penempatan_prakerins.id_dudi',
                 'perusahaans.nama'
             )
@@ -520,13 +496,15 @@ class AbsensiBimbinganDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
-            Column::make('identitas_peserta')->title('Identitas Peserta')->width(250),
-            Column::make('identitas_perusahaan')->title('Tempat Prakerin')->width(350),
-            Column::make('rekap_desember')->title('Desember')->width(150),
-            Column::make('rekap_januari')->title('Januari')->width(150),
-            Column::make('rekap_februari')->title('Februari')->width(150),
-            Column::make('rekap_maret')->title('Maret')->width(150),
-            Column::make('absensi')->title('Total Absensi')->width(150),
+            Column::make('nis')->title('NIS'),
+            Column::make('nama_lengkap')->title('Nama Peserta Didik'),
+            Column::make('rombel_nama')->title('Rombel'),
+            Column::make('nama_perusahaan')->title('Perusahaan')->width(300),
+            Column::make('rekap_desember')->title('Desember')->width(200),
+            Column::make('rekap_januari')->title('Januari')->width(200),
+            Column::make('rekap_februari')->title('Februari')->width(200),
+            Column::make('rekap_maret')->title('Maret')->width(200),
+            Column::make('absensi')->title('Total Absensi')->width(200),
             /* Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
