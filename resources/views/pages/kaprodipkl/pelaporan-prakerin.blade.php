@@ -207,11 +207,10 @@
                                                 <td>{{ $prakerin->nis }}</td>
                                                 <td>{{ $prakerin->nama_lengkap }}</td>
                                                 <td>{{ $prakerin->rombel }}</td>
-                                                <td>{{ $prakerin->rekap_jurnal->nama_perusahaan ?? 'Tidak Ada Perusahaan' }}
-                                                    <br>{{ $prakerin->rekap_jurnal->gelardepan }}
-                                                    {{ $prakerin->rekap_jurnal->pembimbing_nama ?? 'Tidak Ada Pembimbing' }},
-                                                    {{ $prakerin->rekap_jurnal->gelarbelakang }}
-                                                </td>
+                                                <td>{{ $prakerin->nama_perusahaan }}<br>
+                                                    {{ $prakerin->gelardepan }}
+                                                    {{ $prakerin->namalengkap }}
+                                                    {{ $prakerin->gelarbelakang }}</td>
                                                 <td class='text-center'>{{ $prakerin->jumlah_hadir }}</td>
                                                 <td class='text-center'>{{ $prakerin->jumlah_sakit }}</td>
                                                 <td class='text-center'>{{ $prakerin->jumlah_izin }}</td>
@@ -239,22 +238,21 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($dataJurnal as $index => $prakerin)
+                                        @foreach ($dataPrakerin as $index => $prakerin)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $prakerin->nis }}</td>
                                                 <td>{{ $prakerin->nama_lengkap }}</td>
                                                 <td>{{ $prakerin->rombel }}</td>
-                                                <td>{{ $prakerin->rekap_jurnal->nama_perusahaan ?? 'Tidak Ada Perusahaan' }}
-                                                    <br>{{ $prakerin->rekap_jurnal->gelardepan }}
-                                                    {{ $prakerin->rekap_jurnal->pembimbing_nama ?? 'Tidak Ada Pembimbing' }},
-                                                    {{ $prakerin->rekap_jurnal->gelarbelakang }}
-                                                </td>
-                                                <td class="text-center">{{ $prakerin->rekap_jurnal->sudah ?? 0 }}</td>
-                                                <td class="text-center">{{ $prakerin->rekap_jurnal->belum ?? 0 }}</td>
-                                                <td class="text-center">{{ $prakerin->rekap_jurnal->tolak ?? 0 }}</td>
+                                                <td>{{ $prakerin->nama_perusahaan }}<br>
+                                                    {{ $prakerin->gelardepan }}
+                                                    {{ $prakerin->namalengkap }}
+                                                    {{ $prakerin->gelarbelakang }}</td>
+                                                <td>{{ $prakerin->jumlah_sudah }}</td>
+                                                <td>{{ $prakerin->jumlah_belum }}</td>
+                                                <td>{{ $prakerin->jumlah_tolak }}</td>
                                                 <td class="text-center">
-                                                    {{ $prakerin->rekap_jurnal->sudah + $prakerin->rekap_jurnal->belum + $prakerin->rekap_jurnal->tolak }}
+                                                    {{ $prakerin->jumlah_sudah + $prakerin->jumlah_belum + $prakerin->jumlah_tolak }}
                                                 </td>
                                             </tr>
                                         @endforeach

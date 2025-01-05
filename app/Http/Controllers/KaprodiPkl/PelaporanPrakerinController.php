@@ -102,51 +102,39 @@ class PelaporanPrakerinController extends Controller
 
 
 
-            $rekapJurnal = DB::table('penempatan_prakerins')
-                ->leftJoin('jurnal_pkls', 'penempatan_prakerins.id', '=', 'jurnal_pkls.id_penempatan')
+            // Ambil data jurnal dengan lebih sederhana
+            $rekapJurnal = DB::table('jurnal_pkls')
+                ->join('penempatan_prakerins', 'penempatan_prakerins.id', '=', 'jurnal_pkls.id_penempatan')
                 ->join('peserta_didiks', 'penempatan_prakerins.nis', '=', 'peserta_didiks.nis')
-                ->join('peserta_didik_rombels', 'peserta_didiks.nis', '=', 'peserta_didik_rombels.nis')
-                ->leftJoin('perusahaans', 'penempatan_prakerins.id_dudi', '=', 'perusahaans.id')
-                ->leftJoin('pembimbing_prakerins', 'penempatan_prakerins.id', '=', 'pembimbing_prakerins.id_penempatan')
-                ->leftJoin('personil_sekolahs', 'pembimbing_prakerins.id_personil', '=', 'personil_sekolahs.id_personil')
                 ->select(
                     'peserta_didiks.nis',
-                    'peserta_didiks.nama_lengkap',
-                    'peserta_didik_rombels.rombel_nama AS rombel',
-                    'perusahaans.nama AS nama_perusahaan',
-                    DB::raw("COUNT(CASE WHEN jurnal_pkls.validasi = 'SUDAH' THEN 1 ELSE NULL END) AS sudah"),
-                    DB::raw("COUNT(CASE WHEN jurnal_pkls.validasi = 'BELUM' THEN 1 ELSE NULL END) AS belum"),
-                    DB::raw("COUNT(CASE WHEN jurnal_pkls.validasi = 'TOLAK' THEN 1 ELSE NULL END) AS tolak"),
-                    DB::raw("COALESCE(personil_sekolahs.gelardepan, '') AS gelardepan"),
-                    DB::raw("COALESCE(personil_sekolahs.namalengkap, 'Tidak Ada Pembimbing') AS pembimbing_nama"),
-                    DB::raw("COALESCE(personil_sekolahs.gelarbelakang, '') AS gelarbelakang")
+                    DB::raw("SUM(CASE WHEN jurnal_pkls.validasi = 'SUDAH' THEN 1 ELSE 0 END) AS jumlah_sudah"),
+                    DB::raw("SUM(CASE WHEN jurnal_pkls.validasi = 'BELUM' THEN 1 ELSE 0 END) AS jumlah_belum"),
+                    DB::raw("SUM(CASE WHEN jurnal_pkls.validasi = 'TOLAK' THEN 1 ELSE 0 END) AS jumlah_tolak")
                 )
-                ->when($user->hasAnyRole(['kaprodiak']), function ($query) {
-                    return $query->where('penempatan_prakerins.kode_kk', '=', '833');
-                })
-                ->when($user->hasAnyRole(['kaprodibd']), function ($query) {
-                    return $query->where('penempatan_prakerins.kode_kk', '=', '811');
-                })
-                ->when($user->hasAnyRole(['kaprodimp']), function ($query) {
-                    return $query->where('penempatan_prakerins.kode_kk', '=', '821');
-                })
-                ->when($user->hasAnyRole(['kaprodirpl']), function ($query) {
-                    return $query->where('penempatan_prakerins.kode_kk', '=', '411');
-                })
-                ->when($user->hasAnyRole(['kaproditkj']), function ($query) {
-                    return $query->where('penempatan_prakerins.kode_kk', '=', '421');
-                })
-                ->groupBy('peserta_didiks.nis', 'peserta_didiks.nama_lengkap', 'peserta_didik_rombels.rombel_nama', 'perusahaans.nama', 'personil_sekolahs.gelardepan', 'personil_sekolahs.namalengkap', 'personil_sekolahs.gelarbelakang')
-                ->orderBy('peserta_didik_rombels.rombel_nama', 'asc')
-                ->orderBy('peserta_didiks.nis', 'asc')
-                ->get();
+                ->groupBy('peserta_didiks.nis')
+                ->get()
+                ->keyBy('nis');  // Agar hasil bisa diakses langsung berdasarkan nis
 
+            // Gabungkan data jurnal dengan data siswa
+            $dataPrakerin = $dataPrakerin->map(function ($prakerin) use ($rekapJurnal) {
+                $nis = $prakerin->nis;
 
-            $dataJurnal = $dataPrakerin->map(function ($prakerin) use ($rekapJurnal) {
-                // Temukan data jurnal berdasarkan NIS
-                $jurnal = $rekapJurnal->firstWhere('nis', $prakerin->nis);
-                // Gabungkan data
-                $prakerin->rekap_jurnal = $jurnal;
+                // Ambil data jurnal berdasarkan nis
+                $jurnalData = $rekapJurnal[$nis] ?? null;
+
+                // Jika ada data jurnal, gabungkan dengan data siswa
+                if ($jurnalData) {
+                    $prakerin->jumlah_sudah = $jurnalData->jumlah_sudah ?? 0;
+                    $prakerin->jumlah_belum = $jurnalData->jumlah_belum ?? 0;
+                    $prakerin->jumlah_tolak = $jurnalData->jumlah_tolak ?? 0;
+                } else {
+                    // Jika tidak ada data jurnal, set ke nilai default 0
+                    $prakerin->jumlah_sudah = 0;
+                    $prakerin->jumlah_belum = 0;
+                    $prakerin->jumlah_tolak = 0;
+                }
+
                 return $prakerin;
             });
 
@@ -165,7 +153,7 @@ class PelaporanPrakerinController extends Controller
 
 
             // Gabungkan data absensi dengan data siswa
-            $dataAbsensi = $dataPrakerin->map(function ($siswa) use ($absensi) {
+            $dataPrakerin = $dataPrakerin->map(function ($siswa) use ($absensi) {
                 $nis = $siswa->nis;
 
                 // Ambil data absensi yang sesuai dengan nis
@@ -204,9 +192,6 @@ class PelaporanPrakerinController extends Controller
                 'totalDataPrakerin',
                 'totalPerusahaan',
                 'totalPembimbing',
-                'rekapJurnal',
-                'dataJurnal',
-                'dataAbsensi'
             ));
         }
 
