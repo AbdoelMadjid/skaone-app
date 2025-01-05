@@ -62,12 +62,11 @@ class PelaporanPrakerinController extends Controller
             $AmbildataPrakerin = $query->first();
             $totalDataPrakerin = $dataPrakerin->count();
 
-
             // Dapatkan daftar perusahaan unik berdasarkan hasil query
             $perusahaanList = DB::table('perusahaans')
                 ->select('id AS id_perusahaan', 'nama AS nama_perusahaan', 'alamat AS alamat_perusahaan')
                 ->whereIn('id', $dataPrakerin->pluck('id_perusahaan')) // Filter berdasarkan perusahaan terkait
-                ->groupBy('id', 'nama')
+                ->groupBy('id', 'nama', 'alamat')
                 ->get();
 
             // Jumlah total perusahaan dalam $perusahaanList
@@ -94,13 +93,10 @@ class PelaporanPrakerinController extends Controller
             // Jumlah total pembimbing dalam $pembimbingList
             $totalPembimbing = $pembimbingList->count();
 
-
             // Hitung jumlah setiap id_personil di $dataPrakerin
             $pembimbingCounts = $dataPrakerin
                 ->groupBy('id_personil')
                 ->map(fn($items) => $items->count());
-
-
 
             // Ambil data jurnal dengan lebih sederhana
             $rekapJurnal = DB::table('jurnal_pkls')
@@ -138,7 +134,6 @@ class PelaporanPrakerinController extends Controller
                 return $prakerin;
             });
 
-
             $absensi = DB::table('absensi_siswa_pkls')
                 ->select(
                     'nis',
@@ -150,7 +145,6 @@ class PelaporanPrakerinController extends Controller
                 ->groupBy('nis')
                 ->get()
                 ->keyBy('nis'); // Agar hasil bisa diakses langsung dengan nis sebagai key
-
 
             // Gabungkan data absensi dengan data siswa
             $dataPrakerin = $dataPrakerin->map(function ($siswa) use ($absensi) {
