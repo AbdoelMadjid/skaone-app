@@ -6,6 +6,7 @@ use App\Http\Controllers\AdministratorPkl\PenempatanPrakerinController;
 use App\Http\Controllers\AdministratorPkl\PerusahaanController;
 use App\Http\Controllers\AdministratorPkl\PesertaPrakerinController;
 use App\Http\Controllers\KaprodiPkl\ModulAjarController;
+use App\Http\Controllers\KaprodiPkl\PelaporanPrakerinController;
 use App\Http\Controllers\PembimbingPkl\AbsensiPembimbingPklController;
 use App\Http\Controllers\PembimbingPkl\InformasiPembimbingController;
 use App\Http\Controllers\PembimbingPkl\MonitoringPrakerinController;
@@ -51,6 +52,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('penempatan-prakerin', PenempatanPrakerinController::class);
         Route::resource('modul-ajar', ModulAjarController::class);
         Route::resource('informasi-prakerin', InformasiAdministratorController::class);
+        Route::resource('pelaporan-prakerin', PelaporanPrakerinController::class);
     });
 
     Route::group(['prefix' => 'pembimbingpkl', 'as' => 'pembimbingpkl.'], function () {
