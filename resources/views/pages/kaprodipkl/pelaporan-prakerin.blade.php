@@ -24,17 +24,16 @@
                         <div class="row g-4">
                             <div class="col-sm-auto">
                                 <div>
-                                    <a href="/apps_ecommerce_add_product" class="btn btn-success" id="addproduct-btn"><i
-                                            class="ri-add-line align-bottom me-1"></i> Add Product</a>
+                                    <h5>Pelaporan PKL Keprodi</h5>
                                 </div>
                             </div>
                             <div class="col-sm">
                                 <div class="d-flex justify-content-sm-end">
-                                    <div class="search-box ms-2">
+                                    {{-- <div class="search-box ms-2">
                                         <input type="text" class="form-control" id="searchProductList"
                                             placeholder="Search Products...">
                                         <i class="ri-search-line search-icon"></i>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
@@ -145,6 +144,14 @@
                                                         {{ $perusahaanCounts[$perusahaan->id_perusahaan] ?? 0 }}</td>
                                                 </tr>
                                             @endforeach
+                                            <tr>
+                                                <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                                                <td class="text-center">
+                                                    <strong>
+                                                        {{ $perusahaanCounts->values()->sum() }}
+                                                    </strong>
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 @else
@@ -177,6 +184,14 @@
                                                         {{ $pembimbingCounts[$pembimbing->id_personil] ?? 0 }}</td>
                                                 </tr>
                                             @endforeach
+                                            <tr>
+                                                <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                                                <td class="text-center">
+                                                    <strong>
+                                                        {{ $pembimbingCounts->values()->sum() }}
+                                                    </strong>
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 @else
@@ -218,6 +233,24 @@
                                                 <td class='text-center'>{{ $prakerin->jumlah_total }}</td>
                                             </tr>
                                         @endforeach
+                                        <tr>
+                                            <td colspan="5" class="text-end"><strong>Total:</strong></td>
+                                            <td class='text-center'>
+                                                <strong>{{ $dataPrakerin->sum('jumlah_hadir') }}</strong>
+                                            </td>
+                                            <td class='text-center'>
+                                                <strong>{{ $dataPrakerin->sum('jumlah_sakit') }}</strong>
+                                            </td>
+                                            <td class='text-center'>
+                                                <strong>{{ $dataPrakerin->sum('jumlah_izin') }}</strong>
+                                            </td>
+                                            <td class='text-center'>
+                                                <strong>{{ $dataPrakerin->sum('jumlah_alfa') }}</strong>
+                                            </td>
+                                            <td class='text-center'>
+                                                <strong>{{ $dataPrakerin->sum('jumlah_total') }}</strong>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -248,14 +281,29 @@
                                                     {{ $prakerin->gelardepan }}
                                                     {{ $prakerin->namalengkap }}
                                                     {{ $prakerin->gelarbelakang }}</td>
-                                                <td>{{ $prakerin->jumlah_sudah }}</td>
-                                                <td>{{ $prakerin->jumlah_belum }}</td>
-                                                <td>{{ $prakerin->jumlah_tolak }}</td>
+                                                <td class='text-center'>{{ $prakerin->jumlah_sudah }}</td>
+                                                <td class='text-center'>{{ $prakerin->jumlah_belum }}</td>
+                                                <td class='text-center'>{{ $prakerin->jumlah_tolak }}</td>
                                                 <td class="text-center">
                                                     {{ $prakerin->jumlah_sudah + $prakerin->jumlah_belum + $prakerin->jumlah_tolak }}
                                                 </td>
                                             </tr>
                                         @endforeach
+                                        <tr>
+                                            <td colspan="5" class="text-end"><strong>Total:</strong></td>
+                                            <td class='text-center'>
+                                                <strong>{{ $dataPrakerin->sum('jumlah_sudah') }}</strong>
+                                            </td>
+                                            <td class='text-center'>
+                                                <strong>{{ $dataPrakerin->sum('jumlah_belum') }}</strong>
+                                            </td>
+                                            <td class='text-center'>
+                                                <strong>{{ $dataPrakerin->sum('jumlah_tolak') }}</strong>
+                                            </td>
+                                            <td class="text-center">
+                                                <strong>{{ $dataPrakerin->sum('jumlah_sudah') + $dataPrakerin->sum('jumlah_belum') + $dataPrakerin->sum('jumlah_tolak') }}</strong>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
