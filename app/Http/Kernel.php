@@ -70,5 +70,6 @@ class Kernel extends HttpKernel
         'role.master' => \App\Http\Middleware\RoleMasterMiddleware::class,
         'check.default.password' => \App\Http\Middleware\CheckDefaultPassword::class,
         'master' => \App\Http\Middleware\CheckMasterRole::class,
+        'refresh.session' => \App\Http\Middleware\RefreshSession::class,
     ];
 }
