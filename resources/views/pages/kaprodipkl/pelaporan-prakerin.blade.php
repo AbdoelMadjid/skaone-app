@@ -144,6 +144,8 @@
                                                         {{ $perusahaanCounts[$perusahaan->id_perusahaan] ?? 0 }}</td>
                                                 </tr>
                                             @endforeach
+                                        </tbody>
+                                        <tfoot class="bg-light">
                                             <tr>
                                                 <td colspan="3" class="text-end"><strong>Total:</strong></td>
                                                 <td class="text-center">
@@ -152,7 +154,7 @@
                                                     </strong>
                                                 </td>
                                             </tr>
-                                        </tbody>
+                                        </tfoot>
                                     </table>
                                 @else
                                     <p>Data perusahaan tidak tersedia.</p>
@@ -184,6 +186,8 @@
                                                         {{ $pembimbingCounts[$pembimbing->id_personil] ?? 0 }}</td>
                                                 </tr>
                                             @endforeach
+                                        </tbody>
+                                        <tfoot class="bg-light">
                                             <tr>
                                                 <td colspan="3" class="text-end"><strong>Total:</strong></td>
                                                 <td class="text-center">
@@ -192,7 +196,7 @@
                                                     </strong>
                                                 </td>
                                             </tr>
-                                        </tbody>
+                                        </tfoot>
                                     </table>
                                 @else
                                     <p>Data pembimbing tidak tersedia.</p>
@@ -216,6 +220,24 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <tr class="bg-light">
+                                            <td colspan="5" class="text-end"><strong>Total:</strong></td>
+                                            <td class='text-center'>
+                                                <strong>{{ $dataPrakerin->sum('jumlah_hadir') }}</strong>
+                                            </td>
+                                            <td class='text-center'>
+                                                <strong>{{ $dataPrakerin->sum('jumlah_sakit') }}</strong>
+                                            </td>
+                                            <td class='text-center'>
+                                                <strong>{{ $dataPrakerin->sum('jumlah_izin') }}</strong>
+                                            </td>
+                                            <td class='text-center'>
+                                                <strong>{{ $dataPrakerin->sum('jumlah_alfa') }}</strong>
+                                            </td>
+                                            <td class='text-center'>
+                                                <strong>{{ $dataPrakerin->sum('jumlah_total') }}</strong>
+                                            </td>
+                                        </tr>
                                         @foreach ($dataPrakerin as $index => $prakerin)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
@@ -238,6 +260,8 @@
                                                 <td class='text-center'>{{ $prakerin->jumlah_total }}</td>
                                             </tr>
                                         @endforeach
+                                    </tbody>
+                                    <tfoot class="bg-light">
                                         <tr>
                                             <td colspan="5" class="text-end"><strong>Total:</strong></td>
                                             <td class='text-center'>
@@ -256,7 +280,7 @@
                                                 <strong>{{ $dataPrakerin->sum('jumlah_total') }}</strong>
                                             </td>
                                         </tr>
-                                    </tbody>
+                                    </tfoot>
                                 </table>
                             </div>
                             <!-- end tab pane -->
@@ -267,14 +291,29 @@
                                             <th>No</th>
                                             <th width="250">Identitas Siswa</th>
                                             <th>Perusahaan / Pembimbing</th>
+                                            <th width="300">Element</th>
                                             <th>Sudah</th>
                                             <th>Belum</th>
                                             <th>Tolak</th>
                                             <th>Total</th>
-                                            <th width="300">Element</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <tr class="bg-light">
+                                            <td colspan="4" class="text-end"><strong>Total:</strong></td>
+                                            <td class='text-center'>
+                                                <strong>{{ $dataPrakerin->sum('jumlah_sudah') }}</strong>
+                                            </td>
+                                            <td class='text-center'>
+                                                <strong>{{ $dataPrakerin->sum('jumlah_belum') }}</strong>
+                                            </td>
+                                            <td class='text-center'>
+                                                <strong>{{ $dataPrakerin->sum('jumlah_tolak') }}</strong>
+                                            </td>
+                                            <td class="text-center">
+                                                <strong>{{ $dataPrakerin->sum('jumlah_sudah') + $dataPrakerin->sum('jumlah_belum') + $dataPrakerin->sum('jumlah_tolak') }}</strong>
+                                            </td>
+                                        </tr>
                                         @foreach ($dataPrakerin as $index => $prakerin)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
@@ -292,12 +331,6 @@
                                                         {{ $prakerin->gelarbelakang }}
                                                     </strong>
                                                 </td>
-                                                <td class='text-center'>{{ $prakerin->jumlah_sudah }}</td>
-                                                <td class='text-center'>{{ $prakerin->jumlah_belum }}</td>
-                                                <td class='text-center'>{{ $prakerin->jumlah_tolak }}</td>
-                                                <td class="text-center">
-                                                    {{ $prakerin->jumlah_sudah + $prakerin->jumlah_belum + $prakerin->jumlah_tolak }}
-                                                </td>
                                                 <td>
                                                     @foreach ($prakerin->jurnal_per_elemen as $jurnal)
                                                         <div
@@ -313,10 +346,18 @@
                                                         </div><!-- end -->
                                                     @endforeach
                                                 </td>
+                                                <td class='text-center'>{{ $prakerin->jumlah_sudah }}</td>
+                                                <td class='text-center'>{{ $prakerin->jumlah_belum }}</td>
+                                                <td class='text-center'>{{ $prakerin->jumlah_tolak }}</td>
+                                                <td class="text-center">
+                                                    {{ $prakerin->jumlah_sudah + $prakerin->jumlah_belum + $prakerin->jumlah_tolak }}
+                                                </td>
                                             </tr>
                                         @endforeach
+                                    </tbody>
+                                    <tfoot class="bg-light">
                                         <tr>
-                                            <td colspan="5" class="text-end"><strong>Total:</strong></td>
+                                            <td colspan="4" class="text-end"><strong>Total:</strong></td>
                                             <td class='text-center'>
                                                 <strong>{{ $dataPrakerin->sum('jumlah_sudah') }}</strong>
                                             </td>
@@ -330,7 +371,7 @@
                                                 <strong>{{ $dataPrakerin->sum('jumlah_sudah') + $dataPrakerin->sum('jumlah_belum') + $dataPrakerin->sum('jumlah_tolak') }}</strong>
                                             </td>
                                         </tr>
-                                    </tbody>
+                                    </tfoot>
                                 </table>
                             </div>
                             <!-- end tab pane -->
