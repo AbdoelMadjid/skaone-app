@@ -173,7 +173,65 @@ class PelaporanPrakerinController extends Controller
                 return $siswa;
             });
 
-            // Setelah dataPrakerin selesai diproses, Anda bisa menampilkannya di Blade
+
+            // Query jumlah jurnal berdasarkan NIS
+            $jumlahJurnal = DB::table('jurnal_pkls')
+                ->select(
+                    'penempatan_prakerins.nis',
+                    DB::raw("COUNT(jurnal_pkls.id) as total_jurnal")
+                )
+                ->join('penempatan_prakerins', 'jurnal_pkls.id_penempatan', '=', 'penempatan_prakerins.id')
+                ->groupBy('penempatan_prakerins.nis')
+                ->get()
+                ->keyBy('nis');
+
+            // Query elemen dari modul_ajars dan capaian_pembelajarans
+            $elements = DB::table('modul_ajars')
+                ->join('capaian_pembelajarans', 'modul_ajars.kode_cp', '=', 'capaian_pembelajarans.kode_cp')
+                ->select(
+                    'modul_ajars.kode_cp',
+                    'capaian_pembelajarans.element',
+                    DB::raw("GROUP_CONCAT(modul_ajars.isi_tp) as isi_tp")
+                )
+                ->groupBy('modul_ajars.kode_cp', 'capaian_pembelajarans.element')
+                ->get();
+
+            // Query untuk jurnal dan elemen
+            $journals = DB::table('jurnal_pkls')
+                ->join('penempatan_prakerins', 'jurnal_pkls.id_penempatan', '=', 'penempatan_prakerins.id')
+                ->select(
+                    'penempatan_prakerins.nis',
+                    'jurnal_pkls.element',
+                    DB::raw("COUNT(jurnal_pkls.id) as total_jurnal_cp")
+                )
+                ->groupBy('penempatan_prakerins.nis', 'jurnal_pkls.element')
+                ->get();
+
+
+            // Gabungkan data absensi dan jurnal
+            $dataPrakerin = $dataPrakerin->map(function ($siswa) use ($jumlahJurnal, $elements, $journals) {
+                $nis = $siswa->nis;
+
+                // Jumlah jurnal total
+                $siswa->total_jurnal = $jumlahJurnal[$nis]->total_jurnal ?? 0;
+
+                // Gabungkan elemen dengan jurnal
+                $siswa->jurnal_per_elemen = $elements->map(function ($element) use ($journals, $nis) {
+                    $kode_cp = $element->kode_cp;
+
+                    // Ambil jumlah jurnal dari hasil query jurnal
+                    $jurnal = $journals->where('nis', $nis)->where('element', $kode_cp)->first();
+
+                    return [
+                        'element' => $element->element,
+                        'isi_tp' => $element->isi_tp,
+                        'total_jurnal_cp' => $jurnal->total_jurnal_cp ?? 0 // Default 0 jika tidak ada jurnal
+                    ];
+                });
+
+                return $siswa;
+            });
+
 
             // Kirim data ke view
             return view('pages.kaprodipkl.pelaporan-prakerin', compact(

@@ -222,10 +222,15 @@
                                                 <td>{{ $prakerin->nis }}</td>
                                                 <td>{{ $prakerin->nama_lengkap }}</td>
                                                 <td>{{ $prakerin->rombel }}</td>
-                                                <td>{{ $prakerin->nama_perusahaan }}<br>
-                                                    {{ $prakerin->gelardepan }}
-                                                    {{ $prakerin->namalengkap }}
-                                                    {{ $prakerin->gelarbelakang }}</td>
+                                                <td>
+                                                    <strong class="text-primary">{{ $prakerin->nama_perusahaan }}</strong>
+                                                    <br>
+                                                    <strong class="text-info">
+                                                        {{ $prakerin->gelardepan }}
+                                                        {{ $prakerin->namalengkap }}
+                                                        {{ $prakerin->gelarbelakang }}
+                                                    </strong>
+                                                </td>
                                                 <td class='text-center'>{{ $prakerin->jumlah_hadir }}</td>
                                                 <td class='text-center'>{{ $prakerin->jumlah_sakit }}</td>
                                                 <td class='text-center'>{{ $prakerin->jumlah_izin }}</td>
@@ -260,32 +265,53 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>NIS</th>
-                                            <th>Nama Lengkap</th>
-                                            <th>Rombel</th>
+                                            <th width="250">Identitas Siswa</th>
                                             <th>Perusahaan / Pembimbing</th>
                                             <th>Sudah</th>
                                             <th>Belum</th>
                                             <th>Tolak</th>
                                             <th>Total</th>
+                                            <th width="300">Element</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($dataPrakerin as $index => $prakerin)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $prakerin->nis }}</td>
-                                                <td>{{ $prakerin->nama_lengkap }}</td>
-                                                <td>{{ $prakerin->rombel }}</td>
-                                                <td>{{ $prakerin->nama_perusahaan }}<br>
-                                                    {{ $prakerin->gelardepan }}
-                                                    {{ $prakerin->namalengkap }}
-                                                    {{ $prakerin->gelarbelakang }}</td>
+                                                <td>
+                                                    {{ $prakerin->nis }}<br>
+                                                    <strong class="text-info">{{ $prakerin->nama_lengkap }}</strong><br>
+                                                    {{ $prakerin->rombel }}
+                                                </td>
+                                                <td>
+                                                    <strong class="text-primary">{{ $prakerin->nama_perusahaan }}</strong>
+                                                    <br>
+                                                    <strong class="text-info">
+                                                        {{ $prakerin->gelardepan }}
+                                                        {{ $prakerin->namalengkap }}
+                                                        {{ $prakerin->gelarbelakang }}
+                                                    </strong>
+                                                </td>
                                                 <td class='text-center'>{{ $prakerin->jumlah_sudah }}</td>
                                                 <td class='text-center'>{{ $prakerin->jumlah_belum }}</td>
                                                 <td class='text-center'>{{ $prakerin->jumlah_tolak }}</td>
                                                 <td class="text-center">
                                                     {{ $prakerin->jumlah_sudah + $prakerin->jumlah_belum + $prakerin->jumlah_tolak }}
+                                                </td>
+                                                <td>
+                                                    @foreach ($prakerin->jurnal_per_elemen as $jurnal)
+                                                        <div
+                                                            class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
+                                                            <p class="fw-medium fs-10 mb-0"><i
+                                                                    class="ri-checkbox-blank-circle-fill text-primary align-middle me-2"></i>
+                                                                <strong>{{ $jurnal['element'] }}</strong>
+                                                            </p>
+                                                            <div>
+                                                                <span
+                                                                    class="text-primary fw-medium fs-12">{{ $jurnal['total_jurnal_cp'] }}</span>
+                                                            </div>
+                                                        </div><!-- end -->
+                                                    @endforeach
                                                 </td>
                                             </tr>
                                         @endforeach
