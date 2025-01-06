@@ -267,6 +267,16 @@
                             </div>
                             <!-- end tab pane -->
                             <div class="tab-pane" id="absensiPeserta" role="tabpanel">
+                                <div class="form-group mb-3">
+                                    <label for="pembimbingAbsensiSelect">Pilih Pembimbing</label>
+                                    <select id="pembimbingAbsensiSelect" class="form-control">
+                                        <option value="">-- Pilih Pembimbing --</option>
+                                        @foreach ($pembimbingList as $pembimbing)
+                                            <option value="{{ $pembimbing->id_personil }}">{{ $pembimbing->gelardepan }}
+                                                {{ $pembimbing->namalengkap }} {{ $pembimbing->gelarbelakang }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 <table class="table table-bordered table-centered">
                                     <thead>
                                         <tr>
@@ -283,26 +293,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="bg-light">
-                                            <td colspan="5" class="text-end"><strong>Total:</strong></td>
-                                            <td class='text-center'>
-                                                <strong>{{ $dataPrakerin->sum('jumlah_hadir') }}</strong>
-                                            </td>
-                                            <td class='text-center'>
-                                                <strong>{{ $dataPrakerin->sum('jumlah_sakit') }}</strong>
-                                            </td>
-                                            <td class='text-center'>
-                                                <strong>{{ $dataPrakerin->sum('jumlah_izin') }}</strong>
-                                            </td>
-                                            <td class='text-center'>
-                                                <strong>{{ $dataPrakerin->sum('jumlah_alfa') }}</strong>
-                                            </td>
-                                            <td class='text-center'>
-                                                <strong>{{ $dataPrakerin->sum('jumlah_total') }}</strong>
-                                            </td>
-                                        </tr>
                                         @foreach ($dataPrakerin as $index => $prakerin)
-                                            <tr>
+                                            <tr class="absensi-prakerin-row"
+                                                data-pembimbing-id="{{ $prakerin->id_personil }}">
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $prakerin->nis }}</td>
                                                 <td>{{ $prakerin->nama_lengkap }}</td>
@@ -316,30 +309,30 @@
                                                         {{ $prakerin->gelarbelakang }}
                                                     </strong>
                                                 </td>
-                                                <td class='text-center'>{{ $prakerin->jumlah_hadir }}</td>
-                                                <td class='text-center'>{{ $prakerin->jumlah_sakit }}</td>
-                                                <td class='text-center'>{{ $prakerin->jumlah_izin }}</td>
-                                                <td class='text-center'>{{ $prakerin->jumlah_alfa }}</td>
-                                                <td class='text-center'>{{ $prakerin->jumlah_total }}</td>
+                                                <td class="text-center jumlah_hadir">{{ $prakerin->jumlah_hadir }}</td>
+                                                <td class="text-center jumlah_sakit">{{ $prakerin->jumlah_sakit }}</td>
+                                                <td class="text-center jumlah_izin">{{ $prakerin->jumlah_izin }}</td>
+                                                <td class="text-center jumlah_alfa">{{ $prakerin->jumlah_alfa }}</td>
+                                                <td class="text-center jumlah_total">{{ $prakerin->jumlah_total }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                     <tfoot class="bg-light">
                                         <tr>
                                             <td colspan="5" class="text-end"><strong>Total:</strong></td>
-                                            <td class='text-center'>
+                                            <td class="text-center" id="totalHadir">
                                                 <strong>{{ $dataPrakerin->sum('jumlah_hadir') }}</strong>
                                             </td>
-                                            <td class='text-center'>
+                                            <td class="text-center" id="totalSakit">
                                                 <strong>{{ $dataPrakerin->sum('jumlah_sakit') }}</strong>
                                             </td>
-                                            <td class='text-center'>
+                                            <td class="text-center" id="totalIzin">
                                                 <strong>{{ $dataPrakerin->sum('jumlah_izin') }}</strong>
                                             </td>
-                                            <td class='text-center'>
+                                            <td class="text-center" id="totalAlfa">
                                                 <strong>{{ $dataPrakerin->sum('jumlah_alfa') }}</strong>
                                             </td>
-                                            <td class='text-center'>
+                                            <td class="text-center" id="totalAll">
                                                 <strong>{{ $dataPrakerin->sum('jumlah_total') }}</strong>
                                             </td>
                                         </tr>
@@ -348,6 +341,16 @@
                             </div>
                             <!-- end tab pane -->
                             <div class="tab-pane" id="jurnalPeserta" role="tabpanel">
+                                <div class="form-group mb-3">
+                                    <label for="pembimbingJurnalSelect">Pilih Pembimbing</label>
+                                    <select id="pembimbingJurnalSelect" class="form-control">
+                                        <option value="">-- Pilih Pembimbing --</option>
+                                        @foreach ($pembimbingList as $pembimbing)
+                                            <option value="{{ $pembimbing->id_personil }}">{{ $pembimbing->gelardepan }}
+                                                {{ $pembimbing->namalengkap }} {{ $pembimbing->gelarbelakang }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 <table class="table table-bordered table-centered">
                                     <thead>
                                         <tr>
@@ -362,23 +365,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="bg-light">
-                                            <td colspan="4" class="text-end"><strong>Total:</strong></td>
-                                            <td class='text-center'>
-                                                <strong>{{ $dataPrakerin->sum('jumlah_sudah') }}</strong>
-                                            </td>
-                                            <td class='text-center'>
-                                                <strong>{{ $dataPrakerin->sum('jumlah_belum') }}</strong>
-                                            </td>
-                                            <td class='text-center'>
-                                                <strong>{{ $dataPrakerin->sum('jumlah_tolak') }}</strong>
-                                            </td>
-                                            <td class="text-center">
-                                                <strong>{{ $dataPrakerin->sum('jumlah_sudah') + $dataPrakerin->sum('jumlah_belum') + $dataPrakerin->sum('jumlah_tolak') }}</strong>
-                                            </td>
-                                        </tr>
                                         @foreach ($dataPrakerin as $index => $prakerin)
-                                            <tr>
+                                            <tr class="jurnal-prakerin-row"
+                                                data-pembimbing-id="{{ $prakerin->id_personil }}">
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>
                                                     {{ $prakerin->nis }}<br>
@@ -409,10 +398,10 @@
                                                         </div><!-- end -->
                                                     @endforeach
                                                 </td>
-                                                <td class='text-center'>{{ $prakerin->jumlah_sudah }}</td>
-                                                <td class='text-center'>{{ $prakerin->jumlah_belum }}</td>
-                                                <td class='text-center'>{{ $prakerin->jumlah_tolak }}</td>
-                                                <td class="text-center">
+                                                <td class="text-center jumlah_sudah">{{ $prakerin->jumlah_sudah }}</td>
+                                                <td class="text-center jumlah_belum">{{ $prakerin->jumlah_belum }}</td>
+                                                <td class="text-center jumlah_tolak">{{ $prakerin->jumlah_tolak }}</td>
+                                                <td class="text-center total">
                                                     {{ $prakerin->jumlah_sudah + $prakerin->jumlah_belum + $prakerin->jumlah_tolak }}
                                                 </td>
                                             </tr>
@@ -421,16 +410,16 @@
                                     <tfoot class="bg-light">
                                         <tr>
                                             <td colspan="4" class="text-end"><strong>Total:</strong></td>
-                                            <td class='text-center'>
+                                            <td class='text-center' id="totalSudah">
                                                 <strong>{{ $dataPrakerin->sum('jumlah_sudah') }}</strong>
                                             </td>
-                                            <td class='text-center'>
+                                            <td class='text-center' id="totalBelum">
                                                 <strong>{{ $dataPrakerin->sum('jumlah_belum') }}</strong>
                                             </td>
-                                            <td class='text-center'>
+                                            <td class='text-center' id="totalTolak">
                                                 <strong>{{ $dataPrakerin->sum('jumlah_tolak') }}</strong>
                                             </td>
-                                            <td class="text-center">
+                                            <td class="text-center" id="totalAll">
                                                 <strong>{{ $dataPrakerin->sum('jumlah_sudah') + $dataPrakerin->sum('jumlah_belum') + $dataPrakerin->sum('jumlah_tolak') }}</strong>
                                             </td>
                                         </tr>
@@ -503,6 +492,86 @@
                     // Toggle row yang dipilih
                     row.style.display = row.style.display === 'none' ? '' : 'none';
                 });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const pembimbingSelect = document.getElementById('pembimbingJurnalSelect');
+            const tableRows = document.querySelectorAll('.jurnal-prakerin-row');
+            const totalSudah = document.querySelector('#totalSudah');
+            const totalBelum = document.querySelector('#totalBelum');
+            const totalTolak = document.querySelector('#totalTolak');
+            const totalAll = document.querySelector('#totalAll');
+
+            pembimbingSelect.addEventListener('change', function() {
+                const selectedPembimbingId = this.value;
+                let sumSudah = 0;
+                let sumBelum = 0;
+                let sumTolak = 0;
+                let sumAll = 0;
+
+                tableRows.forEach(row => {
+                    const rowPembimbingId = row.getAttribute('data-pembimbing-id');
+
+                    if (selectedPembimbingId === "" || rowPembimbingId === selectedPembimbingId) {
+                        row.style.display = ''; // Menampilkan row yang sesuai
+                        sumSudah += parseInt(row.querySelector('.jumlah_sudah').textContent) || 0;
+                        sumBelum += parseInt(row.querySelector('.jumlah_belum').textContent) || 0;
+                        sumTolak += parseInt(row.querySelector('.jumlah_tolak').textContent) || 0;
+                        sumAll += parseInt(row.querySelector('.total').textContent) || 0;
+                    } else {
+                        row.style.display = 'none'; // Menyembunyikan row yang tidak sesuai
+                    }
+                });
+
+                // Update total values
+                totalSudah.textContent = sumSudah;
+                totalBelum.textContent = sumBelum;
+                totalTolak.textContent = sumTolak;
+                totalAll.textContent = sumAll;
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const pembimbingSelect = document.getElementById('pembimbingAbsensiSelect');
+            const tableRows = document.querySelectorAll('.absensi-prakerin-row');
+
+            // Mengambil elemen total
+            const totalHadir = document.querySelector('#totalHadir');
+            const totalSakit = document.querySelector('#totalSakit');
+            const totalIzin = document.querySelector('#totalIzin');
+            const totalAlfa = document.querySelector('#totalAlfa');
+            const totalAll = document.querySelector('#totalAll');
+
+            pembimbingSelect.addEventListener('change', function() {
+                const selectedPembimbingId = this.value;
+                let sumHadir = 0;
+                let sumSakit = 0;
+                let sumIzin = 0;
+                let sumAlfa = 0;
+                let sumTotal = 0;
+
+                tableRows.forEach(row => {
+                    const rowPembimbingId = row.getAttribute('data-pembimbing-id');
+
+                    if (selectedPembimbingId === "" || rowPembimbingId === selectedPembimbingId) {
+                        row.style.display = ''; // Menampilkan row yang sesuai
+                        sumHadir += parseInt(row.querySelector('.jumlah_hadir').textContent) || 0;
+                        sumSakit += parseInt(row.querySelector('.jumlah_sakit').textContent) || 0;
+                        sumIzin += parseInt(row.querySelector('.jumlah_izin').textContent) || 0;
+                        sumAlfa += parseInt(row.querySelector('.jumlah_alfa').textContent) || 0;
+                        sumTotal += parseInt(row.querySelector('.jumlah_total').textContent) || 0;
+                    } else {
+                        row.style.display = 'none'; // Menyembunyikan row yang tidak sesuai
+                    }
+                });
+
+                // Update total values
+                totalHadir.textContent = sumHadir;
+                totalSakit.textContent = sumSakit;
+                totalIzin.textContent = sumIzin;
+                totalAlfa.textContent = sumAlfa;
+                totalAll.textContent = sumTotal;
             });
         });
     </script>
