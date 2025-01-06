@@ -135,13 +135,47 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($perusahaanList as $index => $perusahaan)
+                                            @foreach ($perusahaanList as $perusahaan)
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $perusahaan->nama_perusahaan }}</td>
-                                                    <td>{{ $perusahaan->alamat_perusahaan }}</td>
-                                                    <td class='text-center'>
-                                                        {{ $perusahaanCounts[$perusahaan->id_perusahaan] ?? 0 }}</td>
+                                                    <td>
+                                                        <a href="javascript:void(0);" class="show-peserta-perusahaan"
+                                                            data-id="{{ $perusahaan->id_perusahaan }}">
+                                                            {{ $perusahaan->nama_perusahaan }}
+                                                        </a>
+                                                    </td>
+                                                    <td>{!! $perusahaan->alamat_perusahaan !!}</td>
+                                                    <td class="text-center">
+                                                        {{ $perusahaanCounts[$perusahaan->id_perusahaan] ?? 0 }}
+                                                    </td>
+                                                </tr>
+                                                <tr id="peserta-{{ $perusahaan->id_perusahaan }}"
+                                                    class="peserta-perusahaan-row" style="display: none;">
+                                                    <td colspan="4">
+                                                        <div class="loading" style="display: none;">Memuat data...</div>
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>No.</th>
+                                                                    <th>NIS</th>
+                                                                    <th>Nama Lengkap</th>
+                                                                    <th>Rombel</th>
+                                                                    <th>Guru PKL</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach ($pesertaByPerusahaan[$perusahaan->id_perusahaan] ?? [] as $index => $peserta)
+                                                                    <tr>
+                                                                        <td>{{ $index + 1 }}</td>
+                                                                        <td>{{ $peserta['nis'] }}</td>
+                                                                        <td>{{ $peserta['nama_lengkap'] }}</td>
+                                                                        <td>{{ $peserta['rombel'] }}</td>
+                                                                        <td>{{ $peserta['nama_pembimbing'] }}</td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -149,9 +183,7 @@
                                             <tr>
                                                 <td colspan="3" class="text-end"><strong>Total:</strong></td>
                                                 <td class="text-center">
-                                                    <strong>
-                                                        {{ $perusahaanCounts->values()->sum() }}
-                                                    </strong>
+                                                    <strong>{{ $perusahaanCounts->values()->sum() }}</strong>
                                                 </td>
                                             </tr>
                                         </tfoot>
@@ -174,16 +206,48 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($pembimbingList as $index => $pembimbing)
+                                            @foreach ($pembimbingList as $pembimbing)
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $pembimbing->nip }}</td>
                                                     <td>
-                                                        {{ $pembimbing->gelardepan }} {{ $pembimbing->namalengkap }}
-                                                        {{ $pembimbing->gelarbelakang }}
+                                                        <a href="javascript:void(0);" class="show-peserta-pembimbing"
+                                                            data-id="{{ $pembimbing->id_personil }}">
+                                                            {{ $pembimbing->gelardepan }} {{ $pembimbing->namalengkap }}
+                                                            {{ $pembimbing->gelarbelakang }}
+                                                        </a>
                                                     </td>
-                                                    <td class='text-center'>
-                                                        {{ $pembimbingCounts[$pembimbing->id_personil] ?? 0 }}</td>
+                                                    <td class="text-center">
+                                                        {{ $pembimbingCounts[$pembimbing->id_personil] ?? 0 }}
+                                                    </td>
+                                                </tr>
+                                                <tr id="peserta-{{ $pembimbing->id_personil }}"
+                                                    class="peserta-pembimbing-row" style="display: none;">
+                                                    <td colspan="4">
+                                                        <div class="loading" style="display: none;">Memuat data...</div>
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>No.</th>
+                                                                    <th>NIS</th>
+                                                                    <th>Nama Lengkap</th>
+                                                                    <th>Rombel</th>
+                                                                    <th>Perusahaan</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach ($pesertaByPembimbing[$pembimbing->id_personil] ?? [] as $index => $peserta)
+                                                                    <tr>
+                                                                        <td>{{ $index + 1 }}</td>
+                                                                        <td>{{ $peserta['nis'] }}</td>
+                                                                        <td>{{ $peserta['nama_lengkap'] }}</td>
+                                                                        <td>{{ $peserta['rombel'] }}</td>
+                                                                        <td>{{ $peserta['nama_perusahaan'] }}</td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -191,9 +255,7 @@
                                             <tr>
                                                 <td colspan="3" class="text-end"><strong>Total:</strong></td>
                                                 <td class="text-center">
-                                                    <strong>
-                                                        {{ $pembimbingCounts->values()->sum() }}
-                                                    </strong>
+                                                    <strong>{{ $pembimbingCounts->values()->sum() }}</strong>
                                                 </td>
                                             </tr>
                                         </tfoot>
@@ -201,6 +263,7 @@
                                 @else
                                     <p>Data pembimbing tidak tersedia.</p>
                                 @endif
+
                             </div>
                             <!-- end tab pane -->
                             <div class="tab-pane" id="absensiPeserta" role="tabpanel">
@@ -395,8 +458,54 @@
     <script src="{{ URL::asset('build/libs/gridjs/gridjs.umd.js') }}"></script>
     <script src="https://unpkg.com/gridjs/plugins/selection/dist/selection.umd.js"></script>
 
-
     <script src="{{ URL::asset('build/js/pages/ecommerce-product-list.init.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const linksPerusahaan = document.querySelectorAll('.show-peserta-perusahaan');
+
+            linksPerusahaan.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const perusahaanId = this.getAttribute('data-id');
+                    const row = document.getElementById(`peserta-${perusahaanId}`);
+
+                    // Sembunyikan semua row lainnya yang sedang terbuka
+                    const allRows = document.querySelectorAll('.peserta-perusahaan-row');
+                    allRows.forEach(r => {
+                        if (r !== row) {
+                            r.style.display = 'none'; // Menyembunyikan row yang lain
+                        }
+                    });
+
+                    // Toggle row yang dipilih
+                    row.style.display = row.style.display === 'none' ? '' : 'none';
+                });
+            });
+        });
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const links = document.querySelectorAll('.show-peserta-pembimbing');
+
+            links.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const pembimbingId = this.getAttribute('data-id');
+                    const row = document.getElementById(`peserta-${pembimbingId}`);
+                    // Sembunyikan semua row lainnya yang sedang terbuka
+                    const allRows = document.querySelectorAll('.peserta-pembimbing-row');
+                    allRows.forEach(r => {
+                        if (r !== row) {
+                            r.style.display = 'none'; // Menyembunyikan row yang lain
+                        }
+                    });
+
+                    // Toggle row yang dipilih
+                    row.style.display = row.style.display === 'none' ? '' : 'none';
+                });
+            });
+        });
+    </script>
 @endsection
 @section('script-bottom')
     <script src="{{ URL::asset('build/js/app.js') }}"></script>

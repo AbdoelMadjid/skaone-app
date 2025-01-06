@@ -232,6 +232,31 @@ class PelaporanPrakerinController extends Controller
                 return $siswa;
             });
 
+            // Ambil data peserta berdasarkan pembimbing
+            $pesertaByPembimbing = $dataPrakerin
+                ->groupBy('id_personil')
+                ->map(function ($peserta) {
+                    return $peserta->map(fn($item) => [
+                        'nis' => $item->nis,
+                        'nama_lengkap' => $item->nama_lengkap,
+                        'rombel' => $item->rombel,
+                        'nama_perusahaan' => $item->nama_perusahaan,
+                    ]);
+                });
+
+            // Ambil data peserta berdasarkan perusahaan
+            $pesertaByPerusahaan = $dataPrakerin
+                ->groupBy('id_perusahaan')
+                ->map(function ($peserta) {
+                    return $peserta->map(function ($item) {
+                        return [
+                            'nis' => $item->nis,
+                            'nama_lengkap' => $item->nama_lengkap,
+                            'rombel' => $item->rombel,
+                            'nama_pembimbing' => $item->namalengkap,  // Tambahkan nama pembimbing
+                        ];
+                    });
+                });
 
             // Kirim data ke view
             return view('pages.kaprodipkl.pelaporan-prakerin', compact(
@@ -244,6 +269,8 @@ class PelaporanPrakerinController extends Controller
                 'totalDataPrakerin',
                 'totalPerusahaan',
                 'totalPembimbing',
+                'pesertaByPembimbing',
+                'pesertaByPerusahaan'
             ));
         }
 
