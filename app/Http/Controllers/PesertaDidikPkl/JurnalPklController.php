@@ -13,6 +13,7 @@ use App\Models\ManajemenSekolah\TahunAjaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Str;
 
 
 class JurnalPklController extends Controller
@@ -74,7 +75,7 @@ class JurnalPklController extends Controller
         if ($request->hasFile('gambar')) {
             // Upload dan proses file gambar
             $image = $request->file('gambar');
-            $imageName = 'jurnal_' . time() . '.' . $image->extension();
+            $imageName = 'jurnal_' . Str::uuid() . '.' . $image->extension();
 
             // Membuat dan menyimpan thumbnail di `public/images/thumbnail`
             $destinationPathThumbnail = base_path('images/thumbnail');
