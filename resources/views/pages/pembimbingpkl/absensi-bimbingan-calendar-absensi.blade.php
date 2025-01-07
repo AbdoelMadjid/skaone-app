@@ -6,7 +6,7 @@
         <div class="nav nav-tabs nav-tabs-custom nav-success nav-justified mb-3" id="calendar-tabs-{{ $siswa->nis }}"
             role="tablist">
             @foreach ($siswa->calendars as $monthYear => $calendar)
-                <button class="nav-link {{ $loop->first ? 'active' : '' }}"
+                <button class="nav-link {{ $loop->first ? 'active' : '' }} text-center"
                     id="tab-{{ $siswa->nis }}-{{ $monthYear }}" data-bs-toggle="tab"
                     data-bs-target="#content-{{ $siswa->nis }}-{{ $monthYear }}" type="button" role="tab"
                     aria-controls="content-{{ $siswa->nis }}-{{ $monthYear }}"
@@ -22,7 +22,7 @@
                     id="content-{{ $siswa->nis }}-{{ $monthYear }}" role="tabpanel"
                     aria-labelledby="tab-{{ $siswa->nis }}-{{ $monthYear }}">
                     <div class="table-responsive">
-                        <table class="table table-bordered text-center">
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th>Ahad</th>
@@ -34,7 +34,7 @@
                                     <th>Sabtu</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="text-center">
                                 @foreach ($calendar as $week)
                                     <tr>
                                         @foreach ($week as $key => $day)
@@ -44,7 +44,7 @@
                                                     <div>{{ \Carbon\Carbon::parse($day['tanggal'])->day }}</div>
                                                     <div>
                                                         <span
-                                                            class="badge
+                                                            class="badge absensi-badge
                                                         {{ $day['status'] === 'HADIR' ? 'bg-success' : '' }}
                                                         {{ $day['status'] === 'SAKIT' ? 'bg-warning' : '' }}
                                                         {{ $day['status'] === 'IZIN' ? 'bg-primary' : '' }}
@@ -54,7 +54,9 @@
                                                             @if ($day['status'] === 'ABSEN') data-nis="{{ $siswa->nis }}"
                                                         data-tanggal="{{ $day['tanggal'] }}"
                                                         onclick="saveAttendance('{{ $siswa->nis }}', '{{ $monthYear }}', '{{ \Carbon\Carbon::parse($day['tanggal'])->day }}')" @endif>
-                                                            {{ $day['status'] === 'LIBUR' ? 'LIBUR' : $day['status'] }}
+                                                            <span class="absen-text">
+                                                                {{ $day['status'] === 'LIBUR' ? 'LIBUR' : $day['status'] }}
+                                                            </span>
                                                         </span>
                                                         @if ($day['status'] === 'LIBUR' && isset($day['keterangan']))
                                                             <p class="fs-10 mb-0">{{ $day['keterangan'] }}</p>
@@ -72,13 +74,15 @@
                         <!-- Keterangan Libur -->
                         @if (!empty($siswa->monthlyHolidays[$monthYear] ?? []))
                             <div>
-                                <h5>Keterangan Libur Bulan
+                                <h6>Keterangan Libur Bulan
                                     {{ \Carbon\Carbon::parse($monthYear . '-01')->translatedFormat('F Y') }}
-                                </h5>
-                                @foreach ($siswa->monthlyHolidays[$monthYear] ?? [] as $date => $description)
-                                    {{ \Carbon\Carbon::parse($date)->translatedFormat('d F Y') }}:
-                                    {{ $description }} <br>
-                                @endforeach
+                                </h6>
+                                <span class="fs-10">
+                                    @foreach ($siswa->monthlyHolidays[$monthYear] ?? [] as $date => $description)
+                                        {{ \Carbon\Carbon::parse($date)->translatedFormat('d F Y') }}:
+                                        {{ $description }} <br>
+                                    @endforeach
+                                </span>
                                 <br><br>
                             </div>
                         @endif

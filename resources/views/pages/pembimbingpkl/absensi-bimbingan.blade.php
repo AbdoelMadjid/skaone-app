@@ -4,6 +4,30 @@
 @endsection
 @section('css')
     {{--  --}}
+    <style>
+        .absensi-badge {
+            cursor: default;
+            /* Default cursor */
+            transition: all 0.3s ease-in-out;
+        }
+
+        .absensi-badge[data-nis][onclick] {
+            cursor: pointer;
+            /* Ubah ke pointer jika ada onclick */
+        }
+
+        .absen-text {
+            display: inline-block;
+            transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+        }
+
+        .absensi-badge:hover .absen-text {
+            transform: scale(1.1);
+            /* Perbesar teks saat hover */
+            color: #ffffff;
+            /* Ubah warna teks */
+        }
+    </style>
 @endsection
 @section('content')
     @component('layouts.breadcrumb')
@@ -60,34 +84,36 @@
 
                                                         <div class="row">
                                                             <div class="col-md-7">
-                                                                <div class="card text-center">
+                                                                <div class="card">
                                                                     <div class="card-body p-4 bg-info-subtle">
-                                                                        @if ($siswa->foto == 'siswacowok.png')
-                                                                            <img src="{{ URL::asset('images/siswacowok.png') }}"
-                                                                                alt="User Avatar"
-                                                                                class="rounded-circle avatar-xl img-thumbnail user-profile-image">
-                                                                        @elseif ($siswa->foto == 'siswacewek.png')
-                                                                            <img src="{{ URL::asset('images/siswacewek.png') }}"
-                                                                                alt="User Avatar"
-                                                                                class="rounded-circle avatar-xl img-thumbnail user-profile-image">
-                                                                        @else
-                                                                            <img src="{{ URL::asset('images/thumbnail/' . $siswa->foto) }}"
-                                                                                alt="User Avatar"
-                                                                                class="rounded-circle avatar-xl img-thumbnail user-profile-image">
-                                                                        @endif
-                                                                        <h5 class="fs-17 mt-3 mb-2">
-                                                                            {!! $siswa->nama_lengkap !!}
-                                                                        </h5>
-                                                                        <p class="text-muted fs-13 mb-3">
-                                                                            {{ $siswa->nis }} - {{ $siswa->rombel_nama }}
-                                                                        </p>
-                                                                        <h5 class="fs-17 mt-3 mb-2">
-                                                                            {!! $siswa->nama !!}
-                                                                        </h5>
-                                                                        <p class="text-muted fs-13 mb-3">
-                                                                            {{ $siswa->alamat }}
-                                                                        </p>
-
+                                                                        <center>
+                                                                            @if ($siswa->foto == 'siswacowok.png')
+                                                                                <img src="{{ URL::asset('images/siswacowok.png') }}"
+                                                                                    alt="User Avatar"
+                                                                                    class="rounded-circle avatar-xl img-thumbnail user-profile-image">
+                                                                            @elseif ($siswa->foto == 'siswacewek.png')
+                                                                                <img src="{{ URL::asset('images/siswacewek.png') }}"
+                                                                                    alt="User Avatar"
+                                                                                    class="rounded-circle avatar-xl img-thumbnail user-profile-image">
+                                                                            @else
+                                                                                <img src="{{ URL::asset('images/thumbnail/' . $siswa->foto) }}"
+                                                                                    alt="User Avatar"
+                                                                                    class="rounded-circle avatar-xl img-thumbnail user-profile-image">
+                                                                            @endif
+                                                                            <h5 class="fs-17 mt-3 mb-2">
+                                                                                {!! $siswa->nama_lengkap !!}
+                                                                            </h5>
+                                                                            <p class="text-muted fs-13 mb-3">
+                                                                                {{ $siswa->nis }} -
+                                                                                {{ $siswa->rombel_nama }}
+                                                                            </p>
+                                                                            <h5 class="fs-17 mt-3 mb-2">
+                                                                                {!! $siswa->nama !!}
+                                                                            </h5>
+                                                                            <p class="text-muted fs-13 mb-3">
+                                                                                {{ $siswa->alamat }}
+                                                                            </p>
+                                                                        </center>
                                                                         @include('pages.pembimbingpkl.absensi-bimbingan-rekap-bulan')
                                                                         <!-- Tambahkan Data Absensi -->
                                                                         <hr>
@@ -110,10 +136,12 @@
                             </div>
                             <!-- end row -->
                         </div>
+
                     </div>
                 </div>
                 <!-- end -->
                 <div class="card-body">
+
                     {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
                 </div>
             </div>
@@ -272,6 +300,25 @@
             });
         }
 
+        document.addEventListener('DOMContentLoaded', () => {
+            const badges = document.querySelectorAll('.absensi-badge[data-nis][onclick]');
+
+            badges.forEach(badge => {
+                const textElement = badge.querySelector('.absen-text');
+
+                badge.addEventListener('mouseenter', () => {
+                    if (textElement.textContent.trim() === 'ABSEN') {
+                        textElement.textContent = 'ADD'; // Ubah ke ADD saat hover
+                    }
+                });
+
+                badge.addEventListener('mouseleave', () => {
+                    if (textElement.textContent.trim() === 'ADD') {
+                        textElement.textContent = 'ABSEN'; // Kembali ke ABSEN saat keluar hover
+                    }
+                });
+            });
+        });
 
         handleDataTableEvents(datatable);
         handleAction(datatable)
