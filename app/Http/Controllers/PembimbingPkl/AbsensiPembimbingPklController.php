@@ -136,6 +136,17 @@ class AbsensiPembimbingPklController extends Controller
         $data = $data->map(function ($siswa) {
             $nis = $siswa->nis;
 
+            // Definisikan libur nasional
+            $holidays = [
+                '2025-01-01' => 'Libur Tahun Baru',
+                '2025-01-27' => 'Isra Miraj Nabi Muhammad SAW',
+                '2025-01-28' => 'Cuti Bersama',
+                '2025-01-29' => 'Tahun Baru Imlek 2576 Kongzili',
+                '2025-03-29' => 'Hari Suci Nyepi (Tahun Baru Saka 1947)',
+                '2025-03-31' => 'Idul Fitri 1446 Hijriah',
+                // Tambahkan libur lainnya sesuai kebutuhan
+            ];
+
             // Periode bulan dan tahun
             $months = [
                 ['month' => 12, 'year' => 2024],
@@ -173,9 +184,21 @@ class AbsensiPembimbingPklController extends Controller
                             $row[] = null; // Kosongkan slot untuk hari di luar bulan ini
                         } else {
                             $date = Carbon::create($year, $month, $currentDay)->format('Y-m-d');
+
+                            // Tentukan status berdasarkan kondisi
+                            $status = 'ABSEN'; // Default jika tidak ada data absensi
+                            if (isset($holidays[$date])) {
+                                $status = 'LIBUR'; // Jika tanggal termasuk hari libur
+                                // Simpan keterangan libur ke bulan yang sesuai
+                                $monthKey = "$year-$month";
+                                $monthlyHolidays[$monthKey][$date] = $holidays[$date];
+                            } elseif ($absensi->has($date)) {
+                                $status = $absensi[$date]->status; // Jika ada data absensi
+                            }
+
                             $row[] = [
                                 'tanggal' => $date,
-                                'status' => $absensi->has($date) ? $absensi[$date]->status : 'ABSEN',
+                                'status' => $status,
                             ];
                             $currentDay++;
                         }
@@ -187,6 +210,7 @@ class AbsensiPembimbingPklController extends Controller
             }
 
             $siswa->calendars = $calendars; // Tambahkan kalender ke data siswa
+            $siswa->monthlyHolidays = $monthlyHolidays; // Tambahkan keterangan libur ke data siswa
             return $siswa;
         });
 

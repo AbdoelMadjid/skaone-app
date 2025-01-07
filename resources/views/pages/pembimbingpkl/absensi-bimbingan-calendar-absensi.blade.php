@@ -45,16 +45,20 @@
                                                     <div>
                                                         <span
                                                             class="badge
-                                                            {{ $day['status'] === 'HADIR' ? 'bg-success' : '' }}
-                                                            {{ $day['status'] === 'SAKIT' ? 'bg-warning' : '' }}
-                                                            {{ $day['status'] === 'IZIN' ? 'bg-primary' : '' }}
-                                                            {{ $day['status'] === 'ALFA' ? 'bg-danger' : '' }}
-                                                            {{ $day['status'] === 'ABSEN' ? 'bg-secondary' : '' }}"
+                                                        {{ $day['status'] === 'HADIR' ? 'bg-success' : '' }}
+                                                        {{ $day['status'] === 'SAKIT' ? 'bg-warning' : '' }}
+                                                        {{ $day['status'] === 'IZIN' ? 'bg-primary' : '' }}
+                                                        {{ $day['status'] === 'ALFA' ? 'bg-danger' : '' }}
+                                                        {{ $day['status'] === 'ABSEN' ? 'bg-secondary' : '' }}
+                                                        {{ $day['status'] === 'LIBUR' ? 'bg-danger' : '' }}"
                                                             @if ($day['status'] === 'ABSEN') data-nis="{{ $siswa->nis }}"
-                                                            data-tanggal="{{ $day['tanggal'] }}"
-                                                            onclick="saveAttendance('{{ $siswa->nis }}', '{{ $monthYear }}', '{{ \Carbon\Carbon::parse($day['tanggal'])->day }}')" @endif>
-                                                            {{ $day['status'] }}
+                                                        data-tanggal="{{ $day['tanggal'] }}"
+                                                        onclick="saveAttendance('{{ $siswa->nis }}', '{{ $monthYear }}', '{{ \Carbon\Carbon::parse($day['tanggal'])->day }}')" @endif>
+                                                            {{ $day['status'] === 'LIBUR' ? 'LIBUR' : $day['status'] }}
                                                         </span>
+                                                        @if ($day['status'] === 'LIBUR' && isset($day['keterangan']))
+                                                            <p class="fs-10 mb-0">{{ $day['keterangan'] }}</p>
+                                                        @endif
                                                     </div>
                                                 </td>
                                             @else
@@ -65,6 +69,17 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <!-- Keterangan Libur -->
+                        <div>
+                            <h5>Keterangan Libur Bulan
+                                {{ \Carbon\Carbon::parse($monthYear . '-01')->translatedFormat('F Y') }}
+                            </h5>
+                            @foreach ($siswa->monthlyHolidays[$monthYear] ?? [] as $date => $description)
+                                {{ \Carbon\Carbon::parse($date)->translatedFormat('d F Y') }}:
+                                {{ $description }} <br>
+                            @endforeach
+                            <br><br>
+                        </div>
                     </div>
                 </div>
             @endforeach
