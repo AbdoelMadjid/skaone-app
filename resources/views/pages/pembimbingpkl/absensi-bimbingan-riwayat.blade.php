@@ -11,7 +11,7 @@
             Riwayat Absen</h5>
         <span class="badge bg-danger rounded-pill">{{ $siswa->jumlah_hadir }}</span>
     </div>
-    <div class="px-4 mx-n4" data-simplebar style="height: calc(100vh - 256px);">
+    <div class="px-4 mx-n4" data-simplebar style="height: calc(250vh - 256px);">
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -22,7 +22,8 @@
             </thead>
             <tbody>
                 @forelse ($riwayat_absensi as $absensi)
-                    <tr>
+                    <tr
+                        class="{{ \Carbon\Carbon::parse($absensi->tanggal)->month === 12 ? 'bg-info-subtle' : (\Carbon\Carbon::parse($absensi->tanggal)->month === 1 ? 'bg-warning-subtle' : (\Carbon\Carbon::parse($absensi->tanggal)->month === 2 ? 'bg-success-subtle' : (\Carbon\Carbon::parse($absensi->tanggal)->month === 3 ? 'bg-danger-subtle' : ''))) }}">
                         <td>
                             @php
                                 $dayOfWeek = \Carbon\Carbon::parse($absensi->tanggal)->dayOfWeek;
@@ -33,12 +34,12 @@
                                 {{ $formattedDate }}
                             </span>
                         </td>
-                        <td>{{ ucfirst(strtolower($absensi->status)) }}
+                        <td>
+                            {{ ucfirst(strtolower($absensi->status)) }}
                         </td>
                         <td class='text-center'>
-                            <button class="btn btn-soft-warning btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#editModal" data-id="{{ $absensi->id }}"
-                                data-status="{{ $absensi->status }}">
+                            <button class="btn btn-soft-info btn-sm" data-bs-toggle="modal" data-bs-target="#editModal"
+                                data-id="{{ $absensi->id }}" data-status="{{ $absensi->status }}">
                                 <i class='ri-edit-2-line'></i>
                             </button>
                             <!-- Tombol delete -->
