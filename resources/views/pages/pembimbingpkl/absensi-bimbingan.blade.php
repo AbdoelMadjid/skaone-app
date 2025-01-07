@@ -96,7 +96,7 @@
                                                                         @include('pages.pembimbingpkl.absensi-bimbingan-calendar-absensi')
                                                                     </div>
                                                                 </div>
-                                                                @include('pages.pembimbingpkl.absensi-bimbingan-tambah-form')
+                                                                {{-- @include('pages.pembimbingpkl.absensi-bimbingan-tambah-form') --}}
                                                             </div>
                                                             @include('pages.pembimbingpkl.absensi-bimbingan-riwayat')
                                                         </div>
