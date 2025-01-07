@@ -11,7 +11,7 @@
                     data-bs-target="#content-{{ $siswa->nis }}-{{ $monthYear }}" type="button" role="tab"
                     aria-controls="content-{{ $siswa->nis }}-{{ $monthYear }}"
                     aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                    {{ \Carbon\Carbon::createFromFormat('Y-m', $monthYear)->translatedFormat('F Y') }}
+                    {{ \Carbon\Carbon::createFromFormat('Y-m', $monthYear)->translatedFormat('F') }}
                 </button>
             @endforeach
         </div>
