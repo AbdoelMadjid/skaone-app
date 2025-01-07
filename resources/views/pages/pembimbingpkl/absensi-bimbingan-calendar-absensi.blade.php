@@ -104,7 +104,7 @@
                                                     </div>
                                                 </td>
                                             @else
-                                                <td></td>
+                                                <td class="bg-primary-subtle"></td>
                                             @endif
                                         @endforeach
                                     </tr>

@@ -5,7 +5,7 @@
         ->orderBy('tanggal', 'asc')
         ->get();
 @endphp
-<div class="col-md-5">
+<div class="col-md-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="fs-14 text-primary mb-0"><i class="ri-calendar-fill align-middle me-2"></i>
             Riwayat Absen</h5>

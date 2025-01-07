@@ -83,7 +83,7 @@
                                                         aria-labelledby="v-pills-bill-{!! $siswa->nis !!}-tab">
 
                                                         <div class="row">
-                                                            <div class="col-md-7">
+                                                            <div class="col-md-8">
                                                                 <div class="card">
                                                                     <div class="card-body p-4 bg-info-subtle">
                                                                         <center>
