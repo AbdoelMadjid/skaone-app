@@ -70,16 +70,18 @@
                             </tbody>
                         </table>
                         <!-- Keterangan Libur -->
-                        <div>
-                            <h5>Keterangan Libur Bulan
-                                {{ \Carbon\Carbon::parse($monthYear . '-01')->translatedFormat('F Y') }}
-                            </h5>
-                            @foreach ($siswa->monthlyHolidays[$monthYear] ?? [] as $date => $description)
-                                {{ \Carbon\Carbon::parse($date)->translatedFormat('d F Y') }}:
-                                {{ $description }} <br>
-                            @endforeach
-                            <br><br>
-                        </div>
+                        @if (!empty($siswa->monthlyHolidays[$monthYear] ?? []))
+                            <div>
+                                <h5>Keterangan Libur Bulan
+                                    {{ \Carbon\Carbon::parse($monthYear . '-01')->translatedFormat('F Y') }}
+                                </h5>
+                                @foreach ($siswa->monthlyHolidays[$monthYear] ?? [] as $date => $description)
+                                    {{ \Carbon\Carbon::parse($date)->translatedFormat('d F Y') }}:
+                                    {{ $description }} <br>
+                                @endforeach
+                                <br><br>
+                            </div>
+                        @endif
                     </div>
                 </div>
             @endforeach
