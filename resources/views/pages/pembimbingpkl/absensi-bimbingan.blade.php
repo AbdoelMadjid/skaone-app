@@ -246,6 +246,33 @@
             });
         });
 
+        function saveAttendance(nis, monthYear, day) {
+            // Format tanggal menjadi YYYY-MM-DD
+            var date = monthYear + '-' + day; // Format YYYY-MM-DD
+
+            // Kirim data absensi dengan AJAX
+            $.ajax({
+                url: '/pembimbingpkl/absensi-bimbingan/simpanabsensi',
+                method: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    nis: nis,
+                    tanggal: date,
+                    status: 'HADIR'
+                },
+                success: function(response) {
+                    showToast('success', 'Absen berhasil ditambahkan!');
+                    window.location.href =
+                        "{{ route('pembimbingpkl.absensi-bimbingan.index') }}";
+                },
+                error: function(xhr, status, error) {
+                    showToast('success', 'Terjadi kesalahan saat mengirim data.');
+                    console.log(xhr.responseText); // Untuk melihat pesan error lebih detail
+                }
+            });
+        }
+
+
         handleDataTableEvents(datatable);
         handleAction(datatable)
         handleDelete(datatable)

@@ -3,7 +3,8 @@
         CALENDAR ABSENSI
     </div>
     <div class="card-body">
-        <div class="nav nav-tabs mb-3" id="calendar-tabs-{{ $siswa->nis }}" role="tablist">
+        <div class="nav nav-tabs nav-tabs-custom nav-success nav-justified mb-3" id="calendar-tabs-{{ $siswa->nis }}"
+            role="tablist">
             @foreach ($siswa->calendars as $monthYear => $calendar)
                 <button class="nav-link {{ $loop->first ? 'active' : '' }}"
                     id="tab-{{ $siswa->nis }}-{{ $monthYear }}" data-bs-toggle="tab"
@@ -36,9 +37,10 @@
                             <tbody>
                                 @foreach ($calendar as $week)
                                     <tr>
-                                        @foreach ($week as $day)
+                                        @foreach ($week as $key => $day)
                                             @if ($day)
-                                                <td>
+                                                <td
+                                                    class="{{ $key == 0 ? 'bg-danger-subtle' : ($key == 6 ? 'bg-info-subtle' : '') }}">
                                                     <div>{{ \Carbon\Carbon::parse($day['tanggal'])->day }}</div>
                                                     <div>
                                                         <span
@@ -47,7 +49,10 @@
                                                             {{ $day['status'] === 'SAKIT' ? 'bg-warning' : '' }}
                                                             {{ $day['status'] === 'IZIN' ? 'bg-primary' : '' }}
                                                             {{ $day['status'] === 'ALFA' ? 'bg-danger' : '' }}
-                                                            {{ $day['status'] === 'BLM ABSEN' ? 'bg-secondary' : '' }}">
+                                                            {{ $day['status'] === 'ABSEN' ? 'bg-secondary' : '' }}"
+                                                            @if ($day['status'] === 'ABSEN') data-nis="{{ $siswa->nis }}"
+                                                            data-tanggal="{{ $day['tanggal'] }}"
+                                                            onclick="saveAttendance('{{ $siswa->nis }}', '{{ $monthYear }}', '{{ \Carbon\Carbon::parse($day['tanggal'])->day }}')" @endif>
                                                             {{ $day['status'] }}
                                                         </span>
                                                     </div>

@@ -175,7 +175,7 @@ class AbsensiPembimbingPklController extends Controller
                             $date = Carbon::create($year, $month, $currentDay)->format('Y-m-d');
                             $row[] = [
                                 'tanggal' => $date,
-                                'status' => $absensi->has($date) ? $absensi[$date]->status : '',
+                                'status' => $absensi->has($date) ? $absensi[$date]->status : 'ABSEN',
                             ];
                             $currentDay++;
                         }
