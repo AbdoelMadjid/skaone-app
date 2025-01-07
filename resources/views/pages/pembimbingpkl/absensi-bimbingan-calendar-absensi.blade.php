@@ -45,22 +45,62 @@
                                                     <div>
                                                         <span
                                                             class="badge absensi-badge
-                                                        {{ $day['status'] === 'HADIR' ? 'bg-success' : '' }}
-                                                        {{ $day['status'] === 'SAKIT' ? 'bg-warning' : '' }}
-                                                        {{ $day['status'] === 'IZIN' ? 'bg-primary' : '' }}
-                                                        {{ $day['status'] === 'ALFA' ? 'bg-danger' : '' }}
-                                                        {{ $day['status'] === 'ABSEN' ? 'bg-secondary' : '' }}
-                                                        {{ $day['status'] === 'LIBUR' ? 'bg-danger' : '' }}"
-                                                            @if ($day['status'] === 'ABSEN') data-nis="{{ $siswa->nis }}"
-                                                        data-tanggal="{{ $day['tanggal'] }}"
-                                                        onclick="saveAttendance('{{ $siswa->nis }}', '{{ $monthYear }}', '{{ \Carbon\Carbon::parse($day['tanggal'])->day }}')" @endif>
-                                                            <span class="absen-text">
+                                                                {{ str_contains($day['status'], 'HADIR') ? 'bg-success' : '' }}
+                                                                {{ str_contains($day['status'], 'SAKIT') ? 'bg-warning' : '' }}
+                                                                {{ str_contains($day['status'], 'IZIN') ? 'bg-primary' : '' }}
+                                                                {{ str_contains($day['status'], 'ALFA') ? 'bg-danger' : '' }}
+                                                                {{ str_contains($day['status'], 'ABSEN') ? 'bg-secondary' : '' }}
+                                                                {{ str_contains($day['status'], 'LIBUR') ? 'bg-danger' : '' }}"
+                                                            @if (str_contains($day['status'], 'ABSEN')) data-nis="{{ $siswa->nis }}"
+                                                            data-tanggal="{{ $day['tanggal'] }}"
+                                                            onclick="saveAttendance('{{ $siswa->nis }}', '{{ $monthYear }}', '{{ \Carbon\Carbon::parse($day['tanggal'])->day }}')" @endif>
+                                                            {{-- <span class="absen-text">
                                                                 {{ $day['status'] === 'LIBUR' ? 'LIBUR' : $day['status'] }}
-                                                            </span>
+                                                            </span> --}}
+                                                            <!-- Badge untuk LIBUR jika statusnya LIBUR -->
+                                                            @if (str_contains($day['status'], 'LIBUR'))
+                                                                <span class="badge bg-danger">
+                                                                    LIBUR
+                                                                </span>
+                                                            @endif
+                                                            <!-- Badge untuk status absensi seperti HADIR, SAKIT, IZIN, dll -->
+                                                            @if (str_contains($day['status'], 'HADIR'))
+                                                                @if (str_contains($day['status'], 'LIBUR'))
+                                                                    <BR>
+                                                                @endif
+                                                                <span class="badge bg-success">
+                                                                    HADIR
+                                                                </span>
+                                                            @elseif (str_contains($day['status'], 'SAKIT'))
+                                                                @if (str_contains($day['status'], 'LIBUR'))
+                                                                    <BR>
+                                                                @endif
+                                                                <span class="badge bg-warning">
+                                                                    SAKIT
+                                                                </span>
+                                                            @elseif (str_contains($day['status'], 'IZIN'))
+                                                                @if (str_contains($day['status'], 'LIBUR'))
+                                                                    <BR>
+                                                                @endif
+                                                                <span class="badge bg-primary">
+                                                                    IZIN
+                                                                </span>
+                                                            @elseif (str_contains($day['status'], 'ALFA'))
+                                                                @if (str_contains($day['status'], 'LIBUR'))
+                                                                    <BR>
+                                                                @endif
+                                                                <span class="badge bg-danger">
+                                                                    ALFA
+                                                                </span>
+                                                            @elseif (str_contains($day['status'], 'ABSEN'))
+                                                                <span class="badge bg-secondary absen-text">
+                                                                    ABSEN
+                                                                </span>
+                                                            @endif
                                                         </span>
-                                                        @if ($day['status'] === 'LIBUR' && isset($day['keterangan']))
-                                                            <p class="fs-10 mb-0">{{ $day['keterangan'] }}</p>
-                                                        @endif
+
+
+
                                                     </div>
                                                 </td>
                                             @else

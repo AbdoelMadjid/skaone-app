@@ -156,6 +156,7 @@ class AbsensiPembimbingPklController extends Controller
             ];
 
             $calendars = [];
+            $monthlyHolidays = []; // Untuk menyimpan keterangan libur
 
             foreach ($months as $period) {
                 $month = $period['month'];
@@ -192,6 +193,10 @@ class AbsensiPembimbingPklController extends Controller
                                 // Simpan keterangan libur ke bulan yang sesuai
                                 $monthKey = "$year-$month";
                                 $monthlyHolidays[$monthKey][$date] = $holidays[$date];
+                                if ($absensi->has($date)) {
+                                    // Gabungkan status LIBUR dengan status absensi jika ada
+                                    $status = 'LIBUR & ' . $absensi[$date]->status;
+                                }
                             } elseif ($absensi->has($date)) {
                                 $status = $absensi[$date]->status; // Jika ada data absensi
                             }
