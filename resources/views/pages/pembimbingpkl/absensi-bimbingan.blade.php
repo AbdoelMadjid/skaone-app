@@ -114,12 +114,11 @@
                                                                                 {{ $siswa->alamat }}
                                                                             </p>
                                                                         </center>
+                                                                        @include('pages.pembimbingpkl.absensi-bimbingan-calendar-absensi')
+                                                                        <hr>
                                                                         @include('pages.pembimbingpkl.absensi-bimbingan-rekap-bulan')
-                                                                        <!-- Tambahkan Data Absensi -->
                                                                         <hr>
                                                                         @include('pages.pembimbingpkl.absensi-bimbingan-rekap-total')
-                                                                        <hr>
-                                                                        @include('pages.pembimbingpkl.absensi-bimbingan-calendar-absensi')
                                                                     </div>
                                                                 </div>
                                                                 @include('pages.pembimbingpkl.absensi-bimbingan-tambah-form')
