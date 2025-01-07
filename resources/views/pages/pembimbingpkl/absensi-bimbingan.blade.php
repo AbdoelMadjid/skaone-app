@@ -229,6 +229,23 @@
                 });
             });
         });
+
+        // Ini akan mengaktifkan tab untuk siswa yang dipilih berdasarkan nis
+        document.querySelectorAll('.nav-link').forEach(tab => {
+            tab.addEventListener('click', function() {
+                let nis = tab.id.split('-')[1]; // Ambil NIS dari ID tab
+                let activeTab = new bootstrap.Tab(tab);
+                activeTab.show(); // Menampilkan tab yang dipilih
+
+                // Ubah konten berdasarkan nis
+                document.querySelectorAll(`#calendar-tabs-` + nis + ` .tab-pane`).forEach(pane => {
+                    if (pane.id.split('-')[1] === nis) {
+                        pane.classList.add('show', 'active');
+                    }
+                });
+            });
+        });
+
         handleDataTableEvents(datatable);
         handleAction(datatable)
         handleDelete(datatable)

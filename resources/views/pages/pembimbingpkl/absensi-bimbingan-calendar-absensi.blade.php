@@ -3,20 +3,23 @@
         CALENDAR ABSENSI
     </div>
     <div class="card-body">
-        <div class="nav nav-tabs nav-tabs-custom nav-success nav-justified mb-3" id="calendar-tabs" role="tablist">
+        <div class="nav nav-tabs mb-3" id="calendar-tabs-{{ $siswa->nis }}" role="tablist">
             @foreach ($siswa->calendars as $monthYear => $calendar)
-                <button class="nav-link {{ $loop->first ? 'active' : '' }}" id="tab-{{ $monthYear }}"
-                    data-bs-toggle="tab" data-bs-target="#content-{{ $monthYear }}" type="button" role="tab"
-                    aria-controls="content-{{ $monthYear }}" aria-selected="{{ $loop->first ? 'true' : 'false' }}">
+                <button class="nav-link {{ $loop->first ? 'active' : '' }}"
+                    id="tab-{{ $siswa->nis }}-{{ $monthYear }}" data-bs-toggle="tab"
+                    data-bs-target="#content-{{ $siswa->nis }}-{{ $monthYear }}" type="button" role="tab"
+                    aria-controls="content-{{ $siswa->nis }}-{{ $monthYear }}"
+                    aria-selected="{{ $loop->first ? 'true' : 'false' }}">
                     {{ \Carbon\Carbon::createFromFormat('Y-m', $monthYear)->translatedFormat('F Y') }}
                 </button>
             @endforeach
         </div>
 
-        <div class="tab-content" id="calendar-tabs-content">
+        <div class="tab-content" id="calendar-tabs-content-{{ $siswa->nis }}">
             @foreach ($siswa->calendars as $monthYear => $calendar)
-                <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="content-{{ $monthYear }}"
-                    role="tabpanel" aria-labelledby="tab-{{ $monthYear }}">
+                <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
+                    id="content-{{ $siswa->nis }}-{{ $monthYear }}" role="tabpanel"
+                    aria-labelledby="tab-{{ $siswa->nis }}-{{ $monthYear }}">
                     <div class="table-responsive">
                         <table class="table table-bordered text-center">
                             <thead>
