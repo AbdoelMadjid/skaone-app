@@ -7,6 +7,7 @@ use App\Models\PembimbingPkl\AbsensiPembimbingPkl;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PembimbingPkl\AbsensiPembimbingPklRequest;
 use App\Models\PesertaDidikPkl\AbsensiSiswaPkl;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -129,6 +130,63 @@ class AbsensiPembimbingPklController extends Controller
                 ];
             });
 
+            return $siswa;
+        });
+
+        $data = $data->map(function ($siswa) {
+            $nis = $siswa->nis;
+
+            // Periode bulan dan tahun
+            $months = [
+                ['month' => 12, 'year' => 2024],
+                ['month' => 1, 'year' => 2025],
+                ['month' => 2, 'year' => 2025],
+                ['month' => 3, 'year' => 2025],
+            ];
+
+            $calendars = [];
+
+            foreach ($months as $period) {
+                $month = $period['month'];
+                $year = $period['year'];
+
+                // Ambil data absensi untuk bulan-tahun tertentu
+                $absensi = DB::table('absensi_siswa_pkls')
+                    ->where('nis', $nis)
+                    ->whereMonth('tanggal', $month)
+                    ->whereYear('tanggal', $year)
+                    ->get()
+                    ->keyBy(function ($item) {
+                        return Carbon::parse($item->tanggal)->format('Y-m-d');
+                    });
+
+                // Generate kalender
+                $daysInMonth = Carbon::create($year, $month, 1)->daysInMonth;
+                $firstDayOfMonth = Carbon::create($year, $month, 1)->dayOfWeek; // 0=Sunday, 1=Monday, etc.
+                $calendar = [];
+                $currentDay = 1;
+
+                for ($week = 0; $week < 6; $week++) {
+                    $row = [];
+                    for ($day = 0; $day < 7; $day++) {
+                        if ($week === 0 && $day < $firstDayOfMonth || $currentDay > $daysInMonth) {
+                            $row[] = null; // Kosongkan slot untuk hari di luar bulan ini
+                        } else {
+                            $date = Carbon::create($year, $month, $currentDay)->format('Y-m-d');
+                            $row[] = [
+                                'tanggal' => $date,
+                                'status' => $absensi->has($date) ? $absensi[$date]->status : '',
+                            ];
+                            $currentDay++;
+                        }
+                    }
+                    $calendar[] = $row;
+                }
+
+                $calendars["$year-$month"] = $calendar;
+            }
+
+            $siswa->calendars = $calendars; // Tambahkan kalender ke data siswa
             return $siswa;
         });
 

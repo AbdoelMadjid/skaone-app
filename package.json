@@ -31,6 +31,7 @@
         "@fullcalendar/core": "^6.1.15",
         "@fullcalendar/daygrid": "^6.1.15",
         "@fullcalendar/interaction": "^6.1.15",
+        "@fullcalendar/timegrid": "^6.1.15",
         "@simonwep/pickr": "^1.8.2",
         "@tarekraafat/autocomplete.js": "^10.2.7",
         "aos": "^2.3.4",
