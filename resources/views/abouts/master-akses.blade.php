@@ -27,6 +27,9 @@
                 <li>
                     <a href="{{ route('about.daily-messages.index') }}" class="dropdown-item">Daily Messages</a>
                 </li>
+                <li>
+                    <a href="{{ route('about.events.index') }}" class="dropdown-item">Event</a>
+                </li>
                 {{-- <li><a class="dropdown-item" href="#">Search Settings</a></li>
                 <li><a class="dropdown-item" href="#">Advanced Search</a></li>
                 <li><a class="dropdown-item" href="#">Search History</a></li>

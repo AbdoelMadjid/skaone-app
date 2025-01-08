@@ -21,6 +21,7 @@ use App\Http\Controllers\AppSupport\DataLoginController;
 use App\Http\Controllers\AppSupport\EksporDataMasterController;
 use App\Http\Controllers\AppSupport\ImporDataMasterController;
 use App\Http\Controllers\AppSupport\ReferensiController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\ManajemenPengguna\AksesRoleController;
 use App\Http\Controllers\ManajemenPengguna\AksesUserController;
 use App\Http\Controllers\ManajemenPengguna\PermissionController;
@@ -109,6 +110,8 @@ Route::group(['prefix' => 'about', 'as' => 'about.'], function () {
     Route::resource('photo-jurusan', PhotoJurusanController::class);
     Route::resource('photo-jurusan', PhotoJurusanController::class);
     Route::resource('daily-messages', DailyMessagesController::class);
+    Route::resource('events', EventController::class);
+    Route::get('events-data', [EventController::class, 'events'])->name('events.data');
 });
 
 // Kelompok rute untuk profil, hanya dapat diakses oleh pengguna yang sudah terotentikasi
