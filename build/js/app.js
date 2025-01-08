@@ -1881,7 +1881,7 @@ File: Main Js File
 
 			// open right sidebar on first time load
 			var offCanvas = document.querySelector('.btn[data-bs-target="#theme-settings-offcanvas"]');
-			//offCanvas ? offCanvas.click() : "";
+			offCanvas ? offCanvas.click() : "";
 		} else {
 			var isLayoutAttributes = {};
 			isLayoutAttributes["data-layout"] = sessionStorage.getItem("data-layout");
