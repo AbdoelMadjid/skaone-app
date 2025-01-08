@@ -35,10 +35,10 @@
                     <div class="text-center">
                         <div class="mx-auto mb-4 profile-user position-relative d-inline-block">
                             @if ($personil->jeniskelamin == 'Perempuan')
-                                <img src="{{ $personil->photo ? URL::asset('images/personil/' . $personil->photo) : URL::asset('images/gurucewek.png') }}"
+                                <img src="{{ $personil->photo ? URL::asset('images/thumbnail/' . $personil->photo) : URL::asset('images/gurucewek.png') }}"
                                     alt="User Avatar" class="rounded-circle avatar-xl img-thumbnail user-profile-image">
                             @else
-                                <img src="{{ $personil->photo ? URL::asset('images/personil/' . $personil->photo) : URL::asset('images/gurulaki.png') }}"
+                                <img src="{{ $personil->photo ? URL::asset('images/thumbnail/' . $personil->photo) : URL::asset('images/gurulaki.png') }}"
                                     alt="User Avatar" class="rounded-circle avatar-xl img-thumbnail user-profile-image">
                             @endif
                             <div class="p-0 avatar-xs rounded-circle profile-photo-edit">

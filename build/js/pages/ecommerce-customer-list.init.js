@@ -234,9 +234,9 @@ Array.prototype.slice.call(forms).forEach(function (form) {
             event.stopPropagation();
         } else {
             event.preventDefault();
-            if (customerNameField.value !== "" && 
-                emailField.value !== "" && 
-                dateField.value !== "" && 
+            if (customerNameField.value !== "" &&
+                emailField.value !== "" &&
+                dateField.value !== "" &&
                 phoneField.value !== "" && !editlist) {
               customerList.add({
                 id: '<a href="javascript:void(0);" class="fw-medium link-primary">#VZ'+count+"</a>",
@@ -345,13 +345,13 @@ function refreshCallbacks() {
         var itemValues = customerList.get({
           id: itemId,
         });
-  
+
         Array.from(itemValues).forEach(function (x) {
           deleteid = new DOMParser().parseFromString(x._values.id, "text/html");
-  
+
           var isElem = deleteid.body.firstElementChild;
           var isdeleteid = deleteid.body.firstElementChild.innerHTML;
-  
+
           if (isdeleteid == itemId) {
             document.getElementById("delete-record").addEventListener("click", function () {
               customerList.remove("id", isElem.outerHTML);
@@ -362,7 +362,7 @@ function refreshCallbacks() {
       });
     });
   }
-  
+
   if(editBtns){
     Array.from(editBtns).forEach(function (btn) {
       btn.addEventListener("click", function (e) {
@@ -371,7 +371,7 @@ function refreshCallbacks() {
         var itemValues = customerList.get({
           id: itemId,
         });
-  
+
         Array.from(itemValues).forEach(function (x) {
           isid = new DOMParser().parseFromString(x._values.id, "text/html");
           var selectedid = isid.body.firstElementChild.innerHTML;
@@ -382,7 +382,7 @@ function refreshCallbacks() {
             emailField.value = x._values.email;
             dateField.value = x._values.date;
             phoneField.value = x._values.phone;
-  
+
             if (statusVal) statusVal.destroy();
             statusVal = new Choices(statusField, {
               searchEnabled: false
@@ -390,7 +390,7 @@ function refreshCallbacks() {
             val = new DOMParser().parseFromString(x._values.status, "text/html");
             var statusSelec = val.body.firstElementChild.innerHTML;
             statusVal.setChoiceByValue(statusSelec);
-  
+
             flatpickr("#date-field", {
               enableTime: true,
               dateFormat: "d M, Y",

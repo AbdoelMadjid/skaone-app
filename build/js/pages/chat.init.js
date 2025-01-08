@@ -230,7 +230,7 @@ File: Chat init js
                     isreplyMessage = false;
                     document.querySelector(".replyCard").classList.remove("show");
                 }
-
+                
                 if (item.querySelector(".align-items-center").querySelector(".avatar-xxs img")) {
                     var contactImg = item.querySelector(".align-items-center").querySelector(".avatar-xxs .rounded-circle").getAttribute("src");
                     document.querySelector(".user-own-img .avatar-xs").setAttribute("src", contactImg);
@@ -636,7 +636,7 @@ File: Chat init js
         });
     }
 
-    //Delete Message
+    //Delete Message 
     function deleteMessage() {
         var deleteItems = itemList.querySelectorAll(".delete-item");
         deleteItems.forEach(function (item) {
@@ -648,7 +648,7 @@ File: Chat init js
         });
     }
 
-    //Delete Image
+    //Delete Image 
     function deleteImage() {
         var deleteImage = itemList.querySelectorAll(".chat-conversation-list .chat-list");
         deleteImage.forEach(function (item) {
@@ -798,7 +798,7 @@ File: Chat init js
             });
         });
 
-        //reply Message model
+        //reply Message model    
         newChatList.querySelectorAll(".reply-message").forEach(function (subitem) {
             subitem.addEventListener("click", function () {
                 var replyToggleOpenNew = document.querySelector(".replyCard");
