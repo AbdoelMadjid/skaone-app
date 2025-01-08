@@ -333,7 +333,7 @@
                                                 <strong>{{ $dataPrakerin->sum('jumlah_alfa') }}</strong>
                                             </td>
                                             <td class="text-center" id="totalAll">
-                                                <strong>{{ $dataPrakerin->sum('jumlah_total') }}</strong>
+                                                <strong>{{ $dataPrakerin->sum('jumlah_hadir') + $dataPrakerin->sum('jumlah_sakit') + $dataPrakerin->sum('jumlah_izin') + $dataPrakerin->sum('jumlah_alfa') }}</strong>
                                             </td>
                                         </tr>
                                     </tfoot>
@@ -401,7 +401,7 @@
                                                 <td class="text-center jumlah_sudah">{{ $prakerin->jumlah_sudah }}</td>
                                                 <td class="text-center jumlah_belum">{{ $prakerin->jumlah_belum }}</td>
                                                 <td class="text-center jumlah_tolak">{{ $prakerin->jumlah_tolak }}</td>
-                                                <td class="text-center total">
+                                                <td class="text-center total_jumlah">
                                                     {{ $prakerin->jumlah_sudah + $prakerin->jumlah_belum + $prakerin->jumlah_tolak }}
                                                 </td>
                                             </tr>
@@ -411,16 +411,16 @@
                                         <tr>
                                             <td colspan="4" class="text-end"><strong>Total:</strong></td>
                                             <td class='text-center' id="totalSudah">
-                                                <strong>{{ $dataPrakerin->sum('jumlah_sudah') }}</strong>
+                                                <strong>{{ $dataPrakerin->sum($prakerin->jumlah_sudah) }}</strong>
                                             </td>
                                             <td class='text-center' id="totalBelum">
-                                                <strong>{{ $dataPrakerin->sum('jumlah_belum') }}</strong>
+                                                <strong>{{ $dataPrakerin->sum($prakerin->jumlah_belum) }}</strong>
                                             </td>
                                             <td class='text-center' id="totalTolak">
-                                                <strong>{{ $dataPrakerin->sum('jumlah_tolak') }}</strong>
+                                                <strong>{{ $dataPrakerin->sum($prakerin->jumlah_tolak) }}</strong>
                                             </td>
-                                            <td class="text-center" id="totalAll">
-                                                <strong>{{ $dataPrakerin->sum('jumlah_sudah') + $dataPrakerin->sum('jumlah_belum') + $dataPrakerin->sum('jumlah_tolak') }}</strong>
+                                            <td class="text-center text-muted" id="allTotal">
+                                                <strong>{{ $dataPrakerin->sum('jumlah_total') }}</strong>
                                             </td>
                                         </tr>
                                     </tfoot>
@@ -501,7 +501,7 @@
             const totalSudah = document.querySelector('#totalSudah');
             const totalBelum = document.querySelector('#totalBelum');
             const totalTolak = document.querySelector('#totalTolak');
-            const totalAll = document.querySelector('#totalAll');
+            const totalAll = document.querySelector('#allTotal');
 
             pembimbingSelect.addEventListener('change', function() {
                 const selectedPembimbingId = this.value;
@@ -518,7 +518,7 @@
                         sumSudah += parseInt(row.querySelector('.jumlah_sudah').textContent) || 0;
                         sumBelum += parseInt(row.querySelector('.jumlah_belum').textContent) || 0;
                         sumTolak += parseInt(row.querySelector('.jumlah_tolak').textContent) || 0;
-                        sumAll += parseInt(row.querySelector('.total').textContent) || 0;
+                        sumAll += parseInt(row.querySelector('.total_jumlah').textContent) || 0;
                     } else {
                         row.style.display = 'none'; // Menyembunyikan row yang tidak sesuai
                     }

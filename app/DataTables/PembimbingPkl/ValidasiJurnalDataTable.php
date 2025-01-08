@@ -73,8 +73,8 @@ class ValidasiJurnalDataTable extends DataTable
                 }
 
                 return
-                    '<strong>Tamggal:</strong> <br>' . $tglkirim .
-                    '<br><br><strong>ELement:</strong> <br>' . $element .
+                    '<strong>Tanggal:</strong> <br>' . $tglkirim .
+                    '<br><br><strong>Element CP:</strong> <br>' . $element .
                     '<br><br><strong>Tujuan Pembelajaran:</strong> <br>' . $isiTp .
                     '<br><br><strong>Keterangan:</strong> <br>' . $row->keterangan .
                     '' . $IsiKomentar;
