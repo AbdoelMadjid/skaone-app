@@ -6,6 +6,9 @@
     {{--  --}}
     <link href="{{ URL::asset('build/libs/nouislider/nouislider.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ URL::asset('build/libs/gridjs/theme/mermaid.min.css') }}">
+    <link href="{{ URL::asset('build/libs/select2/css/select2.min.css') }}" rel="stylesheet" />
+    <link href="{{ URL::asset('build/libs/select2-bootstrap-5-theme/select2-bootstrap-5-theme.min.css') }}"
+        rel="stylesheet" />
 @endsection
 @section('content')
     @component('layouts.breadcrumb')
@@ -269,8 +272,10 @@
                             <div class="tab-pane" id="absensiPeserta" role="tabpanel">
                                 <div class="form-group mb-3">
                                     <label for="pembimbingAbsensiSelect">Pilih Pembimbing</label>
-                                    <select id="pembimbingAbsensiSelect" class="form-control">
-                                        <option value="">-- Pilih Pembimbing --</option>
+                                    <select id="pembimbingAbsensiSelect"
+                                        class="form-control select2 form-select form-select-sm">
+                                        <option value="">-- Pilih Semua --</option>
+                                        <option value="all">Pilih Semua</option>
                                         @foreach ($pembimbingList as $pembimbing)
                                             <option value="{{ $pembimbing->id_personil }}">{{ $pembimbing->gelardepan }}
                                                 {{ $pembimbing->namalengkap }} {{ $pembimbing->gelarbelakang }}</option>
@@ -343,8 +348,10 @@
                             <div class="tab-pane" id="jurnalPeserta" role="tabpanel">
                                 <div class="form-group mb-3">
                                     <label for="pembimbingJurnalSelect">Pilih Pembimbing</label>
-                                    <select id="pembimbingJurnalSelect" class="form-control">
-                                        <option value="">-- Pilih Pembimbing --</option>
+                                    <select id="pembimbingJurnalSelect"
+                                        class="form-control select2 form-select form-select-sm">
+                                        <option value="">-- Pilih Semua --</option>
+                                        <option value="all">Pilih Semua</option>
                                         @foreach ($pembimbingList as $pembimbing)
                                             <option value="{{ $pembimbing->id_personil }}">{{ $pembimbing->gelardepan }}
                                                 {{ $pembimbing->namalengkap }} {{ $pembimbing->gelarbelakang }}</option>
@@ -442,11 +449,12 @@
     <!-- end row -->
 @endsection
 @section('script')
+    <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/nouislider/nouislider.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/wnumb/wNumb.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/gridjs/gridjs.umd.js') }}"></script>
     <script src="https://unpkg.com/gridjs/plugins/selection/dist/selection.umd.js"></script>
-
+    <script src="{{ URL::asset('build/libs/select2/js/select2.min.js') }}"></script>
     <script src="{{ URL::asset('build/js/pages/ecommerce-product-list.init.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -496,25 +504,31 @@
         });
 
         document.addEventListener('DOMContentLoaded', () => {
-            const pembimbingSelect = document.getElementById('pembimbingJurnalSelect');
+            const pembimbingSelect = $(
+                '#pembimbingJurnalSelect'); // Gunakan jQuery karena Select2 memerlukan jQuery
             const tableRows = document.querySelectorAll('.jurnal-prakerin-row');
             const totalSudah = document.querySelector('#totalSudah');
             const totalBelum = document.querySelector('#totalBelum');
             const totalTolak = document.querySelector('#totalTolak');
             const allTotal = document.querySelector('#allTotal');
 
-            pembimbingSelect.addEventListener('change', function() {
-                const selectedPembimbingId = this.value;
+            pembimbingSelect.on('select2:select', function(e) {
+                const selectedPembimbingId = e.target.value; // Nilai yang dipilih
                 let sumSudah = 0;
                 let sumBelum = 0;
                 let sumTolak = 0;
                 let sumAll = 0;
+                let currentNo = 1; // Mulai nomor urut dari 1
 
                 tableRows.forEach(row => {
                     const rowPembimbingId = row.getAttribute('data-pembimbing-id');
 
-                    if (selectedPembimbingId === "" || rowPembimbingId === selectedPembimbingId) {
+                    if (selectedPembimbingId === "all" || selectedPembimbingId === "" ||
+                        rowPembimbingId === selectedPembimbingId) {
                         row.style.display = ''; // Menampilkan row yang sesuai
+                        // Perbarui nomor urut
+                        row.querySelector('td:first-child').textContent = currentNo++;
+                        // Menghitung total jumlah
                         sumSudah += parseInt(row.querySelector('.jumlah_sudah').textContent) || 0;
                         sumBelum += parseInt(row.querySelector('.jumlah_belum').textContent) || 0;
                         sumTolak += parseInt(row.querySelector('.jumlah_tolak').textContent) || 0;
@@ -530,10 +544,17 @@
                 totalTolak.textContent = sumTolak;
                 allTotal.textContent = sumAll;
             });
+
+            // Inisialisasi Select2
+            pembimbingSelect.select2({
+                placeholder: "-- Pilih Pembimbing --",
+                allowClear: true
+            });
         });
 
+
         document.addEventListener('DOMContentLoaded', () => {
-            const pembimbingSelect = document.getElementById('pembimbingAbsensiSelect');
+            const pembimbingSelect = $('#pembimbingAbsensiSelect'); // Gunakan jQuery untuk Select2
             const tableRows = document.querySelectorAll('.absensi-prakerin-row');
 
             // Mengambil elemen total
@@ -543,19 +564,23 @@
             const totalAlfa = document.querySelector('#totalAlfa');
             const totalAll = document.querySelector('#totalAll');
 
-            pembimbingSelect.addEventListener('change', function() {
-                const selectedPembimbingId = this.value;
+            pembimbingSelect.on('select2:select', function(e) {
+                const selectedPembimbingId = e.target.value;
                 let sumHadir = 0;
                 let sumSakit = 0;
                 let sumIzin = 0;
                 let sumAlfa = 0;
                 let sumTotal = 0;
+                let currentNo = 1; // Mulai nomor urut dari 1
 
                 tableRows.forEach(row => {
                     const rowPembimbingId = row.getAttribute('data-pembimbing-id');
 
-                    if (selectedPembimbingId === "" || rowPembimbingId === selectedPembimbingId) {
+                    if (selectedPembimbingId === "all" || selectedPembimbingId === "" ||
+                        rowPembimbingId === selectedPembimbingId) {
                         row.style.display = ''; // Menampilkan row yang sesuai
+                        // Perbarui nomor urut
+                        row.querySelector('td:first-child').textContent = currentNo++;
                         sumHadir += parseInt(row.querySelector('.jumlah_hadir').textContent) || 0;
                         sumSakit += parseInt(row.querySelector('.jumlah_sakit').textContent) || 0;
                         sumIzin += parseInt(row.querySelector('.jumlah_izin').textContent) || 0;
@@ -572,6 +597,12 @@
                 totalIzin.textContent = sumIzin;
                 totalAlfa.textContent = sumAlfa;
                 totalAll.textContent = sumTotal;
+            });
+
+            // Inisialisasi Select2
+            pembimbingSelect.select2({
+                placeholder: "-- Pilih Pembimbing --",
+                allowClear: true
             });
         });
     </script>
