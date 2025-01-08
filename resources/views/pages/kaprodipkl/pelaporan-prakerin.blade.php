@@ -411,16 +411,16 @@
                                         <tr>
                                             <td colspan="4" class="text-end"><strong>Total:</strong></td>
                                             <td class='text-center' id="totalSudah">
-                                                <strong>{{ $dataPrakerin->sum($prakerin->jumlah_sudah) }}</strong>
+                                                <strong>{{ $dataPrakerin->sum('jumlah_sudah') }}</strong>
                                             </td>
                                             <td class='text-center' id="totalBelum">
-                                                <strong>{{ $dataPrakerin->sum($prakerin->jumlah_belum) }}</strong>
+                                                <strong>{{ $dataPrakerin->sum('jumlah_belum') }}</strong>
                                             </td>
                                             <td class='text-center' id="totalTolak">
-                                                <strong>{{ $dataPrakerin->sum($prakerin->jumlah_tolak) }}</strong>
+                                                <strong>{{ $dataPrakerin->sum('jumlah_tolak') }}</strong>
                                             </td>
-                                            <td class="text-center text-muted" id="allTotal">
-                                                <strong>{{ $dataPrakerin->sum('jumlah_total') }}</strong>
+                                            <td class="text-center" id="allTotal">
+                                                <strong>{{ $dataPrakerin->sum('jumlah_sudah') + $dataPrakerin->sum('jumlah_belum') + $dataPrakerin->sum('jumlah_tolak') }}</strong>
                                             </td>
                                         </tr>
                                     </tfoot>
@@ -501,7 +501,7 @@
             const totalSudah = document.querySelector('#totalSudah');
             const totalBelum = document.querySelector('#totalBelum');
             const totalTolak = document.querySelector('#totalTolak');
-            const totalAll = document.querySelector('#allTotal');
+            const allTotal = document.querySelector('#allTotal');
 
             pembimbingSelect.addEventListener('change', function() {
                 const selectedPembimbingId = this.value;
@@ -528,7 +528,7 @@
                 totalSudah.textContent = sumSudah;
                 totalBelum.textContent = sumBelum;
                 totalTolak.textContent = sumTolak;
-                totalAll.textContent = sumAll;
+                allTotal.textContent = sumAll;
             });
         });
 
