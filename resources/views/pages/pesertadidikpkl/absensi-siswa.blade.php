@@ -138,21 +138,60 @@
                     <div class="ribbon ribbon-primary round-shape">Riwayat Absensi</div>
                     <h5 class="fs-14 text-end">Jumlah Hadir : {{ $totalHadir }} x</h5>
                     <div class="ribbon-content mt-4 text-muted">
-                        <div data-simplebar style="height: 400px;">
+                        <div data-simplebar style="height: 450px;">
                             @if ($dataAbsensi->isEmpty())
                                 <p>No users have logged in today.</p>
                             @else
-                                @foreach ($dataAbsensi as $ngabsen)
-                                    <div class="d-flex justify-content-between border-bottom border-bottom-dashed py-0">
-                                        <p class="fw-medium mb-0"><i
-                                                class="ri-checkbox-blank-circle-fill text-success align-middle me-2"></i>
-                                            {{ \Carbon\Carbon::parse($ngabsen->tanggal)->translatedFormat('l, d F Y') }}
-                                        </p>
-                                        <div>
-                                            <span class="text-success fw-medium fs-12">{{ $ngabsen->status }}</span>
-                                        </div>
-                                    </div><!-- end -->
-                                @endforeach
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Tanggal</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($dataAbsensi as $index => $ngabsen)
+                                            <tr
+                                                class="{{ \Carbon\Carbon::parse($ngabsen->tanggal)->month === 12 ? 'bg-info-subtle' : (\Carbon\Carbon::parse($ngabsen->tanggal)->month === 1 ? 'bg-warning-subtle' : (\Carbon\Carbon::parse($ngabsen->tanggal)->month === 2 ? 'bg-success-subtle' : (\Carbon\Carbon::parse($ngabsen->tanggal)->month === 3 ? 'bg-danger-subtle' : ''))) }}">
+                                                <td class="text-center">{{ $loop->iteration }}</td>
+                                                <td>
+                                                    @php
+                                                        $dayOfWeek = \Carbon\Carbon::parse($ngabsen->tanggal)
+                                                            ->dayOfWeek;
+                                                        $formattedDate = \Carbon\Carbon::parse(
+                                                            $ngabsen->tanggal,
+                                                        )->translatedFormat('l, d-m-Y');
+                                                    @endphp
+
+                                                    <span
+                                                        class="{{ $dayOfWeek == 0 ? 'text-danger' : ($dayOfWeek == 6 ? 'text-info' : '') }}">
+                                                        {{ $formattedDate }}
+                                                    </span>
+                                                </td>
+                                                <td class="text-center">
+                                                    @php
+                                                        if ($ngabsen->status == 'HADIR') {
+                                                            $badgeColor = 'success';
+                                                        } elseif ($ngabsen->status == 'SAKIT') {
+                                                            $badgeColor = 'warning';
+                                                        } elseif ($ngabsen->status == 'IZIN') {
+                                                            $badgeColor = 'primary';
+                                                        } elseif ($ngabsen->status == 'ALFA') {
+                                                            $badgeColor = 'danger';
+                                                        } elseif ($ngabsen->status == 'LIBUR') {
+                                                            $badgeColor = 'danger';
+                                                        } else {
+                                                            $badgeColor = 'secondary';
+                                                        }
+                                                    @endphp
+                                                    <span
+                                                        class="badge bg-{{ $badgeColor }}">{{ ucfirst(strtolower($ngabsen->status)) }}</span>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             @endif
                         </div>
                     </div>
