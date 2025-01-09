@@ -35,7 +35,23 @@
                             </span>
                         </td>
                         <td>
-                            {{ ucfirst(strtolower($absensi->status)) }}
+                            @php
+                                if ($absensi->status == 'HADIR') {
+                                    $badgeColor = 'success';
+                                } elseif ($absensi->status == 'SAKIT') {
+                                    $badgeColor = 'warning';
+                                } elseif ($absensi->status == 'IZIN') {
+                                    $badgeColor = 'primary';
+                                } elseif ($absensi->status == 'ALFA') {
+                                    $badgeColor = 'danger';
+                                } elseif ($absensi->status == 'LIBUR') {
+                                    $badgeColor = 'danger';
+                                } else {
+                                    $badgeColor = 'secondary';
+                                }
+                            @endphp
+                            <span
+                                class="badge bg-{{ $badgeColor }}">{{ ucfirst(strtolower($absensi->status)) }}</span>
                         </td>
                         <td class='text-center'>
                             <button class="btn btn-soft-info btn-sm" data-bs-toggle="modal" data-bs-target="#editModal"

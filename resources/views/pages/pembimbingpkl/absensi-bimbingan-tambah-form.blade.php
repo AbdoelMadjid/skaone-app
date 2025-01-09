@@ -15,6 +15,7 @@
                         'SAKIT' => 'SAKIT',
                         'IZIN' => 'IZIN',
                         'ALFA' => 'ALFA',
+                        'LIBUR' => 'LIBUR',
                     ]" value="" label="Status Kehadiran" />
                 </div>
             </div>

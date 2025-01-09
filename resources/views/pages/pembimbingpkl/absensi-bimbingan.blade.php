@@ -168,6 +168,7 @@
                             <option value="SAKIT">SAKIT</option>
                             <option value="IZIN">IZIN</option>
                             <option value="ALFA">ALFA</option>
+                            <option value="LIBUR">LIBUR</option>
                         </select>
                     </div>
                     <div class="modal-footer">

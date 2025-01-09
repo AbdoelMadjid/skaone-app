@@ -9,6 +9,7 @@
     <link href="{{ URL::asset('build/libs/select2/css/select2.min.css') }}" rel="stylesheet" />
     <link href="{{ URL::asset('build/libs/select2-bootstrap-5-theme/select2-bootstrap-5-theme.min.css') }}"
         rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
 @endsection
 @section('content')
     @component('layouts.breadcrumb')
@@ -94,7 +95,7 @@
 
                         <div class="tab-content">
                             <div class="tab-pane active" id="pesertaPrakerin" role="tabpanel">
-                                <table class="table table-bordered table-centered">
+                                <table id="pesertaprakerinTable" class="table table-bordered table-centered">
                                     <thead>
                                         <tr>
                                             <th>No.</th>
@@ -282,7 +283,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <table class="table table-bordered table-centered">
+                                <table id="absensiTable" class="table table-bordered table-centered">
                                     <thead>
                                         <tr>
                                             <th>No.</th>
@@ -504,8 +505,7 @@
         });
 
         document.addEventListener('DOMContentLoaded', () => {
-            const pembimbingSelect = $(
-                '#pembimbingJurnalSelect'); // Gunakan jQuery karena Select2 memerlukan jQuery
+            const pembimbingSelect = $('#pembimbingJurnalSelect'); // Gunakan jQuery untuk Select2
             const tableRows = document.querySelectorAll('.jurnal-prakerin-row');
             const totalSudah = document.querySelector('#totalSudah');
             const totalBelum = document.querySelector('#totalBelum');
@@ -513,7 +513,7 @@
             const allTotal = document.querySelector('#allTotal');
 
             pembimbingSelect.on('select2:select', function(e) {
-                const selectedPembimbingId = e.target.value; // Nilai yang dipilih
+                const selectedPembimbingId = e.target.value;
                 let sumSudah = 0;
                 let sumBelum = 0;
                 let sumTolak = 0;
@@ -528,7 +528,6 @@
                         row.style.display = ''; // Menampilkan row yang sesuai
                         // Perbarui nomor urut
                         row.querySelector('td:first-child').textContent = currentNo++;
-                        // Menghitung total jumlah
                         sumSudah += parseInt(row.querySelector('.jumlah_sudah').textContent) || 0;
                         sumBelum += parseInt(row.querySelector('.jumlah_belum').textContent) || 0;
                         sumTolak += parseInt(row.querySelector('.jumlah_tolak').textContent) || 0;
