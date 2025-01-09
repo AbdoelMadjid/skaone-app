@@ -1,10 +1,10 @@
-<table id="pesertaprakerinTable" class="table table-bordered table-centered">
+<table id="pesertaprakerinTable" class="display" style="width:100%; table-layout: fixed;">
     <thead>
         <tr>
-            <th>No.</th>
-            <th>NIS</th>
+            <th style="width:40px;">No.</th>
+            <th style="width:60px;">NIS</th>
             <th>Nama Lengkap</th>
-            <th>Rombel</th>
+            <th style="width:60px;">Rombel</th>
             <th>Perusahaan</th>
             <th>Pembimbing</th>
         </tr>
@@ -12,7 +12,7 @@
     <tbody>
         @forelse ($dataPrakerin as $index => $prakerin)
             <tr>
-                <td>{{ $loop->iteration }}</td>
+                <td class="text-center">{{ $loop->iteration }}</td>
                 <td>{{ $prakerin->nis }}</td>
                 <td>{{ $prakerin->nama_lengkap }}</td>
                 <td>{{ $prakerin->rombel }}</td>

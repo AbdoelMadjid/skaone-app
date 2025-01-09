@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\KaprodiPkl;
 
-use App\DataTables\KaprodiPkl\LapKaprodiPesertaPrakerinDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -14,7 +13,7 @@ class PelaporanPrakerinController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(LapKaprodiPesertaPrakerinDataTable $lapKaprodiPesertaPrakerinDataTable)
+    public function index()
     {
         // Pastikan user sudah login
         if (auth()->check()) {
@@ -272,7 +271,6 @@ class PelaporanPrakerinController extends Controller
                 'totalPembimbing' =>    $totalPembimbing,
                 'pesertaByPembimbing' => $pesertaByPembimbing,
                 'pesertaByPerusahaan' => $pesertaByPerusahaan,
-                'lapKaprodiPesertaPrakerinDataTable' => $lapKaprodiPesertaPrakerinDataTable->html(),
             ]);
         }
 

@@ -4,32 +4,10 @@
 @endsection
 @section('css')
     {{--  --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link href="{{ URL::asset('build/libs/select2/css/select2.min.css') }}" rel="stylesheet" />
     <link href="{{ URL::asset('build/libs/select2-bootstrap-5-theme/select2-bootstrap-5-theme.min.css') }}"
         rel="stylesheet" />
-    <style>
-        .pagination {
-            justify-content: center;
-            /* Paginasi di tengah */
-            margin-top: 15px;
-        }
-
-        .page-item.disabled .page-link {
-            pointer-events: none;
-            opacity: 0.5;
-        }
-
-        .page-item.active .page-link {
-            background-color: #007bff;
-            color: #fff;
-            border-color: #007bff;
-        }
-
-        .page-link {
-            color: #007bff;
-            cursor: pointer;
-        }
-    </style>
 @endsection
 @section('content')
     @component('layouts.breadcrumb')
@@ -148,142 +126,184 @@
     <!-- end row -->
 @endsection
 @section('script')
-    <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="{{ URL::asset('build/libs/select2/js/select2.min.js') }}"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 @endsection
 @section('script-bottom')
     <script>
-        function initializeDynamicPagination(tableId, rowsPerPage = 10, maxVisiblePages = 3) {
-            const table = $(`#${tableId}`);
-            const tableBody = table.find("tbody");
-            const rows = tableBody.find("tr");
-            const totalRows = rows.length;
-            const totalPages = Math.ceil(totalRows / rowsPerPage);
-
-            // Tambahkan elemen pagination di bawah tabel
-            const paginationId = `${tableId}-pagination`;
-            table.after(`<nav><ul id="${paginationId}" class="pagination justify-content-center"></ul></nav>`);
-            const pagination = $(`#${paginationId}`);
-
-            // Fungsi untuk menampilkan baris berdasarkan halaman
-            function showPage(page) {
-                rows.hide(); // Sembunyikan semua baris
-                const start = (page - 1) * rowsPerPage;
-                const end = start + rowsPerPage;
-                rows.slice(start, end).show(); // Tampilkan baris yang sesuai
-            }
-
-            // Fungsi untuk membuat kontrol paginasi
-            function createPagination(currentPage) {
-                pagination.empty(); // Hapus paginasi sebelumnya
-
-                // Tombol "Halaman Awal"
-                pagination.append(`
-<li class="page-item${currentPage === 1 ? ' disabled' : ''}">
-    <a class="page-link" href="#" data-page="1" aria-label="First">
-        <i class="mdi mdi-chevron-double-left"></i>
-    </a>
-</li>
-`);
-
-                // Tombol "Previous"
-                pagination.append(`
-<li class="page-item${currentPage === 1 ? ' disabled' : ''}">
-    <a class="page-link" href="#" aria-label="Previous">
-        <i class="mdi mdi-chevron-left"></i>
-    </a>
-</li>
-`);
-
-                // Tambahkan nomor halaman
-                let startPage = Math.max(currentPage - Math.floor(maxVisiblePages / 2), 1);
-                let endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
-
-                if (endPage - startPage + 1 < maxVisiblePages) {
-                    startPage = Math.max(endPage - maxVisiblePages + 1, 1);
-                }
-
-                // Tambahkan "..." sebelum halaman jika diperlukan
-                if (startPage > 1) {
-                    pagination.append(`<li class="page-item"><a class="page-link" href="#" data-page="1">1</a></li>`);
-                    if (startPage > 2) {
-                        pagination.append(`<li class="page-item disabled"><span class="page-link">...</span></li>`);
-                    }
-                }
-
-                // Tambahkan nomor halaman
-                for (let i = startPage; i <= endPage; i++) {
-                    pagination.append(`
-    <li class="page-item${i === currentPage ? ' active' : ''}">
-        <a class="page-link" href="#" data-page="${i}">${i}</a>
-    </li>
-`);
-                }
-
-                // Tambahkan "..." setelah halaman jika diperlukan
-                if (endPage < totalPages) {
-                    if (endPage < totalPages - 1) {
-                        pagination.append(`<li class="page-item disabled"><span class="page-link">...</span></li>`);
-                    }
-                    pagination.append(
-                        `<li class="page-item"><a class="page-link" href="#" data-page="${totalPages}">${totalPages}</a></li>`
-                    );
-                }
-
-                // Tombol "Next"
-                pagination.append(`
-<li class="page-item${currentPage === totalPages ? ' disabled' : ''}">
-    <a class="page-link" href="#" aria-label="Next">
-        <i class="mdi mdi-chevron-right"></i>
-    </a>
-</li>
-`);
-
-                // Tombol "Halaman Akhir"
-                pagination.append(`
-<li class="page-item${currentPage === totalPages ? ' disabled' : ''}">
-    <a class="page-link" href="#" data-page="${totalPages}" aria-label="Last">
-        <i class="mdi mdi-chevron-double-right"></i>
-    </a>
-</li>
-`);
-            }
-
-            // Event klik untuk navigasi halaman
-            pagination.on("click", ".page-link", function(e) {
-                e.preventDefault();
-                const pageItem = $(this).closest("li");
-
-                if (pageItem.hasClass("disabled") || pageItem.hasClass("active")) {
-                    return;
-                }
-
-                let currentPage = pagination.find("li.active a").data("page");
-                if ($(this).attr("aria-label") === "Previous") {
-                    currentPage -= 1;
-                } else if ($(this).attr("aria-label") === "Next") {
-                    currentPage += 1;
-                } else if ($(this).attr("aria-label") === "First") {
-                    currentPage = 1;
-                } else if ($(this).attr("aria-label") === "Last") {
-                    currentPage = totalPages;
-                } else {
-                    currentPage = parseInt($(this).data("page"));
-                }
-
-                // Perbarui tampilan tabel dan paginasi
-                showPage(currentPage);
-                createPagination(currentPage);
+        $(document).ready(function() {
+            // Tabel 1: Peserta Prakerin
+            $('#pesertaprakerinTable').DataTable({
+                responsive: true,
+                pageLength: 25,
+                autoWidth: false,
             });
 
-            // Inisialisasi pertama
-            if (totalRows > 0) {
-                showPage(1);
-                createPagination(1);
+            // Tabel 2: Daftar Perusahaan
+            const perusahaanTable = $('#daftarperusahaanTabel').DataTable({
+                responsive: true,
+                pageLength: 10,
+                autoWidth: false,
+            });
+
+            // Data peserta per perusahaan
+            const pesertaByPerusahaan = @json($pesertaByPerusahaan);
+
+            // Fungsi untuk membuat row child (perusahaan)
+            function formatPesertaPerusahaan(perusahaanId) {
+                if (!pesertaByPerusahaan[perusahaanId] || pesertaByPerusahaan[perusahaanId].length === 0) {
+                    return '<div>Tidak ada data peserta.</div>';
+                }
+
+                let tableHtml = `
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>NIS</th>
+                        <th>Nama Lengkap</th>
+                        <th>Rombel</th>
+                        <th>Guru PKL</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+                pesertaByPerusahaan[perusahaanId].forEach((peserta, index) => {
+                    tableHtml += `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${peserta.nis}</td>
+                    <td>${peserta.nama_lengkap}</td>
+                    <td>${peserta.rombel}</td>
+                    <td>${peserta.nama_pembimbing}</td>
+                </tr>
+            `;
+                });
+
+                tableHtml += `
+                </tbody>
+            </table>
+        `;
+
+                return tableHtml;
             }
-        }
-        $(document).ready(function() {
-            initializeDynamicPagination("pesertaprakerinTable", 25);
+
+            // Event Listener untuk row child (perusahaan)
+            $('#daftarperusahaanTabel tbody').on('click', 'a.toggle-peserta', function() {
+                const tr = $(this).closest('tr'); // Baris tabel yang diklik
+                const row = perusahaanTable.row(tr); // DataTables row object
+                const perusahaanId = tr.data('id'); // ID perusahaan dari atribut data-id
+
+                // Periksa apakah row child sudah terbuka
+                if (row.child.isShown()) {
+                    row.child.hide(); // Sembunyikan nested row
+                    tr.removeClass('shown');
+                } else {
+                    // Sembunyikan semua nested row yang terbuka
+                    perusahaanTable.rows('.shown').every(function() {
+                        const currentRow = this.node();
+                        const currentRowId = $(currentRow).data('id');
+                        if (currentRowId !== perusahaanId) {
+                            this.child.hide(); // Sembunyikan nested row yang lainnya
+                            $(currentRow).removeClass(
+                                'shown'); // Hapus kelas 'shown' dari baris lain
+                        }
+                    });
+
+                    const childContent = formatPesertaPerusahaan(perusahaanId); // Buat konten nested row
+                    row.child(childContent).show(); // Tampilkan nested row untuk perusahaan yang dipilih
+                    tr.addClass('shown'); // Tambahkan kelas 'shown' ke baris yang dipilih
+                }
+            });
+
+            // Tabel 3: Pembimbing
+            const pembimbingTable = $('#pembimbingTabel').DataTable({
+                responsive: true,
+                autoWidth: false,
+                pageLength: 25,
+                columnDefs: [{
+                        width: "50px",
+                        targets: 0
+                    }, // Lebar kolom No.
+                    {
+                        width: "200px",
+                        targets: 1
+                    }, // Lebar kolom NIP
+                ]
+            });
+
+            // Data peserta per pembimbing
+            const pesertaByPembimbing = @json($pesertaByPembimbing);
+
+            // Fungsi untuk membuat row child (pembimbing)
+            function formatPesertaPembimbing(pembimbingId) {
+                if (!pesertaByPembimbing[pembimbingId] || pesertaByPembimbing[pembimbingId].length === 0) {
+                    return '<div class="text-center">Tidak ada data peserta.</div>';
+                }
+
+                let tableHtml = `
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>NIS</th>
+                        <th>Nama Lengkap</th>
+                        <th>Rombel</th>
+                        <th>Perusahaan</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+                pesertaByPembimbing[pembimbingId].forEach((peserta, index) => {
+                    tableHtml += `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${peserta.nis}</td>
+                    <td>${peserta.nama_lengkap}</td>
+                    <td>${peserta.rombel}</td>
+                    <td>${peserta.nama_perusahaan}</td>
+                </tr>
+            `;
+                });
+
+                tableHtml += `
+                </tbody>
+            </table>
+        `;
+
+                return tableHtml;
+            }
+
+            // Event Listener untuk row child (pembimbing)
+            $('#pembimbingTabel tbody').on('click', 'a.show-peserta', function() {
+                const tr = $(this).closest('tr'); // Baris tabel yang diklik
+                const row = pembimbingTable.row(tr); // DataTables row object
+                const pembimbingId = tr.data('id'); // ID pembimbing dari atribut data-id
+
+                // Periksa apakah row child sudah terbuka
+                if (row.child.isShown()) {
+                    row.child.hide(); // Sembunyikan nested row
+                    tr.removeClass('shown');
+                } else {
+                    // Sembunyikan semua nested row yang sudah terbuka
+                    pembimbingTable.rows('.shown').every(function() {
+                        const currentRow = this.node();
+                        const currentRowId = $(currentRow).data('id');
+                        if (currentRowId !== pembimbingId) {
+                            this.child.hide(); // Sembunyikan nested row yang lainnya
+                            $(currentRow).removeClass(
+                                'shown'); // Hapus kelas 'shown' dari baris lain
+                        }
+                    });
+
+                    const childContent = formatPesertaPembimbing(pembimbingId); // Buat konten nested row
+                    row.child(childContent).show(); // Tampilkan nested row untuk pembimbing yang dipilih
+                    tr.addClass('shown'); // Tambahkan kelas 'shown' ke baris yang dipilih
+                }
+            });
         });
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
