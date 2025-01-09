@@ -314,7 +314,7 @@ class AbsensiPembimbingPklController extends Controller
         $validated = $request->validate([
             'nis' => 'required|string',
             'tanggal' => 'required|date',
-            'status' => 'required|in:HADIR,SAKIT,IZIN,ALFA',
+            'status' => 'required|in:HADIR,SAKIT,IZIN,ALFA,LIBUR',
         ]);
 
         // Simpan data menggunakan create()
