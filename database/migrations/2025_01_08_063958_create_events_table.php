@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('description')->nullable();
             $table->date('start_date');
             $table->date('end_date');
+            $table->string('category');
             $table->timestamps();
         });
     }

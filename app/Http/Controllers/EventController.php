@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EventRequest;
 use App\Models\Event;
 use Illuminate\Http\Request;
 
@@ -9,47 +10,90 @@ class EventController extends Controller
 {
     public function index()
     {
-        $events = Event::all();
-        return view('pages.about.event', compact('events'));
+        return view('pages.about.event');
     }
 
-    public function store(Request $request)
+    public function listEvent(Request $request)
     {
-        $request->validate([
-            'title' => 'required',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-        ]);
+        $start = date('Y-m-d', strtotime($request->start));
+        $end = date('Y-m-d', strtotime($request->end));
 
-        Event::create($request->all());
+        $events = Event::where('start_date', '>=', $start)
+            ->where('end_date', '<=', $end)->get()
+            ->map(fn($item) => [
+                'id' => $item->id,
+                'title' => $item->title,
+                'start' => $item->start_date,
+                'end' => date('Y-m-d', strtotime($item->end_date . '+1 days')),
+                'category' => $item->category,
+                'className' => ['bg-' . $item->category]
+            ]);
 
-        return response()->json(['success' => 'Event created successfully.']);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'title' => 'required',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-        ]);
-
-        $event = Event::find($id);
-        $event->update($request->all());
-
-        return response()->json(['success' => 'Event updated successfully.']);
-    }
-
-    public function destroy($id)
-    {
-        Event::find($id)->delete();
-
-        return response()->json(['success' => 'Event deleted successfully.']);
-    }
-
-    public function events()
-    {
-        $events = Event::all(['id', 'title', 'start_date as start', 'end_date as end']);
         return response()->json($events);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create(Event $event)
+    {
+        return view('event-form', ['data' => $event, 'action' => route('about.events.store')]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(EventRequest $request, Event $event)
+    {
+        return $this->update($request, $event);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Event $event)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Event $event)
+    {
+        return view('event-form', ['data' => $event, 'action' => route('about.events.update', $event->id)]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(EventRequest $request, Event $event)
+    {
+        if ($request->has('delete')) {
+            return $this->destroy($event);
+        }
+        $event->start_date = $request->start_date;
+        $event->end_date = $request->end_date;
+        $event->title = $request->title;
+        $event->category = $request->category;
+
+        $event->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Save data successfully'
+        ]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Event $event)
+    {
+        $event->delete();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Delete data successfully'
+        ]);
     }
 }

@@ -110,8 +110,8 @@ Route::group(['prefix' => 'about', 'as' => 'about.'], function () {
     Route::resource('photo-jurusan', PhotoJurusanController::class);
     Route::resource('photo-jurusan', PhotoJurusanController::class);
     Route::resource('daily-messages', DailyMessagesController::class);
+    Route::get('events/list', [EventController::class, 'listEvent'])->name('events.list');
     Route::resource('events', EventController::class);
-    Route::get('events-data', [EventController::class, 'events'])->name('events.data');
 });
 
 // Kelompok rute untuk profil, hanya dapat diakses oleh pengguna yang sudah terotentikasi
