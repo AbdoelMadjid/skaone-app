@@ -5,6 +5,7 @@ namespace App\Http\Controllers\About;
 use App\Http\Requests\About\AboutRequest;
 use App\Models\About\About;
 use App\Http\Controllers\Controller;
+use App\Models\About\DailyMessages;
 use App\Models\About\FiturCoding;
 use App\Models\About\Galery;
 use App\Models\About\KumpulanFaq;
@@ -26,17 +27,19 @@ class AboutController extends Controller
 
         $categoryGalery = Referensi::where('jenis', 'KategoriGalery')->pluck('data', 'data')->toArray();
         $galleries = Galery::all();
+        $dailyMessages = DailyMessages::all(); // Fetch data dari DailyMessage
 
         return view(
             'pages.about.about',
-            compact(
-                'faqs',
-                'fiturCodings',
-                'teamPengembang',
-                'photoSlides',
-                'categoryGalery',
-                'galleries'
-            )
+            [
+                'faqs' => $faqs,
+                'fiturCodings' => $fiturCodings,
+                'teamPengembang' => $teamPengembang,
+                'photoSlides' => $photoSlides,
+                'categoryGalery' => $categoryGalery,
+                'galleries' => $galleries,
+                'dailyMessages' => $dailyMessages
+            ]
         );
     }
 

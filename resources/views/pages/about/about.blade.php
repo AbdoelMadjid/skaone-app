@@ -5,6 +5,7 @@
 @section('css')
     <link href="{{ URL::asset('build/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{{ URL::asset('build/libs/glightbox/css/glightbox.min.css') }}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 @endsection
 @section('content')
     @if (auth()->check() &&
@@ -83,6 +84,12 @@
                                     <i class="ri-image-line text-muted align-bottom me-1"></i> Galery
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#dailymessages" role="tab"
+                                    aria-selected="false">
+                                    <i class="ri-image-line text-muted align-bottom me-1"></i> Daily Messages
+                                </a>
+                            </li>
                             @include('abouts.master-akses')
                         </ul>
                     </div>
@@ -105,6 +112,9 @@
                             </div><!--end tab-pane-->
                             <div class="tab-pane" id="galery" role="tabpanel">
                                 @include('abouts.galery')
+                            </div><!--end tab-pane-->
+                            <div class="tab-pane" id="dailymessages" role="tabpanel">
+                                @include('abouts.daily-massage')
                             </div><!--end tab-pane-->
                         </div><!--end tab-content-->
 
@@ -182,6 +192,23 @@
             <!--end col-->
         </div>
     @endif
+@endsection
+@section('script')
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#galleryTable').DataTable({
+                responsive: true,
+                pageLength: 10 // Set jumlah baris per halaman
+            });
+            $('#dailyMessageTable').DataTable({
+                responsive: true,
+                pageLength: 10
+            });
+        });
+    </script>
 @endsection
 @section('script-bottom')
     <script src="{{ URL::asset('build/libs/prismjs/prism.js') }}"></script>
