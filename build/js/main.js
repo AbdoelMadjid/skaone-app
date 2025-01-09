@@ -261,3 +261,132 @@ function checkSessionAndShowToast() {
 }
 
 
+function initializeDynamicPagination(tableId, rowsPerPage = 10, maxVisiblePages = 3) {
+    const table = $(`#${tableId}`);
+    const tableBody = table.find("tbody");
+    const rows = tableBody.find("tr");
+    const totalRows = rows.length;
+    const totalPages = Math.ceil(totalRows / rowsPerPage);
+
+    // Tambahkan elemen pagination di bawah tabel
+    const paginationId = `${tableId}-pagination`;
+    table.after(`<nav><ul id="${paginationId}" class="pagination justify-content-center"></ul></nav>`);
+    const pagination = $(`#${paginationId}`);
+
+    // Fungsi untuk menampilkan baris berdasarkan halaman
+    function showPage(page) {
+        rows.hide(); // Sembunyikan semua baris
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        rows.slice(start, end).show(); // Tampilkan baris yang sesuai
+    }
+
+    // Fungsi untuk membuat kontrol paginasi
+    function createPagination(currentPage) {
+        pagination.empty(); // Hapus paginasi sebelumnya
+
+        // Tombol "Halaman Awal"
+        pagination.append(`
+<li class="page-item${currentPage === 1 ? ' disabled' : ''}">
+    <a class="page-link" href="#" data-page="1" aria-label="First">
+        <i class="mdi mdi-chevron-double-left"></i>
+    </a>
+</li>
+`);
+
+        // Tombol "Previous"
+        pagination.append(`
+<li class="page-item${currentPage === 1 ? ' disabled' : ''}">
+    <a class="page-link" href="#" aria-label="Previous">
+        <i class="mdi mdi-chevron-left"></i>
+    </a>
+</li>
+`);
+
+        // Tambahkan nomor halaman
+        let startPage = Math.max(currentPage - Math.floor(maxVisiblePages / 2), 1);
+        let endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
+
+        if (endPage - startPage + 1 < maxVisiblePages) {
+            startPage = Math.max(endPage - maxVisiblePages + 1, 1);
+        }
+
+        // Tambahkan "..." sebelum halaman jika diperlukan
+        if (startPage > 1) {
+            pagination.append(`<li class="page-item"><a class="page-link" href="#" data-page="1">1</a></li>`);
+            if (startPage > 2) {
+                pagination.append(`<li class="page-item disabled"><span class="page-link">...</span></li>`);
+            }
+        }
+
+        // Tambahkan nomor halaman
+        for (let i = startPage; i <= endPage; i++) {
+            pagination.append(`
+    <li class="page-item${i === currentPage ? ' active' : ''}">
+        <a class="page-link" href="#" data-page="${i}">${i}</a>
+    </li>
+`);
+        }
+
+        // Tambahkan "..." setelah halaman jika diperlukan
+        if (endPage < totalPages) {
+            if (endPage < totalPages - 1) {
+                pagination.append(`<li class="page-item disabled"><span class="page-link">...</span></li>`);
+            }
+            pagination.append(
+                `<li class="page-item"><a class="page-link" href="#" data-page="${totalPages}">${totalPages}</a></li>`
+            );
+        }
+
+        // Tombol "Next"
+        pagination.append(`
+<li class="page-item${currentPage === totalPages ? ' disabled' : ''}">
+    <a class="page-link" href="#" aria-label="Next">
+        <i class="mdi mdi-chevron-right"></i>
+    </a>
+</li>
+`);
+
+        // Tombol "Halaman Akhir"
+        pagination.append(`
+<li class="page-item${currentPage === totalPages ? ' disabled' : ''}">
+    <a class="page-link" href="#" data-page="${totalPages}" aria-label="Last">
+        <i class="mdi mdi-chevron-double-right"></i>
+    </a>
+</li>
+`);
+    }
+
+    // Event klik untuk navigasi halaman
+    pagination.on("click", ".page-link", function(e) {
+        e.preventDefault();
+        const pageItem = $(this).closest("li");
+
+        if (pageItem.hasClass("disabled") || pageItem.hasClass("active")) {
+            return;
+        }
+
+        let currentPage = pagination.find("li.active a").data("page");
+        if ($(this).attr("aria-label") === "Previous") {
+            currentPage -= 1;
+        } else if ($(this).attr("aria-label") === "Next") {
+            currentPage += 1;
+        } else if ($(this).attr("aria-label") === "First") {
+            currentPage = 1;
+        } else if ($(this).attr("aria-label") === "Last") {
+            currentPage = totalPages;
+        } else {
+            currentPage = parseInt($(this).data("page"));
+        }
+
+        // Perbarui tampilan tabel dan paginasi
+        showPage(currentPage);
+        createPagination(currentPage);
+    });
+
+    // Inisialisasi pertama
+    if (totalRows > 0) {
+        showPage(1);
+        createPagination(1);
+    }
+}

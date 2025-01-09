@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\KaprodiPkl;
 
+use App\DataTables\KaprodiPkl\LapKaprodiPesertaPrakerinDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ class PelaporanPrakerinController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(LapKaprodiPesertaPrakerinDataTable $lapKaprodiPesertaPrakerinDataTable)
     {
         // Pastikan user sudah login
         if (auth()->check()) {
@@ -259,19 +260,20 @@ class PelaporanPrakerinController extends Controller
                 });
 
             // Kirim data ke view
-            return view('pages.kaprodipkl.pelaporan-prakerin', compact(
-                'dataPrakerin',
-                'AmbildataPrakerin',
-                'perusahaanList',
-                'pembimbingList',
-                'perusahaanCounts',
-                'pembimbingCounts',
-                'totalDataPrakerin',
-                'totalPerusahaan',
-                'totalPembimbing',
-                'pesertaByPembimbing',
-                'pesertaByPerusahaan'
-            ));
+            return view('pages.kaprodipkl.pelaporan-prakerin', [
+                'dataPrakerin' => $dataPrakerin,
+                'AmbildataPrakerin' => $AmbildataPrakerin,
+                'perusahaanList' => $perusahaanList,
+                'pembimbingList' => $pembimbingList,
+                'perusahaanCounts' => $perusahaanCounts,
+                'pembimbingCounts' => $pembimbingCounts,
+                'totalDataPrakerin' => $totalDataPrakerin,
+                'totalPerusahaan' => $totalPerusahaan,
+                'totalPembimbing' =>    $totalPembimbing,
+                'pesertaByPembimbing' => $pesertaByPembimbing,
+                'pesertaByPerusahaan' => $pesertaByPerusahaan,
+                'lapKaprodiPesertaPrakerinDataTable' => $lapKaprodiPesertaPrakerinDataTable->html(),
+            ]);
         }
 
         // Jika user tidak login, redirect ke halaman login
