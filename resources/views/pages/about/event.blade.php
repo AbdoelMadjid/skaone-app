@@ -38,12 +38,34 @@
         @endslot
     @endcomponent
     <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12 mt-3">
-                            <div id='calendar'></div>
+        <div class="row">
+            <div class="col-xl-8 col-md-8">
+                <div class="card ribbon-box border shadow-none mb-lg-4">
+                    <div class="card-body">
+                        <div class="ribbon ribbon-info round-shape">Kalendar Pendidikan</div>
+                        <div class="ribbon-content mt-5 text-muted">
+                            <div id="calendar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-md-4">
+                <div class="card ribbon-box border shadow-none mb-lg-4">
+                    <div class="card-body">
+                        <div class="ribbon ribbon-info round-shape">List Event</div>
+                        <div class="ribbon-content mt-5 text-muted">
+                            <table class="table table-striped" id="event-list-table">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Tanggal</th>
+                                        <th>Category</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Event rows will be added here -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -127,6 +149,8 @@
                                     success: function(res) {
                                         modal.modal('hide')
                                         calendar.refetchEvents()
+                                        updateEventList(calendar
+                                            .getEvents());
                                     },
                                     error: function(res) {
 
@@ -157,6 +181,8 @@
                                     success: function(res) {
                                         modal.modal('hide')
                                         calendar.refetchEvents()
+                                        updateEventList(calendar
+                                            .getEvents());
                                     }
                                 })
                             })
@@ -185,6 +211,7 @@
                                 message: res.message,
                                 position: 'topRight'
                             });
+                            updateEventList(calendar.getEvents());
                         },
                         error: function(res) {
                             const message = res.responseJSON.message
@@ -221,6 +248,7 @@
                                 message: res.message,
                                 position: 'topRight'
                             });
+                            updateEventList(calendar.getEvents());
                         },
                         error: function(res) {
                             const message = res.responseJSON.message
@@ -232,11 +260,41 @@
                             });
                         }
                     })
+                },
+                dayCellDidMount: function(info) {
+                    // Tambahkan kelas khusus untuk hari Minggu
+                    if (info.date.getUTCDay() === 0) {
+                        info.el.classList.add('fc-day-sun');
+                    }
+                },
+                eventDidMount: function(info) {
+                    // Update the event list when events are rendered
+                    updateEventList(calendar.getEvents());
                 }
-
-
             });
             calendar.render();
+
+            function updateEventList(events) {
+                const eventListTable = document.getElementById('event-list-table').getElementsByTagName('tbody')[0];
+                eventListTable.innerHTML = ''; // Clear existing rows
+
+                function formatDateString(date) {
+                    const d = new Date(date);
+                    const day = String(d.getDate()).padStart(2, '0');
+                    const month = String(d.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+                    const year = d.getFullYear();
+                    return `${day}-${month}-${year}`;
+                }
+
+                events.forEach(event => {
+                    const row = eventListTable.insertRow();
+                    row.insertCell(0).innerText = event.title;
+                    const startDate = formatDateString(event.start);
+                    const endDate = event.end ? formatDateString(event.end) : formatDateString(event.start);
+                    row.insertCell(1).innerText = `${startDate} - ${endDate}`;
+                    row.insertCell(2).innerText = event.extendedProps.category || '';
+                });
+            }
         });
     </script>
 @endsection

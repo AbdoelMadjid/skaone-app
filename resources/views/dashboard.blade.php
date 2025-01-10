@@ -4,6 +4,33 @@
 @endsection
 @section('css')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css"
+        integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
+        integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .fc-day-sun {
+            background-color: rgb(255, 213, 213) !important;
+        }
+
+        .fc-day-sat {
+            background-color: rgb(225, 240, 255) !important;
+        }
+
+        .fc-event-title {
+            white-space: normal !important;
+            /* Memastikan teks judul membungkus */
+            overflow: visible !important;
+            /* Menghindari overflow tersembunyi */
+        }
+    </style>
 @endsection
 @section('content')
     <div class="row">
@@ -319,6 +346,61 @@
             var charts = new ApexCharts(document.querySelector("#login_chart_realtime"), options);
             charts.render();
         }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
+        integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/bootstrap5@6.1.7/index.global.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"
+        integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"
+        integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                themeSystem: 'bootstrap5',
+                events: `{{ route('about.events.list') }}`,
+                editable: false,
+                eventDidMount: function() {
+                    // Update the event list when events are rendered
+                    updateEventList(calendar.getEvents());
+                }
+            });
+            calendar.render();
+
+            function formatDateString(date) {
+                const d = new Date(date);
+                const day = String(d.getDate()).padStart(2, '0');
+                const month = String(d.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+                const year = d.getFullYear();
+                return `${day}-${month}-${year}`;
+            }
+
+            function updateEventList(events) {
+                const eventListTable = document.getElementById('event-list-table').getElementsByTagName('tbody')[0];
+                eventListTable.innerHTML = ''; // Clear existing rows
+
+                // Sort events by start date
+                events.sort((a, b) => a.start - b.start);
+
+                events.forEach(event => {
+                    const row = eventListTable.insertRow();
+                    row.insertCell(0).innerText = event.title;
+                    row.insertCell(1).innerText = formatDateString(event.start);
+                    row.insertCell(2).innerText = event.end ? formatDateString(event.end) :
+                        formatDateString(event.start);
+                });
+            }
+        });
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection
