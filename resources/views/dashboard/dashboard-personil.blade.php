@@ -285,8 +285,7 @@
                         <thead>
                             <tr>
                                 <th>Kegiatan</th>
-                                <th style="width:100px;">Mulai</th>
-                                <th style="width:100px;">Sampai</th>
+                                <th style="width:200px;">Tanggal</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -286,12 +286,47 @@
                     return `${day}-${month}-${year}`;
                 }
 
+                function getCategoryClass(category) {
+                    switch (category) {
+                        case 'primary':
+                            return 'text-primary';
+                        case 'success':
+                            return 'text-success';
+                        case 'danger':
+                            return 'text-danger';
+                        case 'warning':
+                            return 'text-warning';
+                        case 'info':
+                            return 'text-info';
+                        case 'dark':
+                            return 'text-dark';
+                        case 'secondary':
+                            return 'text-secondary';
+                        case 'light':
+                            return 'text-light';
+                        default:
+                            return '';
+                    }
+                }
+
+                // Sort events by start date
+                events.sort((a, b) => a.start - b.start);
+
                 events.forEach(event => {
                     const row = eventListTable.insertRow();
-                    row.insertCell(0).innerText = event.title;
+                    const titleCell = row.insertCell(0);
                     const startDate = formatDateString(event.start);
                     const endDate = event.end ? formatDateString(event.end) : formatDateString(event.start);
-                    row.insertCell(1).innerText = `${startDate} - ${endDate}`;
+                    const dateCell = row.insertCell(1);
+
+                    titleCell.innerText = event.title;
+                    dateCell.innerText = `${startDate} - ${endDate}`;
+
+                    // Tambahkan kelas warna Bootstrap berdasarkan kategori
+                    if (event.extendedProps.category) {
+                        const categoryClass = getCategoryClass(event.extendedProps.category);
+                        titleCell.classList.add(categoryClass);
+                    }
                     row.insertCell(2).innerText = event.extendedProps.category || '';
                 });
             }
