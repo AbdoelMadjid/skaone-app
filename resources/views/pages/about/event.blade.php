@@ -65,6 +65,25 @@
                 themeSystem: 'bootstrap5',
                 events: `{{ route('about.events.list') }}`,
                 editable: true,
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+                },
+                views: {
+                    dayGridMonth: {
+                        buttonText: 'Month'
+                    },
+                    timeGridWeek: {
+                        buttonText: 'Week'
+                    },
+                    timeGridDay: {
+                        buttonText: 'Day'
+                    },
+                    listMonth: {
+                        buttonText: 'List'
+                    }
+                },
                 dateClick: function(info) {
                     $.ajax({
                         url: `{{ route('about.events.create') }}`,
