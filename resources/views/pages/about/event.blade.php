@@ -38,56 +38,63 @@
         @endslot
     @endcomponent
     <div class="row">
-        <div class="row">
-            <div class="col-xl-8 col-md-8">
-                <div class="card ribbon-box border shadow-none mb-lg-4">
-                    <div class="card-body">
-                        <div class="ribbon ribbon-info round-shape">Kalendar Pendidikan</div>
-                        <div class="ribbon-content mt-5 text-muted">
-                            <div id="calendar"></div>
-                        </div>
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header d-flex align-items-center">
+                    <h5 class="card-title mb-0 flex-grow-1">Event Calendar</h5>
+                    <div>
+                        <a class="btn btn-primary" href="{{ route('about.about.index') }}">Kembali</a>
                     </div>
                 </div>
-            </div>
-            <div class="col-xl-4 col-md-4">
-                <div class="card ribbon-box border shadow-none mb-lg-4">
-                    <div class="card-body">
-                        <div class="ribbon ribbon-info round-shape">List Event</div>
-                        <div class="ribbon-content mt-5 text-muted">
-                            <table class="table table-striped" id="event-list-table">
-                                <thead>
-                                    <tr>
-                                        <th>Title</th>
-                                        <th>Tanggal</th>
-                                        <th>Category</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Event rows will be added here -->
-                                </tbody>
-                            </table>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-xl-8 col-md-8">
+                            <div class="card ribbon-box border shadow-none mb-lg-4">
+                                <div class="card-body">
+                                    <div class="ribbon ribbon-info round-shape">Kalendar Pendidikan</div>
+                                    <div class="ribbon-content mt-5 text-muted">
+                                        <div id="calendar"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-md-4">
+                            <div class="card ribbon-box border shadow-none mb-lg-4">
+                                <div class="card-body">
+                                    <div class="ribbon ribbon-info round-shape">List Event</div>
+                                    <div class="ribbon-content mt-5 text-muted">
+                                        <table class="table table-striped" id="event-list-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Title</th>
+                                                    <th>Tanggal</th>
+                                                    <th>Category</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- Event rows will be added here -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <!--end col-->
                 </div>
             </div>
         </div>
-        <!--end col-->
     </div>
     <div id="modal-action-calendar" class="modal" tabindex="-1">
 
     </div>
 @endsection
 @section('script')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
         integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/bootstrap5@6.1.7/index.global.min.js'></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"
-        integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"
         integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
