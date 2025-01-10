@@ -373,40 +373,40 @@
             });
             calendar.render();
 
-            function formatDateString(date) {
-                const d = new Date(date);
-                const day = String(d.getDate()).padStart(2, '0');
-                const month = String(d.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-                const year = d.getFullYear();
-                return `${day}-${month}-${year}`;
-            }
-
-            function getCategoryClass(category) {
-                switch (category) {
-                    case 'primary':
-                        return 'text-primary';
-                    case 'success':
-                        return 'text-success';
-                    case 'danger':
-                        return 'text-danger';
-                    case 'warning':
-                        return 'text-warning';
-                    case 'info':
-                        return 'text-info';
-                    case 'dark':
-                        return 'text-dark';
-                    case 'secondary':
-                        return 'text-secondary';
-                    case 'light':
-                        return 'text-light';
-                    default:
-                        return '';
-                }
-            }
-
             function updateEventList(events) {
                 const eventListTable = document.getElementById('event-list-table').getElementsByTagName('tbody')[0];
                 eventListTable.innerHTML = ''; // Clear existing rows
+
+                function formatDateString(date) {
+                    const d = new Date(date);
+                    const day = String(d.getDate()).padStart(2, '0');
+                    const month = String(d.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+                    const year = d.getFullYear();
+                    return `${day}-${month}-${year}`;
+                }
+
+                function getCategoryClass(category) {
+                    switch (category) {
+                        case 'primary':
+                            return 'text-primary';
+                        case 'success':
+                            return 'text-success';
+                        case 'danger':
+                            return 'text-danger';
+                        case 'warning':
+                            return 'text-warning';
+                        case 'info':
+                            return 'text-info';
+                        case 'dark':
+                            return 'text-dark';
+                        case 'secondary':
+                            return 'text-secondary';
+                        case 'light':
+                            return 'text-light';
+                        default:
+                            return '';
+                    }
+                }
 
                 // Sort events by start date
                 events.sort((a, b) => a.start - b.start);
@@ -415,7 +415,8 @@
                     const row = eventListTable.insertRow();
                     const titleCell = row.insertCell(0);
                     const startDate = formatDateString(event.start);
-                    const endDate = event.end ? formatDateString(event.end) : formatDateString(event.start);
+                    const endDate = event.end ? formatDateString(new Date(event.end.setDate(event.end
+                        .getDate() - 1))) : startDate; // Penyesuaian end_date
                     const dateCell = row.insertCell(1);
 
                     titleCell.innerText = event.title;
@@ -426,6 +427,7 @@
                         const categoryClass = getCategoryClass(event.extendedProps.category);
                         titleCell.classList.add(categoryClass);
                     }
+                    /* row.insertCell(2).innerText = event.extendedProps.category || ''; */
                 });
             }
         });
