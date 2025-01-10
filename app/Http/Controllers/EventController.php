@@ -37,7 +37,7 @@ class EventController extends Controller
      */
     public function create(Event $event)
     {
-        return view('event-form', ['data' => $event, 'action' => route('about.events.store')]);
+        return view('pages.about.event-form', ['data' => $event, 'action' => route('about.events.store')]);
     }
 
     /**
@@ -61,7 +61,7 @@ class EventController extends Controller
      */
     public function edit(Event $event)
     {
-        return view('event-form', ['data' => $event, 'action' => route('about.events.update', $event->id)]);
+        return view('pages.about.event-form', ['data' => $event, 'action' => route('about.events.update', $event->id)]);
     }
 
     /**
