@@ -14,6 +14,22 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
         integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .fc-day-sun {
+            background-color: rgb(255, 213, 213) !important;
+        }
+
+        .fc-day-sat {
+            background-color: rgb(225, 240, 255) !important;
+        }
+
+        .fc-event-title {
+            white-space: normal !important;
+            /* Memastikan teks judul membungkus */
+            overflow: visible !important;
+            /* Menghindari overflow tersembunyi */
+        }
+    </style>
 @endsection
 @section('content')
     @component('layouts.breadcrumb')
