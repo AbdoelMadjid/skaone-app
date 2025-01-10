@@ -4,14 +4,15 @@
     @endif
     <div class="row">
         <div class="col-6">
+            {{-- <input type="text" name="id" value="{{ $data->id }}"> --}}
             <div class="mb-3">
-                <input type="text" name="start_date" readonly value="{{ $data->start_date ?? request()->start_date }}"
+                <input type="text" name="start_date" value="{{ $data->start_date ?? request()->start_date }}"
                     class="form-control datepicker">
             </div>
         </div>
         <div class="col-6">
             <div class="mb-3">
-                <input type="text" name="end_date" readonly value="{{ $data->end_date ?? request()->end_date }}"
+                <input type="text" name="end_date" value="{{ $data->end_date ?? request()->end_date }}"
                     class="form-control datepicker">
             </div>
         </div>

@@ -39,40 +39,19 @@
         @endslot
     @endcomponent
     <div class="row">
-        <div class="row">
-            <div class="col-xl-8 col-md-8">
-                <div class="card ribbon-box border shadow-none mb-lg-4">
-                    <div class="card-body">
-                        <div class="ribbon ribbon-info round-shape">Kalendar Pendidikan</div>
-                        <div class="ribbon-content mt-5 text-muted">
-                            <div id="calendar"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-4 col-md-4">
-                <div class="card ribbon-box border shadow-none mb-lg-4">
-                    <div class="card-body">
-                        <div class="ribbon ribbon-info round-shape">List Event</div>
-                        <div class="ribbon-content mt-5 text-muted">
-                            <table class="table table-striped" id="event-list-table">
-                                <thead>
-                                    <tr>
-                                        <th>Title</th>
-                                        <th>Tanggal</th>
-                                        <th>Category</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Event rows will be added here -->
-                                </tbody>
-                            </table>
-                        </div>
+        <div class="col-lg-12">
+            <!-- Rounded Ribbon -->
+            <div class="card ribbon-box border shadow-none mb-lg-0">
+                <div class="card-body">
+                    <div class="ribbon ribbon-primary round-shape">Event Calendar</div>
+                    <h5 class="fs-14 text-end"><a class="mb-3 btn btn-primary"
+                            href="{{ route('about.about.index') }}">Kembali</a></h5>
+                    <div class="ribbon-content mt-4">
+                        <div id="calendar"></div>
                     </div>
                 </div>
             </div>
         </div>
-        <!--end col-->
     </div>
     <div id="modal-action-calendar" class="modal" tabindex="-1">
 
@@ -109,20 +88,19 @@
                         url: `{{ route('about.events.create') }}`,
                         data: {
                             start_date: info.dateStr,
-                            end_date: info.dateStr,
-                            allDay: true // Menandakan event satu hari penuh
+                            end_date: info.dateStr
                         },
                         success: function(res) {
-                            modal.html(res).modal('show');
+                            modal.html(res).modal('show')
                             $('.datepicker').datepicker({
                                 todayHighlight: true,
                                 format: 'yyyy-mm-dd'
                             });
 
                             $('#form-action').on('submit', function(e) {
-                                e.preventDefault();
-                                const form = this;
-                                const formData = new FormData(form);
+                                e.preventDefault()
+                                const form = this
+                                const formData = new FormData(form)
                                 $.ajax({
                                     url: form.action,
                                     method: form.method,
@@ -130,18 +108,16 @@
                                     processData: false,
                                     contentType: false,
                                     success: function(res) {
-                                        modal.modal('hide');
-                                        calendar.refetchEvents();
-                                        updateEventList(calendar
-                                            .getEvents());
+                                        modal.modal('hide')
+                                        calendar.refetchEvents()
                                     },
                                     error: function(res) {
-                                        // Handle error
+
                                     }
-                                });
-                            });
+                                })
+                            })
                         }
-                    });
+                    })
                 },
                 eventClick: function({
                     event
@@ -149,12 +125,15 @@
                     $.ajax({
                         url: `{{ url('about/events') }}/${event.id}/edit`,
                         success: function(res) {
-                            modal.html(res).modal('show');
-
+                            modal.html(res).modal('show')
+                            $('.datepicker').datepicker({
+                                todayHighlight: true,
+                                format: 'yyyy-mm-dd'
+                            });
                             $('#form-action').on('submit', function(e) {
-                                e.preventDefault();
-                                const form = this;
-                                const formData = new FormData(form);
+                                e.preventDefault()
+                                const form = this
+                                const formData = new FormData(form)
                                 $.ajax({
                                     url: form.action,
                                     method: form.method,
@@ -162,29 +141,23 @@
                                     processData: false,
                                     contentType: false,
                                     success: function(res) {
-                                        modal.modal('hide');
-                                        calendar.refetchEvents();
-                                        updateEventList(calendar
-                                            .getEvents());
+                                        modal.modal('hide')
+                                        calendar.refetchEvents()
                                     }
-                                });
-                            });
+                                })
+                            })
                         }
-                    });
+                    })
                 },
                 eventDrop: function(info) {
-                    const event = info.event;
-                    const adjustedEndDate = new Date(event.end);
-                    adjustedEndDate.setDate(adjustedEndDate.getDate() -
-                        1); // Penyesuaian untuk end_date eksklusif
-
+                    const event = info.event
                     $.ajax({
                         url: `{{ url('about/events') }}/${event.id}`,
                         method: 'put',
                         data: {
                             id: event.id,
                             start_date: event.startStr,
-                            end_date: adjustedEndDate.toISOString().substring(0, 10),
+                            end_date: event.end.toISOString().substring(0, 10),
                             title: event.title,
                             category: event.extendedProps.category
                         },
@@ -198,32 +171,29 @@
                                 message: res.message,
                                 position: 'topRight'
                             });
-                            updateEventList(calendar.getEvents());
                         },
                         error: function(res) {
-                            const message = res.responseJSON.message;
-                            info.revert();
+                            const message = res.responseJSON.message
+                            info.revert()
                             iziToast.error({
                                 title: 'Error',
                                 message: message ?? 'Something wrong',
                                 position: 'topRight'
                             });
                         }
-                    });
+                    })
                 },
                 eventResize: function(info) {
-                    const event = info.event;
-                    const adjustedEndDate = new Date(event.end);
-                    adjustedEndDate.setDate(adjustedEndDate.getDate() -
-                        1); // Penyesuaian untuk end_date eksklusif
-
+                    const {
+                        event
+                    } = info
                     $.ajax({
                         url: `{{ url('about/events') }}/${event.id}`,
                         method: 'put',
                         data: {
                             id: event.id,
                             start_date: event.startStr,
-                            end_date: adjustedEndDate.toISOString().substring(0, 10),
+                            end_date: event.end.toISOString().substring(0, 10),
                             title: event.title,
                             category: event.extendedProps.category
                         },
@@ -237,82 +207,22 @@
                                 message: res.message,
                                 position: 'topRight'
                             });
-                            updateEventList(calendar.getEvents());
                         },
                         error: function(res) {
-                            const message = res.responseJSON.message;
-                            info.revert();
+                            const message = res.responseJSON.message
+                            info.revert()
                             iziToast.error({
                                 title: 'Error',
                                 message: message ?? 'Something wrong',
                                 position: 'topRight'
                             });
                         }
-                    });
-                },
-                eventDidMount: function(info) {
-                    updateEventList(calendar.getEvents());
+                    })
                 }
+
+
             });
             calendar.render();
-
-            function updateEventList(events) {
-                const eventListTable = document.getElementById('event-list-table').getElementsByTagName('tbody')[0];
-                eventListTable.innerHTML = ''; // Clear existing rows
-
-                function formatDateString(date) {
-                    const d = new Date(date);
-                    const day = String(d.getDate()).padStart(2, '0');
-                    const month = String(d.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-                    const year = d.getFullYear();
-                    return `${day}-${month}-${year}`;
-                }
-
-                function getCategoryClass(category) {
-                    switch (category) {
-                        case 'primary':
-                            return 'text-primary';
-                        case 'success':
-                            return 'text-success';
-                        case 'danger':
-                            return 'text-danger';
-                        case 'warning':
-                            return 'text-warning';
-                        case 'info':
-                            return 'text-info';
-                        case 'dark':
-                            return 'text-dark';
-                        case 'secondary':
-                            return 'text-secondary';
-                        case 'light':
-                            return 'text-light';
-                        default:
-                            return '';
-                    }
-                }
-
-                // Sort events by start date
-                events.sort((a, b) => a.start - b.start);
-
-                events.forEach(event => {
-                    const row = eventListTable.insertRow();
-                    const titleCell = row.insertCell(0);
-                    const startDate = formatDateString(event.start);
-                    const endDate = event.end ? formatDateString(new Date(event.end.setDate(event.end
-                        .getDate() - 1))) : startDate; // Penyesuaian end_date
-                    const dateCell = row.insertCell(1);
-
-                    titleCell.innerText = event.title;
-                    dateCell.innerText = `${startDate} - ${endDate}`;
-
-                    // Tambahkan kelas warna Bootstrap berdasarkan kategori
-                    if (event.extendedProps.category) {
-                        const categoryClass = getCategoryClass(event.extendedProps.category);
-                        titleCell.classList.add(categoryClass);
-                    }
-                    row.insertCell(2).innerText = event.extendedProps.category || '';
-                });
-            }
         });
     </script>
 @endsection

@@ -19,13 +19,13 @@ class EventRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
-    public function rules(): array
+    public function rules()
     {
         return [
-            'start_date' => 'required|date_format:Y-m-d',
-            'end_date' => 'required|date_format:Y-m-d',
-            'title' => 'required',
-            'category' => 'required'
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'title' => 'required|string|max:255',
+            'category' => 'nullable|string',
         ];
     }
 }
