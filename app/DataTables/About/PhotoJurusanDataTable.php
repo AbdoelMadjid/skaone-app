@@ -27,12 +27,12 @@ class PhotoJurusanDataTable extends DataTable
             ->addColumn('image', function ($row) {
 
                 // Tentukan path foto dari database
-                $imagePath = base_path('images/gambarjurusan/' . $row->image);
+                $imagePath = base_path('images/thumbnail/' . $row->image);
                 $logoPath = '';
 
                 // Cek apakah file foto ada di folder 'images/personil'
                 if ($row->image && file_exists($imagePath)) {
-                    $logoPath = asset('images/gambarjurusan/' . $row->image);
+                    $logoPath = asset('images/thumbnail/' . $row->image);
                 } else {
                     // Jika file tidak ditemukan, gunakan foto default berdasarkan jenis kelamin
                     $logoPath = asset('build/images/bg-auth.jpg');

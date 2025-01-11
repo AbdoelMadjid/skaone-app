@@ -35,19 +35,19 @@ class TeamPengembangDataTable extends DataTable
                     : asset('images/cewek.png');
 
                 // Tentukan path photo dari database
-                $imagePath = base_path('images/team/' . $row->photo);
+                $imagePath = base_path('images/thumbnail/' . $row->photo);
                 $logoPath = '';
 
                 // Cek apakah file photo ada di folder 'images/personil'
                 if ($row->photo && file_exists($imagePath)) {
-                    $logoPath = asset('images/team/' . $row->photo);
+                    $logoPath = asset('images/thumbnail/' . $row->photo);
                 } else {
                     // Jika file tidak ditemukan, gunakan photo default berdasarkan jenis kelamin
                     $logoPath = $defaultPhotoPath;
                 }
 
                 // Mengembalikan tag img dengan path gambar
-                return '<img src="' . $logoPath . '" alt="photo" width="50" />';
+                return '<img src="' . $logoPath . '" alt="photo" width="150" />';
             })
             ->addIndexColumn()
             ->rawColumns(['photo']);
