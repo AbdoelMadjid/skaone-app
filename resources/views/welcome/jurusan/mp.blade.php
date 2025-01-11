@@ -91,8 +91,17 @@
                 <x-variasi-list> Petugas Humas / Keprotokola</x-variasi-list>
                 <x-variasi-list> Berbagai lembaga/ organisasi
                     pemerintah atau swasta</x-variasi-list>
-                <img src="{{ URL::asset('images/thumbnail/gjur_1730908737.jpg') }}" alt="client-img"
-                    class="mx-auto img-fluid d-block mt-5">
+                @php
+                    // Query untuk mendapatkan data berdasarkan kode_kk
+                    $photo = DB::table('photo_jurusans')->where('kode_kk', '821')->first();
+
+                    // Tentukan path gambar
+                    $imagePath =
+                        $photo && $photo->image
+                            ? asset('images/thumbnail/' . $photo->image)
+                            : asset('images/thumbnail/default.jpg');
+                @endphp
+                <img src="{{ $imagePath }}" alt="client-img" class="mx-auto img-fluid d-block mt-5">
             </div>
         </div>
     </div>

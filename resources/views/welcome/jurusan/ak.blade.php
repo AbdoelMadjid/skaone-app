@@ -110,8 +110,17 @@
                 <x-variasi-list> Operator komputer</x-variasi-list>
                 <x-variasi-list> Administrasi gudang</x-variasi-list>
                 <x-variasi-list> Menyusun laporan keuangan</x-variasi-list>
-                <img src="{{ URL::asset('images/sakola/akl-min.jpg') }}" alt="client-img"
-                    class="mx-auto img-fluid d-block mt-5">
+                @php
+                    // Query untuk mendapatkan data berdasarkan kode_kk
+                    $photo = DB::table('photo_jurusans')->where('kode_kk', '833')->first();
+
+                    // Tentukan path gambar
+                    $imagePath =
+                        $photo && $photo->image
+                            ? asset('images/thumbnail/' . $photo->image)
+                            : asset('images/thumbnail/default.jpg');
+                @endphp
+                <img src="{{ $imagePath }}" alt="client-img" class="mx-auto img-fluid d-block mt-5">
             </div>
         </div>
     </div>

@@ -80,8 +80,17 @@
                 <x-variasi-list> Administrator Jaringan Level Mahir</x-variasi-list>
                 <x-variasi-list> Pekerjaan-pekerjaan lainnya yang
                     berbasis komputer dan jaringan</x-variasi-list>
-                <img src="{{ URL::asset('images/sakola/tkj-min.jpg') }}" alt="client-img"
-                    class="mx-auto img-fluid d-block mt-5">
+                @php
+                    // Query untuk mendapatkan data berdasarkan kode_kk
+                    $photo = DB::table('photo_jurusans')->where('kode_kk', '421')->first();
+
+                    // Tentukan path gambar
+                    $imagePath =
+                        $photo && $photo->image
+                            ? asset('images/thumbnail/' . $photo->image)
+                            : asset('images/thumbnail/default.jpg');
+                @endphp
+                <img src="{{ $imagePath }}" alt="client-img" class="mx-auto img-fluid d-block mt-5">
             </div>
         </div>
     </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\About\Galery;
+use App\Models\About\PhotoJurusan;
 use App\Models\About\PhotoSlide;
 use App\Models\About\TeamPengembang;
 use App\Models\AppSupport\Referensi;
@@ -24,6 +25,7 @@ class WelcomeController extends Controller
         $photoSlides = PhotoSlide::where('is_active', true)->get();
 
         $teamPengembang = TeamPengembang::all();
+        $photoJurusan = PhotoJurusan::all();
 
         //MENGHITUNG JENIS PERSONIL BERDASARKAN JENIS KELAMIN ===================================?
         // Contoh: Mengambil data dari database
@@ -218,6 +220,7 @@ class WelcomeController extends Controller
             'welcome',
             [
                 'photoSlides' => $photoSlides,
+                'photoJurusan' => $photoJurusan,
                 'teamPengembang' => $teamPengembang,
                 'dataPersonil' => $dataPersonil,
                 'totalGuruLakiLaki' => $totalGuruLakiLaki,

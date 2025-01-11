@@ -92,8 +92,17 @@
                 <x-variasi-list> Telemarketting</x-variasi-list>
                 <x-variasi-list> Wirausaha/entrepreneur</x-variasi-list>
                 <x-variasi-list> Eksekutif Sales</x-variasi-list>
-                <img src="{{ URL::asset('images/thumbnail/gjur_1730908705.jpg') }}" alt="client-img"
-                    class="mx-auto img-fluid d-block mt-5">
+                @php
+                    // Query untuk mendapatkan data berdasarkan kode_kk
+                    $photo = DB::table('photo_jurusans')->where('kode_kk', '811')->first();
+
+                    // Tentukan path gambar
+                    $imagePath =
+                        $photo && $photo->image
+                            ? asset('images/thumbnail/' . $photo->image)
+                            : asset('images/thumbnail/default.jpg');
+                @endphp
+                <img src="{{ $imagePath }}" alt="client-img" class="mx-auto img-fluid d-block mt-5">
             </div>
         </div>
     </div>
