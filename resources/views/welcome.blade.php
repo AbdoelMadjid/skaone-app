@@ -20,10 +20,6 @@
             background: white;
         }
 
-        .orgchart .node {
-            padding: 0px 5px;
-        }
-
         .orgchart .kepsek .title {
             background-color: #013a57;
         }
@@ -49,19 +45,19 @@
         }
 
         .orgchart .rd-dept .title {
-            background-color: #993366;
+            background-color: #2c2ad8;
         }
 
         .orgchart .rd-dept .content {
-            border-color: #993366;
+            border-color: #2c2ad8;
         }
 
         .orgchart .pipeline1 .title {
-            background-color: #996633;
+            background-color: #d37b23;
         }
 
         .orgchart .pipeline1 .content {
-            border-color: #996633;
+            border-color: #d37b23;
         }
 
         .orgchart .frontend1 .title {
@@ -73,35 +69,17 @@
         }
 
         .orgchart .node .content {
-            padding: 0 6px;
             height: unset;
-            line-height: 20px;
             width: auto;
-        }
-
-        .orgchart .node .content .symbol {
-            color: #aaa;
-            margin-right: 20px;
-        }
-
-        .oci-leader::before,
-        .oci-leader::after {
-            background-color: rgba(217, 83, 79, 0.8);
+            padding: 0 6px;
+            text-align: left;
         }
 
         .orgchart .node .title {
             height: unset;
-            line-height: 20px;
+            text-align: left;
             width: auto;
-            padding: 0 6px;
-        }
-
-        .orgchart .node .avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 30px;
-            float: left;
-            margin: 5px;
+            padding: 0 10px;
         }
     </style>
 @endsection
@@ -282,64 +260,64 @@
         $(function() {
             var datascource = {
                 'id': '1',
-                'name': 'H. DAMUDIN, S.Pd., M.Pd.',
+                'name': 'H. Damudin, S.Pd., M.Pd.',
                 'title': 'Kepala Sekolah',
                 'className': 'kepsek',
                 'children': [{
                         'id': '2',
-                        'name': 'ABDUL MADJID, S.Pd., M.Pd.',
+                        'name': 'Abdul Madjid, S.Pd., M.Pd.',
                         'title': 'Wakasek Bid. Kurikulum',
                         'className': 'middle-level',
                         'hybrid': true,
                         'children': [{
                                 'id': '7',
-                                'name': 'PUTRI FEBRIMA R.S, S.Pd.',
+                                'name': 'Putri Febrina R.S, S.Pd.',
                                 'title': 'Staf Kurikulum',
                                 'className': 'product-dept',
                                 'children': [{
-                                    'name': 'WALI KELAS',
-                                    'title': 'Wali Kelas 10, 11 dan 12',
+                                    'name': 'Wali Kelas',
+                                    'title': 'Tingkat 10, 11 dan 12',
                                     'className': 'frontend1'
                                 }, ]
                             },
                             {
                                 'id': '8',
-                                'name': 'TABIIN ST',
+                                'name': 'Tabiin, ST',
                                 'title': 'Staf Kurikulum',
                                 'className': 'product-dept',
                                 'children': [{
                                     'name': 'Guru Mata Pelajaran',
-                                    'title': 'Kelas 10, 11 dan 12',
+                                    'title': 'Tingkat 10, 11 dan 12',
                                     'className': 'frontend1'
                                 }, ]
                             },
                             {
                                 'id': '9',
-                                'name': 'KETUA KK',
+                                'name': 'Ketua',
                                 'title': 'Kompetensi Keahlian',
                                 'className': 'rd-dept',
                                 'children': [{
-                                        'name': 'ENDIK CASDI, S.T',
+                                        'name': 'Endik Casdi, S.T',
                                         'title': 'Rekayasa Perangkat Lunak',
                                         'className': 'pipeline1'
                                     },
                                     {
-                                        'name': 'OTONG SUNAHDI, S.T',
+                                        'name': 'Otong Sunahdi, S.T',
                                         'title': 'Teknik Komputer dan Jaringan',
                                         'className': 'pipeline1'
                                     },
                                     {
-                                        'name': 'EUIS KOKOM KOMARIAH SE',
+                                        'name': 'Euis Kokom Komariah, SE',
                                         'title': 'Bisnis Digital',
                                         'className': 'pipeline1'
                                     },
                                     {
-                                        'name': 'RATNO ADMAMIN S.Pd',
+                                        'name': 'Ratno Admamin, S.Pd',
                                         'title': 'Manajemen Perkantoran',
                                         'className': 'pipeline1'
                                     },
                                     {
-                                        'name': 'ADE LINA INAYATUL B., SE., M.Pd',
+                                        'name': 'Ade Lina Inayatul B., SE., M.Pd',
                                         'title': 'Akuntansi',
                                         'className': 'pipeline1'
                                     },
@@ -349,116 +327,178 @@
                     },
                     {
                         'id': '3',
-                        'name': 'DANA IDANG HADIANA S.Pd., M.Pd.',
+                        'name': 'Dana Idang Hadiana, S.Pd., M.Pd.',
                         'title': 'Wakasek Bid. Kesiswaan',
                         'className': 'middle-level',
                         'hybrid': true,
                         'children': [{
-                                'name': 'A.HASAN NASRULOH S.Pd',
+                                'name': 'A. Hasan Nasruloh, S.Pd',
                                 'title': 'Staf Kesiswaan',
-                                'className': 'product-dept'
+                                'className': 'product-dept',
+                                'children': [{
+                                    'name': 'Wali Kelas',
+                                    'title': 'Tingkat 10, 11 dan 12',
+                                    'className': 'frontend1'
+                                }, ]
                             },
                             {
-                                'name': 'TINI AGUSTINI S.Pd.,M.Pd.',
+                                'name': 'Tini Agustini, S.Pd.,M.Pd.',
                                 'title': 'Pembina OSIS',
-                                'className': 'product-dept'
+                                'className': 'product-dept',
+                                'children': [{
+                                    'name': 'Pembantu Pembina OSIS',
+                                    'title': 'Pembina Ekstrakurikuler',
+                                    'className': 'frontend1'
+                                }]
+                            },
+                            {
+                                'name': 'Guru Bimbingan Konseling',
+                                'title': 'Tingkat 10, 11 dan 12',
+                                'className': 'rd-dept',
+                                'children': [{
+                                        'name': 'Enok Sugiharti, S.Pd, M.Pd.I',
+                                        'title': 'Guru BP/BK',
+                                        'className': 'pipeline1'
+                                    },
+                                    {
+                                        'name': 'Junaedi, S.Pd., M.Pd.I',
+                                        'title': 'Guru BP/BK',
+                                        'className': 'pipeline1'
+                                    },
+                                    {
+                                        'name': 'Irfan Firmansyah, S.Pd.',
+                                        'title': 'Guru BP/BK',
+                                        'className': 'pipeline1'
+                                    },
+                                    {
+                                        'name': 'Eri Nurmalasari, S.Pd',
+                                        'title': 'Guru BP/BK',
+                                        'className': 'pipeline1'
+                                    }
+                                ]
                             }
                         ]
                     },
                     {
                         'id': '4',
-                        'name': 'Dra. EBAH HABIBAH MM',
+                        'name': 'Dra. Ebah Habibah, MM',
                         'title': 'Wakasek Bid. Humas',
                         'className': 'middle-level',
                         'hybrid': true,
                         'children': [{
-                                'name': 'APID ISTHOCHORI S. Pd., M. Pd',
+                                'name': 'Apid Isthochori, S.Pd., M.Pd',
                                 'title': 'Staf Humas',
-                                'className': 'product-dept'
+                                'className': 'product-dept',
+                                'children': [{
+                                    'name': 'Team PKL',
+                                    'title': 'Pembantu Panitia PKL',
+                                    'className': 'frontend1'
+                                }, {
+                                    'name': 'Ketua Kompetensi Keahlian',
+                                    'title': 'Koordinasi PKL',
+                                    'className': 'frontend1'
+                                }, ]
                             },
                             {
-                                'name': 'AHMAD SARIPUDIN S.Si., M.Pd.',
+                                'name': 'Febby Muchamad Darmadi, S.T.',
                                 'title': 'Staf Humas',
-                                'className': 'product-dept'
+                                'className': 'product-dept',
+                                'children': [{
+                                    'name': 'Wali Kelas',
+                                    'title': 'Tingkat 10, 11 dan 12',
+                                    'className': 'frontend1'
+                                }, ]
                             },
-                            {
-                                'name': 'OBIE HAMZAH S.Pd',
-                                'title': 'Staf Humas',
-                                'className': 'product-dept'
-                            }
                         ]
                     },
                     {
                         'id': '5',
-                        'name': 'ARYONO, ST',
+                        'name': 'Aryono, ST',
                         'title': 'Wakasek Bid. Sarana Prasarana',
                         'className': 'middle-level',
+                        'hybrid': true,
                         'children': [{
-                            'name': 'ASEP TATANG S., S.Kom',
-                            'title': 'Staf',
-                            'className': 'product-dept'
-                        }]
+                                'name': 'Asep Tatang S., S.Kom',
+                                'title': 'Staf Sarana Prasarana',
+                                'className': 'product-dept',
+                                'children': [{
+                                    'name': 'Kepala Laboratorium',
+                                    'title': 'Setiap Kompetensi Keahlian',
+                                    'className': 'frontend1'
+                                }, {
+                                    'name': 'Wali Kelas',
+                                    'title': 'Tingkat 10, 11 dan 12',
+                                    'className': 'frontend1'
+                                }]
+                            },
+                            {
+                                'name': 'Team Sarana Prasarana',
+                                'title': 'Pemeliharaan dan Perbaikan',
+                                'className': 'rd-dept',
+                            }
+                        ]
                     },
                     {
                         'id': '6',
-                        'name': 'M ZAENAL I.S., S.Kom.',
+                        'name': 'M. Zaenal Iskandar S., S.Kom.',
                         'title': 'Sub Bag Tata Usaha',
                         'className': 'middle-level',
                         'hybrid': true,
                         'children': [{
-                                'name': 'Hj. LILIS HERDIYANI S.Pd, S.Kom., M.M',
+                                'name': 'Hj. Lilis Herdiyani, S.Pd, S.Kom., M.M',
                                 'title': 'Keuangan',
                                 'className': 'rd-dept',
                                 'children': [{
-                                        'name': 'ADE KURNIAWATI S.Pd.',
+                                        'name': 'Ade Kurniawati, S.Pd.',
                                         'title': 'Staf Keuangan',
                                         'className': 'pipeline1'
                                     },
                                     {
-                                        'name': 'ENOK EROS ROSTIKA S. Pd.',
+                                        'name': 'Enok Eros Rostika, S. Pd.',
                                         'title': 'Staf Keuangan',
                                         'className': 'pipeline1'
                                     }
                                 ]
                             },
                             {
-                                'name': 'AAM SITI AMINAH SE',
+                                'name': 'Aam Siti Aminah, SE',
                                 'title': 'Persuratan',
                                 'className': 'rd-dept',
                             },
                             {
-                                'name': 'TATIK NURHAYATI SM',
+                                'name': 'Tatik Nurhayati, SM',
                                 'title': 'Pengelola Gaji',
                                 'className': 'rd-dept',
                             },
                             {
-                                'name': 'SITI TIKA ATIKAH S. Pd.',
+                                'name': 'Siti Tika Atikah, S.Pd.',
                                 'title': 'Kepegawaian',
                                 'className': 'rd-dept',
                                 'children': [{
-                                    'name': 'DADANG SUKENDAR',
+                                    'name': 'Dadang Sukendar',
                                     'title': 'Staf Kepegawaian',
                                     'className': 'pipeline1'
                                 }, ]
                             },
                             {
-                                'name': 'SRI KARTINI',
+                                'name': 'Sri Kartini',
                                 'title': 'Kesiswaan',
                                 'className': 'rd-dept',
                             },
                             {
-                                'name': 'IAH ROHANIAH S.Ak.',
+                                'name': 'Iah Rohaniah, S.Ak.',
                                 'title': 'Kesiswaan',
                                 'className': 'rd-dept',
                             },
                             {
-                                'name': 'INEU APRIYANI SE',
+                                'name': 'Ineu Apriyani, SE',
                                 'title': 'Sarana Prasarana',
                                 'className': 'rd-dept',
                             },
                             {
-                                'name': 'STAF LAINNYA',
-                                'title': 'Satpam dan Petugas Kebersihan'
+                                'name': 'Staf Lainnya',
+                                'title': 'Satpam dan Petugas Kebersihan',
+                                'className': 'rd-dept',
                             },
                         ]
                     }
