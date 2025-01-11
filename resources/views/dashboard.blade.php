@@ -420,7 +420,9 @@
                     const dateCell = row.insertCell(1);
 
                     titleCell.innerText = event.title;
-                    dateCell.innerText = `${startDate} - ${endDate}`;
+                    dateCell.innerText = (startDate === endDate) ?
+                        startDate :
+                        `${startDate} - ${endDate}`; // Tampilkan hanya startDate jika sama
 
                     // Tambahkan kelas warna Bootstrap berdasarkan kategori
                     if (event.extendedProps.category) {
