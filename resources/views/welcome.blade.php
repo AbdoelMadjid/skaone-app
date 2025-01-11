@@ -5,6 +5,105 @@
 @section('css')
     <link href="{{ URL::asset('build/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{{ URL::asset('build/libs/glightbox/css/glightbox.min.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('build/css/jquery.orgchart.min.css') }}">
+    <style type="text/css">
+        #chart-container {
+            position: relative;
+            height: 720px;
+            border: 1px solid #aaa;
+            margin: 0.5rem;
+            overflow: auto;
+            text-align: center;
+        }
+
+        .orgchart {
+            background: white;
+        }
+
+        .orgchart .node {
+            padding: 0px 5px;
+        }
+
+        .orgchart .kepsek .title {
+            background-color: #013a57;
+        }
+
+        .orgchart .kepsek .content {
+            border-color: #013a57;
+        }
+
+        .orgchart .middle-level .title {
+            background-color: #006699;
+        }
+
+        .orgchart .middle-level .content {
+            border-color: #006699;
+        }
+
+        .orgchart .product-dept .title {
+            background-color: #009933;
+        }
+
+        .orgchart .product-dept .content {
+            border-color: #009933;
+        }
+
+        .orgchart .rd-dept .title {
+            background-color: #993366;
+        }
+
+        .orgchart .rd-dept .content {
+            border-color: #993366;
+        }
+
+        .orgchart .pipeline1 .title {
+            background-color: #996633;
+        }
+
+        .orgchart .pipeline1 .content {
+            border-color: #996633;
+        }
+
+        .orgchart .frontend1 .title {
+            background-color: #cc0066;
+        }
+
+        .orgchart .frontend1 .content {
+            border-color: #cc0066;
+        }
+
+        .orgchart .node .content {
+            padding: 0 6px;
+            height: unset;
+            line-height: 20px;
+            width: auto;
+        }
+
+        .orgchart .node .content .symbol {
+            color: #aaa;
+            margin-right: 20px;
+        }
+
+        .oci-leader::before,
+        .oci-leader::after {
+            background-color: rgba(217, 83, 79, 0.8);
+        }
+
+        .orgchart .node .title {
+            height: unset;
+            line-height: 20px;
+            width: auto;
+            padding: 0 6px;
+        }
+
+        .orgchart .node .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+            float: left;
+            margin: 5px;
+        }
+    </style>
 @endsection
 @section('body')
 
@@ -140,7 +239,9 @@
             <div class="pt-5 mt-5"></div>
 
             <section class="section pb-3" id="visimisi">
-                @include('welcome.visimisi')</section>
+                @include('welcome.visimisi')
+                <div id="chart-container"></div>
+            </section>
 
             <section class="section pb-3" id="prodi">
                 @include('welcome.prodi')</section>
@@ -175,6 +276,216 @@
     </body>
 @endsection
 @section('script')
+    <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
+    <script src="{{ URL::asset('build/js/jquery.orgchart.min.js') }}"></script>
+    <script type="text/javascript">
+        $(function() {
+            var datascource = {
+                'id': '1',
+                'name': 'H. DAMUDIN, S.Pd., M.Pd.',
+                'title': 'Kepala Sekolah',
+                'className': 'kepsek',
+                'children': [{
+                        'id': '2',
+                        'name': 'ABDUL MADJID, S.Pd., M.Pd.',
+                        'title': 'Wakasek Bid. Kurikulum',
+                        'className': 'middle-level',
+                        'hybrid': true,
+                        'children': [{
+                                'id': '7',
+                                'name': 'PUTRI FEBRIMA R.S, S.Pd.',
+                                'title': 'Staf Kurikulum',
+                                'className': 'product-dept',
+                                'children': [{
+                                    'name': 'WALI KELAS',
+                                    'title': 'Wali Kelas 10, 11 dan 12',
+                                    'className': 'frontend1'
+                                }, ]
+                            },
+                            {
+                                'id': '8',
+                                'name': 'TABIIN ST',
+                                'title': 'Staf Kurikulum',
+                                'className': 'product-dept',
+                                'children': [{
+                                    'name': 'Guru Mata Pelajaran',
+                                    'title': 'Kelas 10, 11 dan 12',
+                                    'className': 'frontend1'
+                                }, ]
+                            },
+                            {
+                                'id': '9',
+                                'name': 'KETUA KK',
+                                'title': 'Kompetensi Keahlian',
+                                'className': 'rd-dept',
+                                'children': [{
+                                        'name': 'ENDIK CASDI, S.T',
+                                        'title': 'Rekayasa Perangkat Lunak',
+                                        'className': 'pipeline1'
+                                    },
+                                    {
+                                        'name': 'OTONG SUNAHDI, S.T',
+                                        'title': 'Teknik Komputer dan Jaringan',
+                                        'className': 'pipeline1'
+                                    },
+                                    {
+                                        'name': 'EUIS KOKOM KOMARIAH SE',
+                                        'title': 'Bisnis Digital',
+                                        'className': 'pipeline1'
+                                    },
+                                    {
+                                        'name': 'RATNO ADMAMIN S.Pd',
+                                        'title': 'Manajemen Perkantoran',
+                                        'className': 'pipeline1'
+                                    },
+                                    {
+                                        'name': 'ADE LINA INAYATUL B., SE., M.Pd',
+                                        'title': 'Akuntansi',
+                                        'className': 'pipeline1'
+                                    },
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        'id': '3',
+                        'name': 'DANA IDANG HADIANA S.Pd., M.Pd.',
+                        'title': 'Wakasek Bid. Kesiswaan',
+                        'className': 'middle-level',
+                        'hybrid': true,
+                        'children': [{
+                                'name': 'A.HASAN NASRULOH S.Pd',
+                                'title': 'Staf Kesiswaan',
+                                'className': 'product-dept'
+                            },
+                            {
+                                'name': 'TINI AGUSTINI S.Pd.,M.Pd.',
+                                'title': 'Pembina OSIS',
+                                'className': 'product-dept'
+                            }
+                        ]
+                    },
+                    {
+                        'id': '4',
+                        'name': 'Dra. EBAH HABIBAH MM',
+                        'title': 'Wakasek Bid. Humas',
+                        'className': 'middle-level',
+                        'hybrid': true,
+                        'children': [{
+                                'name': 'APID ISTHOCHORI S. Pd., M. Pd',
+                                'title': 'Staf Humas',
+                                'className': 'product-dept'
+                            },
+                            {
+                                'name': 'AHMAD SARIPUDIN S.Si., M.Pd.',
+                                'title': 'Staf Humas',
+                                'className': 'product-dept'
+                            },
+                            {
+                                'name': 'OBIE HAMZAH S.Pd',
+                                'title': 'Staf Humas',
+                                'className': 'product-dept'
+                            }
+                        ]
+                    },
+                    {
+                        'id': '5',
+                        'name': 'ARYONO, ST',
+                        'title': 'Wakasek Bid. Sarana Prasarana',
+                        'className': 'middle-level',
+                        'children': [{
+                            'name': 'ASEP TATANG S., S.Kom',
+                            'title': 'Staf',
+                            'className': 'product-dept'
+                        }]
+                    },
+                    {
+                        'id': '6',
+                        'name': 'M ZAENAL I.S., S.Kom.',
+                        'title': 'Sub Bag Tata Usaha',
+                        'className': 'middle-level',
+                        'hybrid': true,
+                        'children': [{
+                                'name': 'Hj. LILIS HERDIYANI S.Pd, S.Kom., M.M',
+                                'title': 'Keuangan',
+                                'className': 'rd-dept',
+                                'children': [{
+                                        'name': 'ADE KURNIAWATI S.Pd.',
+                                        'title': 'Staf Keuangan',
+                                        'className': 'pipeline1'
+                                    },
+                                    {
+                                        'name': 'ENOK EROS ROSTIKA S. Pd.',
+                                        'title': 'Staf Keuangan',
+                                        'className': 'pipeline1'
+                                    }
+                                ]
+                            },
+                            {
+                                'name': 'AAM SITI AMINAH SE',
+                                'title': 'Persuratan',
+                                'className': 'rd-dept',
+                            },
+                            {
+                                'name': 'TATIK NURHAYATI SM',
+                                'title': 'Pengelola Gaji',
+                                'className': 'rd-dept',
+                            },
+                            {
+                                'name': 'SITI TIKA ATIKAH S. Pd.',
+                                'title': 'Kepegawaian',
+                                'className': 'rd-dept',
+                                'children': [{
+                                    'name': 'DADANG SUKENDAR',
+                                    'title': 'Staf Kepegawaian',
+                                    'className': 'pipeline1'
+                                }, ]
+                            },
+                            {
+                                'name': 'SRI KARTINI',
+                                'title': 'Kesiswaan',
+                                'className': 'rd-dept',
+                            },
+                            {
+                                'name': 'IAH ROHANIAH S.Ak.',
+                                'title': 'Kesiswaan',
+                                'className': 'rd-dept',
+                            },
+                            {
+                                'name': 'INEU APRIYANI SE',
+                                'title': 'Sarana Prasarana',
+                                'className': 'rd-dept',
+                            },
+                            {
+                                'name': 'STAF LAINNYA',
+                                'title': 'Satpam dan Petugas Kebersihan'
+                            },
+                        ]
+                    }
+                ]
+            };
+
+            var oc = $('#chart-container').orgchart({
+                'data': datascource,
+                'nodeContent': 'title',
+                'nodeID': 'id',
+            });
+
+            $(window).resize(function() {
+                var width = $(window).width();
+                if (width > 576) {
+                    oc.init({
+                        'verticalLevel': undefined
+                    });
+                } else {
+                    oc.init({
+                        'verticalLevel': 2
+                    });
+                }
+            });
+
+        });
+    </script>
     <script src="{{ URL::asset('build/libs/apexcharts/apexcharts.min.js') }}"></script>
     <script>
         function getChartColorsArray(chartId) {
