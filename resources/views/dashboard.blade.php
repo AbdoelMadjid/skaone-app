@@ -424,6 +424,9 @@
                         startDate :
                         `${startDate} - ${endDate}`; // Tampilkan hanya startDate jika sama
 
+                    // Pusatkan teks di dateCell
+                    dateCell.style.textAlign = 'center';
+
                     // Tambahkan kelas warna Bootstrap berdasarkan kategori
                     if (event.extendedProps.category) {
                         const categoryClass = getCategoryClass(event.extendedProps.category);
