@@ -8,9 +8,9 @@
                     </div>
                     <div class="mt-4 fs-13">
                         <p>{{ $profileApp->app_deskripsi ?? '' }}</p>
-                        <p class="ff-secondary">You can build any type of web application like eCommerce,
-                            CRM, CMS, Project
-                            management apps, Admin Panels, etc using Velzon.</p>
+                        <p class="ff-secondary">Pencetak lulusan yang kompeten dan berintegritas terbaik di Jawa Barat
+                            pada tahun
+                            2029</p>
                     </div>
                 </div>
             </div>
@@ -21,10 +21,9 @@
                         <h5 class="text-white mb-0">Company</h5>
                         <div class="text-muted mt-3">
                             <ul class="list-unstyled ff-secondary footer-list">
-                                <li><a href="/pages_profile_basic">About Us</a></li>
-                                <li><a href="/pages_gallery">Gallery</a></li>
-                                <li><a href="/apps_projects_overview">Projects</a></li>
-                                <li><a href="/pages_timeline">Timeline</a></li>
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="#galery">Gallery</a></li>
+                                <li><a href="#profil">Statistik</a></li>
                             </ul>
                         </div>
                     </div>
@@ -32,11 +31,11 @@
                         <h5 class="text-white mb-0">Apps Pages</h5>
                         <div class="text-muted mt-3">
                             <ul class="list-unstyled ff-secondary footer-list">
-                                <li><a href="/pages_pricing">Calendar</a></li>
-                                <li><a href="/apps_email_mailbox">Mailbox</a></li>
-                                <li><a href="/apps_chat">Chat</a></li>
-                                <li><a href="/apps_crm_deals">Deals</a></li>
-                                <li><a href="/apps_tasks_kanban">Kanban Board</a></li>
+                                <li><a href="#">Calendar</a></li>
+                                <li><a href="#">Mailbox</a></li>
+                                <li><a href="#">Chat</a></li>
+                                <li><a href="#">Deals</a></li>
+                                <li><a href="#">Kanban Board</a></li>
                             </ul>
                         </div>
                     </div>
@@ -44,8 +43,8 @@
                         <h5 class="text-white mb-0">Support</h5>
                         <div class="text-muted mt-3">
                             <ul class="list-unstyled ff-secondary footer-list">
-                                <li><a href="/pages_faqs">FAQ</a></li>
-                                <li><a href="/apps_crm_contacts">Contact</a></li>
+                                <li><a href="#">FAQ</a></li>
+                                <li><a href="#">Contact</a></li>
                             </ul>
                         </div>
                     </div>
