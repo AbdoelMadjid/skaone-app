@@ -336,6 +336,10 @@
                                 'title': 'Staf Kesiswaan',
                                 'className': 'product-dept',
                                 'children': [{
+                                    'name': 'Team PPDB',
+                                    'title': 'Panitia PPDB',
+                                    'className': 'frontend1'
+                                }, {
                                     'name': 'Wali Kelas',
                                     'title': 'Tingkat 10, 11 dan 12',
                                     'className': 'frontend1'
