@@ -62,6 +62,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/get-personil-sekolah', [KbmPerRombelController::class, 'getPersonilSekolah'])->name('get-personil-sekolah');
             Route::post('/update-personil', [KbmPerRombelController::class, 'updatePersonil']);
             Route::resource('kunci-data-kbm', KunciDataKbmController::class);
+            Route::post('/update-kunci-data', [KunciDataKbmController::class, 'updateKunciData']);
         });
 
         Route::group(['prefix' => 'perangkatkurikulum', 'as' => 'perangkatkurikulum.'], function () {
