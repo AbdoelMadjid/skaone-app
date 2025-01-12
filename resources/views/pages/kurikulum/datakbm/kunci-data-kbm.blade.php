@@ -67,13 +67,13 @@
                         <div class="row align-items-center">
                             <div class="col-xl-3 col-lg-4">
                                 <div>
-                                    Tahun Ajaran:
-                                    {{ isset($dataPilCR) ? $dataPilCR->tahunajaran : $tahunajaran }}
+                                    Tahun Ajaran: <span
+                                        id="tahunAjaranDisplay">{{ isset($dataPilCR) ? $dataPilCR->tahunajaran : $tahunajaran }}</span>
                                 </div>
 
                                 <div>
-                                    Semester:
-                                    {{ isset($dataPilCR) ? $dataPilCR->ganjilgenap : $ganjilgenap }}
+                                    Semester: <span
+                                        id="semesterDisplay">{{ isset($dataPilCR) ? $dataPilCR->ganjilgenap : $ganjilgenap }}</span>
                                 </div>
                             </div>
                             <div class="col-xl-9 col-lg-8">
@@ -142,6 +142,65 @@
         // Inisialisasi DataTable
         $(document).ready(function() {
             $('#' + datatable).DataTable();
+
+            // Ketika tahunajaran dipilih
+            $('#tahun_ajaran').change(function() {
+                // Ambil nilai yang dipilih
+                var tahunajaran = $(this).val();
+
+                // Kirim request AJAX untuk update tahunajaran di tabel kunci_data_kbm
+                $.ajax({
+                    url: '{{ route('kurikulum.datakbm.kunci-data-kbm.updateTahunAjaran') }}', // Route untuk update
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}', // CSRF token
+                        tahunajaran: tahunajaran, // Data yang dikirim
+                    },
+                    success: function(response) {
+                        // Berikan feedback jika update berhasil
+                        if (response.success) {
+                            $('#kuncidatakbm-table').DataTable().ajax.reload(null, false);
+                            showToast('success', 'Tahun Ajaran berhasil diperbarui!');
+                            $('#tahunAjaranDisplay').text(response.tahunajaran);
+                        } else {
+                            showToast('error',
+                                'Terjadi kesalahan saat memperbarui tahun ajaran.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        showToast('error', 'Terjadi kesalahan! Silakan coba lagi.');
+                    }
+                });
+            });
+
+            // Ketika ganjilgenap dipilih
+            $('#ganjilgenap').change(function() {
+                // Ambil nilai yang dipilih
+                var ganjilgenap = $(this).val();
+
+                // Kirim request AJAX untuk update ganjilgenap di tabel kunci_data_kbm
+                $.ajax({
+                    url: '{{ route('kurikulum.datakbm.kunci-data-kbm.updateGanjilGenap') }}', // Route untuk update
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}', // CSRF token
+                        ganjilgenap: ganjilgenap, // Data yang dikirim
+                    },
+                    success: function(response) {
+                        // Berikan feedback jika update berhasil
+                        if (response.success) {
+                            $('#kuncidatakbm-table').DataTable().ajax.reload(null, false);
+                            showToast('success', 'Semester berhasil diperbarui!');
+                            $('#semesterDisplay').text(response.ganjilgenap);
+                        } else {
+                            showToast('error', 'Terjadi kesalahan saat memperbarui semester.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        showToast('error', 'Terjadi kesalahan! Silakan coba lagi.');
+                    }
+                });
+            });
 
             handleDataTableEvents(datatable);
             handleAction(datatable)

@@ -154,4 +154,64 @@ class KunciDataKbmController extends Controller
             return response()->json(['success' => false, 'message' => 'Data tidak ditemukan untuk diperbarui']);
         }
     }
+
+    public function updateTahunAjaran(Request $request)
+    {
+        // Ambil data id_personil dari user yang sedang login
+        $user = Auth::user();
+
+        // Validasi input
+        $request->validate([
+            'tahunajaran' => 'required',
+        ]);
+
+        // Cek apakah data untuk id_personil ada
+        $data = KunciDataKbm::where('id_personil', $user->personal_id)->first();
+
+        if ($data) {
+            // Jika data ditemukan, perbarui tahunajaran
+            $data->tahunajaran = $request->tahunajaran;
+            $data->save();
+
+            return response()->json([
+                'success' => true,
+                'tahunajaran' => $data->tahunajaran, // Kembalikan tahunajaran terbaru
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Data tidak ditemukan',
+        ]);
+    }
+
+    public function updateGanjilGenap(Request $request)
+    {
+        // Ambil data id_personil dari user yang sedang login
+        $user = Auth::user();
+
+        // Validasi input
+        $request->validate([
+            'ganjilgenap' => 'required',
+        ]);
+
+        // Cek apakah data untuk id_personil ada
+        $data = KunciDataKbm::where('id_personil', $user->personal_id)->first();
+
+        if ($data) {
+            // Jika data ditemukan, perbarui ganjilgenap
+            $data->ganjilgenap = $request->ganjilgenap;
+            $data->save();
+
+            return response()->json([
+                'success' => true,
+                'ganjilgenap' => $data->ganjilgenap, // Kembalikan ganjilgenap terbaru
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Data tidak ditemukan',
+        ]);
+    }
 }
