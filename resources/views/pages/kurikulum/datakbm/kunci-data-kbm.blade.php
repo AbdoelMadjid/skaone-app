@@ -21,17 +21,29 @@
                 <div class="card-body">
                     <div class="ribbon ribbon-primary round-shape">Filter</div>
                     <div class="ribbon-content mt-5 text-muted">
-                        <input type="hidden" name="id_personil" value="{{ $personal_id }}">
-                        <div class="col-md-12">
-                            <x-form.select name="tahunajaran" label="Tahun Ajaran" :options="$tahunAjaranOptions"
-                                value="{{ old('tahunajaran', isset($dataPilCR) ? $dataPilCR->tahunajaran : '') }}"
-                                id="tahun_ajaran" />
-                        </div>
-                        <div class="col-md-12">
-                            <x-form.select name="ganjilgenap" :options="['Ganjil' => 'Ganjil', 'Genap' => 'Genap']"
-                                value="{{ old('ganjilgenap', isset($dataPilCR) ? $dataPilCR->ganjilgenap : '') }}"
-                                label="Semester" id="ganjilgenap" />
-                        </div>
+                        <form action="{{ route('kurikulum.datakbm.kunci-data-kbm.store') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="id_personil" value="{{ $personal_id }}">
+
+                            <div class="col-md-12">
+                                <x-form.select name="tahunajaran" label="Tahun Ajaran" :options="$tahunAjaranOptions"
+                                    value="{{ old('tahunajaran', isset($dataPilCR) ? $dataPilCR->tahunajaran : $tahunajaran) }}"
+                                    id="tahun_ajaran" />
+                            </div>
+
+                            <div class="col-md-12">
+                                <x-form.select name="ganjilgenap" :options="['Ganjil' => 'Ganjil', 'Genap' => 'Genap']"
+                                    value="{{ old('ganjilgenap', isset($dataPilCR) ? $dataPilCR->ganjilgenap : $ganjilgenap) }}"
+                                    label="Semester" id="ganjilgenap" />
+                            </div>
+
+                            {{-- Tambahkan tombol jika dataPilCR tidak ada --}}
+                            @if (!$dataPilCR)
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-primary">Tambah Data</button>
+                                </div>
+                            @endif
+                        </form>
                     </div>
                 </div>
             </div>
@@ -54,7 +66,15 @@
                     <div class="card-header">
                         <div class="row align-items-center">
                             <div class="col-xl-3 col-lg-4">
-                                Tahun Ajaran : {{ $dataPilCR->tahunajaran }} Semester : {{ $dataPilCR->ganjilgenap }}
+                                <div>
+                                    Tahun Ajaran:
+                                    {{ isset($dataPilCR) ? $dataPilCR->tahunajaran : $tahunajaran }}
+                                </div>
+
+                                <div>
+                                    Semester:
+                                    {{ isset($dataPilCR) ? $dataPilCR->ganjilgenap : $ganjilgenap }}
+                                </div>
                             </div>
                             <div class="col-xl-9 col-lg-8">
                             </div>

@@ -25,23 +25,35 @@ class KunciDataKbmController extends Controller
         $user = Auth::user();
         $personal_id = $user->personal_id;
 
-        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+        // Cek apakah ada tahun ajaran aktif
+        $tahunAjaranAktif = TahunAjaran::aktif()->first();
 
         if (!$tahunAjaranAktif) {
             return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
         }
 
-        $semester = Semester::where('status', 'Aktif')
-            ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
-            ->first();
+        // Cek apakah ada semester aktif untuk tahun ajaran tersebut
+        $semester = $tahunAjaranAktif->semesters()->where('status', 'Aktif')->first();
 
         if (!$semester) {
             return redirect()->back()->with('error', 'Tidak ada semester aktif.');
         }
 
+        // Ambil semua opsi tahun ajaran
         $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
 
+        // Cek apakah ada data pada KunciDataKbm untuk id_personil
         $dataPilCR = KunciDataKbm::where('id_personil', $personal_id)->first();
+
+        // Jika ada data di KunciDataKbm, ambil data dari situ
+        if ($dataPilCR) {
+            $tahunajaran = $dataPilCR->tahunajaran;
+            $ganjilgenap = $dataPilCR->ganjilgenap;
+        } else {
+            // Jika tidak ada data, ambil data tahun ajaran dan semester aktif
+            $tahunajaran = $tahunAjaranAktif->tahunajaran;
+            $ganjilgenap = $semester->semester;  // Menggunakan nilai semester dari data semester aktif
+        }
 
         return $kunciDataKBMDataTable->render('pages.kurikulum.datakbm.kunci-data-kbm', [
             'personal_id' => $personal_id,
@@ -49,8 +61,11 @@ class KunciDataKbmController extends Controller
             'semester' => $semester,
             'tahunAjaranOptions' => $tahunAjaranOptions,
             'dataPilCR' => $dataPilCR,
+            'tahunajaran' => $tahunajaran,
+            'ganjilgenap' => $ganjilgenap,
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -65,7 +80,30 @@ class KunciDataKbmController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validasi input data
+        $request->validate([
+            'id_personil' => 'required|exists:users,personal_id', // Pastikan id_personil valid
+            'tahunajaran' => 'required',
+            'ganjilgenap' => 'required',
+        ]);
+
+        // Cek apakah data sudah ada
+        $existingData = KunciDataKbm::where('id_personil', $request->id_personil)->first();
+
+        if ($existingData) {
+            // Jika sudah ada, kembalikan response error
+            return back()->with('error', 'Data sudah ada.');
+        }
+
+        // Simpan data baru
+        $newData = new KunciDataKbm();
+        $newData->id_personil = $request->id_personil;
+        $newData->tahunajaran = $request->tahunajaran;
+        $newData->ganjilgenap = $request->ganjilgenap;
+        $newData->save();
+
+        // Redirect atau kembali dengan pesan sukses
+        return redirect()->route('kurikulum.datakbm.kunci-data-kbm.index')->with('success', 'Data berhasil ditambahkan.');
     }
 
     /**
