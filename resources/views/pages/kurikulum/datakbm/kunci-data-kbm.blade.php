@@ -87,7 +87,7 @@
                     <!-- end card header -->
                     <div class="card-body">
 
-                        <div class="tab-content text-muted">
+                        <div class="tab-content">
                             <div class="tab-pane active" id="productnav-all" role="tabpanel">
                                 <div id="table-product-list-all" class="table-card gridjs-border-none">
                                     {!! $dataTable->table([
@@ -100,19 +100,38 @@
 
                             <div class="tab-pane" id="productnav-published" role="tabpanel">
                                 <div id="table-product-list-published" class="table-card gridjs-border-none">
-                                    <!-- Rounded Ribbon -->
-                                    <div class="card ribbon-box border shadow-none mb-lg-0">
-                                        <div class="card-body">
-                                            <div class="ribbon ribbon-primary round-shape">Primary</div>
-                                            <h5 class="fs-14 text-end">Rounded Ribbon</h5>
-                                            <div class="ribbon-content mt-4 text-muted">
-                                                <p class="mb-0">Quisque nec turpis at urna dictum luctus. Suspendisse
-                                                    convallis dignissim eros at volutpat. In egestas
-                                                    mattis dui. Aliquam mattis dictum aliquet. Nulla sapien mauris, eleifend
-                                                    et sem ac, commodo dapibus odio.</p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <table class="table table-bordered mt-1">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Tahun Ajaran</th>
+                                                <th>Kode KK</th>
+                                                <th>Rombel Tingkat</th>
+                                                <th>Kode Rombel</th>
+                                                <th>Nama Rombel</th>
+                                                <th>NIS</th>
+                                                <th>Nama Lengkap</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse ($dataRombel as $index => $rombel)
+                                                <tr>
+                                                    <td>{{ $index + 1 }}</td>
+                                                    <td>{{ $rombel->tahun_ajaran }}</td>
+                                                    <td>{{ $rombel->kode_kk }}</td>
+                                                    <td>{{ $rombel->rombel_tingkat }}</td>
+                                                    <td>{{ $rombel->rombel_kode }}</td>
+                                                    <td>{{ $rombel->rombel_nama }}</td>
+                                                    <td>{{ $rombel->nis }}</td>
+                                                    <td>{{ $rombel->nama_lengkap }}</td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="8" class="text-center">Data tidak ditemukan</td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                             <!-- end tab pane -->

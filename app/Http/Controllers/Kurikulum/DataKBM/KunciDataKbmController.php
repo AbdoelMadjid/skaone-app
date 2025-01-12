@@ -12,8 +12,10 @@ use App\Models\ManajemenSekolah\PesertaDidik;
 use App\Models\ManajemenSekolah\RombonganBelajar;
 use App\Models\ManajemenSekolah\Semester;
 use App\Models\ManajemenSekolah\TahunAjaran;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class KunciDataKbmController extends Controller
 {
@@ -22,48 +24,69 @@ class KunciDataKbmController extends Controller
      */
     public function index(KunciDataKBMDataTable $kunciDataKBMDataTable)
     {
-        $user = Auth::user();
-        $personal_id = $user->personal_id;
+        if (auth()->check()) {
+            $user = User::find(Auth::user()->id);
+            $personal_id = $user->personal_id;
 
-        // Cek apakah ada tahun ajaran aktif
-        $tahunAjaranAktif = TahunAjaran::aktif()->first();
+            // Cek apakah ada tahun ajaran aktif
+            $tahunAjaranAktif = TahunAjaran::aktif()->first();
 
-        if (!$tahunAjaranAktif) {
-            return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
+            if (!$tahunAjaranAktif) {
+                return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
+            }
+
+            // Cek apakah ada semester aktif untuk tahun ajaran tersebut
+            $semester = $tahunAjaranAktif->semesters()->where('status', 'Aktif')->first();
+
+            if (!$semester) {
+                return redirect()->back()->with('error', 'Tidak ada semester aktif.');
+            }
+
+            // Ambil semua opsi tahun ajaran
+            $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
+
+            // Cek apakah ada data pada KunciDataKbm untuk id_personil
+            $dataPilCR = KunciDataKbm::where('id_personil', $personal_id)->first();
+
+            // Jika ada data di KunciDataKbm, ambil data dari situ
+            if ($dataPilCR) {
+                $tahunajaran = $dataPilCR->tahunajaran;
+                $ganjilgenap = $dataPilCR->ganjilgenap;
+            } else {
+                // Jika tidak ada data, ambil data tahun ajaran dan semester aktif
+                $tahunajaran = $tahunAjaranAktif->tahunajaran;
+                $ganjilgenap = $semester->semester;  // Menggunakan nilai semester dari data semester aktif
+            }
+
+            $dataRombel = DB::table('peserta_didik_rombels')
+                ->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
+                ->select(
+                    'peserta_didik_rombels.tahun_ajaran',
+                    'peserta_didik_rombels.kode_kk',
+                    'peserta_didik_rombels.rombel_tingkat',
+                    'peserta_didik_rombels.rombel_kode',
+                    'peserta_didik_rombels.rombel_nama',
+                    'peserta_didik_rombels.nis',
+                    'peserta_didiks.nama_lengkap',
+                )
+                ->where('peserta_didik_rombels.rombel_kode', $dataPilCR->kode_rombel)
+                ->orderBy('peserta_didik_rombels.nis')
+                ->get();
+
+            return $kunciDataKBMDataTable->render('pages.kurikulum.datakbm.kunci-data-kbm', [
+                'user' => $user,
+                'personal_id' => $personal_id,
+                'tahunAjaranAktif' => $tahunAjaranAktif,
+                'semester' => $semester,
+                'tahunAjaranOptions' => $tahunAjaranOptions,
+                'dataPilCR' => $dataPilCR,
+                'tahunajaran' => $tahunajaran,
+                'ganjilgenap' => $ganjilgenap,
+                'dataRombel' => $dataRombel,
+            ]);
         }
-
-        // Cek apakah ada semester aktif untuk tahun ajaran tersebut
-        $semester = $tahunAjaranAktif->semesters()->where('status', 'Aktif')->first();
-
-        if (!$semester) {
-            return redirect()->back()->with('error', 'Tidak ada semester aktif.');
-        }
-
-        // Ambil semua opsi tahun ajaran
-        $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
-
-        // Cek apakah ada data pada KunciDataKbm untuk id_personil
-        $dataPilCR = KunciDataKbm::where('id_personil', $personal_id)->first();
-
-        // Jika ada data di KunciDataKbm, ambil data dari situ
-        if ($dataPilCR) {
-            $tahunajaran = $dataPilCR->tahunajaran;
-            $ganjilgenap = $dataPilCR->ganjilgenap;
-        } else {
-            // Jika tidak ada data, ambil data tahun ajaran dan semester aktif
-            $tahunajaran = $tahunAjaranAktif->tahunajaran;
-            $ganjilgenap = $semester->semester;  // Menggunakan nilai semester dari data semester aktif
-        }
-
-        return $kunciDataKBMDataTable->render('pages.kurikulum.datakbm.kunci-data-kbm', [
-            'personal_id' => $personal_id,
-            'tahunAjaranAktif' => $tahunAjaranAktif,
-            'semester' => $semester,
-            'tahunAjaranOptions' => $tahunAjaranOptions,
-            'dataPilCR' => $dataPilCR,
-            'tahunajaran' => $tahunajaran,
-            'ganjilgenap' => $ganjilgenap,
-        ]);
+        // Jika user tidak login, redirect ke halaman login
+        return redirect()->route('login')->with('error', 'Anda harus login untuk mengakses halaman ini.');
     }
 
 

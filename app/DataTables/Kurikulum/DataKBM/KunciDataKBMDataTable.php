@@ -63,13 +63,32 @@ class KunciDataKBMDataTable extends DataTable
 
                 return $ceckTerpilih;
             })
+            ->addColumn('namarombel', function ($row) {
+                if ($row->tingkat === '10') {
+                    $tombolROmbel = '
+                    <div class="d-grid gap-2" >
+                        <button class="btn btn-success" type="button">' . $row->rombel . '</button>
+                    </div>';
+                } else if ($row->tingkat === '11') {
+                    $tombolROmbel = '
+                    <div class="d-grid gap-2" >
+                        <button class="btn btn-info" type="button">' . $row->rombel . '</button>
+                    </div>';
+                } else {
+                    $tombolROmbel = '
+                    <div class="d-grid gap-2" >
+                        <button class="btn btn-danger" type="button">' . $row->rombel . '</button>
+                    </div>';
+                }
+                return $tombolROmbel;
+            })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
                 return view('action', compact('actions'));
             })
             ->addIndexColumn()
-            ->rawColumns(['pilih_data', 'action']);
+            ->rawColumns(['pilih_data', 'namarombel', 'action']);
     }
 
     /**
@@ -115,8 +134,8 @@ class KunciDataKBMDataTable extends DataTable
                 'personil_sekolahs.namalengkap',
             ])
             ->orderBy('kbm_per_rombels.tahunajaran', 'asc')
-            ->orderBy('kbm_per_rombels.kode_kk', 'asc')
             ->orderBy('kbm_per_rombels.tingkat', 'asc')
+            ->orderBy('kbm_per_rombels.kode_kk', 'asc')
             ->orderBy('kbm_per_rombels.kode_rombel', 'asc')
             ->get();
 
@@ -158,7 +177,7 @@ class KunciDataKBMDataTable extends DataTable
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('tahunajaran')->title('Tahun Ajaran')->addClass('text-center'),
-            Column::make('rombel')->addClass('text-center'),
+            Column::make('namarombel')->addClass('text-center'),
             Column::make('namalengkap')->title('Nama Wali Kelas'),
             Column::make('pilih_data')->title('Pilih Data')->addClass('text-center'),
             /* Column::computed('action')
