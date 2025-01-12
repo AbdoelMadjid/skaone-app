@@ -115,8 +115,9 @@ class KunciDataKBMDataTable extends DataTable
                 'personil_sekolahs.namalengkap',
             ])
             ->orderBy('kbm_per_rombels.tahunajaran', 'asc')
-            ->orderBy('kbm_per_rombels.tingkat', 'asc')
             ->orderBy('kbm_per_rombels.kode_kk', 'asc')
+            ->orderBy('kbm_per_rombels.tingkat', 'asc')
+            ->orderBy('kbm_per_rombels.kode_rombel', 'asc')
             ->get();
 
 

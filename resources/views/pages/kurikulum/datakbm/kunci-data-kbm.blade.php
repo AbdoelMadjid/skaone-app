@@ -15,12 +15,19 @@
         @endslot
     @endcomponent
     <div class="row">
-        <div class="col-xl-2 col-lg-3">
-            <!-- Rounded Ribbon -->
-            <div class="card ribbon-box border shadow-none mb-lg-0">
-                <div class="card-body">
-                    <div class="ribbon ribbon-primary round-shape">Filter</div>
-                    <div class="ribbon-content mt-5 text-muted">
+        <div class="col-xl-3 col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex mb-3">
+                        <div class="flex-grow-1">
+                            <h5 class="fs-16">Filters</h5>
+                        </div>
+                        <div class="flex-shrink-0">
+
+                        </div>
+                    </div>
+
+                    <div class="filter-choices-input">
                         <form action="{{ route('kurikulum.datakbm.kunci-data-kbm.store') }}" method="POST">
                             @csrf
                             <input type="hidden" name="id_personil" value="{{ $personal_id }}">
@@ -46,46 +53,261 @@
                         </form>
                     </div>
                 </div>
+
+                <div class="accordion accordion-flush filter-accordion">
+
+                    <div class="card-body border-bottom">
+                        <div>
+                            <p class="text-muted text-uppercase fs-12 fw-medium mb-2">Products</p>
+                            <ul class="list-unstyled mb-0 filter-list">
+                                <li>
+                                    <a href="#" class="d-flex py-1 align-items-center">
+                                        <div class="flex-grow-1">
+                                            <h5 class="fs-13 mb-0 listname">Grocery</h5>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="d-flex py-1 align-items-center">
+                                        <div class="flex-grow-1">
+                                            <h5 class="fs-13 mb-0 listname">Fashion</h5>
+                                        </div>
+                                        <div class="flex-shrink-0 ms-2">
+                                            <span class="badge bg-light text-muted">5</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="d-flex py-1 align-items-center">
+                                        <div class="flex-grow-1">
+                                            <h5 class="fs-13 mb-0 listname">Watches</h5>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="d-flex py-1 align-items-center">
+                                        <div class="flex-grow-1">
+                                            <h5 class="fs-13 mb-0 listname">Electronics</h5>
+                                        </div>
+                                        <div class="flex-shrink-0 ms-2">
+                                            <span class="badge bg-light text-muted">5</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="d-flex py-1 align-items-center">
+                                        <div class="flex-grow-1">
+                                            <h5 class="fs-13 mb-0 listname">Furniture</h5>
+                                        </div>
+                                        <div class="flex-shrink-0 ms-2">
+                                            <span class="badge bg-light text-muted">6</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="d-flex py-1 align-items-center">
+                                        <div class="flex-grow-1">
+                                            <h5 class="fs-13 mb-0 listname">Automotive Accessories</h5>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="d-flex py-1 align-items-center">
+                                        <div class="flex-grow-1">
+                                            <h5 class="fs-13 mb-0 listname">Appliances</h5>
+                                        </div>
+                                        <div class="flex-shrink-0 ms-2">
+                                            <span class="badge bg-light text-muted">7</span>
+                                        </div>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="#" class="d-flex py-1 align-items-center">
+                                        <div class="flex-grow-1">
+                                            <h5 class="fs-13 mb-0 listname">Kids</h5>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
             </div>
+            <!-- end card -->
         </div>
-        <div class="col-xl-10 col-lg-9">
+        <!-- end col -->
+
+        <div class="col-xl-9 col-lg-8">
             <div>
                 <div class="card">
-                    <div class="card-header border-bottom-dashed">
-                        <div class="row g-4 align-items-center">
-                            <div class="col-sm">
-                                <div>
-                                    <h5 class="card-title mb-0">@lang('translation.tables') @lang('translation.kbm-per-rombel')</h5>
-                                </div>
-                            </div>
-                            <div class="col-sm-auto">
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="card-header">
                         <div class="row align-items-center">
-                            <div class="col-xl-3 col-lg-4">
-                                <div>
-                                    Tahun Ajaran: <span
-                                        id="tahunAjaranDisplay">{{ isset($dataPilCR) ? $dataPilCR->tahunajaran : $tahunajaran }}</span>
-                                </div>
-
-                                <div>
-                                    Semester: <span
-                                        id="semesterDisplay">{{ isset($dataPilCR) ? $dataPilCR->ganjilgenap : $ganjilgenap }}</span>
-                                </div>
+                            <div class="col">
+                                <ul class="nav nav-tabs-custom card-header-tabs border-bottom-0" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active fw-semibold" data-bs-toggle="tab" href="#productnav-all"
+                                            role="tab">
+                                            Rombongan Belajar
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#productnav-published"
+                                            role="tab">
+                                            Leger Nilai
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#productnav-draft"
+                                            role="tab">
+                                            Draft
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
-                            <div class="col-xl-9 col-lg-8">
+                            <div class="col-auto">
+                                <div id="selection-element">
+                                    <div class="my-n1 d-flex align-items-center text-muted">
+                                        Select <div id="select-content" class="text-body fw-semibold px-1"></div> Result
+                                        <button type="button" class="btn btn-link link-danger p-0 ms-3"
+                                            data-bs-toggle="modal" data-bs-target="#removeItemModal">Remove</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
+                    <!-- end card header -->
                     <div class="card-body">
-                        {!! $dataTable->table([
-                            'class' => 'table table-striped hover',
-                            'style' => 'width:100%',
-                        ]) !!}
+
+                        <div class="tab-content text-muted">
+                            <div class="tab-pane active" id="productnav-all" role="tabpanel">
+                                <div id="table-product-list-all" class="table-card gridjs-border-none">
+                                    {!! $dataTable->table([
+                                        'class' => 'table table-striped hover',
+                                        'style' => 'width:100%',
+                                    ]) !!}
+                                </div>
+                            </div>
+                            <!-- end tab pane -->
+
+                            <div class="tab-pane" id="productnav-published" role="tabpanel">
+                                <div id="table-product-list-published" class="table-card gridjs-border-none"></div>
+                            </div>
+                            <!-- end tab pane -->
+
+                            <div class="tab-pane" id="productnav-draft" role="tabpanel">
+                                <div class="py-4 text-center">
+                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
+                                        colors="primary:#405189,secondary:#0ab39c" style="width:72px;height:72px">
+                                    </lord-icon>
+                                    <h5 class="mt-4">Sorry! No Result Found</h5>
+                                </div>
+                            </div>
+                            <!-- end tab pane -->
+                        </div>
+                        <!-- end tab content -->
+
+                    </div>
+                    <!-- end card body -->
+                </div>
+                <!-- end card -->
+            </div>
+        </div>
+        <!-- end col -->
+    </div>
+    <div>
+        <div class="card">
+            <div class="card-header border-0">
+                <div class="row g-4">
+                    <div class="col-sm-auto">
+                        <div>
+
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="d-flex justify-content-sm-end">
+                            <ul class="nav nav-tabs-custom border-bottom-0" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active fw-semibold" data-bs-toggle="tab" href="#pilih-data"
+                                        role="tab">
+                                        Pilih Data
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#data-leger"
+                                        role="tab">
+                                        Leger
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#project-activities"
+                                        role="tab">
+                                        Activities
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#project-team"
+                                        role="tab">
+                                        Team
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-content text-muted">
+        <div class="tab-pane fade show active" id="pilih-data" role="tabpanel">
+            <div class="row">
+                <div class="col-xl-3 col-lg-4">
+                    <!-- Rounded Ribbon -->
+                    <div class="card ribbon-box border shadow-none mb-lg-2">
+                        <div class="card-body">
+                            <div class="ribbon ribbon-primary round-shape">Pilih Tahun Ajar dan Semester</div>
+                            <div class="ribbon-content mt-5">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-9 col-lg-8">
+                    <div>
+                        <div class="card">
+                            <div class="card-header border-bottom-dashed">
+                                <div class="row g-4 align-items-center">
+                                    <div class="col-sm">
+                                        <div>
+                                            <h5 class="card-title mb-0">@lang('translation.tables') @lang('translation.kbm-per-rombel')</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-auto">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade show active" id="data-leger" role="tabpanel">
+            <!-- Rounded Ribbon -->
+            <div class="card ribbon-box border shadow-none mb-lg-0">
+                <div class="card-body">
+                    <div class="ribbon ribbon-primary round-shape">Primary</div>
+                    <h5 class="fs-14 text-end">Rounded Ribbon</h5>
+                    <div class="ribbon-content mt-4 text-muted">
+                        <p class="mb-0">Quisque nec turpis at urna dictum luctus. Suspendisse convallis dignissim eros at
+                            volutpat. In egestas
+                            mattis dui. Aliquam mattis dictum aliquet. Nulla sapien mauris, eleifend et sem ac, commodo
+                            dapibus odio.</p>
                     </div>
                 </div>
             </div>
@@ -161,7 +383,6 @@
                         if (response.success) {
                             $('#kuncidatakbm-table').DataTable().ajax.reload(null, false);
                             showToast('success', 'Tahun Ajaran berhasil diperbarui!');
-                            $('#tahunAjaranDisplay').text(response.tahunajaran);
                         } else {
                             showToast('error',
                                 'Terjadi kesalahan saat memperbarui tahun ajaran.');
@@ -191,7 +412,6 @@
                         if (response.success) {
                             $('#kuncidatakbm-table').DataTable().ajax.reload(null, false);
                             showToast('success', 'Semester berhasil diperbarui!');
-                            $('#semesterDisplay').text(response.ganjilgenap);
                         } else {
                             showToast('error', 'Terjadi kesalahan saat memperbarui semester.');
                         }

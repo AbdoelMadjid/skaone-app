@@ -173,17 +173,14 @@ class KunciDataKbmController extends Controller
             $data->tahunajaran = $request->tahunajaran;
             $data->save();
 
-            return response()->json([
-                'success' => true,
-                'tahunajaran' => $data->tahunajaran, // Kembalikan tahunajaran terbaru
-            ]);
+            // Kembalikan response sukses
+            return response()->json(['success' => true, 'message' => 'Tahun Ajaran berhasil diperbarui']);
         }
 
-        return response()->json([
-            'success' => false,
-            'message' => 'Data tidak ditemukan',
-        ]);
+        // Jika data tidak ditemukan
+        return response()->json(['success' => false, 'message' => 'Data tidak ditemukan']);
     }
+
 
     public function updateGanjilGenap(Request $request)
     {
@@ -203,15 +200,16 @@ class KunciDataKbmController extends Controller
             $data->ganjilgenap = $request->ganjilgenap;
             $data->save();
 
-            return response()->json([
-                'success' => true,
-                'ganjilgenap' => $data->ganjilgenap, // Kembalikan ganjilgenap terbaru
-            ]);
+            // Kembalikan response sukses
+            return response()->json(['success' => true, 'message' => 'Semester berhasil diperbarui']);
         }
 
-        return response()->json([
-            'success' => false,
-            'message' => 'Data tidak ditemukan',
-        ]);
+        // Jika data tidak ditemukan
+        return response()->json(['success' => false, 'message' => 'Data tidak ditemukan']);
+    }
+
+    public function legerNilai()
+    {
+        return view('pages.kurikulum.datakbm.kunci-data-kbm-leger');
     }
 }
