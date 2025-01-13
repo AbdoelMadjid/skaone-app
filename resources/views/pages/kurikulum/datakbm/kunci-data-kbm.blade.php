@@ -137,12 +137,41 @@
                             <!-- end tab pane -->
 
                             <div class="tab-pane" id="productnav-draft" role="tabpanel">
-                                <div class="py-4 text-center">
-                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
-                                        colors="primary:#405189,secondary:#0ab39c" style="width:72px;height:72px">
-                                    </lord-icon>
-                                    <h5 class="mt-4">Sorry! No Result Found</h5>
-                                </div>
+                                <table class="table table-bordered table-striped">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>NIS</th>
+                                            <th>Nama Lengkap</th>
+                                            @foreach ($kelMapelList as $kelMapel)
+                                                <th>{{ $kelMapel }} Average</th>
+                                            @endforeach
+                                            <th>Rata-Rata</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse ($hasilAkhir as $key => $nilai)
+                                            <tr>
+                                                <td class="text-center">{{ $key + 1 }}.</td>
+                                                <td class="text-center">{{ $nilai->nis }}</td>
+                                                <td>{{ $nilai->nama_lengkap }}</td>
+                                                @foreach ($kelMapelList as $kelMapel)
+                                                    <td class="text-center">
+                                                        {{ $nilai->nilai_mapel[$kelMapel] ?? '-' }}
+                                                    </td>
+                                                @endforeach
+                                                <td class="text-center">{{ $nilai->nil_rata_siswa }}</td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="{{ 3 + count($kelMapelList) }}" class="text-center">Tidak ada
+                                                    data</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+
+
                             </div>
                             <!-- end tab pane -->
                         </div>

@@ -30,14 +30,12 @@ class KunciDataKbmController extends Controller
 
             // Cek apakah ada tahun ajaran aktif
             $tahunAjaranAktif = TahunAjaran::aktif()->first();
-
             if (!$tahunAjaranAktif) {
                 return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
             }
 
             // Cek apakah ada semester aktif untuk tahun ajaran tersebut
             $semester = $tahunAjaranAktif->semesters()->where('status', 'Aktif')->first();
-
             if (!$semester) {
                 return redirect()->back()->with('error', 'Tidak ada semester aktif.');
             }
@@ -47,17 +45,15 @@ class KunciDataKbmController extends Controller
 
             // Cek apakah ada data pada KunciDataKbm untuk id_personil
             $dataPilCR = KunciDataKbm::where('id_personil', $personal_id)->first();
-
-            // Jika ada data di KunciDataKbm, ambil data dari situ
-            if ($dataPilCR) {
-                $tahunajaran = $dataPilCR->tahunajaran;
-                $ganjilgenap = $dataPilCR->ganjilgenap;
-            } else {
-                // Jika tidak ada data, ambil data tahun ajaran dan semester aktif
-                $tahunajaran = $tahunAjaranAktif->tahunajaran;
-                $ganjilgenap = $semester->semester;  // Menggunakan nilai semester dari data semester aktif
+            if (!$dataPilCR || !$dataPilCR->kode_rombel) {
+                return redirect()->back()->with('error', 'Data Kunci Data KBM tidak ditemukan untuk pengguna ini.');
             }
 
+            // Ambil data tahun ajaran dan semester berdasarkan data di KunciDataKbm atau fallback ke aktif
+            $tahunajaran = $dataPilCR->tahunajaran ?? $tahunAjaranAktif->tahunajaran;
+            $ganjilgenap = $dataPilCR->ganjilgenap ?? $semester->semester;
+
+            // Ambil data rombel
             $dataRombel = DB::table('peserta_didik_rombels')
                 ->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
                 ->select(
@@ -73,6 +69,61 @@ class KunciDataKbmController extends Controller
                 ->orderBy('peserta_didik_rombels.nis')
                 ->get();
 
+            if ($dataRombel->isEmpty()) {
+                return redirect()->back()->with('error', 'Data rombel tidak ditemukan.');
+            }
+
+            // Ambil data kel_mapel berdasarkan kode rombel
+            $kelMapelList = DB::table('kbm_per_rombels')
+                ->where('kode_rombel', $dataPilCR->kode_rombel)
+                ->pluck('kel_mapel')
+                ->toArray();
+
+            if (empty($kelMapelList)) {
+                return redirect()->back()->with('error', 'Tidak ada data kel_mapel untuk rombel tersebut.');
+            }
+
+            $dataPesertaDidik = DB::table('peserta_didik_rombels')
+                ->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
+                ->join('kbm_per_rombels', 'peserta_didik_rombels.rombel_kode', '=', 'kbm_per_rombels.kode_rombel')
+                ->where('peserta_didik_rombels.rombel_kode', $dataPilCR->kode_rombel)
+                ->select('peserta_didiks.nis', 'peserta_didiks.nama_lengkap')
+                ->get();
+
+            $nilaiMapel = [];
+            foreach ($kelMapelList as $kelMapel) {
+                $nilaiFormatif = DB::table('nilai_formatif')
+                    ->where('kel_mapel', $kelMapel)
+                    ->select('nis', 'rerata_formatif')
+                    ->get();
+
+                $nilaiSumatif = DB::table('nilai_sumatif')
+                    ->where('kel_mapel', $kelMapel)
+                    ->select('nis', 'rerata_sumatif')
+                    ->get();
+
+                $nilaiMapel[$kelMapel] = $nilaiFormatif->merge($nilaiSumatif)->groupBy('nis');
+            }
+
+            $hasilAkhir = $dataPesertaDidik->map(function ($peserta) use ($kelMapelList, $nilaiMapel) {
+                $peserta->nilai_mapel = [];
+                $totalNilai = 0;
+                $jumlahMapel = count($kelMapelList);
+
+                foreach ($kelMapelList as $kelMapel) {
+                    $rerataFormatif = $nilaiMapel[$kelMapel][$peserta->nis]->pluck('rerata_formatif')->first() ?? 0;
+                    $rerataSumatif = $nilaiMapel[$kelMapel][$peserta->nis]->pluck('rerata_sumatif')->first() ?? 0;
+
+                    $rataMapel = ($rerataFormatif + $rerataSumatif) / 2;
+                    $peserta->nilai_mapel[$kelMapel] = round($rataMapel, 2);
+                    $totalNilai += $rataMapel;
+                }
+
+                $peserta->nil_rata_siswa = round($totalNilai / $jumlahMapel, 2);
+                return $peserta;
+            });
+
+
             return $kunciDataKBMDataTable->render('pages.kurikulum.datakbm.kunci-data-kbm', [
                 'user' => $user,
                 'personal_id' => $personal_id,
@@ -83,11 +134,15 @@ class KunciDataKbmController extends Controller
                 'tahunajaran' => $tahunajaran,
                 'ganjilgenap' => $ganjilgenap,
                 'dataRombel' => $dataRombel,
+                'hasilAkhir' => $hasilAkhir,
+                'kelMapelList' => $kelMapelList,
             ]);
         }
+
         // Jika user tidak login, redirect ke halaman login
         return redirect()->route('login')->with('error', 'Anda harus login untuk mengakses halaman ini.');
     }
+
 
 
     /**
