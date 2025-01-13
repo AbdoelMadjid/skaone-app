@@ -54,13 +54,13 @@
             <div class="card ribbon-box border shadow-none mb-lg-0">
                 <div class="card-body">
                     <div class="ribbon ribbon-primary round-shape">Dokumen KBM</div>
-                    <h5 class="fs-14 text-end">Rounded Ribbon</h5>
-                    <div class="ribbon-content mt-4" id="tomboldokumen">
+                    <h5 class="fs-14 text-end"></h5>
+                    <div class="ribbon-content mt-5" id="tomboldokumen">
                         @if ($dataPilCR)
                             <div class="d-grid gap-2">
                                 <a id="leger-link"
                                     href="/kurikulum/datakbm/export-to-excel-leger?kode_rombel={{ $dataPilCR->kode_rombel }}"
-                                    class="btn btn-primary btn-sm">Leger</a>
+                                    class="btn btn-primary btn-sm">Download Excel - Leger</a>
                             </div>
                         @endif
                     </div>
