@@ -67,20 +67,24 @@ class KunciDataKBMDataTable extends DataTable
                 if ($row->tingkat === '10') {
                     $tombolROmbel = '
                     <div class="d-grid gap-2" >
-                        <button class="btn btn-success" type="button">' . $row->rombel . '</button>
+                        <button class="btn btn-success btn-sm" type="button">' . $row->rombel . '</button>
                     </div>';
                 } else if ($row->tingkat === '11') {
                     $tombolROmbel = '
                     <div class="d-grid gap-2" >
-                        <button class="btn btn-info" type="button">' . $row->rombel . '</button>
+                        <button class="btn btn-info btn-sm" type="button">' . $row->rombel . '</button>
                     </div>';
                 } else {
                     $tombolROmbel = '
                     <div class="d-grid gap-2" >
-                        <button class="btn btn-danger" type="button">' . $row->rombel . '</button>
+                        <button class="btn btn-danger btn-sm" type="button">' . $row->rombel . '</button>
                     </div>';
                 }
                 return $tombolROmbel;
+            })
+            ->addColumn('download_leger', function ($row) {
+                $url = url('/kurikulum/datakbm/export-to-excel-leger?kode_rombel=' . $row->kode_rombel);
+                return '<a href="' . $url . '" class="btn btn-soft-success btn-sm">Ekspor ke Excel</a>';
             })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
@@ -88,7 +92,7 @@ class KunciDataKBMDataTable extends DataTable
                 return view('action', compact('actions'));
             })
             ->addIndexColumn()
-            ->rawColumns(['pilih_data', 'namarombel', 'action']);
+            ->rawColumns(['pilih_data', 'namarombel', 'download_leger', 'action']);
     }
 
     /**
@@ -179,6 +183,7 @@ class KunciDataKBMDataTable extends DataTable
             Column::make('tahunajaran')->title('Tahun Ajaran')->addClass('text-center'),
             Column::make('namarombel')->addClass('text-center'),
             Column::make('namalengkap')->title('Nama Wali Kelas'),
+            Column::make('download_leger')->title('Leger')->addClass('text-center'),
             Column::make('pilih_data')->title('Pilih Data')->addClass('text-center'),
             /* Column::computed('action')
                 ->exportable(false)

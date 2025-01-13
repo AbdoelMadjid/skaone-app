@@ -18,7 +18,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\NilaiRataSiswaExport;
-
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 class KunciDataKbmController extends Controller
 {
@@ -292,19 +297,21 @@ class KunciDataKbmController extends Controller
         return response()->json(['success' => false, 'message' => 'Data tidak ditemukan']);
     }
 
-    public function exportNilaiRataSiswa($personal_id)
+    public function exportToExcel(Request $request)
     {
-        // Ambil data dari controller seperti sebelumnya
-        $dataPilCR = KunciDataKbm::where('id_personil', $personal_id)->first();
-        if (!$dataPilCR || !$dataPilCR->kode_rombel) {
-            return redirect()->back()->with('error', 'Data Kunci Data KBM tidak ditemukan untuk pengguna ini.');
+        $kodeRombel = $request->input('kode_rombel');
+
+        if (!$kodeRombel) {
+            return redirect()->back()->with('error', 'Kode Rombel tidak ditemukan.');
         }
 
-        $kodeRombel = $dataPilCR->kode_rombel;
-
         $kelMapelList = DB::table('kbm_per_rombels')
-            ->select('kel_mapel', 'mata_pelajaran')
+            ->select('kel_mapel')
             ->distinct()
+            ->where('kode_rombel', $kodeRombel)
+            ->get();
+
+        $listMapel = DB::table('kbm_per_rombels')
             ->where('kode_rombel', $kodeRombel)
             ->get();
 
@@ -330,7 +337,6 @@ class KunciDataKbmController extends Controller
             pd.nis, kr.kel_mapel
     ", [$kodeRombel]);
 
-        // Pivoting data programatis di PHP
         $pivotData = [];
         foreach ($nilaiRataSiswa as $nilai) {
             $pivotData[$nilai->nis]['nama_lengkap'] = $nilai->nama_lengkap;
@@ -338,12 +344,108 @@ class KunciDataKbmController extends Controller
         }
 
         foreach ($pivotData as $nis => &$data) {
-            $sum = array_sum(array_slice($data, 1)); // Mulai dari elemen kedua (kel_mapel) ke atas
-            $count = count($data) - 1; // Kurangi nama_lengkap
+            $sum = array_sum(array_slice($data, 1));
+            $count = count($data) - 1;
             $data['nil_rata_siswa'] = round($sum / $count, 2);
         }
 
-        // Export ke Excel
-        return Excel::download(new NilaiRataSiswaExport($pivotData, $kelMapelList), 'nilai_rata_siswa.xlsx');
+        $spreadsheet = new Spreadsheet();
+
+        // Sheet 1
+        $sheet1 = $spreadsheet->getActiveSheet();
+        $sheet1->setTitle('Nilai Siswa');
+
+        // Merge title cell and set title
+        $totalColumns = 3 + $kelMapelList->count(); // No., NIS, Nama Lengkap, KelMapel, Rata-Rata
+        $lastColumn = chr(64 + $totalColumns); // Menghitung huruf kolom terakhir
+        $sheet1->mergeCells("A1:{$lastColumn}1");
+        $sheet1->setCellValue('A1', 'LEGER NILAI ROMBEL ' . $kodeRombel);
+        $sheet1->getStyle('A1')->getFont()->setBold(true)->setSize(14);
+        $sheet1->getStyle('A1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+        // Apply borders to the table excluding the title
+        $highestRow = $sheet1->getHighestRow(); // Mengambil baris terakhir
+        $sheet1->getStyle("A2:{$lastColumn}{$highestRow}")
+            ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+
+        // Set auto width for all columns
+        foreach (range('A', $lastColumn) as $column) {
+            $sheet1->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        // Header sheet 1
+        $header1 = ['No.', 'NIS', 'Nama Lengkap'];
+        foreach ($kelMapelList as $kelMapel) {
+            $header1[] = $kelMapel->kel_mapel;
+        }
+        $header1[] = 'Nilai Rata-Rata';
+
+        $sheet1->fromArray($header1, null, 'A2');
+
+        // Style header row
+        $sheet1->getStyle("A2:{$lastColumn}2")
+            ->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('D3D3D3');
+        $sheet1->getStyle("A2:{$lastColumn}2")
+            ->getFont()->setBold(true);
+        $sheet1->getStyle("A2:{$lastColumn}2")
+            ->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+        // Data sheet 1
+        $rowNumber = 3; // Start data after header row
+        $no = 1;
+        foreach ($pivotData as $nis => $data) {
+            $row = [$no++, $nis, $data['nama_lengkap']];
+            foreach ($kelMapelList as $kelMapel) {
+                $row[] = $data[$kelMapel->kel_mapel] ?? '-';
+            }
+            $row[] = $data['nil_rata_siswa'];
+            $sheet1->fromArray($row, null, "A$rowNumber");
+            $rowNumber++;
+        }
+
+        // Apply borders and auto width for Sheet 1
+        $highestRow = $sheet1->getHighestRow(); // Mengambil baris terakhir
+        $highestColumn = $sheet1->getHighestColumn(); // Mengambil kolom terakhir
+        $sheet1->getStyle("A1:{$highestColumn}{$highestRow}")
+            ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+
+        // Set auto width untuk semua kolom
+        foreach (range('A', $highestColumn) as $column) {
+            $sheet1->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        // Sheet 2
+        $sheet2 = $spreadsheet->createSheet();
+        $sheet2->setTitle('Daftar Mapel');
+
+        // Header sheet 2
+        $header2 = ['No.', 'Kelompok Mapel', 'Mata Pelajaran'];
+        $sheet2->fromArray($header2, null, 'A1');
+
+        // Data sheet 2
+        $rowNumber = 2;
+        foreach ($listMapel as $index => $kelMapel) {
+            $row = [$index + 1, $kelMapel->kel_mapel, $kelMapel->mata_pelajaran];
+            $sheet2->fromArray($row, null, "A$rowNumber");
+            $rowNumber++;
+        }
+
+        // Apply borders and auto width for Sheet 2
+        $sheet2->getStyle('A1:' . $sheet2->getHighestColumn() . $sheet2->getHighestRow())
+            ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+        foreach (range('A', $sheet2->getHighestColumn()) as $column) {
+            $sheet2->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        // Simpan file Excel
+        $writer = new Xlsx($spreadsheet);
+
+        $fileName = 'Export_Nilai_Siswa_' . $kodeRombel . '.xlsx';
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header("Content-Disposition: attachment; filename=\"$fileName\"");
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+        exit;
     }
 }
