@@ -138,6 +138,9 @@
 
                             <div class="tab-pane" id="productnav-draft" role="tabpanel">
                                 <h2 class="text-center">Nilai Rata-Rata Siswa</h2>
+                                <a href="{{ route('kurikulum.datakbm.kunci-data-kbm.export', ['personal_id' => $personal_id]) }}"
+                                    class="btn btn-success mb-3">Download Excel</a>
+
                                 <table class="table table-bordered table-striped mt-3">
                                     <thead class="table-dark">
                                         <tr>
@@ -170,6 +173,24 @@
                                     </tbody>
                                 </table>
 
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Kelompok Mapel</th>
+                                            <th>Mata Pelajaran</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($listMapel as $index => $kelMapel)
+                                            <tr>
+                                                <td>{{ $index + 1 }}</td>
+                                                <td>{{ $kelMapel->kel_mapel }}</td>
+                                                <td>{{ $kelMapel->mata_pelajaran }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
 
                             </div>
                             <!-- end tab pane -->
