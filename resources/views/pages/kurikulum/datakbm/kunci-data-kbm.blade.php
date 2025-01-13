@@ -16,159 +16,71 @@
     @endcomponent
     <div class="row">
         <div class="col-xl-3 col-lg-4">
-            <div class="card">
-                <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1">Filter</h4>
-                    <div class="flex-shrink-0">
+            <!-- Rounded Ribbon -->
+            <div class="card ribbon-box border shadow-none mb-lg-0">
+                <div class="card-body">
+                    <div class="ribbon ribbon-primary round-shape">Pilih Data</div>
+                    <h5 class="fs-14 text-end"></h5>
+                    <div class="ribbon-content mt-5">
+                        <div class="filter-choices-input">
+                            <form action="{{ route('kurikulum.datakbm.kunci-data-kbm.store') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="id_personil" value="{{ $personal_id }}">
 
-                    </div>
-                </div><!-- end card header -->
-                <div class="card-header">
-                    <div class="filter-choices-input">
-                        <form action="{{ route('kurikulum.datakbm.kunci-data-kbm.store') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="id_personil" value="{{ $personal_id }}">
-
-                            <div class="col-md-12">
-                                <x-form.select name="tahunajaran" label="Tahun Ajaran" :options="$tahunAjaranOptions"
-                                    value="{{ old('tahunajaran', isset($dataPilCR) ? $dataPilCR->tahunajaran : $tahunajaran) }}"
-                                    id="tahun_ajaran" />
-                            </div>
-
-                            <div class="col-md-12">
-                                <x-form.select name="ganjilgenap" :options="['Ganjil' => 'Ganjil', 'Genap' => 'Genap']"
-                                    value="{{ old('ganjilgenap', isset($dataPilCR) ? $dataPilCR->ganjilgenap : $ganjilgenap) }}"
-                                    label="Semester" id="ganjilgenap" />
-                            </div>
-
-                            {{-- Tambahkan tombol jika dataPilCR tidak ada --}}
-                            @if (!$dataPilCR)
                                 <div class="col-md-12">
-                                    <button type="submit" class="btn btn-primary">Tambah Data</button>
+                                    <x-form.select name="tahunajaran" label="Tahun Ajaran" :options="$tahunAjaranOptions"
+                                        value="{{ old('tahunajaran', isset($dataPilCR) ? $dataPilCR->tahunajaran : $tahunajaran) }}"
+                                        id="tahun_ajaran" />
                                 </div>
-                            @endif
-                        </form>
+
+                                <div class="col-md-12">
+                                    <x-form.select name="ganjilgenap" :options="['Ganjil' => 'Ganjil', 'Genap' => 'Genap']"
+                                        value="{{ old('ganjilgenap', isset($dataPilCR) ? $dataPilCR->ganjilgenap : $ganjilgenap) }}"
+                                        label="Semester" id="ganjilgenap" />
+                                </div>
+
+                                {{-- Tambahkan tombol jika dataPilCR tidak ada --}}
+                                @if (!$dataPilCR)
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-primary">Tambah Data</button>
+                                    </div>
+                                @endif
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- end card -->
+            <!-- Rounded Ribbon -->
+            <div class="card ribbon-box border shadow-none mb-lg-0">
+                <div class="card-body">
+                    <div class="ribbon ribbon-primary round-shape">Dokumen KBM</div>
+                    <h5 class="fs-14 text-end">Rounded Ribbon</h5>
+                    <div class="ribbon-content mt-4" id="tomboldokumen">
+                        @if ($dataPilCR)
+                            <div class="d-grid gap-2">
+                                <a id="leger-link"
+                                    href="/kurikulum/datakbm/export-to-excel-leger?kode_rombel={{ $dataPilCR->kode_rombel }}"
+                                    class="btn btn-primary btn-sm">Leger</a>
+                            </div>
+                        @endif
+                    </div>
+
+                </div>
+            </div>
         </div>
-        <!-- end col -->
 
         <div class="col-xl-9 col-lg-8">
             <div>
                 <div class="card">
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <ul class="nav nav-tabs-custom card-header-tabs border-bottom-0" role="tablist">
-                                    <li class="nav-item">
-                                        <a class="nav-link active fw-semibold" data-bs-toggle="tab" href="#productnav-all"
-                                            role="tab">
-                                            Rombongan Belajar
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#productnav-published"
-                                            role="tab">
-                                            Leger Nilai
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#productnav-draft"
-                                            role="tab">
-                                            Draft
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end card header -->
                     <div class="card-body">
-
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="productnav-all" role="tabpanel">
-                                <div id="table-product-list-all" class="table-card gridjs-border-none">
-                                    {!! $dataTable->table([
-                                        'class' => 'table table-striped hover',
-                                        'style' => 'width:100%',
-                                    ]) !!}
-                                </div>
-                            </div>
-                            <!-- end tab pane -->
-
-                            <div class="tab-pane" id="productnav-published" role="tabpanel">
-                                <div id="table-product-list-published" class="table-card gridjs-border-none">
-                                    <table class="table table-bordered table-striped mt-3">
-                                        <thead class="table-dark">
-                                            <tr>
-                                                <th>No.</th>
-                                                <th>NIS</th>
-                                                <th>Nama Lengkap</th>
-                                                @foreach ($kelMapelList as $kelMapel)
-                                                    <th>{{ $kelMapel->kel_mapel }}</th>
-                                                @endforeach
-                                                <th>Nilai Rata-Rata</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @forelse ($pivotData as $nis => $data)
-                                                <tr>
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $nis }}</td>
-                                                    <td>{{ $data['nama_lengkap'] }}</td>
-                                                    @foreach ($kelMapelList as $kelMapel)
-                                                        <td>{{ $data[$kelMapel->kel_mapel] ?? '-' }}</td>
-                                                    @endforeach
-                                                    <td>{{ $data['nil_rata_siswa'] }}</td>
-                                                </tr>
-                                            @empty
-                                                <tr>
-                                                    <td colspan="{{ 3 + $kelMapelList->count() }}" class="text-center">
-                                                        Tidak
-                                                        ada data</td>
-                                                </tr>
-                                            @endforelse
-                                        </tbody>
-                                    </table>
-
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>No.</th>
-                                                <th>Kelompok Mapel</th>
-                                                <th>Mata Pelajaran</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($listMapel as $index => $kelMapel)
-                                                <tr>
-                                                    <td>{{ $index + 1 }}</td>
-                                                    <td>{{ $kelMapel->kel_mapel }}</td>
-                                                    <td>{{ $kelMapel->mata_pelajaran }}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <!-- end tab pane -->
-
-                            <div class="tab-pane" id="productnav-draft" role="tabpanel">
-                                <h2 class="text-center">Nilai Rata-Rata Siswa</h2>
-                            </div>
-                            <!-- end tab pane -->
-                        </div>
-                        <!-- end tab content -->
-
+                        {!! $dataTable->table([
+                            'class' => 'table table-striped hover',
+                            'style' => 'width:100%',
+                        ]) !!}
                     </div>
-                    <!-- end card body -->
                 </div>
-                <!-- end card -->
             </div>
         </div>
-        <!-- end col -->
     </div>
 @endsection
 @section('script')
@@ -207,7 +119,15 @@
                 success: function(response) {
                     if (response.success) {
                         $('#kuncidatakbm-table').DataTable().ajax.reload(null, false);
+                        //location.reload();
                         showToast('success', 'Data berhasil diperbarui');
+
+                        // Perbarui URL pada link yang ada di dalam #tomboldokumen
+                        const kodeRombel = data.kode_rombel;
+                        // Hanya update link di #tomboldokumen tanpa mempengaruhi link lainnya
+                        $('#leger-link').attr('href',
+                            `/kurikulum/datakbm/export-to-excel-leger?kode_rombel=${kodeRombel}`);
+
                     } else {
                         showToast('error', 'Terjadi kesalahan: ' + response.message);
                     }

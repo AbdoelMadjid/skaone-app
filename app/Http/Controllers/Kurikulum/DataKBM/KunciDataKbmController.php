@@ -53,14 +53,14 @@ class KunciDataKbmController extends Controller
 
             // Cek apakah ada data pada KunciDataKbm untuk id_personil
             $dataPilCR = KunciDataKbm::where('id_personil', $personal_id)->first();
-            if (!$dataPilCR || !$dataPilCR->kode_rombel) {
+            /* if (!$dataPilCR || !$dataPilCR->kode_rombel) {
                 return redirect()->back()->with('error', 'Data Kunci Data KBM tidak ditemukan untuk pengguna ini.');
-            }
+            } */
 
             // Ambil data tahun ajaran dan semester berdasarkan data di KunciDataKbm atau fallback ke aktif
             $tahunajaran = $dataPilCR->tahunajaran ?? $tahunAjaranAktif->tahunajaran;
             $ganjilgenap = $dataPilCR->ganjilgenap ?? $semester->semester;
-
+            /*
             // Ambil kode_rombel dari $dataPilCR
             $kodeRombel = $dataPilCR->kode_rombel;
 
@@ -93,26 +93,26 @@ class KunciDataKbmController extends Controller
 
             // Dapatkan nilai rata-rata per kel_mapel untuk setiap siswa
             $nilaiRataSiswa = DB::select("
-        SELECT
-            pd.nis,
-            pd.nama_lengkap,
-            kr.kel_mapel,
-            ROUND((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2) AS nilai_kel_mapel
-        FROM
-            peserta_didik_rombels pr
-        INNER JOIN
-            peserta_didiks pd ON pr.nis = pd.nis
-        INNER JOIN
-            kbm_per_rombels kr ON pr.rombel_kode = kr.kode_rombel
-        LEFT JOIN
-            nilai_formatif nf ON pr.nis = nf.nis AND kr.kel_mapel = nf.kel_mapel
-        LEFT JOIN
-            nilai_sumatif ns ON pr.nis = ns.nis AND kr.kel_mapel = ns.kel_mapel
-        WHERE
-            pr.rombel_kode = ?
-        ORDER BY
-            pd.nis, kr.kel_mapel
-    ", [$kodeRombel]);
+                SELECT
+                    pd.nis,
+                    pd.nama_lengkap,
+                    kr.kel_mapel,
+                    ROUND((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2) AS nilai_kel_mapel
+                FROM
+                    peserta_didik_rombels pr
+                INNER JOIN
+                    peserta_didiks pd ON pr.nis = pd.nis
+                INNER JOIN
+                    kbm_per_rombels kr ON pr.rombel_kode = kr.kode_rombel
+                LEFT JOIN
+                    nilai_formatif nf ON pr.nis = nf.nis AND kr.kel_mapel = nf.kel_mapel
+                LEFT JOIN
+                    nilai_sumatif ns ON pr.nis = ns.nis AND kr.kel_mapel = ns.kel_mapel
+                WHERE
+                    pr.rombel_kode = ?
+                ORDER BY
+                    pd.nis, kr.kel_mapel
+            ", [$kodeRombel]);
 
             // Pivoting data programatis di PHP
             $pivotData = [];
@@ -132,7 +132,7 @@ class KunciDataKbmController extends Controller
             // Dapatkan semua kel_mapel
             $listMapel = DB::table('kbm_per_rombels')
                 ->where('kode_rombel', $kodeRombel)
-                ->get();
+                ->get(); */
 
             return $kunciDataKBMDataTable->render('pages.kurikulum.datakbm.kunci-data-kbm', [
                 'user' => $user,
@@ -143,17 +143,16 @@ class KunciDataKbmController extends Controller
                 'dataPilCR' => $dataPilCR,
                 'tahunajaran' => $tahunajaran,
                 'ganjilgenap' => $ganjilgenap,
-                'dataRombel' => $dataRombel,
+                /* 'dataRombel' => $dataRombel,
                 'pivotData' => $pivotData,
                 'kelMapelList' => $kelMapelList,
-                'listMapel' => $listMapel,
+                'listMapel' => $listMapel, */
             ]);
         }
 
         // Jika user tidak login, redirect ke halaman login
         return redirect()->route('login')->with('error', 'Anda harus login untuk mengakses halaman ini.');
     }
-
 
 
     /**

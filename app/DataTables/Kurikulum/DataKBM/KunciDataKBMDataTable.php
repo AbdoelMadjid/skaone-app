@@ -83,8 +83,16 @@ class KunciDataKBMDataTable extends DataTable
                 return $tombolROmbel;
             })
             ->addColumn('download_leger', function ($row) {
+                if ($row->tingkat === '10') {
+                    $tombolROmbel = 'success';
+                } else if ($row->tingkat === '11') {
+                    $tombolROmbel = 'info';
+                } else {
+                    $tombolROmbel = 'danger';
+                }
+
                 $url = url('/kurikulum/datakbm/export-to-excel-leger?kode_rombel=' . $row->kode_rombel);
-                return '<a href="' . $url . '" class="btn btn-soft-success btn-sm">Ekspor ke Excel</a>';
+                return '<a href="' . $url . '" class="btn btn-soft-' . $tombolROmbel . ' btn-sm">Ekspor ke Excel</a>';
             })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
