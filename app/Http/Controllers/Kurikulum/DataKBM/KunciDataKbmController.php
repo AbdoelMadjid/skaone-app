@@ -53,6 +53,9 @@ class KunciDataKbmController extends Controller
             $tahunajaran = $dataPilCR->tahunajaran ?? $tahunAjaranAktif->tahunajaran;
             $ganjilgenap = $dataPilCR->ganjilgenap ?? $semester->semester;
 
+            // Ambil kode_rombel dari $dataPilCR
+            $kodeRombel = $dataPilCR->kode_rombel;
+
             // Ambil data rombel
             $dataRombel = DB::table('peserta_didik_rombels')
                 ->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
@@ -77,31 +80,31 @@ class KunciDataKbmController extends Controller
             $kelMapelList = DB::table('kbm_per_rombels')
                 ->select('kel_mapel')
                 ->distinct()
-                ->where('kode_rombel', '202441112-12RPL1')
+                ->where('kode_rombel', $kodeRombel)
                 ->get();
 
             // Dapatkan nilai rata-rata per kel_mapel untuk setiap siswa
             $nilaiRataSiswa = DB::select("
-    SELECT
-        pd.nis,
-        pd.nama_lengkap,
-        kr.kel_mapel,
-        ROUND((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2) AS nilai_kel_mapel
-    FROM
-        peserta_didik_rombels pr
-    INNER JOIN
-        peserta_didiks pd ON pr.nis = pd.nis
-    INNER JOIN
-        kbm_per_rombels kr ON pr.rombel_kode = kr.kode_rombel
-    LEFT JOIN
-        nilai_formatif nf ON pr.nis = nf.nis AND kr.kel_mapel = nf.kel_mapel
-    LEFT JOIN
-        nilai_sumatif ns ON pr.nis = ns.nis AND kr.kel_mapel = ns.kel_mapel
-    WHERE
-        pr.rombel_kode = '202441112-12RPL1'
-    ORDER BY
-        pd.nis, kr.kel_mapel
-");
+        SELECT
+            pd.nis,
+            pd.nama_lengkap,
+            kr.kel_mapel,
+            ROUND((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2) AS nilai_kel_mapel
+        FROM
+            peserta_didik_rombels pr
+        INNER JOIN
+            peserta_didiks pd ON pr.nis = pd.nis
+        INNER JOIN
+            kbm_per_rombels kr ON pr.rombel_kode = kr.kode_rombel
+        LEFT JOIN
+            nilai_formatif nf ON pr.nis = nf.nis AND kr.kel_mapel = nf.kel_mapel
+        LEFT JOIN
+            nilai_sumatif ns ON pr.nis = ns.nis AND kr.kel_mapel = ns.kel_mapel
+        WHERE
+            pr.rombel_kode = ?
+        ORDER BY
+            pd.nis, kr.kel_mapel
+    ", [$kodeRombel]);
 
             // Pivoting data programatis di PHP
             $pivotData = [];
