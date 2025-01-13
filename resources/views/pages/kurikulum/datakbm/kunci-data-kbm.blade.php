@@ -137,35 +137,34 @@
                             <!-- end tab pane -->
 
                             <div class="tab-pane" id="productnav-draft" role="tabpanel">
-                                <table class="table table-bordered table-striped">
+                                <h2 class="text-center">Nilai Rata-Rata Siswa</h2>
+                                <table class="table table-bordered table-striped mt-3">
                                     <thead class="table-dark">
                                         <tr>
                                             <th>No.</th>
                                             <th>NIS</th>
                                             <th>Nama Lengkap</th>
                                             @foreach ($kelMapelList as $kelMapel)
-                                                <th>{{ $kelMapel }} Average</th>
+                                                <th>{{ $kelMapel->kel_mapel }}</th>
                                             @endforeach
-                                            <th>Rata-Rata</th>
+                                            <th>Nilai Rata-Rata</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($hasilAkhir as $key => $nilai)
+                                        @forelse ($pivotData as $nis => $data)
                                             <tr>
-                                                <td class="text-center">{{ $key + 1 }}.</td>
-                                                <td class="text-center">{{ $nilai->nis }}</td>
-                                                <td>{{ $nilai->nama_lengkap }}</td>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $nis }}</td>
+                                                <td>{{ $data['nama_lengkap'] }}</td>
                                                 @foreach ($kelMapelList as $kelMapel)
-                                                    <td class="text-center">
-                                                        {{ $nilai->nilai_mapel[$kelMapel] ?? '-' }}
-                                                    </td>
+                                                    <td>{{ $data[$kelMapel->kel_mapel] ?? '-' }}</td>
                                                 @endforeach
-                                                <td class="text-center">{{ $nilai->nil_rata_siswa }}</td>
+                                                <td>{{ $data['nil_rata_siswa'] }}</td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="{{ 3 + count($kelMapelList) }}" class="text-center">Tidak ada
-                                                    data</td>
+                                                <td colspan="{{ 3 + $kelMapelList->count() }}" class="text-center">Tidak
+                                                    ada data</td>
                                             </tr>
                                         @endforelse
                                     </tbody>

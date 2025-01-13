@@ -73,55 +73,49 @@ class KunciDataKbmController extends Controller
                 return redirect()->back()->with('error', 'Data rombel tidak ditemukan.');
             }
 
-            // Ambil data kel_mapel berdasarkan kode rombel
+            // Dapatkan semua kel_mapel
             $kelMapelList = DB::table('kbm_per_rombels')
-                ->where('kode_rombel', $dataPilCR->kode_rombel)
-                ->pluck('kel_mapel')
-                ->toArray();
-
-            if (empty($kelMapelList)) {
-                return redirect()->back()->with('error', 'Tidak ada data kel_mapel untuk rombel tersebut.');
-            }
-
-            $dataPesertaDidik = DB::table('peserta_didik_rombels')
-                ->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
-                ->join('kbm_per_rombels', 'peserta_didik_rombels.rombel_kode', '=', 'kbm_per_rombels.kode_rombel')
-                ->where('peserta_didik_rombels.rombel_kode', $dataPilCR->kode_rombel)
-                ->select('peserta_didiks.nis', 'peserta_didiks.nama_lengkap')
+                ->select('kel_mapel')
+                ->distinct()
+                ->where('kode_rombel', '202441112-12RPL1')
                 ->get();
 
-            $nilaiMapel = [];
-            foreach ($kelMapelList as $kelMapel) {
-                $nilaiFormatif = DB::table('nilai_formatif')
-                    ->where('kel_mapel', $kelMapel)
-                    ->select('nis', 'rerata_formatif')
-                    ->get();
+            // Dapatkan nilai rata-rata per kel_mapel untuk setiap siswa
+            $nilaiRataSiswa = DB::select("
+    SELECT
+        pd.nis,
+        pd.nama_lengkap,
+        kr.kel_mapel,
+        ROUND((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2) AS nilai_kel_mapel
+    FROM
+        peserta_didik_rombels pr
+    INNER JOIN
+        peserta_didiks pd ON pr.nis = pd.nis
+    INNER JOIN
+        kbm_per_rombels kr ON pr.rombel_kode = kr.kode_rombel
+    LEFT JOIN
+        nilai_formatif nf ON pr.nis = nf.nis AND kr.kel_mapel = nf.kel_mapel
+    LEFT JOIN
+        nilai_sumatif ns ON pr.nis = ns.nis AND kr.kel_mapel = ns.kel_mapel
+    WHERE
+        pr.rombel_kode = '202441112-12RPL1'
+    ORDER BY
+        pd.nis, kr.kel_mapel
+");
 
-                $nilaiSumatif = DB::table('nilai_sumatif')
-                    ->where('kel_mapel', $kelMapel)
-                    ->select('nis', 'rerata_sumatif')
-                    ->get();
-
-                $nilaiMapel[$kelMapel] = $nilaiFormatif->merge($nilaiSumatif)->groupBy('nis');
+            // Pivoting data programatis di PHP
+            $pivotData = [];
+            foreach ($nilaiRataSiswa as $nilai) {
+                $pivotData[$nilai->nis]['nama_lengkap'] = $nilai->nama_lengkap;
+                $pivotData[$nilai->nis][$nilai->kel_mapel] = $nilai->nilai_kel_mapel;
             }
 
-            $hasilAkhir = $dataPesertaDidik->map(function ($peserta) use ($kelMapelList, $nilaiMapel) {
-                $peserta->nilai_mapel = [];
-                $totalNilai = 0;
-                $jumlahMapel = count($kelMapelList);
-
-                foreach ($kelMapelList as $kelMapel) {
-                    $rerataFormatif = $nilaiMapel[$kelMapel][$peserta->nis]->pluck('rerata_formatif')->first() ?? 0;
-                    $rerataSumatif = $nilaiMapel[$kelMapel][$peserta->nis]->pluck('rerata_sumatif')->first() ?? 0;
-
-                    $rataMapel = ($rerataFormatif + $rerataSumatif) / 2;
-                    $peserta->nilai_mapel[$kelMapel] = round($rataMapel, 2);
-                    $totalNilai += $rataMapel;
-                }
-
-                $peserta->nil_rata_siswa = round($totalNilai / $jumlahMapel, 2);
-                return $peserta;
-            });
+            // Hitung rata-rata siswa
+            foreach ($pivotData as $nis => &$data) {
+                $sum = array_sum(array_slice($data, 1)); // Mulai dari elemen kedua (kel_mapel) ke atas
+                $count = count($data) - 1; // Kurangi nama_lengkap
+                $data['nil_rata_siswa'] = round($sum / $count, 2);
+            }
 
 
             return $kunciDataKBMDataTable->render('pages.kurikulum.datakbm.kunci-data-kbm', [
@@ -134,7 +128,7 @@ class KunciDataKbmController extends Controller
                 'tahunajaran' => $tahunajaran,
                 'ganjilgenap' => $ganjilgenap,
                 'dataRombel' => $dataRombel,
-                'hasilAkhir' => $hasilAkhir,
+                'pivotData' => $pivotData,
                 'kelMapelList' => $kelMapelList,
             ]);
         }
