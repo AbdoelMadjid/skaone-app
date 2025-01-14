@@ -20,7 +20,7 @@
             <div class="card ribbon-box border shadow-none right mb-lg-3">
                 <div class="card-body">
                     <div class="ribbon ribbon-info round-shape">Informasi Hari ini</div>
-                    <h5 class="fs-14 text-start"></h5>
+                    <h5 class="fs-14 text-start">{{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</h5>
                     <div class="ribbon-content mt-4">
                         @foreach ($pengumumanHariIni as $pengumuman)
                             <div class="d-flex">
@@ -50,7 +50,9 @@
                                 </div>
                                 <div class="flex-grow-1">
                                     <h5 class="text-info">{{ $pengumuman->judul }}</h5>
-                                    <p class="mb-0">{{ $pengumuman->tanggal }}</p>
+                                    <p class="mb-0">
+                                        {{ \Carbon\Carbon::parse($pengumuman->tanggal)->translatedFormat('l, d F Y') }}
+                                    </p>
                                     <p class="mb-2">{{ $pengumuman->isi }}</p>
                                 </div>
                             </div>
