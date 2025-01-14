@@ -66,6 +66,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/kunci-data-kbm/update-tahunajaran', [KunciDataKbmController::class, 'updateTahunAjaran'])->name('kunci-data-kbm.updateTahunAjaran');
             Route::post('/kunci-data-kbm/update-ganjilgenap', [KunciDataKbmController::class, 'updateGanjilGenap'])->name('kunci-data-kbm.updateGanjilGenap');
             Route::get('/export-to-excel-leger', [KunciDataKbmController::class, 'exportToExcel']);
+            Route::get('/get-leger-content/{kodeRombel}', [KunciDataKbmController::class, 'getLegerData']);
 
             //Route::get('/kunci-data-kbm/export/{personal_id}', [KunciDataKbmController::class, 'exportNilaiRataSiswa'])->name('kunci-data-kbm.export');
         });

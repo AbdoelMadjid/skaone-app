@@ -62,7 +62,7 @@ class KunciDataKbmController extends Controller
             $ganjilgenap = $dataPilCR->ganjilgenap ?? $semester->semester;
             /*
             // Ambil kode_rombel dari $dataPilCR
-            $kodeRombel = $dataPilCR->kode_rombel;
+
 
             // Ambil data rombel
             $dataRombel = DB::table('peserta_didik_rombels')
@@ -82,8 +82,9 @@ class KunciDataKbmController extends Controller
 
             if ($dataRombel->isEmpty()) {
                 return redirect()->back()->with('error', 'Data rombel tidak ditemukan.');
-            }
+            } */
 
+            $kodeRombel = $dataPilCR->kode_rombel;
             // Dapatkan semua kel_mapel
             $kelMapelList = DB::table('kbm_per_rombels')
                 ->select('kel_mapel')
@@ -132,7 +133,7 @@ class KunciDataKbmController extends Controller
             // Dapatkan semua kel_mapel
             $listMapel = DB::table('kbm_per_rombels')
                 ->where('kode_rombel', $kodeRombel)
-                ->get(); */
+                ->get();
 
             return $kunciDataKBMDataTable->render('pages.kurikulum.datakbm.kunci-data-kbm', [
                 'user' => $user,
@@ -143,10 +144,10 @@ class KunciDataKbmController extends Controller
                 'dataPilCR' => $dataPilCR,
                 'tahunajaran' => $tahunajaran,
                 'ganjilgenap' => $ganjilgenap,
-                /* 'dataRombel' => $dataRombel,
                 'pivotData' => $pivotData,
                 'kelMapelList' => $kelMapelList,
-                'listMapel' => $listMapel, */
+                /*'dataRombel' => $dataRombel,
+                 'listMapel' => $listMapel, */
             ]);
         }
 
@@ -295,6 +296,57 @@ class KunciDataKbmController extends Controller
         // Jika data tidak ditemukan
         return response()->json(['success' => false, 'message' => 'Data tidak ditemukan']);
     }
+
+    public function getLegerData($kodeRombel)
+    {
+        $kelMapelList = DB::table('kbm_per_rombels')
+            ->select('kel_mapel')
+            ->distinct()
+            ->where('kode_rombel', $kodeRombel)
+            ->get();
+
+        $nilaiRataSiswa = DB::select("
+        SELECT
+            pd.nis,
+            pd.nama_lengkap,
+            kr.kel_mapel,
+            ROUND((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2) AS nilai_kel_mapel
+        FROM
+            peserta_didik_rombels pr
+        INNER JOIN
+            peserta_didiks pd ON pr.nis = pd.nis
+        INNER JOIN
+            kbm_per_rombels kr ON pr.rombel_kode = kr.kode_rombel
+        LEFT JOIN
+            nilai_formatif nf ON pr.nis = nf.nis AND kr.kel_mapel = nf.kel_mapel
+        LEFT JOIN
+            nilai_sumatif ns ON pr.nis = ns.nis AND kr.kel_mapel = ns.kel_mapel
+        WHERE
+            pr.rombel_kode = ?
+        ORDER BY
+            pd.nis, kr.kel_mapel
+    ", [$kodeRombel]);
+
+        $pivotData = [];
+        foreach ($nilaiRataSiswa as $nilai) {
+            $pivotData[$nilai->nis]['nama_lengkap'] = $nilai->nama_lengkap;
+            $pivotData[$nilai->nis][$nilai->kel_mapel] = $nilai->nilai_kel_mapel;
+        }
+
+        foreach ($pivotData as $nis => &$data) {
+            $sum = array_sum(array_slice($data, 1));
+            $count = count($data) - 1;
+            $data['nil_rata_siswa'] = round($sum / $count, 2);
+        }
+
+        /// Dapatkan semua kel_mapel
+        $listMapel = DB::table('kbm_per_rombels')
+            ->where('kode_rombel', $kodeRombel)
+            ->get();
+
+        return view('pages.kurikulum.datakbm.kunci-data-kbm-leger', compact('kelMapelList', 'pivotData', 'listMapel'));
+    }
+
 
     public function exportToExcel(Request $request)
     {

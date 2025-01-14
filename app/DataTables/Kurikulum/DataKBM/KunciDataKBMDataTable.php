@@ -92,7 +92,7 @@ class KunciDataKBMDataTable extends DataTable
                 }
 
                 $url = url('/kurikulum/datakbm/export-to-excel-leger?kode_rombel=' . $row->kode_rombel);
-                return '<a href="' . $url . '" class="btn btn-soft-' . $tombolROmbel . ' btn-sm">Ekspor ke Excel</a>';
+                return '<div class="d-grid gap-2" ><a href="' . $url . '" class="btn btn-' . $tombolROmbel . ' btn-sm">' . $row->rombel . '</a></div>';
             })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
