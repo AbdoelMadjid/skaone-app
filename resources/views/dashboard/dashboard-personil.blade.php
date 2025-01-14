@@ -10,7 +10,7 @@
             <div class="card ribbon-box border shadow-none right mb-lg-3">
                 <div class="card-body">
                     <div class="ribbon ribbon-info round-shape">Informasi Hari ini</div>
-                    <h5 class="fs-14 text-start"></h5>
+                    <h5 class="fs-14 text-start">{{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</h5>
                     <div class="ribbon-content mt-5">
                         <p class="mb-4 mt-4">Tidak ada pengumuman / informasi hari ini </p>
                     </div>
