@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kurikulum\PerangkatKurikulum\Pengumuman;
 use App\Models\ManajemenPengguna\LoginRecord;
 use App\Models\ManajemenSekolah\PersonilSekolah;
 use App\Models\PesertaDidikPkl\AbsensiSiswaPkl;
@@ -111,6 +112,11 @@ class HomeController extends Controller
             $message = 'Start your day with gratitude and watch how it transforms.';
         }
 
+        $pengumumanHariIni = Pengumuman::where('tanggal', now()->toDateString())->get();
+        $pengumumanAll = DB::table('pengumuman')
+            ->orderBy('tanggal', 'asc')
+            ->get();
+
         return view('dashboard', [
             'activeUsers' => $activeUsers,
             'activeUsersCount' => $activeUsersCount,
@@ -131,6 +137,8 @@ class HomeController extends Controller
             // Semua variabel lainnya
             'chartData' => $data, // Tambahkan di sini
             'message' => $message, // Tambahkan di sini
+            'pengumumanHariIni' => $pengumumanHariIni,
+            'pengumumanAll' => $pengumumanAll,
         ]);
     }
 

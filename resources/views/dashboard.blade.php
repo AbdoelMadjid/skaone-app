@@ -138,6 +138,13 @@
     </script>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var offcanvasRight = new bootstrap.Offcanvas(document.getElementById('offcanvasRight'));
+            offcanvasRight.show();
+        });
+    </script>
+
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
             const nis = '{{ auth()->user()->nis }}'; // Pastikan ini adalah NIS dari pengguna yang login
 

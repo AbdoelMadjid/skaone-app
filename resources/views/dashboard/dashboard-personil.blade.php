@@ -1,3 +1,67 @@
+<!-- right offcanvas -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header">
+        <h5 id="offcanvasRightLabel"><i data-feather="check-circle" class="text-success icon-dual-success icon-xs"></i>
+            PENGUMUMAN / INFORMASI</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        @if ($pengumumanHariIni->isEmpty())
+            <div class="card ribbon-box border shadow-none right mb-lg-3">
+                <div class="card-body">
+                    <div class="ribbon ribbon-info round-shape">Informasi Hari ini</div>
+                    <h5 class="fs-14 text-start"></h5>
+                    <div class="ribbon-content mt-4">
+                        <p class="mb-4">Tidak ada pengumuman / informasi hari ini </p>
+                    </div>
+                </div>
+            </div>
+        @else
+            <div class="card ribbon-box border shadow-none right mb-lg-3">
+                <div class="card-body">
+                    <div class="ribbon ribbon-info round-shape">Informasi Hari ini</div>
+                    <h5 class="fs-14 text-start"></h5>
+                    <div class="ribbon-content mt-4">
+                        @foreach ($pengumumanHariIni as $pengumuman)
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 me-3">
+                                    <i data-feather="check-circle" class="text-success icon-dual-success icon-xs"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h5 class="text-info">{{ $pengumuman->judul }}</h5>
+                                    <p class="mb-2">{{ $pengumuman->isi }}</p>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        @endif
+        <div class="card ribbon-box border shadow-none right mb-lg-3">
+            <div class="card-body">
+                <div class="ribbon ribbon-info round-shape">Informasi Sebelumnya</div>
+                <h5 class="fs-14 text-start"></h5>
+                <div class="ribbon-content mt-5">
+                    <div class="px-4 mx-n4" data-simplebar style="height: calc(100vh - 510px);">
+                        @foreach ($pengumumanAll as $pengumuman)
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 me-3">
+                                    <i data-feather="check-circle" class="text-success icon-dual-success icon-xs"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h5 class="text-info">{{ $pengumuman->judul }}</h5>
+                                    <p class="mb-0">{{ $pengumuman->tanggal }}</p>
+                                    <p class="mb-2">{{ $pengumuman->isi }}</p>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-lg-12">
         <div class="card overflow-hidden shadow-none">
