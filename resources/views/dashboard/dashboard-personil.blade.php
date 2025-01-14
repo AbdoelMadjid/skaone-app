@@ -11,8 +11,8 @@
                 <div class="card-body">
                     <div class="ribbon ribbon-info round-shape">Informasi Hari ini</div>
                     <h5 class="fs-14 text-start"></h5>
-                    <div class="ribbon-content mt-4">
-                        <p class="mb-4">Tidak ada pengumuman / informasi hari ini </p>
+                    <div class="ribbon-content mt-5">
+                        <p class="mb-4 mt-4">Tidak ada pengumuman / informasi hari ini </p>
                     </div>
                 </div>
             </div>
