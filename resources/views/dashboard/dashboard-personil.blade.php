@@ -42,7 +42,7 @@
                 <div class="ribbon ribbon-info round-shape">Informasi Sebelumnya</div>
                 <h5 class="fs-14 text-start"></h5>
                 <div class="ribbon-content mt-5">
-                    <div class="px-4 mx-n4" data-simplebar style="height: calc(100vh - 510px);">
+                    <div data-simplebar data-simplebar-auto-hide="false" style="max-height: 220px;" class="px-3">
                         @foreach ($pengumumanAll as $pengumuman)
                             <div class="d-flex">
                                 <div class="flex-shrink-0 me-3">
