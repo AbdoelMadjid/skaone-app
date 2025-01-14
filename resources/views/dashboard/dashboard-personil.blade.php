@@ -5,7 +5,7 @@
             PENGUMUMAN / INFORMASI</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
-    <div class="offcanvas-body">
+    <div class="offcanvas-body bg-info-subtle">
         @if ($pengumumanHariIni->isEmpty())
             <div class="card ribbon-box border shadow-none right mb-lg-3">
                 <div class="card-body">
@@ -42,7 +42,7 @@
                 <div class="ribbon ribbon-info round-shape">Informasi Sebelumnya</div>
                 <h5 class="fs-14 text-start"></h5>
                 <div class="ribbon-content mt-5">
-                    <div data-simplebar data-simplebar-auto-hide="false" style="max-height: 220px;" class="px-3">
+                    <div data-simplebar data-simplebar-auto-hide="false" style="max-height: 200px;" class="px-3">
                         @foreach ($pengumumanAll as $pengumuman)
                             <div class="d-flex">
                                 <div class="flex-shrink-0 me-3">
@@ -61,6 +61,10 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="offcanvas-foorter border-top p-3 text-center">
+        <a href="javascript:void(0);" class="link-success">View All Acitivity <i
+                class="ri-arrow-right-s-line align-middle ms-1"></i></a>
     </div>
 </div>
 

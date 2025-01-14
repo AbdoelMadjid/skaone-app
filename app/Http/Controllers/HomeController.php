@@ -115,7 +115,7 @@ class HomeController extends Controller
         $pengumumanHariIni = Pengumuman::where('tanggal', now()->toDateString())->get();
         $pengumumanAll = DB::table('pengumuman')
             ->whereDate('tanggal', '<', now()->toDateString()) // Hanya tanggal sebelum hari ini
-            ->orderBy('tanggal', 'asc')
+            ->orderBy('tanggal', 'desc')
             ->get();
 
         return view('dashboard', [

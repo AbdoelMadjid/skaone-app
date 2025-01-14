@@ -11,7 +11,8 @@
             Riwayat Absen</h5>
         <span class="badge bg-danger rounded-pill">{{ $siswa->jumlah_hadir }}</span>
     </div>
-    <div class="px-4 mx-n4" data-simplebar style="height: calc(250vh - 256px);">
+    <div data-simplebar data-simplebar-auto-hide="false" style="max-height: 1300px;" class="px-4 mx-n4"
+        data-simplebar-track="secondary">
         <table class="table table-bordered">
             <thead>
                 <tr>
