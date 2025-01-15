@@ -66,109 +66,32 @@
                     </div>
                 </div>
             </div>
-            <!-- Rounded Ribbon -->
-            <div class="card ribbon-box border shadow-none mb-lg-0">
-                <div class="card-body">
-                    <div class="ribbon ribbon-primary round-shape">Dokumen KBM</div>
-                    <h5 class="fs-14 text-end"></h5>
-                    <div class="ribbon-content mt-5" id="tomboldokumen">
-                        @if ($dataPilCR)
-                            <div class="nav flex-column nav-pills text-center" id="v-pills-tab" role="tablist"
-                                aria-orientation="vertical">
-                                <a class="nav-link mb-2 active" id="v-pills-home-tab" data-bs-toggle="pill"
-                                    href="#v-pills-home" role="tab" aria-controls="v-pills-home"
-                                    aria-selected="true">Rombongan Belajar</a>
-
-                                <a class="nav-link mb-2" id="v-pills-leger-tab" data-bs-toggle="pill" href="#v-pills-leger"
-                                    data-kode-rombel="{{ $dataPilCR->kode_rombel }}" role="tab"
-                                    aria-controls="v-pills-leger" aria-selected="false">Nilai Leger Siswa</a>
-
-                                {{--
-                                <a class="nav-link mb-2" id="v-pills-messages-tab" data-bs-toggle="pill"
-                                    href="#v-pills-messages" role="tab" aria-controls="v-pills-messages"
-                                    aria-selected="false">Messages</a>
-                                <a class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" href="#v-pills-settings"
-                                    role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a> --}}
-                            </div>
-                        @endif
-                    </div>
-
-                </div>
-            </div>
         </div>
 
         <div class="col-xl-9 col-lg-8">
-            <div class="tab-content text-muted mt-4 mt-md-0" id="v-pills-tabContent">
-                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                    <div>
-                        <div class="card">
-                            <div class="card-header border-bottom-dashed">
-                                <div class="row g-4 align-items-center">
-                                    <div class="col-sm">
-                                        <div>
-                                            <h5 class="card-title mb-0">Rombongan Belajar</h5>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-auto">
-                                        <div class="d-flex flex-wrap align-items-start gap-2">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body border-bottom-dashed border-bottom">
-                                {!! $dataTable->table([
-                                    'class' => 'table table-striped hover',
-                                    'style' => 'width:100%',
-                                ]) !!}
+            <div class="card">
+                <div class="card-header border-bottom-dashed">
+                    <div class="row g-4 align-items-center">
+                        <div class="col-sm">
+                            <div>
+                                <h5 class="card-title mb-0">Dokumen Siswa</h5>
                             </div>
                         </div>
-                    </div>
-                </div>
+                        <div class="col-sm-auto">
 
-                <div class="tab-pane fade" id="v-pills-leger" role="tabpanel" aria-labelledby="v-pills-leger-tab">
-                    {{--  --}}
-                </div>
-                <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                    <div class="d-flex mb-2">
-                        <div class="flex-shrink-0">
-                            <img src="http://skaone-apps.test:7777/build/images/small/img-6.jpg" alt=""
-                                width="150" class="rounded">
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <p class="mb-0">In this image, you can see that the line height has been
-                                reduced significantly, and the size was brought up exponentially. Experiment
-                                and play around with the fonts that you already have in the software you’re
-                                working with reputable font websites.</p>
                         </div>
                     </div>
-                    <p class="mb-0">
-                        They highly encourage that you use different fonts in one design, but do not
-                        over-exaggerate and go overboard This may be the most commonly encountered tip I
-                        received from the designers I spoke with.
-                    </p>
                 </div>
-                <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                    <div class="d-flex mb-2">
-                        <div class="flex-shrink-0">
-                            <img src="http://skaone-apps.test:7777/build/images/small/img-7.jpg" alt=""
-                                width="150" class="rounded">
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <p class="mb-0">When designing, the goal is to draw someone’s attention and
-                                portray to them what you’re trying to say. You can make a big statement by
-                                using little tricks, like this one. Use contrasting fonts. you can use a
-                                bold sanserif font with a cursive.</p>
-                        </div>
-                    </div>
-                    <p class="mb-0">
-                        If you’re using multiple elements, make sure that your principal object is larger
-                        than the others, as the eye of your viewer will automatically be drawn to the larger
-                        of the two objects.
-                    </p>
+                <div class="card-body border-bottom-dashed border-bottom">
+                    {!! $dataTable->table([
+                        'class' => 'table table-striped hover',
+                        'style' => 'width:100%',
+                    ]) !!}
                 </div>
             </div>
         </div>
     </div>
+    @include('pages.kurikulum.datakbm.kunci-data-kbm-leger-modal')
 @endsection
 @section('script')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
@@ -182,6 +105,40 @@
 @section('script-bottom')
     <script>
         const datatable = 'kuncidatakbm-table';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('dataLegerSiswa');
+
+            modal.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget; // Tombol yang memicu modal
+                const kodeRombel = button.getAttribute('data-kode_rombel'); // Ambil data-kode_rombel
+
+                // Perbarui judul modal
+                const modalTitle = modal.querySelector('.modal-title');
+                modalTitle.textContent = `Leger for Rombel ${kodeRombel}`;
+
+                // Tampilkan status loading
+                const modalBody = modal.querySelector('.modal-body');
+                modalBody.innerHTML = '<p>Loading data...</p>';
+
+                // Ambil data dari server
+                fetch(`/kurikulum/datakbm/get-leger-data/${kodeRombel}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch data');
+                        }
+                        return response.text(); // Ambil HTML tabel
+                    })
+                    .then(html => {
+                        modalBody.innerHTML = html; // Masukkan HTML ke dalam modal body
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        modalBody.innerHTML =
+                            '<p class="text-danger">Failed to load data. Please try again later.</p>';
+                    });
+            });
+        });
 
         $(document).on('change', '.terpilih-checkbox', function() {
             const checkbox = $(this);
@@ -208,16 +165,6 @@
                         $('#kuncidatakbm-table').DataTable().ajax.reload(null, false);
                         //location.reload();
                         showToast('success', 'Data berhasil diperbarui');
-
-                        // Perbarui URL pada link yang ada di dalam #tomboldokumen
-                        const kodeRombel = data.kode_rombel;
-                        // Hanya update link di #tomboldokumen tanpa mempengaruhi link lainnya
-                        $('#leger-link').attr('href',
-                            `/kurikulum/datakbm/export-to-excel-leger?kode_rombel=${kodeRombel}`);
-
-                        // Update kode_rombel di tab "Leger"
-                        $('#v-pills-leger-tab').attr('data-kode-rombel', kodeRombel);
-
                     } else {
                         showToast('error', 'Terjadi kesalahan: ' + response.message);
                     }
@@ -225,24 +172,6 @@
                 error: function() {
                     showToast('error', 'Terjadi kesalahan saat mengirim data ke server.');
                 }
-            });
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            var legerTab = document.getElementById('v-pills-leger-tab');
-            legerTab.addEventListener('click', function(event) {
-                event.preventDefault(); // Prevent default link behavior
-                var kodeRombel = this.getAttribute('data-kode-rombel');
-
-                // Fetch content via Ajax
-                fetch('/kurikulum/datakbm/get-leger-content/' + kodeRombel)
-                    .then(response => response.text())
-                    .then(html => {
-                        document.getElementById('v-pills-leger').innerHTML = html;
-                        // Optionally trigger the tab to show content
-                        var tab = new bootstrap.Tab(this);
-                        tab.show();
-                    });
             });
         });
 

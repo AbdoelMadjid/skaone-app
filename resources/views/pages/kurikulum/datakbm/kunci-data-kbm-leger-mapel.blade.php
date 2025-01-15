@@ -1,5 +1,19 @@
 <div>
     <div class="card">
+        <div class="card-header border-bottom-dashed">
+            <div class="row g-4 align-items-center">
+                <div class="col-sm">
+                    <div>
+                        <h5 class="card-title mb-0">Leger</h5>
+                    </div>
+                </div>
+                <div class="col-sm-auto">
+                    <div class="d-flex flex-wrap align-items-start gap-2">
+
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="card-body border-bottom-dashed border-bottom">
             <div class="table-responsive">
                 <table class="table table-bordered table-striped mt-3">
@@ -35,6 +49,41 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header border-bottom-dashed">
+            <div class="row g-4 align-items-center">
+                <div class="col-sm">
+                    <div>
+                        <h5 class="card-title mb-0">Leger Mata Pelajaran</h5>
+                    </div>
+                </div>
+                <div class="col-sm-auto">
+                    <div class="d-flex flex-wrap align-items-start gap-2">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body border-bottom-dashed border-bottom">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Kelompok Mapel</th>
+                        <th>Mata Pelajaran</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($listMapel as $index => $kelMapel)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $kelMapel->kel_mapel }}</td>
+                            <td>{{ $kelMapel->mata_pelajaran }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

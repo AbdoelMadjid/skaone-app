@@ -63,25 +63,6 @@ class KunciDataKBMDataTable extends DataTable
 
                 return $ceckTerpilih;
             })
-            ->addColumn('namarombel', function ($row) {
-                if ($row->tingkat === '10') {
-                    $tombolROmbel = '
-                    <div class="d-grid gap-2" >
-                        <button class="btn btn-success btn-sm" type="button">' . $row->rombel . '</button>
-                    </div>';
-                } else if ($row->tingkat === '11') {
-                    $tombolROmbel = '
-                    <div class="d-grid gap-2" >
-                        <button class="btn btn-info btn-sm" type="button">' . $row->rombel . '</button>
-                    </div>';
-                } else {
-                    $tombolROmbel = '
-                    <div class="d-grid gap-2" >
-                        <button class="btn btn-danger btn-sm" type="button">' . $row->rombel . '</button>
-                    </div>';
-                }
-                return $tombolROmbel;
-            })
             ->addColumn('download_leger', function ($row) {
                 if ($row->tingkat === '10') {
                     $tombolROmbel = 'success';
@@ -92,7 +73,29 @@ class KunciDataKBMDataTable extends DataTable
                 }
 
                 $url = url('/kurikulum/datakbm/export-to-excel-leger?kode_rombel=' . $row->kode_rombel);
-                return '<div class="d-grid gap-2" ><a href="' . $url . '" class="btn btn-' . $tombolROmbel . ' btn-sm">' . $row->rombel . '</a></div>';
+
+                $dropdown = '
+                    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                    <div class="btn-group" role="group">
+                    <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-' . $tombolROmbel . ' dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Leger
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                    <li><a class="dropdown-item"
+                    data-bs-toggle="modal"
+                    data-bs-target="#dataLegerSiswa"
+                    data-kode_rombel="' . $row->kode_rombel . '"
+                    href="#">
+                    Review Leger Peserta Didik
+                    </a>
+                    </li>
+                    <li><a class="dropdown-item" href="' . $url . '">Download Leger Excel</a></li>
+                    </ul>
+                    </div>
+                    </div>
+                ';
+
+                return $dropdown;
             })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
@@ -100,7 +103,7 @@ class KunciDataKBMDataTable extends DataTable
                 return view('action', compact('actions'));
             })
             ->addIndexColumn()
-            ->rawColumns(['pilih_data', 'namarombel', 'download_leger', 'action']);
+            ->rawColumns(['pilih_data', 'download_leger', 'action']);
     }
 
     /**
@@ -189,7 +192,7 @@ class KunciDataKBMDataTable extends DataTable
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('tahunajaran')->title('Tahun Ajaran')->addClass('text-center'),
-            Column::make('namarombel')->addClass('text-center'),
+            Column::make('rombel')->addClass('text-center'),
             Column::make('namalengkap')->title('Nama Wali Kelas'),
             Column::make('download_leger')->title('Leger')->addClass('text-center'),
             Column::make('pilih_data')->title('Pilih Data')->addClass('text-center'),

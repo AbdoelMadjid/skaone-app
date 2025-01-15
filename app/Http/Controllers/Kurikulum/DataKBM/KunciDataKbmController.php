@@ -84,7 +84,8 @@ class KunciDataKbmController extends Controller
                 return redirect()->back()->with('error', 'Data rombel tidak ditemukan.');
             } */
 
-            $kodeRombel = $dataPilCR->kode_rombel;
+            $kodeRombel = $dataPilCR ? $dataPilCR->kode_rombel : null;
+
             // Dapatkan semua kel_mapel
             $kelMapelList = DB::table('kbm_per_rombels')
                 ->select('kel_mapel')
@@ -339,13 +340,10 @@ class KunciDataKbmController extends Controller
             $data['nil_rata_siswa'] = round($sum / $count, 2);
         }
 
-        /// Dapatkan semua kel_mapel
-        $listMapel = DB::table('kbm_per_rombels')
-            ->where('kode_rombel', $kodeRombel)
-            ->get();
-
-        return view('pages.kurikulum.datakbm.kunci-data-kbm-leger', compact('kelMapelList', 'pivotData', 'listMapel'));
+        // Default view rendering for non-AJAX requests
+        return view('pages.kurikulum.datakbm.kunci-data-kbm-leger', compact('kelMapelList', 'pivotData'));
     }
+
 
 
     public function exportToExcel(Request $request)
