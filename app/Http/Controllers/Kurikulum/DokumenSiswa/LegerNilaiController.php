@@ -200,7 +200,7 @@ class LegerNilaiController extends Controller
             $existingData->save();
 
             /// Redirect atau kembali dengan pesan sukses
-            return redirect()->route('kurikulum.dokumentsiswa.leger-nilai.index')->with('success', 'Data berhasil ditambahkan.');
+            return redirect()->route('kurikulum.dokumentsiswa.leger-nilai.index')->with('success', 'Data berhasil diupdate.');
         } else {
             // Jika belum ada, simpan data baru
             $newData = new MilihData();
@@ -210,6 +210,8 @@ class LegerNilaiController extends Controller
             $newData->kode_kk = $request->kode_kk;
             $newData->tingkat = $request->tingkat;
             $newData->kode_rombel = $request->kode_rombel;
+            $newData->id_siswa = "";
+            $newData->id_guru = "";
             $newData->save();
 
             // Redirect atau kembali dengan pesan sukses
