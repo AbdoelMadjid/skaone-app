@@ -12,6 +12,7 @@ use App\Http\Controllers\Kurikulum\DokumenGuru\PerGuruController;
 use App\Http\Controllers\Kurikulum\DokumenGuru\PerRombelController;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\CetakRaporController;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\IjazahController;
+use App\Http\Controllers\Kurikulum\DokumenSiswa\LegerNilaiController;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\RaporPklController;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\RaporPLimaController;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\RemedialPesertaDidikNilaiController;
@@ -62,12 +63,6 @@ Route::middleware('auth')->group(function () {
             Route::get('/get-personil-sekolah', [KbmPerRombelController::class, 'getPersonilSekolah'])->name('get-personil-sekolah');
             Route::post('/update-personil', [KbmPerRombelController::class, 'updatePersonil']);
             Route::resource('kunci-data-kbm', KunciDataKbmController::class);
-            Route::post('/update-kunci-data', [KunciDataKbmController::class, 'updateKunciData']);
-            Route::post('/kunci-data-kbm/update-tahunajaran', [KunciDataKbmController::class, 'updateTahunAjaran'])->name('kunci-data-kbm.updateTahunAjaran');
-            Route::post('/kunci-data-kbm/update-ganjilgenap', [KunciDataKbmController::class, 'updateGanjilGenap'])->name('kunci-data-kbm.updateGanjilGenap');
-            Route::get('/export-to-excel-leger', [KunciDataKbmController::class, 'exportToExcel']);
-            Route::get('/get-leger-data/{kodeRombel}', [KunciDataKbmController::class, 'getLegerData']);
-            //Route::get('/kunci-data-kbm/export/{personal_id}', [KunciDataKbmController::class, 'exportNilaiRataSiswa'])->name('kunci-data-kbm.export');
         });
 
         Route::group(['prefix' => 'perangkatkurikulum', 'as' => 'perangkatkurikulum.'], function () {
@@ -88,6 +83,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/get-peserta-didik', [CetakRaporController::class, 'getPesertaDidik']);
             Route::post('/simpanpilihcetakrapor', [CetakRaporController::class, 'simpanPilihCetakRapor'])
                 ->name('simpanpilihcetakrapor');
+
+            Route::resource('leger-nilai', LegerNilaiController::class);
+            Route::get('/export-to-excel-leger', [LegerNilaiController::class, 'exportToExcel']);
 
             Route::resource('ijazah', IjazahController::class);
             Route::resource('rapor-pkl', RaporPklController::class);

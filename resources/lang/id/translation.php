@@ -295,6 +295,7 @@ return [
 
     "dokumen-siswa" => "Dokumen Siswa",
     "cetak-rapor" => "Cetak Rapor",
+    "leger-nilai" => "Leger Nilai",
     'remedial-peserta-didik' => "Remedial Peserta Didik",
 
     "transkrip-nilai" => "Transkrip Nilai",

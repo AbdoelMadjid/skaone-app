@@ -72,6 +72,9 @@ class MenuKurikulumSeeder extends Seeder
         $csm = $sm->subMenus()->create(['name' => 'Cetak Rapor', 'url' => $sm->url . '/cetak-rapor', 'category' => $sm->category]);
         $this->attachMenupermission($csm, ['create', 'read', 'update', 'delete'], ['admin']);
 
+        $csm = $sm->subMenus()->create(['name' => 'Leger Nilai', 'url' => $sm->url . '/leger-nilai', 'category' => $sm->category]);
+        $this->attachMenupermission($csm, ['create', 'read', 'update', 'delete'], ['admin']);
+
         $csm = $sm->subMenus()->create(['name' => 'Rapor P5', 'url' => $sm->url . '/rapor-p-lima', 'category' => $sm->category]);
         $this->attachMenupermission($csm, ['create', 'read', 'update', 'delete'], ['admin']);
 
