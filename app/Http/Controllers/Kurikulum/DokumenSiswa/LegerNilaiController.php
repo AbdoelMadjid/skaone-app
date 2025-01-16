@@ -97,7 +97,7 @@ class LegerNilaiController extends Controller
                     pd.nis,
                     pd.nama_lengkap,
                     kr.kel_mapel,
-                    ROUND((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2) AS nilai_kel_mapel
+                    ROUND((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2,2) AS nilai_kel_mapel
                 FROM
                     peserta_didik_rombels pr
                 INNER JOIN
