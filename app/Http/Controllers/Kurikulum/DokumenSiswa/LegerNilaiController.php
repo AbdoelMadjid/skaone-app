@@ -259,16 +259,14 @@ class LegerNilaiController extends Controller
             return redirect()->back()->with('error', 'Kode Rombel tidak ditemukan.');
         }
 
+        // Dapatkan semua kel_mapel
         $kelMapelList = DB::table('kbm_per_rombels')
             ->select('kel_mapel')
             ->distinct()
             ->where('kode_rombel', $kodeRombel)
             ->get();
 
-        $listMapel = DB::table('kbm_per_rombels')
-            ->where('kode_rombel', $kodeRombel)
-            ->get();
-
+        // Dapatkan nilai rata-rata per kel_mapel untuk setiap siswa
         $nilaiRataSiswa = DB::select("
         SELECT
             pd.nis,
@@ -291,49 +289,54 @@ class LegerNilaiController extends Controller
             pd.nis, kr.kel_mapel
     ", [$kodeRombel]);
 
+        // Pivoting data programatis di PHP
         $pivotData = [];
         foreach ($nilaiRataSiswa as $nilai) {
+            // Pastikan data siswa dipetakan dengan benar
             $pivotData[$nilai->nis]['nama_lengkap'] = $nilai->nama_lengkap;
             $pivotData[$nilai->nis][$nilai->kel_mapel] = $nilai->nilai_kel_mapel;
         }
 
+        // Hitung rata-rata siswa
         foreach ($pivotData as $nis => &$data) {
-            $sum = array_sum(array_slice($data, 1));
-            $count = count($data) - 1;
+            $sum = array_sum(array_slice($data, 1)); // Mulai dari elemen kedua (kel_mapel) ke atas
+            $count = count($data) - 1; // Kurangi nama_lengkap
             $data['nil_rata_siswa'] = round($sum / $count, 2);
         }
 
-        $spreadsheet = new Spreadsheet();
+        // Dapatkan semua kel_mapel
+        $listMapel = DB::table('kbm_per_rombels')
+            ->join('personil_sekolahs', 'kbm_per_rombels.id_personil', '=', 'personil_sekolahs.id_personil')
+            ->select(
+                'kbm_per_rombels.kode_rombel',
+                'kbm_per_rombels.kel_mapel',
+                'kbm_per_rombels.mata_pelajaran',
+                'personil_sekolahs.gelardepan',
+                'personil_sekolahs.namalengkap',
+                'personil_sekolahs.gelarbelakang',
+            )
+            ->where('kbm_per_rombels.kode_rombel', $kodeRombel)
+            ->get();
 
-        // Sheet 1
+        // Persiapkan Spreadsheet
+        $spreadsheet = new Spreadsheet();
         $sheet1 = $spreadsheet->getActiveSheet();
         $sheet1->setTitle('Nilai Siswa');
 
-        // Merge title cell and set title
+        // Set Header
         $totalColumns = 3 + $kelMapelList->count(); // No., NIS, Nama Lengkap, KelMapel, Rata-Rata
-        $lastColumn = chr(64 + $totalColumns); // Menghitung huruf kolom terakhir
+        $lastColumn = chr(64 + $totalColumns); // Column letter for the last column
         $sheet1->mergeCells("A1:{$lastColumn}1");
         $sheet1->setCellValue('A1', 'LEGER NILAI ROMBEL ' . $kodeRombel);
         $sheet1->getStyle('A1')->getFont()->setBold(true)->setSize(14);
         $sheet1->getStyle('A1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
-        // Apply borders to the table excluding the title
-        $highestRow = $sheet1->getHighestRow(); // Mengambil baris terakhir
-        $sheet1->getStyle("A2:{$lastColumn}{$highestRow}")
-            ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
-
-        // Set auto width for all columns
-        foreach (range('A', $lastColumn) as $column) {
-            $sheet1->getColumnDimension($column)->setAutoSize(true);
-        }
-
-        // Header sheet 1
+        // Set header for the table
         $header1 = ['No.', 'NIS', 'Nama Lengkap'];
         foreach ($kelMapelList as $kelMapel) {
             $header1[] = $kelMapel->kel_mapel;
         }
         $header1[] = 'Nilai Rata-Rata';
-
         $sheet1->fromArray($header1, null, 'A2');
 
         // Style header row
@@ -344,39 +347,41 @@ class LegerNilaiController extends Controller
         $sheet1->getStyle("A2:{$lastColumn}2")
             ->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
-        // Data sheet 1
+        // Data Sheet 1 - Isikan Data dengan Benar
         $rowNumber = 3; // Start data after header row
         $no = 1;
         foreach ($pivotData as $nis => $data) {
             $row = [$no++, $nis, $data['nama_lengkap']];
+
+            // Pastikan nilai kel_mapel per siswa dituliskan dengan benar
             foreach ($kelMapelList as $kelMapel) {
-                $row[] = $data[$kelMapel->kel_mapel] ?? '-';
+                $row[] = isset($data[$kelMapel->kel_mapel]) ? $data[$kelMapel->kel_mapel] : '-';
             }
-            $row[] = $data['nil_rata_siswa'];
+            $row[] = $data['nil_rata_siswa']; // Rata-rata siswa
             $sheet1->fromArray($row, null, "A$rowNumber");
-            $rowNumber++;
+            $rowNumber++; // Increment row number after adding each student
         }
 
-        // Apply borders and auto width for Sheet 1
-        $highestRow = $sheet1->getHighestRow(); // Mengambil baris terakhir
-        $highestColumn = $sheet1->getHighestColumn(); // Mengambil kolom terakhir
+        // Apply borders and auto width for Sheet 1 after data is written
+        $highestRow = $sheet1->getHighestRow(); // Get last row number
+        $highestColumn = $sheet1->getHighestColumn(); // Get last column letter
         $sheet1->getStyle("A1:{$highestColumn}{$highestRow}")
             ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
 
-        // Set auto width untuk semua kolom
+        // Set auto width for all columns
         foreach (range('A', $highestColumn) as $column) {
             $sheet1->getColumnDimension($column)->setAutoSize(true);
         }
 
-        // Sheet 2
+        // Sheet 2 - Daftar Mapel
         $sheet2 = $spreadsheet->createSheet();
         $sheet2->setTitle('Daftar Mapel');
 
-        // Header sheet 2
+        // Set header for Sheet 2
         $header2 = ['No.', 'Kelompok Mapel', 'Mata Pelajaran'];
         $sheet2->fromArray($header2, null, 'A1');
 
-        // Data sheet 2
+        // Data for Sheet 2
         $rowNumber = 2;
         foreach ($listMapel as $index => $kelMapel) {
             $row = [$index + 1, $kelMapel->kel_mapel, $kelMapel->mata_pelajaran];
@@ -391,9 +396,8 @@ class LegerNilaiController extends Controller
             $sheet2->getColumnDimension($column)->setAutoSize(true);
         }
 
-        // Simpan file Excel
+        // Save the file
         $writer = new Xlsx($spreadsheet);
-
         $fileName = 'Export_Nilai_Siswa_' . $kodeRombel . '.xlsx';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header("Content-Disposition: attachment; filename=\"$fileName\"");
