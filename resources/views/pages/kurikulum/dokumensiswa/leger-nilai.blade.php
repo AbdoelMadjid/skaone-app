@@ -147,9 +147,11 @@
                                 </ul>
                             </div>
                             <div class="col-auto">
-                                <a
-                                    href="/kurikulum/dokumentsiswa/export-to-excel-leger?kode_rombel={{ $pilihData->kode_rombel }}">Download
-                                    Leger Excel</a>
+                                @if ($pilihData)
+                                    <a
+                                        href="/kurikulum/dokumentsiswa/export-to-excel-leger?kode_rombel={{ $pilihData->kode_rombel }}">Download
+                                        Leger Excel</a>
+                                @endif
                                 <div id="selection-element">
                                     <div class="my-n1 d-flex align-items-center text-muted">
                                         Select <div id="select-content" class="text-body fw-semibold px-1"></div> Result
@@ -163,65 +165,69 @@
                     <!-- end card header -->
                     <div class="card-body">
 
-                        <div class="tab-content text-muted">
+                        <div class="tab-content">
                             <div class="tab-pane active" id="productnav-all" role="tabpanel">
                                 <div id="table-product-list-all" class="table-card gridjs-border-none">
-                                    <table class="table table-bordered table-striped mt-3">
-                                        <thead class="table-dark">
-                                            <tr>
-                                                <th class="vertical-center">No.</th>
-                                                <th class="vertical-center">NIS</th>
-                                                <th class="vertical-center">Nama Lengkap</th>
-                                                @foreach ($kelMapelList as $kelMapel)
-                                                    <th class="vertical-text">{{ $kelMapel->kel_mapel }}</th>
-                                                @endforeach
-                                                <th class="vertical-text">Nilai Rata-Rata</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @forelse ($pivotData as $nis => $data)
+                                    @if ($pilihData)
+                                        <table class="table table-bordered table-striped mt-3">
+                                            <thead class="table-dark">
                                                 <tr>
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $nis }}</td>
-                                                    <td>{{ $data['nama_lengkap'] }}</td>
+                                                    <th class="vertical-center">No.</th>
+                                                    <th class="vertical-center">NIS</th>
+                                                    <th class="vertical-center">Nama Lengkap</th>
                                                     @foreach ($kelMapelList as $kelMapel)
-                                                        <td>{{ $data[$kelMapel->kel_mapel] ?? '-' }}</td>
+                                                        <th class="vertical-text">{{ $kelMapel->kel_mapel }}</th>
                                                     @endforeach
-                                                    <td>{{ $data['nil_rata_siswa'] }}</td>
+                                                    <th class="vertical-text">Nilai Rata-Rata</th>
                                                 </tr>
-                                            @empty
-                                                <tr>
-                                                    <td colspan="{{ 3 + $kelMapelList->count() }}" class="text-center">
-                                                        Tidak
-                                                        ada data</td>
-                                                </tr>
-                                            @endforelse
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($pivotData as $nis => $data)
+                                                    <tr>
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ $nis }}</td>
+                                                        <td>{{ $data['nama_lengkap'] }}</td>
+                                                        @foreach ($kelMapelList as $kelMapel)
+                                                            <td>{{ $data[$kelMapel->kel_mapel] ?? '-' }}</td>
+                                                        @endforeach
+                                                        <td>{{ $data['nil_rata_siswa'] }}</td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="{{ 3 + $kelMapelList->count() }}" class="text-center">
+                                                            Tidak
+                                                            ada data</td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    @endif
                                 </div>
                             </div>
                             <!-- end tab pane -->
 
                             <div class="tab-pane" id="productnav-published" role="tabpanel">
                                 <div id="table-product-list-published" class="table-card gridjs-border-none">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>No.</th>
-                                                <th>Kelompok Mapel</th>
-                                                <th>Mata Pelajaran</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($listMapel as $index => $kelMapel)
+                                    @if ($pilihData)
+                                        <table class="table table-bordered">
+                                            <thead>
                                                 <tr>
-                                                    <td>{{ $index + 1 }}</td>
-                                                    <td>{{ $kelMapel->kel_mapel }}</td>
-                                                    <td>{{ $kelMapel->mata_pelajaran }}</td>
+                                                    <th>No.</th>
+                                                    <th>Kelompok Mapel</th>
+                                                    <th>Mata Pelajaran</th>
                                                 </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($listMapel as $index => $kelMapel)
+                                                    <tr>
+                                                        <td>{{ $index + 1 }}</td>
+                                                        <td>{{ $kelMapel->kel_mapel }}</td>
+                                                        <td>{{ $kelMapel->mata_pelajaran }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    @endif
                                 </div>
                             </div>
                             <!-- end tab pane -->
