@@ -1,13 +1,19 @@
-<div class="form-group mb-3">
-    <label for="pembimbingAbsensiSelect">Pilih Pembimbing</label>
-    <select id="pembimbingAbsensiSelect" class="form-control select2 form-select form-select-sm">
-        <option value="">-- Pilih Semua --</option>
-        <option value="all">Pilih Semua</option>
-        @foreach ($pembimbingList as $pembimbing)
-            <option value="{{ $pembimbing->id_personil }}">{{ $pembimbing->gelardepan }}
-                {{ $pembimbing->namalengkap }} {{ $pembimbing->gelarbelakang }}</option>
-        @endforeach
-    </select>
+<div class="row">
+    <div class="col-sm">
+        <div class="form-group mb-3">
+            <select id="pembimbingAbsensiSelect" class="form-control select2 form-select form-select-sm">
+                <option value="">-- Pilih Semua --</option>
+                <option value="all">Pilih Semua</option>
+                @foreach ($pembimbingList as $pembimbing)
+                    <option value="{{ $pembimbing->id_personil }}">{{ $pembimbing->gelardepan }}
+                        {{ $pembimbing->namalengkap }} {{ $pembimbing->gelarbelakang }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-auto">
+        <a href="{{ route('kaprodipkl.downloadabsensipdf') }}" class="btn btn-soft-primary">Download Absen</a>
+    </div>
 </div>
 <table id="absensiTable" class="table table-bordered table-centered">
     <thead>
@@ -40,11 +46,11 @@
                         {{ $prakerin->gelarbelakang }}
                     </strong>
                 </td>
-                <td class="text-center jumlah_hadir">{{ $prakerin->jumlah_hadir }}</td>
-                <td class="text-center jumlah_sakit">{{ $prakerin->jumlah_sakit }}</td>
-                <td class="text-center jumlah_izin">{{ $prakerin->jumlah_izin }}</td>
-                <td class="text-center jumlah_alfa">{{ $prakerin->jumlah_alfa }}</td>
-                <td class="text-center jumlah_total">{{ $prakerin->jumlah_total }}</td>
+                <td class="text-center">{{ $prakerin->jumlah_hadir }}</td>
+                <td class="text-center">{{ $prakerin->jumlah_sakit }}</td>
+                <td class="text-center">{{ $prakerin->jumlah_izin }}</td>
+                <td class="text-center">{{ $prakerin->jumlah_alfa }}</td>
+                <td class="text-center">{{ $prakerin->jumlah_total }}</td>
             </tr>
         @endforeach
     </tbody>

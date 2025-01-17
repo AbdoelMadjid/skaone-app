@@ -31,6 +31,17 @@
 
             th {
                 background-color: #f2f2f2;
+                text-align: center;
+            }
+
+            .vertical-center {
+                /* Membuat teks vertikal */
+                text-align: center;
+                /* Memusatkan teks secara horizontal */
+                vertical-align: middle;
+                /* Memusatkan konten secara vertikal */
+                justify-content: center;
+                /* Memusatkan konten secara horizontal */
             }
         </style>
     </head>
@@ -41,7 +52,8 @@
         <table>
             <thead>
                 <tr>
-                    <th>Identitas Siswa</th>
+                    <th>No.</th>
+                    <th width="200">Identitas Siswa</th>
                     <th>Nama Perusahaan</th>
                     <th>Jumlah Jurnal (Sudah)</th>
                     <th>Jumlah Jurnal (Belum)</th>
@@ -49,13 +61,14 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($dataPrakerin as $prakerin)
+                @foreach ($dataPrakerin as $index => $prakerin)
                     <tr>
+                        <td class="vertical-center">{{ $loop->iteration }}</td>
                         <td>{{ $prakerin->nis }}<br>{{ $prakerin->nama_lengkap }}<br>{{ $prakerin->rombel }}</td>
                         <td>{{ $prakerin->nama_perusahaan }}</td>
-                        <td>{{ $prakerin->jumlah_sudah }}</td>
-                        <td>{{ $prakerin->jumlah_belum }}</td>
-                        <td>{{ $prakerin->jumlah_tolak }}</td>
+                        <td class="vertical-center">{{ $prakerin->jumlah_sudah }}</td>
+                        <td class="vertical-center">{{ $prakerin->jumlah_belum }}</td>
+                        <td class="vertical-center">{{ $prakerin->jumlah_tolak }}</td>
                     </tr>
                 @endforeach
             </tbody>

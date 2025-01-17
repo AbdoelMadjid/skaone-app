@@ -327,7 +327,7 @@ class PelaporanPrakerinController extends Controller
         //
     }
 
-    public function downloadPdf()
+    public function downloadJurnalPdf()
     {
         // Ambil data sesuai query Anda
         $user = User::find(Auth::user()->id);
@@ -399,11 +399,103 @@ class PelaporanPrakerinController extends Controller
 
 
         // Buat PDF dari view dan data yang ada
-        $pdf = Pdf::loadView('pages.kaprodipkl.pelaporan-prakerin-pdf', [
+        $pdf = Pdf::loadView('pages.kaprodipkl.pelaporan-prakerin-jurnal-pdf', [
             'dataPrakerin' => $dataPrakerin,
         ]);
 
         // Download PDF
-        return $pdf->download('laporan_prakerin.pdf');
+        return $pdf->download('Laporan Prakerin Jurnal.pdf');
+    }
+
+    public function downloadAbsensiPdf()
+    {
+        // Ambil data sesuai query Anda
+        $user = User::find(Auth::user()->id);
+        $query = DB::table('penempatan_prakerins')
+            ->select(
+                'penempatan_prakerins.tahunajaran',
+                'penempatan_prakerins.kode_kk',
+                'kompetensi_keahlians.nama_kk',
+                'peserta_didiks.nis',
+                'peserta_didiks.nama_lengkap',
+                'peserta_didik_rombels.rombel_nama AS rombel',
+                'perusahaans.id AS id_perusahaan',
+                'perusahaans.nama AS nama_perusahaan',
+                'perusahaans.alamat AS alamat_perusahaan',
+                'pembimbing_prakerins.id_personil',
+                'personil_sekolahs.nip',
+                'personil_sekolahs.gelardepan',
+                'personil_sekolahs.namalengkap',
+                'personil_sekolahs.gelarbelakang'
+            )
+            ->join('kompetensi_keahlians', 'penempatan_prakerins.kode_kk', '=', 'kompetensi_keahlians.idkk')
+            ->join('perusahaans', 'penempatan_prakerins.id_dudi', '=', 'perusahaans.id')
+            ->join('peserta_didiks', 'penempatan_prakerins.nis', '=', 'peserta_didiks.nis')
+            ->join('peserta_didik_rombels', 'peserta_didiks.nis', '=', 'peserta_didik_rombels.nis')
+            ->join('pembimbing_prakerins', 'penempatan_prakerins.id', '=', 'pembimbing_prakerins.id_penempatan')
+            ->join('personil_sekolahs', 'pembimbing_prakerins.id_personil', '=', 'personil_sekolahs.id_personil');
+
+        // Filter berdasarkan role user
+        if ($user->hasAnyRole(['kaprodiak'])) {
+            $query->where('penempatan_prakerins.kode_kk', '=', '833');
+        } elseif ($user->hasAnyRole(['kaprodibd'])) {
+            $query->where('penempatan_prakerins.kode_kk', '=', '811');
+        } elseif ($user->hasAnyRole(['kaprodimp'])) {
+            $query->where('penempatan_prakerins.kode_kk', '=', '821');
+        } elseif ($user->hasAnyRole(['kaprodirpl'])) {
+            $query->where('penempatan_prakerins.kode_kk', '=', '411');
+        } elseif ($user->hasAnyRole(['kaproditkj'])) {
+            $query->where('penempatan_prakerins.kode_kk', '=', '421');
+        }
+
+        // Ambil data
+        $dataPrakerin = $query->get();
+
+        $absensi = DB::table('absensi_siswa_pkls')
+            ->select(
+                'nis',
+                DB::raw("SUM(CASE WHEN status = 'HADIR' THEN 1 ELSE 0 END) as jumlah_hadir"),
+                DB::raw("SUM(CASE WHEN status = 'SAKIT' THEN 1 ELSE 0 END) as jumlah_sakit"),
+                DB::raw("SUM(CASE WHEN status = 'IZIN' THEN 1 ELSE 0 END) as jumlah_izin"),
+                DB::raw("SUM(CASE WHEN status = 'ALFA' THEN 1 ELSE 0 END) as jumlah_alfa")
+            )
+            ->groupBy('nis')
+            ->get()
+            ->keyBy('nis'); // Agar hasil bisa diakses langsung dengan nis sebagai key
+
+        // Gabungkan data absensi dengan data siswa
+        $dataPrakerin = $dataPrakerin->map(function ($siswa) use ($absensi) {
+            $nis = $siswa->nis;
+
+            // Ambil data absensi yang sesuai dengan nis
+            $absensiData = $absensi[$nis] ?? null;
+
+            // Jika ada data absensi, gabungkan dengan data siswa
+            if ($absensiData) {
+                $siswa->jumlah_hadir = $absensiData->jumlah_hadir ?? 0;
+                $siswa->jumlah_sakit = $absensiData->jumlah_sakit ?? 0;
+                $siswa->jumlah_izin = $absensiData->jumlah_izin ?? 0;
+                $siswa->jumlah_alfa = $absensiData->jumlah_alfa ?? 0;
+            } else {
+                // Jika tidak ada data absensi, set ke nilai default 0
+                $siswa->jumlah_hadir = 0;
+                $siswa->jumlah_sakit = 0;
+                $siswa->jumlah_izin = 0;
+                $siswa->jumlah_alfa = 0;
+            }
+
+            // Hitung total absensi (jumlah_sakit + jumlah_izin + jumlah_alfa)
+            $siswa->jumlah_total = $siswa->jumlah_hadir + $siswa->jumlah_sakit + $siswa->jumlah_izin + $siswa->jumlah_alfa;
+
+            return $siswa;
+        });
+
+        // Buat PDF dari view dan data yang ada
+        $pdf = Pdf::loadView('pages.kaprodipkl.pelaporan-prakerin-absensi-pdf', [
+            'dataPrakerin' => $dataPrakerin,
+        ]);
+
+        // Download PDF
+        return $pdf->download('Laporan Prakerin Abensi.pdf');
     }
 }

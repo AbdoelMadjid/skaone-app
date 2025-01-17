@@ -1,6 +1,5 @@
 <div class="row">
     <div class="col-sm">
-
         <div class="form-group mb-3">
             <select id="pembimbingJurnalSelect" class="form-control select2 form-select form-select-sm">
                 <option value="">-- Pilih Semua --</option>
@@ -13,7 +12,7 @@
         </div>
     </div>
     <div class="col-sm-auto">
-        <a href="{{ route('kaprodipkl.downloadpdf') }}" class="btn btn-soft-primary">Download Jurnal</a>
+        <a href="{{ route('kaprodipkl.downloadjurnalpdf') }}" class="btn btn-soft-primary">Download Jurnal</a>
     </div>
 </div>
 <table class="table table-bordered table-centered">
