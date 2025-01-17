@@ -53,6 +53,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('modul-ajar', ModulAjarController::class);
         Route::resource('informasi-prakerin', InformasiAdministratorController::class);
         Route::resource('pelaporan-prakerin', PelaporanPrakerinController::class);
+        Route::get('/download-pdf', [PelaporanPrakerinController::class, 'downloadPdf'])->name('downloadpdf');
     });
 
     Route::group(['prefix' => 'pembimbingpkl', 'as' => 'pembimbingpkl.'], function () {

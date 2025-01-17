@@ -4,6 +4,7 @@ namespace App\Http\Controllers\KaprodiPkl;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -324,5 +325,85 @@ class PelaporanPrakerinController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function downloadPdf()
+    {
+        // Ambil data sesuai query Anda
+        $user = User::find(Auth::user()->id);
+        $query = DB::table('penempatan_prakerins')
+            ->select(
+                'penempatan_prakerins.tahunajaran',
+                'penempatan_prakerins.kode_kk',
+                'kompetensi_keahlians.nama_kk',
+                'peserta_didiks.nis',
+                'peserta_didiks.nama_lengkap',
+                'peserta_didik_rombels.rombel_nama AS rombel',
+                'perusahaans.id AS id_perusahaan',
+                'perusahaans.nama AS nama_perusahaan',
+                'perusahaans.alamat AS alamat_perusahaan',
+                'pembimbing_prakerins.id_personil',
+                'personil_sekolahs.nip',
+                'personil_sekolahs.gelardepan',
+                'personil_sekolahs.namalengkap',
+                'personil_sekolahs.gelarbelakang'
+            )
+            ->join('kompetensi_keahlians', 'penempatan_prakerins.kode_kk', '=', 'kompetensi_keahlians.idkk')
+            ->join('perusahaans', 'penempatan_prakerins.id_dudi', '=', 'perusahaans.id')
+            ->join('peserta_didiks', 'penempatan_prakerins.nis', '=', 'peserta_didiks.nis')
+            ->join('peserta_didik_rombels', 'peserta_didiks.nis', '=', 'peserta_didik_rombels.nis')
+            ->join('pembimbing_prakerins', 'penempatan_prakerins.id', '=', 'pembimbing_prakerins.id_penempatan')
+            ->join('personil_sekolahs', 'pembimbing_prakerins.id_personil', '=', 'personil_sekolahs.id_personil');
+
+        // Filter berdasarkan role user
+        if ($user->hasAnyRole(['kaprodiak'])) {
+            $query->where('penempatan_prakerins.kode_kk', '=', '833');
+        } elseif ($user->hasAnyRole(['kaprodibd'])) {
+            $query->where('penempatan_prakerins.kode_kk', '=', '811');
+        } elseif ($user->hasAnyRole(['kaprodimp'])) {
+            $query->where('penempatan_prakerins.kode_kk', '=', '821');
+        } elseif ($user->hasAnyRole(['kaprodirpl'])) {
+            $query->where('penempatan_prakerins.kode_kk', '=', '411');
+        } elseif ($user->hasAnyRole(['kaproditkj'])) {
+            $query->where('penempatan_prakerins.kode_kk', '=', '421');
+        }
+
+        // Ambil data
+        $dataPrakerin = $query->get();
+
+        // Ambil data jurnal
+        $rekapJurnal = DB::table('jurnal_pkls')
+            ->join('penempatan_prakerins', 'penempatan_prakerins.id', '=', 'jurnal_pkls.id_penempatan')
+            ->join('peserta_didiks', 'penempatan_prakerins.nis', '=', 'peserta_didiks.nis')
+            ->select(
+                'peserta_didiks.nis',
+                DB::raw("SUM(CASE WHEN jurnal_pkls.validasi = 'SUDAH' THEN 1 ELSE 0 END) AS jumlah_sudah"),
+                DB::raw("SUM(CASE WHEN jurnal_pkls.validasi = 'BELUM' THEN 1 ELSE 0 END) AS jumlah_belum"),
+                DB::raw("SUM(CASE WHEN jurnal_pkls.validasi = 'TOLAK' THEN 1 ELSE 0 END) AS jumlah_tolak")
+            )
+            ->groupBy('peserta_didiks.nis')
+            ->get()
+            ->keyBy('nis');  // Agar hasil bisa diakses langsung berdasarkan nis
+
+        // Gabungkan data jurnal dengan data siswa
+        $dataPrakerin = $dataPrakerin->map(function ($prakerin) use ($rekapJurnal) {
+            $nis = $prakerin->nis;
+            $jurnalData = $rekapJurnal[$nis] ?? null;
+
+            $prakerin->jumlah_sudah = $jurnalData->jumlah_sudah ?? 0;
+            $prakerin->jumlah_belum = $jurnalData->jumlah_belum ?? 0;
+            $prakerin->jumlah_tolak = $jurnalData->jumlah_tolak ?? 0;
+
+            return $prakerin;
+        });
+
+
+        // Buat PDF dari view dan data yang ada
+        $pdf = Pdf::loadView('pages.kaprodipkl.pelaporan-prakerin-pdf', [
+            'dataPrakerin' => $dataPrakerin,
+        ]);
+
+        // Download PDF
+        return $pdf->download('laporan_prakerin.pdf');
     }
 }

@@ -1,13 +1,20 @@
-<div class="form-group mb-3">
-    <label for="pembimbingJurnalSelect">Pilih Pembimbing</label>
-    <select id="pembimbingJurnalSelect" class="form-control select2 form-select form-select-sm">
-        <option value="">-- Pilih Semua --</option>
-        <option value="all">Pilih Semua</option>
-        @foreach ($pembimbingList as $pembimbing)
-            <option value="{{ $pembimbing->id_personil }}">{{ $pembimbing->gelardepan }}
-                {{ $pembimbing->namalengkap }} {{ $pembimbing->gelarbelakang }}</option>
-        @endforeach
-    </select>
+<div class="row">
+    <div class="col-sm">
+
+        <div class="form-group mb-3">
+            <select id="pembimbingJurnalSelect" class="form-control select2 form-select form-select-sm">
+                <option value="">-- Pilih Semua --</option>
+                <option value="all">Pilih Semua</option>
+                @foreach ($pembimbingList as $pembimbing)
+                    <option value="{{ $pembimbing->id_personil }}">{{ $pembimbing->gelardepan }}
+                        {{ $pembimbing->namalengkap }} {{ $pembimbing->gelarbelakang }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-auto">
+        <a href="{{ route('kaprodipkl.downloadpdf') }}" class="btn btn-soft-primary">Download Jurnal</a>
+    </div>
 </div>
 <table class="table table-bordered table-centered">
     <thead>
