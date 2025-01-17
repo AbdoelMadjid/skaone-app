@@ -148,7 +148,7 @@
                             </div>
                             <div class="col-auto">
                                 @if ($pilihData)
-                                    <a
+                                    <a class="btn btn-soft-primary btn-sm"
                                         href="/kurikulum/dokumentsiswa/export-pivot-data?kode_rombel={{ $pilihData->kode_rombel }}">Download
                                         Leger Excel</a>
                                 @endif
