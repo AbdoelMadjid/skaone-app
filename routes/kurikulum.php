@@ -85,7 +85,7 @@ Route::middleware('auth')->group(function () {
                 ->name('simpanpilihcetakrapor');
 
             Route::resource('leger-nilai', LegerNilaiController::class);
-            Route::get('/export-to-excel-leger', [LegerNilaiController::class, 'exportToExcel']);
+            Route::get('/export-pivot-data', [LegerNilaiController::class, 'exportPivotData'])->name('exportpivotData');
 
             Route::resource('ijazah', IjazahController::class);
             Route::resource('rapor-pkl', RaporPklController::class);

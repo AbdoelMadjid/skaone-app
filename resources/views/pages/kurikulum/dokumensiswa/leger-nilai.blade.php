@@ -149,7 +149,7 @@
                             <div class="col-auto">
                                 @if ($pilihData)
                                     <a
-                                        href="/kurikulum/dokumentsiswa/export-to-excel-leger?kode_rombel={{ $pilihData->kode_rombel }}">Download
+                                        href="/kurikulum/dokumentsiswa/export-pivot-data?kode_rombel={{ $pilihData->kode_rombel }}">Download
                                         Leger Excel</a>
                                 @endif
                                 <div id="selection-element">
