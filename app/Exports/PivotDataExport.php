@@ -30,7 +30,7 @@ class PivotDataExport implements WithMultipleSheets
     }
 }
 
-class Sheet1Export implements FromArray, WithHeadings, WithTitle, WithStyles
+class Sheet1Export implements FromArray, WithTitle, WithStyles
 {
     protected $data;
 
@@ -74,10 +74,10 @@ class Sheet1Export implements FromArray, WithHeadings, WithTitle, WithStyles
 
             // Tambahkan nilai berdasarkan urutan kelompok mapel di header
             foreach ($mapelKeys as $mapel) {
-                $row[] = $item[$mapel] ?? null; // Gunakan nilai atau null jika tidak ada
+                $row[] = $item[$mapel] ?? null;
             }
 
-            $row[] = $item['nil_rata_siswa'] ?? null; // Tambahkan nilai rata-rata siswa
+            $row[] = $item['nil_rata_siswa'] ?? null;
             $rows[] = $row;
         }
 
@@ -92,17 +92,35 @@ class Sheet1Export implements FromArray, WithHeadings, WithTitle, WithStyles
     public function styles(Worksheet $sheet)
     {
         $highestColumn = $sheet->getHighestColumn(); // Kolom terakhir
-        $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn); // Indeks kolom terakhir
 
-        // Set auto-size untuk setiap kolom
+        // Tambahkan judul di A1
+        $sheet->setCellValue('A1', 'LEGER SISWA');
+        $sheet->mergeCells("A1:{$highestColumn}1");
+        $sheet->getStyle('A1')->applyFromArray([
+            'font' => [
+                'bold' => true,
+                'size' => 14,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+        ]);
+
+        // Kosongkan baris A2 untuk semua kolom
+        $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
         for ($col = 1; $col <= $highestColumnIndex; $col++) {
-            $columnLetter = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col); // Konversi indeks menjadi huruf kolom
-            $sheet->getColumnDimension($columnLetter)->setAutoSize(true); // Atur auto-size
+            $columnLetter = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col);
+            $sheet->setCellValue("{$columnLetter}2", ''); // Kosongkan setiap sel di baris kedua
         }
+        // Tambahkan header di A3
+        $sheet->fromArray($this->headings(), null, 'A3');
 
-        // Terapkan border pada seluruh tabel
-        $highestRow = $sheet->getHighestRow(); // Baris terakhir
-        $sheet->getStyle("A1:{$highestColumn}{$highestRow}")->applyFromArray([
+        // Pindahkan data mulai dari A4
+        $sheet->fromArray($this->array(), null, 'A4');
+
+        // Terapkan border untuk header dan data
+        $highestRow = $sheet->getHighestRow();
+        $sheet->getStyle("A3:{$highestColumn}{$highestRow}")->applyFromArray([
             'borders' => [
                 'allBorders' => [
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
@@ -111,16 +129,27 @@ class Sheet1Export implements FromArray, WithHeadings, WithTitle, WithStyles
             ],
         ]);
 
-        // Set header menjadi bold
-        $sheet->getStyle("A1:{$highestColumn}1")->applyFromArray([
+        // Set header (A3) menjadi bold
+        $sheet->getStyle("A3:{$highestColumn}3")->applyFromArray([
             'font' => [
                 'bold' => true,
             ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
         ]);
+
+        // Set auto-size untuk semua kolom
+        $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
+        for ($col = 1; $col <= $highestColumnIndex; $col++) {
+            $columnLetter = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col);
+            $sheet->getColumnDimension($columnLetter)->setAutoSize(true);
+        }
     }
 }
 
-class Sheet2Export implements FromArray, WithHeadings, WithTitle, WithStyles
+
+class Sheet2Export implements FromArray, WithTitle, WithStyles
 {
     protected $data;
 
@@ -159,17 +188,35 @@ class Sheet2Export implements FromArray, WithHeadings, WithTitle, WithStyles
     public function styles(Worksheet $sheet)
     {
         $highestColumn = $sheet->getHighestColumn(); // Kolom terakhir
-        $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn); // Indeks kolom terakhir
 
-        // Set auto-size untuk setiap kolom
+        // Tambahkan judul di A1
+        $sheet->setCellValue('A1', 'DAFTAR MATA PELAJARAN');
+        $sheet->mergeCells("A1:{$highestColumn}1");
+        $sheet->getStyle('A1')->applyFromArray([
+            'font' => [
+                'bold' => true,
+                'size' => 14,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+        ]);
+
+        // Kosongkan baris A2 untuk semua kolom
+        $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
         for ($col = 1; $col <= $highestColumnIndex; $col++) {
-            $columnLetter = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col); // Konversi indeks menjadi huruf kolom
-            $sheet->getColumnDimension($columnLetter)->setAutoSize(true); // Atur auto-size
+            $columnLetter = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col);
+            $sheet->setCellValue("{$columnLetter}2", ''); // Kosongkan setiap sel di baris kedua
         }
+        // Tambahkan header di A3
+        $sheet->fromArray($this->headings(), null, 'A3');
 
-        // Terapkan border pada seluruh tabel
-        $highestRow = $sheet->getHighestRow(); // Baris terakhir
-        $sheet->getStyle("A1:{$highestColumn}{$highestRow}")->applyFromArray([
+        // Pindahkan data mulai dari A4
+        $sheet->fromArray($this->array(), null, 'A4');
+
+        // Terapkan border untuk header dan data
+        $highestRow = $sheet->getHighestRow();
+        $sheet->getStyle("A3:{$highestColumn}{$highestRow}")->applyFromArray([
             'borders' => [
                 'allBorders' => [
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
@@ -178,11 +225,22 @@ class Sheet2Export implements FromArray, WithHeadings, WithTitle, WithStyles
             ],
         ]);
 
-        // Set header menjadi bold
-        $sheet->getStyle("A1:{$highestColumn}1")->applyFromArray([
+        // Set header (A3) menjadi bold
+        $sheet->getStyle("A3:{$highestColumn}3")->applyFromArray([
             'font' => [
                 'bold' => true,
+
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
             ],
         ]);
+
+        // Set auto-size untuk semua kolom
+        $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
+        for ($col = 1; $col <= $highestColumnIndex; $col++) {
+            $columnLetter = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col);
+            $sheet->getColumnDimension($columnLetter)->setAutoSize(true);
+        }
     }
 }

@@ -19,6 +19,10 @@
             justify-content: center;
             /* Memusatkan konten secara horizontal */
         }
+
+        .text-center {
+            text-align: center;
+        }
     </style>
 @endsection
 @section('content')
@@ -184,13 +188,14 @@
                                             <tbody>
                                                 @forelse ($pivotData as $nis => $data)
                                                     <tr>
-                                                        <td>{{ $loop->iteration }}</td>
-                                                        <td>{{ $nis }}</td>
+                                                        <td class="text-center">{{ $loop->iteration }}</td>
+                                                        <td class="text-center">{{ $nis }}</td>
                                                         <td>{{ $data['nama_lengkap'] }}</td>
                                                         @foreach ($kelMapelList as $kelMapel)
-                                                            <td>{{ $data[$kelMapel->kel_mapel] ?? '-' }}</td>
+                                                            <td class="text-center">
+                                                                {{ $data[$kelMapel->kel_mapel] ?? '-' }}</td>
                                                         @endforeach
-                                                        <td>{{ $data['nil_rata_siswa'] }}</td>
+                                                        <td class="text-center">{{ $data['nil_rata_siswa'] }}</td>
                                                     </tr>
                                                 @empty
                                                     <tr>
