@@ -117,6 +117,7 @@ class PesertaTerbimbingDataTable extends DataTable
                         <td align="center">' . $jurnal->sudah . '</td>
                         <td align="center">' . $jurnal->belum . '</td>
                         <td align="center">' . $jurnal->tolak . '</td>
+                        <td align="center">' . ($jurnal->sudah + $jurnal->belum) . '</td>
                     </tr>';
                 }
 
@@ -130,6 +131,7 @@ class PesertaTerbimbingDataTable extends DataTable
                             <th>Sudah</th>
                             <th>Belum</th>
                             <th>Tolak</th>
+                            <th>Total</th>
                         </tr>
                     </thead>
                     <tbody>
