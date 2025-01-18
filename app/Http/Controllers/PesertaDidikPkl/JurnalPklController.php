@@ -23,7 +23,24 @@ class JurnalPklController extends Controller
      */
     public function index(JurnalSiswaDataTable $jurnalSiswaDataTable)
     {
-        return $jurnalSiswaDataTable->render('pages.pesertadidikpkl.jurnal-siswa');
+        $nis = auth()->user()->nis; // Ambil NIS dari user yang sedang login
+
+        $rekapJurnal = DB::table('jurnal_pkls')
+            ->select(
+                DB::raw('YEAR(tanggal_kirim) as tahun'),
+                DB::raw('MONTH(tanggal_kirim) as bulan'),
+                DB::raw('COUNT(CASE WHEN validasi = "sudah" THEN 1 END) as sudah'),
+                DB::raw('COUNT(CASE WHEN validasi = "belum" THEN 1 END) as belum'),
+                DB::raw('COUNT(CASE WHEN validasi = "tolak" THEN 1 END) as tolak')
+            )
+            ->join('penempatan_prakerins', 'jurnal_pkls.id_penempatan', '=', 'penempatan_prakerins.id')
+            ->where('penempatan_prakerins.nis', $nis)
+            ->groupBy(DB::raw('YEAR(tanggal_kirim), MONTH(tanggal_kirim)'))
+            ->orderBy(DB::raw('YEAR(tanggal_kirim)'))
+            ->orderBy(DB::raw('MONTH(tanggal_kirim)'))
+            ->get();
+
+        return $jurnalSiswaDataTable->render('pages.pesertadidikpkl.jurnal-siswa', compact('rekapJurnal'));
     }
 
     /**

@@ -4,6 +4,11 @@
 @endsection
 @section('css')
     {{--  --}}
+    <style>
+        .text-center {
+            text-align: center;
+        }
+    </style>
 @endsection
 @section('content')
     @component('layouts.breadcrumb')
@@ -17,11 +22,47 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
+                <div class="card-body">
+                    <h4 class="fs-18 lh-base mb-3">Rekapitulasi Jurnal : </h4>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Bulan</th>
+                                <th>Sudah</th>
+                                <th>Belum</th>
+                                <th>Tolak</th>
+                                <th>Jumlah</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php $no = 1; @endphp
+                            @forelse ($rekapJurnal as $data)
+                                <tr>
+                                    <td class="text-center">{{ $no++ }}</td>
+                                    <td>{{ \Carbon\Carbon::create()->month($data->bulan)->locale('id')->monthName }}
+                                        {{ $data->tahun }}</td>
+                                    <td class="text-center">{{ $data->sudah }}</td>
+                                    <td class="text-center">{{ $data->belum }}</td>
+                                    <td class="text-center">{{ $data->tolak }}</td>
+                                    <td class="text-center">{{ $data->sudah + $data->belum }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="text-center">Tidak ada data tersedia</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card">
                 <div class="card-header d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @yield('title')</h5>
                     <div>
                         @can('create pesertadidikpkl/jurnal-siswa')
-                            <a class="btn btn-soft-primary action" href="{{ route('pesertadidikpkl.jurnal-siswa.create') }}">Buat
+                            <a class="btn btn-soft-primary action"
+                                href="{{ route('pesertadidikpkl.jurnal-siswa.create') }}">Buat
                                 Jurnal Siswa</a>
                         @endcan
                     </div>

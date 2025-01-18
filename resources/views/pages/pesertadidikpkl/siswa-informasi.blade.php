@@ -90,6 +90,42 @@
                         </div>
                     </div>
 
+
+                    <div class="card overflow-hidden">
+                        <div class="card-body bg-marketplace d-flex">
+                            <div class="flex-grow-1">
+                                <h4 class="fs-18 lh-base mb-3">Rekapitulasi Jurnal : </h4>
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Bulan</th>
+                                            <th>Sudah</th>
+                                            <th>Belum</th>
+                                            <th>Tolak</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @php $no = 1; @endphp
+                                        @forelse ($rekapJurnal as $data)
+                                            <tr>
+                                                <td>{{ $no++ }}</td>
+                                                <td>{{ \Carbon\Carbon::create()->month($data->bulan)->locale('id')->monthName }}
+                                                    {{ $data->tahun }}</td>
+                                                <td>{{ $data->sudah }}</td>
+                                                <td>{{ $data->belum }}</td>
+                                                <td>{{ $data->tolak }}</td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="6" class="text-center">Tidak ada data tersedia</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!--end col-->
                 <div class="col-xl-8">
