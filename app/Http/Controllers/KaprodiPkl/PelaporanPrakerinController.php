@@ -208,7 +208,6 @@ class PelaporanPrakerinController extends Controller
                 ->groupBy('penempatan_prakerins.nis', 'jurnal_pkls.element')
                 ->get();
 
-
             // Gabungkan data absensi dan jurnal
             $dataPrakerin = $dataPrakerin->map(function ($siswa) use ($jumlahJurnal, $elements, $journals) {
                 $nis = $siswa->nis;
@@ -258,6 +257,42 @@ class PelaporanPrakerinController extends Controller
                         ];
                     });
                 });
+
+            $rekapJurnalPerbulan = DB::table('jurnal_pkls')
+                ->select(
+                    'penempatan_prakerins.nis',
+                    DB::raw('YEAR(tanggal_kirim) as tahun'),
+                    DB::raw('MONTH(tanggal_kirim) as bulan'),
+                    DB::raw('COUNT(CASE WHEN validasi = "sudah" THEN 1 END) as sudah'),
+                    DB::raw('COUNT(CASE WHEN validasi = "belum" THEN 1 END) as belum'),
+                    DB::raw('COUNT(CASE WHEN validasi = "tolak" THEN 1 END) as tolak')
+                )
+                ->join('penempatan_prakerins', 'jurnal_pkls.id_penempatan', '=', 'penempatan_prakerins.id')
+                ->groupBy('penempatan_prakerins.nis', DB::raw('YEAR(tanggal_kirim), MONTH(tanggal_kirim)'))
+                ->orderBy('penempatan_prakerins.nis')
+                ->orderBy(DB::raw('YEAR(tanggal_kirim)'))
+                ->orderBy(DB::raw('MONTH(tanggal_kirim)'))
+                ->get();
+
+            $dataPrakerin = $dataPrakerin->map(function ($siswa) use ($rekapJurnalPerbulan) {
+                $nis = $siswa->nis;
+
+                // Filter data jurnal berdasarkan NIS
+                $jurnalPerNIS = $rekapJurnalPerbulan->where('nis', $nis);
+
+                // Gabungkan data jurnal per bulan
+                $siswa->rekap_jurnal = $jurnalPerNIS->map(function ($jurnal) {
+                    return [
+                        'tahun' => $jurnal->tahun,
+                        'bulan' => $jurnal->bulan,
+                        'sudah' => $jurnal->sudah,
+                        'belum' => $jurnal->belum,
+                        'tolak' => $jurnal->tolak,
+                    ];
+                });
+
+                return $siswa;
+            });
 
             // Kirim data ke view
             return view('pages.kaprodipkl.pelaporan-prakerin', [

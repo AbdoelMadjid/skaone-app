@@ -22,6 +22,7 @@
             <th width="250">Identitas Siswa</th>
             <th>Perusahaan / Pembimbing</th>
             <th width="300">Element</th>
+            <th width="150">Rekap Per Bulan</th>
             <th>Sudah</th>
             <th>Belum</th>
             <th>Tolak</th>
@@ -58,6 +59,22 @@
                             </div>
                         </div><!-- end -->
                     @endforeach
+                </td>
+                <td>
+                    @forelse ($prakerin->rekap_jurnal as $jurnal)
+                        <div class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
+                            <p class="fw-medium fs-10 mb-0"><i
+                                    class="ri-checkbox-blank-circle-fill text-primary align-middle me-2"></i>
+                                <strong>{{ \Carbon\Carbon::create($jurnal['tahun'], $jurnal['bulan'])->locale('id')->translatedFormat('F Y') }}</strong>
+                            </p>
+                            <div>
+                                <span
+                                    class="text-primary fw-medium fs-12">{{ $jurnal['sudah'] + $jurnal['belum'] }}</span>
+                            </div>
+                        </div><!-- end -->
+                    @empty
+                        <span class="text-danger fs-12">Jurnal belum ada</span>
+                    @endforelse
                 </td>
                 <td class="text-center jumlah_sudah">{{ $prakerin->jumlah_sudah }}</td>
                 <td class="text-center jumlah_belum">{{ $prakerin->jumlah_belum }}</td>

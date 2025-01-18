@@ -28,409 +28,117 @@ class PesertaTerbimbingDataTable extends DataTable
             ->addColumn('identitas_peserta', function ($row) {
                 // Ambil data `element` dari tabel `capaian_pembelajarans` berdasarkan `kode_cp`
                 $identitas_pesertaPrakerin = '<strong>' . $row->nama_lengkap . '</strong><br> Kelas : ' .  $row->rombel_nama;
-
-                return $identitas_pesertaPrakerin;
-            })
-            ->addColumn('identitas_perusahaan', function ($row) {
                 // Ambil data `element` dari tabel `capaian_pembelajarans` berdasarkan `kode_cp`
-                $idenPerusahaan = '<strong>' . $row->perusahaan_nama . '</strong><br>
-                Alamat : ' .  $row->perusahaan_alamat;
+                $idenPerusahaan = '<strong>' . $row->perusahaan_nama . '</strong><br> Alamat : ' .  $row->perusahaan_alamat;
 
-                return $idenPerusahaan;
+                return $identitas_pesertaPrakerin . '<br><br> Tempat Prakerin <br>' . $idenPerusahaan;
             })
             ->addColumn('absensi', function ($row) {
-                $absensi_total = DB::table('absensi_siswa_pkls')
+                $absensiBulanan = DB::table('absensi_siswa_pkls')
                     ->select(
+                        DB::raw('YEAR(tanggal) as tahun'),
+                        DB::raw('MONTH(tanggal) as bulan'),
                         DB::raw("SUM(CASE WHEN status = 'HADIR' THEN 1 ELSE 0 END) as jumlah_hadir"),
                         DB::raw("SUM(CASE WHEN status = 'SAKIT' THEN 1 ELSE 0 END) as jumlah_sakit"),
                         DB::raw("SUM(CASE WHEN status = 'IZIN' THEN 1 ELSE 0 END) as jumlah_izin"),
                         DB::raw("SUM(CASE WHEN status = 'ALFA' THEN 1 ELSE 0 END) as jumlah_alfa")
                     )
-                    ->where('nis', $row->nis)
-                    ->first();
+                    ->where('nis', $row->nis) // Filter berdasarkan NIS siswa
+                    ->groupBy(DB::raw('YEAR(tanggal), MONTH(tanggal)'))
+                    ->orderBy(DB::raw('YEAR(tanggal)'))
+                    ->orderBy(DB::raw('MONTH(tanggal)'))
+                    ->get();
 
-                $absensiBulan = '
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-info align-middle me-2"></i>
-                            <strong>HADIR:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-info fw-medium fs-12">' . $absensi_total->jumlah_hadir . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-primary align-middle me-2"></i>
-                            <strong>IZIN:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-primary fw-medium fs-12">' . $absensi_total->jumlah_izin . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-success align-middle me-2"></i>
-                            <strong>SAKIT:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-success fw-medium fs-12">' . $absensi_total->jumlah_sakit . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-danger align-middle me-2"></i>
-                            <strong>ALFA:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-danger fw-medium fs-12">' . $absensi_total->jumlah_alfa . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    <br>
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-secondary align-middle me-2"></i>
-                            <strong>ABSENSI:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-secondary fw-medium fs-12">' . ($absensi_total->jumlah_izin + $absensi_total->jumlah_sakit + $absensi_total->jumlah_alfa) . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    ';
+                // Mulai tabel HTML
+                $absensiBulan = '<table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Bulan</th>
+                            <th>Hadir</th>
+                            <th>Sakit</th>
+                            <th>Izin</th>
+                            <th>Alfa</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>';
 
+                // Iterasi data untuk setiap bulan
+                foreach ($absensiBulanan as $index => $absensi) {
+                    $bulanNama = \Carbon\Carbon::create($absensi->tahun, $absensi->bulan)->locale('id')->translatedFormat('F Y');
+                    $totalAbsensi = $absensi->jumlah_sakit + $absensi->jumlah_izin + $absensi->jumlah_alfa;
+
+                    $absensiBulan .= '<tr>
+                        <td align="center">' . ($index + 1) . '</td>
+                        <td>' . $bulanNama . '</td>
+                        <td align="center">' . $absensi->jumlah_hadir . '</td>
+                        <td align="center">' . $absensi->jumlah_sakit . '</td>
+                        <td align="center">' . $absensi->jumlah_izin . '</td>
+                        <td align="center">' . $absensi->jumlah_alfa . '</td>
+                        <td align="center">' . $totalAbsensi . '</td>
+                    </tr>';
+                }
+
+                // Akhiri tabel HTML
+                $absensiBulan .= '</tbody></table>';
+
+                // Kembalikan tabel HTML sebagai hasil kolom
                 return $absensiBulan;
             })
-            // Menambahkan kolom untuk rekapitulasi per bulan
-            ->addColumn('rekap_desember', function ($row) {
-                $absensi_bulanan = DB::table('absensi_siswa_pkls')
+            ->addColumn('rekap_jurnal', function ($row) {
+                $rekapJurnal = DB::table('jurnal_pkls')
                     ->select(
-                        DB::raw("SUM(CASE WHEN status = 'HADIR' THEN 1 ELSE 0 END) as jumlah_hadir"),
-                        DB::raw("SUM(CASE WHEN status = 'SAKIT' THEN 1 ELSE 0 END) as jumlah_sakit"),
-                        DB::raw("SUM(CASE WHEN status = 'IZIN' THEN 1 ELSE 0 END) as jumlah_izin"),
-                        DB::raw("SUM(CASE WHEN status = 'ALFA' THEN 1 ELSE 0 END) as jumlah_alfa")
+                        DB::raw('YEAR(tanggal_kirim) as tahun'),
+                        DB::raw('MONTH(tanggal_kirim) as bulan'),
+                        DB::raw('COUNT(CASE WHEN validasi = "sudah" THEN 1 END) as sudah'),
+                        DB::raw('COUNT(CASE WHEN validasi = "belum" THEN 1 END) as belum'),
+                        DB::raw('COUNT(CASE WHEN validasi = "tolak" THEN 1 END) as tolak') // Menambahkan kolom tolak
                     )
-                    ->where('nis', $row->nis)
-                    ->whereMonth('tanggal', 12) // Bulan Desember
-                    ->whereYear('tanggal', 2024) // Tahun 2024
-                    ->first();
+                    ->join('penempatan_prakerins', 'jurnal_pkls.id_penempatan', '=', 'penempatan_prakerins.id')
+                    ->where('penempatan_prakerins.nis', $row->nis)
+                    ->groupBy(DB::raw('YEAR(tanggal_kirim), MONTH(tanggal_kirim)'))
+                    ->orderBy(DB::raw('YEAR(tanggal_kirim)'))
+                    ->orderBy(DB::raw('MONTH(tanggal_kirim)'))
+                    ->get();
 
-                $absensiBulan = '
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-info align-middle me-2"></i>
-                            <strong>HADIR:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-info fw-medium fs-12">' . $absensi_bulanan->jumlah_hadir . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-primary align-middle me-2"></i>
-                            <strong>IZIN:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-primary fw-medium fs-12">' . $absensi_bulanan->jumlah_izin . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-success align-middle me-2"></i>
-                            <strong>SAKIT:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-success fw-medium fs-12">' . $absensi_bulanan->jumlah_sakit . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-danger align-middle me-2"></i>
-                            <strong>ALFA:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-danger fw-medium fs-12">' . $absensi_bulanan->jumlah_alfa . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    <br>
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-secondary align-middle me-2"></i>
-                            <strong>ABSENSI:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-secondary fw-medium fs-12">' . ($absensi_bulanan->jumlah_izin + $absensi_bulanan->jumlah_sakit + $absensi_bulanan->jumlah_alfa) . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    ';
+                // Mulai HTML untuk tabel
+                $tampilJurnalPerBulan = '';
+                $no = 1;  // Inisialisasi nomor urut
 
-                return $absensiBulan;
-            })
-            ->addColumn('rekap_januari', function ($row) {
-                $absensi_bulanan = DB::table('absensi_siswa_pkls')
-                    ->select(
-                        DB::raw("SUM(CASE WHEN status = 'HADIR' THEN 1 ELSE 0 END) as jumlah_hadir"),
-                        DB::raw("SUM(CASE WHEN status = 'SAKIT' THEN 1 ELSE 0 END) as jumlah_sakit"),
-                        DB::raw("SUM(CASE WHEN status = 'IZIN' THEN 1 ELSE 0 END) as jumlah_izin"),
-                        DB::raw("SUM(CASE WHEN status = 'ALFA' THEN 1 ELSE 0 END) as jumlah_alfa")
-                    )
-                    ->where('nis', $row->nis)
-                    ->whereMonth('tanggal', 1) // Bulan Januari
-                    ->whereYear('tanggal', 2025) // Tahun 2025
-                    ->first();
+                foreach ($rekapJurnal as $jurnal) {
+                    $bulanTahun = \Carbon\Carbon::create($jurnal->tahun, $jurnal->bulan)->locale('id')->translatedFormat('F Y');
+                    $totalJurnal = $jurnal->sudah + $jurnal->belum;
 
-                $absensiBulan = '
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-info align-middle me-2"></i>
-                            <strong>HADIR:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-info fw-medium fs-12">' . $absensi_bulanan->jumlah_hadir . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-primary align-middle me-2"></i>
-                            <strong>IZIN:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-primary fw-medium fs-12">' . $absensi_bulanan->jumlah_izin . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-success align-middle me-2"></i>
-                            <strong>SAKIT:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-success fw-medium fs-12">' . $absensi_bulanan->jumlah_sakit . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-danger align-middle me-2"></i>
-                            <strong>ALFA:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-danger fw-medium fs-12">' . $absensi_bulanan->jumlah_alfa . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    <br>
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-secondary align-middle me-2"></i>
-                            <strong>ABSENSI:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-secondary fw-medium fs-12">' . ($absensi_bulanan->jumlah_izin + $absensi_bulanan->jumlah_sakit + $absensi_bulanan->jumlah_alfa) . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    ';
+                    $tampilJurnalPerBulan .= '
+                    <tr>
+                        <td align="center">' . ($no++) . '</td>
+                        <td>' . \Carbon\Carbon::create()->month($jurnal->bulan)->locale('id')->monthName . ' ' . $jurnal->tahun . '</td>
+                        <td align="center">' . $jurnal->sudah . '</td>
+                        <td align="center">' . $jurnal->belum . '</td>
+                        <td align="center">' . $jurnal->tolak . '</td>
+                    </tr>';
+                }
 
-                return $absensiBulan;
-            })
-            ->addColumn('rekap_februari', function ($row) {
-                $absensi_bulanan = DB::table('absensi_siswa_pkls')
-                    ->select(
-                        DB::raw("SUM(CASE WHEN status = 'HADIR' THEN 1 ELSE 0 END) as jumlah_hadir"),
-                        DB::raw("SUM(CASE WHEN status = 'SAKIT' THEN 1 ELSE 0 END) as jumlah_sakit"),
-                        DB::raw("SUM(CASE WHEN status = 'IZIN' THEN 1 ELSE 0 END) as jumlah_izin"),
-                        DB::raw("SUM(CASE WHEN status = 'ALFA' THEN 1 ELSE 0 END) as jumlah_alfa")
-                    )
-                    ->where('nis', $row->nis)
-                    ->whereMonth('tanggal', 2) // Bulan Februari
-                    ->whereYear('tanggal', 2025) // Tahun 2025
-                    ->first();
+                // Akhiri tabel dan kembalikan
+                $tampilJurnalPerBulan = '
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Bulan</th>
+                            <th>Sudah</th>
+                            <th>Belum</th>
+                            <th>Tolak</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ' . $tampilJurnalPerBulan . '
+                    </tbody>
+                </table>';
 
-                $absensiBulan = '
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-info align-middle me-2"></i>
-                            <strong>HADIR:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-info fw-medium fs-12">' . $absensi_bulanan->jumlah_hadir . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-primary align-middle me-2"></i>
-                            <strong>IZIN:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-primary fw-medium fs-12">' . $absensi_bulanan->jumlah_izin . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-success align-middle me-2"></i>
-                            <strong>SAKIT:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-success fw-medium fs-12">' . $absensi_bulanan->jumlah_sakit . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-danger align-middle me-2"></i>
-                            <strong>ALFA:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-danger fw-medium fs-12">' . $absensi_bulanan->jumlah_alfa . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    <br>
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-secondary align-middle me-2"></i>
-                            <strong>ABSENSI:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-secondary fw-medium fs-12">' . ($absensi_bulanan->jumlah_izin + $absensi_bulanan->jumlah_sakit + $absensi_bulanan->jumlah_alfa) . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    ';
-
-                return $absensiBulan;
-            })
-            ->addColumn('rekap_maret', function ($row) {
-                $absensi_bulanan = DB::table('absensi_siswa_pkls')
-                    ->select(
-                        DB::raw("SUM(CASE WHEN status = 'HADIR' THEN 1 ELSE 0 END) as jumlah_hadir"),
-                        DB::raw("SUM(CASE WHEN status = 'SAKIT' THEN 1 ELSE 0 END) as jumlah_sakit"),
-                        DB::raw("SUM(CASE WHEN status = 'IZIN' THEN 1 ELSE 0 END) as jumlah_izin"),
-                        DB::raw("SUM(CASE WHEN status = 'ALFA' THEN 1 ELSE 0 END) as jumlah_alfa")
-                    )
-                    ->where('nis', $row->nis)
-                    ->whereMonth('tanggal', 3) // Bulan Maret
-                    ->whereYear('tanggal', 2025) // Tahun 2025
-                    ->first();
-
-                $absensiBulan = '
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-info align-middle me-2"></i>
-                            <strong>HADIR:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-info fw-medium fs-12">' . $absensi_bulanan->jumlah_hadir . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-primary align-middle me-2"></i>
-                            <strong>IZIN:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-primary fw-medium fs-12">' . $absensi_bulanan->jumlah_izin . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-success align-middle me-2"></i>
-                            <strong>SAKIT:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-success fw-medium fs-12">' . $absensi_bulanan->jumlah_sakit . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-danger align-middle me-2"></i>
-                            <strong>ALFA:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-danger fw-medium fs-12">' . $absensi_bulanan->jumlah_alfa . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    <br>
-                    <div
-                        class="d-flex justify-content-between border-bottom border-bottom-dashed py-1">
-                        <p class="fw-medium mb-0"><i
-                                class="ri-checkbox-blank-circle-fill text-secondary align-middle me-2"></i>
-                            <strong>ABSENSI:</strong>
-                        </p>
-                        <div>
-                            <span
-                                class="text-secondary fw-medium fs-12">' . ($absensi_bulanan->jumlah_izin + $absensi_bulanan->jumlah_sakit + $absensi_bulanan->jumlah_alfa) . '
-                                Hari</span>
-                        </div>
-                    </div>
-                    ';
-
-                return $absensiBulan;
+                // Jika tidak ada data jurnal, tampilkan pesan
+                return $tampilJurnalPerBulan ?: '<p class="text-muted">Tidak ada data jurnal</p>';
             })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
@@ -442,10 +150,7 @@ class PesertaTerbimbingDataTable extends DataTable
                 'identitas_peserta',
                 'identitas_perusahaan',
                 'absensi',
-                'rekap_desember',
-                'rekap_januari',
-                'rekap_februari',
-                'rekap_maret',
+                'rekap_jurnal',
                 'action'
             ]);
     }
@@ -515,13 +220,9 @@ class PesertaTerbimbingDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(25),
-            Column::make('identitas_peserta')->title('Identitas Peserta')->width(150),
-            Column::make('identitas_perusahaan')->title('Tempat Prakerin')->width(250),
-            Column::make('rekap_desember')->title('Desember')->width(150),
-            Column::make('rekap_januari')->title('Januari')->width(150),
-            Column::make('rekap_februari')->title('Februari')->width(150),
-            Column::make('rekap_maret')->title('Maret')->width(150),
-            Column::make('absensi')->title('Total')->width(150),
+            Column::make('identitas_peserta')->title('Identitas Peserta')->width(200),
+            Column::make('absensi')->title('Absensi')->width(250),
+            Column::make('rekap_jurnal')->title('Jurnal')->width(150),
             /* Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
