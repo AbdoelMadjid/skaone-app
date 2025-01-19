@@ -68,7 +68,7 @@
 
 @section('script')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="{{ URL::asset('build/libs/apexcharts/apexcharts.min.js') }}"></script>
     <script>
         // get colors array from the string
         function getChartColorsArray(chartId) {
