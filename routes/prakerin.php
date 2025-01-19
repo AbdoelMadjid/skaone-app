@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/downloadpembprakerin', [PembimbingPrakerinController::class, 'downloadPDF'])->name('downloadpembprakerin');
         Route::resource('informasi-prakerin', InformasiAdministratorController::class);
         Route::get('/informasi-prakerin/absensi', [InformasiAdministratorController::class, 'index'])->name('informasi-prakerin.absensi');
+        Route::get('/chart-data', [InformasiAdministratorController::class, 'getChartData']);
     });
 
     Route::group(['prefix' => 'kaprodipkl', 'as' => 'kaprodipkl.'], function () {
@@ -59,6 +60,8 @@ Route::middleware('auth')->group(function () {
 
     Route::group(['prefix' => 'pembimbingpkl', 'as' => 'pembimbingpkl.'], function () {
         Route::resource('informasi-prakerin', InformasiPembimbingController::class);
+        Route::get('/chart-data', [InformasiPembimbingController::class, 'getChartData']);
+
         Route::resource('peserta-prakerin', PesertaBimbinganController::class);
         Route::resource('validasi-jurnal', ValidasiJurnalController::class);
         Route::post('/validasi-jurnal/tambahkomentar/{id}', [ValidasiJurnalController::class, 'tambahKomentar'])->name('validasi-jurnal.tambahkomentar');

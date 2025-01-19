@@ -52,12 +52,125 @@
                     </div>
                 </div><!-- end card body -->
             </div><!-- end card -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">Statistik Jurnal Per Bulan</h4>
+                </div>
+                <div class="card-body">
+                    <div id="stacked_bar"
+                        data-colors='["--vz-primary", "--vz-success", "--vz-warning", "--vz-danger", "--vz-info"]'
+                        class="apex-charts" dir="ltr"></div>
+                </div>
+            </div>
         </div><!-- end col -->
     </div><!-- end row -->
 @endsection
 
 @section('script')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+        // get colors array from the string
+        function getChartColorsArray(chartId) {
+            if (document.getElementById(chartId) !== null) {
+                var colors = document.getElementById(chartId).getAttribute("data-colors");
+                colors = JSON.parse(colors);
+                return colors.map(function(value) {
+                    var newValue = value.replace(" ", "");
+                    if (newValue.indexOf(",") === -1) {
+                        var color = getComputedStyle(document.documentElement).getPropertyValue(newValue);
+                        if (color) return color;
+                        else return newValue;;
+                    } else {
+                        var val = value.split(',');
+                        if (val.length == 2) {
+                            var rgbaColor = getComputedStyle(document.documentElement).getPropertyValue(val[0]);
+                            rgbaColor = "rgba(" + rgbaColor + "," + val[1] + ")";
+                            return rgbaColor;
+                        } else {
+                            return newValue;
+                        }
+                    }
+                });
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('/administratorpkl/chart-data')
+                .then(response => response.json())
+                .then(data => {
+                    // Transform data menjadi categories dan series
+                    const categories = [...new Set(data.map(item => item.bulan))];
+                    const groupedData = data.reduce((acc, curr) => {
+                        if (!acc[curr.kompetensi]) acc[curr.kompetensi] = Array(categories.length).fill(
+                            0);
+                        acc[curr.kompetensi][categories.indexOf(curr.bulan)] = curr.jumlah;
+                        return acc;
+                    }, {});
+
+                    const series = Object.keys(groupedData).map(key => ({
+                        name: key,
+                        data: groupedData[key]
+                    }));
+
+                    // Konfigurasi chart
+                    const options = {
+                        series: series,
+                        chart: {
+                            type: 'bar',
+                            height: 350,
+                            stacked: true,
+                            toolbar: {
+                                show: false
+                            }
+                        },
+                        plotOptions: {
+                            bar: {
+                                horizontal: true
+                            }
+                        },
+                        stroke: {
+                            width: 1,
+                            colors: ['#fff']
+                        },
+                        title: {
+                            text: 'Prakerin Data per Kompetensi',
+                            style: {
+                                fontWeight: 500
+                            }
+                        },
+                        xaxis: {
+                            categories: categories,
+                            labels: {
+                                formatter: function(val) {
+                                    return val; // Menampilkan bulan (YYYY-MM)
+                                }
+                            }
+                        },
+                        tooltip: {
+                            y: {
+                                formatter: function(val) {
+                                    return val + " siswa";
+                                }
+                            }
+                        },
+                        fill: {
+                            opacity: 1
+                        },
+                        legend: {
+                            position: 'top',
+                            horizontalAlign: 'left',
+                            offsetX: 40
+                        }
+                    };
+
+                    // Render chart
+                    const chart = new ApexCharts(document.querySelector("#stacked_bar"), options);
+                    chart.render();
+                })
+                .catch(error => console.error('Error fetching chart data:', error));
+        });
+    </script>
     <script>
         $(document).ready(function() {
             $('#tanggal').change(function() {
