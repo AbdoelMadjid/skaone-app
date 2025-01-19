@@ -19,9 +19,7 @@
                     <h5 class="card-title">Backup Database</h5>
                 </div>
                 <div class="card-body">
-                    <p>Backup database adalah proses untuk menyimpan data yang ada di database ke dalam file. File tersebut
-                        dapat digunakan untuk mengembalikan data ke database jika terjadi kegagalan sistem atau kehilangan
-                        data.</p>
+                    <p>Backup database adalah proses untuk menyimpan data yang ada di database ke dalam file.</p>
                     <form action="{{ route('appsupport.backup-db.process') }}" method="POST">
                         @csrf
                         <table class="table table-bordered" id="tables-list">
@@ -35,18 +33,14 @@
                                 @foreach ($tables as $table)
                                     <tr>
                                         <td class="text-center">
-                                            {{-- <input type="checkbox" name="tables[]" value="{{ current((array) $table) }}"> --}}
                                             <div class="form-check form-switch form-switch-md text-center" dir="ltr">
                                                 <input type="checkbox" class="form-check-input" name="tables[]"
-                                                    value="{{ current((array) $table) }}"
-                                                    id="customSwitch{{ $loop->index }}">
-                                                {{--  <label class="form-check-label"
-                                                    for="customSwitch{{ $loop->index }}">{{ current((array) $table) }}</label> --}}
+                                                    value="{{ $table }}" id="customSwitch{{ $loop->index }}">
                                             </div>
                                         </td>
                                         <td>
                                             <span class="table-name" data-target="#customSwitch{{ $loop->index }}">
-                                                {{ ucwords(str_replace('_', ' ', current((array) $table))) }}
+                                                {{ ucwords(str_replace('_', ' ', $table)) }}
                                             </span>
                                         </td>
                                     </tr>
@@ -61,7 +55,6 @@
                     </form>
                 </div>
             </div>
-            <!--end col-->
         </div>
     </div>
     <div class="row">
@@ -85,12 +78,11 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $file }}</td>
-                                    <td>{{ number_format(filesize(storage_path('backups/' . now()->format('Y-m-d') . '/' . $file)) / 1024, 2) }}
+                                    <td>{{ number_format(Storage::size('backups/' . now()->format('Y-m-d') . '/' . $file) / 1024, 2) }}
                                         KB</td>
                                     <td>
-                                        <a href="{{ asset('storage/backups/' . now()->format('Y-m-d') . '/' . $file) }}"
+                                        <a href="{{ Storage::url('backups/' . now()->format('Y-m-d') . '/' . $file) }}"
                                             class="btn btn-info btn-sm" download>Download</a>
-                                        <!-- Tombol Hapus -->
                                         <form action="{{ route('appsupport.backup-db.delete', $file) }}" method="POST"
                                             style="display:inline-block;">
                                             @csrf
@@ -118,23 +110,17 @@
         @endif
 
         $(document).ready(function() {
-            /* $('#tables-list').DataTable({
-                dom: 'Bfrtip',
-                pageLength: 25
-            }); */
-
-            // Inisialisasi DataTable
             var table = $('#tables-list').DataTable({
                 dom: 'Bfrtip',
                 pageLength: 20
-                // Pengaturan lainnya...
             });
-            // Ketika nama tabel diklik, toggle checkbox yang sesuai
+
             $('#tables-list').on('click', '.table-name', function() {
-                var targetCheckbox = $($(this).data('target')); // Ambil ID checkbox terkait
-                targetCheckbox.prop('checked', !targetCheckbox.prop('checked')); // Toggle checked
+                var targetCheckbox = $($(this).data('target'));
+                if (targetCheckbox.length) {
+                    targetCheckbox.prop('checked', !targetCheckbox.prop('checked'));
+                }
             });
         });
     </script>
-    <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection
