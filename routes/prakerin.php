@@ -44,7 +44,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/downloadpembprakerin', [PembimbingPrakerinController::class, 'downloadPDF'])->name('downloadpembprakerin');
         Route::resource('informasi-prakerin', InformasiAdministratorController::class);
         Route::get('/informasi-prakerin/absensi', [InformasiAdministratorController::class, 'index'])->name('informasi-prakerin.absensi');
-        Route::get('/chart-data', [InformasiAdministratorController::class, 'getChartData']);
     });
 
     Route::group(['prefix' => 'kaprodipkl', 'as' => 'kaprodipkl.'], function () {

@@ -112,21 +112,4 @@ class InformasiAdministratorController extends Controller
     {
         //
     }
-
-    public function getChartData()
-    {
-        $data = DB::table('penempatan_prakerins')
-            ->join('jurnal_pkls', 'penempatan_prakerins.id', '=', 'jurnal_pkls.id_penempatan')
-            ->join('kompetensi_keahlians', 'penempatan_prakerins.kode_kk', '=', 'kompetensi_keahlians.idkk')
-            ->select(
-                'kompetensi_keahlians.singkatan as kompetensi',
-                DB::raw('DATE_FORMAT(jurnal_pkls.tanggal_kirim, "%Y-%m") as bulan'),
-                DB::raw('COUNT(penempatan_prakerins.nis) as jumlah')
-            )
-            ->groupBy('kompetensi_keahlians.singkatan', DB::raw('DATE_FORMAT(jurnal_pkls.tanggal_kirim, "%Y-%m")'))
-            ->orderBy(DB::raw('DATE_FORMAT(jurnal_pkls.tanggal_kirim, "%Y-%m")'))
-            ->get();
-
-        return response()->json($data);
-    }
 }
