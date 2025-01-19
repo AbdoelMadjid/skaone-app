@@ -218,9 +218,22 @@
 
             <section class="section pb-3" id="visimisi">
                 @include('welcome.visimisi')
+
+            </section>
+            <section class="section py-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="text-center">
+                            <h1 class="ff-secondary fw-semibold lh-base"><span class="text-danger">Struktur
+                                    Organisasi</span> <br>SMKN 1
+                                Kadipaten</h1>
+                            </p>
+                        </div>
+                    </div>
+                    <!-- end col -->
+                </div>
                 <div id="chart-container"></div>
             </section>
-
             <section class="section pb-3" id="prodi">
                 @include('welcome.prodi')</section>
 
