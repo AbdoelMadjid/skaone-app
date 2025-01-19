@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\KaprodiPkl;
 
 use App\Http\Controllers\Controller;
+use App\Models\PesertaDidikPkl\JurnalPkl;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -294,6 +295,32 @@ class PelaporanPrakerinController extends Controller
                 return $siswa;
             });
 
+            // Perform the query using the kode_kk value
+            $dataJurnal = DB::table('jurnal_pkls')
+                ->join('penempatan_prakerins', 'jurnal_pkls.id_penempatan', '=', 'penempatan_prakerins.id')
+                ->join('peserta_didiks', 'penempatan_prakerins.nis', '=', 'peserta_didiks.nis')
+                ->join('perusahaans', 'penempatan_prakerins.id_dudi', '=', 'perusahaans.id')
+                ->join('peserta_didik_rombels', 'penempatan_prakerins.nis', '=', 'peserta_didik_rombels.nis')
+                ->select(
+                    'jurnal_pkls.id',
+                    'penempatan_prakerins.tahunajaran',
+                    'penempatan_prakerins.kode_kk',
+                    'penempatan_prakerins.nis',
+                    'peserta_didiks.nama_lengkap',
+                    'peserta_didik_rombels.rombel_nama',
+                    'penempatan_prakerins.id_dudi',
+                    'perusahaans.nama',
+                    'perusahaans.alamat',
+                    'jurnal_pkls.id_penempatan',
+                    'jurnal_pkls.tanggal_kirim',
+                    'jurnal_pkls.validasi'
+                )
+                ->whereIn('penempatan_prakerins.kode_kk', $dataPrakerin->pluck('kode_kk')->toArray()) // Filter berdasarkan kode_kk di $dataPrakerin
+                ->orderBy('penempatan_prakerins.kode_kk')
+                ->orderBy('peserta_didik_rombels.rombel_nama')
+                ->orderBy('penempatan_prakerins.nis')
+                ->orderBy('jurnal_pkls.tanggal_kirim', 'desc')
+                ->get();
 
             // Kirim data ke view
             return view('pages.kaprodipkl.pelaporan-prakerin', [
@@ -308,6 +335,7 @@ class PelaporanPrakerinController extends Controller
                 'totalPembimbing' =>    $totalPembimbing,
                 'pesertaByPembimbing' => $pesertaByPembimbing,
                 'pesertaByPerusahaan' => $pesertaByPerusahaan,
+                'dataJurnal' => $dataJurnal,
             ]);
         }
 
@@ -533,5 +561,22 @@ class PelaporanPrakerinController extends Controller
 
         // Download PDF
         return $pdf->download('Laporan Prakerin Abensi.pdf');
+    }
+
+    public function updateTanggalKirim(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'id_jurnal' => 'required|exists:jurnal_pkls,id',
+            'tanggal_kirim' => 'required|date',
+        ]);
+
+        // Cari jurnal berdasarkan ID dan update tanggal_kirim
+        $jurnal = JurnalPkl::find($request->id_jurnal);
+        $jurnal->tanggal_kirim = $request->tanggal_kirim;
+        $jurnal->save();
+
+        // Kembalikan response sukses
+        return response()->json(['status' => 'success']);
     }
 }

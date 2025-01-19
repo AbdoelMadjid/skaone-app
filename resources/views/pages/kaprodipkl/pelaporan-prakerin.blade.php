@@ -8,6 +8,15 @@
     <link href="{{ URL::asset('build/libs/select2/css/select2.min.css') }}" rel="stylesheet" />
     <link href="{{ URL::asset('build/libs/select2-bootstrap-5-theme/select2-bootstrap-5-theme.min.css') }}"
         rel="stylesheet" />
+
+    <style>
+        .invalid-date {
+            border-color: red;
+            /* Ubah warna border menjadi merah */
+            background-color: #ffcccc;
+            /* Opsional: Ubah latar belakang menjadi merah muda */
+        }
+    </style>
 @endsection
 @section('content')
     @component('layouts.breadcrumb')
@@ -75,6 +84,11 @@
                                             role="tab"> Rekap Jurnal
                                         </a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#jurnalprakerin"
+                                            role="tab"> Jurnal Prakerin
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="col-auto">
@@ -114,6 +128,10 @@
                                 @include('pages.kaprodipkl.pelaporan-prakerin-jurnal')
                             </div>
                             <!-- end tab pane -->
+                            <div class="tab-pane" id="jurnalprakerin" role="tabpanel">
+                                @include('pages.kaprodipkl.pelaporan-prakerin-jurnal-data')
+                            </div>
+                            <!-- end tab pane -->
                         </div>
                         <!-- end tab content -->
                     </div>
@@ -133,6 +151,68 @@
 @section('script-bottom')
     <script>
         $(document).ready(function() {
+            // Fungsi untuk memeriksa dan mengubah warna berdasarkan tanggal
+            function checkTanggalKirim(input) {
+                var tanggalKirim = $(input).val(); // Ambil nilai tanggal
+                var tanggal = new Date(tanggalKirim); // Ubah nilai tanggal ke format Date JavaScript
+
+                // Tentukan batas tanggal (1 Desember 2024 dan 31 Maret 2025)
+                var batasAwal = new Date('2024-12-01'); // Batas awal (Desember 2024)
+                var batasAkhir = new Date('2025-03-31'); // Batas akhir (Maret 2025)
+
+                // Dapatkan tanggal hari ini
+                var tanggalHariIni = new Date(); // Tanggal hari ini
+                tanggalHariIni.setHours(0, 0, 0, 0); // Set waktu ke 00:00:00 agar hanya tanggal yang diperhitungkan
+
+                // Jika tanggal berada di luar rentang yang ditentukan atau lebih dari tanggal hari ini, beri warna merah
+                if (tanggal < batasAwal || tanggal > batasAkhir || tanggal > tanggalHariIni) {
+                    $(input).addClass('invalid-date'); // Tambahkan kelas untuk warna merah
+                } else {
+                    $(input).removeClass('invalid-date'); // Hapus kelas jika valid
+                }
+            }
+
+            // Panggil fungsi checkTanggalKirim untuk setiap input tanggal saat halaman dimuat
+            $('.tanggal-kirim').each(function() {
+                checkTanggalKirim(this); // Panggil fungsi untuk memeriksa setiap input tanggal
+            });
+
+            // Menambahkan event listener saat tanggal berubah
+            $('.tanggal-kirim').on('change', function() {
+                checkTanggalKirim(this); // Panggil fungsi setiap kali tanggal berubah
+            });
+
+            // Mendengarkan perubahan tanggal pada input
+            $('.tanggal-kirim').on('change', function() {
+                var tanggalBaru = $(this).val(); // Ambil tanggal yang dipilih
+                var idJurnal = $(this).data('id'); // Ambil id jurnal
+
+                // Pastikan tanggal baru valid
+                if (tanggalBaru) {
+                    // Kirimkan data ke server untuk diperbarui
+                    $.ajax({
+                        url: '/kaprodipkl/update-tanggal-kirim', // Ganti dengan URL yang sesuai di route Anda
+                        method: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}', // CSRF token untuk Laravel
+                            id_jurnal: idJurnal,
+                            tanggal_kirim: tanggalBaru
+                        },
+                        success: function(response) {
+                            if (response.status == 'success') {
+                                showToast('success', 'Tanggal berhasil diperbarui!');
+                            } else {
+                                showToast('error',
+                                    'Terjadi kesalahan saat memperbarui tanggal.');
+                            }
+                        },
+                        error: function() {
+                            showToast('error', 'Terjadi kesalahan saat memperbarui tanggal.');
+                        }
+                    });
+                }
+            });
+
             // Tabel 1: Peserta Prakerin
             $('#pesertaprakerinTable').DataTable({
                 responsive: true,
@@ -303,6 +383,37 @@
                     row.child(childContent).show(); // Tampilkan nested row untuk pembimbing yang dipilih
                     tr.addClass('shown'); // Tambahkan kelas 'shown' ke baris yang dipilih
                 }
+            });
+
+            $('#jurnalTabel').DataTable({
+                responsive: true,
+                autoWidth: false,
+                pageLength: 25,
+                columnDefs: [{
+                        width: "50px",
+                        targets: 0
+                    }, // Lebar kolom No.
+                    {
+                        width: "50px",
+                        targets: 1
+                    }, // Lebar kolom NIP
+                    {
+                        width: "60px",
+                        targets: 2
+                    }, // Lebar kolom NIP
+                    {
+                        width: "60px",
+                        targets: 4
+                    }, // Lebar kolom NIP
+                    {
+                        width: "110px",
+                        targets: 6
+                    }, // Lebar kolom NIP
+                    {
+                        width: "60px",
+                        targets: 7
+                    }, // Lebar kolom NIP
+                ]
             });
         });
     </script>

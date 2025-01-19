@@ -56,6 +56,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('pelaporan-prakerin', PelaporanPrakerinController::class);
         Route::get('/download-jurnal-pdf', [PelaporanPrakerinController::class, 'downloadJurnalPdf'])->name('downloadjurnalpdf');
         Route::get('/download-absensi-pdf', [PelaporanPrakerinController::class, 'downloadAbsensiPdf'])->name('downloadabsensipdf');
+        Route::post('/update-tanggal-kirim', [PelaporanPrakerinController::class, 'updateTanggalKirim'])->name('updatetanggalkirim');
     });
 
     Route::group(['prefix' => 'pembimbingpkl', 'as' => 'pembimbingpkl.'], function () {
