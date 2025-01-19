@@ -294,6 +294,7 @@ class PelaporanPrakerinController extends Controller
                 return $siswa;
             });
 
+
             // Kirim data ke view
             return view('pages.kaprodipkl.pelaporan-prakerin', [
                 'dataPrakerin' => $dataPrakerin,
