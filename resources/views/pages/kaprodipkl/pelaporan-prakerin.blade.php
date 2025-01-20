@@ -11,10 +11,8 @@
 
     <style>
         .invalid-date {
-            border-color: red;
-            /* Ubah warna border menjadi merah */
-            background-color: #ffcccc;
-            /* Opsional: Ubah latar belakang menjadi merah muda */
+            border-color: red !important;
+            background-color: #ffe6e6 !important;
         }
     </style>
 @endsection
