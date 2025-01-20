@@ -90,12 +90,6 @@
                                     <i class="ri-image-line text-muted align-bottom me-1"></i> Daily Messages
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" href="#berita" role="tab"
-                                    aria-selected="false">
-                                    <i class="ri-image-line text-muted align-bottom me-1"></i> Berita
-                                </a>
-                            </li>
                             @include('abouts.master-akses')
                         </ul>
                     </div>
@@ -121,9 +115,6 @@
                             </div><!--end tab-pane-->
                             <div class="tab-pane" id="dailymessages" role="tabpanel">
                                 @include('abouts.daily-massage')
-                            </div><!--end tab-pane-->
-                            <div class="tab-pane" id="berita" role="tabpanel">
-                                @include('abouts.berita')
                             </div><!--end tab-pane-->
                         </div><!--end tab-content-->
 

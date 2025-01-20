@@ -114,7 +114,7 @@ class PhotoSlideController extends Controller
 
             // Upload gambar baru dan buat thumbnail
             $imageFile = $request->file('gambar');
-            $imageName = 'gjur_' . time() . '.' . $imageFile->extension();
+            $imageName = 'slide_' . Str::uuid() . '.' . $imageFile->extension();
 
             // Buat dan simpan thumbnail di `public/images/thumbnail`
             $destinationPathThumbnail = base_path('images/thumbnail');

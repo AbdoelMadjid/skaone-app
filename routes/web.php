@@ -115,9 +115,6 @@ Route::group(['prefix' => 'about', 'as' => 'about.'], function () {
     Route::resource('daily-messages', DailyMessagesController::class);
     Route::get('events/list', [EventController::class, 'listEvent'])->name('events.list');
     Route::resource('events', EventController::class);
-    Route::resource('berita', BeritaController::class);
-    Route::post('berita/{berita}/comments', [BeritaCommentController::class, 'store'])->name('commentsstore');
-    Route::post('berita/{berita}/likes', [BeritaLikeController::class, 'store'])->name('likesstore');
 });
 
 // Kelompok rute untuk profil, hanya dapat diakses oleh pengguna yang sudah terotentikasi
