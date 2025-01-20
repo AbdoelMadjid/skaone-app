@@ -11,7 +11,7 @@
                     <div class="swiper-wrapper">
                         @foreach ($photoSlides as $index => $slide)
                             <div class="swiper-slide">
-                                <img src="{{ asset('images/photoslide/' . $slide->gambar) }}" alt=""
+                                <img src="{{ asset('images/thumbnail/' . $slide->gambar) }}" alt=""
                                     class="img-fluid" />
                             </div>
                         @endforeach
@@ -28,7 +28,7 @@
                 <div class="row">
                     @foreach ($photoSlides as $index => $slide)
                         <div class="col-md-4">
-                            <img src="{{ asset('images/photoslide/' . $slide->gambar) }}" class="img-fluid"
+                            <img src="{{ asset('images/thumbnail/' . $slide->gambar) }}" class="img-fluid"
                                 alt="Responsive image">
                         </div>
                     @endforeach
