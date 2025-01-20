@@ -3,6 +3,9 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\About\AboutController;
+use App\Http\Controllers\About\BeritaCommentController;
+use App\Http\Controllers\About\BeritaController;
+use App\Http\Controllers\About\BeritaLikeController;
 use App\Http\Controllers\About\DailyMessagesController;
 use App\Http\Controllers\About\FiturCodingController;
 use App\Http\Controllers\About\GaleryController;
@@ -112,6 +115,9 @@ Route::group(['prefix' => 'about', 'as' => 'about.'], function () {
     Route::resource('daily-messages', DailyMessagesController::class);
     Route::get('events/list', [EventController::class, 'listEvent'])->name('events.list');
     Route::resource('events', EventController::class);
+    Route::resource('berita', BeritaController::class);
+    Route::post('berita/{berita}/comments', [BeritaCommentController::class, 'store'])->name('commentsstore');
+    Route::post('berita/{berita}/likes', [BeritaLikeController::class, 'store'])->name('likesstore');
 });
 
 // Kelompok rute untuk profil, hanya dapat diakses oleh pengguna yang sudah terotentikasi

@@ -457,6 +457,7 @@ return [
     'ujian-sumatif' => 'Ujian Sumatif',
 
     'daftar' => 'Daftar',
+    'berita' => 'Berita',
 
 
 ];
