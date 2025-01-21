@@ -9,7 +9,7 @@
     <style type="text/css">
         #chart-container {
             position: relative;
-            height: 720px;
+            height: 820px;
             border: 1px solid #aaa;
             margin: 0.5rem;
             overflow: auto;
@@ -236,6 +236,9 @@
             </section>
             <section class="section pb-3" id="prodi">
                 @include('welcome.prodi')</section>
+
+            {{-- <section class="section pb-3" id="blog">
+                @include('welcome.blog')</section> --}}
 
             <section class="section pb-3" id="profil">
                 @include('welcome.profil')</section>
