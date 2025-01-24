@@ -16,8 +16,6 @@
 <link rel="stylesheet" href="{{ URL::asset('build/assets/vendor/animate.css') }}">
 <link rel="stylesheet" href="{{ URL::asset('build/assets/vendor/hs-megamenu/src/hs.megamenu.css') }}">
 <link rel="stylesheet" href="{{ URL::asset('build/assets/vendor/hamburgers/hamburgers.min.css') }}">
-<link rel="stylesheet" href="{{ URL::asset('build/assets/vendor/slick-carousel/slick/slick.css') }}">
-<link rel="stylesheet" href="{{ URL::asset('build/assets/vendor/fancybox/jquery.fancybox.css') }}">
 
 @yield('css')
 
