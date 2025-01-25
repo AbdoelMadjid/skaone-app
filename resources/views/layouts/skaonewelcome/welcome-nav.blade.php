@@ -6,7 +6,7 @@
                 aria-controls="nav-submenu-1">Profil
             </a>
             <!-- Submenu -->
-            <ul class="hs-sub-menu list-unstyled g-text-transform-none g-brd-top g-brd-primary g-brd-top-2 g-min-width-200 g-mt-20 g-mt-10--lg--scrolling"
+            <ul class="hs-sub-menu list-unstyled g-text-transform-none g-brd-top g-brd-white g-brd-top-7 g-brd-around g-brd-7 g-min-width-200 g-mt-20 g-mt-10--lg--scrolling u-shadow-v39"
                 id="nav-submenu-1" aria-labelledby="nav-link-1">
                 <li class="dropdown-item">
                     <a class="nav-link g-px-0" href="#!">Sejarah</a>
