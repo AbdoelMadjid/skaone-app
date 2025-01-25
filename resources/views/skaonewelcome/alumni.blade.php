@@ -88,7 +88,7 @@
                             x="0px" y="0px" viewBox="0 0 73.5 20" enable-background="new 0 0 73.5 20" xml:space="preserve">
                             <g>
                                 <path fill="none" stroke="#9a69cb" stroke-width="3" stroke-miterlimit="10" d="M0,1c9.2,0,9.2,18,18.4,18c9.2,0,9.2-18,18.4-18
-                                      c9.2,0,9.2,18,18.4,18S64.3,1,73.5,1" />
+                                          c9.2,0,9.2,18,18.4,18S64.3,1,73.5,1" />
                             </g>
                         </svg>
                         <!-- End SVG Square #4 -->
@@ -291,7 +291,7 @@
     <!-- End Alumni Articles -->
 
     <!-- Call to Action -->
-    <div class="g-bg-img-hero" style="background-image: url(assets/include/svg/svg-bg1.svg);">
+    <div class="g-bg-img-hero" style="background-image: url({{ URL::asset('build/assets/include/svg/svg-bg1.svg') }});">
         <div class="container g-pt-60 g-pb-30">
             <div class="row justify-content-lg-center align-items-md-center">
                 <div class="col-md-9 col-lg-7 g-mb-30">

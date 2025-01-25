@@ -1,3 +1,4 @@
+<!-- Footer -->
 <footer class="g-bg-secondary g-pt-100 g-pb-50">
     <div class="container">
         {{-- <div class="row g-mb-40">
@@ -70,11 +71,56 @@
             </div>
         </div> --}}
 
-        <div class="row align-items-center">
-            <div class="col-md-4 text-center text-md-left g-mb-30">
+        <!-- Footer Copyright -->
+        <div class="row justify-content-lg-center align-items-center text-center">
+            <div class="col-sm-6 col-md-4 col-lg-3 order-md-3 g-mb-30">
+                <a class="u-link-v5 g-color-text g-color-primary--hover" href="#">
+                    <p class="g-color-text mb-0">SMKN 1 Kadipaten - Since 1969</p>
+                </a>
+            </div>
+
+            <div class="col-sm-6 col-md-4 col-lg-3 order-md-2 g-mb-30">
+                <!-- Social Icons -->
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item g-mx-2">
+                        <a class="u-icon-v1 u-icon-size--sm u-shadow-v32 g-color-primary g-color-white--hover g-bg-white g-bg-primary--hover rounded-circle"
+                            href="#">
+                            <i class="g-font-size-default fa fa-twitter"></i>
+                        </a>
+                    </li>
+                    <li class="list-inline-item g-mx-2">
+                        <a class="u-icon-v1 u-icon-size--sm u-shadow-v32 g-color-primary g-color-white--hover g-bg-white g-bg-primary--hover rounded-circle"
+                            href="#">
+                            <i class="g-font-size-default fa fa-facebook"></i>
+                        </a>
+                    </li>
+                    <li class="list-inline-item g-mx-2">
+                        <a class="u-icon-v1 u-icon-size--sm u-shadow-v32 g-color-primary g-color-white--hover g-bg-white g-bg-primary--hover rounded-circle"
+                            href="#">
+                            <i class="g-font-size-default fa fa-instagram"></i>
+                        </a>
+                    </li>
+                    <li class="list-inline-item g-mx-2">
+                        <a class="u-icon-v1 u-icon-size--sm u-shadow-v32 g-color-primary g-color-white--hover g-bg-white g-bg-primary--hover rounded-circle"
+                            href="#">
+                            <i class="g-font-size-default fa fa-youtube"></i>
+                        </a>
+                    </li>
+                    <li class="list-inline-item g-mx-2">
+                        <a class="u-icon-v1 u-icon-size--sm u-shadow-v32 g-color-primary g-color-white--hover g-bg-white g-bg-primary--hover rounded-circle"
+                            href="#">
+                            <i class="g-font-size-default fa fa-linkedin"></i>
+                        </a>
+                    </li>
+                </ul>
+                <!-- End Social Icons -->
+            </div>
+
+            <div class="col-md-4 col-lg-3 order-md-1 g-mb-30">
                 <!-- Logo -->
                 <a class="g-text-underline--none--hover mr-4" href="index.html">
-                    <img class="g-width-95" src="{{ URL::asset('build/assets/img/logo/logo-mini.png') }}" alt="Logo">
+                    <img class="g-width-95" src="{{ URL::asset('build/assets/img/logo/logo-mini.png') }}"
+                        alt="Logo">
                 </a>
                 <!-- End Logo -->
                 <p class="d-inline-block align-middle g-color-gray-dark-v5 g-font-size-13 mb-0">&copy;
@@ -85,47 +131,8 @@
                     <br>All Rights Reserved. {{ $profileApp->app_pengembang ?? '' }}
                 </p>
             </div>
-
-            <div class="col-md-4 g-mb-30">
-                <!-- Social Icons -->
-                <ul class="list-inline text-center mb-0">
-                    <li class="list-inline-item">
-                        <a class="u-icon-v3 u-icon-size--sm g-color-gray-light-v1 g-color-white--hover g-bg-transparent g-bg-primary--hover rounded"
-                            href="#"><i class="fa fa-facebook"></i></a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a class="u-icon-v3 u-icon-size--sm g-color-gray-light-v1 g-color-white--hover g-bg-transparent g-bg-primary--hover rounded"
-                            href="#"><i class="fa fa-twitter"></i></a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a class="u-icon-v3 u-icon-size--sm g-color-gray-light-v1 g-color-white--hover g-bg-transparent g-bg-primary--hover rounded"
-                            href="#"><i class="fa fa-pinterest"></i></a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a class="u-icon-v3 u-icon-size--sm g-color-gray-light-v1 g-color-white--hover g-bg-transparent g-bg-primary--hover rounded"
-                            href="#"><i class="fa fa-instagram"></i></a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a class="u-icon-v3 u-icon-size--sm g-color-gray-light-v1 g-color-white--hover g-bg-transparent g-bg-primary--hover rounded"
-                            href="#"><i class="fa fa-youtube"></i></a>
-                    </li>
-                </ul>
-                <!-- End Social Icons -->
-            </div>
-
-            <div class="col-md-4 g-mb-30 text-right">
-                <div class="d-inline-block g-mx-15">
-                    <h4 class="g-color-gray-dark-v5 g-font-size-11 text-left text-uppercase">Email</h4>
-                    <a href="#">info@smkn1kadipaten.sch.id</a>
-                </div>
-                <div class="d-inline-block g-mx-10">
-                    <h4 class="g-color-gray-dark-v5 g-font-size-11 text-left text-uppercase">Phone</h4>
-                    <a href="#">(0233) 661434</a>
-                </div>
-            </div>
         </div>
-        <!-- Footer Copyright -->
-
         <!-- End Footer Copyright -->
     </div>
 </footer>
+<!-- End Footer -->
