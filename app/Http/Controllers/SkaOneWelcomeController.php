@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\WelcomeDataPersonil;
 use Illuminate\Http\Request;
 
 class SkaOneWelcomeController extends Controller
@@ -28,7 +29,9 @@ class SkaOneWelcomeController extends Controller
 
     public function faculty_and_staff()
     {
-        return view('skaonewelcome.faculty-and-staff');
+        $groupsPersonil = WelcomeDataPersonil::select('jenis_group')->distinct()->get();
+        $personilData = WelcomeDataPersonil::all();
+        return view('skaonewelcome.faculty-and-staff', compact('groupsPersonil', 'personilData'));
     }
 
     public function events()

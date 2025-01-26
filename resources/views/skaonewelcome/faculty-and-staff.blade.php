@@ -5,6 +5,8 @@
 @section('css')
     <link rel="stylesheet" href="{{ URL::asset('build/assets/vendor/slick-carousel/slick/slick.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('build/assets/vendor/fancybox/jquery.fancybox.css') }}">
+    <link rel="stylesheet"
+        href="{{ URL::asset('build/assets/vendor/cubeportfolio-full/cubeportfolio/css/cubeportfolio.min.css') }}">
 @endsection
 @section('content')
     <!-- Promo Block -->
@@ -181,141 +183,57 @@
     </div>
     <!-- End Unify Competency Model -->
 
-    <!-- Faculty Professors -->
-    <div class="clearfix g-bg-secondary g-py-100">
-        <!-- Heading -->
-        <div class="g-max-width-645 text-center mx-auto g-mb-60">
-            <h2 class="h1 mb-3">Faculty Professors</h2>
-            <p>Put it all together, and choose your study opportunity at the University of Unify.</p>
+    <div class="container text-center g-pt-100">
+        <!-- Cube Portfolio Blocks -->
+        <!-- Cube Portfolio Blocks - Filter -->
+        <ul id="filterControls" class="d-block list-inline text-center g-mb-50">
+            <li class="list-inline-item cbp-filter-item cbp-filter-item-active g-brd-around g-brd-gray-light-v4 g-brd-primary--active g-color-gray-dark-v4 g-color-primary--hover g-color-primary--active g-font-size-12 rounded g-transition-0_3 g-px-20 g-py-7 mb-2"
+                role="button" data-filter="*">All
+            </li>
+
+            @foreach ($groupsPersonil as $group)
+                <li class="list-inline-item cbp-filter-item g-brd-around g-brd-gray-light-v4 g-brd-primary--active g-color-gray-dark-v4 g-color-primary--hover g-color-primary--active g-font-size-12 rounded g-transition-0_3 g-px-20 g-py-7 mb-2"
+                    role="button" data-filter=".{{ strtolower($group->jenis_group) }}">
+                    {{ ucfirst($group->jenis_group) }}
+                </li>
+            @endforeach
+        </ul>
+        <!-- End Cube Portfolio Blocks - Filter -->
+
+        <!-- Cube Portfolio Blocks - Content -->
+        <div class="cbp cbp-caption-active cbp-caption-overlayBottomAlong" data-controls="#filterControls"
+            data-animation="quicksand" data-x-gap="15" data-y-gap="15"
+            data-media-queries="[
+             {'width': 1500, 'cols': 4},
+             {'width': 1100, 'cols': 4},
+             {'width': 800, 'cols': 4},
+             {'width': 480, 'cols': 2},
+             {'width': 300, 'cols': 1}
+           ]">
+            <div class="cbp-wrapper-outer">
+                <div class="cbp-wrapper">
+                    @foreach ($personilData as $personil)
+                        <div class="cbp-item {{ strtolower($personil->jenis_group) }}">
+                            <div class="cbp-item-wrapper">
+                                <div
+                                    class="u-block-hover g-brd-around g-brd-gray-light-v4 g-color-black g-color-white--hover g-bg-lightred--hover text-center rounded g-transition-0_3 g-px-30 g-py-50">
+                                    <img class="img-fluid u-block-hover__main--zoom-v1 mb-5"
+                                        src="{{ URL::asset('images/welcome/personil/' . strtolower($personil->jenis_group) . '/' . $personil->image) }}"
+                                        alt="Image Description">
+                                    <span
+                                        class="g-font-weight-600 g-font-size-12 text-uppercase">{{ ucfirst($personil->jenis_group) }}</span>
+                                    <h3 class="h4 g-font-weight-600 mb-0">Personil {{ $personil->id_personil }}</h3>
+
+                                    <a class="u-link-v2" href="#!"></a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
         </div>
-        <!-- End Heading -->
-
-        <!-- Faculty Professors Carousel -->
-        <div class="js-carousel" data-infinite="true" data-slides-show="3" data-slides-scroll="1"
-            data-arrows-classes="u-icon-v3 g-width-45 g-height-45 g-absolute-centered--y g-color-white g-color-white--hover g-bg-main g-bg-primary--hover rounded g-pa-12"
-            data-arrow-left-classes="fa fa-angle-left g-left-40" data-arrow-right-classes="fa fa-angle-right g-right-40"
-            data-center-mode="true" data-center-padding="100px"
-            data-responsive='[{
-               "breakpoint": 992,
-               "settings": {
-                 "slidesToShow": 2,
-                 "centerPadding": 30
-               }
-             }, {
-               "breakpoint": 768,
-               "settings": {
-                 "slidesToShow": 2,
-                 "centerPadding": 30
-               }
-             }, {
-               "breakpoint": 554,
-               "settings": {
-                 "slidesToShow": 1,
-                 "centerPadding": 30
-               }
-             }]'>
-
-            <!-- Faculty Professors -->
-            <div class="js-slide u-block-hover g-pb-10 g-mx-15">
-                <div class="g-overflow-hidden">
-                    <img class="img-fluid w-100 u-block-hover__main--zoom-v1 g-transition-0_5"
-                        src="{{ URL::asset('build/assets/img-temp/400x500/img4.jpg') }}" alt="Image Description">
-                </div>
-                <div class="u-shadow-v32 g-bg-white g-pa-30">
-                    <h3 class="h3 g-font-weight-500 mb-1">Alex Teseira</h3>
-                    <span class="d-block g-color-text-light-v1 g-font-size-16">Assistant Professor in Ecosystem
-                        Ecology</span>
-                </div>
-                <a class="u-link-v2" href="#"></a>
-            </div>
-            <!-- End Faculty Professors -->
-
-            <!-- Faculty Professors -->
-            <div class="js-slide u-block-hover g-pb-10 g-mx-15">
-                <div class="g-overflow-hidden">
-                    <img class="img-fluid w-100 u-block-hover__main--zoom-v1 g-transition-0_5"
-                        src="{{ URL::asset('build/assets/img-temp/400x500/img5.jpg') }}" alt="Image Description">
-                </div>
-                <div class="u-shadow-v32 g-bg-white g-pa-30">
-                    <h3 class="h3 g-font-weight-500 mb-1">Marina Rubapa</h3>
-                    <span class="d-block g-color-text-light-v1 g-font-size-16">Associate Professor in Biology</span>
-                </div>
-                <a class="u-link-v2" href="#"></a>
-            </div>
-            <!-- End Faculty Professors -->
-
-            <!-- Faculty Professors -->
-            <div class="js-slide u-block-hover g-pb-10 g-mx-15">
-                <div class="g-overflow-hidden">
-                    <img class="img-fluid w-100 u-block-hover__main--zoom-v1 g-transition-0_5"
-                        src="{{ URL::asset('build/assets/img-temp/400x500/img6.jpg') }}" alt="Image Description">
-                </div>
-                <div class="u-shadow-v32 g-bg-white g-pa-30">
-                    <h3 class="h3 g-font-weight-500 mb-1">John Smith</h3>
-                    <span class="d-block g-color-text-light-v1 g-font-size-16">Assistant Professor</span>
-                </div>
-                <a class="u-link-v2" href="#"></a>
-            </div>
-            <!-- End Faculty Professors -->
-
-            <!-- Faculty Professors -->
-            <div class="js-slide u-block-hover g-pb-10 g-mx-15">
-                <div class="g-overflow-hidden">
-                    <img class="img-fluid w-100 u-block-hover__main--zoom-v1 g-transition-0_5"
-                        src="{{ URL::asset('build/assets/img-temp/400x500/img7.jpg') }}" alt="Image Description">
-                </div>
-                <div class="u-shadow-v32 g-bg-white g-pa-30">
-                    <h3 class="h3 g-font-weight-500 mb-1">Samantha Fox</h3>
-                    <span class="d-block g-color-text-light-v1 g-font-size-16">Professorship in Thoracic Surgery</span>
-                </div>
-                <a class="u-link-v2" href="#"></a>
-            </div>
-            <!-- End Faculty Professors -->
-
-            <!-- Faculty Professors -->
-            <div class="js-slide u-block-hover g-pb-10 g-mx-15">
-                <div class="g-overflow-hidden">
-                    <img class="img-fluid w-100 u-block-hover__main--zoom-v1 g-transition-0_5"
-                        src="{{ URL::asset('build/assets/img-temp/400x500/img8.jpg') }}" alt="Image Description">
-                </div>
-                <div class="u-shadow-v32 g-bg-white g-pa-30">
-                    <h3 class="h3 g-font-weight-500 mb-1">James Novel</h3>
-                    <span class="d-block g-color-text-light-v1 g-font-size-16">Teaching Assistant Professor</span>
-                </div>
-                <a class="u-link-v2" href="#"></a>
-            </div>
-            <!-- End Faculty Professors -->
-
-            <!-- Faculty Professors -->
-            <div class="js-slide u-block-hover g-pb-10 g-mx-15">
-                <div class="g-overflow-hidden">
-                    <img class="img-fluid w-100 u-block-hover__main--zoom-v1 g-transition-0_5"
-                        src="{{ URL::asset('build/assets/img-temp/400x500/img9.jpg') }}" alt="Image Description">
-                </div>
-                <div class="u-shadow-v32 g-bg-white g-pa-30">
-                    <h3 class="h3 g-font-weight-500 mb-1">George Freeman</h3>
-                    <span class="d-block g-color-text-light-v1 g-font-size-16">Health Educator</span>
-                </div>
-                <a class="u-link-v2" href="#"></a>
-            </div>
-            <!-- End Faculty Professors -->
-
-            <!-- Faculty Professors -->
-            <div class="js-slide u-block-hover g-pb-10 g-mx-15">
-                <div class="g-overflow-hidden">
-                    <img class="img-fluid w-100 u-block-hover__main--zoom-v1 g-transition-0_5"
-                        src="{{ URL::asset('build/assets/img-temp/400x500/img10.jpg') }}" alt="Image Description">
-                </div>
-                <div class="u-shadow-v32 g-bg-white g-pa-30">
-                    <h3 class="h3 g-font-weight-500 mb-1">Leyla Olsson</h3>
-                    <span class="d-block g-color-text-light-v1 g-font-size-16">Writing and Core Literature Lecturer</span>
-                </div>
-                <a class="u-link-v2" href="#"></a>
-            </div>
-            <!-- End Faculty Professors -->
-        </div>
+        <!-- End Cube Portfolio Blocks - Content -->
     </div>
-    <!-- End Faculty Professors -->
 
     <!-- Video Blocks -->
     <div class="container text-center g-pt-100">
@@ -435,7 +353,9 @@
     <script src="{{ URL::asset('build/assets/js/components/hs.carousel.js') }}"></script>
     <script src="{{ URL::asset('build/assets/js/components/hs.popup.js') }}"></script>
     <script src="{{ URL::asset('build/assets/js/components/hs.go-to.js') }}"></script>
-
+    <script src="{{ URL::asset('build/assets/vendor/cubeportfolio-full/cubeportfolio/js/jquery.cubeportfolio.min.js') }}">
+    </script>
+    <script src="{{ URL::asset('build/assets/js/components/hs.cubeportfolio.js') }}"></script>
     <!-- JS Customization -->
     <script src="{{ URL::asset('build/assets/js/custom.js') }}"></script>
 
@@ -468,6 +388,8 @@
 
             // initialization of go to
             $.HSCore.components.HSGoTo.init('.js-go-to');
+
+            $.HSCore.components.HSCubeportfolio.init('.cbp');
         });
     </script>
 @endsection
