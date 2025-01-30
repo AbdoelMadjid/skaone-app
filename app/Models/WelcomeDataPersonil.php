@@ -12,6 +12,7 @@ class WelcomeDataPersonil extends Model
     protected $fillable = [
         'id_personil',
         'jenis_group',
+        'group_name',
         'image',
     ];
 }

@@ -10,50 +10,14 @@
 @endsection
 @section('content')
     <!-- Promo Block -->
-    <!-- Promo Block -->
     <div class="g-bg-img-hero g-bg-cover g-bg-black-opacity-0_3--after"
         style="background-image: url({{ URL::asset('images/sakola/misisekolah5.jpg') }});">
         <div class="container g-pos-rel g-z-index-1 g-pt-80 g-pb-150">
             <div class="row justify-content-lg-between align-items-md-center">
                 <div class="col-md-6 col-lg-5 g-mb-170">
-                    <h1 class="g-color-white g-font-size-40--md mb-4">Tehacher and Staff</h1>
+                    <h1 class="g-color-white g-font-size-40--md mb-4">Teacher and Staff</h1>
                     <p class="g-color-white-opacity-0_9 g-font-size-20--md"></p>
                 </div>
-
-                {{-- <div class="col-md-6 col-lg-4 g-mb-30">
-                    <!-- Contact Form -->
-                    <form class="u-shadow-v35 g-bg-white rounded g-px-40 g-py-50">
-                        <div class="g-mb-20">
-                            <label class="g-font-weight-500 g-font-size-15 g-pl-20">Full name</label>
-                            <input
-                                class="form-control g-brd-secondary-light-v2 g-bg-secondary g-bg-secondary-dark-v1--focus g-rounded-30 g-px-20 g-py-12"
-                                type="text" placeholder="Enter your full name">
-                        </div>
-
-                        <div class="g-mb-20">
-                            <label class="g-font-weight-500 g-font-size-15 g-pl-20">Email</label>
-                            <input
-                                class="form-control g-brd-secondary-light-v2 g-bg-secondary g-bg-secondary-dark-v1--focus g-rounded-30 g-px-20 g-py-12"
-                                type="email" placeholder="Enter your email">
-                        </div>
-
-                        <div class="g-mb-20">
-                            <label class="g-font-weight-500 g-font-size-15 g-pl-20">How many seats?</label>
-                            <input
-                                class="form-control g-brd-secondary-light-v2 g-bg-secondary g-bg-secondary-dark-v1--focus g-rounded-30 g-px-20 g-py-12"
-                                type="text" placeholder="1">
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center">
-                            <a class="u-link-v5 g-color-text-light-v1 g-color-primary--hover g-font-size-default"
-                                href="#"><i class="align-middle mr-1 icon-real-estate-027 u-line-icon-pro"></i> Get
-                                the Location</a>
-                            <button type="submit"
-                                class="btn u-shadow-v33 g-color-white g-bg-primary g-bg-main--hover g-font-size-default g-rounded-30 g-px-25 g-py-7">Book</button>
-                        </div>
-                    </form>
-                    <!-- End Contact Form -->
-                </div> --}}
             </div>
         </div>
     </div>

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('id_personil');
             $table->string('jenis_group');
+            $table->string('group_name');
             $table->string('image');
             $table->timestamps();
         });

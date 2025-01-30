@@ -5,7 +5,7 @@
     </li>
 
     <!-- Language -->
-    <li class="list-inline-item g-pos-rel ml-lg-auto">
+    {{-- <li class="list-inline-item g-pos-rel ml-lg-auto">
         <a id="language-dropdown-invoker"
             class="d-none d-sm-flex align-items-center u-link-v5 g-color-white-opacity-0_7 g-color-white--hover g-font-size-12 text-uppercase g-pl-0 g-pl-10--lg g-pr-10 g-py-15"
             href="#" aria-controls="language-dropdown" aria-haspopup="true" aria-expanded="false"
@@ -81,11 +81,11 @@
                 </a>
             </li>
         </ul>
-    </li>
+    </li> --}}
     <!-- End Language -->
 
     <!-- Jump To -->
-    <li class="list-inline-item g-pos-rel">
+    <li class="list-inline-item g-pos-rel ml-lg-auto">
         <a id="jump-to-dropdown-invoker"
             class="d-block d-lg-none u-link-v5 g-color-white-opacity-0_7 g-color-white--hover g-font-size-12 text-uppercase g-py-7"
             href="#" aria-controls="jump-to-dropdown" aria-haspopup="true" aria-expanded="false"
@@ -100,27 +100,35 @@
             aria-labelledby="jump-to-dropdown-invoker">
             <li class="dropdown-item g-brd-bottom g-brd-2 g-brd-white g-px-0 g-py-2">
                 <a class="nav-link g-color-main g-color-primary--hover g-bg-secondary-dark-v2--hover g-font-size-default"
-                    href="page-apply-1.html">Apply Now</a>
+                    href="#!">Apply Now</a>
             </li>
             <li class="dropdown-item g-brd-bottom g-brd-2 g-brd-white g-px-0 g-py-2">
                 <a class="nav-link g-color-main g-color-primary--hover g-bg-secondary-dark-v2--hover g-font-size-default"
-                    href="page-campus-life-1.html">Campus Life</a>
+                    href="#!">Campus Life</a>
             </li>
             <li class="dropdown-item g-brd-bottom g-brd-2 g-brd-white g-px-0 g-py-2">
                 <a class="nav-link g-color-main g-color-primary--hover g-bg-secondary-dark-v2--hover g-font-size-default"
-                    href="page-research-1.html">Research</a>
+                    href="#!">Research</a>
             </li>
             <li class="dropdown-item g-brd-bottom g-brd-2 g-brd-white g-px-0 g-py-2">
                 <a class="nav-link g-color-main g-color-primary--hover g-bg-secondary-dark-v2--hover g-font-size-default"
-                    href="page-help-1.html">Help</a>
+                    href="#!">Help</a>
             </li>
             <li class="dropdown-item g-brd-bottom g-brd-2 g-brd-white g-px-0 g-py-2">
                 <a class="nav-link g-color-main g-color-primary--hover g-bg-secondary-dark-v2--hover g-font-size-default"
-                    href="page-contacts-1.html">Contacts</a>
+                    href="#!">Contacts</a>
             </li>
-            <li class="dropdown-item g-px-0 g-py-2">
-                <a class="nav-link g-color-white g-bg-primary g-bg-primary-light-v1--hover g-font-size-default"
-                    href="page-signin-1.html">Sign in</a>
+            <li class="dropdown-item g-brd-bottom g-brd-2 g-brd-white g-px-0 g-py-2">
+                @if (Route::has('login'))
+                    @auth
+                        <a href="{{ url('/dashboard') }}"
+                            class="nav-link g-color-white g-bg-primary g-bg-primary-light-v1--hover g-font-size-default">Dashboard</a>
+                    @else
+                        <a href="{{ route('auth', 'login') }}"
+                            class="nav-link g-color-white g-bg-primary g-bg-primary-light-v1--hover g-font-size-default">Log
+                            in</a>
+                    @endauth
+                @endif
             </li>
         </ul>
     </li>
@@ -129,23 +137,32 @@
     <!-- Links -->
     <li class="list-inline-item d-none d-lg-inline-block">
         <a class="u-link-v5 g-color-white-opacity-0_7 g-color-white--hover g-font-size-12 text-uppercase g-px-10 g-py-15"
-            href="page-campus-life-1.html">Campus Life</a>
+            href="#!">Campus Life</a>
     </li>
     <li class="list-inline-item d-none d-lg-inline-block">
         <a class="u-link-v5 g-color-white-opacity-0_7 g-color-white--hover g-font-size-12 text-uppercase g-px-10 g-py-15"
-            href="page-research-1.html">Research</a>
+            href="#!">Research</a>
     </li>
     <li class="list-inline-item d-none d-lg-inline-block">
         <a class="u-link-v5 g-color-white-opacity-0_7 g-color-white--hover g-font-size-12 text-uppercase g-px-10 g-py-15"
-            href="page-help-1.html">Help</a>
+            href="#!">Help</a>
     </li>
     <li class="list-inline-item d-none d-lg-inline-block">
         <a class="u-link-v5 g-color-white-opacity-0_7 g-color-white--hover g-font-size-12 text-uppercase g-px-10 g-py-15"
-            href="page-contacts-1.html">Contacts</a>
+            href="#!">Contacts</a>
     </li>
     <li class="list-inline-item d-none d-lg-inline-block">
-        <a class="u-link-v5 u-shadow-v19 g-color-white--hover g-bg-white g-bg-primary--hover g-font-size-12 text-uppercase g-rounded-20 g-px-18 g-py-8 g-ml-10"
-            href="page-signin-1.html">Sign in</a>
+        @if (Route::has('login'))
+            @auth
+                <a href="{{ url('/dashboard') }}"
+                    class="u-link-v5 u-shadow-v19 g-color-white--hover g-bg-white g-bg-primary--hover g-font-size-12 text-uppercase g-rounded-20 g-px-18 g-py-8 g-ml-10">Dashboard</a>
+            @else
+                <a href="{{ route('auth', 'login') }}"
+                    class="u-link-v5 u-shadow-v19 g-color-white--hover g-bg-white
+                        g-bg-primary--hover g-font-size-12 text-uppercase g-rounded-20 g-px-18 g-py-8 g-ml-10">Log
+                    in</a>
+            @endauth
+        @endif
     </li>
     <!-- End Links -->
 

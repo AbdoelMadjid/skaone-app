@@ -18,14 +18,14 @@
             <div class="container">
                 <div class="g-max-width-600 g-pos-rel g-z-index-1">
                     <a class="d-block g-text-underline--none--hover" href="#">
-                        <span class="d-block g-color-white g-font-size-20--md mb-2">
+                        {{-- <span class="d-block g-color-white g-font-size-20--md mb-2">
                             Making an Impact : <span
                                 class="g-brd-bottom--dashed g-brd-2 g-brd-primary g-color-primary g-font-weight-700 g-pb-2">Careers
                                 Day</span>
-                        </span>
+                        </span> --}}
                         <span
                             class="d-block g-color-white g-font-secondary g-font-size-25 g-font-size-45--md g-line-height-1_4">
-                            Explore career options October 12 at the Unify Arena.
+                            Pencetak lulusan yang kompeten dan berintegritas terbaik di Jawa Barat pada tahun 2029
                         </span>
                     </a>
                 </div>
@@ -49,12 +49,12 @@
                 <div class="g-max-width-600 g-pos-rel g-z-index-1">
                     <a class="d-block g-text-underline--none--hover" href="#">
                         <span class="d-block g-color-white g-font-size-20--md mb-2">
-                            Discover Unify's Faculty of <span
-                                class="g-brd-bottom--dashed g-brd-2 g-brd-primary g-color-primary g-font-weight-700 g-pb-2">Chemistry</span>
+                            Pembentukan Karakter dan Integritas:
                         </span>
                         <span
                             class="d-block g-color-white g-font-secondary g-font-size-25 g-font-size-45--md g-line-height-1_4">
-                            Student work, Success stories, Faculty profiles, 360&#176; tours &amp; more
+                            Mengimplementasikan program pendidikan karakter yang
+                            menekankan nilai-nilai profil pelajar Pancasila.
                         </span>
                     </a>
                 </div>
@@ -78,13 +78,11 @@
                 <div class="g-max-width-600 g-pos-rel g-z-index-1">
                     <a class="d-block g-text-underline--none--hover" href="#">
                         <span class="d-block g-color-white g-font-size-20--md mb-2">
-                            Fall <span
-                                class="g-brd-bottom--dashed g-brd-2 g-brd-primary g-color-primary g-font-weight-700 g-pb-2">Webinar
-                                Series</span>
+                            Fasilitas dan Infrastruktur :
                         </span>
                         <span
                             class="d-block g-color-white g-font-secondary g-font-size-25 g-font-size-45--md g-line-height-1_4">
-                            See our full schedule and register now
+                            Meningkatkan dan memperbarui fasilitas pendidikan agar sesuai dengan standar industri modern.
                         </span>
                     </a>
                 </div>
@@ -108,22 +106,32 @@
         <div class="container">
             <form class="row align-items-md-center">
                 <div class="col-md-4 g-mb-30">
-                    <h1 class="h2 g-color-white mb-0">Find a course</h1>
+                    <h1 class="h2 g-color-white mb-0">Get Started</h1>
                 </div>
 
                 <div class="col-md-6 g-mb-30">
-                    <input
+                    {{-- <input
                         class="form-control u-shadow-v19 g-brd-none g-bg-white g-font-size-16 g-rounded-30 g-px-25 g-py-13"
-                        type="text" placeholder="Search for courses">
+                        type="text" placeholder="Search for courses"> --}}
                 </div>
 
                 <div class="col-md-2 g-mb-30">
-                    <button
-                        class="btn u-shadow-v32 input-group-addon d-flex align-items-center g-brd-none g-color-white g-color-primary--hover g-bg-primary g-bg-white--hover g-font-size-16 g-rounded-30 g-transition-0_2 g-px-30 g-py-13"
-                        type="button">
-                        Search
-                        <i class="ml-3 fa fa-search"></i>
-                    </button>
+                    @if (Route::has('login'))
+                        <div class="">
+                            @auth
+                                <a href="{{ url('/dashboard') }}"
+                                    class="btn u-shadow-v32 input-group-addon d-flex align-items-center g-brd-none g-color-white g-color-primary--hover g-bg-primary g-bg-white--hover g-font-size-16 g-rounded-30 g-transition-0_2 g-px-30 g-py-13">Dashboard</a>
+                            @else
+                                <a href="{{ route('auth', 'login') }}"
+                                    class="btn u-shadow-v32 input-group-addon d-flex align-items-center g-brd-none g-color-white g-color-primary--hover g-bg-primary g-bg-white--hover g-font-size-16 g-rounded-30 g-transition-0_2 g-px-30 g-py-13">Log
+                                    in</a>
+
+                                {{-- @if (Route::has('register'))
+                                    <a href="{{ route('auth', 'register') }}" class="btn btn-primary">Register</a>
+                                @endif --}}
+                            @endauth
+                        </div>
+                    @endif
                 </div>
             </form>
         </div>
