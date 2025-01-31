@@ -90,26 +90,20 @@
                     </li>
                     <li class="list-inline-item g-mx-2">
                         <a class="u-icon-v1 u-icon-size--sm u-shadow-v32 g-color-primary g-color-white--hover g-bg-white g-bg-primary--hover rounded-circle"
-                            href="#">
+                            href="https://www.facebook.com/smknegeri1kadipaten" target="_blank">
                             <i class="g-font-size-default fa fa-facebook"></i>
                         </a>
                     </li>
                     <li class="list-inline-item g-mx-2">
                         <a class="u-icon-v1 u-icon-size--sm u-shadow-v32 g-color-primary g-color-white--hover g-bg-white g-bg-primary--hover rounded-circle"
-                            href="#">
+                            href="https://www.instagram.com/smkn1kadipaten" target="_blank">
                             <i class="g-font-size-default fa fa-instagram"></i>
                         </a>
                     </li>
                     <li class="list-inline-item g-mx-2">
                         <a class="u-icon-v1 u-icon-size--sm u-shadow-v32 g-color-primary g-color-white--hover g-bg-white g-bg-primary--hover rounded-circle"
-                            href="#">
+                            href="http://www.youtube.com/@smknegeri1kadipaten-majalengka" target="_blank">
                             <i class="g-font-size-default fa fa-youtube"></i>
-                        </a>
-                    </li>
-                    <li class="list-inline-item g-mx-2">
-                        <a class="u-icon-v1 u-icon-size--sm u-shadow-v32 g-color-primary g-color-white--hover g-bg-white g-bg-primary--hover rounded-circle"
-                            href="#">
-                            <i class="g-font-size-default fa fa-linkedin"></i>
                         </a>
                     </li>
                 </ul>
