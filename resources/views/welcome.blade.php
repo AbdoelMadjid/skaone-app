@@ -219,7 +219,77 @@
         </div>
     </div>
     <!-- End Promo Event -->
+    <!-- Team -->
+    <div class="container g-py-100">
+        <!-- Heading -->
+        <div class="g-max-width-550 text-center mx-auto g-mb-100">
+            <h2 class="text-uppercase g-color-main-light-v1 g-font-weight-600 g-font-size-13 g-letter-spacing-2 mb-4">Who is
+                the deputy leader?</h2>
+            <h2 class="h3">This is the deputy principal who helps the principal's performance</h2>
+        </div>
+        <!-- End Heading -->
 
+        <div class="row g-mx-minus-25 g-mb-40">
+            <div class="col-6 col-lg-3 g-px-25 g-mb-50">
+                <!-- Team -->
+                <div class="text-center">
+                    <img class="img-fluid u-shadow-v39 g-brd-around g-brd-10 g-brd-white rounded g-max-width-250 align-self-center mb-5"
+                        src="{{ URL::asset('images/welcome/personil/rpl/personil_0001.jpg') }}" alt="Image Description">
+                    <h4 class="h5 g-font-weight-600 mb-1">Abdul Madjid, S.Pd., M.Pd.</h4>
+                    <span class="d-block g-color-primary">Bidang Akademik/Kurikulum</span>
+                    <hr class="g-brd-gray-light-v4 g-my-15">
+                    <span class="g-color-text g-color-main--hover g-font-size-13">"Merdeka Belajar, Kreatif
+                        Berkarya, Sukses Bersama!"</span>
+                </div>
+                <!-- End Team -->
+            </div>
+
+            <div class="col-6 col-lg-3 g-px-25 g-mb-50">
+                <!-- Team -->
+                <div class="text-center">
+                    <img class="img-fluid u-shadow-v39 g-brd-around g-brd-10 g-brd-white rounded g-max-width-250 align-self-center mb-5"
+                        src="{{ URL::asset('images/welcome/personil/sejarah/personil_0001.jpg') }}"
+                        alt="Image Description">
+                    <h4 class="h5 g-font-weight-600 mb-1">Dana I. Hadiana, S.Pd., M.Pd.</h4>
+                    <span class="d-block g-color-primary">Bidang Kesiswaan</span>
+                    <hr class="g-brd-gray-light-v4 g-my-15">
+                    <span class="g-color-text g-color-main--hover g-font-size-13">"Membimbing dengan
+                        Teladan, Menginspirasi dengan Tindakan!"</span>
+                </div>
+                <!-- End Team -->
+            </div>
+
+            <div class="col-6 col-lg-3 g-px-25 g-mb-50">
+                <!-- Team -->
+                <div class="text-center">
+                    <img class="img-fluid u-shadow-v39 g-brd-around g-brd-10 g-brd-white rounded g-max-width-250 align-self-center mb-5"
+                        src="{{ URL::asset('images/welcome/personil/akuntansi/personil_0003.jpg') }}"
+                        alt="Image Description">
+                    <h4 class="h5 g-font-weight-600 mb-1">Dra. Ebah Habibah, MM.</h4>
+                    <span class="d-block g-color-primary">Bidang Hubungan Masyarakat</span>
+                    <hr class="g-brd-gray-light-v4 g-my-15">
+                    <span class="g-color-text g-color-main--hover g-font-size-13">"Bersama,
+                        Berkomunikasi, dan Berprestasi!"</span>
+                </div>
+                <!-- End Team -->
+            </div>
+
+            <div class="col-6 col-lg-3 g-px-25 g-mb-50">
+                <!-- Team -->
+                <div class="text-center">
+                    <img class="img-fluid u-shadow-v39 g-brd-around g-brd-10 g-brd-white rounded g-max-width-250 align-self-center mb-5"
+                        src="{{ URL::asset('images/welcome/personil/tkj/personil_0002.jpg') }}" alt="Image Description">
+                    <h4 class="h5 g-font-weight-600 mb-1">Aryono, S.T.</h4>
+                    <span class="d-block g-color-primary">Bidang Sarana Prasarana</span>
+                    <hr class="g-brd-gray-light-v4 g-my-15">
+                    <span class="g-color-text g-color-main--hover g-font-size-13">"Mewujudkan Lingkungan Nyaman untuk
+                        Pendidikan Gemilang!"</span>
+                </div>
+                <!-- End Team -->
+            </div>
+        </div>
+    </div>
+    <!-- End Team -->
     <!-- Learn First Steps -->
     <div class="container g-pt-100 g-pb-50">
 
@@ -331,167 +401,6 @@
         </div>
     </div>
     <!-- End Learn First Steps -->
-
-    <!-- Testimonials -->
-    {{-- <div class="g-bg-main-light-v2">
-        <div class="container g-pt-70 g-pb-20">
-            <div class="js-carousel" data-pagi-classes="u-carousel-indicators-v35--white g-pos-rel text-center">
-                <!-- Testimonials -->
-                <div class="js-slide">
-                    <div class="row justify-content-lg-center g-mb-20">
-                        <div class="col-md-3 col-lg-2 g-mb-20">
-                            <img class="img-fluid u-shadow-v36 rounded-circle mx-auto"
-                                src="{{ URL::asset('build/assets/img-temp/200x200/img3.jpg') }}" alt="Image Description">
-                        </div>
-
-                        <div class="col-md-9 col-lg-8 g-mb-20">
-                            <!-- Testimonials - Content -->
-                            <div class="media mb-3">
-                                <div class="d-flex mr-3">
-                                    <span
-                                        class="g-color-white-opacity-0_8 g-font-secondary g-font-size-40 g-opacity-0_3 g-pos-rel g-top-minus-10">&#8220;</span>
-                                </div>
-                                <div class="media-body">
-                                    <blockquote
-                                        class="g-brd-left-none g-color-white g-font-style-italic g-font-size-20 g-pl-0">
-                                        The program offers both a strong theoretical and practical component
-                                        providing the solid foundation needed for student teachers to venture
-                                        out into the realm of teaching.
-                                        <span
-                                            class="align-self-end g-color-white-opacity-0_8 g-font-secondary g-font-size-40 g-opacity-0_3 g-line-height-0 align-bottom g-pos-rel g-top-minus-10">&#8221;</span>
-                                    </blockquote>
-                                </div>
-                            </div>
-
-                            <div class="g-pl-30">
-                                <h3 class="h4 g-color-white-opacity-0_9 mb-0">Karolina Wellyan</h3>
-                                <span class="d-block g-font-size-18 g-color-white-opacity-0_5 g-pl-20">&#8212;
-                                    Bachelor Student</span>
-                            </div>
-                            <!-- End Testimonials - Content -->
-                        </div>
-                    </div>
-                </div>
-                <!-- End Testimonials -->
-
-                <!-- Testimonials -->
-                <div class="js-slide">
-                    <div class="row justify-content-lg-center g-mb-20">
-                        <div class="col-md-3 col-lg-2 g-mb-20">
-                            <img class="img-fluid u-shadow-v36 rounded-circle mx-auto"
-                                src="{{ URL::asset('build/assets/img-temp/200x200/img1.jpg') }}" alt="Image Description">
-                        </div>
-
-                        <div class="col-md-9 col-lg-8 g-mb-20">
-                            <!-- Testimonials - Content -->
-                            <div class="media mb-3">
-                                <div class="d-flex mr-3">
-                                    <span
-                                        class="g-color-white-opacity-0_8 g-font-secondary g-font-size-40 g-opacity-0_3 g-pos-rel g-top-minus-10">&#8220;</span>
-                                </div>
-                                <div class="media-body">
-                                    <blockquote
-                                        class="g-brd-left-none g-color-white g-font-style-italic g-font-size-20 g-pl-0">
-                                        Unify's TESL program was a personally enriching and professionally
-                                        beneficial experience that opened the door to a rewarding second career
-                                        in ESL.
-                                        <span
-                                            class="align-self-end g-color-white-opacity-0_8 g-font-secondary g-font-size-40 g-opacity-0_3 g-line-height-0 align-bottom g-pos-rel g-top-minus-10">&#8221;</span>
-                                    </blockquote>
-                                </div>
-                            </div>
-
-                            <div class="g-pl-30">
-                                <h3 class="h4 g-color-white-opacity-0_9 mb-0">Alex Watson</h3>
-                                <span class="d-block g-font-size-18 g-color-white-opacity-0_5 g-pl-20">&#8212;
-                                    2015 Grad</span>
-                            </div>
-                            <!-- End Testimonials - Content -->
-                        </div>
-                    </div>
-                </div>
-                <!-- End Testimonials -->
-
-                <!-- Testimonials -->
-                <div class="js-slide">
-                    <div class="row justify-content-lg-center g-mb-20">
-                        <div class="col-md-3 col-lg-2 g-mb-20">
-                            <img class="img-fluid u-shadow-v36 rounded-circle mx-auto"
-                                src="{{ URL::asset('build/assets/img-temp/200x200/img2.jpg') }}" alt="Image Description">
-                        </div>
-
-                        <div class="col-md-9 col-lg-8 g-mb-20">
-                            <!-- Testimonials - Content -->
-                            <div class="media mb-3">
-                                <div class="d-flex mr-3">
-                                    <span
-                                        class="g-color-white-opacity-0_8 g-font-secondary g-font-size-40 g-opacity-0_3 g-pos-rel g-top-minus-10">&#8220;</span>
-                                </div>
-                                <div class="media-body">
-                                    <blockquote
-                                        class="g-brd-left-none g-color-white g-font-style-italic g-font-size-20 g-pl-0">
-                                        I would highly recommend the Unify TESL program – it gave me the
-                                        training, tools and network to get ESL teaching opportunities in
-                                        Toronto. Unify's program provided a good balance of both the practical
-                                        and theoretical knowledge.
-                                        <span
-                                            class="align-self-end g-color-white-opacity-0_8 g-font-secondary g-font-size-40 g-opacity-0_3 g-line-height-0 align-bottom g-pos-rel g-top-minus-10">&#8221;</span>
-                                    </blockquote>
-                                </div>
-                            </div>
-
-                            <div class="g-pl-30">
-                                <h3 class="h4 g-color-white-opacity-0_9 mb-0">Maria Olsson</h3>
-                                <span class="d-block g-font-size-18 g-color-white-opacity-0_5 g-pl-20">&#8212;
-                                    2017 Grad</span>
-                            </div>
-                            <!-- End Testimonials - Content -->
-                        </div>
-                    </div>
-                </div>
-                <!-- End Testimonials -->
-
-                <!-- Testimonials -->
-                <div class="js-slide">
-                    <div class="row justify-content-lg-center g-mb-20">
-                        <div class="col-md-3 col-lg-2 g-mb-20">
-                            <img class="img-fluid u-shadow-v36 rounded-circle mx-auto"
-                                src="{{ URL::asset('build/assets/img-temp/200x200/img4.jpg') }}" alt="Image Description">
-                        </div>
-
-                        <div class="col-md-9 col-lg-8 g-mb-20">
-                            <!-- Testimonials - Content -->
-                            <div class="media mb-3">
-                                <div class="d-flex mr-3">
-                                    <span
-                                        class="g-color-white-opacity-0_8 g-font-secondary g-font-size-40 g-opacity-0_3 g-pos-rel g-top-minus-10">&#8220;</span>
-                                </div>
-                                <div class="media-body">
-                                    <blockquote
-                                        class="g-brd-left-none g-color-white g-font-style-italic g-font-size-20 g-pl-0">
-                                        The TESL training at Unify includes an extremely useful practicum
-                                        portion where students get the chance to hone their skills at the front
-                                        of the class and receive feedback from mentors.
-                                        <span
-                                            class="align-self-end g-color-white-opacity-0_8 g-font-secondary g-font-size-40 g-opacity-0_3 g-line-height-0 align-bottom g-pos-rel g-top-minus-10">&#8221;</span>
-                                    </blockquote>
-                                </div>
-                            </div>
-
-                            <div class="g-pl-30">
-                                <h3 class="h4 g-color-white-opacity-0_9 mb-0">Brown Draxler</h3>
-                                <span class="d-block g-font-size-18 g-color-white-opacity-0_5 g-pl-20">&#8212;
-                                    Jeff Brown, M.A., Ph.D.</span>
-                            </div>
-                            <!-- End Testimonials - Content -->
-                        </div>
-                    </div>
-                </div>
-                <!-- End Testimonials -->
-            </div>
-        </div>
-    </div> --}}
-    <!-- End Testimonials -->
 
     <!-- Call to Action -->
     @include('skaonewelcome.call-to-acction')

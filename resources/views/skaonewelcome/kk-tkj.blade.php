@@ -12,6 +12,18 @@
         <div class="row">
             <div class="col-md-3">
                 <img class="img-fluid" src="{{ URL::asset('images/logojurusan/logo-tkj.png') }}" alt="Image Description">
+                <hr class="g-brd-gray-light-v4 g-my-60">
+                <header class="text-center mx-auto g-mb-10">
+                    <div class="u-heading-v6-2 text-center text-uppercase g-mb-20">
+                        <h6 class="g-font-size-12 g-font-weight-600">Ketua Kompetensi Keahlian</h6>
+                    </div>
+                </header>
+                <img class="img-fluid img-thumbnail g-rounded-10 g-mb-20"
+                    src="{{ URL::asset('images/welcome/personil/tkj/personil_0005.jpg') }}" alt="Image Description">
+                <div class="u-heading-v6-2 text-center text-uppercase g-mb-20">
+                    <h6 class="g-font-size-12">Otong Sunahdi S.T.</h6>
+                </div>
+                <hr class="g-brd-gray-light-v4 g-my-60">
                 <table class="table mt-5">
                     <thead>
                         <tr>
