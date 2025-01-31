@@ -290,6 +290,7 @@
         </div>
     </div>
     <!-- End Team -->
+    <hr class="g-brd-gray-light-v4 g-my-60">
     <!-- Learn First Steps -->
     <div class="container g-pt-100 g-pb-50">
 

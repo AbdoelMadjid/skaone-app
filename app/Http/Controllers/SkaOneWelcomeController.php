@@ -118,6 +118,7 @@ class SkaOneWelcomeController extends Controller
     {
         $groupsPersonil = WelcomeDataPersonil::select('jenis_group', 'group_name')
             ->groupBy('jenis_group', 'group_name')
+            ->orderBy('jenis_group')
             ->get();
 
         $personilData = WelcomeDataPersonil::select(
@@ -131,7 +132,7 @@ class SkaOneWelcomeController extends Controller
             'personil_sekolahs.gelarbelakang'
         )
             ->join('personil_sekolahs', 'personil_sekolahs.id_personil', '=', 'welcome_data_personil.id_personil')
-            ->orderBy('welcome_data_personil.jenis_group')
+            ->orderBy('welcome_data_personil.id_personil')
             ->get();
 
         return view('skaonewelcome.faculty-and-staff', compact('groupsPersonil', 'personilData'));
