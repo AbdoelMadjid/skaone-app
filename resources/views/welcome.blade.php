@@ -333,7 +333,7 @@
     <!-- End Learn First Steps -->
 
     <!-- Testimonials -->
-    <div class="g-bg-main-light-v2">
+    {{-- <div class="g-bg-main-light-v2">
         <div class="container g-pt-70 g-pb-20">
             <div class="js-carousel" data-pagi-classes="u-carousel-indicators-v35--white g-pos-rel text-center">
                 <!-- Testimonials -->
@@ -490,7 +490,7 @@
                 <!-- End Testimonials -->
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- End Testimonials -->
 
     <!-- Call to Action -->
