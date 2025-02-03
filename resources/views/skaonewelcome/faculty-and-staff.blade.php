@@ -117,7 +117,7 @@
                 </div>
                 <div class="g-mb-30">
                     <div id="custom_datalabels_bar"
-                        data-colors='["--vz-primary", "--vz-secondary", "--vz-success", "--vz-info", "--vz-warning", "--vz-danger", "--vz-dark", "--vz-primary", "--vz-success", "--vz-secondary"]'
+                        data-colors='["#66DA26", "#F44336", "#9C27B0", "#E91E63", "#2E93fA", "#546E7A", "#FF9800", "#9C27B0", "#66DA26", "#F44336"]'
                         class="apex-charts" dir="ltr"></div>
                 </div>
             </article>
@@ -132,7 +132,7 @@
                 </div>
                 <div class="g-mb-30">
 
-                    <div id="column_chart" data-colors='["--vz-danger", "--vz-primary", "--vz-success"]' class="apex-charts"
+                    <div id="column_chart" data-colors='["#2E93fA", "#E91E63", "#FF9800"]' class="apex-charts"
                         dir="ltr"></div>
                 </div>
             </article>
