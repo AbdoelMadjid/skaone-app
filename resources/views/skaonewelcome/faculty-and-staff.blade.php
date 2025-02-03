@@ -14,7 +14,7 @@
         style="background-image: url({{ URL::asset('images/sakola/misisekolah5.jpg') }});">
         <div class="container g-pos-rel g-z-index-1 g-pt-80 g-pb-150">
             <div class="row justify-content-lg-between align-items-md-center">
-                <div class="col-md-6 col-lg-5 g-mb-170">
+                <div class="col-md-6 col-lg-5 g-mb-150">
                     <h1 class="g-color-white g-font-size-40--md mb-4">Teacher and Staff</h1>
                     <p class="g-color-white-opacity-0_9 g-font-size-20--md"></p>
                 </div>
@@ -24,23 +24,24 @@
     <!-- End Promo Block -->
 
     <!-- Find a Course -->
-    <div class="g-bg-img-hero g-bg-pos-top-center g-pos-rel g-z-index-1 g-mt-minus-150"
+    {{--     <div class="g-bg-img-hero g-bg-pos-top-center g-pos-rel g-z-index-1 g-mt-minus-150"
         style="background-image: url({{ URL::asset('build/assets/include/svg/svg-bg4.svg') }});">
         <div class="container g-pt-150 g-pb-30">
             <!-- Heading -->
 
         </div>
-    </div>
+    </div> --}}
     <!-- End Find a Course -->
     <!-- End Promo Block -->
-    <div class="g-bg-img-hero" style="background-image: url({{ URL::asset('build/assets/include/svg/svg-bg1.svg') }});">
-        <div class="container g-pt-20 g-pb-30">
+    <div class="g-bg-img-hero g-bg-pos-top-center g-pos-rel g-z-index-1 g-mt-minus-150"
+        style="background-image: url({{ URL::asset('build/assets/include/svg/svg-bg4.svg') }});">
+        <div class="container g-pt-150 g-pb-30">
             <!-- End Heading -->
-            <div class="g-max-width-645 text-center mx-auto g-mb-30">
+            {{--             <div class="g-max-width-645 text-center mx-auto g-mb-30">
 
-            </div>
+            </div> --}}
             <div class="g-max-width-645 text-center mx-auto g-mb-60">
-                <h2 class="h1 mb-3">Faculty and Staff</h2>
+                <h2 class="h1 mb-3">Teacher and Staff</h2>
                 <p>Leadership through excellence in teaching and research. We offer the broadest academic program of any
                     school in Majalengka.
                 </p>
