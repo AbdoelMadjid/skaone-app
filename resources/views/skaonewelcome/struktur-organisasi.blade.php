@@ -81,6 +81,7 @@
             padding: 0 10px;
         }
     </style>
+    <link rel="stylesheet" href="{{ URL::asset('build/assets/vendor/slick-carousel/slick/slick.css') }}">
 @endsection
 @section('content')
     <div class="g-bg-img-hero g-pos-rel" style="background-image: url({{ URL::asset('build/assets/img/bg/bg-img1.png') }});">
@@ -119,7 +120,6 @@
         <div id="chart-container"></div>
     </section>
     <!-- End Mockup Block -->
-
     <!-- Call to Action -->
     @include('skaonewelcome.call-to-acction')
     <!-- End Call to Action -->
