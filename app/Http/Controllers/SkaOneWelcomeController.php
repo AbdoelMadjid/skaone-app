@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
+use App\Models\ManajemenSekolah\PersonilSekolah;
 use App\Models\ManajemenSekolah\Semester;
 use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Models\WelcomeDataPersonil;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -135,7 +137,78 @@ class SkaOneWelcomeController extends Controller
             ->orderBy('welcome_data_personil.id_personil')
             ->get();
 
-        return view('skaonewelcome.faculty-and-staff', compact('groupsPersonil', 'personilData'));
+        //MENGHITUNG JENIS PERSONIL BERDASARKAN JENIS KELAMIN ===================================?
+        // Contoh: Mengambil data dari database
+        $dataPersonil = PersonilSekolah::select('jenispersonil', DB::raw('count(*) as total'))
+            ->groupBy('jenispersonil')
+            ->pluck('total', 'jenispersonil');
+
+
+        $totalGuruLakiLaki = PersonilSekolah::where('jenispersonil', 'Guru')
+            ->where('jeniskelamin', 'Laki-laki')
+            ->count();
+
+        $totalGuruPerempuan = PersonilSekolah::where('jenispersonil', 'Guru')
+            ->where('jeniskelamin', 'Perempuan')
+            ->count();
+
+        $totalTataUsahaLakiLaki = PersonilSekolah::where('jenispersonil', 'Tata Usaha')
+            ->where('jeniskelamin', 'Laki-laki')
+            ->count();
+
+        $totalTataUsahaPerempuan = PersonilSekolah::where('jenispersonil', 'Tata Usaha')
+            ->where('jeniskelamin', 'Perempuan')
+            ->count();
+
+        // HITUNG UMUR PERSONIL ==============================================>
+        // Mengambil semua data personil
+        $personil = PersonilSekolah::all();
+
+        // Menghitung umur setiap personil dan mengelompokkan berdasarkan rentang usia
+        $dataUsia = [
+            '<25' => 0,
+            '25-35' => 0,
+            '35-45' => 0,
+            '45-55' => 0,
+            '55+' => 0
+        ];
+
+        foreach ($personil as $p) {
+            $umur = Carbon::parse($p->tanggallahir)->age;
+
+            // Mengelompokkan berdasarkan rentang usia
+            if ($umur < 25) {
+                $dataUsia['<25']++;
+            } elseif ($umur >= 25 && $umur <= 35) {
+                $dataUsia['25-35']++;
+            } elseif ($umur > 35 && $umur <= 45) {
+                $dataUsia['35-45']++;
+            } elseif ($umur > 45 && $umur <= 55) {
+                $dataUsia['45-55']++;
+            } else {
+                $dataUsia['55+']++;
+            }
+        }
+
+        // Kalkulasi total personil untuk total di radial bar
+        $totalPersonil = array_sum($dataUsia);
+
+
+        //return view('skaonewelcome.faculty-and-staff', compact('groupsPersonil', 'personilData'));
+        return view(
+            'skaonewelcome.faculty-and-staff',
+            [
+                'groupsPersonil' => $groupsPersonil,
+                'personilData' => $personilData,
+                'dataPersonil' => $dataPersonil,
+                'totalGuruLakiLaki' => $totalGuruLakiLaki,
+                'totalGuruPerempuan' => $totalGuruPerempuan,
+                'totalTataUsahaLakiLaki' => $totalTataUsahaLakiLaki,
+                'totalTataUsahaPerempuan' => $totalTataUsahaPerempuan,
+                'dataUsia' => $dataUsia,
+                'totalPersonil' => $totalPersonil,
+            ]
+        );
     }
 
     public function events()

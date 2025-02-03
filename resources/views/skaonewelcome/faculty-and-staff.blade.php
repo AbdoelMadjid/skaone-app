@@ -39,9 +39,16 @@
             <div class="g-max-width-645 text-center mx-auto g-mb-30">
 
             </div>
+            <div class="g-max-width-645 text-center mx-auto g-mb-60">
+                <h2 class="h1 mb-3">Faculty and Staff</h2>
+                <p>Leadership through excellence in teaching and research. We offer the broadest academic program of any
+                    school in Majalengka.
+                </p>
+            </div>
             <div class="row">
                 <!-- Sidebar Tabs -->
                 <div class="col-md-4">
+                    <h3>Pilih Jenis Personil</h3>
                     <ul class="nav flex-column u-nav-v1-1 u-nav-primary" role="tablist"
                         data-target="nav-1-1-accordion-primary-ver" data-tabs-mobile-type="accordion"
                         data-btn-classes="btn btn-md btn-block rounded-0 u-btn-outline-primary g-mb-20">
@@ -98,7 +105,41 @@
         </div>
     </div>
 
+    <!-- Studies -->
+    <div class="container g-pt-100 g-pb-50">
+        <div class="row">
+            <!-- Studies -->
+            <article class="col-md-6 g-mb-30">
+                <div class="g-mb-35">
+                    <h3 class="mb-3">Jenis Personil Sekolah</h3>
+                    <p class="g-font-size-15"><img class="img-fluid"
+                            src="{{ URL::asset('images/sakola/misisekolah5.jpg') }}" alt="Image Description"></p>
+                </div>
+                <div class="g-mb-30">
+                    <div id="custom_datalabels_bar"
+                        data-colors='["--vz-primary", "--vz-secondary", "--vz-success", "--vz-info", "--vz-warning", "--vz-danger", "--vz-dark", "--vz-primary", "--vz-success", "--vz-secondary"]'
+                        class="apex-charts" dir="ltr"></div>
+                </div>
+            </article>
+            <!-- End Studies -->
 
+            <!-- Studies -->
+            <article class="col-md-6 g-mb-30">
+                <div class="g-mb-35">
+                    <h3 class="mb-3">Personil Sekolah berdasar Jenis Kelamin</h3>
+                    <p class="g-font-size-15"><img class="img-fluid"
+                            src="{{ URL::asset('images/sakola/salamsapasenyum.jpg') }}" alt="Image Description"></p>
+                </div>
+                <div class="g-mb-30">
+
+                    <div id="column_chart" data-colors='["--vz-danger", "--vz-primary", "--vz-success"]' class="apex-charts"
+                        dir="ltr"></div>
+                </div>
+            </article>
+            <!-- End Studies -->
+        </div>
+    </div>
+    <!-- End Studies -->
     <!-- Call to Action -->
     @include('skaonewelcome.call-to-acction')
     <!-- End Call to Action -->
@@ -166,5 +207,214 @@
                 $.HSCore.components.HSTabs.init('[role="tablist"]');
             }, 200);
         });
+    </script>
+    <script src="{{ URL::asset('build/libs/apexcharts/apexcharts.min.js') }}"></script>
+    <script>
+        function getChartColorsArray(chartId) {
+            if (document.getElementById(chartId) !== null) {
+                var colors = document.getElementById(chartId).getAttribute("data-colors");
+                colors = JSON.parse(colors);
+                return colors.map(function(value) {
+                    var newValue = value.replace(" ", "");
+                    if (newValue.indexOf(",") === -1) {
+                        var color = getComputedStyle(document.documentElement).getPropertyValue(newValue);
+                        if (color) return color;
+                        else return newValue;;
+                    } else {
+                        var val = value.split(',');
+                        if (val.length == 2) {
+                            var rgbaColor = getComputedStyle(document.documentElement).getPropertyValue(val[0]);
+                            rgbaColor = "rgba(" + rgbaColor + "," + val[1] + ")";
+                            return rgbaColor;
+                        } else {
+                            return newValue;
+                        }
+                    }
+                });
+            }
+        }
+
+        //jjj
+        var chartDatalabelsBarColors = getChartColorsArray("custom_datalabels_bar");
+
+        // Ambil data dari controller
+        var personilCategories = @json($dataPersonil->keys());
+        var personilSeries = @json($dataPersonil->values());
+
+        if (chartDatalabelsBarColors) {
+            var options = {
+                series: [{
+                    data: personilSeries
+                }],
+                chart: {
+                    type: 'bar',
+                    height: 350,
+                    toolbar: {
+                        show: false,
+                    }
+                },
+                plotOptions: {
+                    bar: {
+                        barHeight: '100%',
+                        distributed: true,
+                        horizontal: true,
+                        dataLabels: {
+                            position: 'bottom'
+                        },
+                    }
+                },
+                colors: chartDatalabelsBarColors,
+                dataLabels: {
+                    enabled: true,
+                    textAnchor: 'start',
+                    style: {
+                        colors: ['#fff']
+                    },
+                    formatter: function(val, opt) {
+                        return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val;
+                    },
+                    offsetX: 0,
+                    dropShadow: {
+                        enabled: false
+                    }
+                },
+                stroke: {
+                    width: 1,
+                    colors: ['#fff']
+                },
+                xaxis: {
+                    categories: personilCategories,
+                },
+                yaxis: {
+                    labels: {
+                        show: false
+                    }
+                },
+                tooltip: {
+                    theme: 'dark',
+                    x: {
+                        show: false
+                    },
+                    y: {
+                        title: {
+                            formatter: function() {
+                                return ''
+                            }
+                        }
+                    }
+                }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#custom_datalabels_bar"), options);
+            chart.render();
+        }
+
+
+        var chartColumnColors = getChartColorsArray("column_chart");
+        if (chartColumnColors) {
+            var options = {
+                chart: {
+                    height: 350,
+                    type: 'bar',
+                    toolbar: {
+                        show: false,
+                    }
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: '45%',
+                        endingShape: 'rounded'
+                    },
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['transparent']
+                },
+                series: [{
+                    name: 'Laki-laki',
+                    data: [{{ $totalGuruLakiLaki }}, {{ $totalTataUsahaLakiLaki }}]
+                }, {
+                    name: 'Perempuan',
+                    data: [{{ $totalGuruPerempuan }}, {{ $totalTataUsahaPerempuan }}]
+                }],
+                colors: chartColumnColors,
+                xaxis: {
+                    categories: ['Guru', 'Tata Usaha'],
+                },
+                yaxis: {
+                    title: {
+                        text: 'Jumlah Personil'
+                    }
+                },
+                grid: {
+                    borderColor: '#f1f1f1',
+                },
+                fill: {
+                    opacity: 1
+                },
+                tooltip: {
+                    y: {
+                        formatter: function(val) {
+                            return val + " Personil"
+                        }
+                    }
+                }
+            };
+
+            var chart = new ApexCharts(
+                document.querySelector("#column_chart"),
+                options
+            );
+
+            chart.render();
+        }
+
+
+        // rentang usia
+        var chartRadialbarMultipleColors = getChartColorsArray("multiple_radialbar");
+        if (chartRadialbarMultipleColors) {
+            var options = {
+                series: [
+                    {{ $dataUsia['<25'] }},
+                    {{ $dataUsia['25-35'] }},
+                    {{ $dataUsia['35-45'] }},
+                    {{ $dataUsia['45-55'] }},
+                    {{ $dataUsia['55+'] }}
+                ],
+                chart: {
+                    height: 350,
+                    type: 'radialBar',
+                },
+                plotOptions: {
+                    radialBar: {
+                        dataLabels: {
+                            name: {
+                                fontSize: '22px',
+                            },
+                            value: {
+                                fontSize: '16px',
+                            },
+                            total: {
+                                show: true,
+                                label: 'Total',
+                                formatter: function(w) {
+                                    return {{ $totalPersonil }};
+                                }
+                            }
+                        }
+                    }
+                },
+                labels: ['<25', '25-35', '35-45', '45-55', '55+'],
+                colors: chartRadialbarMultipleColors
+            };
+
+            var chart = new ApexCharts(document.querySelector("#multiple_radialbar"), options);
+            chart.render();
+        }
     </script>
 @endsection
