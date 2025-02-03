@@ -12,10 +12,10 @@
                     <a class="nav-link g-px-0" href="#!">Sejarah</a>
                 </li>
                 <li class="dropdown-item">
-                    <a class="nav-link g-px-0" href="#!">Visi dan Misi</a>
+                    <a class="nav-link g-px-0" href="/skaone/visimisi">Visi dan Misi</a>
                 </li>
                 <li class="dropdown-item">
-                    <a class="nav-link g-px-0" href="#!">Struktur Organisasi</a>
+                    <a class="nav-link g-px-0" href="/skaone/struktur_organisasi">Struktur Organisasi</a>
                 </li>
             </ul>
             <!-- End Submenu -->

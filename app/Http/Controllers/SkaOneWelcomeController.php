@@ -147,4 +147,14 @@ class SkaOneWelcomeController extends Controller
     {
         return view('skaonewelcome.alumni');
     }
+
+    public function visimisi()
+    {
+        return view('skaonewelcome.visimisi');
+    }
+
+    public function struktur_organisasi()
+    {
+        return view('skaonewelcome.struktur-organisasi');
+    }
 }
