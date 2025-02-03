@@ -141,7 +141,39 @@
     <!-- JS Customization -->
     <script src="{{ URL::asset('build/assets/js/custom.js') }}"></script>
     <!-- JS Plugins Init. -->
-    <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
+
+    <script>
+        $(document).on('ready', function() {
+            // initialization of header
+            $.HSCore.components.HSHeader.init($('#js-header'));
+            $.HSCore.helpers.HSHamburgers.init('.hamburger');
+
+            // initialization of HSMegaMenu component
+            $('.js-mega-menu').HSMegaMenu({
+                event: 'hover',
+                pageContainer: $('.container'),
+                breakpoint: 991
+            });
+
+            // initialization of HSDropdown component
+            $.HSCore.components.HSDropdown.init($('[data-dropdown-target]'), {
+                afterOpen: function() {
+                    $(this).find('input[type="search"]').focus();
+                }
+            });
+
+            // initialization of custom select
+            $.HSCore.components.HSSelect.init('.js-custom-select');
+
+            // initialization of sticky blocks
+            setTimeout(function() {
+                $.HSCore.components.HSStickyBlock.init('.js-sticky-block');
+            }, 300);
+
+            // initialization of go to
+            $.HSCore.components.HSGoTo.init('.js-go-to');
+        });
+    </script>
     <script src="{{ URL::asset('build/js/jquery.orgchart.min.js') }}"></script>
     <script type="text/javascript">
         $(function() {
@@ -415,38 +447,6 @@
                 }
             });
 
-        });
-    </script>
-    <script>
-        $(document).on('ready', function() {
-            // initialization of header
-            $.HSCore.components.HSHeader.init($('#js-header'));
-            $.HSCore.helpers.HSHamburgers.init('.hamburger');
-
-            // initialization of HSMegaMenu component
-            $('.js-mega-menu').HSMegaMenu({
-                event: 'hover',
-                pageContainer: $('.container'),
-                breakpoint: 991
-            });
-
-            // initialization of HSDropdown component
-            $.HSCore.components.HSDropdown.init($('[data-dropdown-target]'), {
-                afterOpen: function() {
-                    $(this).find('input[type="search"]').focus();
-                }
-            });
-
-            // initialization of custom select
-            $.HSCore.components.HSSelect.init('.js-custom-select');
-
-            // initialization of sticky blocks
-            setTimeout(function() {
-                $.HSCore.components.HSStickyBlock.init('.js-sticky-block');
-            }, 300);
-
-            // initialization of go to
-            $.HSCore.components.HSGoTo.init('.js-go-to');
         });
     </script>
 @endsection
