@@ -73,7 +73,7 @@
 
         <!-- Carousel Slides -->
         <div class="js-slide h-100 g-flex-centered g-bg-img-hero g-bg-pos-top-center g-bg-cover g-bg-black-opacity-0_3--after"
-            style="background-image: url({{ URL::asset('images/sakola/1-min.jpg') }});">
+            style="background-image: url({{ URL::asset('images/gerbang.jpg') }});">
             <div class="container">
                 <div class="g-max-width-600 g-pos-rel g-z-index-1">
                     <a class="d-block g-text-underline--none--hover" href="#">
@@ -103,37 +103,35 @@
 
     <!-- Find a Course -->
     <div id="content" class="u-shadow-v34 g-bg-main g-pos-rel g-z-index-1 g-pt-40 g-pb-10">
-        <div class="container">
-            <form class="row align-items-md-center">
-                <div class="col-md-4 g-mb-30">
-                    <h1 class="h2 g-color-white mb-0">Get Started</h1>
-                </div>
+        <div class="container g-mb-60">
+            <nav class="text-center " aria-label="Page Navigation">
+                <ul class="list-inline">
+                    <li class="list-inline-item float-sm-left">
+                        <h1 class="h2 g-color-white mb-0">Get Started</h1>
+                    </li>
+                    <li class="list-inline-item hidden-down">
+                        {{--  --}}
+                    </li>
+                    <li class="list-inline-item float-sm-right">
+                        @if (Route::has('login'))
+                            <div class="">
+                                @auth
+                                    <a href="{{ url('/dashboard') }}"
+                                        class="btn u-shadow-v32 g-brd-none g-color-white g-color-primary--hover g-bg-primary g-bg-white--hover g-font-size-16 g-rounded-30 g-transition-0_2 g-px-35 g-py-13">Dashboard</a>
+                                @else
+                                    <a href="{{ route('auth', 'login') }}"
+                                        class="btn u-shadow-v32 g-brd-none g-color-white g-color-primary--hover g-bg-primary g-bg-white--hover g-font-size-16 g-rounded-30 g-transition-0_2 g-px-35 g-py-13">Log
+                                        in</a>
 
-                <div class="col-md-6 g-mb-30">
-                    {{-- <input
-                        class="form-control u-shadow-v19 g-brd-none g-bg-white g-font-size-16 g-rounded-30 g-px-25 g-py-13"
-                        type="text" placeholder="Search for courses"> --}}
-                </div>
-
-                <div class="col-md-2 g-mb-30">
-                    @if (Route::has('login'))
-                        <div class="">
-                            @auth
-                                <a href="{{ url('/dashboard') }}"
-                                    class="btn u-shadow-v32 input-group-addon d-flex align-items-center g-brd-none g-color-white g-color-primary--hover g-bg-primary g-bg-white--hover g-font-size-16 g-rounded-30 g-transition-0_2 g-px-30 g-py-13">Dashboard</a>
-                            @else
-                                <a href="{{ route('auth', 'login') }}"
-                                    class="btn u-shadow-v32 input-group-addon d-flex align-items-center g-brd-none g-color-white g-color-primary--hover g-bg-primary g-bg-white--hover g-font-size-16 g-rounded-30 g-transition-0_2 g-px-30 g-py-13">Log
-                                    in</a>
-
-                                {{-- @if (Route::has('register'))
+                                    {{-- @if (Route::has('register'))
                                     <a href="{{ route('auth', 'register') }}" class="btn btn-primary">Register</a>
                                 @endif --}}
-                            @endauth
-                        </div>
-                    @endif
-                </div>
-            </form>
+                                @endauth
+                            </div>
+                        @endif
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
     <!-- End Find a Course -->
@@ -195,7 +193,8 @@
                             Oleh karena itu, kami mengajak seluruh siswa, guru, tenaga kependidikan, orang tua, alumni, dan
                             masyarakat untuk terus bersinergi menciptakan lingkungan pendidikan yang harmonis dan inovatif.
 
-                        <p class="g-font-size-17 mb-0">Melalui website ini, kami berharap dapat memberikan layanan informasi
+                        <p class="g-font-size-17 mb-0">Melalui website ini, kami berharap dapat memberikan layanan
+                            informasi
                             yang cepat, akurat, dan
                             relevan.
 
@@ -223,7 +222,8 @@
     <div class="container g-py-100">
         <!-- Heading -->
         <div class="g-max-width-550 text-center mx-auto g-mb-100">
-            <h2 class="text-uppercase g-color-main-light-v1 g-font-weight-600 g-font-size-13 g-letter-spacing-2 mb-4">Who is
+            <h2 class="text-uppercase g-color-main-light-v1 g-font-weight-600 g-font-size-13 g-letter-spacing-2 mb-4">Who
+                is
                 the deputy leader?</h2>
             <h2 class="h3">This is the deputy principal who helps the principal's performance</h2>
         </div>
