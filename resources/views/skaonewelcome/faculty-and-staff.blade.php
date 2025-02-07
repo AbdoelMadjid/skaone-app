@@ -14,13 +14,71 @@
         style="background-image: url({{ URL::asset('images/sakola/misisekolah5.jpg') }});">
         <div class="container g-pos-rel g-z-index-1 g-pt-80 g-pb-150">
             <div class="row justify-content-lg-between align-items-md-center">
+                <div class="col-md-6 col-lg-5 g-mb-30">
+                    <h1 class="g-color-white g-font-size-40--md mb-4">Teacher and Staff</h1>
+                    <p class="g-color-white-opacity-0_9 g-font-size-20--md">Leadership through excellence in teaching and
+                        research. We offer the broadest academic program of any
+                        school in Majalengka.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Find a Course -->
+    <div class="g-bg-img-hero g-bg-pos-top-center g-pos-rel g-z-index-1 g-mt-minus-150"
+        style="background-image: url({{ URL::asset('build/assets/include/svg/svg-bg4.svg') }});">
+        <div class="container g-pt-150 g-pb-30">
+            <!-- Heading -->
+            {{--  <div class="g-max-width-645 text-center mx-auto g-mb-60">
+                <h2 class="h1 mb-0">Teacher and Staff</h2>
+                <span class="d-block g-font-size-18 mb-0">Discover 100+ of our events</span>
+            </div> --}}
+            <!-- End Heading -->
+            <div class="row">
+                <!-- Studies -->
+                <article class="col-md-6 g-mb-30">
+                    <div class="g-mb-35">
+                        <h3 class="mb-3">Jenis Personil Sekolah</h3>
+                        <p class="g-font-size-15"><img class="img-fluid"
+                                src="{{ URL::asset('images/sakola/misisekolah5.jpg') }}" alt="Image Description"></p>
+                    </div>
+                    <div class="g-mb-30">
+                        <div id="custom_datalabels_bar"
+                            data-colors='["#66DA26", "#F44336", "#9C27B0", "#E91E63", "#2E93fA", "#546E7A", "#FF9800", "#9C27B0", "#66DA26", "#F44336"]'
+                            class="apex-charts" dir="ltr"></div>
+                    </div>
+                </article>
+                <!-- End Studies -->
+
+                <!-- Studies -->
+                <article class="col-md-6 g-mb-30">
+                    <div class="g-mb-35">
+                        <h3 class="mb-3">Personil Sekolah berdasar Jenis Kelamin</h3>
+                        <p class="g-font-size-15"><img class="img-fluid"
+                                src="{{ URL::asset('images/sakola/salamsapasenyum.jpg') }}" alt="Image Description"></p>
+                    </div>
+                    <div class="g-mb-30">
+
+                        <div id="column_chart" data-colors='["#2E93fA", "#E91E63", "#FF9800"]' class="apex-charts"
+                            dir="ltr"></div>
+                    </div>
+                </article>
+                <!-- End Studies -->
+            </div>
+        </div>
+    </div>
+    <!-- End Find a Course -->
+    <!-- End Promo Block -->
+    {{--  <div class="g-bg-img-hero g-bg-cover g-bg-black-opacity-0_3--after"
+        style="background-image: url({{ URL::asset('images/sakola/misisekolah5.jpg') }});">
+        <div class="container g-pos-rel g-z-index-1 g-pt-80 g-pb-150">
+            <div class="row justify-content-lg-between align-items-md-center">
                 <div class="col-md-6 col-lg-5 g-mb-150">
                     <h1 class="g-color-white g-font-size-40--md mb-4">Teacher and Staff</h1>
                     <p class="g-color-white-opacity-0_9 g-font-size-20--md"></p>
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- End Promo Block -->
 
     <!-- Find a Course -->
@@ -33,9 +91,9 @@
     </div> --}}
     <!-- End Find a Course -->
     <!-- End Promo Block -->
-    <div class="g-bg-img-hero g-bg-pos-top-center g-pos-rel g-z-index-1 g-mt-minus-150"
-        style="background-image: url({{ URL::asset('build/assets/include/svg/svg-bg4.svg') }});">
-        <div class="container g-pt-150 g-pb-30">
+    <div class="g-bg-img-hero" style="background-image: url({{ URL::asset('build/assets/include/svg/svg-bg5.svg') }});">
+        <div class="container g-py-100 g-py-150--lg">
+
             <!-- End Heading -->
             {{--             <div class="g-max-width-645 text-center mx-auto g-mb-30">
 
@@ -106,40 +164,7 @@
         </div>
     </div>
 
-    <!-- Studies -->
-    <div class="container g-pt-100 g-pb-50">
-        <div class="row">
-            <!-- Studies -->
-            <article class="col-md-6 g-mb-30">
-                <div class="g-mb-35">
-                    <h3 class="mb-3">Jenis Personil Sekolah</h3>
-                    <p class="g-font-size-15"><img class="img-fluid"
-                            src="{{ URL::asset('images/sakola/misisekolah5.jpg') }}" alt="Image Description"></p>
-                </div>
-                <div class="g-mb-30">
-                    <div id="custom_datalabels_bar"
-                        data-colors='["#66DA26", "#F44336", "#9C27B0", "#E91E63", "#2E93fA", "#546E7A", "#FF9800", "#9C27B0", "#66DA26", "#F44336"]'
-                        class="apex-charts" dir="ltr"></div>
-                </div>
-            </article>
-            <!-- End Studies -->
 
-            <!-- Studies -->
-            <article class="col-md-6 g-mb-30">
-                <div class="g-mb-35">
-                    <h3 class="mb-3">Personil Sekolah berdasar Jenis Kelamin</h3>
-                    <p class="g-font-size-15"><img class="img-fluid"
-                            src="{{ URL::asset('images/sakola/salamsapasenyum.jpg') }}" alt="Image Description"></p>
-                </div>
-                <div class="g-mb-30">
-
-                    <div id="column_chart" data-colors='["#2E93fA", "#E91E63", "#FF9800"]' class="apex-charts"
-                        dir="ltr"></div>
-                </div>
-            </article>
-            <!-- End Studies -->
-        </div>
-    </div>
     <!-- End Studies -->
     <!-- Call to Action -->
     @include('skaonewelcome.call-to-acction')
