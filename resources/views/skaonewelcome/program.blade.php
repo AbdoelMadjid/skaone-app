@@ -13,6 +13,7 @@
                 <div class="col-lg-4 g-pt-50--lg">
                     <div class="mb-5">
                         <h1 class="g-font-size-45 mb-4">Program Studi</h1>
+                        <p> Kompetensi Keahlian di SMKN 1 Kadipaten </p>
                     </div>
                 </div>
                 <div class="col-lg-8 align-self-end">
