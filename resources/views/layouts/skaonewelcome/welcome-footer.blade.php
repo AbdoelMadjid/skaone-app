@@ -112,7 +112,7 @@
 
             <div class="col-md-4 col-lg-3 order-md-1 g-mb-30">
                 <!-- Logo -->
-                <a class="g-text-underline--none--hover mr-4" href="index.html">
+                <a class="g-text-underline--none--hover mr-4" href="/">
                     <img class="g-width-95" src="{{ URL::asset('build/assets/img/logo/logo-mini.png') }}"
                         alt="Logo">
                 </a>
