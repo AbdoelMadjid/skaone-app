@@ -93,3 +93,139 @@ Stack trace:
 [05-Dec-2024 21:11:39 Asia/Jakarta] PHP Fatal error:  Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.1.0". You are running 8.0.30. in /home/smknkadi/public_html/vendor/composer/platform_check.php on line 28
 [05-Dec-2024 21:43:47 Asia/Jakarta] PHP Fatal error:  Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.1.0". You are running 8.0.30. in /home/smknkadi/public_html/vendor/composer/platform_check.php on line 28
 [15-Dec-2024 14:33:02 Asia/Jakarta] PHP Fatal error:  Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.1.0". You are running 8.0.30. in /home/smknkadi/public_html/vendor/composer/platform_check.php on line 28
+[17-Jan-2025 03:27:29 UTC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 20480 bytes) in /home/smknkadi/public_html/vendor/dompdf/dompdf/src/Css/Style.php on line 1904
+[17-Jan-2025 03:27:41 UTC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 20480 bytes) in /home/smknkadi/public_html/vendor/dompdf/dompdf/src/Css/Style.php on line 1904
+[17-Jan-2025 18:04:52 Asia/Jakarta] PHP Warning:  require(/home/smknkadi/public_html/vendor/spatie/flare-client-php/src/helpers.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:04:52 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/vendor/composer/../spatie/flare-client-php/src/helpers.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/smknkadi/public_html/vendor/composer/autoload_real.php(45): {closure}()
+#1 /home/smknkadi/public_html/vendor/autoload.php(25): ComposerAutoloaderInitc99da74d8ca1b62cf66a4238c245c8c0::getLoader()
+#2 /home/smknkadi/public_html/index.php(40): require('/home/smknkadi/...')
+#3 {main}
+  thrown in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:04:53 Asia/Jakarta] PHP Warning:  require(/home/smknkadi/public_html/vendor/spatie/flare-client-php/src/helpers.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:04:53 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/vendor/composer/../spatie/flare-client-php/src/helpers.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/smknkadi/public_html/vendor/composer/autoload_real.php(45): {closure}()
+#1 /home/smknkadi/public_html/vendor/autoload.php(25): ComposerAutoloaderInitc99da74d8ca1b62cf66a4238c245c8c0::getLoader()
+#2 /home/smknkadi/public_html/index.php(40): require('/home/smknkadi/...')
+#3 {main}
+  thrown in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:04:54 Asia/Jakarta] PHP Warning:  require(/home/smknkadi/public_html/vendor/spatie/flare-client-php/src/helpers.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:04:54 Asia/Jakarta] PHP Warning:  require(/home/smknkadi/public_html/vendor/spatie/flare-client-php/src/helpers.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:04:54 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/vendor/composer/../spatie/flare-client-php/src/helpers.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/smknkadi/public_html/vendor/composer/autoload_real.php(45): {closure}()
+#1 /home/smknkadi/public_html/vendor/autoload.php(25): ComposerAutoloaderInitc99da74d8ca1b62cf66a4238c245c8c0::getLoader()
+#2 /home/smknkadi/public_html/index.php(40): require('/home/smknkadi/...')
+#3 {main}
+  thrown in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:04:54 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/vendor/composer/../spatie/flare-client-php/src/helpers.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/smknkadi/public_html/vendor/composer/autoload_real.php(45): {closure}()
+#1 /home/smknkadi/public_html/vendor/autoload.php(25): ComposerAutoloaderInitc99da74d8ca1b62cf66a4238c245c8c0::getLoader()
+#2 /home/smknkadi/public_html/index.php(40): require('/home/smknkadi/...')
+#3 {main}
+  thrown in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:04:54 Asia/Jakarta] PHP Warning:  require(/home/smknkadi/public_html/vendor/spatie/flare-client-php/src/helpers.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:04:54 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/vendor/composer/../spatie/flare-client-php/src/helpers.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/smknkadi/public_html/vendor/composer/autoload_real.php(45): {closure}()
+#1 /home/smknkadi/public_html/vendor/autoload.php(25): ComposerAutoloaderInitc99da74d8ca1b62cf66a4238c245c8c0::getLoader()
+#2 /home/smknkadi/public_html/index.php(40): require('/home/smknkadi/...')
+#3 {main}
+  thrown in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:04:56 Asia/Jakarta] PHP Warning:  require(/home/smknkadi/public_html/vendor/spatie/flare-client-php/src/helpers.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:04:56 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/vendor/composer/../spatie/flare-client-php/src/helpers.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/smknkadi/public_html/vendor/composer/autoload_real.php(45): {closure}()
+#1 /home/smknkadi/public_html/vendor/autoload.php(25): ComposerAutoloaderInitc99da74d8ca1b62cf66a4238c245c8c0::getLoader()
+#2 /home/smknkadi/public_html/index.php(40): require('/home/smknkadi/...')
+#3 {main}
+  thrown in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:04:56 Asia/Jakarta] PHP Warning:  require(/home/smknkadi/public_html/vendor/spatie/flare-client-php/src/helpers.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:04:56 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/vendor/composer/../spatie/flare-client-php/src/helpers.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/smknkadi/public_html/vendor/composer/autoload_real.php(45): {closure}()
+#1 /home/smknkadi/public_html/vendor/autoload.php(25): ComposerAutoloaderInitc99da74d8ca1b62cf66a4238c245c8c0::getLoader()
+#2 /home/smknkadi/public_html/index.php(40): require('/home/smknkadi/...')
+#3 {main}
+  thrown in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:04:56 Asia/Jakarta] PHP Warning:  require(/home/smknkadi/public_html/vendor/spatie/flare-client-php/src/helpers.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:04:56 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/vendor/composer/../spatie/flare-client-php/src/helpers.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/smknkadi/public_html/vendor/composer/autoload_real.php(45): {closure}()
+#1 /home/smknkadi/public_html/vendor/autoload.php(25): ComposerAutoloaderInitc99da74d8ca1b62cf66a4238c245c8c0::getLoader()
+#2 /home/smknkadi/public_html/index.php(40): require('/home/smknkadi/...')
+#3 {main}
+  thrown in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:04:57 Asia/Jakarta] PHP Warning:  require(/home/smknkadi/public_html/vendor/spatie/flare-client-php/src/helpers.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:04:57 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/vendor/composer/../spatie/flare-client-php/src/helpers.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/smknkadi/public_html/vendor/composer/autoload_real.php(45): {closure}()
+#1 /home/smknkadi/public_html/vendor/autoload.php(25): ComposerAutoloaderInitc99da74d8ca1b62cf66a4238c245c8c0::getLoader()
+#2 /home/smknkadi/public_html/index.php(40): require('/home/smknkadi/...')
+#3 {main}
+  thrown in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:04:58 Asia/Jakarta] PHP Warning:  require(/home/smknkadi/public_html/vendor/spatie/flare-client-php/src/helpers.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:04:58 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/vendor/composer/../spatie/flare-client-php/src/helpers.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/smknkadi/public_html/vendor/composer/autoload_real.php(45): {closure}()
+#1 /home/smknkadi/public_html/vendor/autoload.php(25): ComposerAutoloaderInitc99da74d8ca1b62cf66a4238c245c8c0::getLoader()
+#2 /home/smknkadi/public_html/index.php(40): require('/home/smknkadi/...')
+#3 {main}
+  thrown in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:04:59 Asia/Jakarta] PHP Warning:  require(/home/smknkadi/public_html/vendor/spatie/flare-client-php/src/helpers.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:04:59 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/vendor/composer/../spatie/flare-client-php/src/helpers.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/smknkadi/public_html/vendor/composer/autoload_real.php(45): {closure}()
+#1 /home/smknkadi/public_html/vendor/autoload.php(25): ComposerAutoloaderInitc99da74d8ca1b62cf66a4238c245c8c0::getLoader()
+#2 /home/smknkadi/public_html/index.php(40): require('/home/smknkadi/...')
+#3 {main}
+  thrown in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:04:59 Asia/Jakarta] PHP Warning:  require(/home/smknkadi/public_html/vendor/spatie/flare-client-php/src/helpers.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:04:59 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/vendor/composer/../spatie/flare-client-php/src/helpers.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/smknkadi/public_html/vendor/composer/autoload_real.php(45): {closure}()
+#1 /home/smknkadi/public_html/vendor/autoload.php(25): ComposerAutoloaderInitc99da74d8ca1b62cf66a4238c245c8c0::getLoader()
+#2 /home/smknkadi/public_html/index.php(40): require('/home/smknkadi/...')
+#3 {main}
+  thrown in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:05:01 Asia/Jakarta] PHP Warning:  require(/home/smknkadi/public_html/vendor/spatie/flare-client-php/src/helpers.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:05:01 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/vendor/composer/../spatie/flare-client-php/src/helpers.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/smknkadi/public_html/vendor/composer/autoload_real.php(45): {closure}()
+#1 /home/smknkadi/public_html/vendor/autoload.php(25): ComposerAutoloaderInitc99da74d8ca1b62cf66a4238c245c8c0::getLoader()
+#2 /home/smknkadi/public_html/index.php(40): require('/home/smknkadi/...')
+#3 {main}
+  thrown in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:05:04 Asia/Jakarta] PHP Warning:  require(/home/smknkadi/public_html/vendor/spatie/flare-client-php/src/helpers.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:05:04 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smknkadi/public_html/vendor/composer/../spatie/flare-client-php/src/helpers.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home/smknkadi/public_html/vendor/composer/autoload_real.php(45): {closure}()
+#1 /home/smknkadi/public_html/vendor/autoload.php(25): ComposerAutoloaderInitc99da74d8ca1b62cf66a4238c245c8c0::getLoader()
+#2 /home/smknkadi/public_html/index.php(40): require('/home/smknkadi/...')
+#3 {main}
+  thrown in /home/smknkadi/public_html/vendor/composer/autoload_real.php on line 41
+[17-Jan-2025 18:07:29 Asia/Jakarta] PHP Warning:  include(/home/smknkadi/public_html/vendor/composer/../nesbot/carbon/src/Carbon/Carbon.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/vendor/composer/ClassLoader.php on line 576
+[17-Jan-2025 18:07:29 Asia/Jakarta] PHP Warning:  include(): Failed opening '/home/smknkadi/public_html/vendor/composer/../nesbot/carbon/src/Carbon/Carbon.php' for inclusion (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/vendor/composer/ClassLoader.php on line 576
+[17-Jan-2025 18:07:29 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class "Carbon\Carbon" not found in /home/smknkadi/public_html/vendor/laravel/framework/src/Illuminate/Support/Carbon.php:11
+Stack trace:
+#0 /home/smknkadi/public_html/vendor/composer/ClassLoader.php(576): include()
+#1 /home/smknkadi/public_html/vendor/composer/ClassLoader.php(427): Composer\Autoload\{closure}()
+#2 /home/smknkadi/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(139): Composer\Autoload\ClassLoader->loadClass()
+#3 /home/smknkadi/public_html/index.php(58): Illuminate\Foundation\Http\Kernel->handle()
+#4 {main}
+  thrown in /home/smknkadi/public_html/vendor/laravel/framework/src/Illuminate/Support/Carbon.php on line 11
+[17-Jan-2025 11:10:40 UTC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 20480 bytes) in /home/smknkadi/public_html/vendor/dompdf/dompdf/src/Css/Style.php on line 1977
+[17-Jan-2025 11:11:18 UTC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 20480 bytes) in /home/smknkadi/public_html/vendor/dompdf/dompdf/src/Css/Style.php on line 1907
+[19-Mar-2025 22:23:30 Asia/Jakarta] PHP Warning:  include(/home/smknkadi/public_html/vendor/nesbot/carbon/src/Carbon/Carbon.php): Failed to open stream: No such file or directory in /home/smknkadi/public_html/vendor/composer/ClassLoader.php on line 576
+[19-Mar-2025 22:23:30 Asia/Jakarta] PHP Warning:  include(): Failed opening '/home/smknkadi/public_html/vendor/composer/../nesbot/carbon/src/Carbon/Carbon.php' for inclusion (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smknkadi/public_html/vendor/composer/ClassLoader.php on line 576
+[19-Mar-2025 22:23:30 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class "Carbon\Carbon" not found in /home/smknkadi/public_html/vendor/laravel/framework/src/Illuminate/Support/Carbon.php:11
+Stack trace:
+#0 /home/smknkadi/public_html/vendor/composer/ClassLoader.php(576): include()
+#1 /home/smknkadi/public_html/vendor/composer/ClassLoader.php(427): Composer\Autoload\{closure}()
+#2 /home/smknkadi/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(139): Composer\Autoload\ClassLoader->loadClass()
+#3 /home/smknkadi/public_html/index.php(57): Illuminate\Foundation\Http\Kernel->handle()
+#4 {main}
+  thrown in /home/smknkadi/public_html/vendor/laravel/framework/src/Illuminate/Support/Carbon.php on line 11
