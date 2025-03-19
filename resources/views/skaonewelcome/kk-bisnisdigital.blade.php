@@ -3,7 +3,7 @@
         <header class="text-center g-width-80x--md mx-auto g-mb-10">
             <div class="u-heading-v6-2 text-center text-uppercase g-mb-20">
                 <h6 class="g-font-size-12 g-font-weight-600">Kompetensi Keahlian</h6>
-                <h2 class="h3 u-heading-v6__title g-brd-primary g-color-gray-dark-v2 g-font-weight-600">Bisnis Ditital
+                <h2 class="h3 u-heading-v6__title g-brd-primary g-color-gray-dark-v2 g-font-weight-600">Bisnis Digital
                 </h2>
             </div>
         </header>
