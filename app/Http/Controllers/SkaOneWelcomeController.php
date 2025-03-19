@@ -230,4 +230,9 @@ class SkaOneWelcomeController extends Controller
     {
         return view('skaonewelcome.struktur-organisasi');
     }
+
+    public function ppdb()
+    {
+        return view('skaonewelcome.ppdb');
+    }
 }
