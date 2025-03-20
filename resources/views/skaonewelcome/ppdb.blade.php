@@ -83,18 +83,18 @@
                         <!-- Promo Block Images -->
                         <div class="u-shadow-v36 g-max-width-300--sm g-pos-rel g-z-index-2 g-mb-20 g-mb-0--sm">
                             <img class="img-fluid g-brd-around g-brd-4 g-brd-white rounded"
-                                src="{{ URL::asset('images/galery/1730198247.jpg') }}" alt="Image Description">
+                                src="{{ URL::asset('images/sakola/i-min.jpg') }}" alt="Image Description">
                         </div>
 
                         <div
                             class="u-shadow-v36 g-max-width-300--sm g-pos-abs--sm g-top-minus-70 g-left-130 g-z-index-1 g-mb-20 g-mb-0--sm">
                             <img class="img-fluid g-brd-around g-brd-4 g-brd-white rounded"
-                                src="{{ URL::asset('images/galery/1730198279.jpg') }}" alt="Image Description">
+                                src="{{ URL::asset('images/sakola/g-min.jpg') }}" alt="Image Description">
                         </div>
 
                         <div class="u-shadow-v36 g-max-width-300--sm g-pos-abs--sm g-top-65 g-right-0">
                             <img class="img-fluid g-brd-around g-brd-4 g-brd-white rounded"
-                                src="{{ URL::asset('images/galery/1730180439.jpg') }}" alt="Image Description">
+                                src="{{ URL::asset('images/sakola/h-min.jpg') }}" alt="Image Description">
                         </div>
                         <!-- End Promo Block Images -->
 
