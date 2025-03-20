@@ -1,6 +1,6 @@
 @extends('layouts.skaonewelcome.welcome-master')
 @section('title')
-    Faculty and Staff
+    Teacher and Staff
 @endsection
 @section('css')
     <link rel="stylesheet" href="{{ URL::asset('build/assets/vendor/slick-carousel/slick/slick.css') }}">
