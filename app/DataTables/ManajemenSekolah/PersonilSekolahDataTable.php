@@ -87,7 +87,7 @@ class PersonilSekolahDataTable extends DataTable
     {
         $query = $model->newQuery()
             ->select('personil_sekolahs.*', 'users.login_count')
-            ->join('users', 'personil_sekolahs.id_personil', '=', 'users.personal_id')
+            ->leftJoin('users', 'personil_sekolahs.id_personil', '=', 'users.personal_id')
             ->orderBy('personil_sekolahs.id', 'asc');
 
         // Filter pencarian nama lengkap
