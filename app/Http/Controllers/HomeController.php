@@ -104,8 +104,15 @@ class HomeController extends Controller
             ];
         });
 
-        $mesharini = Carbon::today()->toDateString();
-        $message = DB::table('daily_messages')->where('date', $mesharini)->value('message');
+        //$mesharini = Carbon::today()->toDateString();
+        //$message = DB::table('daily_messages')->where('date', $mesharini)->value('message');
+
+
+        $todayDay = Carbon::today()->day;
+
+        $message = DB::table('daily_messages')
+            ->whereRaw('DAY(date) = ?', [$todayDay])
+            ->value('message');
 
         // Jika pesan tidak ditemukan, gunakan pesan default
         if (!$message) {
