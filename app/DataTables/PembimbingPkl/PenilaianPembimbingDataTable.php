@@ -57,6 +57,7 @@ class PenilaianPembimbingDataTable extends DataTable
                         DB::raw("COUNT(jurnal_pkls.id) as total_jurnal")
                     )
                     ->join('penempatan_prakerins', 'jurnal_pkls.id_penempatan', '=', 'penempatan_prakerins.id')
+                    ->where('jurnal_pkls.validasi', 'Sudah') // Tambahkan filter validasi
                     ->groupBy('penempatan_prakerins.nis')
                     ->get()
                     ->keyBy('nis');
@@ -89,6 +90,7 @@ class PenilaianPembimbingDataTable extends DataTable
                         DB::raw("COUNT(jurnal_pkls.id) as total_jurnal")
                     )
                     ->join('penempatan_prakerins', 'jurnal_pkls.id_penempatan', '=', 'penempatan_prakerins.id')
+                    ->where('jurnal_pkls.validasi', 'Sudah') // Tambahkan filter validasi
                     ->groupBy('penempatan_prakerins.nis')
                     ->get()
                     ->keyBy('nis');
@@ -126,6 +128,7 @@ class PenilaianPembimbingDataTable extends DataTable
                         DB::raw("COUNT(jurnal_pkls.id) as total_jurnal")
                     )
                     ->join('penempatan_prakerins', 'jurnal_pkls.id_penempatan', '=', 'penempatan_prakerins.id')
+                    ->where('jurnal_pkls.validasi', 'Sudah') // Tambahkan filter validasi
                     ->groupBy('penempatan_prakerins.nis')
                     ->get()
                     ->keyBy('nis');
@@ -163,6 +166,7 @@ class PenilaianPembimbingDataTable extends DataTable
                         DB::raw("COUNT(jurnal_pkls.id) as total_jurnal")
                     )
                     ->join('penempatan_prakerins', 'jurnal_pkls.id_penempatan', '=', 'penempatan_prakerins.id')
+                    ->where('jurnal_pkls.validasi', 'Sudah') // Tambahkan filter validasi
                     ->groupBy('penempatan_prakerins.nis')
                     ->get()
                     ->keyBy('nis');
