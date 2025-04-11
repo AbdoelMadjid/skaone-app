@@ -100,7 +100,7 @@ class PenilaianPembimbingDataTable extends DataTable
                 $cp1 = round($total_jurnal * 0.15);
 
                 // Hitung nilai CP1 berdasarkan range
-                if ($cp1 >= 8 && $cp1 <= 10) {
+                if ($cp1 >= 8 && $cp1 <= 20) {
                     $nilai_cp1 = 98;
                 } elseif ($cp1 >= 5 && $cp1 <= 7) {
                     $nilai_cp1 = 94;
@@ -135,7 +135,7 @@ class PenilaianPembimbingDataTable extends DataTable
                 $cp2 = round($total_jurnal * 0.65);
 
                 // Hitung nilai CP1 berdasarkan range
-                if ($cp2 >= 32 && $cp2 <= 40) {
+                if ($cp2 >= 32 && $cp2 <= 60) {
                     $nilai_cp2 = 97;
                 } elseif ($cp2 >= 26 && $cp2 <= 31) {
                     $nilai_cp2 = 95;
@@ -172,7 +172,7 @@ class PenilaianPembimbingDataTable extends DataTable
                 $cp3 = round($total_jurnal * 0.20);
 
                 // Hitung nilai CP1 berdasarkan range
-                if ($cp3 >= 11 && $cp3 <= 15) {
+                if ($cp3 >= 11 && $cp3 <= 35) {
                     $nilai_cp3 = 95;
                 } elseif ($cp3 >= 7 && $cp3 <= 10) {
                     $nilai_cp3 = 90;
