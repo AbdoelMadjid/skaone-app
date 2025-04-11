@@ -45,7 +45,7 @@ class PenilaianPembimbingDataTable extends DataTable
                 $persentase = ($jumlah_hadir / $total_hari) * 100;
                 $persentaseFormatted = number_format($persentase, 2); // 2 angka di belakang koma
 
-                return "{$jumlah_hadir} hari ({$persentaseFormatted}%)";
+                return "{$jumlah_hadir} hari <br>({$persentaseFormatted}%)";
                 //return $absensi[$row->nis]->jumlah_hadir ?? 0;
             })
             ->addColumn('jurnal', function ($row) {
@@ -68,7 +68,126 @@ class PenilaianPembimbingDataTable extends DataTable
                 $persentase = ($total_jurnal / $jurnal_seharusnya) * 100;
                 $persentaseFormatted = number_format($persentase, 2); // 2 angka di belakang koma
 
-                return "{$total_jurnal} entri ({$persentaseFormatted}%)";
+                // Beri warna merah jika kurang dari 85%
+                $warna = $persentase < 85 ? 'style="color:red;"' : '';
+
+                // Hitung distribusi CP
+                $cp1 = round($total_jurnal * 0.15);
+                $cp2 = round($total_jurnal * 0.65);
+                $cp3 = round($total_jurnal * 0.20);
+
+                return "{$total_jurnal} entri <br>
+                <span {$warna}>({$persentaseFormatted}%)</span><br>
+                <small>CP1: {$cp1}, CP2: {$cp2}, CP3: {$cp3}</small>";
+            })
+            ->addColumn('nilai_CP1', function ($row) {
+
+                // Query jumlah jurnal berdasarkan NIS
+                $jumlahJurnal = DB::table('jurnal_pkls')
+                    ->select(
+                        'penempatan_prakerins.nis',
+                        DB::raw("COUNT(jurnal_pkls.id) as total_jurnal")
+                    )
+                    ->join('penempatan_prakerins', 'jurnal_pkls.id_penempatan', '=', 'penempatan_prakerins.id')
+                    ->groupBy('penempatan_prakerins.nis')
+                    ->get()
+                    ->keyBy('nis');
+
+                $data = $jumlahJurnal[$row->nis] ?? null;
+                $total_jurnal = $data->total_jurnal ?? 0;
+
+                // Hitung distribusi CP
+                $cp1 = round($total_jurnal * 0.15);
+
+                // Hitung nilai CP1 berdasarkan range
+                if ($cp1 >= 8 && $cp1 <= 10) {
+                    $nilai_cp1 = 98;
+                } elseif ($cp1 >= 5 && $cp1 <= 7) {
+                    $nilai_cp1 = 94;
+                } elseif ($cp1 >= 3 && $cp1 <= 4) {
+                    $nilai_cp1 = 84;
+                } elseif ($cp1 >= 1 && $cp1 <= 2) {
+                    $nilai_cp1 = 73;
+                } else {
+                    $nilai_cp1 = 0; // jika cp1 = 0
+                }
+
+                $warna = $nilai_cp1 < 85 ? 'style="color:red;"' : '';
+
+
+                return "<span {$warna}>{$nilai_cp1}</span>";
+            })
+            ->addColumn('nilai_CP2', function ($row) {
+
+                // Query jumlah jurnal berdasarkan NIS
+                $jumlahJurnal = DB::table('jurnal_pkls')
+                    ->select(
+                        'penempatan_prakerins.nis',
+                        DB::raw("COUNT(jurnal_pkls.id) as total_jurnal")
+                    )
+                    ->join('penempatan_prakerins', 'jurnal_pkls.id_penempatan', '=', 'penempatan_prakerins.id')
+                    ->groupBy('penempatan_prakerins.nis')
+                    ->get()
+                    ->keyBy('nis');
+
+                $data = $jumlahJurnal[$row->nis] ?? null;
+                $total_jurnal = $data->total_jurnal ?? 0;
+                $cp2 = round($total_jurnal * 0.65);
+
+                // Hitung nilai CP1 berdasarkan range
+                if ($cp2 >= 32 && $cp2 <= 40) {
+                    $nilai_cp2 = 97;
+                } elseif ($cp2 >= 26 && $cp2 <= 31) {
+                    $nilai_cp2 = 95;
+                } elseif ($cp2 >= 20 && $cp2 <= 25) {
+                    $nilai_cp2 = 85;
+                } elseif ($cp2 >= 14 && $cp2 <= 19) {
+                    $nilai_cp2 = 75;
+                } elseif ($cp2 >= 5 && $cp2 <= 13) {
+                    $nilai_cp2 = 65;
+                } else {
+                    $nilai_cp2 = 0; // jika cp2 = 0
+                }
+
+                $warna = $nilai_cp2 < 75 ? 'style="color:red;"' : '';
+
+
+                return "<span {$warna}>{$nilai_cp2}</span>";
+            })
+            ->addColumn('nilai_CP3', function ($row) {
+
+                // Query jumlah jurnal berdasarkan NIS
+                $jumlahJurnal = DB::table('jurnal_pkls')
+                    ->select(
+                        'penempatan_prakerins.nis',
+                        DB::raw("COUNT(jurnal_pkls.id) as total_jurnal")
+                    )
+                    ->join('penempatan_prakerins', 'jurnal_pkls.id_penempatan', '=', 'penempatan_prakerins.id')
+                    ->groupBy('penempatan_prakerins.nis')
+                    ->get()
+                    ->keyBy('nis');
+
+                $data = $jumlahJurnal[$row->nis] ?? null;
+                $total_jurnal = $data->total_jurnal ?? 0;
+                $cp3 = round($total_jurnal * 0.20);
+
+                // Hitung nilai CP1 berdasarkan range
+                if ($cp3 >= 11 && $cp3 <= 15) {
+                    $nilai_cp3 = 95;
+                } elseif ($cp3 >= 7 && $cp3 <= 10) {
+                    $nilai_cp3 = 90;
+                } elseif ($cp3 >= 4 && $cp3 <= 6) {
+                    $nilai_cp3 = 85;
+                } elseif ($cp3 >= 1 && $cp3 <= 3) {
+                    $nilai_cp3 = 65;
+                } else {
+                    $nilai_cp3 = 0; // jika cp3 = 0
+                }
+
+                $warna = $nilai_cp3 < 80 ? 'style="color:red;"' : '';
+
+
+                return "<span {$warna}>{$nilai_cp3}</span>";
             })
             ->addColumn('tempat_pkl', function ($row) {
 
@@ -85,6 +204,10 @@ class PenilaianPembimbingDataTable extends DataTable
             ->rawColumns([
                 'absensi',
                 'tempat_pkl',
+                'jurnal',
+                'nilai_CP1',
+                'nilai_CP2',
+                'nilai_CP3',
                 'action'
             ]);
     }
@@ -161,6 +284,9 @@ class PenilaianPembimbingDataTable extends DataTable
             Column::make('tempat_pkl')->title('Tempat PKL')->width(300),
             Column::make('absensi')->title('Absensi'),
             Column::make('jurnal')->title('Jurnal'),
+            Column::make('nilai_CP1')->title('CP1')->addClass('text-center'),
+            Column::make('nilai_CP2')->title('CP2')->addClass('text-center'),
+            Column::make('nilai_CP3')->title('CP3')->addClass('text-center'),
             /* Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
