@@ -8,6 +8,7 @@ use App\Models\About\PhotoSlide;
 use App\Models\About\TeamPengembang;
 use App\Models\AppSupport\Referensi;
 use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
+use App\Models\Kurikulum\PerangkatUjian\ExamSchedule;
 use App\Models\ManajemenPengguna\LoginRecord;
 use App\Models\ManajemenSekolah\PersonilSekolah;
 use App\Models\ManajemenSekolah\Semester;
@@ -216,6 +217,61 @@ class WelcomeController extends Controller
             ];
         });
 
+
+        $now = Carbon::now();
+
+        $jadwals = ExamSchedule::orderBy('tanggal_mulai')
+            ->orderBy('jam_mulai')
+            ->get()
+            ->map(function ($jadwal) use ($now) {
+                $startDate = Carbon::parse($jadwal->tanggal_mulai);
+                $endDate = Carbon::parse($jadwal->tanggal_selesai ?? $jadwal->tanggal_mulai);
+
+                $isSameDate = $startDate->isSameDay($endDate);
+                $canAccess = false;
+                $status = 'Belum tersedia';
+
+                if ($now->lt($startDate)) {
+                    $status = 'Belum tersedia';
+                } elseif ($now->gt($endDate->endOfDay())) {
+                    $status = 'Ujian selesai';
+                } else {
+                    if ($isSameDate) {
+                        if ($now->isSameDay($startDate)) {
+                            $startTime = Carbon::parse($startDate->toDateString() . ' ' . $jadwal->jam_mulai);
+                            $endTime = Carbon::parse($startDate->toDateString() . ' ' . $jadwal->jam_selesai);
+
+                            if ($now->between($startTime, $endTime)) {
+                                $canAccess = true;
+                                $status = 'Bisa diakses';
+                            } else {
+                                $status = 'Diluar jam';
+                            }
+                        }
+                    } else {
+                        if ($now->between($startDate->startOfDay(), $endDate->endOfDay())) {
+                            $startTime = Carbon::parse($now->toDateString() . ' ' . $jadwal->jam_mulai);
+                            $endTime = Carbon::parse($now->toDateString() . ' ' . $jadwal->jam_selesai);
+
+                            if ($now->between($startTime, $endTime)) {
+                                $canAccess = true;
+                                $status = 'Bisa diakses';
+                            } else {
+                                $status = 'Diluar jam';
+                            }
+                        }
+                    }
+                }
+
+                $jadwal->can_access = $canAccess;
+                $jadwal->status_ujian = $status;
+
+                return $jadwal;
+            });
+
+
+
+
         return view(
             'welcome',
             [
@@ -249,6 +305,7 @@ class WelcomeController extends Controller
                 'loginCount' => $loginCount,
                 'activeUsersCount' => $activeUsersCount,
                 'chartData' => $data, // Tambahkan di sini
+                'jadwals' => $jadwals, // Tambahkan di sini
             ]
         );
     }
