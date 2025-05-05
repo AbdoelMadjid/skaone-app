@@ -38,7 +38,7 @@
 
 
                 @if ($showButton)
-                    <a href="{{ route('kbmpesertadidik.kelulusan-peserta-didik') }}" class="btn btn-success mt-3">
+                    <a href="{{ route('kbmpesertadidik.kelulusan-peserta-didik.index') }}" class="btn btn-danger mt-3">
                         Lihat Pengumuman Kelulusan
                     </a>
                 @else
