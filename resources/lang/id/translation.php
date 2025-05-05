@@ -362,6 +362,7 @@ return [
     "identitas-peserta-didik" => "Identitas Peserta Didik",
     "raport-peserta-didik" => "Raport Peserta Didik",
     "remedial-peserta-didik" => "Remedial Peserta Didik",
+    "kelulusan-peserta-didik" => "Kelulusan Peserta Didik",
 
     "dokumenguru" => "Dokumen Guru",
     "dokumensiswa" => "Dokumen Siswa",
@@ -458,6 +459,6 @@ return [
 
     'daftar' => 'Daftar',
     'berita' => 'Berita',
-
+    'kelulusan' => 'Kelulusan',
 
 ];

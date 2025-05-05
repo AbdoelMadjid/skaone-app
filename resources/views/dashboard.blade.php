@@ -86,8 +86,11 @@
     @else
         @include('dashboard.dashboard-personil')
     @endif
-    @if (auth()->check() && auth()->user()->hasRole('pesertapkl'))
+    {{-- @if (auth()->check() && auth()->user()->hasRole('pesertapkl'))
         @include('dashboard.dashboard-peserta-pkl')
+    @endif --}}
+    @if (auth()->check() && auth()->user()->hasRole('siswa'))
+        @include('dashboard.dashboard-kelulusan')
     @endif
 @endsection
 @section('script')
