@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\PesertaDidik;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
+use App\Models\PesertaDidik\KelulusanPesertaDidik;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class KelulusanPesertaDidikController extends Controller
 {
@@ -28,9 +32,19 @@ class KelulusanPesertaDidikController extends Controller
             $diff = $now->diff($endDate);
         }
 
-        return view('pages.pesertadidik.kelulusan-peserta-didik', compact(
-            'diff',
-        ));
+        $aingPengguna = User::find(Auth::user()->id);
+
+        $nis = $aingPengguna->nis;
+
+        $dataRombel = PesertaDidikRombel::where('nis', $nis)->first();
+
+        $kelulusan = KelulusanPesertaDidik::where('nis', $nis)->first();
+
+        return view('pages.pesertadidik.kelulusan-peserta-didik', [
+            'diff' => $diff,
+            'dataRombel' => $dataRombel,
+            'kelulusan' => $kelulusan,
+        ]);
 
         //return view('pages.pesertadidik.kelulusan-peserta-didik');
     }
