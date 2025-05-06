@@ -141,27 +141,167 @@
                                                             Mei 2025
                                                     </ol>
                                                     Menerangkan bahwa anda:<br><br>
-                                                    @php
-                                                        $lulusteu = '';
 
-                                                        if (
-                                                            strtoupper($kelulusan->status_kelulusan) ===
-                                                            'LULUS DI TANGGUHKAN'
-                                                        ) {
-                                                            $lulusteu = 'bg-warning';
-                                                        } else {
-                                                            $lulusteu = 'bg-success';
-                                                        }
 
-                                                    @endphp
-                                                    <h5 class="text-center">
-                                                        <span class="badge {{ $lulusteu }} text-dark"
-                                                            style="font-size: 20px">
 
-                                                            {{ ucfirst($kelulusan->status_kelulusan) }}
-                                                        </span>
-                                                    </h5>
-                                                    <br><br>
+                                                    <h2 class="mb-4">Rekap Nilai Siswa</h2>
+
+                                                    <table border="1" cellpadding="5" cellspacing="0" width="100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th rowspan="2">No</th>
+                                                                <th rowspan="2">Kode</th>
+                                                                <th rowspan="2">Mata Pelajaran</th>
+                                                                <th colspan="6">Semester</th>
+                                                            </tr>
+                                                            <tr>
+                                                                @for ($s = 1; $s <= 6; $s++)
+                                                                    <th>{{ $s }}</th>
+                                                                @endfor
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {{-- Kelompok A --}}
+                                                            <tr>
+                                                                <td colspan="9"><strong>A. Kelompok Mata Pelajaran Umum
+                                                                        Muatan Nasional</strong></td>
+                                                            </tr>
+                                                            @php
+                                                                $no = 1;
+                                                                $avgA = array_fill(1, 6, ['total' => 0, 'count' => 0]);
+                                                            @endphp
+                                                            @foreach ($kelompokA->groupBy('kode_mapel') as $kode => $mapel)
+                                                                <tr>
+                                                                    <td>{{ $no++ }}</td>
+                                                                    <td>{{ $kode }}</td>
+                                                                    <td>{{ $mapel->first()->nama_mapel }}</td>
+                                                                    @for ($s = 1; $s <= 6; $s++)
+                                                                        @php
+                                                                            $nilai = optional(
+                                                                                $mapel->where('semester', $s)->first(),
+                                                                            )->nilai;
+                                                                            if ($nilai) {
+                                                                                $avgA[$s]['total'] += $nilai;
+                                                                                $avgA[$s]['count']++;
+                                                                            }
+                                                                        @endphp
+                                                                        <td>{{ $nilai ?? '' }}</td>
+                                                                    @endfor
+                                                                </tr>
+                                                            @endforeach
+                                                            <tr>
+                                                                <td colspan="3"><strong>Rata-rata</strong></td>
+                                                                @for ($s = 1; $s <= 6; $s++)
+                                                                    <td><strong>
+                                                                            {{ $avgA[$s]['count'] ? round($avgA[$s]['total'] / $avgA[$s]['count'], 1) : '' }}
+                                                                        </strong></td>
+                                                                @endfor
+                                                            </tr>
+
+                                                            {{-- Kelompok B --}}
+                                                            <tr>
+                                                                <td colspan="9"><strong>B. Kelompok Mata Pelajaran
+                                                                        Kejuruan</strong></td>
+                                                            </tr>
+                                                            @php $avgB = array_fill(1, 6, ['total' => 0, 'count' => 0]); @endphp
+                                                            @foreach ($kelompokB->groupBy('kode_mapel') as $kode => $mapel)
+                                                                <tr>
+                                                                    <td>{{ $no++ }}</td>
+                                                                    <td>{{ $kode }}</td>
+                                                                    <td>{{ $mapel->first()->nama_mapel }}</td>
+                                                                    @for ($s = 1; $s <= 6; $s++)
+                                                                        @php
+                                                                            $nilai = optional(
+                                                                                $mapel->where('semester', $s)->first(),
+                                                                            )->nilai;
+                                                                            if ($nilai) {
+                                                                                $avgB[$s]['total'] += $nilai;
+                                                                                $avgB[$s]['count']++;
+                                                                            }
+                                                                        @endphp
+                                                                        <td>{{ $nilai ?? '' }}</td>
+                                                                    @endfor
+                                                                </tr>
+                                                            @endforeach
+                                                            <tr>
+                                                                <td colspan="3"><strong>Rata-rata</strong></td>
+                                                                @for ($s = 1; $s <= 6; $s++)
+                                                                    <td><strong>
+                                                                            {{ $avgB[$s]['count'] ? round($avgB[$s]['total'] / $avgB[$s]['count'], 1) : '' }}
+                                                                        </strong></td>
+                                                                @endfor
+                                                            </tr>
+
+                                                            {{-- Konsentrasi Keahlian (KK dirata-ratakan, satu baris) --}}
+                                                            <tr>
+                                                                <td>{{ $no++ }}</td>
+                                                                <td>KonK</td>
+                                                                <td>Konsentrasi Keahlian</td>
+                                                                <td colspan="6" style="text-align:center">
+                                                                    {{ $kelompokKK->nilai ?? '' }}
+                                                                </td>
+                                                            </tr>
+
+                                                            {{-- KWU --}}
+                                                            <tr>
+                                                                <td>{{ $no++ }}</td>
+                                                                <td>KWU1</td>
+                                                                <td>Projek Kreatif Kewirausahaan</td>
+                                                                <td colspan="6" style="text-align:center">
+                                                                    {{ $kelompokKWU->nilai ?? '' }}
+                                                                </td>
+                                                            </tr>
+
+                                                            {{-- PKL (Semester 6) --}}
+                                                            <tr>
+                                                                <td>{{ $no++ }}</td>
+                                                                <td>PKL1</td>
+                                                                <td>Praktik Kerja Lapangan</td>
+                                                                @for ($s = 1; $s <= 6; $s++)
+                                                                    <td>
+                                                                        {{ $s == 6 ? $kelompokPKL->nilai ?? '' : '' }}
+                                                                    </td>
+                                                                @endfor
+                                                            </tr>
+
+                                                            {{-- MP (Pilihan) --}}
+                                                            <tr>
+                                                                <td colspan="9"><strong>Mata Pelajaran Pilihan</strong>
+                                                                </td>
+                                                            </tr>
+                                                            @php $avgMP = array_fill(1, 6, ['total' => 0, 'count' => 0]); @endphp
+                                                            @foreach ($kelompokMP->groupBy('kode_mapel') as $kode => $mapel)
+                                                                <tr>
+                                                                    <td>{{ $no++ }}</td>
+                                                                    <td>{{ $kode }}</td>
+                                                                    <td>{{ $mapel->first()->nama_mapel }}</td>
+                                                                    @for ($s = 1; $s <= 6; $s++)
+                                                                        @php
+                                                                            $nilai = optional(
+                                                                                $mapel->where('semester', $s)->first(),
+                                                                            )->nilai;
+                                                                            if ($nilai) {
+                                                                                $avgMP[$s]['total'] += $nilai;
+                                                                                $avgMP[$s]['count']++;
+                                                                            }
+                                                                        @endphp
+                                                                        <td>{{ $nilai ?? '' }}</td>
+                                                                    @endfor
+                                                                </tr>
+                                                            @endforeach
+                                                            <tr>
+                                                                <td colspan="3"><strong>Rata-rata</strong></td>
+                                                                @for ($s = 1; $s <= 6; $s++)
+                                                                    <td><strong>
+                                                                            {{ $avgMP[$s]['count'] ? round($avgMP[$s]['total'] / $avgMP[$s]['count'], 1) : '' }}
+                                                                        </strong></td>
+                                                                @endfor
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+
+
+                                                    <br>
                                                 </td>
                                             </tr>
                                             <table align='center' width='70%'
