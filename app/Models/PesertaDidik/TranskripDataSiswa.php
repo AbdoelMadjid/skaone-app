@@ -9,7 +9,7 @@ class TranskripDataSiswa extends Model
 {
     use HasFactory;
     // Nama tabel
-    protected $table = 'peserta_didiks';
+    protected $table = 'transkrip_data_siswa';
 
     // Kolom yang bisa diisi
     protected $fillable = [
