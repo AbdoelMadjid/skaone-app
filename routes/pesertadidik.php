@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PesertaDidik\KelulusanController;
 use App\Http\Controllers\PesertaDidik\KelulusanPesertaDidikController;
 use App\Http\Controllers\PesertaDidik\RaportPesertaDidikController;
@@ -26,6 +27,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('raport-peserta-didik', RaportPesertaDidikController::class);
         Route::resource('remedial-peserta-didik', RemedialPesertaDidikController::class);
         Route::resource('kelulusan-peserta-didik', KelulusanPesertaDidikController::class);
+        Route::get('download-transkrip-skl', [PDFController::class, 'downloadSKL'])->name('download.skl');
     });
     Route::group(['prefix' => 'ujiansemester', 'as' => 'ujiansemester.'], function () {
         Route::resource('test-formatif', TestFormatifController::class);

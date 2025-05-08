@@ -99,18 +99,30 @@
                             <div class="tab-content mt-4 mt-md-0" id="v-pills-tabContent">
                                 <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
                                     aria-labelledby="v-pills-home-tab">
+                                    <button class="btn btn-soft-info btn-sm" onclick="printContent('cetak-skl')"><i
+                                            class="ri-printer-line"></i> Print</button>
+                                    <button class="btn btn-soft-success btn-sm"
+                                        onclick="window.location.href='{{ route('kbmpesertadidik.download.skl') }}'">
+                                        <i class="ri-download-line"></i> Download PDF
+                                    </button>
                                     @include('pages.pesertadidik.transkrip-skl')
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
                                     aria-labelledby="v-pills-profile-tab">
+                                    <button class="btn btn-soft-info btn-sm" onclick="printContent('cetak-nilai-ijazah')"><i
+                                            class="ri-printer-line"></i> Print</button>
                                     @include('pages.pesertadidik.transkrip-ijazah')
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
                                     aria-labelledby="v-pills-messages-tab">
+                                    <button class="btn btn-soft-info btn-sm" onclick="printContent('cetak-nilai-rapor')"><i
+                                            class="ri-printer-line"></i> Print</button>
                                     @include('pages.pesertadidik.transkrip-rapor')
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-settings" role="tabpanel"
                                     aria-labelledby="v-pills-settings-tab">
+                                    <button class="btn btn-soft-info btn-sm" onclick="printContent('cetak-skkb')"><i
+                                            class="ri-printer-line"></i> Print</button>
                                     @include('pages.pesertadidik.transkrip-skkb')
                                 </div>
                             </div>
@@ -123,8 +135,31 @@
     </div>
 @endsection
 @section('script')
-    {{-- --}}
+    <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/dragula/dragula.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/dom-autoscroller/dom-autoscroller.min.js') }}"></script>
+
+    <script src="{{ URL::asset('build/js/pages/todo.init.js') }}"></script>
 @endsection
 @section('script-bottom')
+    <script>
+        /*         @if (session('toast_success'))
+            showToast('success', '{{ session('toast_success') }}');
+        @endif
+        */        function printContent(elId) {
+        var content = document.getElementById(elId).innerHTML;
+        var originalContent = document.body.innerHTML;
+
+        // Ganti konten halaman dengan elemen yang dipilih
+        document.body.innerHTML = content;
+
+        // Cetak halaman
+        window.print();
+
+        // Kembalikan konten asli setelah mencetak
+        document.body.innerHTML = originalContent;
+        //window.location.reload(); // Refresh halaman untuk memuat ulang skrip
+        }
+    </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection
