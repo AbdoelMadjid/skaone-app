@@ -165,7 +165,8 @@
                                                 $daftarNilaiAkhir[] = $nilaiAkhir;
                                             }
                                         @endphp
-                                        {{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}
+                                        <span
+                                            class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}</span>
                                     </td>
                                 </tr>
                             @endforeach
@@ -207,7 +208,8 @@
                                                 $daftarNilaiAkhir[] = $nilaiAkhir;
                                             }
                                         @endphp
-                                        {{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}
+                                        <span
+                                            class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}</span>
                                     </td>
                                 </tr>
                             @endforeach
@@ -249,7 +251,8 @@
                                         }
                                     @endphp
 
-                                    {{ $nilaiAkhir !== null ? number_format(round($nilaiAkhir, 2), 2, ',', '.') : '' }}
+                                    <span
+                                        class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilaiAkhir !== null ? number_format(round($nilaiAkhir, 2), 2, ',', '.') : '' }}</span>
                                 </td>
                             </tr>
                             {{-- NILAI MATA PELAJARAN KEWIRAUSAHAAN --}}
@@ -274,7 +277,8 @@
                                                 $daftarNilaiAkhir[] = $nilaiAkhir;
                                             }
                                         @endphp
-                                        {{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}
+                                        <span
+                                            class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}</span>
                                     </td>
                                 </tr>
                             @endforeach
@@ -300,7 +304,8 @@
                                                 $daftarNilaiAkhir[] = $nilaiAkhir;
                                             }
                                         @endphp
-                                        {{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}
+                                        <span
+                                            class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}</span>
                                     </td>
                                 </tr>
                             @endforeach
@@ -329,7 +334,8 @@
                                                 $daftarNilaiAkhir[] = $nilaiAkhir;
                                             }
                                         @endphp
-                                        {{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}
+                                        <span
+                                            class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}</span>
                                     </td>
                                 </tr>
                             @endforeach

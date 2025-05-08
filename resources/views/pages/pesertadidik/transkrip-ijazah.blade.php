@@ -92,7 +92,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td colspan="3" style="padding-left:8px;padding:4px 8px;"><strong>A. Kelompok Mata
+                    <td colspan="3" style="padding:4px 8px;"><strong>A. Kelompok Mata
                             Pelajaran Umum Muatan
                             Nasional</strong></td>
                 </tr>
@@ -104,7 +104,7 @@
                 @foreach ($dataMPN as $item)
                     <tr>
                         <td style="text-align: center;" width='25'>{{ $no++ }}.</td>
-                        <td style="padding-left:8px;">
+                        <td style="padding:4px 12px;">
                             {{ $item['nama_mapel'] }}</td>
                         @for ($i = 1; $i <= 6; $i++)
                             @php
@@ -138,12 +138,13 @@
                                     $daftarNilaiAkhir[] = $nilaiAkhir;
                                 }
                             @endphp
-                            {{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}
+                            <span
+                                class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}</span>
                         </td>
                     </tr>
                 @endforeach
                 <tr>
-                    <td colspan="3" style="padding-left:8px;"><strong>B. Kelompok Mata
+                    <td colspan="3" style="padding:4px 8px;"><strong>B. Kelompok Mata
                             Pelajaran Kejuruan</strong></td>
                 </tr>
                 {{-- NILAI MATA PELAJARAN KEJURUAN --}}
@@ -151,7 +152,7 @@
                 @foreach ($dataK as $item)
                     <tr>
                         <td style="text-align: center;" width='25'>{{ $noK++ }}.</td>
-                        <td style="padding-left:8px;">
+                        <td style="padding:4px 12px;">
                             {{ $item['nama_mapel'] }}</td>
 
                         <td style="text-align: center;">
@@ -180,14 +181,15 @@
                                     $daftarNilaiAkhir[] = $nilaiAkhir;
                                 }
                             @endphp
-                            {{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}
+                            <span
+                                class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}</span>
                         </td>
                     </tr>
                 @endforeach
                 {{-- NILAI MATA PELAJARAN KONSENTRASI KEAHLIAN --}}
                 <tr>
                     <td style="text-align: center;" width='25'>6.</td>
-                    <td style="padding-left:8px;">Konsentrasi Keahlian</td>
+                    <td style="padding:4px 12px;">Konsentrasi Keahlian</td>
 
                     <td style="text-align: center;">
                         @php
@@ -222,7 +224,8 @@
                             }
                         @endphp
 
-                        {{ $nilaiAkhir !== null ? number_format(round($nilaiAkhir, 2), 2, ',', '.') : '' }}
+                        <span
+                            class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilaiAkhir !== null ? number_format(round($nilaiAkhir, 2), 2, ',', '.') : '' }}</span>
                     </td>
                 </tr>
                 {{-- NILAI MATA PELAJARAN KEWIRAUSAHAAN --}}
@@ -231,7 +234,7 @@
                     <tr>
                         <td style="text-align: center;" width='25'>{{ $noKWU++ }}.
                         </td>
-                        <td style="padding-left:8px;">
+                        <td style="padding:4px 12px;">
                             {{ $item['nama_mapel'] }}</td>
                         <td style="text-align: center;">
                             @php
@@ -247,7 +250,8 @@
                                     $daftarNilaiAkhir[] = $nilaiAkhir;
                                 }
                             @endphp
-                            {{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}
+                            <span
+                                class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}</span>
                         </td>
                     </tr>
                 @endforeach
@@ -257,7 +261,7 @@
                     <tr>
                         <td style="text-align: center;" width='25'>{{ $noPKL++ }}.
                         </td>
-                        <td style="padding-left:8px;">
+                        <td style="padding:4px 12px;">
                             {{ $item['nama_mapel'] }}</td>
                         <td style="text-align: center;">
                             @php
@@ -273,20 +277,21 @@
                                     $daftarNilaiAkhir[] = $nilaiAkhir;
                                 }
                             @endphp
-                            {{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}
+                            <span
+                                class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}</span>
                         </td>
                     </tr>
                 @endforeach
                 <tr>
                     <td style="text-align: center;" width='25'>9.</td>
-                    <td style="padding-left:8px;">Mata Pelajaran Pilihan</td>
+                    <td style="padding:4px 12px;">Mata Pelajaran Pilihan</td>
                     <td></td>
                 </tr>
                 {{-- NILAI MATA PELAJARAN PILIHAN --}}
                 @foreach ($dataMP as $item)
                     <tr>
                         <td style="text-align: center;" width='25'></td>
-                        <td style="padding-left:8px;">
+                        <td style="padding:4px 12px;">
                             {{ $item['nama_mapel'] }}</td>
                         <td style="text-align: center;">
                             @php
@@ -302,12 +307,14 @@
                                     $daftarNilaiAkhir[] = $nilaiAkhir;
                                 }
                             @endphp
-                            {{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}
+                            <span
+                                class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}</span>
                         </td>
                     </tr>
                 @endforeach
                 <tr>
-                    <td colspan="2" style="text-align: center;padding:4px 12px;"><strong>Rata-rata</strong>
+                    <td colspan="2" style="text-align: center;padding:8px 12px;">
+                        <strong>Rata-rata</strong>
                     </td>
                     <td style="text-align: center;">
                         @php
