@@ -81,125 +81,202 @@ class PenilaianKaprodiPKLDataTable extends DataTable
                 $warna = $persentase < 85 ? 'style="color:red;"' : '';
 
                 // Hitung distribusi CP
-                $cp1 = round($total_jurnal * 0.15);
-                $cp2 = round($total_jurnal * 0.65);
-                $cp3 = round($total_jurnal * 0.20);
+                $cp1 = round($total_jurnal * 0.20);
+                $cp2 = round($total_jurnal * 0.45);
+                $cp3 = round($total_jurnal * 0.35);
 
                 return "{$total_jurnal} entri <br>
                 <span {$warna}>({$persentaseFormatted}%)</span><br>
                 <small>CP1: {$cp1}, CP2: {$cp2}, CP3: {$cp3}</small>";
             })
             ->addColumn('nilai_CP1', function ($row) {
-
-                // Query jumlah jurnal berdasarkan NIS
-                $jumlahJurnal = DB::table('jurnal_pkls')
+                $jumlahJurnalSemua = DB::table('jurnal_pkls')
                     ->select(
                         'penempatan_prakerins.nis',
                         DB::raw("COUNT(jurnal_pkls.id) as total_jurnal")
                     )
                     ->join('penempatan_prakerins', 'jurnal_pkls.id_penempatan', '=', 'penempatan_prakerins.id')
-                    ->where('jurnal_pkls.validasi', 'Sudah') // Tambahkan filter validasi
+                    ->where('jurnal_pkls.validasi', 'Sudah')
                     ->groupBy('penempatan_prakerins.nis')
                     ->get()
-                    ->keyBy('nis');
+                    ->keyBy('nis'); // penting agar bisa diakses cepat
 
-                $data = $jumlahJurnal[$row->nis] ?? null;
+                $targetJurnal = 48;
+                $target_cp1 = round($targetJurnal * 0.20); // = 7
+                $nilaiTarget = 92;
+                $nilaiMaksimal = 95;
+
+                // Ambil total jurnal siswa
+                $data = $jumlahJurnalSemua[$row->nis] ?? null;
                 $total_jurnal = $data->total_jurnal ?? 0;
+                $cp1 = round($total_jurnal * 0.20);
 
-                // Hitung distribusi CP
-                $cp1 = round($total_jurnal * 0.15);
-
-                // Hitung nilai CP1 berdasarkan range
-                if ($cp1 >= 8 && $cp1 <= 20) {
-                    $nilai_cp1 = 98;
-                } elseif ($cp1 >= 5 && $cp1 <= 7) {
-                    $nilai_cp1 = 94;
-                } elseif ($cp1 >= 3 && $cp1 <= 4) {
-                    $nilai_cp1 = 84;
-                } elseif ($cp1 >= 1 && $cp1 <= 2) {
-                    $nilai_cp1 = 73;
+                // Penilaian langsung tanpa function
+                if ($cp1 == $target_cp1) {
+                    $nilai_cp1 = $nilaiTarget;
+                } elseif ($cp1 < $target_cp1) {
+                    $selisih = $cp1 - $target_cp1;
+                    $persen = $selisih / $target_cp1;
+                    $nilai_cp1 = round($nilaiTarget + ($nilaiTarget * $persen), 2);
                 } else {
-                    $nilai_cp1 = 0; // jika cp1 = 0
+                    // Nilai naik proporsional dari 91 ke 100
+                    $kelebihan = $cp1 - $target_cp1;
+                    $persen = min($kelebihan / $target_cp1, 1); // maksimal 100% lebih
+                    $nilai_cp1 = round(93 + (($nilaiMaksimal - 93) * $persen), 2);
                 }
 
-                $warna = $nilai_cp1 < 85 ? 'style="color:red;"' : '';
-
-
+                $warna = $nilai_cp1 < 80 ? 'style="color:red;"' : '';
                 return "<span {$warna}>{$nilai_cp1}</span>";
             })
             ->addColumn('nilai_CP2', function ($row) {
-
-                // Query jumlah jurnal berdasarkan NIS
-                $jumlahJurnal = DB::table('jurnal_pkls')
+                $jumlahJurnalSemua = DB::table('jurnal_pkls')
                     ->select(
                         'penempatan_prakerins.nis',
                         DB::raw("COUNT(jurnal_pkls.id) as total_jurnal")
                     )
                     ->join('penempatan_prakerins', 'jurnal_pkls.id_penempatan', '=', 'penempatan_prakerins.id')
-                    ->where('jurnal_pkls.validasi', 'Sudah') // Tambahkan filter validasi
+                    ->where('jurnal_pkls.validasi', 'Sudah')
                     ->groupBy('penempatan_prakerins.nis')
                     ->get()
-                    ->keyBy('nis');
+                    ->keyBy('nis'); // penting agar bisa diakses cepat
 
-                $data = $jumlahJurnal[$row->nis] ?? null;
+                $targetJurnal = 48;
+                $target_cp2 = round($targetJurnal * 0.45); // = 7
+                $nilaiTarget = 95;
+                $nilaiMaksimal = 98;
+
+                // Ambil total jurnal siswa
+                $data = $jumlahJurnalSemua[$row->nis] ?? null;
                 $total_jurnal = $data->total_jurnal ?? 0;
-                $cp2 = round($total_jurnal * 0.65);
+                $cp2 = round($total_jurnal * 0.45);
 
-                // Hitung nilai CP1 berdasarkan range
-                if ($cp2 >= 32 && $cp2 <= 60) {
-                    $nilai_cp2 = 97;
-                } elseif ($cp2 >= 26 && $cp2 <= 31) {
-                    $nilai_cp2 = 95;
-                } elseif ($cp2 >= 20 && $cp2 <= 25) {
-                    $nilai_cp2 = 85;
-                } elseif ($cp2 >= 14 && $cp2 <= 19) {
-                    $nilai_cp2 = 75;
-                } elseif ($cp2 >= 5 && $cp2 <= 13) {
-                    $nilai_cp2 = 65;
+                // Penilaian langsung tanpa function
+                if ($cp2 == $target_cp2) {
+                    $nilai_cp2 = $nilaiTarget;
+                } elseif ($cp2 < $target_cp2) {
+                    $selisih = $cp2 - $target_cp2;
+                    $persen = $selisih / $target_cp2;
+                    $nilai_cp2 = round($nilaiTarget + ($nilaiTarget * $persen), 2);
                 } else {
-                    $nilai_cp2 = 0; // jika cp2 = 0
+                    // Nilai naik proporsional dari 91 ke 100
+                    $kelebihan = $cp2 - $target_cp2;
+                    $persen = min($kelebihan / $target_cp2, 1); // maksimal 100% lebih
+                    $nilai_cp2 = round(96 + (($nilaiMaksimal - 96) * $persen), 2);
                 }
 
-                $warna = $nilai_cp2 < 75 ? 'style="color:red;"' : '';
-
-
+                $warna = $nilai_cp2 < 80 ? 'style="color:red;"' : '';
                 return "<span {$warna}>{$nilai_cp2}</span>";
             })
             ->addColumn('nilai_CP3', function ($row) {
-
-                // Query jumlah jurnal berdasarkan NIS
-                $jumlahJurnal = DB::table('jurnal_pkls')
+                $jumlahJurnalSemua = DB::table('jurnal_pkls')
                     ->select(
                         'penempatan_prakerins.nis',
                         DB::raw("COUNT(jurnal_pkls.id) as total_jurnal")
                     )
                     ->join('penempatan_prakerins', 'jurnal_pkls.id_penempatan', '=', 'penempatan_prakerins.id')
-                    ->where('jurnal_pkls.validasi', 'Sudah') // Tambahkan filter validasi
+                    ->where('jurnal_pkls.validasi', 'Sudah')
+                    ->groupBy('penempatan_prakerins.nis')
+                    ->get()
+                    ->keyBy('nis'); // penting agar bisa diakses cepat
+
+                $targetJurnal = 48;
+                $target_cp3 = round($targetJurnal * 0.35); // = 7
+                $nilaiTarget = 89;
+                $nilaiMaksimal = 93;
+
+                // Ambil total jurnal siswa
+                $data = $jumlahJurnalSemua[$row->nis] ?? null;
+                $total_jurnal = $data->total_jurnal ?? 0;
+                $cp3 = round($total_jurnal * 0.35);
+
+                // Penilaian langsung tanpa function
+                if ($cp3 == $target_cp3) {
+                    $nilai_cp3 = $nilaiTarget;
+                } elseif ($cp3 < $target_cp3) {
+                    $selisih = $cp3 - $target_cp3;
+                    $persen = $selisih / $target_cp3;
+                    $nilai_cp3 = round($nilaiTarget + ($nilaiTarget * $persen), 2);
+                } else {
+                    // Nilai naik proporsional dari 91 ke 100
+                    $kelebihan = $cp3 - $target_cp3;
+                    $persen = min($kelebihan / $target_cp3, 1); // maksimal 100% lebih
+                    $nilai_cp3 = round(90 + (($nilaiMaksimal - 90) * $persen), 2);
+                }
+
+                $warna = $nilai_cp3 < 80 ? 'style="color:red;"' : '';
+                return "<span {$warna}>{$nilai_cp3}</span>";
+            })
+            ->addColumn('rataCP', function ($row) {
+                $jumlahJurnalSemua = DB::table('jurnal_pkls')
+                    ->select(
+                        'penempatan_prakerins.nis',
+                        DB::raw("COUNT(jurnal_pkls.id) as total_jurnal")
+                    )
+                    ->join('penempatan_prakerins', 'jurnal_pkls.id_penempatan', '=', 'penempatan_prakerins.id')
+                    ->where('jurnal_pkls.validasi', 'Sudah')
                     ->groupBy('penempatan_prakerins.nis')
                     ->get()
                     ->keyBy('nis');
 
-                $data = $jumlahJurnal[$row->nis] ?? null;
-                $total_jurnal = $data->total_jurnal ?? 0;
-                $cp3 = round($total_jurnal * 0.20);
+                $targetJurnal = 48;
 
-                // Hitung nilai CP1 berdasarkan range
-                if ($cp3 >= 11 && $cp3 <= 35) {
-                    $nilai_cp3 = 95;
-                } elseif ($cp3 >= 7 && $cp3 <= 10) {
-                    $nilai_cp3 = 90;
-                } elseif ($cp3 >= 4 && $cp3 <= 6) {
-                    $nilai_cp3 = 85;
-                } elseif ($cp3 >= 1 && $cp3 <= 3) {
-                    $nilai_cp3 = 65;
+                $target_cp1 = round($targetJurnal * 0.20);
+                $target_cp2 = round($targetJurnal * 0.45);
+                $target_cp3 = round($targetJurnal * 0.35);
+
+                $nilai_cp1_target = 92;
+                $nilai_cp2_target = 95;
+                $nilai_cp3_target = 89;
+
+                $nilai_cp1_maks = 95;
+                $nilai_cp2_maks = 98;
+                $nilai_cp3_maks = 93;
+
+                $data = $jumlahJurnalSemua[$row->nis] ?? null;
+                $total_jurnal = $data->total_jurnal ?? 0;
+
+                $cp1 = round($total_jurnal * 0.20);
+                $cp2 = round($total_jurnal * 0.45);
+                $cp3 = round($total_jurnal * 0.35);
+
+                // CP1
+                if ($cp1 == $target_cp1) {
+                    $nilai_cp1 = $nilai_cp1_target;
+                } elseif ($cp1 < $target_cp1) {
+                    $persen = ($cp1 - $target_cp1) / $target_cp1;
+                    $nilai_cp1 = round($nilai_cp1_target + ($nilai_cp1_target * $persen), 2);
                 } else {
-                    $nilai_cp3 = 0; // jika cp3 = 0
+                    $persen = min(($cp1 - $target_cp1) / $target_cp1, 1);
+                    $nilai_cp1 = round(93 + (($nilai_cp1_maks - 93) * $persen), 2);
                 }
 
-                $warna = $nilai_cp3 < 80 ? 'style="color:red;"' : '';
+                // CP2
+                if ($cp2 == $target_cp2) {
+                    $nilai_cp2 = $nilai_cp2_target;
+                } elseif ($cp2 < $target_cp2) {
+                    $persen = ($cp2 - $target_cp2) / $target_cp2;
+                    $nilai_cp2 = round($nilai_cp2_target + ($nilai_cp2_target * $persen), 2);
+                } else {
+                    $persen = min(($cp2 - $target_cp2) / $target_cp2, 1);
+                    $nilai_cp2 = round(96 + (($nilai_cp2_maks - 96) * $persen), 2);
+                }
 
+                // CP3
+                if ($cp3 == $target_cp3) {
+                    $nilai_cp3 = $nilai_cp3_target;
+                } elseif ($cp3 < $target_cp3) {
+                    $persen = ($cp3 - $target_cp3) / $target_cp3;
+                    $nilai_cp3 = round($nilai_cp3_target + ($nilai_cp3_target * $persen), 2);
+                } else {
+                    $persen = min(($cp3 - $target_cp3) / $target_cp3, 1);
+                    $nilai_cp3 = round(90 + (($nilai_cp3_maks - 90) * $persen), 2);
+                }
 
-                return "<span {$warna}>{$nilai_cp3}</span>";
+                // Hitung rata-rata
+                $rata = round(($nilai_cp1 + $nilai_cp2 + $nilai_cp3) / 3, 2);
+
+                $warna = $rata < 85 ? 'style="color:red;"' : '';
+                return "<span {$warna}>{$rata}</span>";
             })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
@@ -214,6 +291,7 @@ class PenilaianKaprodiPKLDataTable extends DataTable
                 'nilai_CP1',
                 'nilai_CP2',
                 'nilai_CP3',
+                'rataCP',
                 'action'
             ]);
     }
@@ -290,7 +368,7 @@ class PenilaianKaprodiPKLDataTable extends DataTable
             ])->parameters([
                 'lengthChange' => false, // Menghilangkan dropdown "Show entries"
                 'searching' => false,    // Menghilangkan kotak pencarian
-                'pageLength' => 36,       // Menampilkan 50 baris per halaman
+                'pageLength' => 100,       // Menampilkan 50 baris per halaman
             ]);
     }
 
@@ -310,6 +388,7 @@ class PenilaianKaprodiPKLDataTable extends DataTable
             Column::make('nilai_CP1')->title('CP1')->addClass('text-center'),
             Column::make('nilai_CP2')->title('CP2')->addClass('text-center'),
             Column::make('nilai_CP3')->title('CP3')->addClass('text-center'),
+            Column::make('rataCP')->title('Rata-Rata')->addClass('text-center'),
             /* Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
