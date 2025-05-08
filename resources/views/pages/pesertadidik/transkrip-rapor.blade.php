@@ -111,14 +111,17 @@
                                                         $val = $item['nilai'][$i] ?? null;
                                                     @endphp
                                                     <td style="text-align: center;padding:4px 8px;">
-                                                        {{ !is_null($val) && $val != 0 ? number_format($val, 0, ',', '.') : '' }}
+                                                        <span
+                                                            class="{{ $val < 75 ? 'text-danger fw-bold' : '' }}">{{ !is_null($val) && $val != 0 ? number_format($val, 0, ',', '.') : '' }}</span>
                                                     </td>
                                                 @endfor
                                                 <td style="text-align: center;">
-                                                    {{ !is_null($item['psaj_praktek']) && $item['psaj_praktek'] != 0 ? number_format($item['psaj_praktek'], 0, ',', '.') : '' }}
+                                                    <span
+                                                        class="{{ $item['psaj_praktek'] < 75 ? 'text-danger fw-bold' : '' }}">{{ !is_null($item['psaj_praktek']) && $item['psaj_praktek'] != 0 ? number_format($item['psaj_praktek'], 0, ',', '.') : '' }}</span>
                                                 </td>
                                                 <td style="text-align: center;">
-                                                    {{ !is_null($item['psaj_teori']) && $item['psaj_teori'] != 0 ? number_format($item['psaj_teori'], 0, ',', '.') : '' }}
+                                                    <span
+                                                        class="{{ $item['psaj_teori'] < 75 ? 'text-danger fw-bold' : '' }}">{{ !is_null($item['psaj_teori']) && $item['psaj_teori'] != 0 ? number_format($item['psaj_teori'], 0, ',', '.') : '' }}</span>
                                                 </td>
                                                 <td style="text-align: center;">
                                                     @php
@@ -147,7 +150,8 @@
                                                             $daftarNilaiAkhir[] = $nilaiAkhir;
                                                         }
                                                     @endphp
-                                                    {{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}
+                                                    <span
+                                                        class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}</span>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -160,7 +164,8 @@
                                         @php $noK = 1; @endphp
                                         @foreach ($dataK as $item)
                                             <tr>
-                                                <td style="text-align: center;" width='25'>{{ $noK++ }}.</td>
+                                                <td style="text-align: center;" width='25'>{{ $noK++ }}.
+                                                </td>
                                                 <td style="padding-left:8px;">
                                                     {{ $item['nama_mapel'] }}</td>
                                                 @for ($i = 1; $i <= 6; $i++)
@@ -168,14 +173,17 @@
                                                         $val = $item['nilai'][$i] ?? null;
                                                     @endphp
                                                     <td style="text-align: center;padding:4px 8px;">
-                                                        {{ !is_null($val) && $val != 0 ? number_format($val, 0, ',', '.') : '' }}
+                                                        <span
+                                                            class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ !is_null($val) && $val != 0 ? number_format($val, 0, ',', '.') : '' }}</span>
                                                     </td>
                                                 @endfor
                                                 <td style="text-align: center;">
-                                                    {{ !is_null($item['psaj_praktek']) && $item['psaj_praktek'] != 0 ? number_format($item['psaj_praktek'], 0, ',', '.') : '' }}
+                                                    <span
+                                                        class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ !is_null($item['psaj_praktek']) && $item['psaj_praktek'] != 0 ? number_format($item['psaj_praktek'], 0, ',', '.') : '' }}</span>
                                                 </td>
                                                 <td style="text-align: center;">
-                                                    {{ !is_null($item['psaj_teori']) && $item['psaj_teori'] != 0 ? number_format($item['psaj_teori'], 0, ',', '.') : '' }}
+                                                    <span
+                                                        class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ !is_null($item['psaj_teori']) && $item['psaj_teori'] != 0 ? number_format($item['psaj_teori'], 0, ',', '.') : '' }}</span>
                                                 </td>
                                                 <td style="text-align: center;">
                                                     @php
@@ -204,7 +212,8 @@
                                                             $daftarNilaiAkhir[] = $nilaiAkhir;
                                                         }
                                                     @endphp
-                                                    {{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}
+                                                    <span
+                                                        class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}</span>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -217,7 +226,8 @@
                                                     $nilai = $dataKK->firstWhere('semester', (string) $i)?->rata_kk;
                                                 @endphp
                                                 <td class="text-center">
-                                                    {{ $nilai && $nilai != 0 ? number_format($nilai, 0, ',', '.') : '' }}
+                                                    <span
+                                                        class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilai && $nilai != 0 ? number_format($nilai, 0, ',', '.') : '' }}</span>
                                                 </td>
                                             @endfor
                                             @php
@@ -225,10 +235,12 @@
                                                 $teori = $nilaiPSAJKK['PSAJ10']->nilai ?? null;
                                             @endphp
                                             <td class="text-center">
-                                                {{ $praktek && $praktek != 0 ? number_format($praktek, 0, ',', '.') : '' }}
+                                                <span
+                                                    class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $praktek && $praktek != 0 ? number_format($praktek, 0, ',', '.') : '' }}</span>
                                             </td>
                                             <td class="text-center">
-                                                {{ $teori && $teori != 0 ? number_format($teori, 0, ',', '.') : '' }}
+                                                <span
+                                                    class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $teori && $teori != 0 ? number_format($teori, 0, ',', '.') : '' }}</span>
                                             </td>
                                             <td style="text-align: center;">
                                                 @php
@@ -265,7 +277,8 @@
                                                     }
                                                 @endphp
 
-                                                {{ $nilaiAkhir !== null ? number_format(round($nilaiAkhir, 2), 2, ',', '.') : '' }}
+                                                <span
+                                                    class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilaiAkhir !== null ? number_format(round($nilaiAkhir, 2), 2, ',', '.') : '' }}</span>
                                             </td>
                                         </tr>
                                         {{-- NILAI MATA PELAJARAN KEWIRAUSAHAAN --}}
@@ -281,7 +294,8 @@
                                                         $val = $item['nilai'][$i] ?? null;
                                                     @endphp
                                                     <td style="text-align: center;padding:4px 8px;">
-                                                        {{ !is_null($val) && $val != 0 ? number_format($val, 0, ',', '.') : '' }}
+                                                        <span
+                                                            class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ !is_null($val) && $val != 0 ? number_format($val, 0, ',', '.') : '' }}</span>
                                                     </td>
                                                 @endfor
                                                 <td></td>
@@ -301,7 +315,8 @@
                                                             $daftarNilaiAkhir[] = $nilaiAkhir;
                                                         }
                                                     @endphp
-                                                    {{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}
+                                                    <span
+                                                        class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}</span>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -318,7 +333,8 @@
                                                         $val = $item['nilai'][$i] ?? null;
                                                     @endphp
                                                     <td style="text-align: center;padding:4px 8px;">
-                                                        {{ !is_null($val) && $val != 0 ? number_format($val, 0, ',', '.') : '' }}
+                                                        <span
+                                                            class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ !is_null($val) && $val != 0 ? number_format($val, 0, ',', '.') : '' }}</span>
                                                     </td>
                                                 @endfor
                                                 <td></td>
@@ -338,7 +354,8 @@
                                                             $daftarNilaiAkhir[] = $nilaiAkhir;
                                                         }
                                                     @endphp
-                                                    {{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}
+                                                    <span
+                                                        class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}</span>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -360,7 +377,8 @@
                                                         $val = $item['nilai'][$i] ?? null;
                                                     @endphp
                                                     <td style="text-align: center;padding:4px 8px;">
-                                                        {{ !is_null($val) && $val != 0 ? number_format($val, 0, ',', '.') : '' }}
+                                                        <span
+                                                            class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ !is_null($val) && $val != 0 ? number_format($val, 0, ',', '.') : '' }}</span>
                                                     </td>
                                                 @endfor
                                                 <td></td>
@@ -380,7 +398,8 @@
                                                             $daftarNilaiAkhir[] = $nilaiAkhir;
                                                         }
                                                     @endphp
-                                                    {{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}
+                                                    <span
+                                                        class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}</span>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -390,18 +409,24 @@
                                             </td>
                                             @for ($i = 1; $i <= 6; $i++)
                                                 <td style="text-align: center;">
-                                                    {{ $rataPerSemester[$i] ?? '-' }}
+                                                    <span
+                                                        class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $rataPerSemester[$i] ?? '-' }}</span>
                                                 </td>
                                             @endfor
-                                            <td style="text-align: center;">{{ $rataPsajPraktek }}</td>
-                                            <td style="text-align: center;">{{ $rataPsajTeori }}</td>
+                                            <td style="text-align: center;"><span
+                                                    class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $rataPsajPraktek }}</span>
+                                            </td>
+                                            <td style="text-align: center;"><span
+                                                    class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $rataPsajTeori }}</span>
+                                            </td>
                                             <td style="text-align: center;">
                                                 @php
                                                     $rataRataSemua = count($daftarNilaiAkhir)
                                                         ? array_sum($daftarNilaiAkhir) / count($daftarNilaiAkhir)
                                                         : null;
                                                 @endphp
-                                                {{ $rataRataSemua !== null ? number_format($rataRataSemua, 2, ',', '.') : '-' }}
+                                                <span
+                                                    class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $rataRataSemua !== null ? number_format($rataRataSemua, 2, ',', '.') : '-' }}</span>
                                             </td>
                                         </tr>
                                     </tbody>
