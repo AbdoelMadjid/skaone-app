@@ -174,16 +174,16 @@
                                                     @endphp
                                                     <td style="text-align: center;padding:4px 8px;">
                                                         <span
-                                                            class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ !is_null($val) && $val != 0 ? number_format($val, 0, ',', '.') : '' }}</span>
+                                                            class="{{ $val < 75 ? 'text-danger fw-bold' : '' }}">{{ !is_null($val) && $val != 0 ? number_format($val, 0, ',', '.') : '' }}</span>
                                                     </td>
                                                 @endfor
                                                 <td style="text-align: center;">
                                                     <span
-                                                        class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ !is_null($item['psaj_praktek']) && $item['psaj_praktek'] != 0 ? number_format($item['psaj_praktek'], 0, ',', '.') : '' }}</span>
+                                                        class="{{ $item['psaj_praktek'] < 75 ? 'text-danger fw-bold' : '' }}">{{ !is_null($item['psaj_praktek']) && $item['psaj_praktek'] != 0 ? number_format($item['psaj_praktek'], 0, ',', '.') : '' }}</span>
                                                 </td>
                                                 <td style="text-align: center;">
                                                     <span
-                                                        class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ !is_null($item['psaj_teori']) && $item['psaj_teori'] != 0 ? number_format($item['psaj_teori'], 0, ',', '.') : '' }}</span>
+                                                        class="{{ $item['psaj_teori'] < 75 ? 'text-danger fw-bold' : '' }}">{{ !is_null($item['psaj_teori']) && $item['psaj_teori'] != 0 ? number_format($item['psaj_teori'], 0, ',', '.') : '' }}</span>
                                                 </td>
                                                 <td style="text-align: center;">
                                                     @php
@@ -227,7 +227,7 @@
                                                 @endphp
                                                 <td class="text-center">
                                                     <span
-                                                        class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilai && $nilai != 0 ? number_format($nilai, 0, ',', '.') : '' }}</span>
+                                                        class="{{ $nilai < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilai && $nilai != 0 ? number_format($nilai, 0, ',', '.') : '' }}</span>
                                                 </td>
                                             @endfor
                                             @php
@@ -236,11 +236,11 @@
                                             @endphp
                                             <td class="text-center">
                                                 <span
-                                                    class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $praktek && $praktek != 0 ? number_format($praktek, 0, ',', '.') : '' }}</span>
+                                                    class="{{ $praktek < 75 ? 'text-danger fw-bold' : '' }}">{{ $praktek && $praktek != 0 ? number_format($praktek, 0, ',', '.') : '' }}</span>
                                             </td>
                                             <td class="text-center">
                                                 <span
-                                                    class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $teori && $teori != 0 ? number_format($teori, 0, ',', '.') : '' }}</span>
+                                                    class="{{ $teori < 75 ? 'text-danger fw-bold' : '' }}">{{ $teori && $teori != 0 ? number_format($teori, 0, ',', '.') : '' }}</span>
                                             </td>
                                             <td style="text-align: center;">
                                                 @php
@@ -295,7 +295,7 @@
                                                     @endphp
                                                     <td style="text-align: center;padding:4px 8px;">
                                                         <span
-                                                            class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ !is_null($val) && $val != 0 ? number_format($val, 0, ',', '.') : '' }}</span>
+                                                            class="{{ $val < 75 ? 'text-danger fw-bold' : '' }}">{{ !is_null($val) && $val != 0 ? number_format($val, 0, ',', '.') : '' }}</span>
                                                     </td>
                                                 @endfor
                                                 <td></td>
@@ -334,7 +334,7 @@
                                                     @endphp
                                                     <td style="text-align: center;padding:4px 8px;">
                                                         <span
-                                                            class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ !is_null($val) && $val != 0 ? number_format($val, 0, ',', '.') : '' }}</span>
+                                                            class="{{ $val < 75 ? 'text-danger fw-bold' : '' }}">{{ !is_null($val) && $val != 0 ? number_format($val, 0, ',', '.') : '' }}</span>
                                                     </td>
                                                 @endfor
                                                 <td></td>
@@ -378,7 +378,7 @@
                                                     @endphp
                                                     <td style="text-align: center;padding:4px 8px;">
                                                         <span
-                                                            class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ !is_null($val) && $val != 0 ? number_format($val, 0, ',', '.') : '' }}</span>
+                                                            class="{{ $val < 75 ? 'text-danger fw-bold' : '' }}">{{ !is_null($val) && $val != 0 ? number_format($val, 0, ',', '.') : '' }}</span>
                                                     </td>
                                                 @endfor
                                                 <td></td>
@@ -410,14 +410,14 @@
                                             @for ($i = 1; $i <= 6; $i++)
                                                 <td style="text-align: center;">
                                                     <span
-                                                        class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $rataPerSemester[$i] ?? '-' }}</span>
+                                                        class="{{ $rataPerSemester[$i] < 75 ? 'text-danger fw-bold' : '' }}">{{ $rataPerSemester[$i] ?? '-' }}</span>
                                                 </td>
                                             @endfor
                                             <td style="text-align: center;"><span
-                                                    class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $rataPsajPraktek }}</span>
+                                                    class="{{ $rataPsajPraktek < 75 ? 'text-danger fw-bold' : '' }}">{{ $rataPsajPraktek }}</span>
                                             </td>
                                             <td style="text-align: center;"><span
-                                                    class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $rataPsajTeori }}</span>
+                                                    class="{{ $rataPsajTeori < 75 ? 'text-danger fw-bold' : '' }}">{{ $rataPsajTeori }}</span>
                                             </td>
                                             <td style="text-align: center;">
                                                 @php
