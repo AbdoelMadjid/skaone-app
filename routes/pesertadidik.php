@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('remedial-peserta-didik', RemedialPesertaDidikController::class);
         Route::resource('kelulusan-peserta-didik', KelulusanPesertaDidikController::class);
         Route::get('download-transkrip-skl', [PDFController::class, 'downloadSKL'])->name('download.skl');
+        Route::get('download-transkrip-skkb', [PDFController::class, 'downloadSKKB'])->name('download.skkb');
     });
     Route::group(['prefix' => 'ujiansemester', 'as' => 'ujiansemester.'], function () {
         Route::resource('test-formatif', TestFormatifController::class);

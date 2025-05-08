@@ -589,4 +589,66 @@ class PDFController extends Controller
 
         return $pdf->download('transkrip-skl-' . $dataSiswa->nis . ' ' . $dataSiswa->nama_lengkap . '.pdf');
     }
+
+    public function downloadSKKB()
+    {
+        $aingPengguna = User::find(Auth::user()->id);
+
+        $nis = $aingPengguna->nis;
+
+        $dataRombel = PesertaDidikRombel::where('nis', $nis)->first();
+
+        $kelulusan = KelulusanPesertaDidik::where('nis', $nis)->first();
+
+        $datasiswalulus = TranskripDataSiswa::where('nis', $nis)->first();
+
+        $dataSiswa = DB::table('peserta_didiks')
+            ->select(
+                'peserta_didiks.*',
+                'bidang_keahlians.nama_bk',
+                'program_keahlians.nama_pk',
+                'kompetensi_keahlians.nama_kk',
+                'peserta_didik_rombels.tahun_ajaran',
+                'peserta_didik_rombels.rombel_tingkat',
+                'peserta_didik_rombels.rombel_kode',
+                'peserta_didik_rombels.rombel_nama',
+                'peserta_didik_ortus.status',
+                'peserta_didik_ortus.nm_ayah',
+                'peserta_didik_ortus.nm_ibu',
+                'peserta_didik_ortus.pekerjaan_ayah',
+                'peserta_didik_ortus.pekerjaan_ibu',
+                'peserta_didik_ortus.ortu_alamat_blok',
+                'peserta_didik_ortus.ortu_alamat_norumah',
+                'peserta_didik_ortus.ortu_alamat_rt',
+                'peserta_didik_ortus.ortu_alamat_rw',
+                'peserta_didik_ortus.ortu_alamat_desa',
+                'peserta_didik_ortus.ortu_alamat_kec',
+                'peserta_didik_ortus.ortu_alamat_kab',
+                'peserta_didik_ortus.ortu_alamat_kodepos',
+                'peserta_didik_ortus.ortu_kontak_telepon',
+                'peserta_didik_ortus.ortu_kontak_email',
+            )
+            ->join('kompetensi_keahlians', 'peserta_didiks.kode_kk', '=', 'kompetensi_keahlians.idkk')
+            ->join('program_keahlians', 'kompetensi_keahlians.id_pk', '=', 'program_keahlians.idpk')
+            ->join('bidang_keahlians', 'kompetensi_keahlians.id_bk', '=', 'bidang_keahlians.idbk')
+            ->join('peserta_didik_rombels', 'peserta_didiks.nis', '=', 'peserta_didik_rombels.nis')
+            ->leftJoin('peserta_didik_ortus', 'peserta_didiks.nis', '=', 'peserta_didik_ortus.nis')
+            ->where('peserta_didiks.nis', $nis)
+            ->where('peserta_didik_rombels.tahun_ajaran', '2024-2025')
+            ->first();
+
+
+        // Ambil data yang dibutuhkan view
+        $data = [
+            'dataRombel' => $dataRombel,
+            'kelulusan' => $kelulusan,
+            'datasiswalulus' => $datasiswalulus,
+            'dataSiswa' => $dataSiswa,
+        ];
+
+        $pdf = PDF::loadView('pages.pesertadidik.pdf-transkrip-skkb', $data)
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->download('skkb-' . $dataSiswa->nis . ' ' . $dataSiswa->nama_lengkap . '.pdf');
+    }
 }

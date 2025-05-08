@@ -395,13 +395,13 @@
                 <td>
                     Majalengka, 05 Mei 2025<br>
                     Kepala Sekolah,
-                    <div>
+                    {{-- <div>
                         <img src='{{ public_path('damudin.png') }}' border='0' height='110'
                             style=' position: absolute; padding: 0px 2px 15px -200px; margin-left: -120px;margin-top:-15px;'>
                     </div>
                     <div><img src='{{ public_path('stempel.png') }}' border='0' height='180' width='184'
                             style=' position: absolute; padding: 0px 2px 15px -650px; margin-left: -135px;margin-top:-50px;'>
-                    </div>
+                    </div> --}}
                     <p>&nbsp;</p>
                     <p>&nbsp;</p>
                     <strong>H. DAMUDIN, S.Pd., M.Pd.</strong><br>

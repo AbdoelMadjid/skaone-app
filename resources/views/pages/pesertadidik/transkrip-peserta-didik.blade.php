@@ -123,6 +123,10 @@
                                     aria-labelledby="v-pills-settings-tab">
                                     <button class="btn btn-soft-info btn-sm" onclick="printContent('cetak-skkb')"><i
                                             class="ri-printer-line"></i> Print</button>
+                                    <button class="btn btn-soft-success btn-sm"
+                                        onclick="window.location.href='{{ route('kbmpesertadidik.download.skkb') }}'">
+                                        <i class="ri-download-line"></i> Download PDF
+                                    </button>
                                     @include('pages.pesertadidik.transkrip-skkb')
                                 </div>
                             </div>
