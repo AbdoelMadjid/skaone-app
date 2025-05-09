@@ -77,7 +77,7 @@
         <!--end col-->
         <div class="col-xxl-9">
             <div class="card mt-xxl-n5">
-                <div class="card-header">
+                {{-- <div class="card-header">
                     <ul class="rounded nav nav-tabs-custom card-header-tabs border-bottom-0" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" data-bs-toggle="tab" href="#personalDetails" role="tab">
@@ -92,12 +92,22 @@
                             </a>
                         </li>
                     </ul>
-                </div>
+                </div> --}}
                 <div class="p-4 card-body">
-                    <div class="tab-content">
+                    {{-- <div class="tab-content"> --}}
+                    <form action="{{ route('profilpengguna.profil-pengguna.update', $user->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
                         @include('pages.pengguna.tag-siswa-detail')
                         @include('pages.pengguna.tag-ortu-siswa')
-                    </div>
+                        {{-- === SUBMIT BUTTON UNTUK KESELURUHAN === --}}
+                        <div class="col-lg-12">
+                            <div class="gap-2 hstack justify-content-end">
+                                <button type="submit" class="btn btn-primary">Simpan Seluruh Data</button>
+                            </div>
+                        </div>
+                    </form>
+                    {{-- </div> --}}
                 </div>
             </div>
         </div>

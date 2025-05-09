@@ -31,9 +31,9 @@ class PesertaDidikOrtu extends Model
         'ortu_kontak_email',
     ];
 
-    // Relasi ke PesertaDidik
+    /* // Relasi ke PesertaDidik
     public function pesertaDidik()
     {
         return $this->belongsTo(PesertaDidik::class, 'nis', 'nis');
-    }
+    } */
 }

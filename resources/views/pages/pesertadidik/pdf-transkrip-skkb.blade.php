@@ -171,26 +171,30 @@
                                     <tr>
                                         <td>Nama Orang Tua</td>
                                         <td>:</td>
-                                        <td>{!! ucwords(strtolower($datasiswalulus->orangtua)) !!}</td>
+                                        <td>{!! ucwords(strtolower($dataSiswa->nm_ayah)) !!}</td>
                                     </tr>
                                     <tr>
                                         <td valign='top'>Alamat</td>
                                         <td valign='top'>:</td>
                                         <td>
-                                            @if ($dataSiswa->ortu_alamat_blok)
-                                                Blok {{ $dataSiswa->ortu_alamat_blok }}, <br>
+                                            @if ($dataSiswa->alamat_blok)
+                                                Blok {{ ucwords(strtolower($dataSiswa->alamat_blok)) }},
                                             @endif
-                                            @if ($dataSiswa->ortu_alamat_desa)
-                                                Desa/Kelurahan {{ $dataSiswa->ortu_alamat_desa }}
+                                            @if ($dataSiswa->alamat_rt)
+                                                RT {{ ucwords(strtolower($dataSiswa->alamat_rt)) }} / RW
+                                                {{ ucwords(strtolower($dataSiswa->alamat_rw)) }}, <br>
                                             @endif
-                                            @if ($dataSiswa->ortu_alamat_kec)
-                                                Kecamatan {{ $dataSiswa->ortu_alamat_kec }}<br>
+                                            @if ($dataSiswa->alamat_desa)
+                                                Desa/Kelurahan {{ ucwords(strtolower($dataSiswa->alamat_desa)) }}
                                             @endif
-                                            @if ($dataSiswa->ortu_alamat_kab)
-                                                Kabupaten {{ $dataSiswa->ortu_alamat_kab }}
+                                            @if ($dataSiswa->alamat_kec)
+                                                Kecamatan {{ ucwords(strtolower($dataSiswa->alamat_kec)) }}<br>
                                             @endif
-                                            @if ($dataSiswa->ortu_alamat_kodepos)
-                                                Kode Pos : {{ $dataSiswa->ortu_alamat_kodepos }}
+                                            @if ($dataSiswa->alamat_kab)
+                                                Kabupaten {{ ucwords(strtolower($dataSiswa->alamat_kab)) }}
+                                            @endif
+                                            @if ($dataSiswa->alamat_kodepos)
+                                                Kode Pos : {{ $dataSiswa->alamat_kodepos }}
                                             @endif
                                         </td>
                                     </tr>

@@ -125,7 +125,7 @@
                         <tr>
                             <td></td>
                             <td>Nama Orang Tua</td>
-                            <td>: {!! ucwords(strtolower($datasiswalulus->orangtua)) !!}</td>
+                            <td>: {!! ucwords(strtolower($dataSiswa->nm_ayah)) !!}</td>
                         </tr>
                         <tr>
                             <td></td>

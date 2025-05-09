@@ -146,6 +146,37 @@ class ProfilPenggunaController extends Controller
                 ]));
             }
 
+            // Tambahan untuk peserta_didik_ortu
+            $ortu = PesertaDidikOrtu::where('nis', $user->nis)->first();
+
+            $dataOrtu = $request->only([
+                'nis',
+                'status',
+                'nm_ayah',
+                'nm_ibu',
+                'pekerjaan_ayah',
+                'pekerjaan_ibu',
+                'ortu_alamat_blok',
+                'ortu_alamat_norumah',
+                'ortu_alamat_rt',
+                'ortu_alamat_rw',
+                'ortu_alamat_desa',
+                'ortu_alamat_kec',
+                'ortu_alamat_kab',
+                'ortu_alamat_kodepos',
+                'ortu_kontak_telepon',
+                'ortu_kontak_email',
+            ]);
+
+            $dataOrtu['nis'] = $user->nis;
+
+            if ($ortu) {
+                $ortu->update($dataOrtu);
+            } else {
+                PesertaDidikOrtu::create($dataOrtu);
+            }
+
+
             $user->update([
                 'name' => $request->input('nama_lengkap'),
             ]);
