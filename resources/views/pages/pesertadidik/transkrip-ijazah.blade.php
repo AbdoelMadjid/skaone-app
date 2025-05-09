@@ -54,7 +54,7 @@
             <tr>
                 <td></td>
                 <td>Tanggal Lulus</td>
-                <td>: 05 Maret 2025</td>
+                <td>: 05 Mei 2025</td>
             </tr>
             <tr>
                 <td></td>

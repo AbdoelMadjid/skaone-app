@@ -77,6 +77,8 @@ Route::middleware('auth')->group(function () {
         Route::put('/absensi-bimbingan/updateabsensi/{absensi}', [AbsensiPembimbingPklController::class, 'updateAbsensi'])->name('absensi-bimbingan.updateabsensi');
 
         Route::resource('penilaian-bimbingan', PenilaianBimbinganController::class);
+        Route::post('/generate-nilai-prakerin', [PenilaianBimbinganController::class, 'generateNilaiPrakerin'])
+            ->name('generate.nilai.prakerin');
         Route::resource('monitoring-prakerin', MonitoringPrakerinController::class);
         Route::resource('pesan-prakerin', PesanPrakerinController::class);
         Route::post('/update-read-status', function (Request $request) {

@@ -20,8 +20,20 @@
                 <div class="card-header d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @yield('title')</h5>
                     <div>
+                        <form action="{{ route('pembimbingpkl.generate.nilai.prakerin') }}" method="POST"
+                            onsubmit="return confirm('Yakin ingin generate nilai?')">
+                            @csrf
+                            <button type="submit" class="btn btn-sm btn-primary">
+                                Generate Nilai Prakerin
+                            </button>
+                        </form>
                     </div>
                 </div>
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
                 <div class="card-body">
                     {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
                 </div>
