@@ -41,5 +41,8 @@ class MenuSiswaSeeder extends Seeder
 
         $sm = $mm->subMenus()->create(['name' => 'Remedial', 'url' => $mm->url . '/remedial-peserta-didik', 'category' => $mm->category]);
         $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['siswa']);
+
+        $sm = $mm->subMenus()->create(['name' => 'Kelulusan', 'url' => $mm->url . '/kelulusan-peserta-didik', 'category' => $mm->category]);
+        $this->attachMenupermission($sm, ['read'], ['siswa']);
     }
 }

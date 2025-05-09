@@ -1,0 +1,32 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('transkrip_nilai', function (Blueprint $table) {
+            $table->id();
+            $table->char('tahun_ajaran');
+            $table->char('nis');
+            $table->char('kode_mapel');
+            $table->char('no_urut_kode_mapel');
+            $table->decimal('nilai');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('transkrip_nilai');
+    }
+};

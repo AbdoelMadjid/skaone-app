@@ -7,6 +7,7 @@ use App\Http\Controllers\AdministratorPkl\PerusahaanController;
 use App\Http\Controllers\AdministratorPkl\PesertaPrakerinController;
 use App\Http\Controllers\KaprodiPkl\ModulAjarController;
 use App\Http\Controllers\KaprodiPkl\PelaporanPrakerinController;
+use App\Http\Controllers\KaprodiPkl\PenilaianKaprodiPKLController;
 use App\Http\Controllers\PembimbingPkl\AbsensiPembimbingPklController;
 use App\Http\Controllers\PembimbingPkl\InformasiPembimbingController;
 use App\Http\Controllers\PembimbingPkl\MonitoringPrakerinController;
@@ -54,6 +55,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('modul-ajar', ModulAjarController::class);
         Route::resource('informasi-prakerin', InformasiAdministratorController::class);
         Route::resource('pelaporan-prakerin', PelaporanPrakerinController::class);
+        Route::resource('penilaian-prakerin', PenilaianKaprodiPKLController::class);
         Route::get('/download-jurnal-pdf', [PelaporanPrakerinController::class, 'downloadJurnalPdf'])->name('downloadjurnalpdf');
         Route::get('/download-absensi-pdf', [PelaporanPrakerinController::class, 'downloadAbsensiPdf'])->name('downloadabsensipdf');
         Route::post('/update-tanggal-kirim', [PelaporanPrakerinController::class, 'updateTanggalKirim'])->name('updatetanggalkirim');
@@ -75,6 +77,8 @@ Route::middleware('auth')->group(function () {
         Route::put('/absensi-bimbingan/updateabsensi/{absensi}', [AbsensiPembimbingPklController::class, 'updateAbsensi'])->name('absensi-bimbingan.updateabsensi');
 
         Route::resource('penilaian-bimbingan', PenilaianBimbinganController::class);
+        Route::post('/generate-nilai-prakerin', [PenilaianBimbinganController::class, 'generateNilaiPrakerin'])
+            ->name('generate.nilai.prakerin');
         Route::resource('monitoring-prakerin', MonitoringPrakerinController::class);
         Route::resource('pesan-prakerin', PesanPrakerinController::class);
         Route::post('/update-read-status', function (Request $request) {

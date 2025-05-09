@@ -1,10 +1,12 @@
 <?php
 
-namespace App\DataTables\PembimbingPkl;
+namespace App\DataTables\KaprodiPkl;
 
-use App\Models\AdministratorPkl\PembimbingPrakerin;
+use App\Models\AdministratorPkl\PesertaPrakerin;
+use App\Models\User;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -14,7 +16,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class PenilaianPembimbingDataTable extends DataTable
+class PenilaianKaprodiPKLDataTable extends DataTable
 {
     use DatatableHelper;
     /**
@@ -25,12 +27,11 @@ class PenilaianPembimbingDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('identitas_peserta', function ($row) {
-                // Ambil data `element` dari tabel `capaian_pembelajarans` berdasarkan `kode_cp`
-                $identitas_pesertaPrakerin = '<strong>' . $row->nama_lengkap . '</strong>
-            <br> NIS : ' .  $row->nis;
+            ->addColumn('tempat_pkl', function ($row) {
 
-                return $identitas_pesertaPrakerin;
+                $idenPerusahaan = '<strong>' . $row->nama_perusahaan . '</strong><br> Alamat : ' .  $row->alamat_perusahaan . '<br>';
+
+                return $idenPerusahaan;
             })
             ->addColumn('absensi', function ($row) {
                 $absensi = DB::table('absensi_siswa_pkls')
@@ -274,14 +275,8 @@ class PenilaianPembimbingDataTable extends DataTable
                 // Hitung rata-rata
                 $rata = round(($nilai_cp1 + $nilai_cp2 + $nilai_cp3) / 3, 2);
 
-                $warna = $rata < 80 ? 'style="color:red;"' : '';
+                $warna = $rata < 85 ? 'style="color:red;"' : '';
                 return "<span {$warna}>{$rata}</span>";
-            })
-            ->addColumn('tempat_pkl', function ($row) {
-
-                $idenPerusahaan = '<strong>' . $row->perusahaan_nama . '</strong><br> Alamat : ' .  $row->perusahaan_alamat;
-
-                return $idenPerusahaan;
             })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
@@ -290,7 +285,6 @@ class PenilaianPembimbingDataTable extends DataTable
             })
             ->addIndexColumn()
             ->rawColumns([
-                'identitas_peserta',
                 'absensi',
                 'tempat_pkl',
                 'jurnal',
@@ -305,35 +299,51 @@ class PenilaianPembimbingDataTable extends DataTable
     /**
      * Get the query source of dataTable.
      */
-    public function query(PembimbingPrakerin $model): QueryBuilder
+    public function query(PesertaPrakerin $model): QueryBuilder
     {
-        // Ambil id_personil dari user yang sedang login
-        $idPersonil = auth()->user()->personal_id;
+        $query = $model->newQuery();
 
-        return $model
-            ->select(
-                'penempatan_prakerins.id',
-                'penempatan_prakerins.tahunajaran',
-                'penempatan_prakerins.kode_kk',
-                'kompetensi_keahlians.nama_kk',
-                'penempatan_prakerins.nis',
-                'peserta_didiks.nama_lengkap',
-                'peserta_didik_rombels.rombel_nama',
-                'penempatan_prakerins.id_dudi',
-                'perusahaans.nama as perusahaan_nama',
-                'perusahaans.alamat as perusahaan_alamat',
-                'pembimbing_prakerins.id_personil',
-                'personil_sekolahs.namalengkap as pembimbing_namalengkap'
-            )
-            ->join('penempatan_prakerins', 'pembimbing_prakerins.id_penempatan', '=', 'penempatan_prakerins.id')
-            ->join('peserta_didiks', 'penempatan_prakerins.nis', '=', 'peserta_didiks.nis')
+        $query->join('peserta_didiks', 'peserta_prakerins.nis', '=', 'peserta_didiks.nis')
+            ->join('kompetensi_keahlians', 'peserta_prakerins.kode_kk', '=', 'kompetensi_keahlians.idkk')
             ->join('peserta_didik_rombels', 'peserta_didiks.nis', '=', 'peserta_didik_rombels.nis')
-            ->join('personil_sekolahs', 'pembimbing_prakerins.id_personil', '=', 'personil_sekolahs.id_personil')
+            ->join('penempatan_prakerins', 'peserta_prakerins.nis', '=', 'penempatan_prakerins.nis')
             ->join('perusahaans', 'penempatan_prakerins.id_dudi', '=', 'perusahaans.id')
-            ->join('kompetensi_keahlians', 'penempatan_prakerins.kode_kk', '=', 'kompetensi_keahlians.idkk')
-            ->where('pembimbing_prakerins.id_personil', $idPersonil)
+            ->select(
+                'peserta_prakerins.*',
+                'kompetensi_keahlians.nama_kk',
+                'peserta_didiks.nama_lengkap as nama_siswa',
+                'peserta_didik_rombels.rombel_nama',
+                'perusahaans.nama as nama_perusahaan',
+                'perusahaans.alamat as alamat_perusahaan',
+            )
             ->orderBy('peserta_didik_rombels.rombel_nama')
-            ->orderBy('penempatan_prakerins.nis');
+            ->orderBy('peserta_didiks.nis');
+
+        /* $query->join('peserta_didiks', 'peserta_prakerins.nis', '=', 'peserta_didiks.nis')
+            ->join('kompetensi_keahlians', 'peserta_prakerins.kode_kk', '=', 'kompetensi_keahlians.idkk')
+            ->join('peserta_didik_rombels', 'peserta_prakerins.nis', '=', 'peserta_didik_rombels.nis')
+            ->select(
+                'peserta_prakerins.*',
+                'peserta_didiks.nama_lengkap',
+                'kompetensi_keahlians.nama_kk',
+                'peserta_didik_rombels.rombel_nama'
+            ); // Tambahkan nama_kk */
+
+        if (auth()->check()) {
+            $user = User::find(Auth::user()->id);
+            if ($user->hasAnyRole(['kaprodiak'])) {
+                $query->where('peserta_prakerins.kode_kk', '=', '833');
+            } elseif ($user->hasAnyRole(['kaprodibd'])) {
+                $query->where('peserta_prakerins.kode_kk', '=', '811');
+            } elseif ($user->hasAnyRole(['kaprodimp'])) {
+                $query->where('peserta_prakerins.kode_kk', '=', '821');
+            } elseif ($user->hasAnyRole(['kaprodirpl'])) {
+                $query->where('peserta_prakerins.kode_kk', '=', '411');
+            } elseif ($user->hasAnyRole(['kaproditkj'])) {
+                $query->where('peserta_prakerins.kode_kk', '=', '421');
+            }
+        }
+        return $query;
     }
 
     /**
@@ -342,7 +352,7 @@ class PenilaianPembimbingDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('penilaianpembimbing-table')
+            ->setTableId('penilaiankaprodipkl-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             //->dom('Bfrtip')
@@ -358,7 +368,7 @@ class PenilaianPembimbingDataTable extends DataTable
             ])->parameters([
                 'lengthChange' => false, // Menghilangkan dropdown "Show entries"
                 'searching' => false,    // Menghilangkan kotak pencarian
-                'pageLength' => 36,       // Menampilkan 50 baris per halaman
+                'pageLength' => 100,       // Menampilkan 50 baris per halaman
             ]);
     }
 
@@ -368,10 +378,11 @@ class PenilaianPembimbingDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
-            Column::make('identitas_peserta')->title('Identitas Peserta Didik'),
-            Column::make('rombel_nama')->title('Rombel'),
-            Column::make('tempat_pkl')->title('Tempat PKL')->width(300),
+            Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center align-middle')->width(50),
+            Column::make('nis')->addClass('text-center'),
+            Column::make('nama_siswa'),
+            Column::make('rombel_nama'),
+            Column::make('tempat_pkl')->title('Tempat PKL')->width(200),
             Column::make('absensi')->title('Absensi'),
             Column::make('jurnal')->title('Jurnal'),
             Column::make('nilai_CP1')->title('CP1')->addClass('text-center'),
@@ -391,6 +402,6 @@ class PenilaianPembimbingDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'PenilaianPembimbing_' . date('YmdHis');
+        return 'PenilaianKaprodiPKL_' . date('YmdHis');
     }
 }

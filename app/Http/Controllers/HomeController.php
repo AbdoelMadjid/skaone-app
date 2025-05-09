@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
 use App\Models\Kurikulum\PerangkatKurikulum\Pengumuman;
 use App\Models\ManajemenPengguna\LoginRecord;
 use App\Models\ManajemenSekolah\PersonilSekolah;
@@ -125,6 +126,10 @@ class HomeController extends Controller
             ->orderBy('tanggal', 'desc')
             ->get();
 
+        $nis = $aingPengguna->nis;
+
+        $dataRombel = PesertaDidikRombel::where('nis', $nis)->first();
+
         return view('dashboard', [
             'activeUsers' => $activeUsers,
             'activeUsersCount' => $activeUsersCount,
@@ -147,6 +152,7 @@ class HomeController extends Controller
             'message' => $message, // Tambahkan di sini
             'pengumumanHariIni' => $pengumumanHariIni,
             'pengumumanAll' => $pengumumanAll,
+            'dataRombel' => $dataRombel,
         ]);
     }
 

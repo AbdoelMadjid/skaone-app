@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Models\PembimbingPkl;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class NilaiPrakerin extends Model
+{
+    use HasFactory;
+    protected $table = 'nilai_prakerin';
+    protected $fillable = [
+        'tahun_ajaran',
+        'nis',
+        'cp1',
+        'cp2',
+        'cp3',
+        'cp4',
+    ];
+}

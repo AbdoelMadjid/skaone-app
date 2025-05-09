@@ -218,6 +218,59 @@
         </div>
     </div>
     <!-- End Promo Event -->
+
+    <!-- Call to Action -->
+    <div class="g-bg-img-hero" style="background-image: url({{ URL::asset('build/assets/include/svg/svg-bg1.svg') }});">
+        <div class="container g-pt-60 g-pb-30">
+            <!-- Heading -->
+            <div class="g-max-width-645 text-center mx-auto g-mb-60">
+                <h2 class="h1 mb-3">Pelaksanaan PSAJ</h2>
+                <p>Penilaian Sumatif Akhir Jenjang untuk kelas 12 tahun 2024-2025.</p>
+            </div>
+            <!-- End Heading -->
+
+            <div class="row">
+                <!-- Studies -->
+                @foreach ($jadwals as $jadwal)
+                    <article class="col-md-4 g-mb-30">
+
+                        <div class="g-mb-35">
+                            <h3 class="mb-3">{{ $jadwal->mata_pelajaran }}</h3>
+                            <p class="g-font-size-15">
+                                Kelas: {{ $jadwal->tingkat }} ({{ $jadwal->kelas }})<br>
+                                Token: <span class="g-color-red">{{ $jadwal->token }}</span><br>
+                                Tanggal: {{ $jadwal->tanggal_mulai }}
+                                @if ($jadwal->tanggal_selesai && $jadwal->tanggal_mulai != $jadwal->tanggal_selesai)
+                                    s/d {{ $jadwal->tanggal_selesai }}
+                                @endif
+                                <br>
+                                @if ($jadwal->tanggal_mulai == $jadwal->tanggal_selesai)
+                                    Jam: {{ $jadwal->jam_mulai }} - {{ $jadwal->jam_selesai }}
+                                @endif
+                                <br>
+                            </p>
+                        </div>
+                        @if ($jadwal->can_access)
+                            <a href="{{ $jadwal->link_soal }}" target="_blank"
+                                class="btn u-shadow-v39 g-color-white g-color-white--hover g-bg-main g-bg-primary--hover g-font-size-default g-rounded-30 g-px-35 g-py-8">Mulai
+                                Ujian</a>
+                        @else
+                            <span
+                                class="btn u-shadow-v39 g-color-white g-bg-primary g-bg-main--hover g-rounded-30 g-px-35 g-py-8">
+                                {{ $jadwal->status_ujian }}</span>
+                        @endif
+
+                    </article>
+                    <!-- End Studies -->
+                @endforeach
+                <!-- Studies -->
+
+            </div>
+            <hr class="g-brd-gray-light-v4 g-my-60">
+        </div>
+    </div>
+    </div>
+    <!-- End Call to Action -->
     <!-- Team -->
     <div class="container g-py-100">
         <!-- Heading -->
