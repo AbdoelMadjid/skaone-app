@@ -89,6 +89,45 @@ class PenilaianKaprodiPKLDataTable extends DataTable
                 <span {$warna}>({$persentaseFormatted}%)</span><br>
                 <small>CP1: {$cp1}, CP2: {$cp2}, CP3: {$cp3}</small>";
             })
+            ->addColumn('nilai_absensi', function ($row) {
+                $absensi = DB::table('absensi_siswa_pkls')
+                    ->select(
+                        'nis',
+                        DB::raw("SUM(CASE WHEN status = 'HADIR' THEN 1 ELSE 0 END) as jumlah_hadir"),
+                        DB::raw("SUM(CASE WHEN status = 'SAKIT' THEN 1 ELSE 0 END) as jumlah_sakit"),
+                        DB::raw("SUM(CASE WHEN status = 'IZIN' THEN 1 ELSE 0 END) as jumlah_izin"),
+                        DB::raw("SUM(CASE WHEN status = 'ALFA' THEN 1 ELSE 0 END) as jumlah_alfa")
+                    )
+                    ->groupBy('nis')
+                    ->get()
+                    ->keyBy('nis');
+
+                $data = $absensi[$row->nis] ?? null;
+                $jumlah_hadir = $data->jumlah_hadir ?? 0;
+                $total_hari = 78;
+
+                // Hitung persentase kehadiran
+                $persentase = ($jumlah_hadir / $total_hari) * 100;
+                $persentaseFormatted = number_format($persentase, 2);
+
+                // Hitung nilai absensi
+                $nilai_ideal = 96.5;
+                if ($jumlah_hadir == $total_hari) {
+                    $nilai_absensi = $nilai_ideal;
+                } elseif ($jumlah_hadir > $total_hari) {
+                    $tambahan = min($jumlah_hadir - $total_hari, 2); // maksimal 2 hari ekstra
+                    $nilai_absensi = $nilai_ideal + ($tambahan * 0.5);
+                    $nilai_absensi = min($nilai_absensi, 98.5);
+                } else {
+                    $kurangan = $total_hari - $jumlah_hadir;
+                    $nilai_absensi = $nilai_ideal - ($kurangan * 1.0);
+                    $nilai_absensi = max($nilai_absensi, 0); // agar tidak negatif
+                }
+
+                $nilai_absensi = number_format($nilai_absensi, 2);
+
+                return "{$nilai_absensi}";
+            })
             ->addColumn('nilai_CP1', function ($row) {
                 $jumlahJurnalSemua = DB::table('jurnal_pkls')
                     ->select(
@@ -292,6 +331,7 @@ class PenilaianKaprodiPKLDataTable extends DataTable
                 'nilai_CP2',
                 'nilai_CP3',
                 'rataCP',
+                'nilai_absensi',
                 'action'
             ]);
     }
@@ -385,6 +425,7 @@ class PenilaianKaprodiPKLDataTable extends DataTable
             Column::make('tempat_pkl')->title('Tempat PKL')->width(200),
             Column::make('absensi')->title('Absensi'),
             Column::make('jurnal')->title('Jurnal'),
+            Column::make('nilai_absensi')->title('Nilai Absensi')->addClass('text-center'),
             Column::make('nilai_CP1')->title('CP1')->addClass('text-center'),
             Column::make('nilai_CP2')->title('CP2')->addClass('text-center'),
             Column::make('nilai_CP3')->title('CP3')->addClass('text-center'),
