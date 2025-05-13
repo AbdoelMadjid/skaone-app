@@ -298,7 +298,7 @@
                     </tr>
                 @endforeach
                 {{-- NILAI MATA PELAJARAN PKL --}}
-                @php $noPKL = $noKWU; @endphp
+                {{-- @php $noPKL = $noKWU; @endphp
                 @foreach ($dataPKL as $item)
                     <tr>
                         <td style="text-align: center;" width='25'>{{ $noPKL++ }}.
@@ -334,7 +334,39 @@
                                 class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}</span>
                         </td>
                     </tr>
-                @endforeach
+                @endforeach --}}
+                @php $noPKL = $noKWU; @endphp
+                <tr>
+                    <td style="text-align: center;" width='25'>{{ $noPKL++ }}.</td>
+                    <td style="padding-left:8px;padding:4px 8px;">Praktik Kerja Lapangan</td>
+
+                    {{-- Kolom semester 1–5 (kosong) --}}
+                    @for ($i = 1; $i <= 5; $i++)
+                        <td style="text-align: center;padding:4px 8px;"></td>
+                    @endfor
+
+                    {{-- Kolom semester 6: tampilkan rata-rata --}}
+                    @php
+                        $nilaiAkhir = $dataPKL->rata_rata ?? 0;
+                        $daftarNilaiAkhir[] = $nilaiAkhir;
+                    @endphp
+                    <td style="text-align: center;padding:4px 8px;">
+                        <span class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">
+                            {{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}
+                        </span>
+                    </td>
+
+                    {{-- Kolom predikat dan deskripsi (kosong atau bisa diisi nanti) --}}
+                    <td></td>
+                    <td></td>
+
+                    {{-- Kolom nilai akhir total --}}
+                    <td style="text-align: center;">
+                        <span class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">
+                            {{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}
+                        </span>
+                    </td>
+                </tr>
                 <tr>
                     <td style="text-align: center;" width='25'>9.</td>
                     <td style="padding-left:8px;padding:4px 8px;">Mata Pelajaran Pilihan</td>
@@ -382,16 +414,19 @@
                     <td colspan="2" style="text-align: center;padding:4px 12px;">
                         <strong>Rata-rata</strong>
                     </td>
-                    @for ($i = 1; $i <= 6; $i++)
-                        <td style="text-align: center;">
+                    @for ($i = 1; $i <= 5; $i++)
+                        <td style="text-align: center;padding:2px 2px;">
                             <span
                                 class="{{ $rataPerSemester[$i] < 75 ? 'text-danger fw-bold' : '' }}">{{ $rataPerSemester[$i] ?? '-' }}</span>
                         </td>
                     @endfor
-                    <td style="text-align: center;"><span
+                    <td style="text-align: center;padding:2px 2px;"><span
+                            class="{{ $rataAkhirPkl < 75 ? 'text-danger fw-bold' : '' }}">{{ number_format($rataAkhirPkl, 2, ',', '.') }}</span>
+                    </td>
+                    <td style="text-align: center;padding:2px 2px;"><span
                             class="{{ $rataPsajPraktek < 75 ? 'text-danger fw-bold' : '' }}">{{ $rataPsajPraktek }}</span>
                     </td>
-                    <td style="text-align: center;"><span
+                    <td style="text-align: center;padding:2px 2px;"><span
                             class="{{ $rataPsajTeori < 75 ? 'text-danger fw-bold' : '' }}">{{ $rataPsajTeori }}</span>
                     </td>
                     <td style="text-align: center;">
@@ -414,7 +449,7 @@
                 <td></td>
                 <td></td>
                 <td>
-                    Majalengka, 05 Mei 2025<br>
+                    Kabupaten Majalengka, 05 Mei 2025<br>
                     Kepala Sekolah,
                     <p style='margin-bottom:22px;margin-top:12px'>&nbsp;</p>
                     <strong>H. DAMUDIN, S.Pd., M.Pd.</strong><br>

@@ -294,7 +294,7 @@
                         "{{ route('pembimbingpkl.absensi-bimbingan.index') }}";
                 },
                 error: function(xhr, status, error) {
-                    showToast('success', 'Terjadi kesalahan saat mengirim data.');
+                    showToast('error', 'Terjadi kesalahan saat mengirim data.');
                     console.log(xhr.responseText); // Untuk melihat pesan error lebih detail
                 }
             });

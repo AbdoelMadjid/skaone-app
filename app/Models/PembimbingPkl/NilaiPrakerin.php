@@ -12,6 +12,7 @@ class NilaiPrakerin extends Model
     protected $fillable = [
         'tahun_ajaran',
         'nis',
+        'absen',
         'cp1',
         'cp2',
         'cp3',

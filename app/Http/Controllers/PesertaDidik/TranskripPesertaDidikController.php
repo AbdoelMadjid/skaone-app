@@ -397,7 +397,7 @@ class TranskripPesertaDidikController extends Controller
         }
 
         //nilai PKL
-        $dataPKL = DB::select("
+        /* $dataPKL = DB::select("
             SELECT
                 tm.kode_mapel,
                 tm.nama_mapel,
@@ -429,9 +429,16 @@ class TranskripPesertaDidikController extends Controller
                 AND (tn.PSAJ9 IS NULL OR tn.PSAJ9 = 0)
                 AND (tn.PSAJ10 IS NULL OR tn.PSAJ10 = 0)
             ORDER BY tm.no_urut_mapel
-        ", [$nis]);
+        ", [$nis]); */
 
-        // Format ulang hasilnya ke bentuk [kode_mapel => [semester => nilai]]
+        $dataPKL = DB::table('nilai_prakerin')
+            ->where('nis', $nis)
+            ->select(
+                DB::raw('ROUND((COALESCE(absen,0) + COALESCE(cp1,0) + COALESCE(cp2,0) + COALESCE(cp3,0) + COALESCE(cp4,0)) / 5, 2) as rata_rata')
+            )
+            ->first();
+
+        /* // Format ulang hasilnya ke bentuk [kode_mapel => [semester => nilai]]
         $groupedPKL = [];
         foreach ($dataPKL as $item) {
             $kode = $item->kode_mapel;
@@ -443,7 +450,7 @@ class TranskripPesertaDidikController extends Controller
                 ];
             }
             $groupedPKL[$kode]['nilai'][$item->semester] = $item->nilai;
-        }
+        } */
 
         //nilai PKL
         $dataMP = DB::select("
@@ -499,6 +506,7 @@ class TranskripPesertaDidikController extends Controller
 
         $transkrip = DB::table('transkrip_nilai')
             ->where('nis', $nis)
+            ->where('semester', '<', 6)
             ->orderBy('semester')
             ->get();
 
@@ -526,11 +534,13 @@ class TranskripPesertaDidikController extends Controller
             }
 
             if ($count > 0) {
-                $rataPerSemester[$semester] = ceil($total / $count);
+                $rataPerSemester[$semester] = number_format($total / $count, 2, '.', '');
             } else {
                 $rataPerSemester[$semester] = null; // atau 0 jika lebih cocok
             }
         }
+
+        $rataAkhirPkl = $dataPKL && $dataPKL->rata_rata !== null ? $dataPKL->rata_rata : 0;
 
         $nilaiPsaj = DB::table('transkrip_nilai')
             ->where('nis', $nis)
@@ -561,8 +571,8 @@ class TranskripPesertaDidikController extends Controller
             $nilaiTeori = array_merge($nilaiTeori, array_filter($teori, fn($n) => $n !== null));
         }
 
-        $rataPsajPraktek = count($nilaiPraktek) ? round(array_sum($nilaiPraktek) / count($nilaiPraktek)) : '-';
-        $rataPsajTeori = count($nilaiTeori) ? round(array_sum($nilaiTeori) / count($nilaiTeori)) : '-';
+        $rataPsajPraktek = count($nilaiPraktek) ? number_format(array_sum($nilaiPraktek) / count($nilaiPraktek), 2, '.', '') : '-';
+        $rataPsajTeori = count($nilaiTeori) ? number_format(array_sum($nilaiTeori) / count($nilaiTeori), 2, '.', '') : '-';
 
         return view('pages.pesertadidik.transkrip-peserta-didik', [
             'dataRombel' => $dataRombel,
@@ -575,13 +585,14 @@ class TranskripPesertaDidikController extends Controller
             'dataPSAJKK' => $dataPSAJKK,
             'nilaiPSAJKK' => $nilaiPSAJKK,
             'dataKWU' => $groupedKWU,
-            'dataPKL' => $groupedPKL,
+            'dataPKL' => $dataPKL,
             'dataMP' => $groupedMP,
             'dataK' => $groupedK,
             'dataKK' => $dataKK,
             'rataPerSemester' => $rataPerSemester,
             'rataPsajPraktek' => $rataPsajPraktek,
             'rataPsajTeori' => $rataPsajTeori,
+            'rataAkhirPkl' => $rataAkhirPkl,
         ]);
     }
 }

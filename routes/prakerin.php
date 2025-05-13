@@ -79,6 +79,9 @@ Route::middleware('auth')->group(function () {
         Route::resource('penilaian-bimbingan', PenilaianBimbinganController::class);
         Route::post('/generate-nilai-prakerin', [PenilaianBimbinganController::class, 'generateNilaiPrakerin'])
             ->name('generate.nilai.prakerin');
+        Route::post('/update-cp4', [PenilaianBimbinganController::class, 'updateCp4'])
+            ->name('update.cp4');
+
         Route::resource('monitoring-prakerin', MonitoringPrakerinController::class);
         Route::resource('pesan-prakerin', PesanPrakerinController::class);
         Route::post('/update-read-status', function (Request $request) {

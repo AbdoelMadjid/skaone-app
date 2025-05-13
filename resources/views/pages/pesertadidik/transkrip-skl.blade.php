@@ -254,7 +254,7 @@
                         </tr>
                     @endforeach
                     {{-- NILAI MATA PELAJARAN PKL --}}
-                    @php $noPKL = $noKWU; @endphp
+                    {{-- @php $noPKL = $noKWU; @endphp
                     @foreach ($dataPKL as $item)
                         <tr>
                             <td style="text-align: center;" width='25'>{{ $noPKL++ }}.</td>
@@ -277,7 +277,26 @@
                                     class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}</span>
                             </td>
                         </tr>
-                    @endforeach
+                    @endforeach --}}
+                    @php $noPKL = $noKWU; @endphp
+                    <tr>
+                        <td style="text-align: center;" width='25'>{{ $noPKL++ }}.</td>
+                        <td style="padding-left:8px;">Praktik Kerja Lapangan</td>
+
+
+                        {{-- Kolom semester 6: tampilkan rata-rata --}}
+                        @php
+                            $nilaiAkhir = $dataPKL->rata_rata ?? 0;
+                            $daftarNilaiAkhir[] = $nilaiAkhir;
+                        @endphp
+
+                        {{-- Kolom nilai akhir total --}}
+                        <td style="text-align: center;">
+                            <span class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">
+                                {{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}
+                            </span>
+                        </td>
+                    </tr>
                     <tr>
                         <td style="text-align: center;" width='25'>9.</td>
                         <td style="padding-left:8px;">Mata Pelajaran Pilihan</td>
@@ -330,7 +349,7 @@
                     <td></td>
                     <td></td>
                     <td>
-                        Majalengka, 05 Mei 2025<br>
+                        Kabupaten Majalengka, 05 Mei 2025<br>
                         Kepala Sekolah,
                         <p style='margin-bottom:22px;margin-top:12px'>&nbsp;</p>
                         <strong>H. DAMUDIN, S.Pd., M.Pd.</strong><br>
