@@ -397,7 +397,7 @@ class PDFController extends Controller
         }
 
         //nilai PKL
-        $dataPKL = DB::select("
+        /* $dataPKL = DB::select("
             SELECT
                 tm.kode_mapel,
                 tm.nama_mapel,
@@ -429,9 +429,16 @@ class PDFController extends Controller
                 AND (tn.PSAJ9 IS NULL OR tn.PSAJ9 = 0)
                 AND (tn.PSAJ10 IS NULL OR tn.PSAJ10 = 0)
             ORDER BY tm.no_urut_mapel
-        ", [$nis]);
+        ", [$nis]); */
 
-        // Format ulang hasilnya ke bentuk [kode_mapel => [semester => nilai]]
+        $dataPKL = DB::table('nilai_prakerin')
+            ->where('nis', $nis)
+            ->select(
+                DB::raw('ROUND((COALESCE(absen,0) + COALESCE(cp1,0) + COALESCE(cp2,0) + COALESCE(cp3,0) + COALESCE(cp4,0)) / 5, 2) as rata_rata')
+            )
+            ->first();
+
+        /* // Format ulang hasilnya ke bentuk [kode_mapel => [semester => nilai]]
         $groupedPKL = [];
         foreach ($dataPKL as $item) {
             $kode = $item->kode_mapel;
@@ -443,7 +450,8 @@ class PDFController extends Controller
                 ];
             }
             $groupedPKL[$kode]['nilai'][$item->semester] = $item->nilai;
-        }
+        } */
+
 
         //nilai PKL
         $dataMP = DB::select("
@@ -575,7 +583,7 @@ class PDFController extends Controller
             'dataPSAJKK' => $dataPSAJKK,
             'nilaiPSAJKK' => $nilaiPSAJKK,
             'dataKWU' => $groupedKWU,
-            'dataPKL' => $groupedPKL,
+            'dataPKL' => $dataPKL,
             'dataMP' => $groupedMP,
             'dataK' => $groupedK,
             'dataKK' => $dataKK,

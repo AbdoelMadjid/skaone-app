@@ -351,7 +351,16 @@
                     <td>
                         Kabupaten Majalengka, 05 Mei 2025<br>
                         Kepala Sekolah,
-                        <p style='margin-bottom:22px;margin-top:12px'>&nbsp;</p>
+                        <div>
+                            <img src='{{ URL::asset('images/damudin.png') }}' border='0' height='110'
+                                style=' position: absolute; padding: 0px 2px 15px -200px; margin-left: -120px;margin-top:-15px;'>
+                        </div>
+                        <div><img src='{{ URL::asset('images/stempel.png') }}' border='0' height='180'
+                                width='184'
+                                style=' position: absolute; padding: 0px 2px 15px -650px; margin-left: -135px;margin-top:-50px;'>
+                        </div>
+                        <p>&nbsp;</p>
+                        <p>&nbsp;</p>
                         <strong>H. DAMUDIN, S.Pd., M.Pd.</strong><br>
                         NIP. 19740302 199803 1 002
                     </td>
