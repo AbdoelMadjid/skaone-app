@@ -48,24 +48,27 @@
 @endsection
 @section('script-bottom')
     <script>
-        document.querySelectorAll('.generate-btn').forEach(function(button) {
-            button.addEventListener('click', function(e) {
-                e.preventDefault(); // Cegah form submit langsung
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gunakan event delegation
+            document.addEventListener('click', function(e) {
+                if (e.target && e.target.classList.contains('generate-btn')) {
+                    e.preventDefault();
 
-                Swal.fire({
-                    title: 'Yakin ingin generate ulang nilai?',
-                    text: "Pastikan semua data sudah benar!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, lanjutkan!',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        this.closest('form').submit(); // Submit form jika dikonfirmasi
-                    }
-                });
+                    Swal.fire({
+                        title: 'Yakin ingin generate ulang nilai?',
+                        text: "Pastikan semua data sudah benar!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya, lanjutkan!',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            e.target.closest('form').submit();
+                        }
+                    });
+                }
             });
         });
     </script>
