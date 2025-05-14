@@ -92,6 +92,7 @@ Route::middleware('auth')->group(function () {
             Route::resource('rapor-p-lima', RaporPLimaController::class);
             Route::resource('transkrip-nilai', TranskripNilaiController::class);
             Route::get('nilaisemester', [TranskripNilaiController::class, 'getBySemester']);
+            Route::post('updatenilai', [TranskripNilaiController::class, 'updateNilai']);
 
             Route::resource('remedial-peserta-didik', RemedialPesertaDidikNilaiController::class);
         });

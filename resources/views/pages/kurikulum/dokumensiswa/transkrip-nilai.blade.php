@@ -103,6 +103,9 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="simpanNilaiBtn">Simpan</button>
+                </div>
             </div>
         </div>
     </div>
@@ -125,18 +128,20 @@
 
         $(document).on('click', '.showNilai', function(e) {
             e.preventDefault();
-
             var nis = $(this).data('nis');
-            var nama = $(this).data('nama');
             var semester = $(this).data('semester');
+            var nama = $(this).closest('.dropdown-menu').find('.dropdown-item:first').text().trim();
 
-            // Ubah judul modal
-            var label = (semester === 'PSAJ') ? 'Nilai PSAJ' : 'Semester ' + semester;
-            $('#nilaiModalLabel').text(`${label} - ${nama}`);
+            // Simpan data ke modal
+            $('#nilaiModal').data('nis', nis);
+            $('#nilaiModal').data('semester', semester);
 
-            // Tampilkan modal
+            // Update judul
+            let title = semester === 'PSAJ' ? 'Nilai PSAJ' : `Semester ${semester}`;
+            $('#nilaiModalLabel').text(`${title} - ${nama}`);
+
             $.ajax({
-                url: '/kurikulum/dokumentsiswa/nilaisemester', // PASTIKAN pakai "/" di awal
+                url: '/kurikulum/dokumentsiswa/nilaisemester',
                 method: 'GET',
                 data: {
                     nis: nis,
@@ -144,27 +149,51 @@
                 },
                 success: function(res) {
                     $('#nilaiBody').empty();
-
                     if (res.length > 0) {
                         res.forEach(function(item) {
-                            $('#nilaiBody').append(
-                                `<tr>
-                            <td>${item.kode_mapel}</td>
-                            <td>${item.nama_mapel}</td>
-                            <td>${item.nilai ?? '-'}</td>
-                        </tr>`
-                            );
+                            $('#nilaiBody').append(`
+                            <tr>
+                                <td>${item.kode_mapel}</td>
+                                <td>${item.nama_mapel}</td>
+                                <td>
+                                    <input type="number" class="form-control nilai-input" name="nilai[${item.kode_mapel}]" value="${item.nilai ?? ''}" />
+                                </td>
+                            </tr>
+                        `);
                         });
                     } else {
                         $('#nilaiBody').html(
                             '<tr><td colspan="3" class="text-center">Tidak ada data</td></tr>');
                     }
+                }
+            });
+        });
+
+        $(document).on('click', '#simpanNilaiBtn', function() {
+            const nis = $('#nilaiModal').data('nis');
+            const semester = $('#nilaiModal').data('semester');
+
+            const nilaiData = {};
+            $('.nilai-input').each(function() {
+                const kodeMapel = $(this).attr('name').match(/\[(.*?)\]/)[1];
+                nilaiData[kodeMapel] = $(this).val();
+            });
+
+            $.ajax({
+                url: '/kurikulum/dokumentsiswa/updatenilai',
+                method: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    nis: nis,
+                    semester: semester,
+                    nilai: nilaiData
                 },
-                error: function(xhr, status, error) {
-                    console.error("AJAX Error:", error);
-                    $('#nilaiBody').html(
-                        '<tr><td colspan="3" class="text-danger text-center">Terjadi kesalahan</td></tr>'
-                    );
+                success: function(response) {
+                    showToast('success', 'Nilai berhasil disimpan');
+                    $('#nilaiModal').modal('hide');
+                },
+                error: function(xhr) {
+                    showToast('error', 'Gagal menyimpan nilai');
                 }
             });
         });
