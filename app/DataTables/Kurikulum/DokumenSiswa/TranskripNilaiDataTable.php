@@ -31,27 +31,27 @@ class TranskripNilaiDataTable extends DataTable
                 return $row->nama_kk; // Mengambil nama kompetensi keahlian dari hasil join
             })
             ->addColumn('action', function ($row) {
-                // Menggunakan basicActions untuk menghasilkan action buttons
-                //$actions = $this->basicActions($row);
-                //return view('action', compact('actions'));
+                $id = $row->nis;
+                $nama = $row->nama_lengkap;
+
                 $tombol = '
-                        <div class="btn-group dropstart">
-                            <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
-                                class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
-                                <li><a class="dropdown-item" href=""> <strong>' . $row->nama_lengkap . '</strong></a></li>
-                                <li><a class="dropdown-item" href="">Semester 1</a></li>
-                                <li><a class="dropdown-item" href="">Semester 2</a></li>
-                                <li><a class="dropdown-item" href="">Semester 3</a></li>
-                                <li><a class="dropdown-item" href="">Semester 4</a></li>
-                                <li><a class="dropdown-item" href="">Semester 5</a></li>
-                                <li><a class="dropdown-item" href="">Semester 6 / PKL</a></li>
-                                <li><a class="dropdown-item" href="">PSAJ</a></li>
-                            </ul>
-                        </div>';
+                <div class="btn-group dropstart">
+                    <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
+                        class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                        <li><a href="#" class="dropdown-item"> ' . $nama . ' </a></li>
+                        <li><a href="#" class="dropdown-item showNilai" data-nis="' . $id . '" data-nama="' . $nama . '" data-semester="1" data-bs-toggle="modal" data-bs-target="#nilaiModal">Semester 1</a></li>
+                        <li><a href="#" class="dropdown-item showNilai" data-nis="' . $id . '" data-nama="' . $nama . '" data-semester="2" data-bs-toggle="modal" data-bs-target="#nilaiModal">Semester 2</a></li>
+                        <li><a href="#" class="dropdown-item showNilai" data-nis="' . $id . '" data-nama="' . $nama . '" data-semester="3" data-bs-toggle="modal" data-bs-target="#nilaiModal">Semester 3</a></li>
+                        <li><a href="#" class="dropdown-item showNilai" data-nis="' . $id . '" data-nama="' . $nama . '" data-semester="4" data-bs-toggle="modal" data-bs-target="#nilaiModal">Semester 4</a></li>
+                        <li><a href="#" class="dropdown-item showNilai" data-nis="' . $id . '" data-nama="' . $nama . '" data-semester="5" data-bs-toggle="modal" data-bs-target="#nilaiModal">Semester 5</a></li>
+                        <li><a href="#" class="dropdown-item showNilai" data-nis="' . $id . '" data-nama="' . $nama . '" data-semester="PSAJ" data-bs-toggle="modal" data-bs-target="#nilaiModal">PSAJ</a></li>
+                    </ul>
+                </div>';
                 return $tombol;
             })
-            ->addIndexColumn();
+            ->addIndexColumn()
+            ->rawColumns(['action', 'nama_siswa', 'nama_kk']);
     }
 
     /**

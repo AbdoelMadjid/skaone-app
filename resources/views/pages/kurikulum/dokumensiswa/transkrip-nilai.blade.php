@@ -82,6 +82,30 @@
         </div>
         <!--end col-->
     </div>
+    <div class="modal fade" id="nilaiModal" tabindex="-1" aria-labelledby="nilaiModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="nilaiModalLabel">Nilai Semester</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered" id="nilaiTable">
+                        <thead>
+                            <tr>
+                                <th>Kode Mapel</th>
+                                <th>Nama Mapel</th>
+                                <th>Nilai</th>
+                            </tr>
+                        </thead>
+                        <tbody id="nilaiBody">
+                            <!-- Isi dengan Ajax -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('script')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
@@ -98,6 +122,52 @@
 @section('script-bottom')
     <script>
         const datatable = 'transkripnilai-table';
+
+        $(document).on('click', '.showNilai', function(e) {
+            e.preventDefault();
+
+            var nis = $(this).data('nis');
+            var nama = $(this).data('nama');
+            var semester = $(this).data('semester');
+
+            // Ubah judul modal
+            var label = (semester === 'PSAJ') ? 'Nilai PSAJ' : 'Semester ' + semester;
+            $('#nilaiModalLabel').text(`${label} - ${nama}`);
+
+            // Tampilkan modal
+            $.ajax({
+                url: '/kurikulum/dokumentsiswa/nilaisemester', // PASTIKAN pakai "/" di awal
+                method: 'GET',
+                data: {
+                    nis: nis,
+                    semester: semester
+                },
+                success: function(res) {
+                    $('#nilaiBody').empty();
+
+                    if (res.length > 0) {
+                        res.forEach(function(item) {
+                            $('#nilaiBody').append(
+                                `<tr>
+                            <td>${item.kode_mapel}</td>
+                            <td>${item.nama_mapel}</td>
+                            <td>${item.nilai ?? '-'}</td>
+                        </tr>`
+                            );
+                        });
+                    } else {
+                        $('#nilaiBody').html(
+                            '<tr><td colspan="3" class="text-center">Tidak ada data</td></tr>');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error:", error);
+                    $('#nilaiBody').html(
+                        '<tr><td colspan="3" class="text-danger text-center">Terjadi kesalahan</td></tr>'
+                    );
+                }
+            });
+        });
 
         function handleFilterAndReload(tableId) {
             var table = $('#' + tableId).DataTable();
