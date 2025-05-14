@@ -145,7 +145,7 @@ class PenilaianKaprodiPKLController extends Controller
         ]);
 
         return redirect()->route('kaprodipkl.penilaian-prakerin.index')
-            ->with('success', 'Nilai dan absensi berhasil digenerate untuk siswa bimbingan Anda.');
+            ->with('success', 'Nilai dan absensi berhasil digenerate ulang.');
         //return redirect()->back()->with('success', 'Nilai berhasil digenerate ulang untuk siswa ini.');
     }
 }

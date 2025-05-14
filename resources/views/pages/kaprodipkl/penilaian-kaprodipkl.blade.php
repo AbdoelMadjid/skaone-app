@@ -72,6 +72,7 @@
             });
         });
     </script>
+
     <script>
         const datatable = 'penilaiankaprodipkl-table';
 
