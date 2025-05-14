@@ -56,6 +56,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('informasi-prakerin', InformasiAdministratorController::class);
         Route::resource('pelaporan-prakerin', PelaporanPrakerinController::class);
         Route::resource('penilaian-prakerin', PenilaianKaprodiPKLController::class);
+        Route::put('/generate/{id}', [PenilaianKaprodiPKLController::class, 'generateUlang'])->name('generate');
         Route::get('/download-jurnal-pdf', [PelaporanPrakerinController::class, 'downloadJurnalPdf'])->name('downloadjurnalpdf');
         Route::get('/download-absensi-pdf', [PelaporanPrakerinController::class, 'downloadAbsensiPdf'])->name('downloadabsensipdf');
         Route::post('/update-tanggal-kirim', [PelaporanPrakerinController::class, 'updateTanggalKirim'])->name('updatetanggalkirim');

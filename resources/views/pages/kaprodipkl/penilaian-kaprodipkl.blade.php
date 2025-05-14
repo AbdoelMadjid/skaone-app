@@ -32,6 +32,9 @@
         </div>
         <!--end col-->
     </div>
+    @if (session('success'))
+        <div id="session-message" data-message="{{ session('success') }}"></div>
+    @endif
 @endsection
 @section('script')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
@@ -44,6 +47,28 @@
     {!! $dataTable->scripts() !!}
 @endsection
 @section('script-bottom')
+    <script>
+        document.querySelectorAll('.generate-btn').forEach(function(button) {
+            button.addEventListener('click', function(e) {
+                e.preventDefault(); // Cegah form submit langsung
+
+                Swal.fire({
+                    title: 'Yakin ingin generate ulang nilai?',
+                    text: "Pastikan semua data sudah benar!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, lanjutkan!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.closest('form').submit(); // Submit form jika dikonfirmasi
+                    }
+                });
+            });
+        });
+    </script>
     <script>
         const datatable = 'penilaiankaprodipkl-table';
 

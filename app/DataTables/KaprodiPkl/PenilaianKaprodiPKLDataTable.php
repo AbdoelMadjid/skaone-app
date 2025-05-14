@@ -48,12 +48,13 @@ class PenilaianKaprodiPKLDataTable extends DataTable
 
                 $data = $absensi[$row->nis] ?? null;
                 $jumlah_hadir = $data->jumlah_hadir ?? 0;
-                $total_hari = 78;
+                //$total_hari = 78;
 
-                $persentase = ($jumlah_hadir / $total_hari) * 100;
-                $persentaseFormatted = number_format($persentase, 2); // 2 angka di belakang koma
+                //$persentase = ($jumlah_hadir / $total_hari) * 100;
+                //$persentaseFormatted = number_format($persentase, 2); // 2 angka di belakang koma
 
-                return "{$jumlah_hadir} hari <br>({$persentaseFormatted}%)";
+                //return "{$jumlah_hadir} hari <br>({$persentaseFormatted}%)";
+                return "{$jumlah_hadir}";
                 //return $absensi[$row->nis]->jumlah_hadir ?? 0;
             })
             ->addColumn('jurnal', function ($row) {
@@ -72,24 +73,25 @@ class PenilaianKaprodiPKLDataTable extends DataTable
 
                 $data = $jumlahJurnal[$row->nis] ?? null;
                 $total_jurnal = $data->total_jurnal ?? 0;
-                $jurnal_seharusnya = 48;
+                //$jurnal_seharusnya = 48;
 
-                $persentase = ($total_jurnal / $jurnal_seharusnya) * 100;
-                $persentaseFormatted = number_format($persentase, 2); // 2 angka di belakang koma
+                //$persentase = ($total_jurnal / $jurnal_seharusnya) * 100;
+                //$persentaseFormatted = number_format($persentase, 2); // 2 angka di belakang koma
 
                 // Beri warna merah jika kurang dari 85%
-                $warna = $persentase < 85 ? 'style="color:red;"' : '';
+                //$warna = $persentase < 85 ? 'style="color:red;"' : '';
 
                 // Hitung distribusi CP
-                $cp1 = round($total_jurnal * 0.20);
-                $cp2 = round($total_jurnal * 0.45);
-                $cp3 = round($total_jurnal * 0.35);
+                //$cp1 = round($total_jurnal * 0.20);
+                //$cp2 = round($total_jurnal * 0.45);
+                //$cp3 = round($total_jurnal * 0.35);
 
-                return "{$total_jurnal} entri <br>
+                return "{$total_jurnal} entri";
+                /*                 return "{$total_jurnal} entri <br>
                 <span {$warna}>({$persentaseFormatted}%)</span><br>
-                <small>CP1: {$cp1}, CP2: {$cp2}, CP3: {$cp3}</small>";
+                <small>CP1: {$cp1}, CP2: {$cp2}, CP3: {$cp3}</small>"; */
             })
-            ->addColumn('nilai_absensi', function ($row) {
+            /* ->addColumn('nilai_absensi', function ($row) {
                 $absensi = DB::table('absensi_siswa_pkls')
                     ->select(
                         'nis',
@@ -316,6 +318,45 @@ class PenilaianKaprodiPKLDataTable extends DataTable
 
                 $warna = $rata < 85 ? 'style="color:red;"' : '';
                 return "<span {$warna}>{$rata}</span>";
+            }) */
+            ->addColumn('rataCP', function ($row) {
+                // Cegah error jika semua nilai NULL (misalnya siswa belum dinilai)
+                $nilai = [
+                    $row->absen ?? null,
+                    $row->cp1 ?? null,
+                    $row->cp2 ?? null,
+                    $row->cp3 ?? null,
+                    $row->cp4 ?? null,
+                ];
+
+                // Filter nilai yang tidak null
+                $nilaiTersedia = array_filter($nilai, function ($n) {
+                    return $n !== null;
+                });
+
+                // Jika tidak ada nilai sama sekali, tampilkan "-"
+                if (count($nilaiTersedia) === 0) {
+                    return '<span style="color:gray;">-</span>';
+                }
+
+                // Hitung rata-rata dari nilai yang tersedia
+                $rata = round(array_sum($nilaiTersedia) / count($nilaiTersedia), 2);
+
+                // Warnai jika < 75
+                $warna = $rata < 75 ? 'style="color:red;"' : '';
+                return "<span {$warna}>{$rata}</span>";
+            })
+            ->addColumn('generateulang', function ($row) {
+                if ($row->id_nilai_prakerin) {
+                    return '
+            <form action="' . route('kaprodipkl.generate', $row->id_nilai_prakerin) . '" method="POST" class="generate-nilai-form">
+                ' . csrf_field() . method_field('PUT') . '
+                <button type="submit" class="btn btn-sm btn-warning generate-btn">Generate Ulang</button>
+            </form>
+        ';
+                } else {
+                    return '<span class="text-muted">Belum Ada</span>';
+                }
             })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
@@ -327,11 +368,13 @@ class PenilaianKaprodiPKLDataTable extends DataTable
                 'absensi',
                 'tempat_pkl',
                 'jurnal',
-                'nilai_CP1',
+                /* 'nilai_CP1',
                 'nilai_CP2',
                 'nilai_CP3',
                 'rataCP',
-                'nilai_absensi',
+                'nilai_absensi', */
+                'rataCP',
+                'generateulang',
                 'action'
             ]);
     }
@@ -348,6 +391,7 @@ class PenilaianKaprodiPKLDataTable extends DataTable
             ->join('peserta_didik_rombels', 'peserta_didiks.nis', '=', 'peserta_didik_rombels.nis')
             ->join('penempatan_prakerins', 'peserta_prakerins.nis', '=', 'penempatan_prakerins.nis')
             ->join('perusahaans', 'penempatan_prakerins.id_dudi', '=', 'perusahaans.id')
+            ->leftJoin('nilai_prakerin', 'peserta_prakerins.nis', '=', 'nilai_prakerin.nis') // JOIN ke nilai_prakerin
             ->select(
                 'peserta_prakerins.*',
                 'kompetensi_keahlians.nama_kk',
@@ -355,19 +399,16 @@ class PenilaianKaprodiPKLDataTable extends DataTable
                 'peserta_didik_rombels.rombel_nama',
                 'perusahaans.nama as nama_perusahaan',
                 'perusahaans.alamat as alamat_perusahaan',
+                'nilai_prakerin.id as id_nilai_prakerin', // Tambah ID di sini
+                'nilai_prakerin.tahun_ajaran',
+                'nilai_prakerin.absen',
+                'nilai_prakerin.cp1',
+                'nilai_prakerin.cp2',
+                'nilai_prakerin.cp3',
+                'nilai_prakerin.cp4'
             )
             ->orderBy('peserta_didik_rombels.rombel_nama')
             ->orderBy('peserta_didiks.nis');
-
-        /* $query->join('peserta_didiks', 'peserta_prakerins.nis', '=', 'peserta_didiks.nis')
-            ->join('kompetensi_keahlians', 'peserta_prakerins.kode_kk', '=', 'kompetensi_keahlians.idkk')
-            ->join('peserta_didik_rombels', 'peserta_prakerins.nis', '=', 'peserta_didik_rombels.nis')
-            ->select(
-                'peserta_prakerins.*',
-                'peserta_didiks.nama_lengkap',
-                'kompetensi_keahlians.nama_kk',
-                'peserta_didik_rombels.rombel_nama'
-            ); // Tambahkan nama_kk */
 
         if (auth()->check()) {
             $user = User::find(Auth::user()->id);
@@ -383,6 +424,7 @@ class PenilaianKaprodiPKLDataTable extends DataTable
                 $query->where('peserta_prakerins.kode_kk', '=', '421');
             }
         }
+
         return $query;
     }
 
@@ -425,11 +467,13 @@ class PenilaianKaprodiPKLDataTable extends DataTable
             Column::make('tempat_pkl')->title('Tempat PKL')->width(200),
             Column::make('absensi')->title('Absensi'),
             Column::make('jurnal')->title('Jurnal'),
-            Column::make('nilai_absensi')->title('Nilai Absensi')->addClass('text-center'),
-            Column::make('nilai_CP1')->title('CP1')->addClass('text-center'),
-            Column::make('nilai_CP2')->title('CP2')->addClass('text-center'),
-            Column::make('nilai_CP3')->title('CP3')->addClass('text-center'),
+            Column::make('absen')->title('Absen')->addClass('text-center'),
+            Column::make('cp1')->title('CP1')->addClass('text-center'),
+            Column::make('cp2')->title('CP2')->addClass('text-center'),
+            Column::make('cp3')->title('CP3')->addClass('text-center'),
+            Column::make('cp4')->title('CP4')->addClass('text-center'),
             Column::make('rataCP')->title('Rata-Rata')->addClass('text-center'),
+            Column::make('generateulang')->title('Generate')->addClass('text-center'),
             /* Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
