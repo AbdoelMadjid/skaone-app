@@ -32,8 +32,24 @@ class TranskripNilaiDataTable extends DataTable
             })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
-                $actions = $this->basicActions($row);
-                return view('action', compact('actions'));
+                //$actions = $this->basicActions($row);
+                //return view('action', compact('actions'));
+                $tombol = '
+                        <div class="btn-group dropstart">
+                            <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
+                                class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                <li><a class="dropdown-item" href=""> <strong>' . $row->nama_lengkap . '</strong></a></li>
+                                <li><a class="dropdown-item" href="">Semester 1</a></li>
+                                <li><a class="dropdown-item" href="">Semester 2</a></li>
+                                <li><a class="dropdown-item" href="">Semester 3</a></li>
+                                <li><a class="dropdown-item" href="">Semester 4</a></li>
+                                <li><a class="dropdown-item" href="">Semester 5</a></li>
+                                <li><a class="dropdown-item" href="">Semester 6 / PKL</a></li>
+                                <li><a class="dropdown-item" href="">PSAJ</a></li>
+                            </ul>
+                        </div>';
+                return $tombol;
             })
             ->addIndexColumn();
     }
