@@ -317,30 +317,49 @@
                     </tr>
                 @endforeach
                 {{-- NILAI MATA PELAJARAN PKL --}}
+                {{-- @php $noPKL = $noKWU; @endphp
+                    @foreach ($dataPKL as $item)
+                        <tr>
+                            <td style="text-align: center;" width='25'>{{ $noPKL++ }}.</td>
+                            <td style="padding-left:8px;">{{ $item['nama_mapel'] }}</td>
+                            <td style="text-align: center;">
+                                @php
+                                    $nilaiSemester = array_filter($item['nilai'], function ($v) {
+                                        return !is_null($v) && $v != 0;
+                                    });
+
+                                    $jumlahNilai = count($nilaiSemester);
+                                    $totalNilai = array_sum($nilaiSemester);
+                                    $nilaiAkhir = $jumlahNilai > 0 ? $totalNilai / $jumlahNilai : null;
+
+                                    if ($nilaiAkhir !== null) {
+                                        $daftarNilaiAkhir[] = $nilaiAkhir;
+                                    }
+                                @endphp
+                                <span
+                                    class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}</span>
+                            </td>
+                        </tr>
+                    @endforeach --}}
                 @php $noPKL = $noKWU; @endphp
-                @foreach ($dataPKL as $item)
-                    <tr>
-                        <td style="text-align: center;" width='25'>{{ $noPKL++ }}.</td>
-                        <td style="padding-left:8px;">{{ $item['nama_mapel'] }}</td>
-                        <td style="text-align: center;">
-                            @php
-                                $nilaiSemester = array_filter($item['nilai'], function ($v) {
-                                    return !is_null($v) && $v != 0;
-                                });
+                <tr>
+                    <td style="text-align: center;" width='25'>{{ $noPKL++ }}.</td>
+                    <td style="padding-left:8px;">Praktik Kerja Lapangan</td>
 
-                                $jumlahNilai = count($nilaiSemester);
-                                $totalNilai = array_sum($nilaiSemester);
-                                $nilaiAkhir = $jumlahNilai > 0 ? $totalNilai / $jumlahNilai : null;
 
-                                if ($nilaiAkhir !== null) {
-                                    $daftarNilaiAkhir[] = $nilaiAkhir;
-                                }
-                            @endphp
-                            <span
-                                class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">{{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}</span>
-                        </td>
-                    </tr>
-                @endforeach
+                    {{-- Kolom semester 6: tampilkan rata-rata --}}
+                    @php
+                        $nilaiAkhir = $dataPKL->rata_rata ?? 0;
+                        $daftarNilaiAkhir[] = $nilaiAkhir;
+                    @endphp
+
+                    {{-- Kolom nilai akhir total --}}
+                    <td style="text-align: center;">
+                        <span class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">
+                            {{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}
+                        </span>
+                    </td>
+                </tr>
                 <tr>
                     <td style="text-align: center;" width='25'>9.</td>
                     <td style="padding-left:8px;">Mata Pelajaran Pilihan</td>
@@ -402,8 +421,6 @@
                     <div><img src='{{ public_path('stempel.png') }}' border='0' height='180' width='184'
                             style=' position: absolute; padding: 0px 2px 15px -650px; margin-left: -135px;margin-top:-50px;'>
                     </div>
-                    <p>&nbsp;</p>
-                    <p>&nbsp;</p>
                     <p>&nbsp;</p>
                     <p>&nbsp;</p>
                     <strong>H. DAMUDIN, S.Pd., M.Pd.</strong><br>

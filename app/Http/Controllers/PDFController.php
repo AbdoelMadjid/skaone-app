@@ -540,6 +540,9 @@ class PDFController extends Controller
             }
         }
 
+        $rataAkhirPkl = $dataPKL && $dataPKL->rata_rata !== null ? $dataPKL->rata_rata : 0;
+
+
         $nilaiPsaj = DB::table('transkrip_nilai')
             ->where('nis', $nis)
             ->select(
@@ -590,6 +593,7 @@ class PDFController extends Controller
             'rataPerSemester' => $rataPerSemester,
             'rataPsajPraktek' => $rataPsajPraktek,
             'rataPsajTeori' => $rataPsajTeori,
+            'rataAkhirPkl' => $rataAkhirPkl,
         ];
 
         $pdf = PDF::loadView('pages.pesertadidik.pdf-transkrip-skl', $data)
