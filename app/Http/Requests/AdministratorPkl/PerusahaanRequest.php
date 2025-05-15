@@ -24,6 +24,8 @@ class PerusahaanRequest extends FormRequest
         return [
             'nama' => 'required|string',
             'alamat' => 'required|string',
+            'jabatan' => 'required|string',
+            'nama_pembimbing' => 'required|string',
         ];
     }
 }

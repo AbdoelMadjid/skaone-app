@@ -75,6 +75,8 @@ class PerusahaanDataTable extends DataTable
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('nama')->title('Nama Perusahaan'),
             Column::make('alamat')->title('Alamat'),
+            Column::make('jabatan')->title('Jabatan Pembimbing'),
+            Column::make('nama_pembimbing')->title('Nama Pembimbing'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
