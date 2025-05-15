@@ -87,6 +87,11 @@
                                             role="tab"> Jurnal Prakerin
                                         </a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#sertifikatprakerin"
+                                            role="tab"> Sertifikat Prakerin
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="col-auto">
@@ -130,6 +135,10 @@
                                 @include('pages.kaprodipkl.pelaporan-prakerin-jurnal-data')
                             </div>
                             <!-- end tab pane -->
+                            <div class="tab-pane active" id="sertifikatprakerin" role="tabpanel">
+                                @include('pages.kaprodipkl.pelaporan-prakerin-sertifikat')
+                            </div>
+                            <!-- end tab pane -->
                         </div>
                         <!-- end tab content -->
                     </div>
@@ -149,6 +158,21 @@
 @section('script-bottom')
     <script>
         $(document).ready(function() {
+
+            $('.btn-show-sertifikat').on('click', function() {
+                const nama = $(this).data('nama');
+                const nis = $(this).data('nis');
+                const perusahaan = $(this).data('perusahaan');
+
+                $('#modalNama').text(nama);
+                $('#modalNis').text(nis);
+                $('#modalPerusahaan').text(perusahaan);
+
+                // Tampilkan modal
+                const modal = new bootstrap.Modal(document.getElementById('globalSertifikatModal'));
+                modal.show();
+            });
+
             // Fungsi untuk memeriksa dan mengubah warna berdasarkan tanggal
             function checkTanggalKirim(input) {
                 var tanggalKirim = $(input).val(); // Ambil nilai tanggal
@@ -412,6 +436,13 @@
                         targets: 7
                     }, // Lebar kolom NIP
                 ]
+            });
+
+            // Tabel 1: Peserta Prakerin
+            $('#sertifikatprakerinTable').DataTable({
+                responsive: true,
+                pageLength: 25,
+                autoWidth: false,
             });
         });
     </script>
