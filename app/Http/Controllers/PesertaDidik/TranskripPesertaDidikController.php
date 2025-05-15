@@ -214,7 +214,7 @@ class TranskripPesertaDidikController extends Controller
                 AND (tn.PSAJ8 IS NULL OR tn.PSAJ8 = 0)
                 AND (tn.PSAJ9 IS NULL OR tn.PSAJ9 = 0)
                 AND (tn.PSAJ10 IS NULL OR tn.PSAJ10 = 0)
-            ORDER BY tm.no_urut_mapel
+            ORDER BY tm.kode_mapel
         ", [$nis]);
 
 
