@@ -452,7 +452,7 @@ class TranskripPesertaDidikController extends Controller
             $groupedPKL[$kode]['nilai'][$item->semester] = $item->nilai;
         } */
 
-        //nilai PKL
+        //nilai PSAJ
         $dataMP = DB::select("
             SELECT
                 tm.kode_mapel,

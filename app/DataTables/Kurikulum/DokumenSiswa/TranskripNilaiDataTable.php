@@ -39,7 +39,7 @@ class TranskripNilaiDataTable extends DataTable
                     <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
                         class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
-                        <li><a href="#" class="dropdown-item"> ' . $nama . ' </a></li>
+                        <li><a href="#" class="dropdown-item showTranskrip" data-nis="' . $id . '" data-bs-toggle="modal" data-bs-target="#TranskripRapor"> ' . $nama . ' </a></li>
                         <li><a href="#" class="dropdown-item showNilai" data-nis="' . $id . '" data-nama="' . $nama . '" data-semester="1" data-bs-toggle="modal" data-bs-target="#nilaiModal">Semester 1</a></li>
                         <li><a href="#" class="dropdown-item showNilai" data-nis="' . $id . '" data-nama="' . $nama . '" data-semester="2" data-bs-toggle="modal" data-bs-target="#nilaiModal">Semester 2</a></li>
                         <li><a href="#" class="dropdown-item showNilai" data-nis="' . $id . '" data-nama="' . $nama . '" data-semester="3" data-bs-toggle="modal" data-bs-target="#nilaiModal">Semester 3</a></li>

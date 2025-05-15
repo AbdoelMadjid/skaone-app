@@ -109,6 +109,24 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="TranskripRapor" tabindex="-1" aria-labelledby="TranskripRaporLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Transkrip Nilai </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body" id="transkripBody">
+                    <div class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('script')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
@@ -197,6 +215,30 @@
                 }
             });
         });
+
+        $(document).on('click', '.showTranskrip', function(e) {
+            e.preventDefault();
+
+            let nis = $(this).data('nis');
+            $('#transkripBody').html(`<div class="text-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>`);
+
+            $.ajax({
+                url: '/kurikulum/dokumentsiswa/transkriprapor/' + nis,
+                type: 'GET',
+                success: function(res) {
+                    $('#transkripBody').html(res);
+                },
+                error: function(xhr) {
+                    $('#transkripBody').html(
+                        `<div class="alert alert-danger">Gagal memuat data transkrip.</div>`);
+                }
+            });
+        });
+
 
         function handleFilterAndReload(tableId) {
             var table = $('#' + tableId).DataTable();
