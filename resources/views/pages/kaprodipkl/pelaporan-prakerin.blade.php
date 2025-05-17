@@ -159,16 +159,66 @@
     <script>
         $(document).ready(function() {
 
+            $('#btnCetakSertifikat').on('click', function() {
+                const printContent = document.getElementById('cetak-sertifikat-pkl').innerHTML;
+                const win = window.open('', '', 'height=800,width=1000');
+                win.document.write('<html><head><title>Cetak Sertifikat</title>');
+                win.document.write(`
+            <style>
+                @page {
+                    size: A4 landscape;
+                    margin: 1cm;
+                }
+                body {
+                    font-family: "Times New Roman", Times, serif;
+                    margin: 0;
+                    padding: 0;
+                }
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+            </style>
+        `);
+                win.document.write('</head><body>');
+                win.document.write(printContent);
+                win.document.write('</body></html>');
+                win.document.close();
+                win.focus();
+                win.print();
+                win.close();
+            });
+
+            // Fungsi konversi nilai angka ke huruf
+            function getNilaiHuruf(nilai) {
+                if (nilai >= 90) return 'A';
+                if (nilai >= 80) return 'B';
+                if (nilai >= 70) return 'C';
+                if (nilai >= 60) return 'D';
+                return 'E';
+            }
+
             $('.btn-show-sertifikat').on('click', function() {
-                const nama = $(this).data('nama');
-                const nis = $(this).data('nis');
-                const perusahaan = $(this).data('perusahaan');
+                const nama = $(this).data('nama') || '-';
+                const nis = $(this).data('nis') || '-';
+                const perusahaan = $(this).data('perusahaan') || '-';
+                const nilaiprakerin = $(this).data('nilaiprakerin') || '0.00';
+                const jabatanpembimbing = $(this).data('jabatanpembimbing') || '-';
+                const namapembimbing = $(this).data('namapembimbing') || '-';
+                const programkeahlian = $(this).data('programkeahlian') || '-';
+                const konsentrasi = $(this).data('konsentrasi') || '-';
+
+                const nilaiHuruf = getNilaiHuruf(parseFloat(nilaiprakerin));
 
                 $('#modalNama').text(nama);
                 $('#modalNis').text(nis);
                 $('#modalPerusahaan').text(perusahaan);
+                $('#modalNilaiPrakerin').text(`${nilaiprakerin} (${nilaiHuruf})`);
+                $('#modalJabatanPembimbing').text(jabatanpembimbing);
+                $('#modalNamaPembimbing').text(namapembimbing);
+                $('#modalProgramKeahlian').text(programkeahlian);
+                $('#modalKonsentrasiKeahlian').text(konsentrasi);
 
-                // Tampilkan modal
                 const modal = new bootstrap.Modal(document.getElementById('globalSertifikatModal'));
                 modal.show();
             });

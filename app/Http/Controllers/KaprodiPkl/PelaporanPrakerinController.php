@@ -27,12 +27,15 @@ class PelaporanPrakerinController extends Controller
                     'penempatan_prakerins.tahunajaran',
                     'penempatan_prakerins.kode_kk',
                     'kompetensi_keahlians.nama_kk',
+                    'program_keahlians.nama_pk', // ← ambil nama program keahlian
                     'peserta_didiks.nis',
                     'peserta_didiks.nama_lengkap',
                     'peserta_didik_rombels.rombel_nama AS rombel',
                     'perusahaans.id AS id_perusahaan',
                     'perusahaans.nama AS nama_perusahaan',
                     'perusahaans.alamat AS alamat_perusahaan',
+                    'perusahaans.jabatan AS jabatan_pembimbing',
+                    'perusahaans.nama_pembimbing AS nama_pembimbing',
                     'pembimbing_prakerins.id_personil',
                     'personil_sekolahs.nip',
                     'personil_sekolahs.gelardepan',
@@ -40,6 +43,7 @@ class PelaporanPrakerinController extends Controller
                     'personil_sekolahs.gelarbelakang'
                 )
                 ->join('kompetensi_keahlians', 'penempatan_prakerins.kode_kk', '=', 'kompetensi_keahlians.idkk')
+                ->join('program_keahlians', 'kompetensi_keahlians.id_pk', '=', 'program_keahlians.idpk') // ← Tambahkan JOIN ini
                 ->join('perusahaans', 'penempatan_prakerins.id_dudi', '=', 'perusahaans.id')
                 ->join('peserta_didiks', 'penempatan_prakerins.nis', '=', 'peserta_didiks.nis')
                 ->join('peserta_didik_rombels', 'peserta_didiks.nis', '=', 'peserta_didik_rombels.nis')
@@ -66,9 +70,9 @@ class PelaporanPrakerinController extends Controller
 
             // Dapatkan daftar perusahaan unik berdasarkan hasil query
             $perusahaanList = DB::table('perusahaans')
-                ->select('id AS id_perusahaan', 'nama AS nama_perusahaan', 'alamat AS alamat_perusahaan')
+                ->select('id AS id_perusahaan', 'nama AS nama_perusahaan', 'alamat AS alamat_perusahaan', 'jabatan AS jabatan_pembimbing', 'nama_pembimbing AS pembimbing_perusahaan')
                 ->whereIn('id', $dataPrakerin->pluck('id_perusahaan')) // Filter berdasarkan perusahaan terkait
-                ->groupBy('id', 'nama', 'alamat')
+                ->groupBy('id', 'nama', 'alamat', 'jabatan', 'nama_pembimbing')
                 ->get();
 
             // Jumlah total perusahaan dalam $perusahaanList
@@ -294,6 +298,25 @@ class PelaporanPrakerinController extends Controller
 
                 return $siswa;
             });
+
+
+            $nilaiPrakerin = DB::table('nilai_prakerin')
+                ->select(
+                    'nis',
+                    DB::raw('ROUND((COALESCE(absen,0) + COALESCE(cp1,0) + COALESCE(cp2,0) + COALESCE(cp3,0) + COALESCE(cp4,0)) / 5, 2) as rata_rata')
+                )
+                ->get()
+                ->keyBy('nis');
+
+            $dataPrakerin = $dataPrakerin->map(function ($prakerin) use ($nilaiPrakerin) {
+                $nis = $prakerin->nis;
+
+                $nilai = $nilaiPrakerin[$nis] ?? null;
+                $prakerin->rata_rata_prakerin = $nilai->rata_rata ?? 0;
+
+                return $prakerin;
+            });
+
 
             // Perform the query using the kode_kk value
             $dataJurnal = DB::table('jurnal_pkls')
