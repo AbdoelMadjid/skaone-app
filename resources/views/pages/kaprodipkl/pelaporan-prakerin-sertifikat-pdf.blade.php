@@ -1,54 +1,29 @@
-<table id="sertifikatprakerinTable" class="display" style="width:100%; table-layout: fixed;">
-    <thead>
-        <tr>
-            <th style="width:40px;">No.</th>
-            <th style="width:60px;">NIS</th>
-            <th>Nama Lengkap</th>
-            <th style="width:60px;">Rombel</th>
-            <th>Perusahaan</th>
-            <th>Pembimbing</th>
-            <th>Nilai Prakerin</th>
-            <th>Sertifikat</th>
-        </tr>
-    </thead>
-    <tbody>
-        @forelse ($dataPrakerin as $index => $prakerin)
-            <tr>
-                <td class="text-center">{{ $loop->iteration }}</td>
-                <td>{{ $prakerin->nis }}</td>
-                <td>{{ $prakerin->nama_lengkap }}</td>
-                <td>{{ $prakerin->rombel }}</td>
-                <td>{{ $prakerin->nama_perusahaan }}</td>
-                <td>{{ $prakerin->nama_pembimbing }}<br>{{ $prakerin->jabatan_pembimbing }}</td>
-                <td class="text-center">{{ number_format($prakerin->rata_rata_prakerin, 2) }} </td>
-                <td class="text-center">
-                    <button class="btn btn-soft-success btn-sm"
-                        onclick="window.location.href='{{ route('kaprodipkl.download.sertifpkl', $prakerin->nis) }}'">
-                        <i class="ri-download-line"></i> PDF
-                    </button>
-                    <button class="btn btn-sm btn-soft-success btn-cetak-sertifikat"
-                        data-nama="{{ $prakerin->nama_lengkap }}" data-nis="{{ $prakerin->nis }}"
-                        data-perusahaan="{{ $prakerin->nama_perusahaan }}"
-                        data-nilaiprakerin="{{ $prakerin->rata_rata_prakerin }}"
-                        data-jabatanpembimbing="{{ $prakerin->jabatan_pembimbing }}"
-                        data-namapembimbing="{{ $prakerin->nama_pembimbing }}"
-                        data-programkeahlian="{{ $prakerin->nama_pk }}" data-konsentrasi="{{ $prakerin->nama_kk }}">
-                        <i class="ri-printer-line"></i> Print
-                    </button>
-                </td>
-            </tr>
-        @empty
-            <tr>
-                <td colspan="8">Tidak ada data.</td>
-            </tr>
-        @endforelse
-    </tbody>
-</table>
+<style>
+    @page {
+        size: A4 landscape;
+        margin: 0;
+    }
 
-<div id='cetak-sertifikat-pkl' style="display: none; position: relative; width: 100%; height: 1000px;">
-    <img src="{{ URL::asset('images/sertifikatpkl.jpg') }}"
-        style="position: absolute; width: 29.7cm; height: auto; z-index: 0; top: 0; left: 0;" />
-    <div style="margin-top: 320px;"></div>
+    body {
+        font-family: "Times New Roman", Times, serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    img {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+</style>
+<div id='cetak-sertifikat-pkl' style="position: relative; width: 100%; height: 1000px;">
+    <img src="{{ public_path('sertifikatpkl.jpg') }}"
+        style="position: absolute; width: 29.7cm; height: auto; top: 0; left: 0;" />
+    <div style="margin-top: 330px;"></div>
     <div style="position: relative; z-index: 1;">
         <table style='margin: 0 auto;width:75%;border-collapse:collapse;'>
             <tr>
@@ -64,22 +39,22 @@
                         <tr>
                             <td width='170'>Nama</td>
                             <td width='10'>:</td>
-                            <td><strong><span class="sertifikat-nama"></span></strong></td>
+                            <td><strong>{{ $prakerin->nama_lengkap }}</strong></td>
                         </tr>
                         <tr>
                             <td>Nomor Induk Siswa</td>
                             <td>:</td>
-                            <td><span class="sertifikat-nis"></span></td>
+                            <td>{{ $prakerin->nis }}</td>
                         </tr>
                         <tr>
                             <td>Program Keahlian</td>
                             <td>:</td>
-                            <td><span class="sertifikat-pk"></span></td>
+                            <td>{{ $prakerin->nama_pk }}</td>
                         </tr>
                         <tr>
                             <td>Konsentrasi Keahlian</td>
                             <td>:</td>
-                            <td><span class="sertifikat-kk"></span></td>
+                            <td>{{ $prakerin->nama_kk }}</td>
                         </tr>
                     </table>
                 </td>
@@ -90,11 +65,11 @@
             </tr>
             <tr>
                 <td colspan='3'>Dalam Kegiatan Praktek Kerja Lapangan (PKL) di: <br>
-                    <strong><span class="sertifikat-perusahaan"></span></strong>
+                    <strong><span>{{ $prakerin->nama_perusahaan }}</span></strong>
                     <br>
                     dari tanggal 01 Nopember 2024 - 30 April 2025 tahun pelajaran 2024-2025
                     dengan nilai
-                    Capaian Kompetensi <span class="sertifikat-nilai"></span>
+                    Capaian Kompetensi <span>{{ $prakerin->rata_rata_prakerin }}</span>
                 </td>
             </tr>
             <tr style="height: 15px;">
@@ -124,10 +99,10 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><strong><span class="sertifikat-pembimbing"></span></strong></td>
+                            <td><strong><span>{{ $prakerin->nama_pembimbing }}</span></strong></td>
                         </tr>
                         <tr>
-                            <td><span class="sertifikat-jabatan"></span></td>
+                            <td><span>{{ $prakerin->jabatan_pembimbing }}</span></td>
                         </tr>
                     </table>
                 </td>
@@ -143,10 +118,10 @@
                         <tr>
                             <td>
                                 <div>
-                                    <img src='{{ URL::asset('images/damudin.png') }}' border='0' height='110'
+                                    <img src='{{ public_path('damudin.png') }}' border='0' height='110'
                                         style=' position: absolute; padding: 0px 2px 15px -200px; margin-left: -120px;margin-top:-15px;'>
                                 </div>
-                                <div><img src='{{ URL::asset('images/stempel.png') }}' border='0' height='180'
+                                <div><img src='{{ public_path('stempel.png') }}' border='0' height='180'
                                         width='184'
                                         style=' position: absolute; padding: 0px 2px 15px -650px; margin-left: -135px;margin-top:-50px;'>
                                 </div>

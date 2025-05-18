@@ -53,7 +53,7 @@
                             <div class="col">
                                 <ul class="nav nav-tabs-custom card-header-tabs border-bottom-0" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active fw-semibold" data-bs-toggle="tab" href="#pesertaPrakerin"
+                                        <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#pesertaPrakerin"
                                             role="tab">
                                             Peserta Prakerin <span
                                                 class="badge bg-danger-subtle text-danger align-middle rounded-pill ms-1">{{ $totalDataPrakerin }}</span>
@@ -88,8 +88,8 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#sertifikatprakerin"
-                                            role="tab"> Sertifikat Prakerin
+                                        <a class="nav-link active fw-semibold" data-bs-toggle="tab"
+                                            href="#sertifikatprakerin" role="tab"> Sertifikat Prakerin
                                         </a>
                                     </li>
                                 </ul>
@@ -109,7 +109,7 @@
                     <div class="card-body">
 
                         <div class="tab-content">
-                            <div class="tab-pane active" id="pesertaPrakerin" role="tabpanel">
+                            <div class="tab-pane" id="pesertaPrakerin" role="tabpanel">
                                 @include('pages.kaprodipkl.pelaporan-prakerin-peserta')
                             </div>
                             <!-- end tab pane -->
@@ -159,7 +159,40 @@
     <script>
         $(document).ready(function() {
 
-            $('#btnCetakSertifikat').on('click', function() {
+            // Fungsi konversi nilai angka ke huruf
+            function getNilaiHuruf(nilai) {
+                if (nilai >= 90) return 'A';
+                if (nilai >= 80) return 'B';
+                if (nilai >= 70) return 'C';
+                if (nilai >= 60) return 'D';
+                return 'E';
+            }
+
+            $('.btn-cetak-sertifikat').on('click', function() {
+                // Ambil data dari tombol
+                var nama = $(this).data('nama');
+                var nis = $(this).data('nis');
+                var perusahaan = $(this).data('perusahaan');
+                var nilaiprakerin = $(this).data('nilaiprakerin');
+                var jabatan = $(this).data('jabatanpembimbing');
+                var pembimbing = $(this).data('namapembimbing');
+                var pk = $(this).data('programkeahlian');
+                var kk = $(this).data('konsentrasi');
+
+                var nilaiHuruf = getNilaiHuruf(parseFloat(nilaiprakerin));
+
+                // Masukkan data ke elemen dalam #cetak-sertifikat-pkl
+                $('#cetak-sertifikat-pkl').find('.sertifikat-nama').text(nama);
+                $('#cetak-sertifikat-pkl').find('.sertifikat-nis').text(nis);
+                $('#cetak-sertifikat-pkl').find('.sertifikat-perusahaan').text(perusahaan);
+                $('#cetak-sertifikat-pkl').find('.sertifikat-nilai').text(nilaiprakerin + ' (' +
+                    nilaiHuruf + ')');
+                $('#cetak-sertifikat-pkl').find('.sertifikat-pk').text(pk);
+                $('#cetak-sertifikat-pkl').find('.sertifikat-kk').text(kk);
+                $('#cetak-sertifikat-pkl').find('.sertifikat-pembimbing').text(pembimbing);
+                $('#cetak-sertifikat-pkl').find('.sertifikat-jabatan').text(jabatan);
+
+                // Setelah data terisi, ambil isi HTML lalu cetak
                 const printContent = document.getElementById('cetak-sertifikat-pkl').innerHTML;
                 const win = window.open('', '', 'height=800,width=1000');
                 win.document.write('<html><head><title>Cetak Sertifikat</title>');
@@ -167,16 +200,23 @@
             <style>
                 @page {
                     size: A4 landscape;
-                    margin: 1cm;
+                    margin: 0;
                 }
+
                 body {
                     font-family: "Times New Roman", Times, serif;
                     margin: 0;
                     padding: 0;
                 }
+
                 table {
                     width: 100%;
                     border-collapse: collapse;
+                }
+
+                img {
+                    -webkit-print-color-adjust: exact;
+                    print-color-adjust: exact;
                 }
             </style>
         `);
@@ -187,40 +227,6 @@
                 win.focus();
                 win.print();
                 win.close();
-            });
-
-            // Fungsi konversi nilai angka ke huruf
-            function getNilaiHuruf(nilai) {
-                if (nilai >= 90) return 'A';
-                if (nilai >= 80) return 'B';
-                if (nilai >= 70) return 'C';
-                if (nilai >= 60) return 'D';
-                return 'E';
-            }
-
-            $('.btn-show-sertifikat').on('click', function() {
-                const nama = $(this).data('nama') || '-';
-                const nis = $(this).data('nis') || '-';
-                const perusahaan = $(this).data('perusahaan') || '-';
-                const nilaiprakerin = $(this).data('nilaiprakerin') || '0.00';
-                const jabatanpembimbing = $(this).data('jabatanpembimbing') || '-';
-                const namapembimbing = $(this).data('namapembimbing') || '-';
-                const programkeahlian = $(this).data('programkeahlian') || '-';
-                const konsentrasi = $(this).data('konsentrasi') || '-';
-
-                const nilaiHuruf = getNilaiHuruf(parseFloat(nilaiprakerin));
-
-                $('#modalNama').text(nama);
-                $('#modalNis').text(nis);
-                $('#modalPerusahaan').text(perusahaan);
-                $('#modalNilaiPrakerin').text(`${nilaiprakerin} (${nilaiHuruf})`);
-                $('#modalJabatanPembimbing').text(jabatanpembimbing);
-                $('#modalNamaPembimbing').text(namapembimbing);
-                $('#modalProgramKeahlian').text(programkeahlian);
-                $('#modalKonsentrasiKeahlian').text(konsentrasi);
-
-                const modal = new bootstrap.Modal(document.getElementById('globalSertifikatModal'));
-                modal.show();
             });
 
             // Fungsi untuk memeriksa dan mengubah warna berdasarkan tanggal

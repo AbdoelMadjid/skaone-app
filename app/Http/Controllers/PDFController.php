@@ -10,6 +10,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class PDFController extends Controller
 {
@@ -662,5 +663,83 @@ class PDFController extends Controller
             ->setPaper('a4', 'portrait');
 
         return $pdf->download('skkb-' . $dataSiswa->nis . ' ' . $dataSiswa->nama_lengkap . '.pdf');
+    }
+
+    public function downloadSertifPKL($nis)
+    {
+        // Pastikan user sudah login
+        if (auth()->check()) {
+            $user = User::find(Auth::user()->id); // Mendapatkan user yang sedang login
+
+            // Mulai query dasar
+            $query = DB::table('penempatan_prakerins')
+                ->select(
+                    'penempatan_prakerins.tahunajaran',
+                    'penempatan_prakerins.kode_kk',
+                    'kompetensi_keahlians.nama_kk',
+                    'program_keahlians.nama_pk', // ← ambil nama program keahlian
+                    'peserta_didiks.nis',
+                    'peserta_didiks.nama_lengkap',
+                    'peserta_didik_rombels.rombel_nama AS rombel',
+                    'perusahaans.id AS id_perusahaan',
+                    'perusahaans.nama AS nama_perusahaan',
+                    'perusahaans.alamat AS alamat_perusahaan',
+                    'perusahaans.jabatan AS jabatan_pembimbing',
+                    'perusahaans.nama_pembimbing AS nama_pembimbing',
+                    'pembimbing_prakerins.id_personil',
+                    'personil_sekolahs.nip',
+                    'personil_sekolahs.gelardepan',
+                    'personil_sekolahs.namalengkap',
+                    'personil_sekolahs.gelarbelakang'
+                )
+                ->join('kompetensi_keahlians', 'penempatan_prakerins.kode_kk', '=', 'kompetensi_keahlians.idkk')
+                ->join('program_keahlians', 'kompetensi_keahlians.id_pk', '=', 'program_keahlians.idpk') // ← Tambahkan JOIN ini
+                ->join('perusahaans', 'penempatan_prakerins.id_dudi', '=', 'perusahaans.id')
+                ->join('peserta_didiks', 'penempatan_prakerins.nis', '=', 'peserta_didiks.nis')
+                ->join('peserta_didik_rombels', 'peserta_didiks.nis', '=', 'peserta_didik_rombels.nis')
+                ->join('pembimbing_prakerins', 'penempatan_prakerins.id', '=', 'pembimbing_prakerins.id_penempatan')
+                ->join('personil_sekolahs', 'pembimbing_prakerins.id_personil', '=', 'personil_sekolahs.id_personil');
+
+            // Cek role user menggunakan hasAnyRole dan tambahkan filter kode_kk
+            if ($user->hasAnyRole(['kaprodiak'])) {
+                $query->where('penempatan_prakerins.kode_kk', '=', '833');
+            } elseif ($user->hasAnyRole(['kaprodibd'])) {
+                $query->where('penempatan_prakerins.kode_kk', '=', '811');
+            } elseif ($user->hasAnyRole(['kaprodimp'])) {
+                $query->where('penempatan_prakerins.kode_kk', '=', '821');
+            } elseif ($user->hasAnyRole(['kaprodirpl'])) {
+                $query->where('penempatan_prakerins.kode_kk', '=', '411');
+            } elseif ($user->hasAnyRole(['kaproditkj'])) {
+                $query->where('penempatan_prakerins.kode_kk', '=', '421');
+            }
+
+            $query->where('peserta_didiks.nis', $nis);
+
+            // Eksekusi query dan dapatkan hasil
+            $prakerin = $query->first();
+
+            $nilai = DB::table('nilai_prakerin')
+                ->select(
+                    'nis',
+                    DB::raw('ROUND((COALESCE(absen,0) + COALESCE(cp1,0) + COALESCE(cp2,0) + COALESCE(cp3,0) + COALESCE(cp4,0)) / 5, 2) as rata_rata')
+                )
+                ->where('nis', $prakerin->nis)
+                ->first();
+
+            $prakerin->rata_rata_prakerin = $nilai->rata_rata ?? 0;
+
+            // Ambil data yang dibutuhkan view
+            $data = [
+                'prakerin' => $prakerin,
+            ];
+
+            $pdf = PDF::loadView('pages.kaprodipkl.pelaporan-prakerin-sertifikat-pdf', $data)
+                ->setPaper('a4', 'landscape');
+
+            return $pdf->download('sertifikat-pkl-' . $prakerin->nis . '-' . Str::slug($prakerin->nama_lengkap) . '.pdf');
+        }
+
+        // Jika user tidak login, redirect ke halaman login
+        return redirect()->route('login')->with('error', 'Anda harus login untuk mengakses halaman ini.');
     }
 }

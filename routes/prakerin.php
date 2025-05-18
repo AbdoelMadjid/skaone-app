@@ -21,6 +21,7 @@ use App\Http\Controllers\PesertaDidikPkl\MonitoringSiswaController;
 use App\Http\Controllers\PesertaDidikPkl\PesanPrakerinSiswaController;
 use App\Http\Controllers\PesertaDidikPkl\SiswaInformasiController;
 use App\Models\PembimbingPkl\PesanPrakerin;
+use App\Http\Controllers\PDFController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -55,6 +56,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('modul-ajar', ModulAjarController::class);
         Route::resource('informasi-prakerin', InformasiAdministratorController::class);
         Route::resource('pelaporan-prakerin', PelaporanPrakerinController::class);
+        //Route::get('download-sertifikat-pkl', [PDFController::class, 'downloadSertifPKL'])->name('download.sertifpkl');
+        Route::get('/download-sertifikat-pkl/{nis}', [PDFController::class, 'downloadSertifPKL'])->name('download.sertifpkl');
         Route::resource('penilaian-prakerin', PenilaianKaprodiPKLController::class);
         Route::put('/generate/{id}', [PenilaianKaprodiPKLController::class, 'generateUlang'])->name('generate');
         Route::get('/download-jurnal-pdf', [PelaporanPrakerinController::class, 'downloadJurnalPdf'])->name('downloadjurnalpdf');
