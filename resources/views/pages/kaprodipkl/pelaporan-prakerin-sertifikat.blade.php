@@ -47,7 +47,7 @@
 
 <div id='cetak-sertifikat-pkl' style="display: none; position: relative; width: 100%; height: 1000px;">
     <img src="{{ URL::asset('images/sertifikatpkl.jpg') }}"
-        style="position: absolute; width: 29.7cm; height: auto; z-index: 0; top: 0; left: 0;" />
+        style="position: absolute; width: 29.7cm; height: 21cm; z-index: 0; top: 0; left: 0;" />
     <div style="margin-top: 320px;"></div>
     <div style="position: relative; z-index: 1;">
         <table style='margin: 0 auto;width:75%;border-collapse:collapse;'>
