@@ -89,6 +89,7 @@ Route::middleware('auth')->group(function () {
 
             Route::resource('ijazah', IjazahController::class);
             Route::resource('rapor-pkl', RaporPklController::class);
+            Route::get('raporpkl/{nis}', [RaporPklController::class, 'showRaporPKL']);
             Route::resource('rapor-p-lima', RaporPLimaController::class);
             Route::resource('transkrip-nilai', TranskripNilaiController::class);
             Route::get('nilaisemester', [TranskripNilaiController::class, 'getBySemester']);
