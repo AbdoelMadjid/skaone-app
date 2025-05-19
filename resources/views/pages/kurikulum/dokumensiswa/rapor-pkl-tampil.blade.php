@@ -85,10 +85,6 @@
         padding: 3px;
     }
 
-    .ttd-title {
-        font-weight: bold;
-    }
-
     .ttd-spacing {
         height: 45px;
     }
@@ -196,7 +192,7 @@
                         kerja, bekerja secara mandiri dan/atau secara tim,
                         kepedulian sosial dan lingkungan, serta ketaatan terhadap
                         norma, K3LH, dan POS yang berlaku di dunia kerja terkait
-                        dengan {{ $data->nama_pk }}.</td>
+                        dengan {{ $data->nama_kk }}.</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;" width='25'>2.</td>
@@ -207,7 +203,7 @@
                         {{ $nilaiPrakerin?->cp2 !== null ? number_format($nilaiPrakerin->cp2, 2) : '-' }}</td>
                     <td style="padding-left:8px;padding-right:8px;">Sudah sangat baik dalam menerapkan kompetensi teknis
                         pada pekerjaan sesuai POS yang berlaku di dunia kerja
-                        terkait dengan bidang {{ $data->nama_pk }}.</td>
+                        terkait dengan bidang {{ $data->nama_kk }}.</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;" width='25'>3.</td>
@@ -218,7 +214,7 @@
                         {{ $nilaiPrakerin?->cp3 !== null ? number_format($nilaiPrakerin->cp3, 2) : '-' }}</td>
                     <td style="padding-left:8px;padding-right:8px;">Sudah sangat baik dalam menerapkan kompetensi teknis
                         baru atau kompetensi teknis yang belum tuntas dipelajari
-                        terkait dengan bidang {{ $data->nama_pk }}.</td>
+                        terkait dengan bidang {{ $data->nama_kk }}.</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;" width='25'>4.</td>
@@ -227,27 +223,20 @@
                     <td style="text-align: center;">
                         {{ $nilaiPrakerin?->cp4 !== null ? number_format($nilaiPrakerin->cp4, 2) : '-' }}</td>
                     <td style="padding-left:8px;padding-right:8px;">Sudah baik dalam melakukan analisis usaha secara
-                        mandiri yang memiliki relevansi dengan {{ $data->nama_pk }}.</td>
+                        mandiri yang memiliki relevansi dengan {{ $data->nama_kk }}.</td>
                 </tr>
             </tbody>
         </table>
         <p style='margin-bottom:-2px;margin-top:-2px'>&nbsp;</p>
         <table style='margin: 0 auto;width:90%;border-collapse:collapse;font:12px Times New Roman;'>
-            <tr class="no-border">
-                <td colspan="2">Catatan :</td>
-            </tr>
-            <tr class="cetak-rapor">
-                <td colspan="2" style="padding : 8px 8px;">Siswa sudah dapat mengikuti alur kerja
-                    dan tuntutan kerja industri, cepat dalam
-                    menyelesaikan tugas-tugas yang diberikan, bisa menyesuaikan diri dengan lingkungan kerja.</td>
-            </tr>
-            <tr class="no-border" height='20'>
-                <td colspan="2">&nbsp;</td>
-            </tr>
+
             <tr>
-                <td class="no-border">
+                <td class="no-border" valign="top">
                     <table class="cetak-rapor"
                         style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;'>
+                        <tr class="no-border">
+                            <td colspan="2">Absensi</td>
+                        </tr>
                         <tr>
                             <th>Kehadiran</th>
                             <th>Jumlah</th>
@@ -266,7 +255,20 @@
                         </tr>
                     </table>
                 </td>
-                <td width="75%">&nbsp;</td>
+                <td width="5%"></td>
+                <td width="70%" valign="top">
+                    <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;'>
+                        <tr class="no-border">
+                            <td>Catatan :</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="padding-top : 8px;">Siswa sudah dapat mengikuti alur kerja
+                                dan tuntutan kerja industri, cepat dalam
+                                menyelesaikan tugas-tugas yang diberikan, bisa menyesuaikan diri dengan lingkungan
+                                kerja.</td>
+                        </tr>
+                    </table>
+                </td>
             </tr>
         </table>
         <div class="ttd-container">
@@ -284,9 +286,9 @@
                                 <td></td>
                             </tr>
                             <tr>
-                                <td class="ttd-title">
-                                    {{ $data->gelardepan }} {{ ucwords(strtolower($data->namalengkap)) }}
-                                    {{ $data->gelarbelakang }}<br>
+                                <td>
+                                    <strong>{{ $data->gelardepan }} {{ ucwords(strtolower($data->namalengkap)) }}
+                                        {{ $data->gelarbelakang }}</strong><br>
                                     NIP. {{ $data->nip }}
                                 </td>
                             </tr>
@@ -304,7 +306,7 @@
                                 <td></td>
                             </tr>
                             <tr>
-                                <td class="ttd-title">{{ $data->nama_pembimbing }}</td>
+                                <td><strong>{{ $data->nama_pembimbing }}</strong></td>
                             </tr>
                         </table>
                     </td>
@@ -327,7 +329,7 @@
                                 <td></td>
                             </tr>
                             <tr>
-                                <td class="ttd-title">H. DAMUDIN, S.Pd., M.Pd.<br>NIP. 19740302 199803 1 002</td>
+                                <td><strong>Damudin, S.Pd., M.Pd.</strong><br>NIP. 19740302 199803 1 002</td>
                             </tr>
                         </table>
                         <img src='{{ URL::asset('images/damudin.png') }}' class="ttd-img-kepsek" />
@@ -345,9 +347,10 @@
                                 <td></td>
                             </tr>
                             <tr>
-                                <td class="ttd-title">
-                                    {{ $data->wali_gelardepan }} {{ ucwords(strtolower($data->wali_namalengkap)) }}
-                                    {{ $data->wali_gelarbelakang }}<br>
+                                <td>
+                                    <strong>{{ $data->wali_gelardepan }}
+                                        {{ ucwords(strtolower($data->wali_namalengkap)) }}
+                                        {{ $data->wali_gelarbelakang }}</strong><br>
                                     NIP. {{ $data->wali_nip }}
                                 </td>
                             </tr>
