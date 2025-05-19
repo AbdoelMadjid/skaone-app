@@ -155,7 +155,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><strong>H. DAMUDIN, S.Pd., M.Pd.</strong></td>
+                            <td><strong>Damudin, S.Pd., M.Pd.</strong></td>
                         </tr>
                         <tr>
                             <td>NIP. 19740302 199803 1 002</td>
