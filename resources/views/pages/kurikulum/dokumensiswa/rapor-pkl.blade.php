@@ -86,7 +86,7 @@
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Transkrip Nilai </h5>
+                    <h5 class="modal-title">Rapor PKL</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                 </div>
                 <div class="modal-body" id="raporPklBody">
@@ -218,19 +218,19 @@
                         position: relative;
                     }
 
-                    .ttd-img-cap {
+                    .ttd-img-kepsek {
                         position: absolute;
-                        top: -15px;
-                        left: 0;
-                        height: 110px;
+                        top: 35px;
+                        left: -90px;
+                        height: 90px;
                         z-index: 1;
                     }
 
                     .ttd-img-stempel {
                         position: absolute;
-                        top: -50px;
-                        left: 20px;
-                        height: 180px;
+                        top: 5px;
+                        left: -75px;
+                        height: 150px;
                         z-index: 0;
                     }
 

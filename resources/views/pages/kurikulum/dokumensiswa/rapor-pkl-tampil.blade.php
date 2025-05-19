@@ -97,19 +97,19 @@
         position: relative;
     }
 
-    .ttd-img-cap {
+    .ttd-img-kepsek {
         position: absolute;
-        top: -15px;
-        left: 0;
-        height: 110px;
+        top: 20px;
+        left: -75px;
+        height: 80px;
         z-index: 1;
     }
 
     .ttd-img-stempel {
         position: absolute;
-        top: -50px;
-        left: 20px;
-        height: 180px;
+        top: -5px;
+        left: -75px;
+        height: 120px;
         z-index: 0;
     }
 
@@ -188,7 +188,8 @@
                         butuhkan dalam dunia
                         kerja (tempat PKL)
                     </td>
-                    <td style="text-align: center;">{{ ($nilaiPrakerin?->absen + $nilaiPrakerin?->cp1) / 2 ?? '-' }}
+                    <td style="text-align: center;">
+                        {{ number_format((($nilaiPrakerin?->absen ?? 0) + ($nilaiPrakerin?->cp1 ?? 0)) / 2, 2) }}
                     </td>
                     <td style="padding-left:8px;padding-right:8px;">Sudah sangat baik dalam menerapkan etika
                         berkomunikasi secara lisan dan tulisan, integritas, etos
@@ -202,7 +203,8 @@
                     <td style="padding-left:8px;padding-right:8px;">Menerapkan norma, POS dan K3LH yang ada pada dunia
                         kerja (tempat PKL)
                     </td>
-                    <td style="text-align: center;">{{ $nilaiPrakerin?->cp2 ?? '-' }}</td>
+                    <td style="text-align: center;">
+                        {{ $nilaiPrakerin?->cp2 !== null ? number_format($nilaiPrakerin->cp2, 2) : '-' }}</td>
                     <td style="padding-left:8px;padding-right:8px;">Sudah sangat baik dalam menerapkan kompetensi teknis
                         pada pekerjaan sesuai POS yang berlaku di dunia kerja
                         terkait dengan bidang {{ $data->nama_pk }}.</td>
@@ -212,7 +214,8 @@
                     <td style="padding-left:8px;padding-right:8px;">Menerapkan kompetensi teknis yang sudah dipelajari
                         di sekolah dan/atau
                         baru dipelajari pada dunia kerja (tempat PKL)</td>
-                    <td style="text-align: center;">{{ $nilaiPrakerin?->cp3 ?? '-' }}</td>
+                    <td style="text-align: center;">
+                        {{ $nilaiPrakerin?->cp3 !== null ? number_format($nilaiPrakerin->cp3, 2) : '-' }}</td>
                     <td style="padding-left:8px;padding-right:8px;">Sudah sangat baik dalam menerapkan kompetensi teknis
                         baru atau kompetensi teknis yang belum tuntas dipelajari
                         terkait dengan bidang {{ $data->nama_pk }}.</td>
@@ -221,7 +224,8 @@
                     <td style="text-align: center;" width='25'>4.</td>
                     <td style="padding-left:8px;padding-right:8px;">Memahami alur bisnis dunia kerja tempat PKL dan
                         wawasan wirausaha</td>
-                    <td style="text-align: center;">{{ $nilaiPrakerin?->cp4 ?? '-' }}</td>
+                    <td style="text-align: center;">
+                        {{ $nilaiPrakerin?->cp4 !== null ? number_format($nilaiPrakerin->cp4, 2) : '-' }}</td>
                     <td style="padding-left:8px;padding-right:8px;">Sudah baik dalam melakukan analisis usaha secara
                         mandiri yang memiliki relevansi dengan {{ $data->nama_pk }}.</td>
                 </tr>
@@ -271,7 +275,7 @@
                     <td class="ttd-section">
                         <table style="line-height: 1.2;">
                             <tr>
-                                <td style="padding: 1px;">Mengetahui:</td>
+                                <td style="padding: 1px;">&nbsp;</td>
                             </tr>
                             <tr>
                                 <td style="padding: 1px;">Guru Pembimbing PKL</td>
@@ -326,7 +330,7 @@
                                 <td class="ttd-title">H. DAMUDIN, S.Pd., M.Pd.<br>NIP. 19740302 199803 1 002</td>
                             </tr>
                         </table>
-                        <img src='{{ URL::asset('images/damudin.png') }}' class="ttd-img-cap" />
+                        <img src='{{ URL::asset('images/damudin.png') }}' class="ttd-img-kepsek" />
                         <img src='{{ URL::asset('images/stempel.png') }}' class="ttd-img-stempel" />
                     </td>
                     <td class="ttd-section">
