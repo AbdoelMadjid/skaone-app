@@ -180,6 +180,65 @@
                         font-size: 11px;
                         margin-top: 10px;
                     }
+
+                    .ttd-container {
+                        margin-left: 10%;
+                        width: 90%;
+                        /* Supaya tidak melewati batas kanan */
+                    }
+
+                    .ttd-wrapper {
+                        width: 100%;
+                        margin: 20px auto;
+                        font-family: "Times New Roman", Times, serif;
+                        font-size: 12px;
+                        border-collapse: collapse;
+                    }
+
+                    .ttd-section {
+                        width: 50%;
+                        vertical-align: top;
+                        text-align: left;
+                        /* Rata kiri */
+                    }
+
+                    .ttd-section td {
+                        padding: 3px;
+                    }
+
+                    .ttd-title {
+                        font-weight: bold;
+                    }
+
+                    .ttd-spacing {
+                        height: 45px;
+                    }
+
+                    .relative-wrapper {
+                        position: relative;
+                    }
+
+                    .ttd-img-cap {
+                        position: absolute;
+                        top: -15px;
+                        left: 0;
+                        height: 110px;
+                        z-index: 1;
+                    }
+
+                    .ttd-img-stempel {
+                        position: absolute;
+                        top: -50px;
+                        left: 20px;
+                        height: 180px;
+                        z-index: 0;
+                    }
+
+                    @media print {
+                        .ttd-wrapper {
+                            page-break-inside: avoid;
+                        }
+                    }
                 </style>
             </head>
             <body onload="window.print(); window.close();">

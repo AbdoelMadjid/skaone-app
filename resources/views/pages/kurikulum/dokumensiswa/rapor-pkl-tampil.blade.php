@@ -59,6 +59,65 @@
         font-size: 11px;
         margin-top: 10px;
     }
+
+    .ttd-container {
+        margin-left: 10%;
+        width: 90%;
+        /* Supaya tidak melewati batas kanan */
+    }
+
+    .ttd-wrapper {
+        width: 100%;
+        margin: 20px auto;
+        font-family: "Times New Roman", Times, serif;
+        font-size: 12px;
+        border-collapse: collapse;
+    }
+
+    .ttd-section {
+        width: 50%;
+        vertical-align: top;
+        text-align: left;
+        /* Rata kiri */
+    }
+
+    .ttd-section td {
+        padding: 3px;
+    }
+
+    .ttd-title {
+        font-weight: bold;
+    }
+
+    .ttd-spacing {
+        height: 45px;
+    }
+
+    .relative-wrapper {
+        position: relative;
+    }
+
+    .ttd-img-cap {
+        position: absolute;
+        top: -15px;
+        left: 0;
+        height: 110px;
+        z-index: 1;
+    }
+
+    .ttd-img-stempel {
+        position: absolute;
+        top: -50px;
+        left: 20px;
+        height: 180px;
+        z-index: 0;
+    }
+
+    @media print {
+        .ttd-wrapper {
+            page-break-inside: avoid;
+        }
+    }
 </style>
 <div id='cetak-nilai-pkl' style='@page {size: A4;}'>
     <div>
@@ -206,122 +265,92 @@
                 <td width="75%">&nbsp;</td>
             </tr>
         </table>
+        <div class="ttd-container">
+            <table class="ttd-wrapper">
+                <tr>
+                    <td class="ttd-section">
+                        <table style="line-height: 1.2;">
+                            <tr>
+                                <td style="padding: 1px;">Mengetahui:</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 1px;">Guru Pembimbing PKL</td>
+                            </tr>
+                            <tr class="ttd-spacing">
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="ttd-title">
+                                    {{ $data->gelardepan }} {{ ucwords(strtolower($data->namalengkap)) }}
+                                    {{ $data->gelarbelakang }}<br>
+                                    NIP. {{ $data->nip }}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td class="ttd-section">
+                        <table style="line-height: 1.2;">
+                            <tr>
+                                <td style="padding: 1px;">Kabupaten Majalengka, 05 Mei 2025</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 1px;">Pimpinan/Instruktur Industri</td>
+                            </tr>
+                            <tr class="ttd-spacing">
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="ttd-title">{{ $data->nama_pembimbing }}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
 
-        <p style='margin-bottom:-2px;margin-top:-2px'>&nbsp;</p>
-        <table style='margin: 0 auto;width:90%;border-collapse:collapse;font:12px Times New Roman;'>
-            <tr>
-                <td width='45'>&nbsp;</td>
-                <td>
-                    <table style='margin: 0 auto;border-collapse:collapse;'>
-                        <tr>
-                            <td>Mengetahui :</td>
-                        </tr>
-                        <tr>
-                            <td>Guru Pembimbing PKL,</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p>&nbsp;</p>
-                                <p>&nbsp;</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong> {{ $data->gelardepan }} {{ ucwords(strtolower($data->namalengkap)) }}
-                                    {{ $data->gelarbelakang }}</strong><br>
-                                NIP. {{ $data->nip }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                        </tr>
-                    </table>
-                </td>
-                <td width='150'></td>
-                <td>
-                    <table style='margin: 0 auto;border-collapse:collapse;'>
-                        <tr>
-                            <td>Kabupaten Majalengka, 05 Mei 2025</td>
-                        </tr>
-                        <tr>
-                            <td>Pimpinan/Instruktur Industri</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p>&nbsp;</p>
-                                <p>&nbsp;</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>{{ $data->nama_pembimbing }}</strong></td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr class="no-border" height='20'>
-                <td colspan="2">&nbsp;</td>
-            </tr>
-            <tr>
-                <td width='45'>&nbsp;</td>
-                <td>
-                    <table style='margin: 0 auto;border-collapse:collapse;'>
-                        <tr>
-                            <td>Mengesahkan :</td>
-                        </tr>
-                        <tr>
-                            <td>Kepala SMKN 1 Kadipaten</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div>
-                                    <img src='{{ URL::asset('images/damudin.png') }}' border='0' height='110'
-                                        style=' position: absolute; padding: 0px 2px 15px -200px; margin-left: -120px;margin-top:-15px;'>
-                                </div>
-                                <div><img src='{{ URL::asset('images/stempel.png') }}' border='0' height='180'
-                                        width='184'
-                                        style=' position: absolute; padding: 0px 2px 15px -450px; margin-left: -80px;margin-top:-50px;'>
-                                </div>
-                                <p>&nbsp;</p>
-                                <p>&nbsp;</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>H. DAMUDIN, S.Pd., M.Pd.</strong></td>
-                        </tr>
-                        <tr>
-                            <td>NIP. 19740302 199803 1 002</td>
-                        </tr>
-                    </table>
+                <tr>
+                    <td colspan="2" style="height: 30px;"></td>
+                </tr>
 
-                </td>
-                <td width='150'></td>
-                <td>
-                    <table style='margin: 0 auto;border-collapse:collapse;'>
-                        <tr>
-                            <td>Mengetahui :</td>
-                        </tr>
-                        <tr>
-                            <td>Wali Kelas</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p>&nbsp;</p>
-                                <p>&nbsp;</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>{{ $data->wali_gelardepan }}
-                                    {{ ucwords(strtolower($data->wali_namalengkap)) }}
-                                    {{ $data->wali_gelarbelakang }}</strong></td>
-                        </tr>
-                        <tr>
-                            <td>NIP. {{ $data->wali_nip }}</td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
+                <tr>
+                    <td class="ttd-section relative-wrapper">
+                        <table style="line-height: 1.2;">
+                            <tr>
+                                <td style="padding: 1px;">Mengesahkan:</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 1px;">Kepala SMKN 1 Kadipaten</td>
+                            </tr>
+                            <tr class="ttd-spacing">
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="ttd-title">H. DAMUDIN, S.Pd., M.Pd.<br>NIP. 19740302 199803 1 002</td>
+                            </tr>
+                        </table>
+                        <img src='{{ URL::asset('images/damudin.png') }}' class="ttd-img-cap" />
+                        <img src='{{ URL::asset('images/stempel.png') }}' class="ttd-img-stempel" />
+                    </td>
+                    <td class="ttd-section">
+                        <table style="line-height: 1.2;">
+                            <tr>
+                                <td style="padding: 1px;">Mengetahui:</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 1px;">Wali Kelas</td>
+                            </tr>
+                            <tr class="ttd-spacing">
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="ttd-title">
+                                    {{ $data->wali_gelardepan }} {{ ucwords(strtolower($data->wali_namalengkap)) }}
+                                    {{ $data->wali_gelarbelakang }}<br>
+                                    NIP. {{ $data->wali_nip }}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>
