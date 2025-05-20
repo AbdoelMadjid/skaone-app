@@ -1,4 +1,4 @@
-<x-form.modal size="lg" title="{{ __('translation.identitas-ujian') }}" action="{{ $action ?? null }}">
+<x-form.modal title="{{ __('translation.identitas-ujian') }}" action="{{ $action ?? null }}">
     @if ($data->id)
         @method('put')
     @endif
@@ -12,11 +12,11 @@
             <x-form.input name="kode_ujian" value="{{ $data->kode_ujian }}" label="Kode Ujian" readonly
                 id="kode_ujian" />
             <x-form.input type="date" name="tgl_ujian_awal" value="{{ $data->tgl_ujian_awal }}"
-                label="Tanggal Ujian Awal" />
+                label="Tanggal Ujian Awal" id="tgl_ujian_awal" />
             <x-form.input type="date" name="tgl_ujian_akhir" value="{{ $data->tgl_ujian_akhir }}"
-                label="Tanggal Ujian Akhir" />
+                label="Tanggal Ujian Akhir" id="tgl_ujian_akhir" />
             <x-form.input type="date" name="titimangsa_ujian" value="{{ $data->titimangsa_ujian }}"
-                label="Titimangsa Ujian" />
+                label="Titimangsa Ujian" id="titimangsa_ujian" />
         </div>
 </x-form.modal>
 <script>

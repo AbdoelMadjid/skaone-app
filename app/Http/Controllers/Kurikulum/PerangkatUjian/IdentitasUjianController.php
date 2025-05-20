@@ -54,7 +54,7 @@ class IdentitasUjianController extends Controller
 
         return view('pages.kurikulum.perangkatujian.identitas-ujian-form', [
             'data' => $ujianIdentitas,
-            'tahunAjaranOptions' => $tahunAjaranOptions
+            'tahunAjaranOptions' => $tahunAjaranOptions,
         ]);
     }
 
