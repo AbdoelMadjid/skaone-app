@@ -37,7 +37,10 @@
                         label="Titimangsa Ujian" id="titimangsa_ujian" />
                 </div>
             </div>
+            <x-form.select name="status" :options="['Aktif' => 'Aktif', 'Non Aktif' => 'Non Aktif']" value="{{ old('status', $data->status) }}"
+                label="Status Ujian" />
         </div>
+
 </x-form.modal>
 <script>
     function handleGenerateKodeUjian() {

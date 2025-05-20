@@ -24,12 +24,16 @@ class IdentitasUjianDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addColumn('tgl_ujian', function ($row) {
+                return 'Tgl Titimangsa Ujian : ' . \Carbon\Carbon::parse($row->titimangsa_ujian)->format('d-m-Y') . '<br>Tgl Awal Ujian : ' . \Carbon\Carbon::parse($row->tgl_ujian_awal)->format('d-m-Y') . '<br>Tgl Akhir Ujian : ' . \Carbon\Carbon::parse($row->tgl_ujian_akhir)->format('d-m-Y'); // Mengambil nama siswa dari hasil join
+            })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
                 return view('action', compact('actions'));
             })
-            ->addIndexColumn();
+            ->addIndexColumn()
+            ->rawColumns(['action', 'tgl_ujian']);
     }
 
     /**
@@ -73,9 +77,8 @@ class IdentitasUjianDataTable extends DataTable
             Column::make('semester')->title('Semester'),
             Column::make('nama_ujian')->title('Nama Ujian'),
             Column::make('kode_ujian')->title('Kode Ujian'),
-            Column::make('tgl_ujian_awal')->title('Tanggal Ujian Awal'),
-            Column::make('tgl_ujian_akhir')->title('Tanggal Ujian Akhir'),
-            Column::make('titimangsa_ujian')->title('Tanggal'),
+            Column::make('tgl_ujian')->title('Tanggal Ujian'),
+            Column::make('status')->title('Status'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

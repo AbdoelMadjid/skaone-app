@@ -17,6 +17,6 @@ class IdentitasUjian extends Model
         'tgl_ujian_awal',
         'tgl_ujian_akhir',
         'titimangsa_ujian',
-        'aktif',
+        'status',
     ];
 }

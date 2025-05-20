@@ -50,6 +50,10 @@ class IdentitasUjianRequest extends FormRequest
                 'required',
                 'date',
             ],
+            'status' => [
+                'required',
+                'string',
+            ],
         ];
     }
 
@@ -59,13 +63,14 @@ class IdentitasUjianRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'tahun_ajaran.required' => 'Tahun Ajaran harus diisi.',
-            'semester.required' => 'Semester harus diisi.',
+            'tahun_ajaran.required' => 'Tahun Ajaran harus dipilih.',
+            'semester.required' => 'Semester harus dipilih.',
             'nama_ujian.required' => 'Nama Ujian harus diisi.',
             'kode_ujian.required' => 'Kode Ujian harus diisi.',
             'tgl_ujian_awal.required' => 'Tanggal Ujian Awal harus diisi.',
             'tgl_ujian_akhir.required' => 'Tanggal Ujian Akhir harus diisi.',
             'titimangsa_ujian.required' => 'Titimangsa Ujian harus diisi.',
+            'status.required' => 'Status harus dipilih.',
         ];
     }
 }
