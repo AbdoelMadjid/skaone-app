@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ujian_identitas', function (Blueprint $table) {
+        Schema::create('identitas_ujians', function (Blueprint $table) {
             $table->id();
             $table->char('tahun_ajaran');
             $table->char('semester');
@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('tgl_ujian_awal')->nullable();
             $table->date('tgl_ujian_akhir')->nullable();
             $table->date('titimangsa_ujian')->nullable();
+            $table->enum('aktif', ['Aktif', 'Non Aktif']);
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ujian_identitas');
+        Schema::dropIfExists('identitas_ujians');
     }
 };

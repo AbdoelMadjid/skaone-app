@@ -5,10 +5,10 @@ namespace App\Models\Kurikulum\PerangkatUjian;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UjianIdentitas extends Model
+class IdentitasUjian extends Model
 {
     use HasFactory;
-    protected $table = 'ujian_identitas';
+    protected $table = 'identitas_ujians';
     protected $fillable = [
         'tahun_ajaran',
         'semester',
@@ -17,5 +17,6 @@ class UjianIdentitas extends Model
         'tgl_ujian_awal',
         'tgl_ujian_akhir',
         'titimangsa_ujian',
+        'aktif',
     ];
 }

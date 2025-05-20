@@ -45,7 +45,7 @@
 @endsection
 @section('script-bottom')
     <script>
-        const datatable = 'ujianidentitas-table';
+        const datatable = 'identitasujian-table';
 
         handleDataTableEvents(datatable);
         handleAction(datatable)

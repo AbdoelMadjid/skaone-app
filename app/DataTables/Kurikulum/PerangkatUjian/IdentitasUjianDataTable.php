@@ -2,7 +2,7 @@
 
 namespace App\DataTables\Kurikulum\PerangkatUjian;
 
-use App\Models\Kurikulum\PerangkatUjian\UjianIdentitas;
+use App\Models\Kurikulum\PerangkatUjian\IdentitasUjian;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
@@ -13,7 +13,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class UjianIdentitasDataTable extends DataTable
+class IdentitasUjianDataTable extends DataTable
 {
     use DatatableHelper;
     /**
@@ -35,7 +35,7 @@ class UjianIdentitasDataTable extends DataTable
     /**
      * Get the query source of dataTable.
      */
-    public function query(UjianIdentitas $model): QueryBuilder
+    public function query(IdentitasUjian $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -46,7 +46,7 @@ class UjianIdentitasDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('ujianidentitas-table')
+            ->setTableId('identitasujian-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             //->dom('Bfrtip')
@@ -89,6 +89,6 @@ class UjianIdentitasDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'UjianIdentitas_' . date('YmdHis');
+        return 'IdentitasUjian_' . date('YmdHis');
     }
 }

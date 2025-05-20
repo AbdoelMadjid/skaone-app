@@ -5,9 +5,9 @@ namespace Database\Factories\Kurikulum\PerangkatUjian;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Kurikulum\PerangkatUjian\UjianIdentitas>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Kurikulum\PerangkatUjian\IdentitasUjian>
  */
-class UjianIdentitasFactory extends Factory
+class IdentitasUjianFactory extends Factory
 {
     /**
      * Define the model's default state.

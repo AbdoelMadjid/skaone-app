@@ -4,7 +4,7 @@ namespace App\Http\Requests\Kurikulum\PerangkatUjian;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UjianIdentitasRequest extends FormRequest
+class IdentitasUjianRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -52,7 +52,6 @@ class UjianIdentitasRequest extends FormRequest
             ],
         ];
     }
-
 
     /**
      * Get custom messages for validator errors.

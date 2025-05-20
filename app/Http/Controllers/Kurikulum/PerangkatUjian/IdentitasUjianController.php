@@ -2,23 +2,21 @@
 
 namespace App\Http\Controllers\Kurikulum\PerangkatUjian;
 
-use App\DataTables\Kurikulum\PerangkatUjian\UjianIdentitasDataTable;
+use App\DataTables\Kurikulum\PerangkatUjian\IdentitasUjianDataTable;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Kurikulum\PerangkatUjian\UjianIdentitasRequest;
-use App\Models\Kurikulum\PerangkatUjian\UjianIdentitas;
+use App\Http\Requests\Kurikulum\PerangkatUjian\IdentitasUjianRequest;
+use App\Models\Kurikulum\PerangkatUjian\IdentitasUjian;
 use App\Models\ManajemenSekolah\TahunAjaran;
-use Illuminate\Http\Request;
 
 class IdentitasUjianController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(UjianIdentitasDataTable $ujianIdentitasDataTable)
+    public function index(IdentitasUjianDataTable $identitasUjianDataTable)
     {
-        return $ujianIdentitasDataTable->render('pages.kurikulum.perangkatujian.identitas-ujian');
+        return $identitasUjianDataTable->render('pages.kurikulum.perangkatujian.identitas-ujian');
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -28,7 +26,7 @@ class IdentitasUjianController extends Controller
         $tahunAjaranOptions  = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
 
         return view('pages.kurikulum.perangkatujian.identitas-ujian-form', [
-            'data' => new UjianIdentitas(),
+            'data' => new IdentitasUjian(),
             'action' => route('kurikulum.perangkatujian.identitas-ujian.store'),
             'tahunAjaranOptions' => $tahunAjaranOptions
         ]);
@@ -37,9 +35,9 @@ class IdentitasUjianController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UjianIdentitasRequest $request)
+    public function store(IdentitasUjianRequest $request)
     {
-        $ujianIdentitas = new UjianIdentitas($request->validated());
+        $ujianIdentitas = new IdentitasUjian($request->validated());
         $ujianIdentitas->save();
 
         return responseSuccess();
@@ -48,49 +46,45 @@ class IdentitasUjianController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(UjianIdentitas $ujianIdentitas)
+    public function show(IdentitasUjian $identitasUjian)
     {
         $tahunAjaranOptions  = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
-
         return view('pages.kurikulum.perangkatujian.identitas-ujian-form', [
-            'data' => $ujianIdentitas,
+            'data' => $identitasUjian,
             'tahunAjaranOptions' => $tahunAjaranOptions,
         ]);
     }
 
-
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(UjianIdentitas $ujianIdentitas)
+    public function edit(IdentitasUjian $identitasUjian)
     {
         $tahunAjaranOptions  = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
-
         return view('pages.kurikulum.perangkatujian.identitas-ujian-form', [
-            'data' => $ujianIdentitas,
-            'action' => route('kurikulum.perangkatujian.identitas-ujian.update', $ujianIdentitas->id),
-            'tahunAjaranOptions' => $tahunAjaranOptions
+            'data' => $identitasUjian,
+            'action' => route('kurikulum.perangkatujian.identitas-ujian.update', $identitasUjian->id),
+            'tahunAjaranOptions' => $tahunAjaranOptions,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UjianIdentitasRequest $request, UjianIdentitas $ujianIdentitas)
+    public function update(IdentitasUjianRequest $request, IdentitasUjian $identitasUjian)
     {
-        $ujianIdentitas->fill($request->validated());
-        $ujianIdentitas->save();
+        $identitasUjian->fill($request->validated());
+        $identitasUjian->save();
 
-        return responseSuccess();
+        return responseSuccess(true);
     }
-
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(UjianIdentitas $ujianIdentitas)
+    public function destroy(IdentitasUjian $identitasUjian)
     {
-        $ujianIdentitas->delete();
+        $identitasUjian->delete();
 
         return responseSuccessDelete();
     }
