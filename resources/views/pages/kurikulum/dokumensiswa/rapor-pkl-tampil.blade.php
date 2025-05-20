@@ -4,7 +4,7 @@
         /* Menggabungkan garis border */
         width: 100%;
         /* Agar tabel mengambil seluruh lebar */
-        text-decoration-color: black
+        text-decoration-color: black;
     }
 
     .cetak-rapor td {
@@ -168,6 +168,27 @@
             </tr>
         </table>
         <p style='margin-bottom:-2px;margin-top:-2px'>&nbsp;</p>
+        @php
+            function getPredikat($nilai)
+            {
+                if ($nilai >= 90) {
+                    return 'sangat baik';
+                } elseif ($nilai >= 80) {
+                    return 'baik';
+                } elseif ($nilai >= 70) {
+                    return 'cukup baik';
+                } elseif ($nilai >= 60) {
+                    return 'kurang baik';
+                } else {
+                    return 'sangat kurang baik';
+                }
+            }
+
+            $predikat1 = getPredikat((($nilaiPrakerin?->absen ?? 0) + ($nilaiPrakerin?->cp1 ?? 0)) / 2);
+            $predikat2 = getPredikat($nilaiPrakerin?->cp2);
+            $predikat3 = getPredikat($nilaiPrakerin?->cp3);
+            $predikat4 = getPredikat($nilaiPrakerin?->cp4);
+        @endphp
         <table class="cetak-rapor" style='margin: 0 auto;width:90%;border-collapse:collapse;font:12px Times New Roman;'>
             <thead>
                 <tr>
@@ -187,7 +208,7 @@
                     <td style="text-align: center;">
                         {{ number_format((($nilaiPrakerin?->absen ?? 0) + ($nilaiPrakerin?->cp1 ?? 0)) / 2, 2) }}
                     </td>
-                    <td style="padding-left:8px;padding-right:8px;">Sudah sangat baik dalam menerapkan etika
+                    <td style="padding-left:8px;padding-right:8px;">Sudah {{ $predikat1 }} dalam menerapkan etika
                         berkomunikasi secara lisan dan tulisan, integritas, etos
                         kerja, bekerja secara mandiri dan/atau secara tim,
                         kepedulian sosial dan lingkungan, serta ketaatan terhadap
@@ -201,7 +222,8 @@
                     </td>
                     <td style="text-align: center;">
                         {{ $nilaiPrakerin?->cp2 !== null ? number_format($nilaiPrakerin->cp2, 2) : '-' }}</td>
-                    <td style="padding-left:8px;padding-right:8px;">Sudah sangat baik dalam menerapkan kompetensi teknis
+                    <td style="padding-left:8px;padding-right:8px;">Sudah {{ $predikat2 }} dalam menerapkan
+                        kompetensi teknis
                         pada pekerjaan sesuai POS yang berlaku di dunia kerja
                         terkait dengan bidang {{ $data->nama_kk }}.</td>
                 </tr>
@@ -212,7 +234,8 @@
                         baru dipelajari pada dunia kerja (tempat PKL)</td>
                     <td style="text-align: center;">
                         {{ $nilaiPrakerin?->cp3 !== null ? number_format($nilaiPrakerin->cp3, 2) : '-' }}</td>
-                    <td style="padding-left:8px;padding-right:8px;">Sudah sangat baik dalam menerapkan kompetensi teknis
+                    <td style="padding-left:8px;padding-right:8px;">Sudah {{ $predikat3 }} dalam menerapkan
+                        kompetensi teknis
                         baru atau kompetensi teknis yang belum tuntas dipelajari
                         terkait dengan bidang {{ $data->nama_kk }}.</td>
                 </tr>
@@ -222,7 +245,8 @@
                         wawasan wirausaha</td>
                     <td style="text-align: center;">
                         {{ $nilaiPrakerin?->cp4 !== null ? number_format($nilaiPrakerin->cp4, 2) : '-' }}</td>
-                    <td style="padding-left:8px;padding-right:8px;">Sudah baik dalam melakukan analisis usaha secara
+                    <td style="padding-left:8px;padding-right:8px;">Sudah {{ $predikat4 }} dalam melakukan analisis
+                        usaha secara
                         mandiri yang memiliki relevansi dengan {{ $data->nama_kk }}.</td>
                 </tr>
             </tbody>
@@ -274,7 +298,7 @@
         <div class="ttd-container">
             <table class="ttd-wrapper">
                 <tr>
-                    <td class="ttd-section">
+                    <td class="ttd-section" style='margin: 0 auto;font:12px Times New Roman;'>
                         <table style="line-height: 1.2;">
                             <tr>
                                 <td style="padding: 1px;">&nbsp;</td>
