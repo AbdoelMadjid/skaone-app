@@ -21,7 +21,11 @@ use App\Http\Controllers\Kurikulum\PerangkatKurikulum\PengumumanController;
 use App\Http\Controllers\Kurikulum\PerangkatKurikulum\VersiKurikulumController;
 use App\Http\Controllers\Kurikulum\PerangkatUjian\AdministrasiUjianController;
 use App\Http\Controllers\Kurikulum\PerangkatUjian\IdentitasUjianController;
+use App\Http\Controllers\Kurikulum\PerangkatUjian\JadwalUjianController;
 use App\Http\Controllers\Kurikulum\PerangkatUjian\PelaksanaanUjianController;
+use App\Http\Controllers\Kurikulum\PerangkatUjian\PengawasUjianController;
+use App\Http\Controllers\Kurikulum\PerangkatUjian\PesertaUjianController;
+use App\Http\Controllers\Kurikulum\PerangkatUjian\RuangUjianController;
 use App\Http\Controllers\ManajemenSekolah\PesertaDidikController;
 use Illuminate\Support\Facades\Route;
 
@@ -101,7 +105,13 @@ Route::middleware('auth')->group(function () {
 
         Route::group(['prefix' => 'perangkatujian', 'as' => 'perangkatujian.'], function () {
             Route::resource('identitas-ujian', IdentitasUjianController::class);
-            Route::resource('administrasi-ujian', AdministrasiUjianController::class);
+            Route::get('administrasi-ujian', [AdministrasiUjianController::class, 'index'])->name('administrasi-ujian.index');
+            Route::prefix('administrasi-ujian')->as('administrasi-ujian.')->group(function () {
+                Route::resource('ruang-ujian', RuangUjianController::class);
+                Route::resource('peserta-ujian', PesertaUjianController::class);
+                Route::resource('jadwal-ujian', JadwalUjianController::class);
+                Route::resource('pengawas-ujian', PengawasUjianController::class);
+            });
             Route::resource('pelaksanaan-ujian', PelaksanaanUjianController::class);
         });
     });

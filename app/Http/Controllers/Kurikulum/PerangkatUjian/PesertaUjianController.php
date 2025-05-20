@@ -3,21 +3,17 @@
 namespace App\Http\Controllers\Kurikulum\PerangkatUjian;
 
 use App\Http\Controllers\Controller;
-use App\Models\Kurikulum\PerangkatUjian\IdentitasUjian;
+use App\Models\Kurikulum\PerangkatUjian\PesertaUjian;
 use Illuminate\Http\Request;
 
-class AdministrasiUjianController extends Controller
+class PesertaUjianController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $identitasUjian = IdentitasUjian::where('status', 'Aktif')->first(); // Ambil 1 data aktif
-
-        return view('pages.kurikulum.perangkatujian.administrasi-ujian', [
-            'identitasUjian' => $identitasUjian,
-        ]);
+        //
     }
 
     /**
@@ -39,7 +35,7 @@ class AdministrasiUjianController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(PesertaUjian $pesertaUjian)
     {
         //
     }
@@ -47,7 +43,7 @@ class AdministrasiUjianController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(PesertaUjian $pesertaUjian)
     {
         //
     }
@@ -55,7 +51,7 @@ class AdministrasiUjianController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, PesertaUjian $pesertaUjian)
     {
         //
     }
@@ -63,7 +59,7 @@ class AdministrasiUjianController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(PesertaUjian $pesertaUjian)
     {
         //
     }

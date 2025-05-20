@@ -303,6 +303,10 @@ return [
     "identitas-ujian" => "Identitas Ujian",
     "administrasi-ujian" => "Administrasi Ujian",
     "pelaksanaan-ujian" => "Pelaksanaan Ujian",
+    "ruang-ujian" => "Ruang Ujian",
+    "peserta-ujian" => "Peserta Ujian",
+    "jadwal-ujian" => "Jadwal Ujian",
+    "pengawas-ujian" => "Pengawas Ujian",
 
 
     "guru-mata-pelajaran" => "Guru Mata Pelajaran",
