@@ -73,12 +73,12 @@ class IdentitasUjianDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
-            Column::make('tahun_ajaran')->title('Tahun Ajaran'),
-            Column::make('semester')->title('Semester'),
+            Column::make('tahun_ajaran')->title('Tahun Ajaran')->width(100),
+            Column::make('semester')->title('Semester')->width(50),
             Column::make('nama_ujian')->title('Nama Ujian'),
-            Column::make('kode_ujian')->title('Kode Ujian'),
+            Column::make('kode_ujian')->title('Kode Ujian')->width(110),
             Column::make('tgl_ujian')->title('Tanggal Ujian'),
-            Column::make('status')->title('Status'),
+            Column::make('status')->title('Status')->width(50),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
