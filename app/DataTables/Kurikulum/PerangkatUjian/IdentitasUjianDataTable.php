@@ -25,7 +25,9 @@ class IdentitasUjianDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('tgl_ujian', function ($row) {
-                return 'Tgl Titimangsa Ujian : ' . \Carbon\Carbon::parse($row->titimangsa_ujian)->format('d-m-Y') . '<br>Tgl Awal Ujian : ' . \Carbon\Carbon::parse($row->tgl_ujian_awal)->format('d-m-Y') . '<br>Tgl Akhir Ujian : ' . \Carbon\Carbon::parse($row->tgl_ujian_akhir)->format('d-m-Y'); // Mengambil nama siswa dari hasil join
+                return 'Tgl Titimangsa Ujian : <strong>' . \Carbon\Carbon::parse($row->titimangsa_ujian)->format('d-m-Y') .
+                    '</strong><br>Tgl Awal Ujian : <strong>' . \Carbon\Carbon::parse($row->tgl_ujian_awal)->format('d-m-Y') .
+                    '</strong><br>Tgl Akhir Ujian : <strong>' . \Carbon\Carbon::parse($row->tgl_ujian_akhir)->format('d-m-Y') . '</strong>';
             })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
