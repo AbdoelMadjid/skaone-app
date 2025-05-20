@@ -357,7 +357,7 @@
                             </tr>
                         </table>
                         <img src='{{ URL::asset('images/damudin.png') }}' class="ttd-img-kepsek" />
-                        <img src='{{ URL::asset('images/stempel.png') }}' class="ttd-img-stempel" />
+                        {{-- <img src='{{ URL::asset('images/stempel.png') }}' class="ttd-img-stempel" /> --}}
                     </td>
                     <td class="ttd-section">
                         <table style="line-height: 1.2;">

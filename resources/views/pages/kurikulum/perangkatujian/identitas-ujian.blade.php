@@ -17,22 +17,17 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="alert alert-warning alert-dismissible alert-additional fade show mb-2" role="alert">
-                    <div class="alert-body">
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        <div class="d-flex">
-                            <div class="flex-shrink-0 me-3">
-                                <i class="ri-alert-line display-6 align-middle"></i>
-                            </div>
-                            <div class="flex-grow-1">
-                                <h5 class="alert-heading">Mohon Maaf !!. <br>Halaman @yield('title')</h5>
-                                <p class="mb-0">Masih proses scripting. </p>
-                            </div>
-                        </div>
+                <div class="card-header d-flex align-items-center">
+                    <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @lang('translation.identitas-ujian')</h5>
+                    <div>
+                        @can('create kurikulum/perangkatujian/identitas-ujian')
+                            <a class="btn btn-soft-primary action"
+                                href="{{ route('kurikulum.perangkatujian.identitas-ujian.create') }}">Tambah</a>
+                        @endcan
                     </div>
-                    <div class="alert-content">
-                        <p class="mb-0">Scripting & Desing by. Abdul Madjid, S.Pd., M.Pd.</p>
-                    </div>
+                </div>
+                <div class="card-body">
+                    {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
                 </div>
             </div>
         </div>
@@ -40,8 +35,21 @@
     </div>
 @endsection
 @section('script')
-    {{-- --}}
+    <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
+
+    {!! $dataTable->scripts() !!}
 @endsection
 @section('script-bottom')
+    <script>
+        const datatable = 'ujianidentitas-table';
+
+        handleDataTableEvents(datatable);
+        handleAction(datatable)
+        handleDelete(datatable)
+    </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

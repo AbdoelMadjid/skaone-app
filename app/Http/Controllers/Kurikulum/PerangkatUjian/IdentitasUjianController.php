@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Kurikulum\PerangkatUjian;
 
+use App\DataTables\Kurikulum\PerangkatUjian\UjianIdentitasDataTable;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -10,10 +11,11 @@ class IdentitasUjianController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(UjianIdentitasDataTable $ujianIdentitasDataTable)
     {
-        return view('pages.kurikulum.perangkatujian.identitas-ujian');
+        return $ujianIdentitasDataTable->render('pages.kurikulum.perangkatujian.identitas-ujian');
     }
+
 
     /**
      * Show the form for creating a new resource.
