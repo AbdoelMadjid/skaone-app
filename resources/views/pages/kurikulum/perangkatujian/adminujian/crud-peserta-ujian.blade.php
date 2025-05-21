@@ -23,15 +23,15 @@
                 <div class="card-header d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">Peserta Ujian</h5>
                     <div>
-                        @can('create kurikulum/perangkatujian/administrasi-ujian/peserta-ujian')
+                        {{-- @can('create kurikulum/perangkatujian/administrasi-ujian/peserta-ujian')
                             <a class="btn btn-soft-primary action"
                                 href="{{ route('kurikulum.perangkatujian.administrasi-ujian.peserta-ujian.create') }}">Tambah</a>
-                        @endcan
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        @endcan --}}
+                        <button type="button" class="btn btn-sm btn-soft-primary" data-bs-toggle="modal"
                             data-bs-target="#pesertaUjianModal">
                             Tambah Peserta
                         </button>
-                        <a class="btn btn-soft-danger"
+                        <a class="btn btn-sm btn-soft-danger"
                             href="{{ route('kurikulum.perangkatujian.administrasi-ujian.index') }}">Kembali</a>
                     </div>
                 </div>
@@ -133,7 +133,7 @@
                         <td>${index + 1}</td>
                         <td>${item.nis}</td>
                         <td>${item.nama_lengkap}</td>
-                        <td>
+                        <td class="text-center">
                             <input type="checkbox"
                                 class="siswa-checkbox-${posisi}"
                                 name="siswa_${posisi}[]"
@@ -149,14 +149,66 @@
             });
         }
 
-        // Ceklist semua untuk siswa tabel kanan
-        $('#check-all-kanan').on('change', function() {
-            $('#siswa-table-kanan tbody input[type="checkbox"]').prop('checked', $(this).is(':checked'));
+        // Ceklist semua siswa - KIRI
+        $('#check-all-kiri').on('change', function() {
+            const checked = $(this).is(':checked');
+            $('#check-ganjil-kiri').prop('checked', false); // reset ganjil
+            $('#siswa-table-kiri tbody input[type="checkbox"]').prop('checked', checked);
         });
 
-        // Ceklist semua untuk siswa tabel kiri
-        $('#check-all-kiri').on('change', function() {
-            $('#siswa-table-kiri tbody input[type="checkbox"]').prop('checked', $(this).is(':checked'));
+        // Ceklist nomor ganjil saja - KIRI
+        $('#check-ganjil-kiri').on('change', function() {
+            const checked = $(this).is(':checked');
+            $('#check-all-kiri').prop('checked', false); // reset semua
+            $('#siswa-table-kiri tbody input[type="checkbox"]').each(function(index) {
+                $(this).prop('checked', checked && ((index + 1) % 2 === 1)); // hanya ganjil
+            });
+        });
+
+        // Ceklist semua siswa - KANAN
+        $('#check-all-kanan').on('change', function() {
+            const checked = $(this).is(':checked');
+            $('#check-ganjil-kanan').prop('checked', false); // reset ganjil
+            $('#siswa-table-kanan tbody input[type="checkbox"]').prop('checked', checked);
+        });
+
+        // Ceklist nomor ganjil saja - KANAN
+        $('#check-ganjil-kanan').on('change', function() {
+            const checked = $(this).is(':checked');
+            $('#check-all-kanan').prop('checked', false); // reset semua
+            $('#siswa-table-kanan tbody input[type="checkbox"]').each(function(index) {
+                $(this).prop('checked', checked && ((index + 1) % 2 === 1)); // hanya ganjil
+            });
+        });
+
+        // Ceklist setengah siswa - KIRI
+        $('#check-setengah-kiri').on('change', function() {
+            const checked = $(this).is(':checked');
+            $('#check-all-kiri').prop('checked', false);
+            $('#check-ganjil-kiri').prop('checked', false);
+
+            const checkboxes = $('#siswa-table-kiri tbody input[type="checkbox"]');
+            const total = checkboxes.length;
+            const batas = Math.ceil(total / 2);
+
+            checkboxes.each(function(index) {
+                $(this).prop('checked', checked && (index < batas)); // index dimulai dari 0
+            });
+        });
+
+        // Ceklist setengah siswa - KANAN
+        $('#check-setengah-kanan').on('change', function() {
+            const checked = $(this).is(':checked');
+            $('#check-all-kanan').prop('checked', false);
+            $('#check-ganjil-kanan').prop('checked', false);
+
+            const checkboxes = $('#siswa-table-kanan tbody input[type="checkbox"]');
+            const total = checkboxes.length;
+            const batas = Math.ceil(total / 2);
+
+            checkboxes.each(function(index) {
+                $(this).prop('checked', checked && (index < batas));
+            });
         });
 
         $('form').on('submit', function() {

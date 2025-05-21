@@ -64,7 +64,13 @@
                                         <th>No.</th>
                                         <th>NIS</th>
                                         <th>Nama Lengkap</th>
-                                        <th><input type="checkbox" id="check-all-kiri"></th>
+                                        <th>
+                                            <div>
+                                                <input type="checkbox" id="check-all-kiri"> Semua<br>
+                                                <input type="checkbox" id="check-ganjil-kiri"> Ganjil<br>
+                                                <input type="checkbox" id="check-setengah-kiri"> Setengah
+                                            </div>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -85,7 +91,13 @@
                                         <th>No.</th>
                                         <th>NIS</th>
                                         <th>Nama Lengkap</th>
-                                        <th><input type="checkbox" id="check-all-kanan"></th>
+                                        <th>
+                                            <div>
+                                                <input type="checkbox" id="check-all-kanan"> Semua<br>
+                                                <input type="checkbox" id="check-ganjil-kanan"> Ganjil<br>
+                                                <input type="checkbox" id="check-setengah-kanan"> Setengah
+                                            </div>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>

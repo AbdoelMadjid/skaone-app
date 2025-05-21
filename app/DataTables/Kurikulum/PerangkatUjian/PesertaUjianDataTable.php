@@ -5,6 +5,7 @@ namespace App\DataTables\Kurikulum\PerangkatUjian;
 use App\Models\Kurikulum\PerangkatUjian\PesertaUjian;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -24,12 +25,29 @@ class PesertaUjianDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addColumn('nama_siswa', function ($row) {
+                $pesertaDidik = DB::table('peserta_didiks')
+                    ->where('nis', $row->nis)
+                    ->select('nama_lengkap') // Ambil semua field yang diperlukan
+                    ->first();
+
+                return $pesertaDidik->nama_lengkap; // Mengambil nama siswa dari hasil join
+            })
+            ->addColumn('nama_kelas', function ($row) {
+                $namaKelas = DB::table('rombongan_belajars')
+                    ->where('kode_rombel', $row->kelas)
+                    ->select('rombel') // Ambil semua field yang diperlukan
+                    ->first();
+
+                return $namaKelas->rombel; // Mengambil nama siswa dari hasil join
+            })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
                 return view('action', compact('actions'));
             })
-            ->addIndexColumn();
+            ->addIndexColumn()
+            ->rawColumns(['action', 'nama_siswa', 'nama_kelas']);
     }
 
     /**
@@ -59,6 +77,10 @@ class PesertaUjianDataTable extends DataTable
                 Button::make('print'),
                 Button::make('reset'),
                 Button::make('reload')
+            ])->parameters([
+                'lengthChange' => false, // Menghilangkan dropdown "Show entries"
+                'searching' => false,    // Menghilangkan kotak pencarian
+                'pageLength' => 36,       // Menampilkan 50 baris per halaman
             ]);
     }
 
@@ -71,16 +93,16 @@ class PesertaUjianDataTable extends DataTable
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('kode_ujian')->title('Kode Ujian'),
             Column::make('nis')->title('NIS'),
-            Column::make('kelas')->title('Kelas'),
-            Column::make('nomor_peserta')->title('Nomor Peserta'),
-            Column::make('nomor_ruang')->title('Nomor Ruang'),
-            Column::make('kode_posisi_kelas')->title('Kode Posisi Kelas'),
+            Column::make('nama_siswa')->title('Nama Siswa'),
+            Column::make('nama_kelas')->title('Kelas'),
+            Column::make('nomor_peserta')->title('Nomor Peserta')->addClass('text-center'),
+            Column::make('nomor_ruang')->title('Nomor Ruang')->addClass('text-center'),
             Column::make('posisi_duduk')->title('Posisi Duduk'),
-            Column::computed('action')
+            /* Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
                 ->width(60)
-                ->addClass('text-center'),
+                ->addClass('text-center'), */
         ];
     }
 

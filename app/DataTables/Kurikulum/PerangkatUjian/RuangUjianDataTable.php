@@ -5,6 +5,7 @@ namespace App\DataTables\Kurikulum\PerangkatUjian;
 use App\Models\Kurikulum\PerangkatUjian\RuangUjian;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -24,6 +25,22 @@ class RuangUjianDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addColumn('nama_kelas_kiri', function ($row) {
+                $namaKelasKiri = DB::table('rombongan_belajars')
+                    ->where('kode_rombel', $row->kelas_kiri)
+                    ->select('rombel') // Ambil semua field yang diperlukan
+                    ->first();
+
+                return $namaKelasKiri->rombel; // Mengambil nama siswa dari hasil join
+            })
+            ->addColumn('nama_kelas_kanan', function ($row) {
+                $namaKelasKanan = DB::table('rombongan_belajars')
+                    ->where('kode_rombel', $row->kelas_kanan)
+                    ->select('rombel') // Ambil semua field yang diperlukan
+                    ->first();
+
+                return $namaKelasKanan->rombel; // Mengambil nama siswa dari hasil join
+            })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
@@ -59,6 +76,10 @@ class RuangUjianDataTable extends DataTable
                 Button::make('print'),
                 Button::make('reset'),
                 Button::make('reload')
+            ])->parameters([
+                'lengthChange' => false, // Menghilangkan dropdown "Show entries"
+                'searching' => false,    // Menghilangkan kotak pencarian
+                'pageLength' => 50,       // Menampilkan 50 baris per halaman
             ]);
     }
 
@@ -70,11 +91,11 @@ class RuangUjianDataTable extends DataTable
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('kode_ujian')->title('Kode Ujian'),
-            Column::make('nomor_ruang')->title('No. Ruang'),
-            Column::make('kelas_kiri')->title('Kelas Kiri'),
-            Column::make('kelas_kanan')->title('Kelas Kanan'),
-            Column::make('kode_kelas_kiri')->title('Kode Kelas Kiri'),
-            Column::make('kode_kelas_kanan')->title('Kode Kelas Kanan'),
+            Column::make('nomor_ruang')->title('No. Ruang')->addClass('text-center'),
+            Column::make('nama_kelas_kiri')->title('Kelas Kiri')->addClass('text-center'),
+            Column::make('nama_kelas_kanan')->title('Kelas Kanan')->addClass('text-center'),
+            Column::make('kode_kelas_kiri')->title('Kode Kelas Kiri')->addClass('text-center'),
+            Column::make('kode_kelas_kanan')->title('Kode Kelas Kanan')->addClass('text-center'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

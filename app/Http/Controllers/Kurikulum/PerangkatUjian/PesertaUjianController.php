@@ -197,6 +197,7 @@ class PesertaUjianController extends Controller
                 'pd.nama_lengkap',
                 'kk.nama_kk'
             )
+            ->orderBy('pdr.rombel_tingkat')->orderBy('pdr.nis')
             ->get();
 
         return response()->json($data);

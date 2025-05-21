@@ -21,7 +21,7 @@
                     <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @lang('translation.identitas-ujian')</h5>
                     <div>
                         @can('create kurikulum/perangkatujian/identitas-ujian')
-                            <a class="btn btn-soft-primary action"
+                            <a class="btn btn-sm btn-soft-primary action"
                                 href="{{ route('kurikulum.perangkatujian.identitas-ujian.create') }}">Tambah</a>
                         @endcan
                     </div>

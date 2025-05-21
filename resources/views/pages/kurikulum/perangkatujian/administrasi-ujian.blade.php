@@ -57,25 +57,39 @@
                 <div>
                     <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" data-bs-toggle="tab" href="#about" role="tab"
-                                aria-selected="false">
-                                <i class="ri-question-line text-muted align-bottom me-1"></i> Ruang Ujian
+                            <a class="nav-link active" data-bs-toggle="tab" href="#RuangUjian" role="tab"
+                                aria-selected="true">
+                                <i class="ri-home-4-line text-muted align-bottom me-1"></i> Ruang Ujian
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" id="images-tab" href="#team" role="tab"
-                                aria-selected="true">
+                            <a class="nav-link" data-bs-toggle="tab" href="#PesertaUjian" role="tab"
+                                aria-selected="false">
                                 <i class="mdi mdi-account-circle text-muted align-bottom me-1"></i> Peserta Ujian
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#faqs" role="tab" aria-selected="false">
+                            <a class="nav-link" data-bs-toggle="tab" href="#JadwalUjian" role="tab"
+                                aria-selected="false">
                                 <i class="ri-list-unordered text-muted align-bottom me-1"></i> Jadwal Ujian
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#develop" role="tab" aria-selected="false">
-                                <i class="ri-video-line text-muted align-bottom me-1"></i> Pengawas Ujian
+                            <a class="nav-link" data-bs-toggle="tab" href="#PengawasUjian" role="tab"
+                                aria-selected="false">
+                                <i class="ri-file-user-line text-muted align-bottom me-1"></i> Pengawas Ujian
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#KartuUjian" role="tab"
+                                aria-selected="false">
+                                <i class="ri-contacts-book-2-line text-muted align-bottom me-1"></i> Kartu Ujian
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#DenahUjian" role="tab"
+                                aria-selected="false">
+                                <i class="ri-dashboard-line text-muted align-bottom me-1"></i> Denah Tempat Duduk
                             </a>
                         </li>
                         <li class="nav-item ms-auto">
@@ -109,18 +123,24 @@
                 </div>
                 <div class="card-body p-4">
                     <div class="tab-content text-muted">
-                        <div class="tab-pane active" id="about" role="tabpanel">
-                            @include('pages.kurikulum.perangkatujian.ruang-ujian')
+                        <div class="tab-pane active" id="RuangUjian" role="tabpanel">
+                            @include('pages.kurikulum.perangkatujian.halamanadmin.ruang-ujian')
                         </div>
-                        <div class="tab-pane" id="team" role="tabpanel">
-                            @include('pages.kurikulum.perangkatujian.peserta-ujian')
-                        </div><!--end tab-pane-->
-                        <div class="tab-pane" id="faqs" role="tabpanel">
-                            @include('pages.kurikulum.perangkatujian.jadwal-ujian')
-                        </div><!--end tab-pane-->
-                        <div class="tab-pane" id="develop" role="tabpanel">
-                            @include('pages.kurikulum.perangkatujian.pengawas-ujian')
-                        </div><!--end tab-pane-->
+                        <div class="tab-pane" id="PesertaUjian" role="tabpanel">
+                            @include('pages.kurikulum.perangkatujian.halamanadmin.peserta-ujian')
+                        </div>
+                        <div class="tab-pane" id="JadwalUjian" role="tabpanel">
+                            @include('pages.kurikulum.perangkatujian.halamanadmin.jadwal-ujian')
+                        </div>
+                        <div class="tab-pane" id="PengawasUjian" role="tabpanel">
+                            @include('pages.kurikulum.perangkatujian.halamanadmin.pengawas-ujian')
+                        </div>
+                        <div class="tab-pane" id="KartuUjian" role="tabpanel">
+                            @include('pages.kurikulum.perangkatujian.halamanadmin.kartu-ujian')
+                        </div>
+                        <div class="tab-pane" id="DenahUjian" role="tabpanel">
+                            @include('pages.kurikulum.perangkatujian.halamanadmin.denah-ujian')
+                        </div>
                     </div><!--end tab-content-->
                 </div><!--end card-body-->
             </div><!--end card -->
