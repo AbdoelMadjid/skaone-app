@@ -149,8 +149,79 @@
     </div>
 @endsection
 @section('script')
-    {{-- --}}
+    <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
 @endsection
 @section('script-bottom')
+    <script>
+        function loadDenah() {
+            const ruang = document.getElementById('nomorRuang').value;
+            const layout = document.getElementById('layout').value;
+
+            fetch(`/kurikulum/perangkatujian/denahdata?nomor_ruang=${ruang}&layout=${layout}`)
+                .then(res => res.json())
+                .then(response => {
+                    const {
+                        layout,
+                        mejaList
+                    } = response;
+                    const layoutType = layout === '4x5' ? generateLayout4x5 : generateLayout5x4;
+                    document.getElementById('denah-container').innerHTML = layoutType(mejaList);
+                });
+        }
+
+        function generateLayout4x5(data) {
+            const urutan = [
+                [1, 2, 3, 4],
+                [8, 7, 6, 5],
+                [9, 10, 11, 12],
+                [16, 15, 14, 13],
+                [17, 18, 19, 20]
+            ];
+            return renderLayoutByNumber(urutan, data);
+        }
+
+        function generateLayout5x4(data) {
+            const urutan = [
+                [1, 2, 3, 4, 5],
+                [10, 9, 8, 7, 6],
+                [11, 12, 13, 14, 15],
+                [20, 19, 18, 17, 16]
+            ];
+            return renderLayoutByNumber(urutan, data);
+        }
+
+        function renderLayoutByNumber(layoutArray, mejaList) {
+            let html = `<div class="text-center mb-3"><strong>Papan Tulis</strong></div>`;
+
+            layoutArray.forEach(baris => {
+                html += `<div class="d-flex justify-content-center mb-2">`;
+                baris.forEach(nomor => {
+                    const index = nomor - 1;
+                    const meja = mejaList[index] || {};
+                    const kiri = meja.kiri;
+                    const kanan = meja.kanan;
+
+                    html += `
+                <div style="border:1px solid #333; width:300px; height:165px; margin:4px; background:#fefefe;">
+                    <table style="width:100%; height:100%; font-size:11px; text-align:center; border-collapse:collapse;">
+                        <tr>
+                            <td style="border-bottom:1px solid #ccc; padding:2px;">
+                                ${kiri ? kiri.nomor_peserta + '<br>' + kiri.nis : '&nbsp;'}
+                            </td>
+                            <td style="padding:2px;">
+                                ${kanan ? kanan.nomor_peserta + '<br>' + kanan.nis : '&nbsp;'}
+                            </td>
+                        </tr>
+                    </table>
+                </div>`;
+                });
+                html += `</div>`;
+            });
+
+            return html;
+        }
+    </script>
+
+
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection
