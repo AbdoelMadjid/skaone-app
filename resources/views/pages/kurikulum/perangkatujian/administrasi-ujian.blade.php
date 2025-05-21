@@ -90,7 +90,8 @@
                                             class="dropdown-item">Ruang Ujian</a>
                                     </li>
                                     <li>
-                                        <a href="#" class="dropdown-item">Peserta
+                                        <a href="{{ route('kurikulum.perangkatujian.administrasi-ujian.peserta-ujian.index') }}"
+                                            class="dropdown-item">Peserta
                                             Ujian</a>
                                     </li>
                                     <li>

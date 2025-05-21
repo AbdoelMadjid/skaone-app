@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PesertaUjian extends Model
 {
     use HasFactory;
-    protected $table = 'ruang_ujians';
+    protected $table = 'peserta_ujians';
     protected $fillable = [
         'kode_ujian',
         'nis',
@@ -16,5 +16,6 @@ class PesertaUjian extends Model
         'nomor_peserta',
         'nomor_ruang',
         'kode_posisi_kelas',
+        'posisi_duduk',
     ];
 }

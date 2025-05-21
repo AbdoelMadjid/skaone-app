@@ -112,6 +112,9 @@ Route::middleware('auth')->group(function () {
                 Route::resource('jadwal-ujian', JadwalUjianController::class);
                 Route::resource('pengawas-ujian', PengawasUjianController::class);
             });
+            Route::get('/get-ruang-ujian/{nomor_ruang}', [PesertaUjianController::class, 'getRuangUjian']);
+            Route::get('/get-siswa-kelas/{kode_kelas}', [PesertaUjianController::class, 'getSiswaKelas']);
+            Route::post('tambahpesertaujian', [PesertaUjianController::class, 'tambahpesertaujian'])->name('tambahpesertaujian');
             Route::resource('pelaksanaan-ujian', PelaksanaanUjianController::class);
         });
     });
