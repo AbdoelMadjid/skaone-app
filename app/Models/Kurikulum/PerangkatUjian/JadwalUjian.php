@@ -12,11 +12,10 @@ class JadwalUjian extends Model
     protected $fillable = [
         'kode_ujian',
         'kode_kk',
-        'mata_pelajaran',
         'tingkat',
-        'jam_ke',
         'tanggal',
-        'jam_mulai',
-        'jam_selesai',
+        'jam_ke',
+        'jam_ujian',
+        'mata_pelajaran',
     ];
 }

@@ -109,7 +109,8 @@
                                             Ujian</a>
                                     </li>
                                     <li>
-                                        <a href="#" class="dropdown-item">Jadwal
+                                        <a href="{{ route('kurikulum.perangkatujian.administrasi-ujian.jadwal-ujian.index') }}"
+                                            class="dropdown-item">Jadwal
                                             Ujian</a>
                                     </li>
                                     <li>
@@ -122,7 +123,7 @@
                     </ul>
                 </div>
                 <div class="card-body p-4">
-                    <div class="tab-content text-muted">
+                    <div class="tab-content">
                         <div class="tab-pane active" id="RuangUjian" role="tabpanel">
                             @include('pages.kurikulum.perangkatujian.halamanadmin.ruang-ujian')
                         </div>
@@ -153,9 +154,16 @@
 @endsection
 @section('script-bottom')
     <script>
+        function formatRuang(nomor) {
+            return nomor.toString().padStart(2, '0');
+        }
+
         function loadDenah() {
             const ruang = document.getElementById('nomorRuang').value;
             const layout = document.getElementById('layout').value;
+
+            // Set nomor ruang ke tampilan cetak
+            document.getElementById('text-ruang').innerText = formatRuang(ruang);
 
             fetch(`/kurikulum/perangkatujian/denahdata?nomor_ruang=${ruang}&layout=${layout}`)
                 .then(res => res.json())
@@ -191,7 +199,7 @@
         }
 
         function renderLayoutByNumber(layoutArray, mejaList) {
-            let html = `<div class="text-center mb-3"><strong>Papan Tulis</strong></div>`;
+            let html = `<div class="text-center mb-3"><strong></strong></div>`;
 
             layoutArray.forEach(baris => {
                 html += `<div class="d-flex justify-content-center mb-2">`;
@@ -202,14 +210,14 @@
                     const kanan = meja.kanan;
 
                     html += `
-                <div style="border:1px solid #333; width:300px; height:165px; margin:4px; background:#fefefe;">
+                <div style="border:1px solid #333; width:300px; height:75px; margin:2px; background:#fefefe;">
                     <table style="width:100%; height:100%; font-size:11px; text-align:center; border-collapse:collapse;">
                         <tr>
-                            <td style="border-bottom:1px solid #ccc; padding:2px;">
-                                ${kiri ? kiri.nomor_peserta + '<br>' + kiri.nis : '&nbsp;'}
+                            <td style="border-right:1px solid #ccc;padding-top:12px;" width="50%" valign="top">
+                                ${kiri ? kiri.nomor_peserta + '<br>' + kiri.nis + '<br>' + kiri.nama_lengkap : '&nbsp;'}
                             </td>
-                            <td style="padding:2px;">
-                                ${kanan ? kanan.nomor_peserta + '<br>' + kanan.nis : '&nbsp;'}
+                            <td style="border-left:1px solid #ccc;padding-top:12px;" width="50%" valign="top">
+                                ${kanan ? kanan.nomor_peserta + '<br>' + kanan.nis + '<br>' + kanan.nama_lengkap : '&nbsp;'}
                             </td>
                         </tr>
                     </table>
@@ -221,7 +229,34 @@
             return html;
         }
     </script>
+    <script>
+        function cetakDenah() {
+            const printContents = document.getElementById('cetak-denah').innerHTML;
+            const w = window.open('', '', 'height=1000,width=800');
 
+            w.document.write(`
+        <html>
+        <head>
+            <title>Denah Tempat Duduk</title>
+            <style>
+                @page { size: A4; margin: 10mm; }
+                body { font-family: 'Times New Roman', serif; font-size: 12px; }
+                table { border-collapse: collapse; width: 100%; }
+                td { padding: 4px; }
+                .meja { border:1px solid #333; width:300px; height:165px; margin:4px; background:#fefefe; }
+                .denah-wrapper { display: flex; justify-content: center; flex-wrap: wrap; }
+                .d-flex { display: flex; justify-content: center; margin-bottom: 10px; }
+            </style>
+        </head>
+        <body onload="window.print(); setTimeout(() => window.close(), 100);">
+            ${printContents}
+        </body>
+        </html>
+    `);
+
+            w.document.close();
+        }
+    </script>
 
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

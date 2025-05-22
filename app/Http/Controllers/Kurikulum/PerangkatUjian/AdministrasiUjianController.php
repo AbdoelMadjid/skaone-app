@@ -73,6 +73,26 @@ class AdministrasiUjianController extends Controller
         //
     }
 
+    private function singkatNama($nama)
+    {
+        $parts = explode(' ', $nama);
+        $jumlah = count($parts);
+
+        if ($jumlah <= 2) {
+            return $nama;
+        }
+
+        // Ambil dua kata pertama
+        $singkat = $parts[0] . ' ' . $parts[1];
+
+        // Tambahkan inisial dari kata ke-3 dan seterusnya
+        for ($i = 2; $i < $jumlah; $i++) {
+            $singkat .= ' ' . strtoupper(substr($parts[$i], 0, 1)) . '.';
+        }
+
+        return $singkat;
+    }
+
     public function getDenahData(Request $request)
     {
         $request->validate([
@@ -80,7 +100,11 @@ class AdministrasiUjianController extends Controller
             'layout' => 'required|in:4x5,5x4',
         ]);
 
-        $data = PesertaUjian::where('nomor_ruang', $request->nomor_ruang)->get();
+        $data = PesertaUjian::with('pesertaDidik')
+            ->where('nomor_ruang', $request->nomor_ruang)
+            ->get();
+
+
 
         // Bagi berdasarkan posisi_duduk dan reset index (agar bisa diakses via indeks)
         $kiri = $data->where('posisi_duduk', 'kiri')->values();
@@ -89,11 +113,30 @@ class AdministrasiUjianController extends Controller
         // Maksimum jumlah meja (selalu 20 untuk 4x5 atau 5x4)
         $totalMeja = 20;
 
-        $mejaList = [];
+        /* $mejaList = [];
         for ($i = 0; $i < $totalMeja; $i++) {
             $mejaList[] = [
                 'kiri' => $kiri[$i] ?? null,
                 'kanan' => $kanan[$i] ?? null,
+            ];
+        } */
+
+        $mejaList = [];
+        for ($i = 0; $i < $totalMeja; $i++) {
+            $kiriData = $kiri[$i] ?? null;
+            $kananData = $kanan[$i] ?? null;
+
+            $mejaList[] = [
+                'kiri' => $kiriData ? [
+                    'nomor_peserta' => $kiriData->nomor_peserta,
+                    'nis' => $kiriData->nis,
+                    'nama_lengkap' => $this->singkatNama($kiriData->pesertaDidik->nama_lengkap ?? ''),
+                ] : null,
+                'kanan' => $kananData ? [
+                    'nomor_peserta' => $kananData->nomor_peserta,
+                    'nis' => $kananData->nis,
+                    'nama_lengkap' => $this->singkatNama($kananData->pesertaDidik->nama_lengkap ?? ''),
+                ] : null,
             ];
         }
 

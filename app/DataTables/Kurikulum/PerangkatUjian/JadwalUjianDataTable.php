@@ -3,6 +3,7 @@
 namespace App\DataTables\Kurikulum\PerangkatUjian;
 
 use App\Models\Kurikulum\PerangkatUjian\JadwalUjian;
+use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -14,6 +15,7 @@ use Yajra\DataTables\Services\DataTable;
 
 class JadwalUjianDataTable extends DataTable
 {
+    use DatatableHelper;
     /**
      * Build the DataTable class.
      *
@@ -22,8 +24,12 @@ class JadwalUjianDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'jadwalujian.action')
-            ->setRowId('id');
+            ->addColumn('action', function ($row) {
+                // Menggunakan basicActions untuk menghasilkan action buttons
+                $actions = $this->basicActions($row);
+                return view('action', compact('actions'));
+            })
+            ->addIndexColumn();
     }
 
     /**
@@ -62,15 +68,19 @@ class JadwalUjianDataTable extends DataTable
     public function getColumns(): array
     {
         return [
+            Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
+            Column::make('kode_ujian')->title('Kode'),
+            Column::make('kode_kk')->title('Kode KK'),
+            Column::make('tingkat')->title('Tingkat'),
+            Column::make('tanggal')->title('Tanggal'),
+            Column::make('jam_ke')->title('Jam Ke'),
+            Column::make('jam_ujian')->title('Waktu Ujian'),
+            Column::make('mata_pelajaran')->title('Mata Pelajaran'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
                 ->width(60)
                 ->addClass('text-center'),
-            Column::make('id'),
-            Column::make('add your columns'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
         ];
     }
 

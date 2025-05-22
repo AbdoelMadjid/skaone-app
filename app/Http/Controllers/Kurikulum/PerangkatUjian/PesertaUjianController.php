@@ -211,58 +211,67 @@ class PesertaUjianController extends Controller
             'kode_kelas_kanan' => 'required',
         ]);
 
-        // Ambil kode ujian aktif
-        $kodeUjianAktif = IdentitasUjian::where('status', 'aktif')->value('kode_ujian');
+        // Ambil data ujian aktif (nama ujian dan tahun ajaran)
+        $ujianAktif = IdentitasUjian::where('status', 'aktif')->first();
 
-        // Hitung nomor terakhir yang sudah dipakai
-        $nomorTerakhir = PesertaUjian::where('kode_ujian', $kodeUjianAktif)
+        if (!$ujianAktif) {
+            return redirect()->back()->with('error', 'Tidak ada ujian yang aktif.');
+        }
+
+        // Buat kode peserta dari nama ujian dan tahun ajaran
+        $singkatanUjian = strtoupper(collect(explode(' ', $ujianAktif->nama_ujian))->map(fn($word) => substr($word, 0, 1))->implode(''));
+        $tahunAjaranAngka = preg_replace('/[^0-9\-]/', '', $ujianAktif->tahun_ajaran);
+        [$tahunAwal, $tahunAkhir] = explode('-', $tahunAjaranAngka);
+        $tahunKode = substr($tahunAwal, -2) . substr($tahunAkhir, -2);
+        $kodeNomorPeserta = $singkatanUjian . $tahunKode; // contoh: SAS2425
+
+        // Ambil nomor terakhir dari peserta ujian untuk kode ini
+        $nomorTerakhir = PesertaUjian::where('kode_ujian', $ujianAktif->kode_ujian)
+            ->where('nomor_peserta', 'like', $kodeNomorPeserta . '-%')
             ->orderBy('nomor_peserta', 'desc')
             ->value('nomor_peserta');
 
-        // Ambil hanya angkanya dan lanjutkan
         $counter = 1;
         if ($nomorTerakhir) {
             $bagian = explode('-', $nomorTerakhir);
             $counter = (int)end($bagian) + 1;
         }
 
-        $nomorRuang = $request->nomor_ruang;
-
-        // Helper untuk format nomor peserta
-        $generateNomorPeserta = function ($kodeUjian, $urutan) {
-            return $kodeUjian . '-' . str_pad($urutan, 5, '0', STR_PAD_LEFT);
-        };
+        // Helper
+        $generateNomorPeserta = fn($kode, $urutan) => $kode . '-' . str_pad($urutan, 5, '0', STR_PAD_LEFT);
 
         DB::beginTransaction();
         try {
-            // ============ DATA KIRI ============
+            $nomorRuang = $request->nomor_ruang;
+
+            // ============ KIRI ============
             $nisListKiri = $request->input('siswa_kiri', []);
             $kelasKiri = $request->input('kelas_kiri');
             $kodeKelasKiri = $request->input('kode_kelas_kiri');
 
             foreach ($nisListKiri as $nis) {
                 PesertaUjian::create([
-                    'kode_ujian' => $kodeUjianAktif,
+                    'kode_ujian' => $ujianAktif->kode_ujian,
                     'nis' => $nis,
                     'kelas' => $kelasKiri,
-                    'nomor_peserta' => $generateNomorPeserta($kodeUjianAktif, $counter++),
+                    'nomor_peserta' => $generateNomorPeserta($kodeNomorPeserta, $counter++),
                     'nomor_ruang' => $nomorRuang,
                     'kode_posisi_kelas' => $kodeKelasKiri,
                     'posisi_duduk' => 'kiri',
                 ]);
             }
 
-            // ============ DATA KANAN ============
+            // ============ KANAN ============
             $nisListKanan = $request->input('siswa_kanan', []);
             $kelasKanan = $request->input('kelas_kanan');
             $kodeKelasKanan = $request->input('kode_kelas_kanan');
 
             foreach ($nisListKanan as $nis) {
                 PesertaUjian::create([
-                    'kode_ujian' => $kodeUjianAktif,
+                    'kode_ujian' => $ujianAktif->kode_ujian,
                     'nis' => $nis,
                     'kelas' => $kelasKanan,
-                    'nomor_peserta' => $generateNomorPeserta($kodeUjianAktif, $counter++),
+                    'nomor_peserta' => $generateNomorPeserta($kodeNomorPeserta, $counter++),
                     'nomor_ruang' => $nomorRuang,
                     'kode_posisi_kelas' => $kodeKelasKanan,
                     'posisi_duduk' => 'kanan',
@@ -272,7 +281,7 @@ class PesertaUjianController extends Controller
             DB::commit();
             return redirect()->back()->with('toast_success', 'Peserta ujian berhasil disimpan.');
         } catch (\Exception $e) {
-            DB::rollback();
+            DB::rollBack();
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
