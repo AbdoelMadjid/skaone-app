@@ -3,7 +3,19 @@
     @lang('translation.administrasi-ujian')
 @endsection
 @section('css')
-    {{-- --}}
+    <style>
+        @media print {
+            .cetak-kartu tr {
+                page-break-inside: avoid;
+                /* Hindari potongan di tengah baris */
+            }
+
+            .page-break {
+                page-break-before: always;
+                /* Paksa halaman baru */
+            }
+        }
+    </style>
 @endsection
 @section('content')
     @component('layouts.breadcrumb')
@@ -154,6 +166,21 @@
 @endsection
 @section('script-bottom')
     <script>
+        function printContent(elId) {
+            var content = document.getElementById(elId).innerHTML;
+            var originalContent = document.body.innerHTML;
+
+            // Ganti konten halaman dengan elemen yang dipilih
+            document.body.innerHTML = content;
+
+            // Cetak halaman
+            window.print();
+
+            // Kembalikan konten asli setelah mencetak
+            document.body.innerHTML = originalContent;
+            //window.location.reload(); // Refresh halaman untuk memuat ulang skrip
+        }
+
         function formatRuang(nomor) {
             return nomor.toString().padStart(2, '0');
         }
@@ -232,16 +259,18 @@
         document.getElementById('kelas').addEventListener('change', function() {
             const kelas = this.value;
             const container = document.getElementById('kartu-container');
+            const kelasRombel = document.getElementById('kelas-rombel');
             container.innerHTML = '<p>Loading...</p>';
+            kelasRombel.innerText = this.options[this.selectedIndex].text;
 
-            fetch("{{ route('kurikulum.perangkatujian.getkartupeserta') }}?kelas=" + kelas)
+            fetch("{{ route('kurikulum.perangkatujian.getkartupeserta') }}?kelas=" + encodeURIComponent(kelas))
                 .then(response => response.json())
                 .then(data => {
                     container.innerHTML = data.html;
                 })
-                .catch(err => {
+                .catch(error => {
                     container.innerHTML = '<p>Gagal memuat data.</p>';
-                    console.error(err);
+                    console.error(error);
                 });
         });
     </script>

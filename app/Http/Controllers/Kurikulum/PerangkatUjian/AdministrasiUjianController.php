@@ -187,9 +187,13 @@ class AdministrasiUjianController extends Controller
                 'peserta_didiks.nisn',
                 'rombongan_belajars.rombel'
             )
+            ->orderBy('peserta_didiks.nama_lengkap') // atau orderBy('id'), tergantung kebutuhan urutan
             ->get();
 
-        $html = view('pages.kurikulum.perangkatujian.halamanadmin.kartu-ujian-tampil', compact('pesertaUjians', 'identitasUjian'))->render();
+        $html = view('pages.kurikulum.perangkatujian.halamanadmin.kartu-ujian-tampil', [
+            'pesertaUjians' => $pesertaUjians,
+            'identitasUjian' => $identitasUjian
+        ])->render();
 
         return response()->json(['html' => $html]);
     }

@@ -1,7 +1,8 @@
 <div class="row g-4 mb-3">
     <div class="col-sm-auto">
         <div>
-
+            <button class="btn btn-soft-info btn-sm" onclick="printContent('cetak-kartu-ujian')">
+                Cetak</button>
         </div>
     </div>
     <div class="col-sm">
@@ -23,7 +24,11 @@
 
     </div>
 </div>
-<p class="mt-3"></p>
-<div class="row" id="kartu-container">
-    {{-- Kartu peserta akan dimuat di sini via AJAX --}}
+<div id="cetak-kartu-ujian">
+    <p class="mt-3">KARTU UJIAN KELAS <span id="kelas-rombel"></span></p>
+    <div class="kartu-peserta">
+        <div class="row" id="kartu-container" style='@page {size: A4;}'>
+            {{-- Kartu peserta akan dimuat di sini via AJAX --}}
+        </div>
+    </div>
 </div>
