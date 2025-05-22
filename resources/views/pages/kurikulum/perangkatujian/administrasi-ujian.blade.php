@@ -228,6 +228,22 @@
 
             return html;
         }
+
+        document.getElementById('kelas').addEventListener('change', function() {
+            const kelas = this.value;
+            const container = document.getElementById('kartu-container');
+            container.innerHTML = '<p>Loading...</p>';
+
+            fetch("{{ route('kurikulum.perangkatujian.getkartupeserta') }}?kelas=" + kelas)
+                .then(response => response.json())
+                .then(data => {
+                    container.innerHTML = data.html;
+                })
+                .catch(err => {
+                    container.innerHTML = '<p>Gagal memuat data.</p>';
+                    console.error(err);
+                });
+        });
     </script>
     <script>
         function cetakDenah() {

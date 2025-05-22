@@ -526,12 +526,12 @@
                         </div>
                     </div>
                     <!-- <div class="card-preloader">
-                                <div class="card-status">
-                                    <div class="spinner-border text-success">
-                                        <span class="visually-hidden">Loading...</span>
+                                    <div class="card-status">
+                                        <div class="spinner-border text-success">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
                                     </div>
-                                </div>
-                            </div> -->
+                                </div> -->
                 </div>
             </div>
         </div><!-- end col -->

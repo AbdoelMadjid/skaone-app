@@ -115,6 +115,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/get-ruang-ujian/{nomor_ruang}', [PesertaUjianController::class, 'getRuangUjian']);
             Route::get('/get-siswa-kelas/{kode_kelas}', [PesertaUjianController::class, 'getSiswaKelas']);
             Route::post('tambahpesertaujian', [PesertaUjianController::class, 'tambahpesertaujian'])->name('tambahpesertaujian');
+            Route::get('/getkartupeserta', [AdministrasiUjianController::class, 'getKartuPeserta'])->name('getkartupeserta');
             Route::get('/denahdata', [AdministrasiUjianController::class, 'getDenahData'])->name('denahdata');
             Route::resource('pelaksanaan-ujian', PelaksanaanUjianController::class);
         });

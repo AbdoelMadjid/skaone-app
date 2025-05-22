@@ -7,6 +7,7 @@ use App\Models\Kurikulum\PerangkatUjian\IdentitasUjian;
 use App\Models\Kurikulum\PerangkatUjian\PesertaUjian;
 use App\Models\Kurikulum\PerangkatUjian\RuangUjian;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdministrasiUjianController extends Controller
 {
@@ -19,9 +20,33 @@ class AdministrasiUjianController extends Controller
 
         $ruangs = RuangUjian::select('nomor_ruang')->distinct()->pluck('nomor_ruang');
 
+        $rombels = DB::table('rombongan_belajars')->pluck('rombel', 'kode_rombel');
+
+        $pesertaUjians = [];
+
+        if ($identitasUjian) {
+            $pesertaUjians = DB::table('peserta_ujians')
+                ->join('peserta_didiks', 'peserta_ujians.nis', '=', 'peserta_didiks.nis')
+                ->join('rombongan_belajars', 'peserta_ujians.kelas', '=', 'rombongan_belajars.kode_rombel')
+                ->where('peserta_ujians.kode_ujian', $identitasUjian->kode_ujian)
+                ->select(
+                    'peserta_ujians.kode_ujian',
+                    'peserta_ujians.nis',
+                    'peserta_didiks.nama_lengkap',
+                    'rombongan_belajars.rombel',
+                    'peserta_ujians.nomor_peserta',
+                    'peserta_ujians.nomor_ruang',
+                    'peserta_ujians.kode_posisi_kelas',
+                    'peserta_ujians.posisi_duduk'
+                )
+                ->get();
+        }
+
         return view('pages.kurikulum.perangkatujian.administrasi-ujian', [
             'identitasUjian' => $identitasUjian,
             'ruangs' => $ruangs,
+            'pesertaUjians' => $pesertaUjians,
+            'rombels' => $rombels,
         ]);
     }
 
@@ -144,5 +169,28 @@ class AdministrasiUjianController extends Controller
             'layout' => $request->layout,
             'mejaList' => $mejaList,
         ]);
+    }
+
+    public function getKartuPeserta(Request $request)
+    {
+        $kelas = $request->kelas;
+        $identitasUjian = IdentitasUjian::where('status', 'Aktif')->first();
+
+        $pesertaUjians = DB::table('peserta_ujians')
+            ->join('peserta_didiks', 'peserta_ujians.nis', '=', 'peserta_didiks.nis')
+            ->join('rombongan_belajars', 'peserta_ujians.kelas', '=', 'rombongan_belajars.kode_rombel')
+            ->where('peserta_ujians.kode_ujian', $identitasUjian->kode_ujian)
+            ->where('peserta_ujians.kelas', $kelas)
+            ->select(
+                'peserta_ujians.*',
+                'peserta_didiks.nama_lengkap',
+                'peserta_didiks.nisn',
+                'rombongan_belajars.rombel'
+            )
+            ->get();
+
+        $html = view('pages.kurikulum.perangkatujian.halamanadmin.kartu-ujian-tampil', compact('pesertaUjians', 'identitasUjian'))->render();
+
+        return response()->json(['html' => $html]);
     }
 }
