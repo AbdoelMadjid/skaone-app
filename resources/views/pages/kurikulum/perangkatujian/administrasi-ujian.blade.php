@@ -3,9 +3,13 @@
     @lang('translation.administrasi-ujian')
 @endsection
 @section('css')
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link href="{{ URL::asset('build/libs/select2/css/select2.min.css') }}" rel="stylesheet" />
+    <link href="{{ URL::asset('build/libs/select2-bootstrap-5-theme/select2-bootstrap-5-theme.min.css') }}"
+        rel="stylesheet" />
     <style>
         @media print {
-            .cetak-kartu tr {
+            .etak-kartu tr {
                 page-break-inside: avoid;
                 /* Hindari potongan di tengah baris */
             }
@@ -98,12 +102,6 @@
                                 <i class="ri-contacts-book-2-line text-muted align-bottom me-1"></i> Kartu Ujian
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#DenahUjian" role="tab"
-                                aria-selected="false">
-                                <i class="ri-dashboard-line text-muted align-bottom me-1"></i> Denah Tempat Duduk
-                            </a>
-                        </li>
                         <li class="nav-item ms-auto">
                             <div class="dropdown">
                                 <a class="nav-link fw-medium text-reset mb-n1" href="#" role="button"
@@ -151,9 +149,6 @@
                         <div class="tab-pane" id="KartuUjian" role="tabpanel">
                             @include('pages.kurikulum.perangkatujian.halamanadmin.kartu-ujian')
                         </div>
-                        <div class="tab-pane" id="DenahUjian" role="tabpanel">
-                            @include('pages.kurikulum.perangkatujian.halamanadmin.denah-ujian')
-                        </div>
                     </div><!--end tab-content-->
                 </div><!--end card-body-->
             </div><!--end card -->
@@ -162,37 +157,96 @@
     </div>
 @endsection
 @section('script')
-    <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="{{ URL::asset('build/libs/select2/js/select2.min.js') }}"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 @endsection
 @section('script-bottom')
     <script>
-        function printContent(elId) {
-            var content = document.getElementById(elId).innerHTML;
-            var originalContent = document.body.innerHTML;
+        $('#ruangUjianTable').DataTable({
+            responsive: true,
+            pageLength: 25,
+            autoWidth: false,
+            columnDefs: [{
+                    width: "20px",
+                    targets: 0
+                },
+                {
+                    width: "150px",
+                    targets: 1
+                },
+                {
+                    width: "60px",
+                    targets: 2
+                },
+                {
+                    width: "300px",
+                    targets: 3
+                },
+            ]
+        });
+        $('#pesertaUjianTable').DataTable({
+            responsive: true,
+            pageLength: 36,
+            autoWidth: false,
+            columnDefs: [{
+                    width: "20px",
+                    targets: 0
+                },
+                {
+                    width: "150px",
+                    targets: 1
+                },
+                {
+                    width: "300px",
+                    targets: 2
+                },
+                {
+                    width: "60px",
+                    targets: 3
+                },
+            ]
+        });
+    </script>
+    <script>
+        let currentRuang = null;
 
-            // Ganti konten halaman dengan elemen yang dipilih
-            document.body.innerHTML = content;
-
-            // Cetak halaman
-            window.print();
-
-            // Kembalikan konten asli setelah mencetak
-            document.body.innerHTML = originalContent;
-            //window.location.reload(); // Refresh halaman untuk memuat ulang skrip
-        }
-
-        function formatRuang(nomor) {
+        function formatNomorRuang(nomor) {
             return nomor.toString().padStart(2, '0');
         }
 
+        document.addEventListener('DOMContentLoaded', function() {
+            const layoutSelector = document.getElementById('layoutSelector');
+
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('showDenahTempatDuduk')) {
+                    e.preventDefault();
+
+                    currentRuang = e.target.dataset.ruangan;
+                    const ruangFormatted = formatNomorRuang(currentRuang);
+
+                    // Update semua elemen dengan id yang sama
+                    document.querySelectorAll('#text-ruang').forEach(el => {
+                        el.textContent = ruangFormatted;
+                    });
+
+                    loadDenah();
+                }
+            });
+
+            layoutSelector.addEventListener('change', function() {
+                if (currentRuang) loadDenah();
+            });
+
+            document.getElementById('btn-cetak-denah').addEventListener('click', function() {
+                cetakDenah();
+            });
+        });
+
         function loadDenah() {
-            const ruang = document.getElementById('nomorRuang').value;
-            const layout = document.getElementById('layout').value;
+            const layout = document.getElementById('layoutSelector').value;
 
-            // Set nomor ruang ke tampilan cetak
-            document.getElementById('text-ruang').innerText = formatRuang(ruang);
-
-            fetch(`/kurikulum/perangkatujian/denahdata?nomor_ruang=${ruang}&layout=${layout}`)
+            fetch(`/kurikulum/perangkatujian/denahdata?nomor_ruang=${currentRuang}&layout=${layout}`)
                 .then(res => res.json())
                 .then(response => {
                     const {
@@ -226,8 +280,7 @@
         }
 
         function renderLayoutByNumber(layoutArray, mejaList) {
-            let html = `<div class="text-center mb-3"><strong></strong></div>`;
-
+            let html = '';
             layoutArray.forEach(baris => {
                 html += `<div class="d-flex justify-content-center mb-2">`;
                 baris.forEach(nomor => {
@@ -237,42 +290,23 @@
                     const kanan = meja.kanan;
 
                     html += `
-                <div style="border:1px solid #333; width:300px; height:75px; margin:2px; background:#fefefe;">
-                    <table style="width:100%; height:100%; font-size:11px; text-align:center; border-collapse:collapse;">
-                        <tr>
-                            <td style="border-right:1px solid #ccc;padding-top:12px;" width="50%" valign="top">
-                                ${kiri ? kiri.nomor_peserta + '<br>' + kiri.nis + '<br>' + kiri.nama_lengkap : '&nbsp;'}
-                            </td>
-                            <td style="border-left:1px solid #ccc;padding-top:12px;" width="50%" valign="top">
-                                ${kanan ? kanan.nomor_peserta + '<br>' + kanan.nis + '<br>' + kanan.nama_lengkap : '&nbsp;'}
-                            </td>
-                        </tr>
-                    </table>
-                </div>`;
+                    <div style="border:1px solid #333; width:300px; height:75px; margin:2px; background:#fefefe;">
+                        <table style="width:100%; height:100%; font-size:11px; text-align:center; border-collapse:collapse;">
+                            <tr>
+                                <td style="border-right:1px solid #ccc;padding-top:12px;" width="50%" valign="top">
+                                    ${kiri ? '<div style="font-size:10px;">' + kiri.nomor_peserta  + '<br>' + kiri.nis + '<br>' + kiri.nama_lengkap + '</div>' : '&nbsp;'}
+                                </td>
+                                <td style="border-left:1px solid #ccc;padding-top:12px;" width="50%" valign="top">
+                                    ${kanan ? '<div style="font-size:10px;">' + kanan.nomor_peserta + '<br>' + kanan.nis + '<br>' + kanan.nama_lengkap + '</div>' : '&nbsp;'}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>`;
                 });
                 html += `</div>`;
             });
-
             return html;
         }
-
-        document.getElementById('kelas').addEventListener('change', function() {
-            const kelas = this.value;
-            const container = document.getElementById('kartu-container');
-            const kelasRombel = document.getElementById('kelas-rombel');
-            container.innerHTML = '<p>Loading...</p>';
-            kelasRombel.innerText = this.options[this.selectedIndex].text;
-
-            fetch("{{ route('kurikulum.perangkatujian.getkartupeserta') }}?kelas=" + encodeURIComponent(kelas))
-                .then(response => response.json())
-                .then(data => {
-                    container.innerHTML = data.html;
-                })
-                .catch(error => {
-                    container.innerHTML = '<p>Gagal memuat data.</p>';
-                    console.error(error);
-                });
-        });
     </script>
     <script>
         function cetakDenah() {
@@ -302,6 +336,89 @@
             w.document.close();
         }
     </script>
+
+    <script>
+        document.querySelectorAll('.btn-kartu').forEach(button => {
+            button.addEventListener('click', function() {
+                const kelas = this.getAttribute('data-kelas');
+                const container = $('#modalKartuUjian .modal-body');
+                container.html('<p>Memuat data...</p>');
+
+                $.ajax({
+                    url: "{{ route('kurikulum.perangkatujian.getkartupeserta') }}",
+                    method: "GET",
+                    data: {
+                        kelas: kelas
+                    },
+                    success: function(response) {
+                        // Pastikan data JSON punya properti 'html'
+                        container.html(response.html);
+                        $('#modalKartuUjian').modal('show');
+                    },
+                    error: function(xhr) {
+                        container.html('<p class="text-danger">Gagal memuat data.</p>');
+                        console.error(xhr);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        document.getElementById('btn-cetak-kartu').addEventListener('click', function() {
+            const printContents = document.getElementById('cetak-kartu-ujian');
+            if (!printContents) {
+                alert("Data belum tersedia untuk dicetak.");
+                return;
+            }
+
+            const w = window.open('', '', 'height=1000,width=800');
+            w.document.write(`
+            <html>
+            <head>
+                <title>Cetak Kartu Peserta</title>
+                <style>
+                    @page {
+                        size: A4;
+                        margin: 10mm;
+                    }
+                    html, body {
+                        width: 210mm;
+                        height: 297mm;
+                        margin: 0;
+                        padding: 0;
+                        font-family: 'Times New Roman', serif;
+                        font-size: 12px;
+                    }
+                    .kartu-wrapper {
+                        page-break-inside: avoid;
+                    }
+                    table {
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+                    td {
+                        padding: 4px;
+                        vertical-align: top;
+                    }
+                    .cetak-kartu {
+                        margin: 0 auto;
+                        width: 95%;
+                        border-collapse: collapse;
+                        font: 12px Times New Roman;
+                        table-layout: fixed;
+                    }
+                </style>
+            </head>
+            <body onload="window.print(); setTimeout(() => window.close(), 300);">
+                ${printContents.innerHTML}
+            </body>
+            </html>
+        `);
+            w.document.close();
+        });
+    </script>
+
 
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

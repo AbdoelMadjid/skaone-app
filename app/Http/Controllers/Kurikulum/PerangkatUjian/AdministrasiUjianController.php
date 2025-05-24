@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Kurikulum\PerangkatUjian\IdentitasUjian;
 use App\Models\Kurikulum\PerangkatUjian\PesertaUjian;
 use App\Models\Kurikulum\PerangkatUjian\RuangUjian;
+use App\Models\ManajemenSekolah\RombonganBelajar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -23,6 +24,7 @@ class AdministrasiUjianController extends Controller
         $rombels = DB::table('rombongan_belajars')->pluck('rombel', 'kode_rombel');
 
         $pesertaUjians = [];
+
 
         if ($identitasUjian) {
             $pesertaUjians = DB::table('peserta_ujians')
@@ -42,11 +44,80 @@ class AdministrasiUjianController extends Controller
                 ->get();
         }
 
+        $ujianAktif = IdentitasUjian::where('status', 'aktif')->first();
+
+        $dataRuang = RuangUjian::where('kode_ujian', $ujianAktif->kode_ujian)->get()->map(function ($item) use ($ujianAktif) {
+            $kelasKiri = RombonganBelajar::where('kode_rombel', $item->kelas_kiri)
+                ->where('tahunajaran', $ujianAktif->tahun_ajaran)->first();
+            $kelasKanan = RombonganBelajar::where('kode_rombel', $item->kelas_kanan)
+                ->where('tahunajaran', $ujianAktif->tahun_ajaran)->first();
+
+            // Hitung siswa posisi_duduk 'kiri' di kelas kiri
+            $jumlahSiswaKiri = DB::table('peserta_ujians')
+                ->where('kode_ujian', $ujianAktif->kode_ujian)
+                ->where('kode_posisi_kelas', $item->kode_kelas_kiri)
+                ->where('posisi_duduk', 'kiri')
+                ->count();
+
+            // Hitung siswa posisi_duduk 'kanan' di kelas kanan
+            $jumlahSiswaKanan = DB::table('peserta_ujians')
+                ->where('kode_ujian', $ujianAktif->kode_ujian)
+                ->where('kode_posisi_kelas', $item->kode_kelas_kanan)
+                ->where('posisi_duduk', 'kanan')
+                ->count();
+
+            $item->kelas_kiri_nama = $kelasKiri->rombel ?? '-';
+            $item->kelas_kanan_nama = $kelasKanan->rombel ?? '-';
+            $item->jumlah_siswa_kiri = $jumlahSiswaKiri;
+            $item->jumlah_siswa_kanan = $jumlahSiswaKanan;
+            $item->jumlah_total = ($jumlahSiswaKanan + $jumlahSiswaKiri);
+            return $item;
+        });
+
+        $pesertaUjianTable = DB::table('peserta_ujians')
+            ->join('peserta_didiks', 'peserta_ujians.nis', '=', 'peserta_didiks.nis')
+            ->join('rombongan_belajars', 'peserta_ujians.kelas', '=', 'rombongan_belajars.kode_rombel')
+            ->where('peserta_ujians.kode_ujian', $ujianAktif->kode_ujian)
+            ->select(
+                'peserta_ujians.kode_ujian',
+                'peserta_ujians.nis',
+                'peserta_ujians.kelas',
+                'peserta_didiks.nama_lengkap',
+                'rombongan_belajars.rombel',
+                'peserta_ujians.nomor_peserta',
+                'peserta_ujians.nomor_ruang',
+                'peserta_ujians.kode_posisi_kelas',
+                'peserta_ujians.posisi_duduk'
+            )
+            ->get();
+
+        $rekapKelas = collect($pesertaUjianTable)
+            ->groupBy('rombel')
+            ->sortKeys()
+            ->map(function ($group, $rombel) {
+                $jumlahKiri = $group->where('posisi_duduk', 'kiri')->count();
+                $jumlahKanan = $group->where('posisi_duduk', 'kanan')->count();
+                $ruang = $group->pluck('nomor_ruang')->unique()->sort()->implode(', ');
+                $kelas = $group->first()->kelas; // ambil nilai kelas dari item pertama
+
+                return [
+                    'rombel' => $rombel,
+                    'kelas' => $kelas, // ← tambahkan ini
+                    'jumlah_kiri' => $jumlahKiri,
+                    'jumlah_kanan' => $jumlahKanan,
+                    'ruang' => $ruang,
+                    'total' => $group->count(),
+                ];
+            })->values();
+
         return view('pages.kurikulum.perangkatujian.administrasi-ujian', [
             'identitasUjian' => $identitasUjian,
             'ruangs' => $ruangs,
             'pesertaUjians' => $pesertaUjians,
             'rombels' => $rombels,
+            'dataRuang' => $dataRuang,
+            'pesertaUjianTable' => $pesertaUjianTable,
+            'rekapKelas' => $rekapKelas,
         ]);
     }
 
@@ -100,18 +171,16 @@ class AdministrasiUjianController extends Controller
 
     private function singkatNama($nama)
     {
-        $parts = explode(' ', $nama);
+        $parts = explode(' ', trim($nama));
         $jumlah = count($parts);
 
-        if ($jumlah <= 2) {
-            return $nama;
+        if ($jumlah === 0) {
+            return '';
         }
 
-        // Ambil dua kata pertama
-        $singkat = $parts[0] . ' ' . $parts[1];
+        $singkat = $parts[0]; // Kata pertama utuh
 
-        // Tambahkan inisial dari kata ke-3 dan seterusnya
-        for ($i = 2; $i < $jumlah; $i++) {
+        for ($i = 1; $i < $jumlah; $i++) {
             $singkat .= ' ' . strtoupper(substr($parts[$i], 0, 1)) . '.';
         }
 
@@ -197,4 +266,17 @@ class AdministrasiUjianController extends Controller
 
         return response()->json(['html' => $html]);
     }
+
+    /* public function getKartuPeserta(Request $request)
+    {
+        $kelas = $request->kelas;
+        $identitasUjian = IdentitasUjian::where('status', 'aktif')->first();
+
+        $pesertaUjians = PesertaUjian::with(['pesertaDidik', 'rombel'])
+            ->where('kelas', $kelas)
+            ->where('kode_ujian', $identitasUjian->kode_ujian)
+            ->get();
+
+        return view('pages.kurikulum.perangkatujian.halamanadmin.kartu-ujian-tampil', compact('pesertaUjians', 'identitasUjian'))->render();
+    } */
 }
