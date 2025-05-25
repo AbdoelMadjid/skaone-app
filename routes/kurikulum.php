@@ -120,6 +120,9 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/get-mapel/{kode_kk}', [JadwalUjianController::class, 'getMapelByKK']);
 
+            Route::get('/generatejadwalmassal', [JadwalUjianController::class, 'generateMassal']);
+            Route::post('/simpan-massal', [JadwalUjianController::class, 'simpanMassal']);
+
             Route::get('denahtempatduduk/{ruangan}', [AdministrasiUjianController::class, 'showDenahTempatDuduk']);
 
             Route::resource('pelaksanaan-ujian', PelaksanaanUjianController::class);

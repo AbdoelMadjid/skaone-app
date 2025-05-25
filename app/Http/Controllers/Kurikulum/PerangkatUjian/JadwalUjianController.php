@@ -10,7 +10,10 @@ use App\Models\Kurikulum\DataKBM\MataPelajaranPerJurusan;
 use App\Models\Kurikulum\PerangkatUjian\IdentitasUjian;
 use App\Models\Kurikulum\PerangkatUjian\JadwalUjian;
 use App\Models\ManajemenSekolah\KompetensiKeahlian;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class JadwalUjianController extends Controller
 {
@@ -208,5 +211,58 @@ class JadwalUjianController extends Controller
     {
         $mapel = MataPelajaranPerJurusan::where('kode_kk', $kode_kk)->pluck('mata_pelajaran', 'mata_pelajaran');
         return response()->json($mapel);
+    }
+
+    public function generateMassal(Request $request)
+    {
+        $request->validate([
+            'kode_kk' => 'required',
+            'tingkat' => 'required',
+        ]);
+
+        $ujianAktif = IdentitasUjian::where('status', 'aktif')->firstOrFail();
+        $tanggalMulai = Carbon::parse($ujianAktif->tgl_ujian_awal);
+        $tanggalAkhir = Carbon::parse($ujianAktif->tgl_ujian_akhir);
+        $periode = CarbonPeriod::create($tanggalMulai, $tanggalAkhir);
+
+        $jamKeList = [
+            1 => '07.30 - 08.30',
+            2 => '09.00 - 10.00',
+            3 => '10.30 - 11.30',
+            4 => '13.00 - 14.00',
+        ];
+
+        $mataPelajaran = MataPelajaranPerJurusan::where('kode_kk', $request->kode_kk)->pluck('mata_pelajaran');
+
+        return response()->json([
+            'tanggal' => collect($periode)->map(function ($tgl) {
+                return ['date' => $tgl->format('Y-m-d')];
+            }),
+            'jamKeList' => $jamKeList,
+            'mapel' => $mataPelajaran,
+            'kode_ujian' => $ujianAktif->kode_ujian,
+        ]);
+    }
+
+    public function simpanMassal(Request $request)
+    {
+        $data = $request->input('data');
+
+        foreach ($data as $row) {
+            if (empty($row['mata_pelajaran'])) {
+                continue; // skip jika kosong
+            }
+            JadwalUjian::create([
+                'kode_ujian' => $row['kode_ujian'],
+                'kode_kk' => $row['kode_kk'],
+                'tingkat' => $row['tingkat'],
+                'tanggal' => $row['tanggal'],
+                'jam_ke' => $row['jam_ke'],
+                'jam_ujian' => $row['jam_ujian'],
+                'mata_pelajaran' => $row['mata_pelajaran'],
+            ]);
+        }
+
+        return response()->json(['message' => 'Berhasil disimpan']);
     }
 }
