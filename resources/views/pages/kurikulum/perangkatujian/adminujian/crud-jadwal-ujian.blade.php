@@ -23,10 +23,22 @@
                 <div class="card-header d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">Jadwal Ujian</h5>
                     <div>
-                        @can('create kurikulum/perangkatujian/administrasi-ujian/jadwal-ujian')
-                            <a class="btn btn-soft-primary action"
-                                href="{{ route('kurikulum.perangkatujian.administrasi-ujian.jadwal-ujian.create') }}">Tambah</a>
-                        @endcan
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-soft-primary dropdown-toggle" data-bs-toggle="dropdown">
+                                Tambah Jadwal
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    @can('create kurikulum/perangkatujian/administrasi-ujian/jadwal-ujian')
+                                        <a class="dropdown-item action"
+                                            href="{{ route('kurikulum.perangkatujian.administrasi-ujian.jadwal-ujian.create') }}">Tambah
+                                            Satuan</a>
+                                    @endcan
+                                </li>
+                                {{-- <li><a href="#" class="dropdown-item" id="btnTambahSatuan">Tambah Satuan</a></li> --}}
+                                <li><a href="#" class="dropdown-item" id="btnTambahMassal">Input Massal</a></li>
+                            </ul>
+                        </div>
                         <a class="btn btn-soft-danger"
                             href="{{ route('kurikulum.perangkatujian.administrasi-ujian.index') }}">Kembali</a>
                     </div>

@@ -5,6 +5,7 @@ namespace App\DataTables\Kurikulum\PerangkatUjian;
 use App\Models\Kurikulum\PerangkatUjian\JadwalUjian;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -24,12 +25,25 @@ class JadwalUjianDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addColumn('tgl', function ($row) {
+                $date = \Carbon\Carbon::parse($row->tanggal)->translatedFormat('l, d M Y');
+
+                return $date;
+            })
+            ->addColumn('namakk', function ($row) {
+                $namaKK = DB::table('kompetensi_keahlians')
+                    ->where('idkk', $row->kode_kk)
+                    ->value('nama_kk');
+
+                return $namaKK . ' (' . $row->kode_kk . ')';
+            })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
                 return view('action', compact('actions'));
             })
-            ->addIndexColumn();
+            ->addIndexColumn()
+            ->rawColumns(['namakk', 'tgl', 'action']);
     }
 
     /**
@@ -69,11 +83,10 @@ class JadwalUjianDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
-            Column::make('kode_ujian')->title('Kode'),
-            Column::make('kode_kk')->title('Kode KK'),
-            Column::make('tingkat')->title('Tingkat'),
-            Column::make('tanggal')->title('Tanggal'),
-            Column::make('jam_ke')->title('Jam Ke'),
+            Column::make('namakk')->title('Konsentrasi Keahlian'),
+            Column::make('tingkat')->title('Tingkat')->addClass('text-center'),
+            Column::make('tgl')->title('Tanggal'),
+            Column::make('jam_ke')->title('Jam Ke')->addClass('text-center'),
             Column::make('jam_ujian')->title('Waktu Ujian'),
             Column::make('mata_pelajaran')->title('Mata Pelajaran'),
             Column::computed('action')
