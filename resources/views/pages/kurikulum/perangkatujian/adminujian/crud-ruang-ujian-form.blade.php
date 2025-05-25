@@ -16,7 +16,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-3">
-                    <x-form.select name="kelas_kiri" label="Kelas Bagian Kiri" :options="$kelasOptions" id="kelas_kiri"
+                    <x-form.select name="kelas_kiri" label="Kelas Bagian Kiri" :options="['-' => 'Kosong'] + $kelasOptions" id="kelas_kiri"
                         value="{{ $data->kelas_kiri }}" />
                 </div>
                 <div class="col-sm-3">
@@ -24,7 +24,7 @@
                         id="kode_kelas_kiri" readonly />
                 </div>
                 <div class="col-sm-3">
-                    <x-form.select name="kelas_kanan" label="Kelas Bagian Kanan" :options="$kelasOptions" id="kelas_kanan"
+                    <x-form.select name="kelas_kanan" label="Kelas Bagian Kanan" :options="['-' => 'Kosong'] + $kelasOptions" id="kelas_kanan"
                         value="{{ $data->kelas_kanan }}" />
                 </div>
                 <div class="col-sm-3">

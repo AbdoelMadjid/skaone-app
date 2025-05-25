@@ -31,7 +31,7 @@ class RuangUjianDataTable extends DataTable
                     ->select('rombel') // Ambil semua field yang diperlukan
                     ->first();
 
-                return $namaKelasKiri->rombel; // Mengambil nama siswa dari hasil join
+                return $namaKelasKiri ? $namaKelasKiri->rombel : '-'; // Mengambil nama siswa dari hasil join
             })
             ->addColumn('nama_kelas_kanan', function ($row) {
                 $namaKelasKanan = DB::table('rombongan_belajars')
@@ -39,7 +39,7 @@ class RuangUjianDataTable extends DataTable
                     ->select('rombel') // Ambil semua field yang diperlukan
                     ->first();
 
-                return $namaKelasKanan->rombel; // Mengambil nama siswa dari hasil join
+                return $namaKelasKanan ? $namaKelasKanan->rombel : '-'; // Mengambil nama siswa dari hasil join
             })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
