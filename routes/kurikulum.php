@@ -123,6 +123,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/generatejadwalmassal', [JadwalUjianController::class, 'generateMassal']);
             Route::post('/simpan-massal', [JadwalUjianController::class, 'simpanMassal']);
 
+            Route::get('load-jadwal-tingkat', [AdministrasiUjianController::class, 'loadJadwalTingkat']);
+
             Route::get('denahtempatduduk/{ruangan}', [AdministrasiUjianController::class, 'showDenahTempatDuduk']);
 
             Route::resource('pelaksanaan-ujian', PelaksanaanUjianController::class);

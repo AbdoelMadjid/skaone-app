@@ -208,6 +208,7 @@
             ]
         });
     </script>
+
     <script>
         let currentRuang = null;
 
@@ -419,6 +420,28 @@
         });
     </script>
 
+    <script>
+        document.getElementById('tingkat').addEventListener('change', function() {
+            const tingkat = this.value;
+            const url = "{{ url('kurikulum/perangkatujian/load-jadwal-tingkat') }}";
+
+            if (!tingkat) {
+                document.getElementById('tabel-jadwal-ujian').innerHTML = '';
+                return;
+            }
+
+            fetch(`${url}?tingkat=${tingkat}`)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById('tabel-jadwal-ujian').innerHTML = html;
+                })
+                .catch(err => {
+                    console.error('Gagal memuat data:', err);
+                    document.getElementById('tabel-jadwal-ujian').innerHTML =
+                        '<div class="alert alert-danger">Gagal memuat data.</div>';
+                });
+        });
+    </script>
 
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

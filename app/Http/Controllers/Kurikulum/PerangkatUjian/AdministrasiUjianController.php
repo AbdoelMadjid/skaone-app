@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Kurikulum\PerangkatUjian;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kurikulum\PerangkatUjian\IdentitasUjian;
+use App\Models\Kurikulum\PerangkatUjian\JadwalUjian;
 use App\Models\Kurikulum\PerangkatUjian\PesertaUjian;
 use App\Models\Kurikulum\PerangkatUjian\RuangUjian;
+use App\Models\ManajemenSekolah\KompetensiKeahlian;
 use App\Models\ManajemenSekolah\RombonganBelajar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -110,6 +112,58 @@ class AdministrasiUjianController extends Controller
                 ];
             })->values();
 
+        /* // tampilkan data jadwal ujian
+        $kompetensiKeahlian = KompetensiKeahlian::all();
+        $kompetensiKeahlianOption = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
+        $tanggalUjian = [];
+        $tanggalUjianOption = [];
+
+        if ($ujianAktif) {
+            $tanggalUjian = collect(
+                \Carbon\CarbonPeriod::create($ujianAktif->tgl_ujian_awal, $ujianAktif->tgl_ujian_akhir)
+            )->map(fn($date) => $date->toDateString());
+
+            $tanggalUjianOption = $tanggalUjian->mapWithKeys(function ($date) {
+                return [$date => \Carbon\Carbon::parse($date)->translatedFormat('l, d M Y')];
+            })->toArray();
+        }
+
+        $tingkat = request()->get('tingkat', 10); // default ke 10 jika tidak dipilih
+
+        // Ambil semua kode_kk yang tersedia di jadwal_ujians tingkat 10
+        $kodeKKList = JadwalUjian::where('tingkat', $tingkat)
+            ->pluck('kode_kk')
+            ->unique()
+            ->values()
+            ->toArray();
+
+        // Ambil data singkatan berdasarkan kode_kk
+        $singkatanKK = KompetensiKeahlian::whereIn('idkk', $kodeKKList)
+            ->pluck('singkatan', 'idkk')
+            ->toArray();
+
+        // Ambil seluruh jadwal ujian sesuai syarat
+        $jadwalList = JadwalUjian::where('tingkat', $tingkat)
+            ->whereIn('tanggal', $tanggalUjian)
+            ->orderBy('tanggal')
+            ->orderBy('jam_ke')
+            ->get();
+
+        // Susun berdasarkan tanggal → jam_ke → kode_kk
+        $jadwalByTanggal = [];
+
+        foreach ($jadwalList as $jadwal) {
+            $tanggal = $jadwal->tanggal;
+            $jamKe = $jadwal->jam_ke;
+            $kodeKK = $jadwal->kode_kk;
+            $jamUjian = $jadwal->jam_ujian;
+            $mapel = $jadwal->mata_pelajaran;
+
+            $jadwalByTanggal[$tanggal][$jamKe]['pukul'] = $jamUjian;
+            $jadwalByTanggal[$tanggal][$jamKe][$kodeKK] = $mapel;
+        } */
+
+
         return view('pages.kurikulum.perangkatujian.administrasi-ujian', [
             'identitasUjian' => $identitasUjian,
             'ruangs' => $ruangs,
@@ -118,6 +172,14 @@ class AdministrasiUjianController extends Controller
             'dataRuang' => $dataRuang,
             'pesertaUjianTable' => $pesertaUjianTable,
             'rekapKelas' => $rekapKelas,
+            //tampildata kelas
+            /* 'jadwalByTanggal' => $jadwalByTanggal,
+            'tanggalUjianOption' => $tanggalUjianOption,
+            'kompetensiKeahlian' => $kompetensiKeahlian,
+            'kompetensiKeahlianOption' => $kompetensiKeahlianOption,
+            'kodeKKList' => $kodeKKList,
+            'singkatanKK' => $singkatanKK,
+            'tingkat' => $tingkat, */
         ]);
     }
 
@@ -279,4 +341,46 @@ class AdministrasiUjianController extends Controller
 
         return view('pages.kurikulum.perangkatujian.halamanadmin.kartu-ujian-tampil', compact('pesertaUjians', 'identitasUjian'))->render();
     } */
+
+    public function loadJadwalTingkat(Request $request)
+    {
+        $tingkat = $request->get('tingkat');
+
+
+        $ujianAktif = IdentitasUjian::where('status', 1)->first();
+        $tanggalUjian = collect(\Carbon\CarbonPeriod::create($ujianAktif->tgl_ujian_awal, $ujianAktif->tgl_ujian_akhir))
+            ->map(fn($date) => $date->toDateString());
+
+        $kodeKKList = JadwalUjian::where('tingkat', $tingkat)
+            ->pluck('kode_kk')->unique()->values()->toArray();
+
+        $singkatanKK = KompetensiKeahlian::whereIn('idkk', $kodeKKList)
+            ->pluck('singkatan', 'idkk')->toArray();
+
+        $jadwalList = JadwalUjian::where('tingkat', $tingkat)
+            ->whereIn('tanggal', $tanggalUjian)
+            ->orderBy('tanggal')
+            ->orderBy('jam_ke')
+            ->get();
+
+        $jadwalByTanggal = [];
+
+        foreach ($jadwalList as $jadwal) {
+            $tanggal = $jadwal->tanggal;
+            $jamKe = $jadwal->jam_ke;
+            $kodeKK = $jadwal->kode_kk;
+            $jamUjian = $jadwal->jam_ujian;
+            $mapel = $jadwal->mata_pelajaran;
+
+            $jadwalByTanggal[$tanggal][$jamKe]['pukul'] = $jamUjian;
+            $jadwalByTanggal[$tanggal][$jamKe][$kodeKK] = $mapel;
+        }
+
+        return view('pages.kurikulum.perangkatujian.halamanadmin.jadwal-ujian-tampil', compact(
+            'kodeKKList',
+            'singkatanKK',
+            'jadwalByTanggal',
+            'tingkat'
+        ));
+    }
 }
