@@ -14,13 +14,19 @@
                                 <label for="tingkat" class="form-label mb-0">Pilih Tingkat:</label>
                                 <select name="tingkat" id="tingkat" class="form-select w-auto">
                                     <option value="">-- Pilih Tingkat --</option>
-                                    @for ($i = 10; $i <= 13; $i++)
-                                        <option value="{{ $i }}">Kelas {{ $i }}</option>
+                                    @for ($i = 10; $i <= 12; $i++)
+                                        <option value="{{ $i }}">Tingkat {{ $i }}</option>
                                     @endfor
                                 </select>
                             </div>
                         </div>
-
+                        <div class="col-lg-auto">
+                            <div class="mb-3 d-flex align-items-center gap-2">
+                                <button type="button" class="btn btn-soft-primary" id="btn-download-jadwal">
+                                    Download Jadwal
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <!--end row-->
                 </form>

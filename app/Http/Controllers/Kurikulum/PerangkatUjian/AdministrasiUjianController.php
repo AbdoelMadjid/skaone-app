@@ -376,11 +376,14 @@ class AdministrasiUjianController extends Controller
             $jadwalByTanggal[$tanggal][$jamKe][$kodeKK] = $mapel;
         }
 
+        $identitasUjian = IdentitasUjian::where('status', 'Aktif')->first();
+
         return view('pages.kurikulum.perangkatujian.halamanadmin.jadwal-ujian-tampil', compact(
             'kodeKKList',
             'singkatanKK',
             'jadwalByTanggal',
-            'tingkat'
+            'tingkat',
+            'identitasUjian',
         ));
     }
 }

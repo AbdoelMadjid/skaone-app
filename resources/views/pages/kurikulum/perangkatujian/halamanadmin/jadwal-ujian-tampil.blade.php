@@ -1,4 +1,6 @@
-<h4 class="text-center mb-3">Jadwal Ujian Kelas {{ $tingkat }}</h4>
+<h4 class="text-center">JADWAL UJIAN TINGKAT {{ $tingkat }}</h4>
+<h4 class="text-center">{{ strtoupper($identitasUjian?->nama_ujian ?? '-') }}</h4>
+<h4 class="text-center">TAHUN AJARAN {{ $identitasUjian?->tahun_ajaran ?? '-' }}</h4>
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -27,12 +29,12 @@
                 <tr>
                     @if (!$printed)
                         <td rowspan="{{ $rowspan }}" class="text-center">{{ $no++ }}</td>
-                        <td rowspan="{{ $rowspan }}" class="text-center">
+                        <td rowspan="{{ $rowspan }}" width="100" class="text-center">
                             {{ strtoupper($hari) }}<br>{{ $tgl_indo }}</td>
                         @php $printed = true; @endphp
                     @endif
                     <td class="text-center">{{ $jamKe }}</td>
-                    <td>{{ $jadwalPerJam['pukul'] ?? '-' }}</td>
+                    <td width="100">{{ $jadwalPerJam['pukul'] ?? '-' }}</td>
                     @foreach ($kodeKKList as $kk)
                         <td>{{ $jadwalPerJam[$kk] ?? '-' }}</td>
                     @endforeach

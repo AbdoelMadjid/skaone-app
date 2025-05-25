@@ -160,6 +160,7 @@
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="{{ URL::asset('build/libs/select2/js/select2.min.js') }}"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 @endsection
 @section('script-bottom')
     <script>
@@ -369,7 +370,7 @@
         document.getElementById('btn-cetak-kartu').addEventListener('click', function() {
             const printContents = document.getElementById('cetak-kartu-ujian');
             if (!printContents) {
-                alert("Data belum tersedia untuk dicetak.");
+                showToast('error', "Data belum tersedia untuk dicetak.");
                 return;
             }
 
@@ -440,6 +441,41 @@
                     document.getElementById('tabel-jadwal-ujian').innerHTML =
                         '<div class="alert alert-danger">Gagal memuat data.</div>';
                 });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const downloadButton = document.getElementById('btn-download-jadwal');
+            downloadButton?.addEventListener('click', function() {
+                const element = document.getElementById('tabel-jadwal-ujian');
+                const tingkat = document.getElementById('tingkat').value || 'jadwal';
+
+                if (!element || !element.innerHTML.trim()) {
+                    showToast('error',
+                        'Silakan pilih tingkat terlebih dahulu dan pastikan jadwal sudah ditampilkan.');
+                    return;
+                }
+
+                const opt = {
+                    margin: 0.5,
+                    filename: `jadwal-ujian-kelas-${tingkat}.pdf`,
+                    image: {
+                        type: 'jpeg',
+                        quality: 0.98
+                    },
+                    html2canvas: {
+                        scale: 2
+                    },
+                    jsPDF: {
+                        unit: 'cm',
+                        format: [33, 21],
+                        orientation: 'landscape'
+                    } // Ukuran F4, landscape
+                };
+
+                html2pdf().set(opt).from(element).save();
+            });
         });
     </script>
 
