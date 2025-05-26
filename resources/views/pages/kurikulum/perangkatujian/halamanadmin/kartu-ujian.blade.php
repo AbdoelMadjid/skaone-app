@@ -12,7 +12,7 @@
     </thead>
     <tbody>
         @foreach ($rekapKelas as $i => $item)
-            <tr>
+            <tr class="text-center">
                 <td>{{ $i + 1 }}</td>
                 <td>{{ $item['rombel'] }} / {{ $item['kelas'] }}</td>
                 <td>{{ $item['jumlah_kiri'] }}</td>

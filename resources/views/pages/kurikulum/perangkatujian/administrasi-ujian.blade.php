@@ -53,7 +53,7 @@
                         </div>
                     </div>
 
-                    <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasExample"
+                    {{-- <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasExample"
                         aria-labelledby="offcanvasExampleLabel">
                         <div class="offcanvas-body">
                             <button type="button" class="btn-close text-reset float-end" data-bs-dismiss="offcanvas"
@@ -68,7 +68,7 @@
                                 <h4>Talk to me, what can I do for you?</h4>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
                 <div>
                     <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
@@ -124,7 +124,8 @@
                                             Ujian</a>
                                     </li>
                                     <li>
-                                        <a href="#" class="dropdown-item">Pengawas
+                                        <a href="{{ route('kurikulum.perangkatujian.administrasi-ujian.pengawas-ujian.index') }}"
+                                            class="dropdown-item">Pengawas
                                             Ujian</a>
                                     </li>
                                 </ul>
@@ -163,6 +164,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 @endsection
 @section('script-bottom')
+    {{-- Start Datatable --}}
     <script>
         $('#ruangUjianTable').DataTable({
             responsive: true,
@@ -209,7 +211,9 @@
             ]
         });
     </script>
+    {{-- End Datatable --}}
 
+    {{-- start denah tempat duduk --}}
     <script>
         let currentRuang = null;
 
@@ -338,7 +342,9 @@
             w.document.close();
         }
     </script>
+    {{-- end denah tempat duduk --}}
 
+    {{-- start kartu ujian --}}
     <script>
         document.querySelectorAll('.btn-kartu').forEach(button => {
             button.addEventListener('click', function() {
@@ -420,7 +426,9 @@
             w.document.close();
         });
     </script>
+    {{-- end kartu ujian --}}
 
+    {{-- start jadwal ujian --}}
     <script>
         document.getElementById('tingkat').addEventListener('change', function() {
             const tingkat = this.value;
@@ -478,6 +486,7 @@
             });
         });
     </script>
+    {{-- end jadwal ujian --}}
 
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

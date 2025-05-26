@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pengawas_ujians', function (Blueprint $table) {
+        Schema::create('daftar_pengawas_ujian', function (Blueprint $table) {
             $table->id();
             $table->char('kode_ujian');
-            $table->char('nomor_ruang');
-            $table->date('tanggal_ujian');
-            $table->char('jam_ke');
             $table->char('kode_pengawas');
+            $table->char('nip');
+            $table->char('nama_lengkap');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pengawas_ujians');
+        Schema::dropIfExists('daftar_pengawas_ujian');
     }
 };

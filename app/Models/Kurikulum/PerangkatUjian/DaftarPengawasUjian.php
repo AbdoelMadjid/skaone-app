@@ -5,15 +5,14 @@ namespace App\Models\Kurikulum\PerangkatUjian;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PengawasUjian extends Model
+class DaftarPengawasUjian extends Model
 {
     use HasFactory;
-    protected $table = 'pengawas_ujians';
+    protected $table = 'daftar_pengawas_ujian';
     protected $fillable = [
         'kode_ujian',
-        'nomor_ruang',
-        'tanggal_ujian',
-        'jam_ke',
         'kode_pengawas',
+        'nip',
+        'nama_lengkap',
     ];
 }

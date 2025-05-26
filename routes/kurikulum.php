@@ -127,6 +127,11 @@ Route::middleware('auth')->group(function () {
 
             Route::get('denahtempatduduk/{ruangan}', [AdministrasiUjianController::class, 'showDenahTempatDuduk']);
 
+            Route::get('/daftar-pengawas-ujian', [PengawasUjianController::class, 'loadFormPengawas'])->name('daftar-pengawas-ujian');
+
+            Route::post('/simpan-daftar-pengawas-massal', [PengawasUjianController::class, 'simpanpengawasMassal'])->name('simpan-daftar-pengawas-massal');
+
+
             Route::resource('pelaksanaan-ujian', PelaksanaanUjianController::class);
         });
     });

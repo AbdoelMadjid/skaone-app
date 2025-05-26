@@ -3,6 +3,7 @@
 namespace App\DataTables\Kurikulum\PerangkatUjian;
 
 use App\Models\Kurikulum\PerangkatUjian\PengawasUjian;
+use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -14,6 +15,7 @@ use Yajra\DataTables\Services\DataTable;
 
 class PengawasUjianDataTable extends DataTable
 {
+    use DatatableHelper;
     /**
      * Build the DataTable class.
      *
@@ -22,8 +24,12 @@ class PengawasUjianDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'pengawasujian.action')
-            ->setRowId('id');
+            ->addColumn('action', function ($row) {
+                // Menggunakan basicActions untuk menghasilkan action buttons
+                $actions = $this->basicActions($row);
+                return view('action', compact('actions'));
+            })
+            ->addIndexColumn();
     }
 
     /**
@@ -53,6 +59,10 @@ class PengawasUjianDataTable extends DataTable
                 Button::make('print'),
                 Button::make('reset'),
                 Button::make('reload')
+            ])->parameters([
+                'lengthChange' => false, // Menghilangkan dropdown "Show entries"
+                'searching' => false,    // Menghilangkan kotak pencarian
+                'pageLength' => 50,       // Menampilkan 50 baris per halaman
             ]);
     }
 
@@ -62,15 +72,17 @@ class PengawasUjianDataTable extends DataTable
     public function getColumns(): array
     {
         return [
+            Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
+            Column::make('kode_ujian')->title('Kode Ujian')->addClass('text-center'),
+            Column::make('nomor_ruang')->title('Nomor Ruang')->addClass('text-center'),
+            Column::make('tanggal_ujian')->title('Tanggal Ujian')->addClass('text-center'),
+            Column::make('jam_ke')->title('Jam Ke')->addClass('text-center'),
+            Column::make('kode_pengawas')->title('Kode Pengawas')->addClass('text-center'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
                 ->width(60)
                 ->addClass('text-center'),
-            Column::make('id'),
-            Column::make('add your columns'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
         ];
     }
 
