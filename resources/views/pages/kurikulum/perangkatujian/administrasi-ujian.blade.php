@@ -162,6 +162,9 @@
     <script src="{{ URL::asset('build/libs/select2/js/select2.min.js') }}"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 @endsection
 @section('script-bottom')
     {{-- Start Datatable --}}
@@ -487,6 +490,187 @@
         });
     </script>
     {{-- end jadwal ujian --}}
+
+    {{-- jadwal pengawas --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const printButton = document.getElementById('btn-print-jadwal-mengawas');
+            if (!printButton) {
+                console.error("Tombol print tidak ditemukan");
+                return;
+            }
+
+            printButton.addEventListener('click', function() {
+                const content = document.getElementById('tabel-jadwal-mengawas');
+                if (!content) {
+                    console.error("Elemen tabel tidak ditemukan");
+                    return;
+                }
+
+                const win = window.open('', '_blank');
+                win.document.write(`
+            <html>
+            <head>
+                <title>Jadwal Pengawas</title>
+                <style>
+                    body { font-family: Arial, sans-serif; font-size: 12px; }
+                    table { width: 100%; border-collapse: collapse; }
+                    table, th, td { border: 1px solid black; }
+                    th { padding: 5px; text-align: center; }
+                    h4 { margin: 5px 0; text-align: center; }
+                </style>
+            </head>
+            <body>
+                <img class="card-img-top img-fluid mb-0" src="{{ URL::asset('images/kossurat.jpg') }}"
+                alt="Card image cap"><br><br>
+                ${content.innerHTML}
+                <table
+                style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;border: none !important;'>
+                <tr>
+                    <td width='25' style='border: none !important;'>&nbsp;</td>
+                    <td style='border: none !important;'>
+                        <p style='margin-bottom:-2px;margin-top:-2px'>&nbsp;</p>
+                        <table width='70%'
+                            style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;border: none !important;'>
+                            <tr style='border: none !important;'>
+                                <td width='50' style='border: none !important;'></td>
+                                <td style='border: none !important;'></td>
+                                <td style='border: none !important;'>
+                                    Mengetahui<br>
+                                    Kepala Sekolah,
+                                    <div>
+                                        <img src='{{ URL::asset('images/damudin.png') }}' border='0' height='110'
+                                            style=' position: absolute; padding: 0px 2px 15px -200px; margin-left: -120px;margin-top:-15px;'>
+                                    </div>
+                                    {{-- <div><img src='{{ URL::asset('images/stempel.png') }}' border='0' height='180'
+                                            width='184'
+                                            style=' position: absolute; padding: 0px 2px 15px -650px; margin-left: -135px;margin-top:-50px;'>
+                                    </div> --}}
+                                    <p>&nbsp;</p>
+                                    <p>&nbsp;</p>
+                                    <strong>H. DAMUDIN, S.Pd., M.Pd.</strong><br>
+                                    NIP. 19740302 199803 1 002
+                                </td>
+                                <td style='border: none !important;' width='200'></td>
+                                <td style='padding:4px 8px;border: none !important;'>
+                                    Majalengka, 05 Mei 2025<br>
+                                    Wakasek Kurikulum,
+                                    <div>
+                                        <img src='{{ URL::asset('images/almadjid.png') }}' border='0' height='110'
+                                            style=' position: absolute; padding: 0px 2px 15px -200px; margin-left: -20px;margin-top:-15px;'>
+                                    </div>
+
+                                    <p>&nbsp;</p>
+                                    <p>&nbsp;</p>
+                                    <strong>Abdul Madjid, S.Pd., M.Pd.</strong><br>
+                                    NIP. 19761128 200012 1 002
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width='25' style='border: none !important;'>&nbsp;</td>
+                </tr>
+            </table>
+            </body>
+            </html>
+        `);
+                win.document.close();
+                win.focus();
+                win.print();
+                win.close();
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const printButton = document.getElementById('btn-print-daftar-pengawas');
+            if (!printButton) {
+                console.error("Tombol print tidak ditemukan");
+                return;
+            }
+
+            printButton.addEventListener('click', function() {
+                const content = document.getElementById('tabel-daftar-pengawas');
+                if (!content) {
+                    console.error("Elemen tabel tidak ditemukan");
+                    return;
+                }
+
+                const win = window.open('', '_blank');
+                win.document.write(`
+            <html>
+            <head>
+                <title>Daftar Pengawas</title>
+                <style>
+                    body { font-family: Arial, sans-serif; font-size: 12px; }
+                    table { width: 100%; border-collapse: collapse; }
+                    table, th, td { border: 1px solid black; }
+                    th, td { padding: 5px; text-align: center; }
+                    h4 { margin: 5px 0; text-align: center; }
+                </style>
+            </head>
+            <body>
+                <img class="card-img-top img-fluid mb-0" src="{{ URL::asset('images/kossurat.jpg') }}"
+                alt="Card image cap"><br><br>
+                ${content.innerHTML}
+                <table
+                style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;border: none !important;'>
+                <tr>
+                    <td width='25' style='border: none !important;'>&nbsp;</td>
+                    <td style='border: none !important;'>
+                        <p style='margin-bottom:-2px;margin-top:-2px'>&nbsp;</p>
+                        <table
+                            style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;border: none !important;'>
+                            <tr style='border: none !important;'>
+                                <td width='50' style='border: none !important;'></td>
+                                <td style='border: none !important;'></td>
+                                <td style='border: none !important;'>
+                                    Mengetahui<br>
+                                    Kepala Sekolah,
+                                    <div>
+                                        <img src='{{ URL::asset('images/damudin.png') }}' border='0' height='110'
+                                            style=' position: absolute; padding: 0px 2px 15px -200px; margin-left: -160px;margin-top:-15px;'>
+                                    </div>
+                                    {{-- <div><img src='{{ URL::asset('images/stempel.png') }}' border='0' height='180'
+                                            width='184'
+                                            style=' position: absolute; padding: 0px 2px 15px -650px; margin-left: -135px;margin-top:-50px;'>
+                                    </div> --}}
+                                    <p>&nbsp;</p>
+                                    <p>&nbsp;</p>
+                                    <strong>H. DAMUDIN, S.Pd., M.Pd.</strong><br>
+                                    NIP. 19740302 199803 1 002
+                                </td>
+                                <td style='border: none !important;' width='200'></td>
+                                <td style='padding:4px 8px;border: none !important;'>
+                                    Majalengka, 05 Mei 2025<br>
+                                    Wakasek Kurikulum,
+                                    <div>
+                                        <img src='{{ URL::asset('images/almadjid.png') }}' border='0'
+                                            height='110'
+                                            style=' position: absolute; padding: 0px 2px 15px -200px; margin-left: -80px;margin-top:-15px;'>
+                                    </div>
+
+                                    <p>&nbsp;</p>
+                                    <p>&nbsp;</p>
+                                    <strong>Abdul Madjid, S.Pd., M.Pd.</strong><br>
+                                    NIP. 19761128 200012 1 002
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width='25' style='border: none !important;'>&nbsp;</td>
+                </tr>
+            </table>
+            </body>
+            </html>
+        `);
+                win.document.close();
+                win.focus();
+                win.print();
+                win.close();
+            });
+        });
+    </script>
 
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

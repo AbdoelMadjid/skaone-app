@@ -10,7 +10,7 @@
                         id="kode_ujian" readonly />
                 </div>
                 <div class="col-sm-6">
-                    <x-form.select name="nomor_ruang" label="Nomor Ruangan" :options="$ruanganOptions" id="nomor_ruang"
+                    <x-form.select name="nomor_ruang" label="Nomor Ruangan" :options="['CAD' => 'Cadangan'] + $ruanganOptions" id="nomor_ruang"
                         value="{{ $data->nomor_ruang }}" />
                 </div>
             </div>

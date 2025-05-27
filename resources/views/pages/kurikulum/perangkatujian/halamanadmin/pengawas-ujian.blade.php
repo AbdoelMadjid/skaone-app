@@ -1,76 +1,187 @@
-<div class="row">
-    <div class="col-md-12">
-        <h3>Pengawas Ujian</h3>
-        <p>Pengawas ujian untuk setiap ruang dan tanggal ujian.</p>
+<style>
+    .ttd-container {
+        margin-left: 10%;
+        width: 90%;
+        /* Supaya tidak melewati batas kanan */
+    }
+
+    .ttd-wrapper {
+        width: 100%;
+        margin: 20px auto;
+        font-family: "Times New Roman", Times, serif;
+        font-size: 12px;
+        border-collapse: collapse;
+    }
+
+    .ttd-section {
+        width: 50%;
+        vertical-align: top;
+        text-align: left;
+        /* Rata kiri */
+    }
+
+    .ttd-section td {
+        padding: 3px;
+    }
+
+    .ttd-spacing {
+        height: 45px;
+    }
+
+    .relative-wrapper {
+        position: relative;
+    }
+
+    .ttd-img-kepsek {
+        position: absolute;
+        top: 20px;
+        left: -75px;
+        height: 80px;
+        z-index: 1;
+    }
+
+    .ttd-img-stempel {
+        position: absolute;
+        top: -5px;
+        left: -75px;
+        height: 120px;
+        z-index: 0;
+    }
+
+    @media print {
+        .ttd-wrapper {
+            page-break-inside: avoid;
+        }
+    }
+</style>
+<div class="card">
+    <div class="card-body border-bottom-dashed border-bottom">
+        <form id="form-pilih-tingkat">
+            <div class="row g-3">
+                <div class="col-lg">
+                    <h3>Pengawas Ujian</h3>
+                    <p>Pengawas ujian untuk setiap ruang dan tanggal ujian.</p>
+                </div>
+                <!--end col-->
+
+                <div class="col-lg-auto">
+                    <div class="mb-3 d-flex align-items-center gap-2">
+                        <button type="button" class="btn btn-soft-primary" id="btn-print-jadwal-mengawas">
+                            Cetak Jadwal Pengawas
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-auto">
+                    <div class="mb-3 d-flex align-items-center gap-2">
+                        <button type="button" class="btn btn-soft-primary" id="btn-print-daftar-pengawas">
+                            Cetak Daftar Pengawas
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!--end row-->
+        </form>
     </div>
 </div>
-<div class="row mb-3">
-    <div class="col-md-6">
-        <h4 class="text-center">JADWAL PENGAWAS UJIAN</h4>
-        <h4 class="text-center">{{ strtoupper($identitasUjian?->nama_ujian ?? '-') }}</h4>
-        <h4 class="text-center">TAHUN AJARAN {{ $identitasUjian?->tahun_ajaran ?? '-' }}</h4>
-        <table border="1" cellpadding="5" cellspacing="0" class="table table-bordered">
-            <thead>
-                <tr>
-                    <th rowspan="2">No</th>
-                    <th rowspan="2">Ruang</th>
-                    @foreach ($tanggalUjianOption as $tgl => $label)
-                        <th colspan="3">{{ strtoupper($label) }}</th>
-                    @endforeach
-                </tr>
-                <tr>
-                    @foreach ($tanggalUjian as $tgl)
-                        <th>1</th>
-                        <th>2</th>
-                        <th>3</th>
-                    @endforeach
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($ruangUjian as $index => $ruang)
-                    <tr>
-                        <td class="text-center">{{ $index + 1 }}</td>
-                        <td class="text-center">{{ str_pad($ruang->nomor_ruang, 2, '0', STR_PAD_LEFT) }}</td>
-                        @foreach ($tanggalUjian as $tgl)
-                            @for ($sesi = 1; $sesi <= 3; $sesi++)
-                                @php
-                                    $key = $ruang->nomor_ruang . '_' . $tgl . '_' . $sesi;
-                                    $pengawasNama = $pengawas[$key][0]->kode_pengawas ?? '';
-                                @endphp
-                                <td class="text-center">{{ $pengawasNama }}</td>
-                            @endfor
+<div class="row">
+    <div class="col-md-12">
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-7">
+        <div id="tabel-jadwal-mengawas">
+            {{--  <img class="card-img-top img-fluid mb-0" src="{{ URL::asset('images/kossurat.jpg') }}"
+                alt="Card image cap"><br><br> --}}
+            <h4 class="text-center">JADWAL PENGAWAS UJIAN</h4>
+            <h4 class="text-center">{{ strtoupper($identitasUjian?->nama_ujian ?? '-') }}</h4>
+            <h4 class="text-center">TAHUN AJARAN {{ $identitasUjian?->tahun_ajaran ?? '-' }}</h4>
+            <br><br>
+            <table cellpadding="2" cellspacing="0" class="table table-bordered" style="font-size: 12px;">
+                <thead>
+                    <tr style='background-color: #797878;'>
+                        <th rowspan="2">No</th>
+                        <th rowspan="2">Ruang</th>
+                        @foreach ($tanggalUjianOption as $tgl => $label)
+                            <th colspan="3">{{ strtoupper($label) }}</th>
                         @endforeach
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                    <tr>
+                        @foreach ($tanggalUjian as $tgl)
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                        @endforeach
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($ruangUjian as $index => $ruang)
+                        <tr>
+                            <td style='text-align:center;'>{{ $index + 1 }}</td>
+                            <td style='text-align:center;'>{{ str_pad($ruang->nomor_ruang, 2, '0', STR_PAD_LEFT) }}</td>
+                            @foreach ($tanggalUjian as $tgl)
+                                @for ($sesi = 1; $sesi <= 3; $sesi++)
+                                    @php
+                                        $key = $ruang->nomor_ruang . '_' . $tgl . '_' . $sesi;
+                                        $pengawasNama = $pengawas[$key][0]->kode_pengawas ?? '';
+                                    @endphp
+                                    <td style='text-align:center;'>{{ $pengawasNama }}</td>
+                                @endfor
+                            @endforeach
+                        </tr>
+                    @endforeach
+                    <tr>
+                        <td colspan="2" style='text-align:center;'>Cadangan</td>
+                        @foreach ($tanggalUjian as $tgl)
+                            <td colspan="3" style='text-align:center;'>
+                                @php
+                                    $cadangan = collect($pengawas)
+                                        ->filter(fn($value, $key) => str_contains($key, 'CAD_' . $tgl))
+                                        ->flatten();
+
+                                    $kodePengawasList = $cadangan->pluck('kode_pengawas')->unique()->implode(', ');
+                                @endphp
+                                {{ $kodePengawasList ?: '-' }}
+                            </td>
+                        @endforeach
+                    </tr>
+                </tbody>
+            </table>
+            <br><br>
+        </div>
     </div>
-    <div class="col-md-6">
-        <h4>Daftar Pengawas Ujian</h4>
-        <p>Berikut adalah daftar pengawas yang ditugaskan untuk ujian ini.</p>
-        <table border="1" cellpadding="6" cellspacing="0" width="100%" class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Kode</th>
-                    <th>NIP</th>
-                    <th>Nama Lengkap</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($daftarPengawas as $index => $p)
+    <div class="col-md-5">
+        <div id="tabel-daftar-pengawas">
+            <h4 class="text-center">DAFTAR PENGAWAS UJIAN</h4>
+            <h4 class="text-center">{{ strtoupper($identitasUjian?->nama_ujian ?? '-') }}</h4>
+            <h4 class="text-center">TAHUN AJARAN {{ $identitasUjian?->tahun_ajaran ?? '-' }}</h4>
+            <br><br>
+            <table cellpadding="2" cellspacing="0" width="100%" class="table table-bordered" style="font-size: 10px;">
+                <thead>
                     <tr>
-                        <td class="text-center">{{ $index + 1 }}</td>
-                        <td class="text-center">{{ $p->kode_pengawas }}</td>
-                        <td>{{ $p->nip ?? '-' }}</td>
-                        <td>{{ $p->nama_lengkap }}</td>
+                        <th>No</th>
+                        <th>Kode</th>
+                        <th>NIP</th>
+                        <th>Nama Lengkap</th>
                     </tr>
-                @empty
-                    <tr>
-                        <td colspan="4">Belum ada data pengawas untuk ujian ini.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @forelse ($daftarPengawas as $index => $p)
+                        <tr>
+                            <td class="text-center">{{ $index + 1 }}</td>
+                            <td class="text-center">{{ $p->kode_pengawas }}</td>
+                            <td>{{ $p->nip ?? '-' }}</td>
+                            <td style='text-align:left;padding-left:8px;'>{{ $p->nama_lengkap }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4">Belum ada data pengawas untuk ujian ini.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+            <br><br>
+
+        </div>
     </div>
 </div>
