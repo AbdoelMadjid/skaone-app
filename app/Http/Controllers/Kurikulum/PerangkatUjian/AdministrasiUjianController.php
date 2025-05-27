@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Kurikulum\PerangkatUjian;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kurikulum\PerangkatUjian\DaftarPengawasUjian;
 use App\Models\Kurikulum\PerangkatUjian\IdentitasUjian;
 use App\Models\Kurikulum\PerangkatUjian\JadwalUjian;
+use App\Models\Kurikulum\PerangkatUjian\PengawasUjian;
 use App\Models\Kurikulum\PerangkatUjian\PesertaUjian;
 use App\Models\Kurikulum\PerangkatUjian\RuangUjian;
 use App\Models\ManajemenSekolah\KompetensiKeahlian;
 use App\Models\ManajemenSekolah\RombonganBelajar;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -163,6 +167,28 @@ class AdministrasiUjianController extends Controller
             $jadwalByTanggal[$tanggal][$jamKe][$kodeKK] = $mapel;
         } */
 
+        $ruangUjian = RuangUjian::orderByRaw('CAST(nomor_ruang AS UNSIGNED) ASC')->get();
+        $ujianYangAktif = IdentitasUjian::where('status', 'aktif')->first();
+
+        $tanggalUjian = collect();
+        $tanggalUjianOption = [];
+
+        if ($ujianYangAktif) {
+            $tanggalUjian = collect(CarbonPeriod::create($ujianYangAktif->tgl_ujian_awal, $ujianYangAktif->tgl_ujian_akhir))
+                ->map(fn($date) => $date->toDateString());
+
+            $tanggalUjianOption = $tanggalUjian->mapWithKeys(function ($date) {
+                return [$date => Carbon::parse($date)->translatedFormat('l, d M Y')];
+            })->toArray();
+        }
+
+        $pengawas = PengawasUjian::all()->groupBy(function ($item) {
+            return $item->nomor_ruang . '_' . $item->tanggal_ujian . '_' . $item->jam_ke;
+        });
+
+        $daftarPengawas = DaftarPengawasUjian::where('kode_ujian', $ujianYangAktif->kode_ujian)
+            ->orderByRaw('CAST(kode_pengawas AS UNSIGNED) ASC')
+            ->get();
 
         return view('pages.kurikulum.perangkatujian.administrasi-ujian', [
             'identitasUjian' => $identitasUjian,
@@ -172,6 +198,11 @@ class AdministrasiUjianController extends Controller
             'dataRuang' => $dataRuang,
             'pesertaUjianTable' => $pesertaUjianTable,
             'rekapKelas' => $rekapKelas,
+            'ruangUjian' => $ruangUjian,
+            'tanggalUjian' => $tanggalUjian,
+            'tanggalUjianOption' => $tanggalUjianOption,
+            'pengawas' => $pengawas,
+            'daftarPengawas' => $daftarPengawas,
             //tampildata kelas
             /* 'jadwalByTanggal' => $jadwalByTanggal,
             'tanggalUjianOption' => $tanggalUjianOption,

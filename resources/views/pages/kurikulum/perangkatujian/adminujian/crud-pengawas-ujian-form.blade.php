@@ -1,4 +1,4 @@
-<x-form.modal title="{{ __('translation.ruang-ujian') }}" action="{{ $action ?? null }}">
+<x-form.modal title="{{ __('translation.pengawas-ujian') }}" action="{{ $action ?? null }}">
     @if ($data->id)
         @method('put')
     @endif
@@ -6,7 +6,7 @@
         <div class="col-md-12">
             <div class="row">
                 <div class="col-sm-6">
-                    <x-form.input name="kode_ujian" value="{{ $identitasUjian?->kode_ujian }}" label="Kode Ujian"
+                    <x-form.input name="kode_ujian" value="{{ $ujianAktif?->kode_ujian }}" label="Kode Ujian"
                         id="kode_ujian" readonly />
                 </div>
                 <div class="col-sm-6">
@@ -15,21 +15,17 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-3">
-                    <x-form.select name="kelas_kiri" label="Kelas Bagian Kiri" :options="['-' => 'Kosong'] + $kelasOptions" id="kelas_kiri"
-                        value="{{ $data->kelas_kiri }}" />
+                <div class="col-sm-4">
+                    <x-form.select name="tanggal_ujian" label="Tanggal Ujian" :options="$tanggalUjianOption" id="tanggal_ujian"
+                        value="{{ $data->tanggal_ujian }}" />
                 </div>
-                <div class="col-sm-3">
-                    <x-form.input name="kode_kelas_kiri" value="{{ $data->kode_kelas_kiri }}" label="Kode Kelas Kiri"
-                        id="kode_kelas_kiri" readonly />
+                <div class="col-sm-2">
+                    <x-form.select name="jam_ke" label="Jam Ke" :options="['1' => '1', '2' => '2', '3' => '3', '4' => '4']" id="jam_ke"
+                        value="{{ $data->jam_ke }}" />
                 </div>
-                <div class="col-sm-3">
-                    <x-form.select name="kelas_kanan" label="Kelas Bagian Kanan" :options="['-' => 'Kosong'] + $kelasOptions" id="kelas_kanan"
-                        value="{{ $data->kelas_kanan }}" />
-                </div>
-                <div class="col-sm-3">
-                    <x-form.input name="kode_kelas_kanan" value="{{ $data->kode_kelas_kanan }}" label="Kode Kelas Kanan"
-                        id="kode_kelas_kanan" readonly />
+                <div class="col-sm-6">
+                    <x-form.select name="kode_pengawas" label="Pengawas Ujian" :options="$pengawasOption" id="kode_pengawas"
+                        value="{{ $data->kode_pengawas }}" />
                 </div>
             </div>
         </div>

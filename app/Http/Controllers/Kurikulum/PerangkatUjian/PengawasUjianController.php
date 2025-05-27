@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Kurikulum\PerangkatUjian;
 
 use App\DataTables\Kurikulum\PerangkatUjian\PengawasUjianDataTable;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Kurikulum\PerangkatUjian\PengawasUjianRequest;
 use App\Models\Kurikulum\PerangkatUjian\DaftarPengawasUjian;
 use App\Models\Kurikulum\PerangkatUjian\IdentitasUjian;
 use App\Models\Kurikulum\PerangkatUjian\PengawasUjian;
+use App\Models\Kurikulum\PerangkatUjian\RuangUjian;
 use App\Models\ManajemenSekolah\PersonilSekolah;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -29,9 +32,24 @@ class PengawasUjianController extends Controller
             ->get();
 
 
+        $tanggalUjian = [];
+
+        if ($identitasUjian) {
+            $tanggalUjian = collect(
+                \Carbon\CarbonPeriod::create($identitasUjian->tgl_ujian_awal, $identitasUjian->tgl_ujian_akhir)
+            )->map(fn($date) => $date->toDateString());
+
+            $tanggalUjianOption = $tanggalUjian->mapWithKeys(function ($date) {
+                return [$date => \Carbon\Carbon::parse($date)->translatedFormat('l, d M Y')];
+            })->toArray();
+        } else {
+            $tanggalUjianOption = [];
+        }
+
         return $pengawasUjianDataTable->render('pages.kurikulum.perangkatujian.adminujian.crud-pengawas-ujian', [
             'identitasUjian' => $identitasUjian,
             'daftarPengawas' => $daftarPengawas,
+            'tanggalUjianOption' => $tanggalUjianOption,
         ]);
     }
 
@@ -40,27 +58,49 @@ class PengawasUjianController extends Controller
      */
     public function create()
     {
-        $identitasUjian = IdentitasUjian::where('status', 'Aktif')->first(); // Ambil 1 data aktif
+        $ujianAktif = IdentitasUjian::where('status', 'aktif')->first();
 
         $ruanganOptions = [];
         for ($i = 1; $i <= 50; $i++) {
             $ruanganOptions[$i] = (string) $i; // Key and value both are the same, e.g., '1' => '1'
         }
 
+        $tanggalUjian = [];
+
+        if ($ujianAktif) {
+            $tanggalUjian = collect(
+                \Carbon\CarbonPeriod::create($ujianAktif->tgl_ujian_awal, $ujianAktif->tgl_ujian_akhir)
+            )->map(fn($date) => $date->toDateString());
+
+            $tanggalUjianOption = $tanggalUjian->mapWithKeys(function ($date) {
+                return [$date => \Carbon\Carbon::parse($date)->translatedFormat('l, d M Y')];
+            })->toArray();
+        } else {
+            $tanggalUjianOption = [];
+        }
+
+        $pengawasOption = DaftarPengawasUjian::pluck('nama_lengkap', 'kode_pengawas')->toArray();
+
         return view('pages.kurikulum.perangkatujian.adminujian.crud-pengawas-ujian-form', [
             'data' => new PengawasUjian(),
             'action' => route('kurikulum.perangkatujian.administrasi-ujian.pengawas-ujian.store'),
-            'identitasUjian' => $identitasUjian,
+            'ujianAktif' => $ujianAktif,
             'ruanganOptions' => $ruanganOptions,
+            'tanggalUjian' => $tanggalUjian,
+            'tanggalUjianOption' => $tanggalUjianOption,
+            'pengawasOption' => $pengawasOption,
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PengawasUjianRequest $request)
     {
-        //
+        $pengawasUjian = new PengawasUjian($request->validated());
+        $pengawasUjian->save();
+
+        return responseSuccess();
     }
 
     /**
@@ -176,5 +216,62 @@ class PengawasUjianController extends Controller
         }
 
         return redirect()->back()->with('success', 'Data pengawas berhasil disimpan.');
+    }
+
+    public function generateMassalTable(Request $request)
+    {
+        $identitasUjian = IdentitasUjian::where('status', 'aktif')->firstOrFail();
+        $tanggal = $request->tanggal;
+        $sesi = (int) $request->sesi;
+
+        if (!$tanggal || !$sesi) {
+            return response('Data tidak lengkap.', 400);
+        }
+
+        // Urutkan berdasarkan nomor_ruang secara numerik
+        $ruangs = RuangUjian::orderByRaw('CAST(nomor_ruang AS UNSIGNED) ASC')->get();
+
+        // Urutkan berdasarkan kode_pengawas (bukan nama_lengkap)
+        $pengawas = DaftarPengawasUjian::orderBy('kode_pengawas')->get();
+
+        $tanggalFormatted = \Carbon\Carbon::parse($tanggal)->translatedFormat('l, d F Y');
+
+        return view('pages.kurikulum.perangkatujian.adminujian.crud-pengawas-ujian-jadwal-form', compact('ruangs', 'sesi', 'tanggalFormatted', 'pengawas', 'identitasUjian'));
+    }
+
+    public function storeJadwalpengawasMassal(Request $request)
+    {
+        $tanggalUjian = $request->tanggal_ujian;
+        $sesi = $request->jam_ke;
+        $kodeUjian = $request->kode_ujian;
+        $dataPengawas = $request->input('pengawas'); // Format: pengawas[ruang_id][sesi] = kode_pengawas
+
+        if (!$tanggalUjian || !$sesi || !$dataPengawas || !$kodeUjian) {
+            return response()->json(['message' => 'Data tidak lengkap'], 422);
+        }
+
+        foreach ($dataPengawas as $ruangId => $sesiList) {
+            foreach ($sesiList as $jamKe => $kodePengawas) {
+                if (empty($kodePengawas)) {
+                    // Tidak perlu simpan jika tidak ada pengawas
+                    continue;
+                }
+
+                // Simpan atau update
+                PengawasUjian::updateOrCreate(
+                    [
+                        'tanggal_ujian' => $tanggalUjian,
+                        'jam_ke' => $jamKe,
+                        'nomor_ruang' => $ruangId,
+                    ],
+                    [
+                        'kode_ujian' => $kodeUjian,
+                        'kode_pengawas' => $kodePengawas,
+                    ]
+                );
+            }
+        }
+
+        return response()->json(['message' => 'Data berhasil disimpan']);
     }
 }

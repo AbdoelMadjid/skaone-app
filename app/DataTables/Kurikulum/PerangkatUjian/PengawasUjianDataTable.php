@@ -5,6 +5,7 @@ namespace App\DataTables\Kurikulum\PerangkatUjian;
 use App\Models\Kurikulum\PerangkatUjian\PengawasUjian;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -24,6 +25,19 @@ class PengawasUjianDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addColumn('tgl', function ($row) {
+                $date = \Carbon\Carbon::parse($row->tanggal_ujian)->translatedFormat('l, d M Y');
+
+                return $date;
+            })
+            ->addColumn('nama_pengawas', function ($row) {
+                $namaPengawas = DB::table('daftar_pengawas_ujian')
+                    ->where('kode_pengawas', $row->kode_pengawas)
+                    ->select('nama_lengkap') // Ambil semua field yang diperlukan
+                    ->first();
+
+                return $row->kode_pengawas . '. - ' . $namaPengawas->nama_lengkap; // Mengambil nama siswa dari hasil join
+            })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
@@ -75,9 +89,9 @@ class PengawasUjianDataTable extends DataTable
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('kode_ujian')->title('Kode Ujian')->addClass('text-center'),
             Column::make('nomor_ruang')->title('Nomor Ruang')->addClass('text-center'),
-            Column::make('tanggal_ujian')->title('Tanggal Ujian')->addClass('text-center'),
+            Column::make('tgl')->title('Tanggal Ujian')->addClass('text-center'),
             Column::make('jam_ke')->title('Jam Ke')->addClass('text-center'),
-            Column::make('kode_pengawas')->title('Kode Pengawas')->addClass('text-center'),
+            Column::make('nama_pengawas')->title('Kode dan Nama Pengawas'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

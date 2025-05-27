@@ -131,6 +131,9 @@ Route::middleware('auth')->group(function () {
 
             Route::post('/simpan-daftar-pengawas-massal', [PengawasUjianController::class, 'simpanpengawasMassal'])->name('simpan-daftar-pengawas-massal');
 
+            Route::get('/jadwal-massal-table', [PengawasUjianController::class, 'generateMassalTable'])->name('jadwal-massal-table');
+
+            Route::post('/jadwal-massal-simpan', [PengawasUjianController::class, 'storeJadwalpengawasMassal'])->name('jadwal-massal-simpan');
 
             Route::resource('pelaksanaan-ujian', PelaksanaanUjianController::class);
         });

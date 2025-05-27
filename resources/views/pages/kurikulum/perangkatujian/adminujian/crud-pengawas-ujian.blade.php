@@ -23,10 +23,22 @@
                 <div class="card-header d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">Pengawas Ujian</h5>
                     <div>
-                        @can('create kurikulum/perangkatujian/administrasi-ujian/pengawas-ujian')
-                            <a class="btn btn-soft-primary action"
-                                href="{{ route('kurikulum.perangkatujian.administrasi-ujian.pengawas-ujian.create') }}">Tambah</a>
-                        @endcan
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-soft-primary dropdown-toggle" data-bs-toggle="dropdown">
+                                Tambah Jadwal
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    @can('create kurikulum/perangkatujian/administrasi-ujian/pengawas-ujian')
+                                        <a class="dropdown-item action"
+                                            href="{{ route('kurikulum.perangkatujian.administrasi-ujian.pengawas-ujian.create') }}">Tambah</a>
+                                    @endcan
+                                </li>
+                                {{-- <li><a href="#" class="dropdown-item" id="btnTambahSatuan">Tambah Satuan</a></li> --}}
+                                <li><a href="#" class="dropdown-item" id="btnTambahMassal">Input Massal</a></li>
+                            </ul>
+                        </div>
+
                         <a class="btn btn-soft-danger"
                             href="{{ route('kurikulum.perangkatujian.administrasi-ujian.index') }}">Kembali</a>
                     </div>
@@ -123,6 +135,7 @@
             </form>
         </div>
     </div>
+    @include('pages.kurikulum.perangkatujian.adminujian.crud-pengawas-ujian-jadwal-massal')
 @endsection
 @section('script')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
@@ -148,6 +161,59 @@
                     },
                     error: function() {
                         alert('Gagal memuat form pengawas.');
+                    }
+                });
+            });
+
+            // Buka modal
+            $('#btnTambahMassal').click(function() {
+                $('#massal_tanggal_ujian').val('');
+                $('#massal_jml_sesi').val('');
+                $('#massal_table_wrap').html('');
+                $('#modalMassal').modal('show');
+            });
+
+            $('#massal_tanggal_ujian, #massal_jml_sesi').change(function() {
+                let tanggal = $('#massal_tanggal_ujian').val();
+                let jmlSesi = $('#massal_jml_sesi').val();
+
+                if (tanggal && jmlSesi) {
+                    $.ajax({
+                        url: '{{ route('kurikulum.perangkatujian.jadwal-massal-table') }}',
+                        method: 'GET',
+                        data: {
+                            tanggal: tanggal,
+                            sesi: jmlSesi
+                        },
+                        success: function(res) {
+                            $('#massal_table_wrap').html(res);
+                        },
+                        error: function() {
+                            $('#massal_table_wrap').html(
+                                '<div class="alert alert-danger">Gagal memuat tabel.</div>');
+                        }
+                    });
+                } else {
+                    $('#massal_table_wrap').html('');
+                }
+            });
+
+            $('#formMassal').on('submit', function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: '{{ route('kurikulum.perangkatujian.jadwal-massal-simpan') }}', // ganti dengan route Anda
+                    method: 'POST',
+                    data: $(this).serialize(),
+                    success: function(res) {
+                        showToast('success', 'Data berhasil disimpan');
+                        $('#modalMassal').modal('hide');
+                        location.reload();
+                        // refresh datatable atau halaman jika perlu
+                    },
+                    error: function(xhr) {
+                        showToast('error', 'Terjadi kesalahan saat menyimpan data.');
+                        console.log(xhr.responseText);
                     }
                 });
             });
