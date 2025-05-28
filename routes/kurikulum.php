@@ -140,6 +140,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/daftar-siswa-ruangan/{nomor_ruang}', [AdministrasiUjianController::class, 'daftarSiswaPerRuang']);
 
             Route::resource('pelaksanaan-ujian', PelaksanaanUjianController::class);
+
+            Route::get('/peserta-by-ruang', [PelaksanaanUjianController::class, 'getByRuang'])->name('peserta-by-ruang');
         });
     });
 });

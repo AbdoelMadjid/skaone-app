@@ -258,4 +258,32 @@ class PelaksanaanUjianController extends Controller
     {
         //
     }
+
+    public function getByRuang(Request $request)
+    {
+        $nomorRuang = $request->nomor_ruang;
+        $posisiDuduk = $request->posisi_duduk;
+
+        $ujianAktif = IdentitasUjian::where('status', 'Aktif')->first();
+        if (!$ujianAktif) {
+            return response('<div class="alert alert-warning">Ujian aktif tidak ditemukan.</div>');
+        }
+
+        $pesertas = DB::table('peserta_ujians')
+            ->join('peserta_didiks', 'peserta_ujians.nis', '=', 'peserta_didiks.nis')
+            ->join('rombongan_belajars', 'peserta_ujians.kelas', '=', 'rombongan_belajars.kode_rombel')
+            ->where('peserta_ujians.kode_ujian', $ujianAktif->kode_ujian)
+            ->where('peserta_ujians.nomor_ruang', $nomorRuang)
+            ->where('peserta_ujians.posisi_duduk', $posisiDuduk) // tambahkan filter ini
+            ->select(
+                'peserta_ujians.nomor_peserta',
+                'peserta_ujians.nomor_ruang',
+                'peserta_ujians.nis',
+                'peserta_didiks.nama_lengkap',
+                'rombongan_belajars.rombel'
+            )
+            ->get();
+
+        return view('pages.kurikulum.perangkatujian.halamanpelaksanaan.daftar-hadir-peserta-tampil', compact('pesertas', 'ujianAktif'))->render();
+    }
 }
