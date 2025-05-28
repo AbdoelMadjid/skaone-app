@@ -347,6 +347,81 @@
     </script>
     {{-- end denah tempat duduk --}}
 
+    {{-- start pesertaujian per ruang --}}
+    <script>
+        let currentRuangPeserta = null;
+
+        function formatNomorRuang(nomor) {
+            return nomor.toString().padStart(2, '0');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Event Delegation untuk tombol daftar siswa
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('showDaftarSiswaRuangan')) {
+                    e.preventDefault();
+
+                    currentRuangPeserta = e.target.dataset.ruangan;
+                    const ruangFormatted = formatNomorRuang(currentRuangPeserta);
+
+                    // Update semua elemen #text-ruang-peserta dan #text-ruang
+                    document.querySelectorAll('#text-ruang-peserta').forEach(el => {
+                        el.textContent = ruangFormatted;
+                    });
+
+                    loadDaftarPeserta();
+                }
+            });
+
+            // Tombol cetak daftar peserta
+            document.getElementById('btn-cetak-daftarpeserta').addEventListener('click', function() {
+                cetakDaftarPesertaRuangan();
+            });
+        });
+
+        function loadDaftarPeserta() {
+            if (!currentRuangPeserta) return;
+
+            $.ajax({
+                url: '/kurikulum/perangkatujian/daftar-siswa-ruangan/' + currentRuangPeserta,
+                method: 'GET',
+                success: function(response) {
+                    $('#daftar-siswa-ujian').html(response);
+                },
+                error: function() {
+                    alert('Gagal memuat daftar siswa.');
+                }
+            });
+        }
+    </script>
+    <script>
+        function cetakDaftarPesertaRuangan() {
+            const printContents = document.getElementById('cetak-daftar-peserta-ujian').innerHTML;
+            const w = window.open('', '', 'height=1000,width=800');
+
+            w.document.write(`
+        <html>
+        <head>
+            <title>Daftar Peserta Ujian</title>
+            <style>
+                body { font-family: Arial, sans-serif; font-size: 11px; }
+                    table { width: 100%; border-collapse: collapse; }
+                    table, th, td { border: 1px solid black; }
+                    th { padding: 4px; text-align: center; }
+                    h4 { margin: 5px 0; text-align: center; }
+            </style>
+        </head>
+        <body onload="window.print(); setTimeout(() => window.close(), 100);">
+            ${printContents}
+        </body>
+        </html>
+    `);
+
+            w.document.close();
+        }
+    </script>
+    {{-- end pesertaujian per ruang --}}
+
     {{-- start kartu ujian --}}
     <script>
         document.querySelectorAll('.btn-kartu').forEach(button => {

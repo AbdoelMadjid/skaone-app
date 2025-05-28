@@ -148,3 +148,108 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="daftarSiswaPerRuang" tabindex="-1" aria-labelledby="daftarLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Daftar Peserta Ujian <span id="text-ruang-peserta"></span></h5>
+            </div>
+            <div class="modal-body">
+                <div id="cetak-daftar-peserta-ujian" style='@page {size: A4;}'>
+                    <table
+                        style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;border: none !important;'>
+                        <tr style='border: none !important;'>
+                            <td align='center' style='border: none !important;'><img
+                                    src="{{ URL::asset('images/kossurat.jpg') }}" alt="" height="154"
+                                    width="700" border="0"></td>
+                        </tr>
+                        <tr>
+                            <td style='border: none !important;'>&nbsp;</td>
+                        </tr>
+                        <tr style='border: none !important;'>
+                            <td style='font-size:18px;text-align:center;border: none !important;'><strong>DAFTAR
+                                    PERSERTA UJIAN</strong>
+                            </td>
+                        </tr>
+                        <tr style='border: none !important;'>
+                            <td style='font-size:18px;text-align:center;border: none !important;'>
+                                <strong>{{ strtoupper($identitasUjian?->nama_ujian ?? '-') }}</strong>
+                            </td>
+                        </tr>
+                        <tr style='border: none !important;'>
+                            <td style='font-size:18px;text-align:center;border: none !important;'>
+                                <strong>TAHUN AJARAN {{ $identitasUjian?->tahun_ajaran ?? '-' }}</strong>
+                            </td>
+                        </tr>
+                        <tr style='border: none !important;'>
+                            <td style='border: none !important;'>&nbsp;</td>
+                        </tr>
+                        <tr style='border: none !important;'>
+                            <td style='font-size:24px;text-align:center;border: none !important;'>RUANG : <span
+                                    id="text-ruang-peserta"></span>
+                            </td>
+                        </tr>
+                        <tr style='border: none !important;'>
+                            <td style='border: none !important;'>&nbsp;</td>
+                        </tr>
+                    </table>
+
+                    <table cellpadding="2" cellspacing="0" class="table table-bordered" style="font-size: 11px;">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">No.</th>
+                                <th colspan="3">Tempat Duduk Kiri</th>
+                                <th colspan="3">Tempat Duduk Kanan</th>
+                            </tr>
+                            <tr>
+                                <th>Nomor Peserta</th>
+                                <th>Nama Siswa</th>
+                                <th>Kelas</th>
+                                <th>Nomor Peserta</th>
+                                <th>Nama Siswa</th>
+                                <th>Kelas</th>
+                            </tr>
+                        </thead>
+                        <tbody id="daftar-siswa-ujian">
+                            <!-- Data akan diisi melalui JavaScript -->
+                        </tbody>
+                    </table>
+
+                    <table
+                        style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;border: none !important;'>
+                        <tr>
+                            <td width="400" style='border: none !important;'>&nbsp;</td>
+                            <td style='border: none !important;'>&nbsp;</td>
+                            <td style='border: none !important;'>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td style='border: none !important;'>&nbsp;</td>
+                            <td style='border: none !important;'>&nbsp;</td>
+                            <td style='border: none !important;'>Kadipaten,
+                                {{ \Carbon\Carbon::parse($identitasUjian?->titimangsa_ujian)->translatedFormat('d F Y') ?? '-' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style='border: none !important;'>&nbsp;</td>
+                            <td style='border: none !important;'>&nbsp;</td>
+                            <td style='border: none !important;'>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td style='border: none !important;'>&nbsp;</td>
+                            <td style='border: none !important;'>&nbsp;</td>
+                            <td style='border: none !important;'>PANITIA
+                                <br>{{ strtoupper($identitasUjian?->nama_ujian ?? '-') }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-soft-secondary"
+                    id="btn-cetak-daftarpeserta">Cetak</button>
+                <button type="button" class="btn btn-sm btn-soft-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>

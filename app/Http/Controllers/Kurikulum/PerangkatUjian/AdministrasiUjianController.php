@@ -443,4 +443,79 @@ class AdministrasiUjianController extends Controller
 
         return response()->json(['html' => $html]);
     }
+
+
+    private function singkatNama2($nama)
+    {
+        $parts = explode(' ', trim($nama));
+        $jumlah = count($parts);
+
+        if ($jumlah === 0) {
+            return '';
+        }
+
+        // Ambil 2 kata pertama utuh
+        $singkat = $parts[0] ?? '';
+        if ($jumlah > 1) {
+            $singkat .= ' ' . $parts[1];
+        }
+
+        // Sisanya dijadikan inisial
+        for ($i = 2; $i < $jumlah; $i++) {
+            $singkat .= ' ' . strtoupper(substr($parts[$i], 0, 1)) . '.';
+        }
+
+        return $singkat;
+    }
+
+    public function daftarSiswaPerRuang($nomorRuang)
+    {
+        $ujianAktif = IdentitasUjian::where('status', 'aktif')->first();
+
+        if (!$ujianAktif) {
+            return response()->json(['error' => 'Ujian aktif tidak ditemukan.'], 404);
+        }
+
+        $peserta = DB::table('peserta_ujians')
+            ->join('peserta_didiks', 'peserta_ujians.nis', '=', 'peserta_didiks.nis')
+            ->join('rombongan_belajars', 'peserta_ujians.kelas', '=', 'rombongan_belajars.kode_rombel')
+            ->where('peserta_ujians.kode_ujian', $ujianAktif->kode_ujian)
+            ->where('peserta_ujians.nomor_ruang', $nomorRuang)
+            ->select(
+                'peserta_ujians.nomor_peserta',
+                'peserta_didiks.nama_lengkap',
+                'rombongan_belajars.rombel',
+                'peserta_ujians.posisi_duduk'
+            )
+            ->orderBy('peserta_ujians.id')
+            ->get();
+
+        // Bagi berdasarkan posisi duduk
+        $kiriList = $peserta->where('posisi_duduk', 'kiri')->values();
+        $kananList = $peserta->where('posisi_duduk', 'kanan')->values();
+        $max = max($kiriList->count(), $kananList->count());
+
+        $rows = [];
+
+        for ($i = 0; $i < $max; $i++) {
+            $kiri = $kiriList[$i] ?? null;
+            $kanan = $kananList[$i] ?? null;
+
+            if ($kiri) {
+                $kiri->nama_lengkap = $this->singkatNama2($kiri->nama_lengkap);
+            }
+
+            if ($kanan) {
+                $kanan->nama_lengkap = $this->singkatNama2($kanan->nama_lengkap);
+            }
+
+            $rows[] = [
+                'no' => $i + 1,
+                'kiri' => $kiri,
+                'kanan' => $kanan,
+            ];
+        }
+
+        return view('pages.kurikulum.perangkatujian.halamanadmin.peserta-ujian-ruangan', compact('rows'))->render();
+    }
 }
