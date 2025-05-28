@@ -118,6 +118,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/getkartupeserta', [AdministrasiUjianController::class, 'getKartuPeserta'])->name('getkartupeserta');
             Route::get('/denahdata', [AdministrasiUjianController::class, 'getDenahData'])->name('denahdata');
 
+            Route::get('/cetak-kartu-ujian/{kelas}', [AdministrasiUjianController::class, 'cetakKartuUjianByKelas']);
+
             Route::get('/get-mapel/{kode_kk}', [JadwalUjianController::class, 'getMapelByKK']);
 
             Route::get('/generatejadwalmassal', [JadwalUjianController::class, 'generateMassal']);

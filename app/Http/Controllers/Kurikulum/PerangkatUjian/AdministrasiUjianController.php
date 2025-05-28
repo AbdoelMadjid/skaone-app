@@ -417,4 +417,30 @@ class AdministrasiUjianController extends Controller
             'identitasUjian',
         ));
     }
+
+    public function cetakKartuUjianByKelas($kelas)
+    {
+        $identitasUjian = IdentitasUjian::where('status', 'Aktif')->first();
+
+        $pesertaUjians = DB::table('peserta_ujians')
+            ->join('peserta_didiks', 'peserta_ujians.nis', '=', 'peserta_didiks.nis')
+            ->join('rombongan_belajars', 'peserta_ujians.kelas', '=', 'rombongan_belajars.kode_rombel')
+            ->where('peserta_ujians.kode_ujian', $identitasUjian->kode_ujian)
+            ->where('peserta_ujians.kelas', $kelas)
+            ->select(
+                'peserta_ujians.*',
+                'peserta_didiks.nama_lengkap',
+                'peserta_didiks.nisn',
+                'rombongan_belajars.rombel'
+            )
+            ->orderBy('peserta_didiks.nama_lengkap') // atau orderBy('id'), tergantung kebutuhan urutan
+            ->get();
+
+        $html = view('pages.kurikulum.perangkatujian.halamanadmin.kartu-ujian-tampil', [
+            'pesertaUjians' => $pesertaUjians,
+            'identitasUjian' => $identitasUjian
+        ])->render();
+
+        return response()->json(['html' => $html]);
+    }
 }

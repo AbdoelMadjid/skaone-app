@@ -26,9 +26,9 @@
                             'identitasUjian' => $identitasUjian,
                         ])
                     @endif
-                    <br>
+                    <p style='margin-bottom:-2px;margin-top:-8px'>&nbsp;</p>
                 </td>
-                <td></td>
+                <td width="10">&nbsp;</td>
                 <td style="width:50%;vertical-align: top; border: 1px solid #000;">
                     @if (isset($genap[$i]))
                         @include('pages.kurikulum.perangkatujian.halamanadmin.kartu-ujian-tampil-isi', [
@@ -36,10 +36,11 @@
                             'identitasUjian' => $identitasUjian,
                         ])
                     @endif
-                    <br>
+                    <p style='margin-bottom:-2px;margin-top:-8px'>&nbsp;</p>
                 </td>
             </tr>
         </table>
+
         {{-- <div style="page-break-after: always;"></div>
             <div style="page-break-inside: avoid;"></div>
             <div style="page-break-before: always;"></div> --}}

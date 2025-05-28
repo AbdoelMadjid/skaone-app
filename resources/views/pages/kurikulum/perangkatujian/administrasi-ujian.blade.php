@@ -429,6 +429,93 @@
             w.document.close();
         });
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Pilih semua tombol cetak kelas
+            document.querySelectorAll('.btn-cetak-kelas').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    const kelas = this.getAttribute('data-kelas');
+
+                    if (!kelas) {
+                        alert('Data kelas tidak ditemukan!');
+                        return;
+                    }
+
+                    // Kirim AJAX minta HTML kartu ujian per kelas
+                    fetch(`/kurikulum/perangkatujian/cetak-kartu-ujian/${kelas}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Data gagal diambil');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.html) {
+                                // Buka jendela baru untuk cetak
+                                const printWindow = window.open('', '_blank');
+
+                                printWindow.document.write(`
+                            <html>
+                            <head>
+                                <title>Cetak Kartu Ujian Kelas ${kelas}</title>
+                                <style>
+                                    @page {
+                                        size: A4;
+                                        margin: 10mm;
+                                    }
+                                    html, body {
+                                        width: 210mm;
+                                        height: 297mm;
+                                        margin: 0;
+                                        padding: 0;
+                                        font-family: 'Times New Roman', serif;
+                                        font-size: 12px;
+                                    }
+                                    .kartu-wrapper {
+                                        page-break-inside: avoid;
+                                    }
+                                    table {
+                                        border-collapse: collapse;
+                                        width: 100%;
+                                    }
+                                    td {
+                                        padding: 4px;
+                                        vertical-align: top;
+                                    }
+                                    .cetak-kartu {
+                                        margin: 0 auto;
+                                        width: 95%;
+                                        border-collapse: collapse;
+                                        font: 12px Times New Roman;
+                                        table-layout: fixed;
+                                    }
+                                    /* Sesuaikan style kartu lain jika perlu */
+                                </style>
+                            </head>
+                            <body>
+                                ${data.html}
+                            </body>
+                            </html>
+                        `);
+
+                                printWindow.document.close();
+                                printWindow.focus();
+                                printWindow.print();
+                                printWindow
+                                    .close(); // opsional, kadang tidak perlu langsung close
+                            } else {
+                                alert('Data kartu ujian tidak tersedia');
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            alert('Terjadi kesalahan saat mengambil data.');
+                        });
+                });
+            });
+        });
+    </script>
     {{-- end kartu ujian --}}
 
     {{-- start jadwal ujian --}}

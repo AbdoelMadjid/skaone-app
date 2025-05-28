@@ -19,8 +19,13 @@
                 <td>{{ $item['jumlah_kanan'] }}</td>
                 <td>{{ $item['ruang'] }}</td>
                 <td>{{ $item['total'] }}</td>
-                <td> <button class="btn btn-sm btn-primary btn-kartu" data-kelas="{{ $item['kelas'] }}">
+                <td>
+                    <button type="button" class="btn btn-sm btn-soft-primary btn-kartu" data-kelas="{{ $item['kelas'] }}">
                         Lihat Kartu
+                    </button>
+                    <button type="button" class="btn btn-sm btn-soft-secondary btn-cetak-kelas"
+                        data-kelas="{{ $item['kelas'] }}">
+                        Cetak
                     </button>
                 </td>
             </tr>
