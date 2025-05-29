@@ -58,8 +58,8 @@
                 <td>{{ $peserta->rombel }}</td>
                 <td width="75"></td> {{-- Kolom Nilai --}}
                 @if ($isOdd)
-                    <td rowspan="2" width="100" style="text-align: left;" valign="top">{{ $urut }}</td>
-                    <td rowspan="2" width="100" style="text-align: left;" valign="top">{{ $urut + 1 }}</td>
+                    <td rowspan="2" width="75" style="text-align: left;" valign="top">{{ $urut }}</td>
+                    <td rowspan="2" width="75" style="text-align: left;" valign="top">{{ $urut + 1 }}</td>
                 @endif
             </tr>
         @endforeach
