@@ -26,30 +26,29 @@
     </div>
 </div>
 
-<div id="kartu-container" class="mt-3"></div>
-
-
-{{-- <table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>No.</th>
-            <th>Rombel</th>
-            <th>Jumlah Kiri</th>
-            <th>Jumlah Kanan</th>
-            <th>Ruang</th>
-            <th>Total Siswa</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($rekapKelas as $i => $item)
-            <tr class="text-center">
-                <td>{{ $i + 1 }}</td>
-                <td>{{ $item['rombel'] }} / {{ $item['kelas'] }}</td>
-                <td>{{ $item['jumlah_kiri'] }}</td>
-                <td>{{ $item['jumlah_kanan'] }}</td>
-                <td>{{ $item['ruang'] }}</td>
-                <td>{{ $item['total'] }}</td>
+<div id="kartu-container" class="mt-3">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Rombel</th>
+                <th>Jumlah Kiri</th>
+                <th>Jumlah Kanan</th>
+                <th>Ruang</th>
+                <th>Total Siswa</th>
             </tr>
-        @endforeach
-    </tbody>
-</table> --}}
+        </thead>
+        <tbody>
+            @foreach ($rekapKelas as $i => $item)
+                <tr class="text-center">
+                    <td>{{ $i + 1 }}</td>
+                    <td>{{ $item['rombel'] }} / {{ $item['kelas'] }}</td>
+                    <td>{{ $item['jumlah_kiri'] }}</td>
+                    <td>{{ $item['jumlah_kanan'] }}</td>
+                    <td>{{ $item['ruang'] }}</td>
+                    <td>{{ $item['total'] }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
