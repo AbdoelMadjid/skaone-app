@@ -48,7 +48,7 @@
 <div id="tabel-daftar-hadir-pengawas">
     <img class="card-img-top img-fluid mb-0" src="{{ URL::asset('images/kossurat.jpg') }}" alt="Card image cap"><br><br>
     <div style="text-align:center; font-size: 14px; font-weight: bold;">
-        <H4><strong>DAFTAR HADIR DAN NILAI</strong></H4>
+        <H4><strong>DAFTAR HADIR PENGAWAS</strong></H4>
         <H4><strong>{{ strtoupper($identitasUjian?->nama_ujian ?? '-') }}</strong></H4>
         <H4><strong>TAHUN AJARAN
                 {{ $identitasUjian?->tahun_ajaran ?? '-' }}</strong></H4>
