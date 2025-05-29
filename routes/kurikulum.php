@@ -142,6 +142,8 @@ Route::middleware('auth')->group(function () {
             Route::resource('pelaksanaan-ujian', PelaksanaanUjianController::class);
 
             Route::get('/peserta-by-ruang', [PelaksanaanUjianController::class, 'getByRuang'])->name('peserta-by-ruang');
+
+            Route::get('/pengawasruangan', [PelaksanaanUjianController::class, 'getPengawasSesi'])->name('pengawasruangan');
         });
     });
 });

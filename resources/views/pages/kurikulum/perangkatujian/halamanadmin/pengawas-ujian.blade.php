@@ -256,16 +256,16 @@
                                 <td style='border: none !important;' width='200'></td>
                                 <td style='padding:4px 8px;border: none !important;'>
                                     Majalengka, 05 Mei 2025<br>
-                                    Wakasek Kurikulum,
-                                    <div>
+                                    Ketua Panitia,
+                                    {{-- <div>
                                         <img src='{{ URL::asset('images/almadjid.png') }}' border='0'
                                             height='110'
                                             style=' position: absolute; padding: 0px 2px 15px -200px; margin-left: -80px;margin-top:-15px;'>
-                                    </div>
+                                    </div> --}}
 
                                     <p>&nbsp;</p>
                                     <p>&nbsp;</p>
-                                    <strong>Abdul Madjid, S.Pd., M.Pd.</strong><br>
+                                    <strong>ABDUL MADJID, S.Pd., M.Pd.</strong><br>
                                     NIP. 19761128 200012 1 002
                                 </td>
                             </tr>

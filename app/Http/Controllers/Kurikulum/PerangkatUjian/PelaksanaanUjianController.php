@@ -187,6 +187,10 @@ class PelaksanaanUjianController extends Controller
             ->orderByRaw('CAST(kode_pengawas AS UNSIGNED) ASC')
             ->get();
 
+
+        $tanggalList = PengawasUjian::select('tanggal_ujian')->distinct()->orderBy('tanggal_ujian')->pluck('tanggal_ujian');
+        $jamKeList = PengawasUjian::select('jam_ke')->distinct()->orderBy('jam_ke')->pluck('jam_ke');
+
         return view('pages.kurikulum.perangkatujian.pelaksanaan-ujian', [
             'identitasUjian' => $identitasUjian,
             'ruangs' => $ruangs,
@@ -200,6 +204,8 @@ class PelaksanaanUjianController extends Controller
             'tanggalUjianOption' => $tanggalUjianOption,
             'pengawas' => $pengawas,
             'daftarPengawas' => $daftarPengawas,
+            'tanggalList' => $tanggalList,
+            'jamKeList' => $jamKeList,
             //tampildata kelas
             /* 'jadwalByTanggal' => $jadwalByTanggal,
             'tanggalUjianOption' => $tanggalUjianOption,
@@ -285,5 +291,26 @@ class PelaksanaanUjianController extends Controller
             ->get();
 
         return view('pages.kurikulum.perangkatujian.halamanpelaksanaan.daftar-hadir-peserta-tampil', compact('pesertas', 'ujianAktif'))->render();
+    }
+
+    public function getPengawasSesi(Request $request)
+    {
+        $tanggal = $request->input('tanggal');
+        $jamKe = $request->input('jam_ke');
+
+        $data = PengawasUjian::join('daftar_pengawas_ujian', 'pengawas_ujians.kode_pengawas', '=', 'daftar_pengawas_ujian.kode_pengawas')
+            ->select(
+                'pengawas_ujians.nomor_ruang',
+                DB::raw("COALESCE(daftar_pengawas_ujian.nip, '-') as nip"),
+                'daftar_pengawas_ujian.nama_lengkap',
+                'pengawas_ujians.kode_pengawas'
+            )
+            ->where('pengawas_ujians.nomor_ruang', '!=', 'CAD') // <- ini tambahan filter
+            ->when($tanggal, fn($q) => $q->where('pengawas_ujians.tanggal_ujian', $tanggal))
+            ->when($jamKe, fn($q) => $q->where('pengawas_ujians.jam_ke', $jamKe))
+            ->orderByRaw('CAST(nomor_ruang AS UNSIGNED) ASC')
+            ->get();
+
+        return response()->json($data);
     }
 }

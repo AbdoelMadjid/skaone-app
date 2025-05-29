@@ -51,6 +51,12 @@
                                 <i class="mdi mdi-account-circle text-muted align-bottom me-1"></i> Panitia Ujian
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#DaftarHadirPengawas" role="tab"
+                                aria-selected="false">
+                                <i class="mdi mdi-account-circle text-muted align-bottom me-1"></i> Pengawas Ujian
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <div class="card-body p-4">
@@ -60,6 +66,9 @@
                         </div>
                         <div class="tab-pane" id="DaftarHadirPanitia" role="tabpanel">
                             @include('pages.kurikulum.perangkatujian.halamanpelaksanaan.daftar-hadir-panitia')
+                        </div>
+                        <div class="tab-pane" id="DaftarHadirPengawas" role="tabpanel">
+                            @include('pages.kurikulum.perangkatujian.halamanpelaksanaan.daftar-hadir-pengawas')
                         </div>
                     </div><!--end tab-content-->
                 </div><!--end card-body-->
