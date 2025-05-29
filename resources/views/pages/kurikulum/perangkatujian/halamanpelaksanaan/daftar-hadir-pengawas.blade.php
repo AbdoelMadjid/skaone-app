@@ -128,10 +128,11 @@
         </tr>
     </table>
     <br><br><br>
-    <h4>DAFTAR HADIR PENGAWAS CADANGAN</h4>
+    <h4>DAFTAR HADIR PENGAWAS CADANGAN / PENGGANTI</h4>
     <table class="table table-bordered" style="font-size: 12px;">
         <thead>
             <tr>
+                <th width="50">No.</th>
                 <th width="50">Ruang</th>
                 <th width="150">NIP</th>
                 <th>Nama Pengawas</th>
@@ -140,48 +141,16 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td style="padding: 25px;">&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <td style="padding: 25px;">&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <td style="padding: 25px;">&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <td style="padding: 25px;">&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <td style="padding: 25px;">&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <td style="padding: 25px;">&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
+            @for ($i = 1; $i <= 7; $i++)
+                <tr>
+                    <td style="padding: 25px;">{{ $i }}</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+            @endfor
         </tbody>
     </table>
 </div>
