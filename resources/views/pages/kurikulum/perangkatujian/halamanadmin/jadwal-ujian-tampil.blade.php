@@ -74,7 +74,8 @@
                     </td>
                     <td style='border: none !important;' width='200'></td>
                     <td style='padding:4px 8px;border: none !important;'>
-                        Majalengka, 05 Mei 2025<br>
+                        Majalengka,
+                        {{ \Carbon\Carbon::parse($identitasUjian?->titimangsa_ujian)->translatedFormat('d F Y') ?? '-' }}<br>
                         Ketua Panitia,
                         {{-- <div>
                                 <img src='{{ URL::asset('images/almadjid.png') }}' border='0' height='110'

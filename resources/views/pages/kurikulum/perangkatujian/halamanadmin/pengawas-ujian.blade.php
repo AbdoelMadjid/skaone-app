@@ -202,13 +202,14 @@
                                                         </td>
                                                         <td style='border: none !important;' width='200'></td>
                                                         <td style='padding:4px 8px;border: none !important;'>
-                                                            Majalengka, 05 Mei 2025<br>
+                                                            Majalengka,
+                                                            {{ \Carbon\Carbon::parse($identitasUjian?->titimangsa_ujian)->translatedFormat('d F Y') ?? '-' }}<br>
                                                             Ketua Panitia,
-                                                            <div>
+                                                            {{-- <div>
                                                                 <img src='{{ URL::asset('images/almadjid.png') }}'
                                                                     border='0' height='110'
                                                                     style=' position: absolute; padding: 0px 2px 15px -200px; margin-left: -20px;margin-top:-15px;'>
-                                                            </div>
+                                                            </div> --}}
 
                                                             <p>&nbsp;</p>
                                                             <p>&nbsp;</p>
@@ -287,7 +288,8 @@
                                                         </td>
                                                         <td style='border: none !important;' width='200'></td>
                                                         <td style='padding:4px 8px;border: none !important;'>
-                                                            Majalengka, 05 Mei 2025<br>
+                                                            Majalengka,
+                                                            {{ \Carbon\Carbon::parse($identitasUjian?->titimangsa_ujian)->translatedFormat('d F Y') ?? '-' }}<br>
                                                             Ketua Panitia,
                                                             {{-- <div>
                                         <img src='{{ URL::asset('images/almadjid.png') }}' border='0'
@@ -313,13 +315,5 @@
                 </div><!--end row-->
             </div><!-- end card-body -->
         </div><!-- end card -->
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-7">
-
-    </div>
-    <div class="col-md-5">
-
     </div>
 </div>
