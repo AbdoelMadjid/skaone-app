@@ -25,7 +25,7 @@ class PengawasUjianDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('tgl', function ($row) {
+            ->addColumn('tanggal_ujian', function ($row) {
                 $date = \Carbon\Carbon::parse($row->tanggal_ujian)->translatedFormat('l, d M Y');
 
                 return $date;
@@ -43,7 +43,8 @@ class PengawasUjianDataTable extends DataTable
                 $actions = $this->basicActions($row);
                 return view('action', compact('actions'));
             })
-            ->addIndexColumn();
+            ->addIndexColumn()
+            ->rawColumns(['action', 'tanggal_ujian', 'nama_pengawas']);
     }
 
     /**
@@ -51,7 +52,10 @@ class PengawasUjianDataTable extends DataTable
      */
     public function query(PengawasUjian $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()
+            ->orderByRaw('CAST(nomor_ruang AS UNSIGNED) ASC')
+            ->orderBy('jam_ke')
+            ->orderBy('tanggal_ujian');
     }
 
     /**
@@ -89,14 +93,14 @@ class PengawasUjianDataTable extends DataTable
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('kode_ujian')->title('Kode Ujian')->addClass('text-center'),
             Column::make('nomor_ruang')->title('Nomor Ruang')->addClass('text-center'),
-            Column::make('tgl')->title('Tanggal Ujian')->addClass('text-center'),
+            Column::make('tanggal_ujian')->title('Tanggal Ujian')->addClass('text-center'),
             Column::make('jam_ke')->title('Jam Ke')->addClass('text-center'),
             Column::make('nama_pengawas')->title('Kode dan Nama Pengawas'),
-            Column::computed('action')
+            /* Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
                 ->width(60)
-                ->addClass('text-center'),
+                ->addClass('text-center'), */
         ];
     }
 
