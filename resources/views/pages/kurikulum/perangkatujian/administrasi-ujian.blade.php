@@ -102,6 +102,12 @@
                                 <i class="ri-contacts-book-2-line text-muted align-bottom me-1"></i> Kartu Ujian
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#DenahUjian" role="tab"
+                                aria-selected="false">
+                                <i class="ri-contacts-book-2-line text-muted align-bottom me-1"></i> Denah Tempat Duduk
+                            </a>
+                        </li>
                         <li class="nav-item ms-auto">
                             <div class="dropdown">
                                 <a class="nav-link fw-medium text-reset mb-n1" href="#" role="button"
@@ -149,6 +155,9 @@
                         </div>
                         <div class="tab-pane" id="KartuUjian" role="tabpanel">
                             @include('pages.kurikulum.perangkatujian.halamanadmin.kartu-ujian')
+                        </div>
+                        <div class="tab-pane" id="DenahUjian" role="tabpanel">
+                            @include('pages.kurikulum.perangkatujian.halamanadmin.denah-ujian')
                         </div>
                     </div><!--end tab-content-->
                 </div><!--end card-body-->
@@ -226,32 +235,32 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             const layoutSelector = document.getElementById('layoutSelector');
+            const selectRuang = document.getElementById('ruangan');
 
-            document.addEventListener('click', function(e) {
-                if (e.target.classList.contains('showDenahTempatDuduk')) {
-                    e.preventDefault();
+            // Ganti ruangan dari select dropdown
+            selectRuang.addEventListener('change', function() {
+                currentRuang = this.value;
 
-                    currentRuang = e.target.dataset.ruangan;
+                if (currentRuang) {
                     const ruangFormatted = formatNomorRuang(currentRuang);
-
-                    // Update semua elemen dengan id yang sama
                     document.querySelectorAll('#text-ruang').forEach(el => {
                         el.textContent = ruangFormatted;
                     });
 
                     loadDenah();
+                } else {
+                    document.getElementById('denah-container').innerHTML = '';
+                    document.querySelectorAll('#text-ruang').forEach(el => el.textContent = '');
                 }
             });
 
+            // Ganti layout (4x5 atau 5x4)
             layoutSelector.addEventListener('change', function() {
                 if (currentRuang) loadDenah();
             });
-
-            document.getElementById('btn-cetak-denah').addEventListener('click', function() {
-                cetakDenah();
-            });
         });
 
+        // Fungsi untuk memuat denah tempat duduk
         function loadDenah() {
             const layout = document.getElementById('layoutSelector').value;
 
@@ -318,107 +327,119 @@
         }
     </script>
     <script>
-        function cetakDenah() {
-            const printContents = document.getElementById('cetak-denah').innerHTML;
-            const w = window.open('', '', 'height=1000,width=800');
+        document.addEventListener('DOMContentLoaded', function() {
+            const printButton = document.getElementById('btn-print-denah-ujian');
+            if (!printButton) {
+                console.error("Tombol print tidak ditemukan");
+                return;
+            }
 
-            w.document.write(`
-        <html>
-        <head>
-            <title>Denah Tempat Duduk</title>
-            <style>
+            printButton.addEventListener('click', function() {
+                const content = document.getElementById('tabel-denah-ujian');
+                if (!content) {
+                    console.error("Elemen tabel tidak ditemukan");
+                    return;
+                }
+
+                const win = window.open('', '_blank');
+                win.document.write(`
+            <html>
+            <head>
+                <title>Denah Tempat Duduk</title>
+                <style>
                 @page { size: A4; margin: 10mm; }
                 body { font-family: 'Times New Roman', serif; font-size: 12px; }
                 table { border-collapse: collapse; width: 100%; }
                 td { padding: 4px; }
+                h4 { margin: 5px 0; text-align: center; }
                 .meja { border:1px solid #333; width:300px; height:165px; margin:4px; background:#fefefe; }
                 .denah-wrapper { display: flex; justify-content: center; flex-wrap: wrap; }
                 .d-flex { display: flex; justify-content: center; margin-bottom: 10px; }
             </style>
-        </head>
-        <body onload="window.print(); setTimeout(() => window.close(), 100);">
-            ${printContents}
-        </body>
-        </html>
-    `);
-
-            w.document.close();
-        }
+            </head>
+            <body>
+                ${content.innerHTML}
+            </body>
+            </html>
+        `);
+                win.document.close();
+                win.focus();
+                win.print();
+                win.close();
+            });
+        });
     </script>
+
     {{-- end denah tempat duduk --}}
 
     {{-- start pesertaujian per ruang --}}
     <script>
-        let currentRuangPeserta = null;
+        $('#ruangan').change(function() {
+            let nomorRuang = $(this).val();
+            console.log('Selected:', nomorRuang);
 
-        function formatNomorRuang(nomor) {
-            return nomor.toString().padStart(2, '0');
-        }
+            if (nomorRuang !== "") {
+                // Format nomor ruang ke dua digit
+                let ruangFormatted = nomorRuang.padStart(2, '0');
+                $('#text-ruang-peserta').text(ruangFormatted); // Update teks RUANG
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // Event Delegation untuk tombol daftar siswa
-            document.addEventListener('click', function(e) {
-                if (e.target.classList.contains('showDaftarSiswaRuangan')) {
-                    e.preventDefault();
-
-                    currentRuangPeserta = e.target.dataset.ruangan;
-                    const ruangFormatted = formatNomorRuang(currentRuangPeserta);
-
-                    // Update semua elemen #text-ruang-peserta dan #text-ruang
-                    document.querySelectorAll('#text-ruang-peserta').forEach(el => {
-                        el.textContent = ruangFormatted;
-                    });
-
-                    loadDaftarPeserta();
-                }
-            });
-
-            // Tombol cetak daftar peserta
-            document.getElementById('btn-cetak-daftarpeserta').addEventListener('click', function() {
-                cetakDaftarPesertaRuangan();
-            });
+                $.ajax({
+                    url: '{{ url('/kurikulum/perangkatujian/daftar-siswa-ruangan') }}/' + nomorRuang,
+                    type: 'GET',
+                    success: function(response) {
+                        $('#daftar-siswa-ujian').html(response);
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                        $('#daftar-siswa-ujian').html('<tr><td colspan="7">Gagal load data.</td></tr>');
+                    }
+                });
+            } else {
+                $('#daftar-siswa-ujian').html('');
+                $('#text-ruang-peserta').text('');
+            }
         });
-
-        function loadDaftarPeserta() {
-            if (!currentRuangPeserta) return;
-
-            $.ajax({
-                url: '/kurikulum/perangkatujian/daftar-siswa-ruangan/' + currentRuangPeserta,
-                method: 'GET',
-                success: function(response) {
-                    $('#daftar-siswa-ujian').html(response);
-                },
-                error: function() {
-                    alert('Gagal memuat daftar siswa.');
-                }
-            });
-        }
     </script>
-    <script>
-        function cetakDaftarPesertaRuangan() {
-            const printContents = document.getElementById('cetak-daftar-peserta-ujian').innerHTML;
-            const w = window.open('', '', 'height=1000,width=800');
 
-            w.document.write(`
-        <html>
-        <head>
-            <title>Daftar Peserta Ujian</title>
-            <style>
-                body { font-family: Arial, sans-serif; font-size: 11px; }
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const printButton = document.getElementById('btn-print-daftar-peserta-ruangan');
+            if (!printButton) {
+                console.error("Tombol print tidak ditemukan");
+                return;
+            }
+
+            printButton.addEventListener('click', function() {
+                const content = document.getElementById('cetak-daftar-peserta-ujian');
+                if (!content) {
+                    console.error("Elemen tabel tidak ditemukan");
+                    return;
+                }
+
+                const win = window.open('', '_blank');
+                win.document.write(`
+            <html>
+            <head>
+                <title>Daftar Hadir Peserta Ruangan</title>
+                <style>
+                    body { font-family: 'Times New Roman', serif; font-size: 11px; }
                     table { width: 100%; border-collapse: collapse; }
                     table, th, td { border: 1px solid black; }
                     th { padding: 4px; text-align: center; }
                     h4 { margin: 5px 0; text-align: center; }
-            </style>
-        </head>
-        <body onload="window.print(); setTimeout(() => window.close(), 100);">
-            ${printContents}
-        </body>
-        </html>
-    `);
-
-            w.document.close();
-        }
+                </style>
+            </head>
+            <body>
+                ${content.innerHTML}
+            </body>
+            </html>
+        `);
+                win.document.close();
+                win.focus();
+                win.print();
+                win.close();
+            });
+        });
     </script>
     {{-- end pesertaujian per ruang --}}
 
@@ -616,41 +637,6 @@
                 });
         });
     </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const downloadButton = document.getElementById('btn-download-jadwal');
-            downloadButton?.addEventListener('click', function() {
-                const element = document.getElementById('tabel-jadwal-ujian');
-                const tingkat = document.getElementById('tingkat').value || 'jadwal';
-
-                if (!element || !element.innerHTML.trim()) {
-                    showToast('error',
-                        'Silakan pilih tingkat terlebih dahulu dan pastikan jadwal sudah ditampilkan.');
-                    return;
-                }
-
-                const opt = {
-                    margin: 0.5,
-                    filename: `jadwal-ujian-kelas-${tingkat}.pdf`,
-                    image: {
-                        type: 'jpeg',
-                        quality: 0.98
-                    },
-                    html2canvas: {
-                        scale: 2
-                    },
-                    jsPDF: {
-                        unit: 'cm',
-                        format: [33, 21],
-                        orientation: 'landscape'
-                    } // Ukuran F4, landscape
-                };
-
-                html2pdf().set(opt).from(element).save();
-            });
-        });
-    </script>
     {{-- end jadwal ujian --}}
 
     {{-- jadwal pengawas --}}
@@ -675,7 +661,7 @@
             <head>
                 <title>Jadwal Pengawas</title>
                 <style>
-                    body { font-family: Arial, sans-serif; font-size: 12px; }
+                    body { font-family: 'Times New Roman', serif; font-size: 11px; }
                     table { width: 100%; border-collapse: collapse; }
                     table, th, td { border: 1px solid black; }
                     th { padding: 5px; text-align: center; }
@@ -717,7 +703,7 @@
             <head>
                 <title>Daftar Pengawas</title>
                 <style>
-                    body { font-family: Arial, sans-serif; font-size: 12px; }
+                    body { font-family: 'Times New Roman', serif; font-size: 12px; }
                     table { width: 100%; border-collapse: collapse; }
                     table, th, td { border: 1px solid black; }
                     th, td { padding: 5px; text-align: center; }

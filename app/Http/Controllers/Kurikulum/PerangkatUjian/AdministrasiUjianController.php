@@ -300,14 +300,6 @@ class AdministrasiUjianController extends Controller
         // Maksimum jumlah meja (selalu 20 untuk 4x5 atau 5x4)
         $totalMeja = 20;
 
-        /* $mejaList = [];
-        for ($i = 0; $i < $totalMeja; $i++) {
-            $mejaList[] = [
-                'kiri' => $kiri[$i] ?? null,
-                'kanan' => $kanan[$i] ?? null,
-            ];
-        } */
-
         $mejaList = [];
         for ($i = 0; $i < $totalMeja; $i++) {
             $kiriData = $kiri[$i] ?? null;
@@ -516,6 +508,6 @@ class AdministrasiUjianController extends Controller
             ];
         }
 
-        return view('pages.kurikulum.perangkatujian.halamanadmin.peserta-ujian-ruangan', compact('rows'))->render();
+        return view('pages.kurikulum.perangkatujian.halamanadmin.denah-ujian-daftar-peserta-tampil', compact('rows'))->render();
     }
 }

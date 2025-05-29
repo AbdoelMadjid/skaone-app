@@ -8,7 +8,7 @@
             <th>Jumlah Siswa Kiri</th>
             <th>Jumlah Siswa Kanan</th>
             <th>Jumlah Total</th>
-            <th>Aksi</th>
+            {{-- <th>Aksi</th> --}}
         </tr>
     </thead>
     <tbody>
@@ -34,7 +34,7 @@
                 <td class="text-center">{{ $ruang->jumlah_siswa_kiri }}</td>
                 <td class="text-center">{{ $ruang->jumlah_siswa_kanan }}</td>
                 <td class="text-center">{{ $ruang->jumlah_total }}</td>
-                <td>
+                {{-- <td>
                     <div class="btn-group dropstart">
                         <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
                             class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
@@ -46,13 +46,13 @@
                                     data-ruangan="{{ $ruang->nomor_ruang }}" data-bs-toggle="modal"
                                     data-bs-target="#daftarSiswaPerRuang"> Daftar Siswa Per Ruang </a></li>
                         </ul>
-                    </div>
-                    {{--  <a href="{{ route('ruang-ujian.edit', $ruang->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                    </div> --}}
+                {{--  <a href="{{ route('ruang-ujian.edit', $ruang->id) }}" class="btn btn-sm btn-warning">Edit</a>
                     <form action="{{ route('ruang-ujian.destroy', $ruang->id) }}" method="POST" style="display:inline;">
                         @csrf @method('DELETE')
                         <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus?')">Hapus</button>
                     </form> --}}
-                </td>
+                {{-- </td> --}}
             </tr>
         @empty
             <tr>
@@ -63,7 +63,7 @@
 </table>
 
 
-<!-- Modal Denah -->
+{{-- <!-- Modal Denah -->
 <div class="modal fade" id="denahTempatDuduk" tabindex="-1" aria-labelledby="denahLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
@@ -74,7 +74,7 @@
                         <option value="4x5">Layout 4x5</option>
                         <option value="5x4">Layout 5x4</option>
                     </select>
-                    {{-- <button type="button" class="btn btn-primary" id="btn-cetak-denah">Cetak</button> --}}
+                    <button type="button" class="btn btn-primary" id="btn-cetak-denah">Cetak</button>
                 </div>
             </div>
             <div class="modal-body">
@@ -147,9 +147,9 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
-<div class="modal fade" id="daftarSiswaPerRuang" tabindex="-1" aria-labelledby="daftarLabel" aria-hidden="true">
+{{-- <div class="modal fade" id="daftarSiswaPerRuang" tabindex="-1" aria-labelledby="daftarLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
@@ -252,4 +252,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}

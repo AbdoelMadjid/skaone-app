@@ -128,7 +128,7 @@
                 win.document.write(`
             <html>
             <head>
-                <title>Daftar Pengawas</title>
+                <title>Daftar Hadir Peserta</title>
                 <style>
                     body { font-family: Arial, sans-serif; font-size: 12px; }
                     table { width: 100%; border-collapse: collapse; }

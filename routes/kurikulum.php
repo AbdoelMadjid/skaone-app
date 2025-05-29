@@ -137,7 +137,11 @@ Route::middleware('auth')->group(function () {
 
             Route::post('/jadwal-massal-simpan', [PengawasUjianController::class, 'storeJadwalpengawasMassal'])->name('jadwal-massal-simpan');
 
-            Route::get('/daftar-siswa-ruangan/{nomor_ruang}', [AdministrasiUjianController::class, 'daftarSiswaPerRuang']);
+            //Route::get('/daftar-siswa-ruangan/{nomor_ruang}', [AdministrasiUjianController::class, 'daftarSiswaPerRuang']);
+
+            Route::get('/daftar-siswa-ruangan/{nomorRuang}', [AdministrasiUjianController::class, 'daftarSiswaPerRuang'])
+                ->name('daftar-siswa-ruangan');
+
 
             Route::resource('pelaksanaan-ujian', PelaksanaanUjianController::class);
 
