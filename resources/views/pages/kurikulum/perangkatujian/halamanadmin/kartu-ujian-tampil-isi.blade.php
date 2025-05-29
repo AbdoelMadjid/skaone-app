@@ -55,7 +55,7 @@
 
     <!-- Kolom kanan -->
     <div style="flex: 1; position: relative;">
-        Majalengka,
+        Kadipaten,
         {{ \Carbon\Carbon::parse($identitasUjian?->titimangsa_ujian)->translatedFormat('d F Y') ?? '-' }}<br>
         Kepala Sekolah,
         <!-- Tanda tangan -->

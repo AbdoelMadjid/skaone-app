@@ -26,7 +26,7 @@
                     </td>
                     <td style='border: none !important;' width='200'></td>
                     <td style='padding:4px 8px;border: none !important;'>
-                        Majalengka,
+                        Kadipaten,
                         {{ \Carbon\Carbon::parse($identitasUjian?->titimangsa_ujian)->translatedFormat('d F Y') ?? '-' }}<br>
                         Ketua Panitia,
                         {{-- <div>
