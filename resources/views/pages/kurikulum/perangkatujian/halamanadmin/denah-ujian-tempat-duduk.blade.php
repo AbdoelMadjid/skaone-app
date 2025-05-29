@@ -1,7 +1,17 @@
-<select name="pilih_layout" id="layoutSelector" class="form-select w-auto">
-    <option value="4x5">Layout 4 x 5</option>
-    <option value="5x4">Layout 5 x 4</option>
-</select>
+<div class="row g-3">
+    <div class="col-lg">
+
+    </div>
+    <!--end col-->
+    <div class="col-lg-auto">
+        <div class="mb-3 d-flex align-items-center gap-2">
+            <select name="pilih_layout" id="layoutSelector" class="form-select w-auto">
+                <option value="4x5">Layout 4 x 5</option>
+                <option value="5x4">Layout 5 x 4</option>
+            </select>
+        </div>
+    </div>
+</div>
 
 <div id="tabel-denah-ujian">
     <div id="cetak-denah" style='@page {size: A4;}'>

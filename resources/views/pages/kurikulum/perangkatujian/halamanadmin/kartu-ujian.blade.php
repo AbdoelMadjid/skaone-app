@@ -1,4 +1,35 @@
-<table class="table table-bordered">
+<div class="card">
+    <div class="card-body border-bottom-dashed border-bottom">
+        <div class="row g-3">
+            <div class="col-lg">
+                <h3>Kartu Peserta Ujian</h3>
+                <p>Pilih kelas untuk proses cetak kartu peserta ujian.</p>
+            </div>
+            <div class="col-lg-auto">
+                <div class="mb-3 d-flex align-items-center gap-2">
+                    <select name="pilih_kelas" id="rombel" class="form-select w-auto">
+                        <option value="">Pilih Kelas</option>
+                        @foreach ($rekapKelas as $item)
+                            <option value="{{ $item['kelas'] }}">{{ $item['rombel'] }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-auto">
+                <div class="mb-3 d-flex align-items-center gap-2">
+                    <button type="button" class="btn btn-soft-primary" id="btn-print-cetak-kartu-ujian">
+                        Cetak
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="kartu-container" class="mt-3"></div>
+
+
+{{-- <table class="table table-bordered">
     <thead>
         <tr>
             <th>No.</th>
@@ -7,7 +38,6 @@
             <th>Jumlah Kanan</th>
             <th>Ruang</th>
             <th>Total Siswa</th>
-            <th>Cetak</th>
         </tr>
     </thead>
     <tbody>
@@ -19,40 +49,7 @@
                 <td>{{ $item['jumlah_kanan'] }}</td>
                 <td>{{ $item['ruang'] }}</td>
                 <td>{{ $item['total'] }}</td>
-                <td>
-                    <button type="button" class="btn btn-sm btn-soft-primary btn-kartu" data-kelas="{{ $item['kelas'] }}">
-                        Lihat Kartu
-                    </button>
-                    <button type="button" class="btn btn-sm btn-soft-secondary btn-cetak-kelas"
-                        data-kelas="{{ $item['kelas'] }}">
-                        Cetak
-                    </button>
-                </td>
             </tr>
         @endforeach
     </tbody>
-</table>
-
-
-<!-- Modal -->
-<div class="modal fade" id="modalKartuUjian" tabindex="-1" aria-labelledby="modalKartuLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Kartu Ujian Peserta</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-            </div>
-            <div class="modal-body" id="kartu-container">
-                <p>Memuat data...</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-soft-secondary" id="btn-cetak-kartu">Cetak</button>
-                {{-- <button class="btn btn-soft-secondary btn-sm" onclick="printContent('cetak-kartu-ujian')">
-                    Cetak</button> --}}
-                <button type="button" class="btn btn-sm btn-soft-secondary" data-bs-dismiss="modal">Tutup</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<iframe id="print-iframe" style="display:none;"></iframe>
+</table> --}}

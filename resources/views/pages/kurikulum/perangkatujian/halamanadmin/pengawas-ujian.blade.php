@@ -1,86 +1,27 @@
-<style>
-    .ttd-container {
-        margin-left: 10%;
-        width: 90%;
-        /* Supaya tidak melewati batas kanan */
-    }
-
-    .ttd-wrapper {
-        width: 100%;
-        margin: 20px auto;
-        font-family: "Times New Roman", Times, serif;
-        font-size: 12px;
-        border-collapse: collapse;
-    }
-
-    .ttd-section {
-        width: 50%;
-        vertical-align: top;
-        text-align: left;
-        /* Rata kiri */
-    }
-
-    .ttd-section td {
-        padding: 3px;
-    }
-
-    .ttd-spacing {
-        height: 45px;
-    }
-
-    .relative-wrapper {
-        position: relative;
-    }
-
-    .ttd-img-kepsek {
-        position: absolute;
-        top: 20px;
-        left: -75px;
-        height: 80px;
-        z-index: 1;
-    }
-
-    .ttd-img-stempel {
-        position: absolute;
-        top: -5px;
-        left: -75px;
-        height: 120px;
-        z-index: 0;
-    }
-
-    @media print {
-        .ttd-wrapper {
-            page-break-inside: avoid;
-        }
-    }
-</style>
 <div class="card">
     <div class="card-body border-bottom-dashed border-bottom">
-        <form id="form-pilih-tingkat">
-            <div class="row g-3">
-                <div class="col-lg">
-                    <h3>Pengawas Ujian</h3>
-                    <p>Pengawas ujian untuk setiap ruang dan tanggal ujian.</p>
-                </div>
-                <!--end col-->
+        <div class="row g-3">
+            <div class="col-lg">
+                <h3>Pengawas Ujian</h3>
+                <p>Pengawas ujian untuk setiap ruang dan tanggal ujian.</p>
+            </div>
+            <!--end col-->
 
-                <div class="col-lg-auto">
-                    <div class="mb-3 d-flex align-items-center gap-2">
-                        <button type="button" class="btn btn-soft-primary" id="btn-print-jadwal-mengawas">
-                            Cetak Jadwal Pengawas
-                        </button>
-                    </div>
-                </div>
-                <div class="col-lg-auto">
-                    <div class="mb-3 d-flex align-items-center gap-2">
-                        <button type="button" class="btn btn-soft-primary" id="btn-print-daftar-pengawas">
-                            Cetak Daftar Pengawas
-                        </button>
-                    </div>
+            <div class="col-lg-auto">
+                <div class="mb-3 d-flex align-items-center gap-2">
+                    <button type="button" class="btn btn-soft-primary" id="btn-print-jadwal-mengawas">
+                        Cetak Jadwal Pengawas
+                    </button>
                 </div>
             </div>
-            <!--end row-->
-        </form>
+            <div class="col-lg-auto">
+                <div class="mb-3 d-flex align-items-center gap-2">
+                    <button type="button" class="btn btn-soft-primary" id="btn-print-daftar-pengawas">
+                        Cetak Daftar Pengawas
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div class="row">

@@ -45,10 +45,13 @@
 <div style="display: flex; width: 100%; font-size: 12px; margin-bottom: 0;">
     <!-- Kolom kiri -->
     <div style="width: 20px;">&nbsp;</div>
-    <div style="width: 65px; padding: 4px;padding-top:30px;">
-        <i><strong>Kartu ini harap dibawa saat ujian</strong></i>
+    <div style="width: 100px; display: flex; align-items: flex-start; justify-content: center;">
+        <div
+            style="border: 1px solid #848282; border-radius: 4px; padding: 6px 4px; margin-top:30px;font-style: italic;">
+            <strong>Kartu ini harap dibawa saat ujian</strong>
+        </div>
     </div>
-    <div style="width: 95px;">&nbsp;</div>
+    <div style="width: 85px;">&nbsp;</div>
 
     <!-- Kolom kanan -->
     <div style="flex: 1; position: relative;">

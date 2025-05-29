@@ -116,57 +116,7 @@ class AdministrasiUjianController extends Controller
                 ];
             })->values();
 
-        /* // tampilkan data jadwal ujian
-        $kompetensiKeahlian = KompetensiKeahlian::all();
-        $kompetensiKeahlianOption = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
-        $tanggalUjian = [];
-        $tanggalUjianOption = [];
-
-        if ($ujianAktif) {
-            $tanggalUjian = collect(
-                \Carbon\CarbonPeriod::create($ujianAktif->tgl_ujian_awal, $ujianAktif->tgl_ujian_akhir)
-            )->map(fn($date) => $date->toDateString());
-
-            $tanggalUjianOption = $tanggalUjian->mapWithKeys(function ($date) {
-                return [$date => \Carbon\Carbon::parse($date)->translatedFormat('l, d M Y')];
-            })->toArray();
-        }
-
-        $tingkat = request()->get('tingkat', 10); // default ke 10 jika tidak dipilih
-
-        // Ambil semua kode_kk yang tersedia di jadwal_ujians tingkat 10
-        $kodeKKList = JadwalUjian::where('tingkat', $tingkat)
-            ->pluck('kode_kk')
-            ->unique()
-            ->values()
-            ->toArray();
-
-        // Ambil data singkatan berdasarkan kode_kk
-        $singkatanKK = KompetensiKeahlian::whereIn('idkk', $kodeKKList)
-            ->pluck('singkatan', 'idkk')
-            ->toArray();
-
-        // Ambil seluruh jadwal ujian sesuai syarat
-        $jadwalList = JadwalUjian::where('tingkat', $tingkat)
-            ->whereIn('tanggal', $tanggalUjian)
-            ->orderBy('tanggal')
-            ->orderBy('jam_ke')
-            ->get();
-
-        // Susun berdasarkan tanggal → jam_ke → kode_kk
-        $jadwalByTanggal = [];
-
-        foreach ($jadwalList as $jadwal) {
-            $tanggal = $jadwal->tanggal;
-            $jamKe = $jadwal->jam_ke;
-            $kodeKK = $jadwal->kode_kk;
-            $jamUjian = $jadwal->jam_ujian;
-            $mapel = $jadwal->mata_pelajaran;
-
-            $jadwalByTanggal[$tanggal][$jamKe]['pukul'] = $jamUjian;
-            $jadwalByTanggal[$tanggal][$jamKe][$kodeKK] = $mapel;
-        } */
-
+        // Ambil semua ruang ujian yang ada, diurutkan berdasarkan nomor ruang
         $ruangUjian = RuangUjian::orderByRaw('CAST(nomor_ruang AS UNSIGNED) ASC')->get();
         $ujianYangAktif = IdentitasUjian::where('status', 'aktif')->first();
 

@@ -9,7 +9,7 @@
         rel="stylesheet" />
     <style>
         @media print {
-            .etak-kartu tr {
+            .cetak-kartu tr {
                 page-break-inside: avoid;
                 /* Hindari potongan di tengah baris */
             }
@@ -445,28 +445,96 @@
 
     {{-- start kartu ujian --}}
     <script>
-        document.querySelectorAll('.btn-kartu').forEach(button => {
-            button.addEventListener('click', function() {
-                const kelas = this.getAttribute('data-kelas');
-                const container = $('#modalKartuUjian .modal-body');
+        $(document).ready(function() {
+            $('#rombel').on('change', function() {
+                const kelas = $(this).val();
+                const container = $('#kartu-container');
                 container.html('<p>Memuat data...</p>');
 
-                $.ajax({
-                    url: "{{ route('kurikulum.perangkatujian.getkartupeserta') }}",
-                    method: "GET",
-                    data: {
-                        kelas: kelas
-                    },
-                    success: function(response) {
-                        // Pastikan data JSON punya properti 'html'
-                        container.html(response.html);
-                        $('#modalKartuUjian').modal('show');
-                    },
-                    error: function(xhr) {
-                        container.html('<p class="text-danger">Gagal memuat data.</p>');
-                        console.error(xhr);
+                if (kelas !== "") {
+                    $.ajax({
+                        url: "{{ route('kurikulum.perangkatujian.getkartupeserta') }}",
+                        method: "GET",
+                        data: {
+                            kelas: kelas
+                        },
+                        success: function(response) {
+                            container.html(response.html);
+                        },
+                        error: function(xhr) {
+                            container.html('<p class="text-danger">Gagal memuat data.</p>');
+                            console.error(xhr);
+                        }
+                    });
+                } else {
+                    container.html('');
+                }
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const printButton = document.getElementById('btn-print-cetak-kartu-ujian');
+            if (!printButton) {
+                console.error("Tombol print tidak ditemukan");
+                return;
+            }
+
+            printButton.addEventListener('click', function() {
+                const content = document.getElementById('cetak-kartu-ujian');
+                if (!content) {
+                    console.error("Elemen tabel tidak ditemukan");
+                    return;
+                }
+
+                const win = window.open('', '_blank');
+                win.document.write(`
+            <html>
+            <head>
+                <title>Cetak Kartu Ujian</title>
+                <style>
+                    @page {
+                        size: A4;
+                        margin: 5mm;
                     }
-                });
+                    html, body {
+                        width: 210mm;
+                        height: 297mm;
+                        margin: 0;
+                        padding: 0;
+                        font-family: 'Times New Roman', serif;
+                        font-size: 12px;
+                    }
+                    .kartu-wrapper {
+                        page-break-inside: avoid;
+                    }
+                    table {
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+                    td {
+                        padding: 4px;
+                        vertical-align: top;
+                    }
+                    .cetak-kartu {
+                        margin: 0 auto;
+                        width: 100%;
+                        border-collapse: collapse;
+                        font: 12px Times New Roman;
+                        table-layout: fixed;
+                    }
+                </style>
+            </head>
+            <body>
+                ${content.innerHTML}
+            </body>
+            </html>
+        `);
+                win.document.close();
+                win.focus();
+                win.print();
+                win.close();
             });
         });
     </script>
