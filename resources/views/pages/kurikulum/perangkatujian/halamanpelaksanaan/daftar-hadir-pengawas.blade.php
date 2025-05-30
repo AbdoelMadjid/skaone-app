@@ -77,13 +77,13 @@
         </thead>
         <tbody></tbody>
     </table>
-    <P style='font-size: 12px; margin-top: 20px;margin-bottom: 20px;margin-left: 25px;'>
+    <P style='font-size: 12px; margin-top: 20px;margin-bottom: 10px;margin-left: 25px;'>
         <strong>Catatan:</strong> Pengawas wajib mengisi daftar hadir ini sebelum dan sesudah pelaksanaan ujian.
     </P>
     @include('pages.kurikulum.perangkatujian.halamanadmin.tanda-tangan', [
         'identitasUjian' => $identitasUjian,
     ])
-    <br><br><br>
+    <br>
     <h4>DAFTAR HADIR PENGAWAS CADANGAN / PENGGANTI</h4>
     <table class="table table-bordered" style="font-size: 12px;">
         <thead>
@@ -99,7 +99,7 @@
         <tbody>
             @for ($i = 1; $i <= 7; $i++)
                 <tr>
-                    <td style="padding: 25px;">{{ $i }}</td>
+                    <td style="padding: 20px;">{{ $i }}</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
@@ -130,11 +130,9 @@
                         const tbody = document.querySelector('#tabelPengawas tbody');
                         tbody.innerHTML = '';
 
-                        // ➕ Tambahan: tampilkan info hari & sesi
                         const hariTglUjian = document.getElementById('hari_tgl_ujian');
                         const sesiJamKe = document.getElementById('sesi_jamke');
 
-                        // Konversi tanggal ke format Hari, DD/MM/YYYY
                         const tanggalObj = new Date(tanggal);
                         const namaHari = tanggalObj.toLocaleDateString('id-ID', {
                             weekday: 'long'
@@ -148,7 +146,6 @@
                         hariTglUjian.textContent = `${namaHari}, ${formatTanggal}`;
                         sesiJamKe.textContent = `${jamKe}`;
 
-                        // ➕ Akhir tambahan
                         if (data.length === 0) {
                             tbody.innerHTML = `
                                 <tr>
@@ -156,33 +153,53 @@
                                 </tr>
                             `;
                         } else {
-                            data.forEach(row => {
-                                const nomorRuang = parseInt(row
-                                    .nomor_ruang); // langsung parsing angka
+                            // Jika jumlah data ganjil, tambahkan satu item kosong untuk dipasangkan
+                            if (data.length % 2 === 1) {
+                                data.push({
+                                    nomor_ruang: '&nbsp;',
+                                    nip: '',
+                                    nama_lengkap: '',
+                                    kode_pengawas: ''
+                                });
+                            }
 
-                                // Cek valid angka
-                                let ruangGanjil = '';
-                                let ruangGenap = '';
+                            for (let i = 0; i < data.length; i += 2) {
+                                const row1 = data[i];
+                                const row2 = data[i + 1];
 
-                                if (!isNaN(nomorRuang)) {
-                                    if (nomorRuang % 2 === 1) {
-                                        ruangGanjil = row.nomor_ruang;
-                                    } else {
-                                        ruangGenap = row.nomor_ruang;
-                                    }
+                                const ruang1 = parseInt(row1.nomor_ruang);
+                                const ruang2 = parseInt(row2.nomor_ruang);
+
+                                let ruangGanjilGabung = '';
+                                let ruangGenapGabung = '';
+
+                                if (!isNaN(ruang1)) {
+                                    if (ruang1 % 2 === 1) ruangGanjilGabung = row1.nomor_ruang;
+                                    else ruangGenapGabung = row1.nomor_ruang;
+                                }
+
+                                if (!isNaN(ruang2)) {
+                                    if (ruang2 % 2 === 1) ruangGanjilGabung = row2.nomor_ruang;
+                                    else ruangGenapGabung = row2.nomor_ruang;
                                 }
 
                                 tbody.innerHTML += `
                                     <tr>
-                                        <td>${row.nomor_ruang}</td>
-                                        <td>${row.nip}</td>
-                                        <td style="text-align:left;">${row.nama_lengkap}</td>
-                                        <td>${row.kode_pengawas}</td>
-                                        <td width="100" style="text-align:left;" valign="top">${ruangGanjil}</td>
-                                        <td width="100" style="text-align:left;" valign="top">${ruangGenap}</td>
+                                        <td style="padding:10px;">${row1.nomor_ruang}</td>
+                                        <td>${row1.nip}</td>
+                                        <td style="text-align:left;">${row1.nama_lengkap}</td>
+                                        <td>${row1.kode_pengawas}</td>
+                                        <td rowspan="2" width="100" style="text-align:left;" valign="top">${ruangGanjilGabung}</td>
+                                        <td rowspan="2" width="100" style="text-align:left;" valign="top">${ruangGenapGabung}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px;">${row2.nomor_ruang}</td>
+                                        <td>${row2.nip}</td>
+                                        <td style="text-align:left;">${row2.nama_lengkap}</td>
+                                        <td>${row2.kode_pengawas}</td>
                                     </tr>
                                 `;
-                            });
+                            }
                         }
                     })
                     .catch(error => {
@@ -201,6 +218,7 @@
         selectJamKe.addEventListener('change', fetchData);
     });
 </script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const printButton = document.getElementById('btn-print-daftar-pengawas');
