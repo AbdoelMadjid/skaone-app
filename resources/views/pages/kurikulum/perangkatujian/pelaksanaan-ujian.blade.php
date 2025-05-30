@@ -126,12 +126,24 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const printButton = document.getElementById('btn-print-daftar-peserta');
+            const pilihRuangan = document.getElementById('ruangan'); // Ganti ID sesuai HTML
+            const posisiDuduk = document.getElementById('posisi_duduk'); // Ganti ID sesuai HTML
+
             if (!printButton) {
                 console.error("Tombol print tidak ditemukan");
                 return;
             }
 
             printButton.addEventListener('click', function() {
+                if (!pilihRuangan || !pilihRuangan.value) {
+                    showToast('error', "Silakan pilih ruangan terlebih dahulu sebelum mencetak.");
+                    return;
+                }
+                if (!posisiDuduk || !posisiDuduk.value) {
+                    showToast('error', "Silakan pilih posisi duduk terlebih dahulu sebelum mencetak.");
+                    return;
+                }
+
                 const content = document.getElementById('tabel-peserta');
                 if (!content) {
                     console.error("Elemen tabel tidak ditemukan");
@@ -164,45 +176,5 @@
         });
     </script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const printButton = document.getElementById('btn-print-daftar-panitia');
-            if (!printButton) {
-                console.error("Tombol print tidak ditemukan");
-                return;
-            }
-
-            printButton.addEventListener('click', function() {
-                const content = document.getElementById('tabel-daftar-hadir-panitia');
-                if (!content) {
-                    console.error("Elemen tabel tidak ditemukan");
-                    return;
-                }
-
-                const win = window.open('', '_blank');
-                win.document.write(`
-            <html>
-            <head>
-                <title>Daftar Hadir Panitia</title>
-                <style>
-                    body { font-family: 'Times New Roman', serif; font-size: 12px; }
-                    table { width: 100%; border-collapse: collapse; }
-                    table, th, td { border: 1px solid black; }
-                    th, td { padding: 5px; text-align: center; }
-                    h4 { margin: 5px 0; text-align: center; }
-                </style>
-            </head>
-            <body>
-                ${content.innerHTML}
-            </body>
-            </html>
-        `);
-                win.document.close();
-                win.focus();
-                win.print();
-                win.close();
-            });
-        });
-    </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

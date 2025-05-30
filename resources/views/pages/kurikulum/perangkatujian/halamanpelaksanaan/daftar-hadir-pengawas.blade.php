@@ -222,12 +222,25 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const printButton = document.getElementById('btn-print-daftar-pengawas');
+        const selectTanggal = document.getElementById('selectTanggal'); // Ganti ID sesuai HTML
+        const selectJamKe = document.getElementById('selectJamKe'); // Ganti ID sesuai HTML
+
         if (!printButton) {
             console.error("Tombol print tidak ditemukan");
             return;
         }
 
         printButton.addEventListener('click', function() {
+
+            if (!selectTanggal || !selectTanggal.value) {
+                showToast('error', "Silakan pilih tanggal terlebih dahulu sebelum mencetak.");
+                return;
+            }
+            if (!selectJamKe || !selectJamKe.value) {
+                showToast('error', "Silakan pilih jam ke terlebih dahulu sebelum mencetak.");
+                return;
+            }
+
             const content = document.getElementById('tabel-daftar-hadir-pengawas');
             if (!content) {
                 console.error("Elemen tabel tidak ditemukan");
@@ -236,33 +249,33 @@
 
             const win = window.open('', '_blank');
             win.document.write(`
-            <html>
-            <head>
-                <title>Daftar Hadir Pengawas</title>
-                <style>
-                    @page {
-                        size: A4;
-                        margin: 5mm;
-                    }
-                    html, body {
-                        width: 210mm;
-                        height: 297mm;
-                        margin: 0;
-                        padding: 0;
-                        font-family: 'Times New Roman', serif;
-                        font-size: 12px;
-                    }
-                    table { width: 100%; border-collapse: collapse; margin-left:25px; }
-                    table, th, td { border: 1px solid black; }
-                    th, td { padding: 5px; text-align: center; }
-                    h4 { margin: 5px 0; text-align: center; }
-                </style>
-            </head>
-            <body>
-                ${content.innerHTML}
-            </body>
-            </html>
-        `);
+                <html>
+                <head>
+                    <title>Daftar Hadir Pengawas</title>
+                    <style>
+                        @page {
+                            size: A4;
+                            margin: 5mm;
+                        }
+                        html, body {
+                            width: 210mm;
+                            height: 297mm;
+                            margin: 0;
+                            padding: 0;
+                            font-family: 'Times New Roman', serif;
+                            font-size: 12px;
+                        }
+                        table { width: 100%; border-collapse: collapse; margin-left:25px; }
+                        table, th, td { border: 1px solid black; }
+                        th, td { padding: 5px; text-align: center; }
+                        h4 { margin: 5px 0; text-align: center; }
+                    </style>
+                </head>
+                <body>
+                    ${content.innerHTML}
+                </body>
+                </html>
+            `);
             win.document.close();
             win.focus();
             win.print();
