@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Kurikulum\PerangkatUjian;
 use App\Http\Controllers\Controller;
 use App\Models\Kurikulum\PerangkatUjian\DaftarPengawasUjian;
 use App\Models\Kurikulum\PerangkatUjian\IdentitasUjian;
+use App\Models\Kurikulum\PerangkatUjian\PanitiaUjian;
 use App\Models\Kurikulum\PerangkatUjian\PengawasUjian;
 use App\Models\Kurikulum\PerangkatUjian\RuangUjian;
 use App\Models\ManajemenSekolah\RombonganBelajar;
@@ -191,6 +192,8 @@ class PelaksanaanUjianController extends Controller
         $tanggalList = PengawasUjian::select('tanggal_ujian')->distinct()->orderBy('tanggal_ujian')->pluck('tanggal_ujian');
         $jamKeList = PengawasUjian::select('jam_ke')->distinct()->orderBy('jam_ke')->pluck('jam_ke');
 
+        $panitiaUjian = PanitiaUjian::where('kode_ujian', $ujianAktif->kode_ujian)->get();
+
         return view('pages.kurikulum.perangkatujian.pelaksanaan-ujian', [
             'identitasUjian' => $identitasUjian,
             'ruangs' => $ruangs,
@@ -206,6 +209,7 @@ class PelaksanaanUjianController extends Controller
             'daftarPengawas' => $daftarPengawas,
             'tanggalList' => $tanggalList,
             'jamKeList' => $jamKeList,
+            'panitiaUjian' => $panitiaUjian,
             //tampildata kelas
             /* 'jadwalByTanggal' => $jadwalByTanggal,
             'tanggalUjianOption' => $tanggalUjianOption,

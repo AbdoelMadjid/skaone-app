@@ -5,7 +5,7 @@
     <H4><strong>TAHUN AJARAN
             {{ $ujianAktif?->tahun_ajaran ?? '-' }}</strong></H4>
 </div>
-<div style="width: 100%;font-size: 12px;margin-left:60px;margin-bottom: 10px; margin-top: 20px;">
+<div style="width: 100%;font-size: 12px;margin-bottom: 10px; margin-top: 50px;">
     <div style="display: flex; margin-bottom: 12px;">
         <div style="width: 150px;">Mata Pelajaran</div>
         <div style="width: 10px;">:</div>

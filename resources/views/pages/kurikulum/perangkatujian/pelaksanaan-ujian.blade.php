@@ -57,6 +57,20 @@
                                 <i class="mdi mdi-account-circle text-muted align-bottom me-1"></i> Pengawas Ujian
                             </a>
                         </li>
+                        <li class="nav-item ms-auto">
+                            <div class="dropdown">
+                                <a class="nav-link fw-medium text-reset mb-n1" href="#" role="button"
+                                    id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="ri-settings-4-line align-middle me-1"></i> Settings
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                    <li>
+                                        <a href="{{ route('kurikulum.perangkatujian.pelaksanaan-ujian.panitia-ujian.index') }}"
+                                            class="dropdown-item">Panitia Ujian</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
                     </ul>
                 </div>
                 <div class="card-body p-4">
@@ -131,6 +145,47 @@
                 <title>Daftar Hadir Peserta</title>
                 <style>
                     body { font-family: Arial, sans-serif; font-size: 12px; }
+                    table { width: 100%; border-collapse: collapse; }
+                    table, th, td { border: 1px solid black; }
+                    th, td { padding: 5px; text-align: center; }
+                    h4 { margin: 5px 0; text-align: center; }
+                </style>
+            </head>
+            <body>
+                ${content.innerHTML}
+            </body>
+            </html>
+        `);
+                win.document.close();
+                win.focus();
+                win.print();
+                win.close();
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const printButton = document.getElementById('btn-print-daftar-panitia');
+            if (!printButton) {
+                console.error("Tombol print tidak ditemukan");
+                return;
+            }
+
+            printButton.addEventListener('click', function() {
+                const content = document.getElementById('tabel-daftar-hadir-panitia');
+                if (!content) {
+                    console.error("Elemen tabel tidak ditemukan");
+                    return;
+                }
+
+                const win = window.open('', '_blank');
+                win.document.write(`
+            <html>
+            <head>
+                <title>Daftar Hadir Panitia</title>
+                <style>
+                    body { font-family: 'Times New Roman', serif; font-size: 12px; }
                     table { width: 100%; border-collapse: collapse; }
                     table, th, td { border: 1px solid black; }
                     th, td { padding: 5px; text-align: center; }

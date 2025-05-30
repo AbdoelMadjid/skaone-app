@@ -307,6 +307,7 @@ return [
     "peserta-ujian" => "Peserta Ujian",
     "jadwal-ujian" => "Jadwal Ujian",
     "pengawas-ujian" => "Pengawas Ujian",
+    "panitia-ujian" => "Panitia Ujian",
 
 
     "guru-mata-pelajaran" => "Guru Mata Pelajaran",

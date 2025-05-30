@@ -22,6 +22,7 @@ use App\Http\Controllers\Kurikulum\PerangkatKurikulum\VersiKurikulumController;
 use App\Http\Controllers\Kurikulum\PerangkatUjian\AdministrasiUjianController;
 use App\Http\Controllers\Kurikulum\PerangkatUjian\IdentitasUjianController;
 use App\Http\Controllers\Kurikulum\PerangkatUjian\JadwalUjianController;
+use App\Http\Controllers\Kurikulum\PerangkatUjian\PanitiaUjianController;
 use App\Http\Controllers\Kurikulum\PerangkatUjian\PelaksanaanUjianController;
 use App\Http\Controllers\Kurikulum\PerangkatUjian\PengawasUjianController;
 use App\Http\Controllers\Kurikulum\PerangkatUjian\PesertaUjianController;
@@ -144,7 +145,13 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/get-tempelan-ruang', [AdministrasiUjianController::class, 'getTempelanPesertaByRuang'])->name('get-tempelan-ruang');
 
-            Route::resource('pelaksanaan-ujian', PelaksanaanUjianController::class);
+            Route::get('pelaksanaan-ujian', [PelaksanaanUjianController::class, 'index'])->name('pelaksanaan-ujian.index');
+            Route::prefix('pelaksanaan-ujian')->as('pelaksanaan-ujian.')->group(function () {
+                Route::resource('panitia-ujian', PanitiaUjianController::class);
+            });
+
+            Route::get('/get-personil-panitia', [PanitiaUjianController::class, 'getPersonilPanitia'])->name('getpersonilPanitia');
+
 
             Route::get('/peserta-by-ruang', [PelaksanaanUjianController::class, 'getByRuang'])->name('peserta-by-ruang');
 
