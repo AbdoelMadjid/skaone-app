@@ -460,4 +460,17 @@ class AdministrasiUjianController extends Controller
 
         return view('pages.kurikulum.perangkatujian.halamanadmin.denah-ujian-daftar-peserta-tampil', compact('rows'))->render();
     }
+
+    public function getTempelanPesertaByRuang(Request $request)
+    {
+        $data = PesertaUjian::with('pesertaDidik')
+            ->where('nomor_ruang', $request->nomor_ruang)
+            ->get()
+            ->groupBy('posisi_duduk');
+
+        return response()->json([
+            'kiri' => $data->get('kiri', collect()),
+            'kanan' => $data->get('kanan', collect())
+        ]);
+    }
 }

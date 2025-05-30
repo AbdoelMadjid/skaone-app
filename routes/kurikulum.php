@@ -142,6 +142,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/daftar-siswa-ruangan/{nomorRuang}', [AdministrasiUjianController::class, 'daftarSiswaPerRuang'])
                 ->name('daftar-siswa-ruangan');
 
+            Route::get('/get-tempelan-ruang', [AdministrasiUjianController::class, 'getTempelanPesertaByRuang'])->name('get-tempelan-ruang');
 
             Route::resource('pelaksanaan-ujian', PelaksanaanUjianController::class);
 

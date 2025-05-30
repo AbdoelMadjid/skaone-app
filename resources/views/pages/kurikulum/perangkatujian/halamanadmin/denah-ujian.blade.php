@@ -19,14 +19,21 @@
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
                     <button type="button" class="btn btn-soft-primary" id="btn-print-denah-ujian">
-                        Cetak Denah
+                        <i class="ri-printer-line"></i> Denah
                     </button>
                 </div>
             </div>
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
                     <button type="button" class="btn btn-soft-primary" id="btn-print-daftar-peserta-ruangan">
-                        Cetak Daftar Peserta
+                        <i class="ri-printer-line"></i> Daftar Peserta
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-auto">
+                <div class="mb-3 d-flex align-items-center gap-2">
+                    <button type="button" class="btn btn-soft-primary" id="btn-cetak-tempelan-meja">
+                        <i class="ri-printer-line"></i> Tempelan Meja
                     </button>
                 </div>
             </div>
@@ -41,8 +48,11 @@
                     aria-orientation="vertical">
                     <a class="nav-link mb-2 active" id="daftar-peserta-tab" data-bs-toggle="pill" href="#daftar-peserta"
                         role="tab" aria-controls="daftar-peserta" aria-selected="false">Daftar Peserta</a>
-                    <a class="nav-link mb-2" id="dena-tempat-duduk-tab" data-bs-toggle="pill" href="#dena-tempat-duduk"
-                        role="tab" aria-controls="dena-tempat-duduk" aria-selected="true">Denah Tempat Duduk</a>
+                    <a class="nav-link mb-2" id="denah-tempat-duduk-tab" data-bs-toggle="pill"
+                        href="#denah-tempat-duduk" role="tab" aria-controls="denah-tempat-duduk"
+                        aria-selected="true">Denah Tempat Duduk</a>
+                    <a class="nav-link mb-2" id="denah-tempel-meja-tab" data-bs-toggle="pill" href="#denah-tempel-meja"
+                        role="tab" aria-controls="denah-tempel-meja" aria-selected="true">Label Tempel Meja</a>
                 </div>
             </div><!-- end col -->
             <div class="col-md-9">
@@ -51,9 +61,13 @@
                         aria-labelledby="daftar-peserta-tab">
                         @include('pages.kurikulum.perangkatujian.halamanadmin.denah-ujian-daftar-peserta')
                     </div>
-                    <div class="tab-pane fade" id="dena-tempat-duduk" role="tabpanel"
-                        aria-labelledby="dena-tempat-duduk-tab">
+                    <div class="tab-pane fade" id="denah-tempat-duduk" role="tabpanel"
+                        aria-labelledby="denah-tempat-duduk-tab">
                         @include('pages.kurikulum.perangkatujian.halamanadmin.denah-ujian-tempat-duduk')
+                    </div>
+                    <div class="tab-pane fade" id="denah-tempel-meja" role="tabpanel"
+                        aria-labelledby="denah-tempel-meja-tab">
+                        @include('pages.kurikulum.perangkatujian.halamanadmin.denah-ujian-tempel-meja')
                     </div>
                 </div>
             </div><!--  end col -->
