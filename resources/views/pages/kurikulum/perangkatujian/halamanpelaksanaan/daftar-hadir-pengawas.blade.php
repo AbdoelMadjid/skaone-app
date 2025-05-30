@@ -1,47 +1,45 @@
 <div class="card">
     <div class="card-body border-bottom-dashed border-bottom">
-        <form id="form-pilih-tingkat">
-            <div class="row g-3">
-                <div class="col-lg">
-                    <h3>Daftar Hadir Pengawas</h3>
-                    <p>Pilih tanggal dan jamke untuk proses cetak daftar hadir peserta ujian.</p>
-                </div>
-                <!--end col-->
+        <div class="row g-3">
+            <div class="col-lg">
+                <h3><i class="ri-contacts-line text-muted align-bottom me-1"></i> Daftar Hadir Pengawas</h3>
+                <p>Pilih tanggal dan jamke untuk proses cetak daftar hadir peserta ujian.</p>
+            </div>
+            <!--end col-->
 
-                <div class="col-lg-auto">
-                    <div class="mb-3 d-flex align-items-center gap-2">
-                        <select id="selectTanggal" class="form-control">
-                            <option value="">-- Pilih Tanggal --</option>
-                            @foreach ($tanggalList as $tgl)
-                                @php
-                                    $tanggalFormat = \Carbon\Carbon::parse($tgl)->translatedFormat('l, d F Y');
-                                @endphp
-                                <option value="{{ $tgl }}">{{ $tanggalFormat }}</option>
-                            @endforeach
-                        </select>
+            <div class="col-lg-auto">
+                <div class="mb-3 d-flex align-items-center gap-2">
+                    <select id="selectTanggal" class="form-control">
+                        <option value="">-- Pilih Tanggal --</option>
+                        @foreach ($tanggalList as $tgl)
+                            @php
+                                $tanggalFormat = \Carbon\Carbon::parse($tgl)->translatedFormat('l, d F Y');
+                            @endphp
+                            <option value="{{ $tgl }}">{{ $tanggalFormat }}</option>
+                        @endforeach
+                    </select>
 
-                    </div>
-                </div>
-                <div class="col-lg-auto">
-                    <div class="mb-3 d-flex align-items-center gap-2">
-                        <select id="selectJamKe" class="form-control">
-                            <option value="">-- Pilih Jam Ke --</option>
-                            @foreach ($jamKeList as $jk)
-                                <option value="{{ $jk }}">{{ $jk }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-auto">
-                    <div class="mb-3 d-flex align-items-center gap-2">
-                        <button type="button" class="btn btn-soft-primary" id="btn-print-daftar-pengawas">
-                            Cetak
-                        </button>
-                    </div>
                 </div>
             </div>
-            <!--end row-->
-        </form>
+            <div class="col-lg-auto">
+                <div class="mb-3 d-flex align-items-center gap-2">
+                    <select id="selectJamKe" class="form-control">
+                        <option value="">-- Pilih Jam Ke --</option>
+                        @foreach ($jamKeList as $jk)
+                            <option value="{{ $jk }}">{{ $jk }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-auto">
+                <div class="mb-3 d-flex align-items-center gap-2">
+                    <button type="button" class="btn btn-soft-primary" id="btn-print-daftar-pengawas">
+                        Cetak
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!--end row-->
     </div>
 </div>
 

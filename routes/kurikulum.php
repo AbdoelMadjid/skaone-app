@@ -27,6 +27,7 @@ use App\Http\Controllers\Kurikulum\PerangkatUjian\PelaksanaanUjianController;
 use App\Http\Controllers\Kurikulum\PerangkatUjian\PengawasUjianController;
 use App\Http\Controllers\Kurikulum\PerangkatUjian\PesertaUjianController;
 use App\Http\Controllers\Kurikulum\PerangkatUjian\RuangUjianController;
+use App\Http\Controllers\Kurikulum\PerangkatUjian\TokenSoalUjianController;
 use App\Http\Controllers\ManajemenSekolah\PesertaDidikController;
 use Illuminate\Support\Facades\Route;
 
@@ -148,6 +149,7 @@ Route::middleware('auth')->group(function () {
             Route::get('pelaksanaan-ujian', [PelaksanaanUjianController::class, 'index'])->name('pelaksanaan-ujian.index');
             Route::prefix('pelaksanaan-ujian')->as('pelaksanaan-ujian.')->group(function () {
                 Route::resource('panitia-ujian', PanitiaUjianController::class);
+                Route::resource('token-soal-ujian', TokenSoalUjianController::class);
             });
 
             Route::get('/get-personil-panitia', [PanitiaUjianController::class, 'getPersonilPanitia'])->name('getpersonilPanitia');

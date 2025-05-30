@@ -2,7 +2,7 @@
     <div class="card-body border-bottom-dashed border-bottom">
         <div class="row g-3">
             <div class="col-lg">
-                <h3>Kartu Peserta Ujian</h3>
+                <h3><i class="ri-contacts-book-2-line text-muted align-bottom me-1"></i> Kartu Peserta Ujian</h3>
                 <p>Pilih kelas untuk proses cetak kartu peserta ujian.</p>
             </div>
             <div class="col-lg-auto">

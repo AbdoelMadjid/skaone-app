@@ -1,3 +1,17 @@
+<div class="card">
+    <div class="card-body border-bottom-dashed border-bottom">
+        <div class="row g-3">
+            <div class="col-lg">
+                <h3><i class="mdi mdi-account-circle text-muted align-bottom me-1"></i> Peserta Ujian</h3>
+                <p>Seluruh peserta pada pelaksanaan ujian</p>
+            </div>
+            <!--end col-->
+
+            <div class="col-lg-auto"></div>
+            <div class="col-lg-auto"></div>
+        </div>
+    </div>
+</div>
 <table id="pesertaUjianTable" class="display" style="width:100%; table-layout: fixed;">
     <thead>
         <tr>

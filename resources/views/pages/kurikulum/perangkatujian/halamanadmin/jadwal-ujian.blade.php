@@ -3,7 +3,7 @@
         <form id="form-pilih-tingkat">
             <div class="row g-3">
                 <div class="col-lg">
-                    <h3>Jadwal Ujian</h3>
+                    <h3><i class="ri-list-unordered text-muted align-bottom me-1"></i> Jadwal Ujian</h3>
                     <p>Pilih tingkat untuk menampilkan jadwal ujian.</p>
                 </div>
                 <div class="col-lg-auto">

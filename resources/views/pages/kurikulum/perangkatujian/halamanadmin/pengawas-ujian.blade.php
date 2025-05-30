@@ -2,7 +2,7 @@
     <div class="card-body border-bottom-dashed border-bottom">
         <div class="row g-3">
             <div class="col-lg">
-                <h3>Pengawas Ujian</h3>
+                <h3><i class="ri-file-user-line text-muted align-bottom me-1"></i> Pengawas Ujian</h3>
                 <p>Pengawas ujian untuk setiap ruang dan tanggal ujian.</p>
             </div>
             <!--end col-->

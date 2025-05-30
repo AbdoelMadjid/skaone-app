@@ -42,7 +42,7 @@
                         <li class="nav-item">
                             <a class="nav-link active" data-bs-toggle="tab" href="#DaftarHadirPeserta" role="tab"
                                 aria-selected="true">
-                                <i class="ri-home-4-line text-muted align-bottom me-1"></i> Peserta Ujian
+                                <i class="ri-file-user-line text-muted align-bottom me-1"></i> Peserta Ujian
                             </a>
                         </li>
                         <li class="nav-item">
@@ -54,7 +54,13 @@
                         <li class="nav-item">
                             <a class="nav-link" data-bs-toggle="tab" href="#DaftarHadirPengawas" role="tab"
                                 aria-selected="false">
-                                <i class="mdi mdi-account-circle text-muted align-bottom me-1"></i> Pengawas Ujian
+                                <i class="ri-contacts-line text-muted align-bottom me-1"></i> Pengawas Ujian
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#TokenSoalUjian" role="tab"
+                                aria-selected="false">
+                                <i class="ri-key-line text-muted align-bottom me-1"></i> Token Soal Ujian
                             </a>
                         </li>
                         <li class="nav-item ms-auto">
@@ -67,6 +73,10 @@
                                     <li>
                                         <a href="{{ route('kurikulum.perangkatujian.pelaksanaan-ujian.panitia-ujian.index') }}"
                                             class="dropdown-item">Panitia Ujian</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('kurikulum.perangkatujian.pelaksanaan-ujian.token-soal-ujian.index') }}"
+                                            class="dropdown-item">Token Soal Ujian</a>
                                     </li>
                                 </ul>
                             </div>
@@ -83,6 +93,9 @@
                         </div>
                         <div class="tab-pane" id="DaftarHadirPengawas" role="tabpanel">
                             @include('pages.kurikulum.perangkatujian.halamanpelaksanaan.daftar-hadir-pengawas')
+                        </div>
+                        <div class="tab-pane" id="TokenSoalUjian" role="tabpanel">
+                            @include('pages.kurikulum.perangkatujian.halamanpelaksanaan.token-soal-ujian')
                         </div>
                     </div><!--end tab-content-->
                 </div><!--end card-body-->

@@ -52,23 +52,6 @@
                             </div>
                         </div>
                     </div>
-
-                    {{-- <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasExample"
-                        aria-labelledby="offcanvasExampleLabel">
-                        <div class="offcanvas-body">
-                            <button type="button" class="btn-close text-reset float-end" data-bs-dismiss="offcanvas"
-                                aria-label="Close"></button>
-                            <div class="d-flex flex-column h-100 justify-content-center align-items-center">
-                                <div class="search-voice">
-                                    <i class="ri-mic-fill align-middle"></i>
-                                    <span class="voice-wave"></span>
-                                    <span class="voice-wave"></span>
-                                    <span class="voice-wave"></span>
-                                </div>
-                                <h4>Talk to me, what can I do for you?</h4>
-                            </div>
-                        </div>
-                    </div> --}}
                 </div>
                 <div>
                     <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
@@ -105,7 +88,8 @@
                         <li class="nav-item">
                             <a class="nav-link" data-bs-toggle="tab" href="#DenahUjian" role="tab"
                                 aria-selected="false">
-                                <i class="ri-contacts-book-2-line text-muted align-bottom me-1"></i> Denah Tempat Duduk
+                                <i class="ri-checkbox-multiple-blank-line text-muted align-bottom me-1"></i> Denah Tempat
+                                Duduk
                             </a>
                         </li>
                         <li class="nav-item ms-auto">

@@ -2,7 +2,8 @@
     <div class="card-body border-bottom-dashed border-bottom">
         <div class="row g-3">
             <div class="col-lg">
-                <h3>Denah Duduk Peserta Per Ruangan</h3>
+                <h3><i class="ri-checkbox-multiple-blank-line text-muted align-bottom me-1"></i> Denah Duduk Peserta Per
+                    Ruangan</h3>
                 <p>Pilih ruangan untuk proses cetak denah duduk peserta ujian.</p>
             </div>
             <!--end col-->
