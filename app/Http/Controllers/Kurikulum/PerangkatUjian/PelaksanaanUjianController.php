@@ -8,6 +8,7 @@ use App\Models\Kurikulum\PerangkatUjian\IdentitasUjian;
 use App\Models\Kurikulum\PerangkatUjian\PanitiaUjian;
 use App\Models\Kurikulum\PerangkatUjian\PengawasUjian;
 use App\Models\Kurikulum\PerangkatUjian\RuangUjian;
+use App\Models\Kurikulum\PerangkatUjian\TokenSoalUjian;
 use App\Models\ManajemenSekolah\RombonganBelajar;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -316,5 +317,30 @@ class PelaksanaanUjianController extends Controller
             ->get();
 
         return response()->json($data);
+    }
+
+    public function filterToken(Request $request)
+    {
+        $tanggal = $request->query('tanggal');
+        $jamKe = $request->query('jam_ke');
+
+        $tokens = TokenSoalUjian::when($tanggal, fn($q) => $q->whereDate('tanggal_ujian', $tanggal))
+            ->when($jamKe, fn($q) => $q->where('sesi_ujian', $jamKe))
+            ->get();
+
+        return response()->json($tokens);
+    }
+
+    public function hapusToken($id)
+    {
+        $token = TokenSoalUjian::find($id);
+
+        if (!$token) {
+            return response()->json(['success' => false, 'message' => 'Token tidak ditemukan.'], 404);
+        }
+
+        $token->delete();
+
+        return response()->json(['success' => true, 'message' => 'Token berhasil dihapus.']);
     }
 }

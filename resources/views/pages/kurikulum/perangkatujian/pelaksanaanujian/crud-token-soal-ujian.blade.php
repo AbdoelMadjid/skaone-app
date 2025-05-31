@@ -28,13 +28,12 @@
                                 Tambah Token
                             </button>
                             <ul class="dropdown-menu">
-                                <li>
+                                {{-- <li>
                                     @can('create kurikulum/perangkatujian/pelaksanaan-ujian/token-soal-ujian')
                                         <a class="dropdown-item action"
                                             href="{{ route('kurikulum.perangkatujian.pelaksanaan-ujian.token-soal-ujian.create') }}">Tambah</a>
                                     @endcan
-                                </li>
-                                {{-- <li><a href="#" class="dropdown-item" id="btnTambahSatuan">Tambah Satuan</a></li> --}}
+                                </li> --}}
                                 <li><a href="#" class="dropdown-item" id="btnTambahTokenMassal">Input Massal</a></li>
                             </ul>
                         </div>

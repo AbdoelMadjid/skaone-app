@@ -163,6 +163,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/get-rombel-by-kk', [TokenSoalUjianController::class, 'getByKkTahun']);
 
             Route::post('/simpan-token-massal', [TokenSoalUjianController::class, 'simpanTokenMassal'])->name('simpan-token-massal');
+
+            Route::get('/token-soal-ujian', [PelaksanaanUjianController::class, 'filterToken'])->name('token-soal-ujian');
+            Route::delete('/hapus-token-soal-ujian/{id}', [PelaksanaanUjianController::class, 'hapusToken'])->name('hapus-token-soal-ujian');
         });
     });
 });

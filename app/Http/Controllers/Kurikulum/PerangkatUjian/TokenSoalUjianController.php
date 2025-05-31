@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Kurikulum\PerangkatUjian;
 
 use App\DataTables\Kurikulum\PerangkatUjian\TokenSoalUjianDataTable;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Kurikulum\PerangkatUjian\TokenSoalUjianRequest;
 use App\Models\Kurikulum\PerangkatUjian\IdentitasUjian;
 use App\Models\Kurikulum\PerangkatUjian\JadwalUjian;
 use App\Models\Kurikulum\PerangkatUjian\TokenSoalUjian;
@@ -66,7 +67,28 @@ class TokenSoalUjianController extends Controller
      */
     public function show(TokenSoalUjian $tokenSoalUjian)
     {
-        //
+        $ujianAktif = IdentitasUjian::where('status', 'aktif')->first();
+
+        $tanggalUjian = [];
+
+        if ($ujianAktif) {
+            $tanggalUjian = collect(
+                \Carbon\CarbonPeriod::create($ujianAktif->tgl_ujian_awal, $ujianAktif->tgl_ujian_akhir)
+            )->map(fn($date) => $date->toDateString());
+
+            $tanggalUjianOption = $tanggalUjian->mapWithKeys(function ($date) {
+                return [$date => \Carbon\Carbon::parse($date)->translatedFormat('l, d M Y')];
+            })->toArray();
+        } else {
+            $tanggalUjianOption = [];
+        }
+
+        return view('pages.kurikulum.perangkatujian.pelaksanaanujian.crud-token-soal-ujian-form', [
+            'data' => $tokenSoalUjian,
+            'ujianAktif' => $ujianAktif,
+            'tanggalUjian' => $tanggalUjian,
+            'tanggalUjianOption' => $tanggalUjianOption,
+        ]);
     }
 
     /**
@@ -74,15 +96,40 @@ class TokenSoalUjianController extends Controller
      */
     public function edit(TokenSoalUjian $tokenSoalUjian)
     {
-        //
+        $ujianAktif = IdentitasUjian::where('status', 'aktif')->first();
+
+        $tanggalUjian = [];
+
+        if ($ujianAktif) {
+            $tanggalUjian = collect(
+                \Carbon\CarbonPeriod::create($ujianAktif->tgl_ujian_awal, $ujianAktif->tgl_ujian_akhir)
+            )->map(fn($date) => $date->toDateString());
+
+            $tanggalUjianOption = $tanggalUjian->mapWithKeys(function ($date) {
+                return [$date => \Carbon\Carbon::parse($date)->translatedFormat('l, d M Y')];
+            })->toArray();
+        } else {
+            $tanggalUjianOption = [];
+        }
+
+        return view('pages.kurikulum.perangkatujian.pelaksanaanujian.crud-token-soal-ujian-form', [
+            'data' => $tokenSoalUjian,
+            'action' => route('kurikulum.perangkatujian.pelaksanaan-ujian.token-soal-ujian.update', $tokenSoalUjian->id),
+            'ujianAktif' => $ujianAktif,
+            'tanggalUjian' => $tanggalUjian,
+            'tanggalUjianOption' => $tanggalUjianOption,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TokenSoalUjian $tokenSoalUjian)
+    public function update(TokenSoalUjianRequest $request, TokenSoalUjian $tokenSoalUjian)
     {
-        //
+        $tokenSoalUjian->fill($request->validated());
+        $tokenSoalUjian->save();
+
+        return responseSuccess(true);
     }
 
     /**

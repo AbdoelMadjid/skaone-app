@@ -5,6 +5,7 @@ namespace App\DataTables\Kurikulum\PerangkatUjian;
 use App\Models\Kurikulum\PerangkatUjian\TokenSoalUjian;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -24,12 +25,21 @@ class TokenSoalUjianDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addColumn('nama_kelas', function ($row) {
+                $namaKelas = DB::table('rombongan_belajars')
+                    ->where('kode_rombel', $row->kelas)
+                    ->select('rombel') // Ambil semua field yang diperlukan
+                    ->first();
+
+                return $namaKelas->rombel; // Mengambil nama siswa dari hasil join
+            })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
                 return view('action', compact('actions'));
             })
-            ->addIndexColumn();
+            ->addIndexColumn()
+            ->rawColumns(['action', 'nama_kelas']);
     }
 
     /**
@@ -59,6 +69,10 @@ class TokenSoalUjianDataTable extends DataTable
                 Button::make('print'),
                 Button::make('reset'),
                 Button::make('reload')
+            ])->parameters([
+                'lengthChange' => false, // Menghilangkan dropdown "Show entries"
+                'searching' => false,    // Menghilangkan kotak pencarian
+                'pageLength' => 100,       // Menampilkan 50 baris per halaman
             ]);
     }
 
@@ -72,8 +86,8 @@ class TokenSoalUjianDataTable extends DataTable
             Column::make('kode_ujian')->title('Kode Ujian'),
             Column::make('tanggal_ujian')->title('Tanggal Ujian')->addClass('text-center'),
             Column::make('sesi_ujian')->title('Sesi Ujian')->addClass('text-center'),
-            Column::make('matapelajaran')->title('Mata Pelajaran')->addClass('text-center'),
-            Column::make('kelas')->title('Kelas')->addClass('text-center'),
+            Column::make('matapelajaran')->title('Mata Pelajaran'),
+            Column::make('nama_kelas')->title('Kelas')->addClass('text-center'),
             Column::make('token_soal')->title('Token Soal')->addClass('text-center'),
             Column::computed('action')
                 ->exportable(false)

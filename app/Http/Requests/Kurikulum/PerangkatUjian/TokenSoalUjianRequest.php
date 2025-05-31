@@ -11,7 +11,7 @@ class TokenSoalUjianRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,44 @@ class TokenSoalUjianRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'kode_ujian' => [
+                'required',
+                'string',
+            ],
+            'tanggal_ujian' => [
+                'required',
+                'date',
+            ],
+            'sesi_ujian' => [
+                'required',
+                'string',
+            ],
+            'matapelajaran' => [
+                'required',
+                'string',
+            ],
+            'kelas' => [
+                'required',
+                'string',
+            ],
+            'token_soal' => [
+                'required',
+                'string',
+            ],
+        ];
+    }
+    /**
+     * Get custom messages for validator errors.
+     */
+    public function messages(): array
+    {
+        return [
+            'kode_ujian.required' => 'Kode Ujian harus diisi.',
+            'tanggal_ujian.required' => 'Tanggal Ujian harus dipilih.',
+            'sesi_ujian.required' => 'Sesi Ujian harus dipilih.',
+            'matapelajaran.required' => 'Mata Pelajaran harus diisi.',
+            'kelas.required' => 'Kelas harus diisi.',
+            'token_soal.required' => 'Token Ujian harus diisi.',
         ];
     }
 }

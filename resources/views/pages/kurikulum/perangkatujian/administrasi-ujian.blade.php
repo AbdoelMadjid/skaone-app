@@ -444,6 +444,82 @@
     {{-- end pesertaujian per ruang --}}
 
     {{-- start tempelan meja --}}
+    {{-- tempelan meja --}}
+    <script>
+        $('#ruangan').on('change', function() {
+            let ruang = $(this).val();
+
+            if (ruang !== "") {
+                $.ajax({
+                    url: '{{ route('kurikulum.perangkatujian.get-tempelan-ruang') }}',
+                    method: 'GET',
+                    data: {
+                        nomor_ruang: ruang
+                    },
+                    success: function(response) {
+                        tampilkanPeserta(response.kiri, '#tempel-meja-kiri');
+                        tampilkanPeserta(response.kanan, '#tempel-meja-kanan');
+                    },
+                    error: function() {
+                        alert("Gagal mengambil data peserta.");
+                    }
+                });
+            } else {
+                $('#tempel-meja-kiri').html('');
+                $('#tempel-meja-kanan').html('');
+            }
+        });
+
+        function tampilkanPeserta(pesertaList, targetDiv) {
+            let html =
+                "<table style='margin: 0 auto; width: 100%; border-collapse: collapse; font: 12px Arial, sans-serif;'>";
+
+            let kolom = 3;
+            let i = 0;
+
+            pesertaList.forEach((peserta, index) => {
+                if (i % kolom === 0) {
+                    html += "<tr>";
+                }
+
+                html += `
+        <td style="width:33%; padding:10px;">
+            <div style="
+                border: 2px solid #444;
+                border-radius: 10px;
+                padding: 15px;
+                text-align: center;
+                background: #f9f9f9;
+                box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+                min-height: 100px;
+            ">
+                <div style="font-weight: bold; font-size: 16px; margin-bottom: 5px;">${peserta.nomor_peserta}</div>
+                <div style="font-size: 14px; font-weight: 600;">${peserta.peserta_didik.nama_lengkap}</div>
+                <div style="font-size: 12px; color: #555;">NIS: ${peserta.nis}</div>
+            </div>
+        </td>`;
+
+                i++;
+
+                if (i % kolom === 0) {
+                    html += "</tr>";
+                }
+            });
+
+            // Tambah kolom kosong jika kurang dari 3
+            let sisa = i % kolom;
+            if (sisa !== 0) {
+                for (let j = 0; j < kolom - sisa; j++) {
+                    html += "<td style='width:33%;'></td>";
+                }
+                html += "</tr>";
+            }
+
+            html += "</table>";
+            $(targetDiv).html(html);
+        }
+    </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const printButton = document.getElementById('btn-cetak-tempelan-meja');
@@ -709,81 +785,7 @@
         });
     </script>
 
-    {{-- tempelan meja --}}
-    <script>
-        $('#ruangan').on('change', function() {
-            let ruang = $(this).val();
 
-            if (ruang !== "") {
-                $.ajax({
-                    url: '{{ route('kurikulum.perangkatujian.get-tempelan-ruang') }}',
-                    method: 'GET',
-                    data: {
-                        nomor_ruang: ruang
-                    },
-                    success: function(response) {
-                        tampilkanPeserta(response.kiri, '#tempel-meja-kiri');
-                        tampilkanPeserta(response.kanan, '#tempel-meja-kanan');
-                    },
-                    error: function() {
-                        alert("Gagal mengambil data peserta.");
-                    }
-                });
-            } else {
-                $('#tempel-meja-kiri').html('');
-                $('#tempel-meja-kanan').html('');
-            }
-        });
-
-        function tampilkanPeserta(pesertaList, targetDiv) {
-            let html =
-                "<table style='margin: 0 auto; width: 100%; border-collapse: collapse; font: 12px Arial, sans-serif;'>";
-
-            let kolom = 3;
-            let i = 0;
-
-            pesertaList.forEach((peserta, index) => {
-                if (i % kolom === 0) {
-                    html += "<tr>";
-                }
-
-                html += `
-        <td style="width:33%; padding:10px;">
-            <div style="
-                border: 2px solid #444;
-                border-radius: 10px;
-                padding: 15px;
-                text-align: center;
-                background: #f9f9f9;
-                box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-                min-height: 100px;
-            ">
-                <div style="font-weight: bold; font-size: 16px; margin-bottom: 5px;">${peserta.nomor_peserta}</div>
-                <div style="font-size: 14px; font-weight: 600;">${peserta.peserta_didik.nama_lengkap}</div>
-                <div style="font-size: 12px; color: #555;">NIS: ${peserta.nis}</div>
-            </div>
-        </td>`;
-
-                i++;
-
-                if (i % kolom === 0) {
-                    html += "</tr>";
-                }
-            });
-
-            // Tambah kolom kosong jika kurang dari 3
-            let sisa = i % kolom;
-            if (sisa !== 0) {
-                for (let j = 0; j < kolom - sisa; j++) {
-                    html += "<td style='width:33%;'></td>";
-                }
-                html += "</tr>";
-            }
-
-            html += "</table>";
-            $(targetDiv).html(html);
-        }
-    </script>
 
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

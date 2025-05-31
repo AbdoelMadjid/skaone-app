@@ -18,7 +18,6 @@
                             <option value="{{ $tgl }}">{{ $tanggalFormat }}</option>
                         @endforeach
                     </select>
-
                 </div>
             </div>
             <div class="col-lg-auto">
