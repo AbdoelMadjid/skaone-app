@@ -154,10 +154,15 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/get-personil-panitia', [PanitiaUjianController::class, 'getPersonilPanitia'])->name('getpersonilPanitia');
 
-
             Route::get('/peserta-by-ruang', [PelaksanaanUjianController::class, 'getByRuang'])->name('peserta-by-ruang');
 
             Route::get('/pengawasruangan', [PelaksanaanUjianController::class, 'getPengawasSesi'])->name('pengawasruangan');
+
+            Route::get('/cek-jadwal-untuk-token', [TokenSoalUjianController::class, 'cekJadwaluntukToken'])->name('cek-jadwal-untuk-token');
+
+            Route::get('/get-rombel-by-kk', [TokenSoalUjianController::class, 'getByKkTahun']);
+
+            Route::post('/simpan-token-massal', [TokenSoalUjianController::class, 'simpanTokenMassal'])->name('simpan-token-massal');
         });
     });
 });

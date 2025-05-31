@@ -181,7 +181,7 @@
                     },
                     success: function() {
                         showToast('success', 'Data berhasil disimpan');
-                        location.reload();
+                        $('#jadwalujian-table').DataTable().ajax.reload(null, false);
                     },
                     error: function(xhr) {
                         console.error(xhr.responseText);

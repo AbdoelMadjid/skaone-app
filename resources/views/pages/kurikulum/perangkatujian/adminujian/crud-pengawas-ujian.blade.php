@@ -208,7 +208,7 @@
                     success: function(res) {
                         showToast('success', 'Data berhasil disimpan');
                         $('#modalMassal').modal('hide');
-                        location.reload();
+                        $('#pengawasujian-table').DataTable().ajax.reload(null, false);
                         // refresh datatable atau halaman jika perlu
                     },
                     error: function(xhr) {
