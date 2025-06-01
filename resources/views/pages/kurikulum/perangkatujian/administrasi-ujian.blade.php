@@ -158,6 +158,8 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+    <script src="{{ URL::asset('build/js/ngeprint.js') }}"></script>
 @endsection
 @section('script-bottom')
     {{-- Start Datatable --}}
@@ -310,35 +312,17 @@
             return html;
         }
     </script>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const printButton = document.getElementById('btn-print-denah-ujian');
-            const ruangSelect = document.getElementById('ruangan');
-
-            if (!printButton) {
-                console.error("Tombol print tidak ditemukan");
-                return;
-            }
-
-            printButton.addEventListener('click', function() {
-                // ✅ Validasi: Pastikan ruang dipilih
-                if (!ruangSelect || !ruangSelect.value) {
-                    showToast('error', "Silakan pilih ruangan terlebih dahulu sebelum mencetak denah.");
-                    return;
-                }
-
-                const content = document.getElementById('tabel-denah-ujian');
-                if (!content) {
-                    console.error("Elemen tabel tidak ditemukan");
-                    return;
-                }
-
-                const win = window.open('', '_blank');
-                win.document.write(`
-            <html>
-            <head>
-                <title>Denah Tempat Duduk</title>
-                <style>
+        setupPrintHandler({
+            printButtonId: 'btn-print-denah-ujian',
+            tableContentId: 'tabel-denah-ujian',
+            title: 'Denah Tempat Duduk Ujian',
+            requiredFields: [{
+                id: 'ruangan',
+                message: 'Silakan pilih ruangan terlebih dahulu sebelum mencetak denah tempat duduk ujian.'
+            }],
+            customStyle: `
                 @page { size: A4; margin: 10mm; }
                 body { font-family: 'Times New Roman', serif; font-size: 12px; }
                 table { border-collapse: collapse; width: 100%; }
@@ -347,21 +331,9 @@
                 .meja { border:1px solid #333; width:300px; height:165px; margin:4px; background:#fefefe; }
                 .denah-wrapper { display: flex; justify-content: center; flex-wrap: wrap; }
                 .d-flex { display: flex; justify-content: center; margin-bottom: 10px; }
-            </style>
-            </head>
-            <body>
-                ${content.innerHTML}
-            </body>
-            </html>
-        `);
-                win.document.close();
-                win.focus();
-                win.print();
-                win.close();
-            });
+            `
         });
     </script>
-
     {{-- end denah tempat duduk --}}
 
     {{-- start pesertaujian per ruang --}}
@@ -394,57 +366,26 @@
     </script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const printButton = document.getElementById('btn-print-daftar-peserta-ruangan');
-            const ruangSelect = document.getElementById('ruangan');
-            if (!printButton) {
-                console.error("Tombol print tidak ditemukan");
-                return;
-            }
-
-            printButton.addEventListener('click', function() {
-                // ✅ Validasi: Pastikan ruang dipilih
-                if (!ruangSelect || !ruangSelect.value) {
-                    showToast('error',
-                        "Silakan pilih ruangan terlebih dahulu sebelum mencetak daftar peserta.");
-                    return;
-                }
-
-                const content = document.getElementById('cetak-daftar-peserta-ujian');
-                if (!content) {
-                    console.error("Elemen tabel tidak ditemukan");
-                    return;
-                }
-
-                const win = window.open('', '_blank');
-                win.document.write(`
-            <html>
-            <head>
-                <title>Daftar Hadir Peserta Ruangan</title>
-                <style>
-                    body { font-family: 'Times New Roman', serif; font-size: 11px; }
-                    table { width: 100%; border-collapse: collapse; }
-                    table, th, td { border: 1px solid black; }
-                    th { padding: 4px; text-align: center; }
-                    h4 { margin: 5px 0; text-align: center; }
-                </style>
-            </head>
-            <body>
-                ${content.innerHTML}
-            </body>
-            </html>
-        `);
-                win.document.close();
-                win.focus();
-                win.print();
-                win.close();
-            });
+        setupPrintHandler({
+            printButtonId: 'btn-print-daftar-peserta-ruangan',
+            tableContentId: 'cetak-daftar-peserta-ujian',
+            title: 'Daftar Peserta Ujian',
+            requiredFields: [{
+                id: 'ruangan',
+                message: 'Silakan pilih ruangan terlebih dahulu sebelum mencetak peserta ujian tiap ruangan.'
+            }],
+            customStyle: `
+                body { font-family: 'Times New Roman', serif; font-size: 11px; }
+                table { width: 100%; border-collapse: collapse; }
+                table, th, td { border: 1px solid black; }
+                th { padding: 4px; text-align: center; }
+                h4 { margin: 5px 0; text-align: center; }
+            `
         });
     </script>
     {{-- end pesertaujian per ruang --}}
 
     {{-- start tempelan meja --}}
-    {{-- tempelan meja --}}
     <script>
         $('#ruangan').on('change', function() {
             let ruang = $(this).val();
@@ -521,51 +462,21 @@
     </script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const printButton = document.getElementById('btn-cetak-tempelan-meja');
-            const ruangSelect = document.getElementById('ruangan');
-            if (!printButton) {
-                console.error("Tombol print tidak ditemukan");
-                return;
-            }
-
-            printButton.addEventListener('click', function() {
-                // ✅ Validasi: Pastikan ruang dipilih
-                if (!ruangSelect || !ruangSelect.value) {
-                    showToast('error',
-                        "Silakan pilih ruangan terlebih dahulu sebelum mencetak tempelan meja.");
-                    return;
-                }
-
-                const content = document.getElementById('cetak-tempelan-meja');
-                if (!content) {
-                    console.error("Elemen tabel tidak ditemukan");
-                    return;
-                }
-
-                const win = window.open('', '_blank');
-                win.document.write(`
-            <html>
-            <head>
-                <title>Daftar Pengawas</title>
-                <style>
-                    body { font-family: 'Times New Roman', serif; font-size: 12px; }
-                    table { width: 100%; border-collapse: collapse; }
-                    table, th, td { border: 1px solid black; }
-                    th, td { padding: 5px; text-align: center; }
-                    h4 { margin: 5px 0; text-align: center; }
-                </style>
-            </head>
-            <body>
-                ${content.innerHTML}
-            </body>
-            </html>
-        `);
-                win.document.close();
-                win.focus();
-                win.print();
-                win.close();
-            });
+        setupPrintHandler({
+            printButtonId: 'btn-cetak-tempelan-meja',
+            tableContentId: 'cetak-tempelan-meja',
+            title: 'Cetak Tempelan Meja Ujian',
+            requiredFields: [{
+                id: 'ruangan',
+                message: 'Silakan pilih ruangan terlebih dahulu sebelum mencetak tempelan meja ujian.'
+            }],
+            customStyle: `
+                body { font-family: 'Times New Roman', serif; font-size: 12px; }
+                table { width: 100%; border-collapse: collapse; }
+                table, th, td { border: 1px solid black; }
+                th, td { padding: 5px; text-align: center; }
+                h4 { margin: 5px 0; text-align: center; }
+            `
         });
     </script>
     {{-- end tempelan meja --}}
@@ -601,75 +512,46 @@
     </script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const printButton = document.getElementById('btn-print-cetak-kartu-ujian');
-            const rombelSelect = document.getElementById('rombel');
-            if (!printButton) {
-                console.error("Tombol print tidak ditemukan");
-                return;
-            }
-
-            printButton.addEventListener('click', function() {
-                // ✅ Validasi: Pastikan rombel dipilih
-                if (!rombelSelect || !rombelSelect.value) {
-                    showToast('error', "Silakan pilih kelas terlebih dahulu sebelum mencetak kartu ujian.");
-                    return;
+        setupPrintHandler({
+            printButtonId: 'btn-print-cetak-kartu-ujian',
+            tableContentId: 'cetak-kartu-ujian',
+            title: 'Kartu Ujian Peserta',
+            requiredFields: [{
+                id: 'rombel',
+                message: 'Silakan pilih rombongan belajar terlebih dahulu sebelum mencetak kartu ujian.'
+            }],
+            customStyle: `
+                @page {
+                    size: A4;
+                    margin: 5mm;
                 }
-
-                const content = document.getElementById('cetak-kartu-ujian');
-                if (!content) {
-                    console.error("Elemen tabel tidak ditemukan");
-                    return;
+                html, body {
+                    width: 210mm;
+                    height: 297mm;
+                    margin: 0;
+                    padding: 0;
+                    font-family: 'Times New Roman', serif;
+                    font-size: 12px;
                 }
-
-                const win = window.open('', '_blank');
-                win.document.write(`
-            <html>
-            <head>
-                <title>Cetak Kartu Ujian</title>
-                <style>
-                    @page {
-                        size: A4;
-                        margin: 5mm;
-                    }
-                    html, body {
-                        width: 210mm;
-                        height: 297mm;
-                        margin: 0;
-                        padding: 0;
-                        font-family: 'Times New Roman', serif;
-                        font-size: 12px;
-                    }
-                    .kartu-wrapper {
-                        page-break-inside: avoid;
-                    }
-                    table {
-                        border-collapse: collapse;
-                        width: 100%;
-                    }
-                    td {
-                        padding: 4px;
-                        vertical-align: top;
-                    }
-                    .cetak-kartu {
-                        margin: 0 auto;
-                        width: 100%;
-                        border-collapse: collapse;
-                        font: 12px Times New Roman;
-                        table-layout: fixed;
-                    }
-                </style>
-            </head>
-            <body>
-                ${content.innerHTML}
-            </body>
-            </html>
-        `);
-                win.document.close();
-                win.focus();
-                win.print();
-                win.close();
-            });
+                .kartu-wrapper {
+                    page-break-inside: avoid;
+                }
+                table {
+                    border-collapse: collapse;
+                    width: 100%;
+                }
+                td {
+                    padding: 4px;
+                    vertical-align: top;
+                }
+                .cetak-kartu {
+                    margin: 0 auto;
+                    width: 100%;
+                    border-collapse: collapse;
+                    font: 12px Times New Roman;
+                    table-layout: fixed;
+                }
+            `
         });
     </script>
     {{-- end kartu ujian --}}
@@ -701,91 +583,62 @@
 
     {{-- jadwal pengawas --}}
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const printButton = document.getElementById('btn-print-jadwal-mengawas');
-            if (!printButton) {
-                console.error("Tombol print tidak ditemukan");
-                return;
-            }
-
-            printButton.addEventListener('click', function() {
-                const content = document.getElementById('tabel-jadwal-mengawas');
-                if (!content) {
-                    console.error("Elemen tabel tidak ditemukan");
-                    return;
-                }
-
-                const win = window.open('', '_blank');
-                win.document.write(`
-            <html>
-            <head>
-                <title>Jadwal Pengawas</title>
-                <style>
-                    body { font-family: 'Times New Roman', serif; font-size: 11px; }
-                    table { width: 100%; border-collapse: collapse; }
-                    table, th, td { border: 1px solid black; }
-                    th { padding: 5px; text-align: center; }
-                    h4 { margin: 5px 0; text-align: center; }
-                </style>
-            </head>
-            <body>
+        setupPrintHandler({
+            printButtonId: 'btn-print-jadwal-mengawas',
+            tableContentId: 'tabel-jadwal-mengawas',
+            title: 'Jadwal Pengawas Ujian',
+            beforeContent: () => `
                 <img class="card-img-top img-fluid mb-0" src="{{ URL::asset('images/kossurat.jpg') }}"
                 alt="Card image cap"><br><br>
-                ${content.innerHTML}
-            </body>
-            </html>
-        `);
-                win.document.close();
-                win.focus();
-                win.print();
-                win.close();
-            });
+            `,
+            customStyle: `
+                body { font-family: 'Times New Roman', serif; font-size: 11px; }
+                table { width: 100%; border-collapse: collapse; }
+                table, th, td { border: 1px solid black; }
+                th { padding: 5px; text-align: center; }
+                h4 { margin: 5px 0; text-align: center; }
+            `
         });
     </script>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const printButton = document.getElementById('btn-print-daftar-pengawas');
-            if (!printButton) {
-                console.error("Tombol print tidak ditemukan");
-                return;
-            }
-
-            printButton.addEventListener('click', function() {
-                const content = document.getElementById('tabel-daftar-pengawas');
-                if (!content) {
-                    console.error("Elemen tabel tidak ditemukan");
-                    return;
-                }
-
-                const win = window.open('', '_blank');
-                win.document.write(`
-            <html>
-            <head>
-                <title>Daftar Pengawas</title>
-                <style>
-                    body { font-family: 'Times New Roman', serif; font-size: 12px; }
-                    table { width: 100%; border-collapse: collapse; }
-                    table, th, td { border: 1px solid black; }
-                    th, td { padding: 5px; text-align: center; }
-                    h4 { margin: 5px 0; text-align: center; }
-                </style>
-            </head>
-            <body>
+        setupPrintHandler({
+            printButtonId: 'btn-print-daftar-pengawas',
+            tableContentId: 'tabel-daftar-pengawas',
+            title: 'Daftar Pengawas Ujian',
+            beforeContent: () => `
                 <img class="card-img-top img-fluid mb-0" src="{{ URL::asset('images/kossurat.jpg') }}"
                 alt="Card image cap"><br><br>
-                ${content.innerHTML}
-            </body>
-            </html>
-        `);
-                win.document.close();
-                win.focus();
-                win.print();
-                win.close();
-            });
+            `,
+            customStyle: `
+                body { font-family: 'Times New Roman', serif; font-size: 12px; }
+                table { width: 100%; border-collapse: collapse; }
+                table, th, td { border: 1px solid black; }
+                th, td { padding: 5px; text-align: center; }
+                h4 { margin: 5px 0; text-align: center; }
+            `
         });
     </script>
 
-
+    {{-- cetak Jadwa Ujian --}}
+    <script>
+        setupPrintHandler({
+            printButtonId: 'btn-cetak-jadwal',
+            tableContentId: 'tabel-jadwal-ujian',
+            title: 'Kartu Ujian Peserta',
+            requiredFields: [{
+                id: 'tingkat',
+                message: 'Silakan pilih tingkat terlebih dahulu dan pastikan jadwal sudah ditampilkan.'
+            }],
+            customStyle: `
+                body { font-family: 'Times New Roman', serif; font-size: 12px; }
+                table { width: 100%; border-collapse: collapse; }
+                table, th, td { border: 1px solid black; }
+                th { padding: 4px; text-align: center; }
+                h4 { margin: 5px 0; text-align: center; }
+            `
+        });
+    </script>
 
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

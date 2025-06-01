@@ -106,8 +106,10 @@
 @endsection
 @section('script')
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="{{ URL::asset('build/js/ngeprint.js') }}"></script>
 @endsection
 @section('script-bottom')
+    {{-- daftar hadir peserta --}}
     <script>
         function loadPeserta() {
             let nomorRuang = $('#ruangan').val();
@@ -137,10 +139,363 @@
         $('#ruangan, #posisi_duduk').change(loadPeserta);
     </script>
     <script>
+        setupPrintHandler({
+            printButtonId: 'btn-print-daftar-peserta',
+            tableContentId: 'tabel-peserta',
+            title: 'Daftar Hadir Peserta',
+            requiredFields: [{
+                    id: 'ruangan',
+                    message: 'Silakan pilih ruangan terlebih dahulu sebelum mencetak.'
+                },
+                {
+                    id: 'posisi_duduk',
+                    message: 'Silakan pilih posisi duduk terlebih dahulu sebelum mencetak.'
+                }
+            ],
+        });
+    </script>
+
+    {{-- dafar hadir panitia --}}
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const printButton = document.getElementById('btn-print-daftar-peserta');
-            const pilihRuangan = document.getElementById('ruangan'); // Ganti ID sesuai HTML
-            const posisiDuduk = document.getElementById('posisi_duduk'); // Ganti ID sesuai HTML
+            const selectTanggal = document.getElementById('selectTanggalPanitia');
+            const outputDiv = document.getElementById('hari_tgl_ujian_panitia');
+
+            selectTanggal.addEventListener('change', function() {
+                const selectedDate = this.value;
+                if (selectedDate) {
+                    const tanggalObj = new Date(selectedDate);
+
+                    // Format nama hari dan tanggal (gunakan bahasa Indonesia)
+                    const hari = tanggalObj.toLocaleDateString('id-ID', {
+                        weekday: 'long'
+                    });
+                    const tanggalFormat = tanggalObj.toLocaleDateString('id-ID', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                    });
+
+                    outputDiv.textContent = `${hari}, ${tanggalFormat}`;
+                } else {
+                    outputDiv.textContent = '';
+                }
+            });
+        });
+    </script>
+    <script>
+        setupPrintHandler({
+            printButtonId: 'btn-print-daftar-panitia',
+            tableContentId: 'tabel-daftar-hadir-panitia',
+            title: 'Daftar Hadir Panitia',
+            requiredFields: [{
+                id: 'selectTanggalPanitia',
+                message: 'Silakan pilih tanggal terlebih dahulu sebelum mencetak daftar hadir panitia.'
+            }],
+            customStyle: `
+                body { font-family: 'Times New Roman', serif; font-size: 12px; }
+                table { width: 100%; border-collapse: collapse; }
+                table, th, td { border: 1px solid black; }
+                th, td { padding: 5px; text-align: center; }
+                h4 { margin: 5px 0; text-align: center; }
+            `
+        });
+    </script>
+
+    {{-- daftar hadir pengawas --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectTanggal = document.getElementById('selectTanggal');
+            const selectJamKe = document.getElementById('selectJamKe');
+
+            function fetchData() {
+                const tanggal = selectTanggal.value;
+                const jamKe = selectJamKe.value;
+
+                if (tanggal && jamKe) {
+                    fetch(
+                            `{{ route('kurikulum.perangkatujian.pengawasruangan') }}?tanggal=${tanggal}&jam_ke=${jamKe}`
+                        )
+                        .then(response => response.json())
+                        .then(data => {
+                            const tbody = document.querySelector('#tabelPengawas tbody');
+                            tbody.innerHTML = '';
+
+                            const hariTglUjian = document.getElementById('hari_tgl_ujian');
+                            const sesiJamKe = document.getElementById('sesi_jamke');
+
+                            const tanggalObj = new Date(tanggal);
+                            const namaHari = tanggalObj.toLocaleDateString('id-ID', {
+                                weekday: 'long'
+                            });
+                            const formatTanggal = tanggalObj.toLocaleDateString('id-ID', {
+                                day: 'numeric',
+                                month: 'long',
+                                year: 'numeric'
+                            });
+
+                            hariTglUjian.textContent = `${namaHari}, ${formatTanggal}`;
+                            sesiJamKe.textContent = `${jamKe}`;
+
+                            if (data.length === 0) {
+                                tbody.innerHTML = `
+                                <tr>
+                                    <td colspan="6" class="text-muted text-center">Tidak ada data</td>
+                                </tr>
+                            `;
+                            } else {
+                                // Jika jumlah data ganjil, tambahkan satu item kosong untuk dipasangkan
+                                if (data.length % 2 === 1) {
+                                    data.push({
+                                        nomor_ruang: '&nbsp;',
+                                        nip: '',
+                                        nama_lengkap: '',
+                                        kode_pengawas: ''
+                                    });
+                                }
+
+                                for (let i = 0; i < data.length; i += 2) {
+                                    const row1 = data[i];
+                                    const row2 = data[i + 1];
+
+                                    const ruang1 = parseInt(row1.nomor_ruang);
+                                    const ruang2 = parseInt(row2.nomor_ruang);
+
+                                    let ruangGanjilGabung = '';
+                                    let ruangGenapGabung = '';
+
+                                    if (!isNaN(ruang1)) {
+                                        if (ruang1 % 2 === 1) ruangGanjilGabung = row1.nomor_ruang;
+                                        else ruangGenapGabung = row1.nomor_ruang;
+                                    }
+
+                                    if (!isNaN(ruang2)) {
+                                        if (ruang2 % 2 === 1) ruangGanjilGabung = row2.nomor_ruang;
+                                        else ruangGenapGabung = row2.nomor_ruang;
+                                    }
+
+                                    tbody.innerHTML += `
+                                    <tr>
+                                        <td style="padding:10px;">${row1.nomor_ruang}</td>
+                                        <td>${row1.nip}</td>
+                                        <td style="text-align:left;">${row1.nama_lengkap}</td>
+                                        <td>${row1.kode_pengawas}</td>
+                                        <td rowspan="2" width="100" style="text-align:left;" valign="top">${ruangGanjilGabung}</td>
+                                        <td rowspan="2" width="100" style="text-align:left;" valign="top">${ruangGenapGabung}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px;">${row2.nomor_ruang}</td>
+                                        <td>${row2.nip}</td>
+                                        <td style="text-align:left;">${row2.nama_lengkap}</td>
+                                        <td>${row2.kode_pengawas}</td>
+                                    </tr>
+                                `;
+                                }
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Gagal mengambil data:', error);
+                            const tbody = document.querySelector('#tabelPengawas tbody');
+                            tbody.innerHTML = `
+                            <tr>
+                                <td colspan="6" class="text-danger text-center">Terjadi kesalahan saat memuat data</td>
+                            </tr>
+                        `;
+                        });
+                }
+            }
+
+            selectTanggal.addEventListener('change', fetchData);
+            selectJamKe.addEventListener('change', fetchData);
+        });
+    </script>
+
+    <script>
+        setupPrintHandler({
+            printButtonId: 'btn-print-daftar-pengawas',
+            tableContentId: 'tabel-daftar-hadir-pengawas',
+            title: 'Daftar Hadir Pengawas',
+            requiredFields: [{
+                    id: 'selectTanggal',
+                    message: 'Silakan pilih tanggal terlebih dahulu sebelum mencetak.'
+                },
+                {
+                    id: 'selectJamKe',
+                    message: 'Silakan pilih jam ke terlebih dahulu sebelum mencetak.'
+                }
+            ],
+            customStyle: `
+                @page {
+                    size: A4;
+                    margin: 5mm;
+                }
+                html, body {
+                    width: 210mm;
+                    height: 297mm;
+                    margin: 0;
+                    padding: 0;
+                    font-family: 'Times New Roman', serif;
+                    font-size: 12px;
+                }
+                table { width: 100%; border-collapse: collapse; margin-left:25px; }
+                table, th, td { border: 1px solid black; }
+                th, td { padding: 5px; text-align: center; }
+                h4 { margin: 5px 0; text-align: center; }
+            `
+        });
+    </script>
+
+    {{-- token soal ujian --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectTanggal = document.getElementById('selectTanggalToken');
+            const selectJamKe = document.getElementById('selectJamKeToken');
+            const tokenContainer = document.getElementById('token-soal-ujian-container');
+
+            selectTanggal.addEventListener('change', filterTokens);
+            selectJamKe.addEventListener('change', filterTokens);
+
+            function filterTokens() {
+                const tanggal = selectTanggal.value;
+                const jamKe = selectJamKe.value;
+
+                if (!tanggal || !jamKe) {
+                    tokenContainer.innerHTML =
+                        '<p class="text-muted">Silakan pilih tanggal dan sesi/jam ke terlebih dahulu.</p>';
+                    return;
+                }
+
+                fetch(`/kurikulum/perangkatujian/token-soal-ujian?tanggal=${tanggal}&jam_ke=${jamKe}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        tokenContainer.innerHTML = '';
+
+                        if (data.length === 0) {
+                            tokenContainer.innerHTML =
+                                '<p class="text-warning">Tidak ada token untuk filter tersebut.</p>';
+                            return;
+                        }
+
+                        let html = `
+                            <table style="margin: 0 auto; width: 100%; border-collapse: collapse; font: 12px Arial, sans-serif;">
+                        `;
+
+                        const kolom = 2; // Jumlah kolom yang diinginkan
+                        let i = 0;
+
+                        data.forEach((token, index) => {
+                            if (i % kolom === 0) {
+                                html += `<tr>`;
+                            }
+
+                            html += `
+                            <td style="width:33%; padding:10px;">
+                                <div style="
+                                    border: 2px solid #444;
+                                    border-radius: 10px;
+                                    padding: 15px;
+                                    background: #f9f9f9;
+                                    box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+                                    min-height: 120px;
+                                ">
+                                    <div style="font-size: 14px; margin-bottom: 5px;text-align: center;">
+                                        Token: <br><span style="font-weight: bold; font-size: 18px; text-align: center;">${token.token_soal}</span>
+                                    </div>
+                                    <hr style="border: 1px solid #444; margin: 10px 0;">
+                                    <div style="margin-left:60px;"><strong>Kode Ujian:</strong> ${token.kode_ujian}</div>
+                                    <div style="margin-left:60px;"><strong>Tanggal:</strong> ${new Date(token.tanggal_ujian).toLocaleDateString('id-ID', {
+                                        weekday: 'long',
+                                        day: 'numeric',
+                                        month: 'long',
+                                        year: 'numeric'
+                                    })}</div>
+                                    <div style="margin-left:60px;"><strong>Sesi:</strong> ${token.sesi_ujian}</div>
+                                    <div style="margin-left:60px;"><strong>Mapel:</strong> ${token.matapelajaran}</div>
+                                    <div style="margin-left:60px;"><strong>Kelas:</strong> ${token.kelas}</div>
+                                </div>
+                            </td>
+                        `;
+
+                            i++;
+                            if (i % kolom === 0) {
+                                // Tutup baris
+                                html += `</tr>`;
+
+                                // Tambahkan page break setelah setiap 6 baris (12 item)
+                                let barisSaatIni = i / kolom;
+                                if (barisSaatIni > 0 && barisSaatIni % 6 === 0) {
+                                    html += `<tr class="page-break"></tr>`;
+                                }
+                            }
+                        });
+
+
+                        // Tambah kolom kosong jika tidak genap
+                        let sisa = i % kolom;
+                        if (sisa !== 0) {
+                            for (let j = 0; j < kolom - sisa; j++) {
+                                html += "<td></td>";
+                            }
+                            html += "</tr>";
+                        }
+
+                        html += "</table>";
+                        tokenContainer.innerHTML = html;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching tokens:', error);
+                        tokenContainer.innerHTML =
+                            '<p class="text-danger">Gagal memuat token. Silakan coba lagi.</p>';
+                    });
+            }
+
+            // Load awal saat halaman dibuka
+            filterTokens();
+        });
+    </script>
+
+    <script>
+        setupPrintHandler({
+            printButtonId: 'btn-print-token-soal-ujian',
+            tableContentId: 'token-soal-ujian-container',
+            title: 'Token Soal Ujian',
+            requiredFields: [{
+                    id: 'selectTanggalToken',
+                    message: 'Silakan pilih tanggal terlebih dahulu sebelum mencetak.'
+                },
+                {
+                    id: 'selectJamKeToken',
+                    message: 'Silakan pilih jam ke terlebih dahulu sebelum mencetak.'
+                }
+            ],
+            customStyle: `
+                @page {
+                    size: A4;
+                    margin: 5mm;
+                }
+                html, body {
+                    width: 210mm;
+                    height: 297mm;
+                    margin: 0;
+                    padding: 0;
+                    font-family: 'Times New Roman', serif;
+                    font-size: 12px;
+                }
+                table { width: 100%; border-collapse: collapse; }
+                table, th, td { border: 1px solid black; }
+                h4 { margin: 5px 0; text-align: center; }
+                .page-break {
+                    page-break-after: always;
+                }
+            `
+        });
+    </script>
+
+    {{-- <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const printButton = document.getElementById('btn-print-token-soal-ujian');
+            const selectTanggal = document.getElementById('selectTanggalToken'); // Ganti ID sesuai HTML
+            const selectJamKe = document.getElementById('selectJamKeToken'); // Ganti ID sesuai HTML
 
             if (!printButton) {
                 console.error("Tombol print tidak ditemukan");
@@ -148,16 +503,17 @@
             }
 
             printButton.addEventListener('click', function() {
-                if (!pilihRuangan || !pilihRuangan.value) {
-                    showToast('error', "Silakan pilih ruangan terlebih dahulu sebelum mencetak.");
+
+                if (!selectTanggal || !selectTanggal.value) {
+                    showToast('error', "Silakan pilih tanggal terlebih dahulu sebelum mencetak.");
                     return;
                 }
-                if (!posisiDuduk || !posisiDuduk.value) {
-                    showToast('error', "Silakan pilih posisi duduk terlebih dahulu sebelum mencetak.");
+                if (!selectJamKe || !selectJamKe.value) {
+                    showToast('error', "Silakan pilih jam ke terlebih dahulu sebelum mencetak.");
                     return;
                 }
 
-                const content = document.getElementById('tabel-peserta');
+                const content = document.getElementById('token-soal-ujian-container');
                 if (!content) {
                     console.error("Elemen tabel tidak ditemukan");
                     return;
@@ -165,29 +521,42 @@
 
                 const win = window.open('', '_blank');
                 win.document.write(`
-            <html>
-            <head>
-                <title>Daftar Hadir Peserta</title>
-                <style>
-                    body { font-family: Arial, sans-serif; font-size: 12px; }
-                    table { width: 100%; border-collapse: collapse; }
-                    table, th, td { border: 1px solid black; }
-                    th, td { padding: 5px; text-align: center; }
-                    h4 { margin: 5px 0; text-align: center; }
-                </style>
-            </head>
-            <body>
-                ${content.innerHTML}
-            </body>
-            </html>
-        `);
+                <html>
+                <head>
+                    <title>Token Ujian</title>
+                    <style>
+                        @page {
+                            size: A4;
+                            margin: 5mm;
+                        }
+                        html, body {
+                            width: 210mm;
+                            height: 297mm;
+                            margin: 0;
+                            padding: 0;
+                            font-family: 'Times New Roman', serif;
+                            font-size: 12px;
+                        }
+                        table { width: 100%; border-collapse: collapse; }
+                        table, th, td { border: 1px solid black; }
+                        h4 { margin: 5px 0; text-align: center; }
+                        .page-break {
+                            page-break-after: always;
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${content.innerHTML}
+                </body>
+                </html>
+            `);
                 win.document.close();
                 win.focus();
                 win.print();
                 win.close();
             });
         });
-    </script>
+    </script> --}}
 
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

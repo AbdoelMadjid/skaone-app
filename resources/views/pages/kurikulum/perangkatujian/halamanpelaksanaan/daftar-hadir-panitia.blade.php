@@ -91,34 +91,9 @@
     ])
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const selectTanggal = document.getElementById('selectTanggalPanitia');
-        const outputDiv = document.getElementById('hari_tgl_ujian_panitia');
 
-        selectTanggal.addEventListener('change', function() {
-            const selectedDate = this.value;
-            if (selectedDate) {
-                const tanggalObj = new Date(selectedDate);
 
-                // Format nama hari dan tanggal (gunakan bahasa Indonesia)
-                const hari = tanggalObj.toLocaleDateString('id-ID', {
-                    weekday: 'long'
-                });
-                const tanggalFormat = tanggalObj.toLocaleDateString('id-ID', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric'
-                });
-
-                outputDiv.textContent = `${hari}, ${tanggalFormat}`;
-            } else {
-                outputDiv.textContent = '';
-            }
-        });
-    });
-</script>
-<script>
+{{-- <script>
     document.addEventListener('DOMContentLoaded', function() {
         const printButton = document.getElementById('btn-print-daftar-panitia');
         const selectTanggal = document.getElementById('selectTanggalPanitia');
@@ -166,4 +141,4 @@
             win.close();
         });
     });
-</script>
+</script> --}}
