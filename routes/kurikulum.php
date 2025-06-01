@@ -166,6 +166,14 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/token-soal-ujian', [PelaksanaanUjianController::class, 'filterToken'])->name('token-soal-ujian');
             Route::delete('/hapus-token-soal-ujian/{id}', [PelaksanaanUjianController::class, 'hapusToken'])->name('hapus-token-soal-ujian');
+
+
+            Route::post('/denahstore', [PelaksanaanUjianController::class, 'storeDenahRuangan']);
+            Route::post('/denahupdate/{id}', [PelaksanaanUjianController::class, 'updateDenahRuangan']);
+            Route::delete('/denahdelete/{id}', [PelaksanaanUjianController::class, 'destroyDenahRuangan']);
+
+
+            Route::post('/denah-update-position/{id}', [PelaksanaanUjianController::class, 'updatePosition']);
         });
     });
 });

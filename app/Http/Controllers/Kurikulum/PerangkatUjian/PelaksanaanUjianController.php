@@ -6,12 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Models\Kurikulum\PerangkatUjian\DaftarPengawasUjian;
 use App\Models\Kurikulum\PerangkatUjian\IdentitasUjian;
 use App\Models\Kurikulum\PerangkatUjian\PanitiaUjian;
+use App\Models\Kurikulum\PerangkatUjian\PenandaDenah;
+use App\Models\Kurikulum\PerangkatUjian\PenandaRuangan;
 use App\Models\Kurikulum\PerangkatUjian\PengawasUjian;
 use App\Models\Kurikulum\PerangkatUjian\RuangUjian;
 use App\Models\Kurikulum\PerangkatUjian\TokenSoalUjian;
 use App\Models\ManajemenSekolah\RombonganBelajar;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -195,6 +199,9 @@ class PelaksanaanUjianController extends Controller
 
         $panitiaUjian = PanitiaUjian::where('kode_ujian', $ujianAktif->kode_ujian)->get();
 
+        // Ambil semua penanda denah ruangan
+        $penanda = PenandaRuangan::all();
+
         return view('pages.kurikulum.perangkatujian.pelaksanaan-ujian', [
             'identitasUjian' => $identitasUjian,
             'ruangs' => $ruangs,
@@ -211,6 +218,8 @@ class PelaksanaanUjianController extends Controller
             'tanggalList' => $tanggalList,
             'jamKeList' => $jamKeList,
             'panitiaUjian' => $panitiaUjian,
+            'panitiaUjian' => $panitiaUjian,
+            'penanda' => $penanda,
             //tampildata kelas
             /* 'jadwalByTanggal' => $jadwalByTanggal,
             'tanggalUjianOption' => $tanggalUjianOption,
@@ -342,5 +351,52 @@ class PelaksanaanUjianController extends Controller
         $token->delete();
 
         return response()->json(['success' => true, 'message' => 'Token berhasil dihapus.']);
+    }
+
+
+    /* penanda denah ruangan */
+
+    public function updatePosition(Request $request, $id)
+    {
+        $item = PenandaRuangan::findOrFail($id);
+        $item->x = $request->x;
+        $item->y = $request->y;
+        $item->save();
+
+        return response()->json(['success' => true]);
+    }
+
+    public function storeDenahRuangan(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'kode_ruang' => 'required',
+            'label' => 'nullable|string',
+            'x' => 'required|integer',
+            'y' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $data = PenandaRuangan::create($request->all());
+
+        return response()->json(['success' => true, 'data' => $data]);
+    }
+
+    public function updateDenahRuangan(Request $request, $id)
+    {
+        $data = PenandaRuangan::findOrFail($id);
+        $data->update($request->only(['kode_ruang', 'label', 'x', 'y']));
+
+        return response()->json(['success' => true, 'data' => $data]);
+    }
+
+    public function destroyDenahRuangan($id)
+    {
+        $data = PenandaRuangan::findOrFail($id);
+        $data->delete();
+
+        return response()->json(['success' => true]);
     }
 }
