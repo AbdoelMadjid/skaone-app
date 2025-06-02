@@ -87,10 +87,10 @@
                 <td>
                     <table>
                         <tr>
-                            <td>&nbsp;</td>
+                            <td>Pimpinan/Pembimbing DU/DI</td>
                         </tr>
                         <tr>
-                            <td>Pimpinan/Pembimbing DU/DI,</td>
+                            <td><span>{{ $prakerin->jabatan_pembimbing }}</span>,</td>
                         </tr>
                         <tr>
                             <td>
@@ -102,7 +102,7 @@
                             <td><strong><span>{{ $prakerin->nama_pembimbing }}</span></strong></td>
                         </tr>
                         <tr>
-                            <td><span>{{ $prakerin->jabatan_pembimbing }}</span></td>
+                            <td></td>
                         </tr>
                     </table>
                 </td>
@@ -130,7 +130,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><strong>Damudin, S.Pd., M.Pd.</strong></td>
+                            <td><strong>H. Damudin, S.Pd., M.Pd.</strong></td>
                         </tr>
                         <tr>
                             <td>NIP. 19740302 199803 1 002</td>

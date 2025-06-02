@@ -14,5 +14,7 @@ class Perusahaan extends Model
         'alamat',
         'jabatan',
         'nama_pembimbing',
+        'nip',
+        'nidn'
     ];
 }

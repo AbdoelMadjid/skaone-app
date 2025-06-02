@@ -32,6 +32,8 @@
                         data-nilaiprakerin="{{ $prakerin->rata_rata_prakerin }}"
                         data-jabatanpembimbing="{{ $prakerin->jabatan_pembimbing }}"
                         data-namapembimbing="{{ $prakerin->nama_pembimbing }}"
+                        data-nippembimbing="{{ $prakerin->nip_pembimbing }}"
+                        data-nidnpembimbing="{{ $prakerin->nidn_pembimbing }}"
                         data-programkeahlian="{{ $prakerin->nama_pk }}" data-konsentrasi="{{ $prakerin->nama_kk }}">
                         <i class="ri-printer-line"></i> Print
                     </button>
@@ -113,10 +115,10 @@
                 <td>
                     <table>
                         <tr>
-                            <td>&nbsp;</td>
+                            <td>Pimpinan/Pembimbing DU/DI</td>
                         </tr>
                         <tr>
-                            <td>Pimpinan/Pembimbing DU/DI,</td>
+                            <td><span class="sertifikat-jabatan"></span>,</td>
                         </tr>
                         <tr>
                             <td>
@@ -128,7 +130,7 @@
                             <td><strong><span class="sertifikat-pembimbing"></span></strong></td>
                         </tr>
                         <tr>
-                            <td><span class="sertifikat-jabatan"></span></td>
+                            <td><span class="nomor-pembimbing"></span></td>
                         </tr>
                     </table>
                 </td>
@@ -156,7 +158,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><strong>Damudin, S.Pd., M.Pd.</strong></td>
+                            <td><strong>H. Damudin, S.Pd., M.Pd.</strong></td>
                         </tr>
                         <tr>
                             <td>NIP. 19740302 199803 1 002</td>

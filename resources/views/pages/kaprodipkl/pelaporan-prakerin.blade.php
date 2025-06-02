@@ -176,6 +176,8 @@
                 var nilaiprakerin = $(this).data('nilaiprakerin');
                 var jabatan = $(this).data('jabatanpembimbing');
                 var pembimbing = $(this).data('namapembimbing');
+                var nippembimbing = $(this).data('nippembimbing');
+                var nidnpembimbing = $(this).data('nidnpembimbing');
                 var pk = $(this).data('programkeahlian');
                 var kk = $(this).data('konsentrasi');
 
@@ -191,6 +193,18 @@
                 $('#cetak-sertifikat-pkl').find('.sertifikat-kk').text(kk);
                 $('#cetak-sertifikat-pkl').find('.sertifikat-pembimbing').text(pembimbing);
                 $('#cetak-sertifikat-pkl').find('.sertifikat-jabatan').text(jabatan);
+
+                var resultNomor = '';
+
+                if (nippembimbing) {
+                    resultNomor = 'NIP. ' + nippembimbing;
+                } else if (nidnpembimbing) {
+                    resultNomor = 'NIDN ' + nidnpembimbing;
+                } else {
+                    resultNomor = '';
+                }
+
+                $('#cetak-sertifikat-pkl').find('.nomor-pembimbing').text(resultNomor);
 
                 // Setelah data terisi, ambil isi HTML lalu cetak
                 const printContent = document.getElementById('cetak-sertifikat-pkl').innerHTML;

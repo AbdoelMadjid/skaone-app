@@ -77,6 +77,9 @@ class PerusahaanDataTable extends DataTable
             Column::make('alamat')->title('Alamat'),
             Column::make('jabatan')->title('Jabatan Pembimbing'),
             Column::make('nama_pembimbing')->title('Nama Pembimbing'),
+            Column::make('nip')->title('NIP'),
+            Column::make('nidn')->title('NIDN'),
+            // Kolom untuk aksi
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

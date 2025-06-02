@@ -26,6 +26,8 @@ class PerusahaanRequest extends FormRequest
             'alamat' => 'required|string',
             'jabatan' => 'required|string',
             'nama_pembimbing' => 'required|string',
+            'nip' => 'nullable|string',
+            'nidn' => 'nullable|string',
         ];
     }
 }
