@@ -37,33 +37,85 @@
         </div>
     </div>
 </div>
+<div id="cetak-denah-ruangan-ujian">
+    <div style="text-align:center; font-size: 14px; font-weight: bold;">
+        <H4><strong>DENAH RUANGAN UJIAN</strong></H4>
+        <H4><strong>{{ strtoupper($identitasUjian?->nama_ujian ?? '-') }}</strong></H4>
+        <H4><strong>TAHUN AJARAN
+                {{ $identitasUjian?->tahun_ajaran ?? '-' }}</strong></H4>
+    </div>
+    <div class="denah-container" style="margin-top: 20px; margin-bottom: 20px;">
+        <img src="{{ asset('images/denahsekolah.jpg') }}" alt="Denah Sekolah" class="denah-img"
+            style="align-content: center;">
 
-<div class="denah-container">
-    <img src="{{ asset('images/denahsekolah.jpg') }}" alt="Denah Sekolah" class="denah-img">
-
-    @foreach ($penanda as $item)
-        <div class="penanda" data-id="{{ $item->id }}"
-            style="left: {{ $item->x }}px; top: {{ $item->y }}px;">
-            {{ $item->kode_ruang }}
-        </div>
-    @endforeach
-</div>
-<h3>Daftar Ruangan</h3>
-<table border="1" cellpadding="8" cellspacing="0" class="table table-striped" style="width:30%; margin-top: 20px;">
-    <thead>
-        <tr>
-            <th>No</th>
-            <th>Kode</th>
-            <th>Label</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($penanda as $index => $item)
-            <tr>
-                <td>{{ $index + 1 }}</td>
-                <td>{{ $item->kode_ruang }}</td>
-                <td>{{ $item->label }}</td>
-            </tr>
+        @foreach ($penanda as $item)
+            <div class="penanda" data-id="{{ $item->id }}"
+                style="left: {{ $item->x }}px; top: {{ $item->y }}px;">
+                {{ $item->kode_ruang }}
+            </div>
         @endforeach
-    </tbody>
-</table>
+    </div>
+</div>
+
+<div id="denah-ruangan-list">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Daftar Ruangan</h4>
+            <p>Berikut adalah daftar ruangan yang telah ditandai pada denah.</p>
+            @php
+                $columns = 3;
+                $penanda = $penanda->values(); // pastikan indeks berurutan
+                $total = $penanda->count();
+                $rowsPerColumn = ceil($total / $columns);
+
+                // Inisialisasi array kolom kosong
+                $tables = array_fill(0, $columns, []);
+
+                // Bagi data secara berurutan ke kolom
+                foreach ($penanda as $index => $item) {
+                    $columnIndex = floor($index / $rowsPerColumn);
+                    $tables[$columnIndex][] = $item;
+                }
+
+                // Tambahkan baris kosong jika jumlah baris < $rowsPerColumn
+                foreach ($tables as $i => $table) {
+                    while (count($tables[$i]) < $rowsPerColumn) {
+                        $tables[$i][] = null;
+                    }
+                }
+
+                $startNumber = 1;
+            @endphp
+
+            <div style="display: flex; gap: 20px; margin-top: 20px;">
+                @foreach ($tables as $table)
+                    <table border="1" cellpadding="8" cellspacing="0" class="table table-striped"
+                        style="width: 30%;">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Kode</th>
+                                <th>Label</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($table as $item)
+                                <tr>
+                                    @if ($item)
+                                        <td style="text-align: center">{{ $startNumber++ }}</td>
+                                        <td style="text-align: center">{{ $item->kode_ruang }}</td>
+                                        <td>{{ $item->label }}</td>
+                                    @else
+                                        <td>&nbsp;</td>
+                                        <td></td>
+                                        <td></td>
+                                    @endif
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</div>
