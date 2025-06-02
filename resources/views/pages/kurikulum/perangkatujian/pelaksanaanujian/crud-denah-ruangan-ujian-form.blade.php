@@ -19,6 +19,14 @@
                 <div class="col-sm-4">
                     <x-form.input name="y" value="{{ $data->y }}" label="Koordinat Y" id="y" />
                 </div>
+                <div class="col-sm-4">
+                    <!-- Color Picker -->
+                    <div>
+                        <label for="warna" class="form-label">Warna</label>
+                        <input type="color" name="warna" class="form-control form-control-color w-100"
+                            id="warna" value="{{ $data->warna ?? '#364574' }}">
+                    </div>
+                </div>
             </div>
         </div>
 </x-form.modal>

@@ -50,7 +50,7 @@
 
         @foreach ($penanda as $item)
             <div class="penanda" data-id="{{ $item->id }}"
-                style="left: {{ $item->x }}px; top: {{ $item->y }}px;">
+                style="left: {{ $item->x }}px; top: {{ $item->y }}px;background-color: {{ $item->warna ?? '#007bff' }};">
                 {{ $item->kode_ruang }}
             </div>
         @endforeach

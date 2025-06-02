@@ -74,6 +74,7 @@ class DenahRuanganUjianDataTable extends DataTable
             Column::make('label')->title('Label Ruang'),
             Column::make('x')->title('Koordinat X')->addClass('text-center'),
             Column::make('y')->title('Koordinat Y')->addClass('text-center'),
+            Column::make('warna')->title('Warna')->addClass('text-center'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

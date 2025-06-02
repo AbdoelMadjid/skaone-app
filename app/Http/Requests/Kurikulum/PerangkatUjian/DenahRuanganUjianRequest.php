@@ -38,6 +38,10 @@ class DenahRuanganUjianRequest extends FormRequest
                 'required',
                 'string',
             ],
+            'warna' => [
+                'required',
+                'string',
+            ],
         ];
     }
     /**
@@ -50,6 +54,7 @@ class DenahRuanganUjianRequest extends FormRequest
             'label.required' => 'Label harus diisi.',
             'x.required' => 'Koordinat X harus diisi.',
             'y.required' => 'Koordinat Y harus diisi.',
+            'warna.required' => 'Warna harus diisi.',
         ];
     }
 }
