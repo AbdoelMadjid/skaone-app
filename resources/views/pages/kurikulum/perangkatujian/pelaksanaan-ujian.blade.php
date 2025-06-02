@@ -561,5 +561,43 @@
             }
         });
     </script>
+    <script>
+        setupPrintHandler({
+            printButtonId: 'btn-print-denah-ruangan-ujian',
+            tableContentId: 'cetak-denah-ruangan-ujian',
+            title: 'Denah Ruangan Ujian',
+            customStyle: `
+                @media print {
+                    @page {
+                        size: A4 landscape;
+                        margin: 10mm;
+                    }
+                    body {
+                        font-family: Arial, sans-serif;
+                        -webkit-print-color-adjust: exact;
+                        print-color-adjust: exact;
+                    }
+                    .penanda {
+                        position: absolute;
+                        padding: 6px 8px;
+                        background: rgba(0, 123, 255, 0.8);
+                        color: #fff;
+                        border-radius: 4px;
+                        cursor: move;
+                        font-weight: bold;
+                        font-size: 14px;
+                    }
+                    #denah-container {
+                        position: relative;
+                        width: 1000px;
+                    }
+                    .denah-img {
+                        width: 97%;
+                        height: auto;
+                    }
+                }
+            `
+        });
+    </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

@@ -76,12 +76,23 @@
         @endif
     </tbody>
 </table>
-<div class="row">
-    <div class="col-md-12" style="margin-top: 20px; font-size: 12px;">
-        <p style="font-weight: bold;">Catatan :</p>
-        <ul>
-            <li>Nilai Puluhan (0 - 100)</li>
-            <li>Daftar dibuat rangkap 2 (dua), satu eksemplar disetor ke bagian kurikulum</li>
-        </ul>
-    </div>
-</div>
+<table style="width: 100%; margin-top: 20px; font-size: 12px; border-collapse: collapse;border: none;">
+    <tr>
+        <!-- Kolom Kiri -->
+        <td style="width: 40%; vertical-align: top; padding-right: 10px;text-align: justify;border: none;">
+            <p style="font-weight: bold;">Catatan :</p>
+            <ul style="margin: 0; padding-left: 18px;">
+                <li>Nilai Puluhan (0 - 100)</li>
+                <li>Daftar dibuat rangkap 2 (dua), satu eksemplar disetor ke bagian kurikulum</li>
+            </ul>
+        </td>
+        <td style="width: 20%; vertical-align: top; padding-left: 10px;text-align: justify;border: none;">&nbsp;</td>
+        <!-- Kolom Kanan -->
+        <td style="width: 50%; vertical-align: top; padding-left: 10px;text-align: justify;border: none;">
+            <p style="font-weight: bold;">Guru Mata Pelajaran</p>
+            <br><br><br><br>
+            <p>___________________________________</p>
+            <p style="margin-top: -5px">NIP. </p>
+        </td>
+    </tr>
+</table>

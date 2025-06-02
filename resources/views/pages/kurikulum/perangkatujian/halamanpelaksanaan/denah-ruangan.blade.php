@@ -16,7 +16,7 @@
         border-radius: 4px;
         cursor: move;
         font-weight: bold;
-        font-size: 14px;
+        font-size: 12px;
     }
 </style>
 <div class="card">
@@ -29,8 +29,8 @@
             <!--end col-->
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
-                    <button type="button" class="btn btn-soft-primary" id="btn-print-daftar-panitia">
-                        Cetak
+                    <button type="button" class="btn btn-soft-primary" id="btn-print-denah-ruangan-ujian">
+                        <i class="ri-printer-line align-bottom me-1"></i> Cetak Denah Ruangan Ujian
                     </button>
                 </div>
             </div>
@@ -44,9 +44,9 @@
         <H4><strong>TAHUN AJARAN
                 {{ $identitasUjian?->tahun_ajaran ?? '-' }}</strong></H4>
     </div>
-    <div class="denah-container" style="margin-top: 20px; margin-bottom: 20px;">
-        <img src="{{ asset('images/denahsekolah.jpg') }}" alt="Denah Sekolah" class="denah-img"
-            style="align-content: center;">
+    <div class="denah-container" class="denah-container"
+        style="position: relative; margin-top: 20px; margin-bottom: 20px;">
+        <img src="{{ asset('images/denahsekolah.jpg') }}" alt="Denah Sekolah" class="denah-img">
 
         @foreach ($penanda as $item)
             <div class="penanda" data-id="{{ $item->id }}"
