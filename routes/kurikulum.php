@@ -20,10 +20,12 @@ use App\Http\Controllers\Kurikulum\DokumenSiswa\TranskripNilaiController;
 use App\Http\Controllers\Kurikulum\PerangkatKurikulum\PengumumanController;
 use App\Http\Controllers\Kurikulum\PerangkatKurikulum\VersiKurikulumController;
 use App\Http\Controllers\Kurikulum\PerangkatUjian\AdministrasiUjianController;
+use App\Http\Controllers\Kurikulum\PerangkatUjian\DenahRuanganUjianController;
 use App\Http\Controllers\Kurikulum\PerangkatUjian\IdentitasUjianController;
 use App\Http\Controllers\Kurikulum\PerangkatUjian\JadwalUjianController;
 use App\Http\Controllers\Kurikulum\PerangkatUjian\PanitiaUjianController;
 use App\Http\Controllers\Kurikulum\PerangkatUjian\PelaksanaanUjianController;
+use App\Http\Controllers\Kurikulum\PerangkatUjian\PenandaRuanganController;
 use App\Http\Controllers\Kurikulum\PerangkatUjian\PengawasUjianController;
 use App\Http\Controllers\Kurikulum\PerangkatUjian\PesertaUjianController;
 use App\Http\Controllers\Kurikulum\PerangkatUjian\RuangUjianController;
@@ -150,6 +152,7 @@ Route::middleware('auth')->group(function () {
             Route::prefix('pelaksanaan-ujian')->as('pelaksanaan-ujian.')->group(function () {
                 Route::resource('panitia-ujian', PanitiaUjianController::class);
                 Route::resource('token-soal-ujian', TokenSoalUjianController::class);
+                Route::resource('denah-ruangan-ujian', DenahRuanganUjianController::class);
             });
 
             Route::get('/get-personil-panitia', [PanitiaUjianController::class, 'getPersonilPanitia'])->name('getpersonilPanitia');
@@ -166,12 +169,6 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/token-soal-ujian', [PelaksanaanUjianController::class, 'filterToken'])->name('token-soal-ujian');
             Route::delete('/hapus-token-soal-ujian/{id}', [PelaksanaanUjianController::class, 'hapusToken'])->name('hapus-token-soal-ujian');
-
-
-            Route::post('/denahstore', [PelaksanaanUjianController::class, 'storeDenahRuangan']);
-            Route::post('/denahupdate/{id}', [PelaksanaanUjianController::class, 'updateDenahRuangan']);
-            Route::delete('/denahdelete/{id}', [PelaksanaanUjianController::class, 'destroyDenahRuangan']);
-
 
             Route::post('/denah-update-position/{id}', [PelaksanaanUjianController::class, 'updatePosition']);
         });

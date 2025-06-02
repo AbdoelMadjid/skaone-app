@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Kurikulum\PerangkatUjian;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kurikulum\PerangkatUjian\DaftarPengawasUjian;
+use App\Models\Kurikulum\PerangkatUjian\DenahRuanganUjian;
 use App\Models\Kurikulum\PerangkatUjian\IdentitasUjian;
 use App\Models\Kurikulum\PerangkatUjian\PanitiaUjian;
 use App\Models\Kurikulum\PerangkatUjian\PenandaDenah;
@@ -200,7 +201,7 @@ class PelaksanaanUjianController extends Controller
         $panitiaUjian = PanitiaUjian::where('kode_ujian', $ujianAktif->kode_ujian)->get();
 
         // Ambil semua penanda denah ruangan
-        $penanda = PenandaRuangan::all();
+        $penanda = DenahRuanganUjian::all();
 
         return view('pages.kurikulum.perangkatujian.pelaksanaan-ujian', [
             'identitasUjian' => $identitasUjian,
@@ -358,44 +359,10 @@ class PelaksanaanUjianController extends Controller
 
     public function updatePosition(Request $request, $id)
     {
-        $item = PenandaRuangan::findOrFail($id);
+        $item = DenahRuanganUjian::findOrFail($id);
         $item->x = $request->x;
         $item->y = $request->y;
         $item->save();
-
-        return response()->json(['success' => true]);
-    }
-
-    public function storeDenahRuangan(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'kode_ruang' => 'required',
-            'label' => 'nullable|string',
-            'x' => 'required|integer',
-            'y' => 'required|integer',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $data = PenandaRuangan::create($request->all());
-
-        return response()->json(['success' => true, 'data' => $data]);
-    }
-
-    public function updateDenahRuangan(Request $request, $id)
-    {
-        $data = PenandaRuangan::findOrFail($id);
-        $data->update($request->only(['kode_ruang', 'label', 'x', 'y']));
-
-        return response()->json(['success' => true, 'data' => $data]);
-    }
-
-    public function destroyDenahRuangan($id)
-    {
-        $data = PenandaRuangan::findOrFail($id);
-        $data->delete();
 
         return response()->json(['success' => true]);
     }

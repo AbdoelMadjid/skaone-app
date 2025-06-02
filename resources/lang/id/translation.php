@@ -309,6 +309,7 @@ return [
     "pengawas-ujian" => "Pengawas Ujian",
     "panitia-ujian" => "Panitia Ujian",
     "token-soal-ujian" => "Token Soal Ujian",
+    "denah-ruangan-ujian" => "Denah Ruangan Ujian",
 
 
     "guru-mata-pelajaran" => "Guru Mata Pelajaran",

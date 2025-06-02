@@ -40,7 +40,13 @@
                 <div>
                     <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" data-bs-toggle="tab" href="#DaftarHadirPeserta" role="tab"
+                            <a class="nav-link active" data-bs-toggle="tab" href="#DenahRuangan" role="tab"
+                                aria-selected="false">
+                                <i class=" ri-community-line text-muted align-bottom me-1"></i> Denah Ruangan
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#DaftarHadirPeserta" role="tab"
                                 aria-selected="true">
                                 <i class="ri-file-user-line text-muted align-bottom me-1"></i> Peserta Ujian
                             </a>
@@ -63,12 +69,7 @@
                                 <i class="ri-key-line text-muted align-bottom me-1"></i> Token Soal Ujian
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#DenahRuangan" role="tab"
-                                aria-selected="false">
-                                <i class="ri-key-line text-muted align-bottom me-1"></i> Denah Ruangan
-                            </a>
-                        </li>
+
                         <li class="nav-item ms-auto">
                             <div class="dropdown">
                                 <a class="nav-link fw-medium text-reset mb-n1" href="#" role="button"
@@ -84,6 +85,10 @@
                                         <a href="{{ route('kurikulum.perangkatujian.pelaksanaan-ujian.token-soal-ujian.index') }}"
                                             class="dropdown-item">Token Soal Ujian</a>
                                     </li>
+                                    <li>
+                                        <a href="{{ route('kurikulum.perangkatujian.pelaksanaan-ujian.denah-ruangan-ujian.index') }}"
+                                            class="dropdown-item">Denah Ruangan Ujian</a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>
@@ -91,7 +96,7 @@
                 </div>
                 <div class="card-body p-4">
                     <div class="tab-content">
-                        <div class="tab-pane active" id="DaftarHadirPeserta" role="tabpanel">
+                        <div class="tab-pane" id="DaftarHadirPeserta" role="tabpanel">
                             @include('pages.kurikulum.perangkatujian.halamanpelaksanaan.daftar-hadir-peserta')
                         </div>
                         <div class="tab-pane" id="DaftarHadirPanitia" role="tabpanel">
@@ -103,7 +108,7 @@
                         <div class="tab-pane" id="TokenSoalUjian" role="tabpanel">
                             @include('pages.kurikulum.perangkatujian.halamanpelaksanaan.token-soal-ujian')
                         </div>
-                        <div class="tab-pane" id="DenahRuangan" role="tabpanel">
+                        <div class="tab-pane active" id="DenahRuangan" role="tabpanel">
                             @include('pages.kurikulum.perangkatujian.halamanpelaksanaan.denah-ruangan')
                         </div>
                     </div><!--end tab-content-->
@@ -115,6 +120,7 @@
 @endsection
 @section('script')
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
     <script src="{{ URL::asset('build/js/ngeprint.js') }}"></script>
 @endsection
 @section('script-bottom')
@@ -500,72 +506,60 @@
         });
     </script>
 
-    {{-- <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const printButton = document.getElementById('btn-print-token-soal-ujian');
-            const selectTanggal = document.getElementById('selectTanggalToken'); // Ganti ID sesuai HTML
-            const selectJamKe = document.getElementById('selectJamKeToken'); // Ganti ID sesuai HTML
+    {{-- denah ruangan --}}
+    <script>
+        interact('.penanda').draggable({
+            listeners: {
+                move(event) {
+                    const target = event.target;
+                    const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+                    const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
 
-            if (!printButton) {
-                console.error("Tombol print tidak ditemukan");
-                return;
+                    target.style.transform = `translate(${x}px, ${y}px)`;
+                    target.setAttribute('data-x', x);
+                    target.setAttribute('data-y', y);
+                },
+                end(event) {
+                    const target = event.target;
+                    const id = target.dataset.id;
+                    const offsetX = parseFloat(target.getAttribute('data-x')) || 0;
+                    const offsetY = parseFloat(target.getAttribute('data-y')) || 0;
+
+                    const left = parseFloat(target.style.left) + offsetX;
+                    const top = parseFloat(target.style.top) + offsetY;
+
+                    target.style.left = left + 'px';
+                    target.style.top = top + 'px';
+                    target.style.transform = '';
+                    target.removeAttribute('data-x');
+                    target.removeAttribute('data-y');
+
+                    fetch('/kurikulum/perangkatujian/denah-update-position/' + id, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                'content')
+                        },
+                        body: JSON.stringify({
+                            x: left,
+                            y: top
+                        })
+                    }).then(response => {
+                        if (!response.ok) {
+                            alert("Gagal menyimpan posisi.");
+                        } else {
+                            // ✅ UPDATE KOORDINAT PADA TABEL
+                            const row = document.querySelector(`tr[data-id='${id}']`);
+                            if (row) {
+                                row.querySelector('.kolom-x').textContent = Math.round(left);
+                                row.querySelector('.kolom-y').textContent = Math.round(top);
+                            }
+                        }
+                    });
+                }
             }
-
-            printButton.addEventListener('click', function() {
-
-                if (!selectTanggal || !selectTanggal.value) {
-                    showToast('error', "Silakan pilih tanggal terlebih dahulu sebelum mencetak.");
-                    return;
-                }
-                if (!selectJamKe || !selectJamKe.value) {
-                    showToast('error', "Silakan pilih jam ke terlebih dahulu sebelum mencetak.");
-                    return;
-                }
-
-                const content = document.getElementById('token-soal-ujian-container');
-                if (!content) {
-                    console.error("Elemen tabel tidak ditemukan");
-                    return;
-                }
-
-                const win = window.open('', '_blank');
-                win.document.write(`
-                <html>
-                <head>
-                    <title>Token Ujian</title>
-                    <style>
-                        @page {
-                            size: A4;
-                            margin: 5mm;
-                        }
-                        html, body {
-                            width: 210mm;
-                            height: 297mm;
-                            margin: 0;
-                            padding: 0;
-                            font-family: 'Times New Roman', serif;
-                            font-size: 12px;
-                        }
-                        table { width: 100%; border-collapse: collapse; }
-                        table, th, td { border: 1px solid black; }
-                        h4 { margin: 5px 0; text-align: center; }
-                        .page-break {
-                            page-break-after: always;
-                        }
-                    </style>
-                </head>
-                <body>
-                    ${content.innerHTML}
-                </body>
-                </html>
-            `);
-                win.document.close();
-                win.focus();
-                win.print();
-                win.close();
-            });
         });
-    </script> --}}
-
+    </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection
