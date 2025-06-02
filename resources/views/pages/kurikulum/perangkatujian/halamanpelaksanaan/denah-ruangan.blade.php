@@ -34,6 +34,13 @@
                     </button>
                 </div>
             </div>
+            <div class="col-lg-auto">
+                <div class="mb-3 d-flex align-items-center gap-2">
+                    <button type="button" class="btn btn-soft-primary" id="btn-print-keterangan-denah-ruangan-ujian">
+                        <i class="ri-printer-line align-bottom me-1"></i> Cetak Keterangan Denah
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -58,64 +65,59 @@
 </div>
 
 <div id="denah-ruangan-list">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">Daftar Ruangan</h4>
-            <p>Berikut adalah daftar ruangan yang telah ditandai pada denah.</p>
-            @php
-                $columns = 3;
-                $penanda = $penanda->values(); // pastikan indeks berurutan
-                $total = $penanda->count();
-                $rowsPerColumn = ceil($total / $columns);
+    <h4>Daftar Ruangan</h4>
+    <p>Berikut adalah daftar ruangan yang telah ditandai pada denah.</p>
+    @php
+        $columns = 3;
+        $penanda = $penanda->values(); // pastikan indeks berurutan
+        $total = $penanda->count();
+        $rowsPerColumn = ceil($total / $columns);
 
-                // Inisialisasi array kolom kosong
-                $tables = array_fill(0, $columns, []);
+        // Inisialisasi array kolom kosong
+        $tables = array_fill(0, $columns, []);
 
-                // Bagi data secara berurutan ke kolom
-                foreach ($penanda as $index => $item) {
-                    $columnIndex = floor($index / $rowsPerColumn);
-                    $tables[$columnIndex][] = $item;
-                }
+        // Bagi data secara berurutan ke kolom
+        foreach ($penanda as $index => $item) {
+            $columnIndex = floor($index / $rowsPerColumn);
+            $tables[$columnIndex][] = $item;
+        }
 
-                // Tambahkan baris kosong jika jumlah baris < $rowsPerColumn
-                foreach ($tables as $i => $table) {
-                    while (count($tables[$i]) < $rowsPerColumn) {
-                        $tables[$i][] = null;
-                    }
-                }
+        // Tambahkan baris kosong jika jumlah baris < $rowsPerColumn
+        foreach ($tables as $i => $table) {
+            while (count($tables[$i]) < $rowsPerColumn) {
+                $tables[$i][] = null;
+            }
+        }
 
-                $startNumber = 1;
-            @endphp
+        $startNumber = 1;
+    @endphp
 
-            <div style="display: flex; gap: 20px; margin-top: 20px;">
-                @foreach ($tables as $table)
-                    <table border="1" cellpadding="8" cellspacing="0" class="table table-striped"
-                        style="width: 30%;">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Kode</th>
-                                <th>Label</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($table as $item)
-                                <tr>
-                                    @if ($item)
-                                        <td style="text-align: center">{{ $startNumber++ }}</td>
-                                        <td style="text-align: center">{{ $item->kode_ruang }}</td>
-                                        <td>{{ $item->label }}</td>
-                                    @else
-                                        <td>&nbsp;</td>
-                                        <td></td>
-                                        <td></td>
-                                    @endif
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                @endforeach
-            </div>
-        </div>
+    <div style="display: flex; gap: 20px; margin-top: 20px;">
+        @foreach ($tables as $table)
+            <table border="1" cellpadding="8" cellspacing="0" class="table table-striped" style="width: 30%;">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Kode</th>
+                        <th>Label</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($table as $item)
+                        <tr>
+                            @if ($item)
+                                <td style="text-align: center">{{ $startNumber++ }}</td>
+                                <td style="text-align: center">{{ $item->kode_ruang }}</td>
+                                <td>{{ $item->label }}</td>
+                            @else
+                                <td>&nbsp;</td>
+                                <td></td>
+                                <td></td>
+                            @endif
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endforeach
     </div>
 </div>

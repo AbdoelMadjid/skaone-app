@@ -577,25 +577,44 @@
                         -webkit-print-color-adjust: exact;
                         print-color-adjust: exact;
                     }
+                    .denah-container {
+                        position: relative;
+                        width: 1000px;
+                    }
+
+                    .denah-img {
+                        width: 100%;
+                    }
+
                     .penanda {
                         position: absolute;
-                        padding: 6px 8px;
+                        padding: 2px 6px;
                         background: rgba(0, 123, 255, 0.8);
                         color: #fff;
                         border-radius: 4px;
                         cursor: move;
                         font-weight: bold;
-                        font-size: 14px;
-                    }
-                    #denah-container {
-                        position: relative;
-                        width: 1000px;
-                    }
-                    .denah-img {
-                        width: 97%;
-                        height: auto;
+                        font-size: 12px;
                     }
                 }
+            `
+        });
+    </script>
+    <script>
+        setupPrintHandler({
+            printButtonId: 'btn-print-keterangan-denah-ruangan-ujian',
+            tableContentId: 'denah-ruangan-list',
+            title: 'Keterangan Denah Ruangan Ujian',
+            customStyle: `
+                @page {
+                        size: A4;
+                        margin: 5mm;
+                    }
+                body { font-family: 'Times New Roman', serif; font-size: 12px; }
+                table { width: 100%; border-collapse: collapse; }
+                table, th, td { border: 1px solid black; }
+                th, td { padding: 5px; text-align: center; }
+                h4 { margin: 5px 0; text-align: center; }
             `
         });
     </script>
