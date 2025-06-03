@@ -132,7 +132,9 @@ class PengawasUjianController extends Controller
      */
     public function destroy(PengawasUjian $pengawasUjian)
     {
-        //
+        $pengawasUjian->delete();
+
+        return responseSuccessDelete();
     }
 
     public function loadFormPengawas()

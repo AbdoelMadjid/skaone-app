@@ -41,6 +41,8 @@ class PengawasUjianDataTable extends DataTable
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
+                unset($actions['Edit']);
+                unset($actions['Detail']);
                 return view('action', compact('actions'));
             })
             ->addIndexColumn()
@@ -96,11 +98,11 @@ class PengawasUjianDataTable extends DataTable
             Column::make('tanggal_ujian')->title('Tanggal Ujian')->addClass('text-center'),
             Column::make('jam_ke')->title('Jam Ke')->addClass('text-center'),
             Column::make('nama_pengawas')->title('Kode dan Nama Pengawas'),
-            /* Column::computed('action')
+            Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
                 ->width(60)
-                ->addClass('text-center'), */
+                ->addClass('text-center'),
         ];
     }
 
