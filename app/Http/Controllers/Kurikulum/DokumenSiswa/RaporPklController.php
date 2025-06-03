@@ -102,6 +102,8 @@ class RaporPklController extends Controller
                 'perusahaans.alamat AS alamat_perusahaan',
                 'perusahaans.jabatan AS jabatan_pembimbing',
                 'perusahaans.nama_pembimbing AS nama_pembimbing',
+                'perusahaans.nip AS nip_pembimbing',
+                'perusahaans.nidn AS nidn_pembimbing',
 
                 // Pembimbing dari sekolah
                 'personil_sekolahs.nip',

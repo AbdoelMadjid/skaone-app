@@ -332,6 +332,18 @@
                             <tr>
                                 <td><strong>{{ $data->nama_pembimbing }}</strong></td>
                             </tr>
+                            @php
+                                if ($data->nip_pembimbing) {
+                                    $nomor_pembimbing = 'NIP. ' . $data->nip_pembimbing;
+                                } elseif ($data->nidn_pembimbing) {
+                                    $nomor_pembimbing = 'NIDN. ' . $data->nidn_pembimbing;
+                                } else {
+                                    $nomor_pembimbing = '';
+                                }
+                            @endphp
+                            <tr>
+                                <td>{{ $nomor_pembimbing }}</td>
+                            </tr>
                         </table>
                     </td>
                 </tr>
@@ -353,7 +365,7 @@
                                 <td></td>
                             </tr>
                             <tr>
-                                <td><strong>Damudin, S.Pd., M.Pd.</strong><br>NIP. 19740302 199803 1 002</td>
+                                <td><strong>H. Damudin, S.Pd., M.Pd.</strong><br>NIP. 19740302 199803 1 002</td>
                             </tr>
                         </table>
                         <img src='{{ URL::asset('images/damudin.png') }}' class="ttd-img-kepsek" />
