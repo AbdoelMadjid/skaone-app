@@ -24,9 +24,8 @@
                                 ->first();
                         @endphp
                         @if ($pengajar)
-                            {{ $pengajar->gelardepan }} <span
-                                class="text-uppercase">{{ $pengajar->namalengkap }}
-                            </span>
+                            {{ $pengajar->gelardepan }}
+                            <span class="text-uppercase">{{ $pengajar->namalengkap }} </span>
                             {{ $pengajar->gelarbelakang }}<br>
                             @if (!empty($pengajar->nip))
                                 NIP. {{ $pengajar->nip }}

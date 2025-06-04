@@ -5,6 +5,7 @@ namespace App\Http\Controllers\WaliKelas;
 use App\Http\Controllers\Controller;
 use App\Models\ManajemenSekolah\IdentitasSekolah;
 use App\Models\ManajemenSekolah\KepalaSekolah;
+use App\Models\ManajemenSekolah\Semester;
 use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Models\WaliKelas\Ekstrakurikuler;
 use App\Models\WaliKelas\PrestasiSiswa;
@@ -76,6 +77,8 @@ class RaporPesertaDidikController extends Controller
             // Ambil data dari tabel kbm_per_rombels berdasarkan kode_rombel
             $kbmData = DB::table('kbm_per_rombels')
                 ->where('kode_rombel', $waliKelas->kode_rombel)
+                ->where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+                ->where('ganjilgenap', $semesterAktif)
                 ->get();
 
             // Ambil data siswa berdasarkan tahun ajaran, kode rombel, dan tingkat
@@ -116,17 +119,27 @@ class RaporPesertaDidikController extends Controller
             INNER JOIN
                 kbm_per_rombels kr ON pr.rombel_kode = kr.kode_rombel
             LEFT JOIN
-                nilai_formatif nf ON pr.nis = nf.nis AND kr.kel_mapel = nf.kel_mapel
+                nilai_formatif nf ON pr.nis = nf.nis
+                    AND kr.kel_mapel = nf.kel_mapel
+                    AND kr.tahunajaran = nf.tahunajaran
+                    AND kr.ganjilgenap = nf.ganjilgenap
             LEFT JOIN
-                nilai_sumatif ns ON pr.nis = ns.nis AND kr.kel_mapel = ns.kel_mapel
+                nilai_sumatif ns ON pr.nis = ns.nis
+                    AND kr.kel_mapel = ns.kel_mapel
+                    AND kr.tahunajaran = ns.tahunajaran
+                    AND kr.ganjilgenap = ns.ganjilgenap
             WHERE
                 pr.rombel_kode = ?
+                AND kr.tahunajaran = ?
+                AND kr.ganjilgenap = ?
             GROUP BY
                 pd.nis, pd.nama_lengkap
             ORDER BY
                 nil_rata_siswa DESC
         ", [
-            $waliKelas->kode_rombel
+            $waliKelas->kode_rombel,
+            $tahunAjaranAktif->tahunajaran,
+            $semesterAktif,
         ]);
 
         return view(
@@ -170,15 +183,13 @@ class RaporPesertaDidikController extends Controller
         $user = auth()->user();
 
         // Ambil tahun ajaran yang aktif
-        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')
-            ->with(['semesters' => function ($query) {
-                $query->where('status', 'Aktif');
-            }])
-            ->first();
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+        $semesterAktif = null;
 
-        // Pastikan tahun ajaran aktif ada sebelum melanjutkan
-        if (!$tahunAjaranAktif) {
-            return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
+        if ($tahunAjaranAktif) {
+            $semesterAktif = Semester::where('status', 'Aktif')
+                ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+                ->first();
         }
 
         // Ambil wali kelas berdasarkan personal_id dari user yang sedang login dan tahun ajaran aktif
@@ -199,6 +210,8 @@ class RaporPesertaDidikController extends Controller
 
         $kbmData = DB::table('kbm_per_rombels')
             ->where('kode_rombel', $waliKelas->kode_rombel)
+            ->where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('ganjilgenap', $semesterAktif->semester)
             ->first();
 
         $dataSiswa = DB::table('peserta_didiks')
@@ -424,6 +437,8 @@ class RaporPesertaDidikController extends Controller
                 ->where('kode_rombel', $nilai->kode_rombel)
                 ->where('kel_mapel', $nilai->kel_mapel)
                 ->where('id_personil', $nilai->id_personil)
+                ->where('tahunajaran', $nilai->tahunajaran)
+                ->where('ganjilgenap', $nilai->ganjilgenap)
                 ->count();
 
             $rerataFormatif = $nilai->rerata_formatif;

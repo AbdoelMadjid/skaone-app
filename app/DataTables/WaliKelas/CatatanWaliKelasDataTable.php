@@ -2,6 +2,7 @@
 
 namespace App\DataTables\WaliKelas;
 
+use App\Models\ManajemenSekolah\Semester;
 use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Models\WaliKelas\CatatanWaliKelas;
 use App\Traits\DatatableHelper;
@@ -49,6 +50,13 @@ class CatatanWaliKelasDataTable extends DataTable
 
         // Ambil tahun ajaran yang aktif
         $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+        $semesterAktif = null;
+
+        if ($tahunAjaranAktif) {
+            $semesterAktif = Semester::where('status', 'Aktif')
+                ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+                ->first();
+        }
 
         // Ambil wali kelas berdasarkan personal_id dari user yang login
         $rombonganBelajar = DB::table('rombongan_belajars')
@@ -67,6 +75,8 @@ class CatatanWaliKelasDataTable extends DataTable
                 ])
                 ->join('peserta_didiks', 'catatan_wali_kelas.nis', '=', 'peserta_didiks.nis')
                 ->where('catatan_wali_kelas.kode_rombel', $rombonganBelajar->kode_rombel) // Filter berdasarkan kode rombel
+                ->where('catatan_wali_kelas.tahunajaran', $rombonganBelajar->tahunajaran) // Filter berdasarkan kode rombel
+                ->where('catatan_wali_kelas.ganjilgenap', $semesterAktif->semester) // Filter berdasarkan kode rombel
                 ->orderBy('nis', 'asc'); // Default order by NIS
 
             // Logika pengurutan berdasarkan request

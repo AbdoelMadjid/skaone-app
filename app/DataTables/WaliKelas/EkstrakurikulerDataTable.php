@@ -3,6 +3,7 @@
 namespace App\DataTables\WaliKelas;
 
 use App\Models\AppSupport\Referensi;
+use App\Models\ManajemenSekolah\Semester;
 use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Models\WaliKelas\Ekstrakurikuler;
 use App\Traits\DatatableHelper;
@@ -206,6 +207,13 @@ class EkstrakurikulerDataTable extends DataTable
 
         // Ambil tahun ajaran yang aktif
         $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+        $semesterAktif = null;
+
+        if ($tahunAjaranAktif) {
+            $semesterAktif = Semester::where('status', 'Aktif')
+                ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+                ->first();
+        }
 
         // Ambil wali kelas berdasarkan personal_id dari user yang login
         $rombonganBelajar = DB::table('rombongan_belajars')
@@ -224,6 +232,8 @@ class EkstrakurikulerDataTable extends DataTable
                 ])
                 ->join('peserta_didiks', 'ekstrakurikulers.nis', '=', 'peserta_didiks.nis')
                 ->where('ekstrakurikulers.kode_rombel', $rombonganBelajar->kode_rombel) // Filter berdasarkan kode rombel
+                ->where('ekstrakurikulers.tahunajaran', $rombonganBelajar->tahunajaran) // Filter berdasarkan kode rombel
+                ->where('ekstrakurikulers.ganjilgenap', $semesterAktif->semester) // Filter berdasarkan kode rombel
                 ->orderBy('nis', 'asc'); // Default order by NIS
 
             // Logika pengurutan berdasarkan request
