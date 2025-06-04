@@ -329,9 +329,6 @@
                             <tr class="ttd-spacing">
                                 <td></td>
                             </tr>
-                            <tr>
-                                <td><strong>{{ $data->nama_pembimbing }}</strong></td>
-                            </tr>
                             @php
                                 if ($data->nip_pembimbing) {
                                     $nomor_pembimbing = 'NIP. ' . $data->nip_pembimbing;
@@ -342,7 +339,10 @@
                                 }
                             @endphp
                             <tr>
-                                <td>{{ $nomor_pembimbing }}</td>
+                                <td>
+                                    <strong>{{ $data->nama_pembimbing }}</strong>
+                                    <br>{{ $nomor_pembimbing }}
+                                </td>
                             </tr>
                         </table>
                     </td>

@@ -3,6 +3,8 @@
 namespace App\DataTables\GuruMapel;
 
 use App\Models\GuruMapel\CpTerpilih;
+use App\Models\ManajemenSekolah\Semester;
+use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Support\Facades\Auth;
@@ -95,13 +97,43 @@ class DataCpTerpilihDataTable extends DataTable
         $user = Auth::user();
         $personal_id = $user->personal_id;
 
-        return $model->newQuery()
+        // Ambil tahun ajaran dan semester aktif
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+        $semesterAktif = null;
+
+        if ($tahunAjaranAktif) {
+            $semesterAktif = Semester::where('status', 'Aktif')
+                ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+                ->first();
+        }
+
+        // Mulai query
+        $query = $model->newQuery();
+
+        // Filter berdasarkan id_personil (user login)
+        $query->where('id_personil', $personal_id);
+
+        // Jika ada tahun ajaran aktif, filter
+        if ($tahunAjaranAktif) {
+            $query->where('tahunajaran', $tahunAjaranAktif->tahunajaran);
+        }
+
+        // Jika ada semester aktif, filter berdasarkan kolom ganjilgenap
+        if ($semesterAktif) {
+            $query->where('ganjilgenap', $semesterAktif->ganjilgenap);
+        }
+
+        // Urutkan jika perlu
+        $query->orderBy('kode_rombel', 'asc');
+
+        return $query;
+        /* return $model->newQuery()
             ->where('id_personil', $personal_id);
 
         return $model->newQuery()->orderBy('kode_rombel', 'asc');
 
         // Jika user tidak memiliki role 'gmapel', kembalikan query kosong atau hentikan
-        return $model->newQuery()->whereNull('id'); // Mengembalikan query yang tidak akan mengembalikan data
+        return $model->newQuery()->whereNull('id'); // Mengembalikan query yang tidak akan mengembalikan data */
     }
 
     /**
