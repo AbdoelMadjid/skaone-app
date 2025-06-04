@@ -3,6 +3,8 @@
 namespace App\DataTables\GuruMapel;
 
 use App\Models\Kurikulum\DataKBM\KbmPerRombel;
+use App\Models\ManajemenSekolah\Semester;
+use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Models\Sumatif;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
@@ -59,16 +61,22 @@ class SumatifDataTable extends DataTable
                 $JumlahCP = DB::table('capaian_pembelajarans')
                     ->where('inisial_mp', $row->kel_mapel)
                     ->where('tingkat', $row->tingkat)
+                    /* ->where('tahunajaran', $row->tahunajaran)
+                    ->where('ganjilgenap', $row->ganjilgenap) */
                     ->count();
 
                 $JumlahMA = DB::table('cp_terpilihs')
                     ->where('kode_rombel', $row->kode_rombel)
                     ->where('kel_mapel', $row->kel_mapel)
+                    ->where('tahunajaran', $row->tahunajaran)
+                    ->where('ganjilgenap', $row->ganjilgenap)
                     ->count();
 
                 $jumlahTP = DB::table('tujuan_pembelajarans')
                     ->where('kode_rombel', $row->kode_rombel)
                     ->where('kel_mapel', $row->kel_mapel)
+                    ->where('tahunajaran', $row->tahunajaran)
+                    ->where('ganjilgenap', $row->ganjilgenap)
                     ->count();
 
                 return $JumlahCP . ' / ' . $JumlahMA . ' / ' . $jumlahTP;
@@ -77,6 +85,8 @@ class SumatifDataTable extends DataTable
                 $jumlahTP = DB::table('tujuan_pembelajarans')
                     ->where('kode_rombel', $row->kode_rombel)
                     ->where('kel_mapel', $row->kel_mapel)
+                    ->where('tahunajaran', $row->tahunajaran)
+                    ->where('ganjilgenap', $row->ganjilgenap)
                     ->count();
 
                 $dataExists = DB::table('nilai_sumatif')
@@ -100,10 +110,13 @@ class SumatifDataTable extends DataTable
                             'kode_rombel' => $row->kode_rombel,
                             'kel_mapel' => $row->kel_mapel,
                             'id_personil' => $row->id_personil,
+                            'tahunajaran' => $row->tahunajaran,
+                            'ganjilgenap' => $row->ganjilgenap,
                         ]) . '"><i class="bx bx-edit-alt"></i> Create</a></li>
-                        <li><a href="' . route('gurumapel.penilaian.exportsumatif', ['kode_rombel' => $row->kode_rombel, 'kel_mapel' => $row->kel_mapel, 'id_personil' => $row->id_personil]) . '""
+                        <li><a href="' . route('gurumapel.penilaian.exportsumatif', ['kode_rombel' => $row->kode_rombel, 'kel_mapel' => $row->kel_mapel, 'id_personil' => $row->id_personil, 'tahunajaran' => $row->tahunajaran, 'ganjilgenap' => $row->ganjilgenap]) . '""
                                         class="dropdown-item btn btn-soft-primary" tittle="Download Format Nilai Sumatif">
-                                        <i class="bx bx-download"></i> Download</a></li>
+                                        <i class="bx bx-download"></i> Download</a>
+                        </li>
                                 <li>
                                 <button class="dropdown-item btn btn-soft-success" data-bs-toggle="modal"
                                         data-bs-target="#modalUploadSumatif"
@@ -130,6 +143,8 @@ class SumatifDataTable extends DataTable
                             'kode_rombel' => $row->kode_rombel,
                             'kel_mapel' => $row->kel_mapel,
                             'id_personil' => $row->id_personil,
+                            'tahunajaran' => $row->tahunajaran,
+                            'ganjilgenap' => $row->ganjilgenap,
                         ]) . '">Edit</a></li>
                             </ul>
                         </div>';
@@ -170,6 +185,16 @@ class SumatifDataTable extends DataTable
             $query->where('id_personil', $personal_id);
         } */
 
+        // Ambil tahun ajaran dan semester aktif
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+        $semesterAktif = null;
+
+        if ($tahunAjaranAktif) {
+            $semesterAktif = Semester::where('status', 'Aktif')
+                ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+                ->first();
+        }
+
         // Join dengan tabel PersonilSekolah
         $query->join('personil_sekolahs', 'personil_sekolahs.id_personil', '=', 'kbm_per_rombels.id_personil')
             ->select(
@@ -178,7 +203,9 @@ class SumatifDataTable extends DataTable
                 'personil_sekolahs.namalengkap', // Kolom tambahan (jika ada) dari tabel personil_sekolahs
                 'personil_sekolahs.gelarbelakang',
             )
-            ->where('kbm_per_rombels.id_personil', $personal_id);
+            ->where('kbm_per_rombels.id_personil', $personal_id)
+            ->where('kbm_per_rombels.tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('kbm_per_rombels.ganjilgenap', $semesterAktif->semester);
 
         return $query; // Mengembalikan query yang tidak akan mengembalikan data
     }

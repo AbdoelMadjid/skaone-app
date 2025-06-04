@@ -21,7 +21,8 @@
                     <h5 class="card-title mb-0 flex-grow-1">Edit Nilai @yield('title') - {{ $fullName }}</h5>
                     <div>
                         <button id="hapusdata" class="btn btn-soft-danger" data-kode-rombel="{{ $data->kode_rombel }}"
-                            data-kel-mapel="{{ $data->kel_mapel }}" data-id-personil="{{ $data->id_personil }}">
+                            data-kel-mapel="{{ $data->kel_mapel }}" data-id-personil="{{ $data->id_personil }}"
+                            data-tahunajaran="{{ $data->tahunajaran }}" data-ganjilgenap="{{ $data->ganjilgenap }}">
                             <i class="ri-delete-bin-2-line"></i>
                         </button>
                         <a class="btn btn-soft-primary" href="{{ route('gurumapel.penilaian.formatif.index') }}">Kembali</a>
@@ -234,6 +235,8 @@
                 var kodeRombel = $(this).data('kode-rombel');
                 var kelMapel = $(this).data('kel-mapel');
                 var idPersonil = $(this).data('id-personil');
+                var thnAjaran = $(this).data('tahunajaran');
+                var ganjilGenap = $(this).data('ganjilgenap');
 
                 Swal.fire({
                     title: 'Apa Anda yakin?',
@@ -252,7 +255,9 @@
                                 _token: '{{ csrf_token() }}',
                                 kode_rombel: kodeRombel,
                                 kel_mapel: kelMapel,
-                                id_personil: idPersonil
+                                id_personil: idPersonil,
+                                tahunajaran: thnAjaran,
+                                ganjilgenap: ganjilGenap
                             },
                             success: function(response) {
                                 showToast('success', 'Data berhasil dihapus!');

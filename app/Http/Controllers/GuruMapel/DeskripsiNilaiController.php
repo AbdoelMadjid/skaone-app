@@ -131,11 +131,23 @@ class DeskripsiNilaiController extends Controller
         $kode_rombel = $request->input('kode_rombel');
         $kel_mapel = $request->input('kel_mapel');
 
+        // Ambil tahun ajaran dan semester aktif
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+        $semesterAktif = null;
+
+        if ($tahunAjaranAktif) {
+            $semesterAktif = Semester::where('status', 'Aktif')
+                ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+                ->first();
+        }
+
         // Ambil jumlah TP dari tabel tujuan_pembelajarans
         $jumlahTP = DB::table('tujuan_pembelajarans')
             ->where('kode_rombel', $kode_rombel)
             ->where('kel_mapel', $kel_mapel)
             ->where('id_personil', $id_personil)
+            ->where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('ganjilgenap', $semesterAktif->semester)
             ->count();
 
         // Ambil jumlah TP dari tabel tujuan_pembelajarans
@@ -189,25 +201,37 @@ class DeskripsiNilaiController extends Controller
             AND nilai_formatif.id_personil = ?
             AND nilai_formatif.kode_rombel = ?
             AND nilai_formatif.kel_mapel = ?
+            AND nilai_formatif.tahunajaran = ?
+            AND nilai_formatif.ganjilgenap = ?
         LEFT JOIN nilai_sumatif ON peserta_didik_rombels.nis = nilai_sumatif.nis
             AND nilai_sumatif.id_personil = ?
             AND nilai_sumatif.kode_rombel = ?
             AND nilai_sumatif.kel_mapel = ?
+            AND nilai_sumatif.tahunajaran = ?
+            AND nilai_sumatif.ganjilgenap = ?
         WHERE
             kbm_per_rombels.id_personil = ?
             AND kbm_per_rombels.kode_rombel = ?
             AND kbm_per_rombels.kel_mapel = ?
+            AND kbm_per_rombels.tahunajaran = ?
+            AND kbm_per_rombels.ganjilgenap = ?
         ORDER BY peserta_didik_rombels.nis
         ", [
             $id_personil,
             $kode_rombel,
             $kel_mapel,
+            $tahunAjaranAktif->tahunajaran,
+            $semesterAktif->semester,
             $id_personil,
             $kode_rombel,
             $kel_mapel,
+            $tahunAjaranAktif->tahunajaran,
+            $semesterAktif->semester,
             $id_personil,
             $kode_rombel,
-            $kel_mapel
+            $kel_mapel,
+            $tahunAjaranAktif->tahunajaran,
+            $semesterAktif->semester,
         ]);
 
         return response()->json([

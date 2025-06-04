@@ -10,15 +10,15 @@
                 </div>
                 <div class="modal-body">
 
-                    <input type="input" name="tahunajaran" id="tahunajaran" value="{{ $tahunAjaran->tahunajaran }}">
-                    <input type="input" name="ganjilgenap" id="ganjilgenap" value="{{ $semester->semester }}">
-                    <input type="input" name="semester" id="semester" value="">
-                    <input type="input" name="tingkat" id="tingkat" value="">
-                    <input type="input" name="personal_id" id="personal_id" value="{{ $personal_id }}">
-                    <input type="input" name="selected_rombel_ids" id="selected_rombel_ids" class="col-md-12">
-                    <input type="input" name="selected_tp_data" id="selected_tp_data">
-                    <input type="input" name="jml_materi" id="jml_materi" value="">
-                    <input type="input" name="kel_mapel" id="kel_mapel" class="col-md-12">
+                    <input type="hidden" name="tahunajaran" id="tahunajaran" value="{{ $tahunAjaran->tahunajaran }}">
+                    <input type="hidden" name="ganjilgenap" id="ganjilgenap" value="{{ $semester->semester }}">
+                    <input type="hidden" name="semester" id="semester" value="">
+                    <input type="hidden" name="tingkat" id="tingkat" value="">
+                    <input type="hidden" name="personal_id" id="personal_id" value="{{ $personal_id }}">
+                    <input type="hidden" name="selected_rombel_ids" id="selected_rombel_ids" class="col-md-12">
+                    <input type="hidden" name="selected_tp_data" id="selected_tp_data">
+                    <input type="hidden" name="jml_materi" id="jml_materi" value="">
+                    <input type="hidden" name="kel_mapel" id="kel_mapel" class="col-md-12">
 
                     <div class="row">
                         <div class="col-md-12">

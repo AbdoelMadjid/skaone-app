@@ -79,10 +79,22 @@ class FormatifController extends Controller
      */
     public function createNilai($kode_rombel, $kel_mapel, $id_personil)
     {
+        // Ambil tahun ajaran dan semester aktif
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+        $semesterAktif = null;
+
+        if ($tahunAjaranAktif) {
+            $semesterAktif = Semester::where('status', 'Aktif')
+                ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+                ->first();
+        }
+
         // Cari data berdasarkan parameter
         $data = KbmPerRombel::where('kode_rombel', $kode_rombel)
             ->where('kel_mapel', $kel_mapel)
             ->where('id_personil', $id_personil)
+            ->where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('ganjilgenap', $semesterAktif->semester)
             ->first();
 
         if (!$data) {
@@ -100,6 +112,8 @@ class FormatifController extends Controller
             ->where('kode_rombel', $kode_rombel)
             ->where('kel_mapel', $kel_mapel)
             ->where('id_personil', $id_personil)
+            ->where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('ganjilgenap', $semesterAktif->semester)
             ->count();
 
         $pesertaDidik = DB::table('kbm_per_rombels')
@@ -114,11 +128,15 @@ class FormatifController extends Controller
             ->where('kbm_per_rombels.id_personil', $id_personil)
             ->where('kbm_per_rombels.kode_rombel', $kode_rombel)
             ->where('kbm_per_rombels.kel_mapel', $kel_mapel)
+            ->where('kbm_per_rombels.tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('kbm_per_rombels.ganjilgenap', $semesterAktif->semester)
             ->get();
 
         $tujuanPembelajaran = TujuanPembelajaran::where('id_personil', $id_personil)
             ->where('kode_rombel', $kode_rombel)
             ->where('kel_mapel', $kel_mapel)
+            ->where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('ganjilgenap', $semesterAktif->semester)
             ->orderBy('tp_kode')
             ->get();
 
@@ -179,6 +197,8 @@ class FormatifController extends Controller
             'kode_rombel' => $data['kode_rombel'],
             'kel_mapel' => $data['kel_mapel'],
             'id_personil' => $data['id_personil'],
+            'tahunajaran' => $data['tahunajaran'],
+            'ganjilgenap' => $data['ganjilgenap'],
         ])->with('toast_success', 'Data Nilai Formatif berhasil disimpan.');
     }
 
@@ -193,12 +213,14 @@ class FormatifController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function editNilai($kode_rombel, $kel_mapel, $id_personil)
+    public function editNilai($kode_rombel, $kel_mapel, $id_personil, $tahunajaran, $ganjilgenap)
     {
         // Cari data berdasarkan parameter
         $data = KbmPerRombel::where('kode_rombel', $kode_rombel)
             ->where('kel_mapel', $kel_mapel)
             ->where('id_personil', $id_personil)
+            ->where('tahunajaran', $tahunajaran)
+            ->where('ganjilgenap', $ganjilgenap)
             ->first();
 
         if (!$data) {
@@ -215,11 +237,15 @@ class FormatifController extends Controller
         $jumlahTP = DB::table('tujuan_pembelajarans')
             ->where('kode_rombel', $kode_rombel)
             ->where('kel_mapel', $kel_mapel)
+            ->where('tahunajaran', $tahunajaran)
+            ->where('ganjilgenap', $ganjilgenap)
             ->count();
 
         $nilaiFormatif = NilaiFormatif::where('kode_rombel', $kode_rombel)
             ->where('kel_mapel', $kel_mapel)
             ->where('id_personil', $id_personil)
+            ->where('tahunajaran', $tahunajaran)
+            ->where('ganjilgenap', $ganjilgenap)
             ->get()
             ->keyBy('nis'); // Buat array dengan key NIS
 
@@ -234,6 +260,8 @@ class FormatifController extends Controller
             ->where('kbm_per_rombels.id_personil', $id_personil)
             ->where('kbm_per_rombels.kode_rombel', $kode_rombel)
             ->where('kbm_per_rombels.kel_mapel', $kel_mapel)
+            ->where('kbm_per_rombels.tahunajaran', $tahunajaran)
+            ->where('kbm_per_rombels.ganjilgenap', $ganjilgenap)
             ->get()
             ->map(function ($siswa) use ($nilaiFormatif, $jumlahTP) {
                 // Tambahkan nilai TP dan rerata ke data siswa
@@ -254,6 +282,8 @@ class FormatifController extends Controller
         $tujuanPembelajaran = TujuanPembelajaran::where('id_personil', $id_personil)
             ->where('kode_rombel', $kode_rombel)
             ->where('kel_mapel', $kel_mapel)
+            ->where('tahunajaran', $tahunajaran)
+            ->where('ganjilgenap', $ganjilgenap)
             ->orderBy('tp_kode')
             ->get();
 
@@ -314,6 +344,8 @@ class FormatifController extends Controller
             'kode_rombel' => $data['kode_rombel'],
             'kel_mapel' => $data['kel_mapel'],
             'id_personil' => $data['id_personil'],
+            'tahunajaran' => $data['tahunajaran'],
+            'ganjilgenap' => $data['ganjilgenap'],
         ])->with('toast_success', 'Data Nilai Formatif berhasil diupdate.');
     }
 
@@ -332,12 +364,16 @@ class FormatifController extends Controller
             'kode_rombel' => 'required|string',
             'kel_mapel' => 'required|string',
             'id_personil' => 'required|string',
+            'tahunajaran' => 'required|string',
+            'ganjilgenap' => 'required|string',
         ]);
 
         // Hapus data sesuai parameter
         $deleted = NilaiFormatif::where('kode_rombel', $request->kode_rombel)
             ->where('kel_mapel', $request->kel_mapel)
             ->where('id_personil', $request->id_personil)
+            ->where('tahunajaran', $request->tahunajaran)
+            ->where('ganjilgenap', $request->ganjilgenap)
             ->delete();
 
         if ($deleted) {
@@ -352,11 +388,15 @@ class FormatifController extends Controller
         $kode_rombel = $request->kode_rombel;
         $kel_mapel = $request->kel_mapel;
         $id_personil = $request->id_personil;
+        $tahunajaran = $request->tahunajaran;
+        $ganjilgenap = $request->ganjilgenap;
 
         // Validasi keberadaan data
         $data = KbmPerRombel::where('kode_rombel', $kode_rombel)
             ->where('kel_mapel', $kel_mapel)
             ->where('id_personil', $id_personil)
+            ->where('tahunajaran', $tahunajaran)
+            ->where('ganjilgenap', $ganjilgenap)
             ->first();
 
         if (!$data) {
@@ -373,6 +413,8 @@ class FormatifController extends Controller
         $jumlahTP = DB::table('tujuan_pembelajarans')
             ->where('kode_rombel', $kode_rombel)
             ->where('kel_mapel', $kel_mapel)
+            ->where('tahunajaran', $tahunajaran)
+            ->where('ganjilgenap', $ganjilgenap)
             ->count();
 
         // Ambil peserta didik
@@ -388,18 +430,22 @@ class FormatifController extends Controller
             ->where('kbm_per_rombels.id_personil', $id_personil)
             ->where('kbm_per_rombels.kode_rombel', $kode_rombel)
             ->where('kbm_per_rombels.kel_mapel', $kel_mapel)
+            ->where('kbm_per_rombels.tahunajaran', $tahunajaran)
+            ->where('kbm_per_rombels.ganjilgenap', $ganjilgenap)
             ->get();
 
         $tujuanPembelajaran = TujuanPembelajaran::where('id_personil', $id_personil)
             ->where('kode_rombel', $kode_rombel)
             ->where('kel_mapel', $kel_mapel)
+            ->where('tahunajaran', $tahunajaran)
+            ->where('ganjilgenap', $ganjilgenap)
             ->orderBy('tp_kode')
             ->get();
 
         // Parameter untuk eksport
         $params = [
-            'tahunajaran' => $data->tahunajaran,
-            'ganjilgenap' => $data->ganjilgenap,
+            'tahunajaran' => $tahunajaran,
+            'ganjilgenap' => $ganjilgenap,
             'semester' => $data->semester,
             'tingkat' => $data->tingkat,
             'id_personil' => $data->id_personil,
@@ -509,6 +555,8 @@ class FormatifController extends Controller
                 'kode_rombel' => $kode_rombel,
                 'kel_mapel' => $kel_mapel,
                 'id_personil' => $id_personil,
+                'tahunajaran' => $tahunajaran,
+                'ganjilgenap' => $ganjilgenap,
             ])->with('toast_success', 'Data Nilai Formatif berhasil diunggah ke database.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
