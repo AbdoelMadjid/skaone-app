@@ -120,7 +120,7 @@ class DataCpTerpilihDataTable extends DataTable
 
         // Jika ada semester aktif, filter berdasarkan kolom ganjilgenap
         if ($semesterAktif) {
-            $query->where('ganjilgenap', $semesterAktif->ganjilgenap);
+            $query->where('ganjilgenap', $semesterAktif->semester);
         }
 
         // Urutkan jika perlu

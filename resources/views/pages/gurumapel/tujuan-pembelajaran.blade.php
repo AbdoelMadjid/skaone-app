@@ -71,6 +71,8 @@
                                                                 ->where('id_personil', $kbm->id_personil)
                                                                 ->where('kode_rombel', $kbm->kode_rombel)
                                                                 ->where('kel_mapel', $kbm->kel_mapel)
+                                                                ->where('tahunajaran', $kbm->tahunajaran)
+                                                                ->where('ganjilgenap', $kbm->ganjilgenap)
                                                                 ->count();
                                                         @endphp
                                                         @if ($jmlTP)
@@ -86,6 +88,8 @@
                                                                 ->where('id_personil', $kbm->id_personil)
                                                                 ->where('kode_rombel', $kbm->kode_rombel)
                                                                 ->where('kel_mapel', $kbm->kel_mapel)
+                                                                ->where('tahunajaran', $kbm->tahunajaran)
+                                                                ->where('ganjilgenap', $kbm->ganjilgenap)
                                                                 ->first();
                                                         @endphp
                                                         @if ($cpTerpilih)

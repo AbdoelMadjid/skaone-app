@@ -4,6 +4,8 @@ namespace App\DataTables\GuruMapel;
 
 use App\Models\Kurikulum\DataKBM\KbmPerRombel;
 use App\Models\ManajemenSekolah\PersonilSekolah;
+use App\Models\ManajemenSekolah\Semester;
+use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Support\Facades\Auth;
@@ -66,6 +68,8 @@ class DataKbmDataTable extends DataTable
                 $JumlahMA = DB::table('cp_terpilihs')
                     ->where('kode_rombel', $row->kode_rombel)
                     ->where('kel_mapel', $row->kel_mapel)
+                    ->where('tahunajaran', $row->tahunajaran)
+                    ->where('ganjilgenap', $row->ganjilgenap)
                     ->count();
                 return $JumlahMA;
 
@@ -91,19 +95,43 @@ class DataKbmDataTable extends DataTable
         $user = Auth::user();
         $personal_id = $user->personal_id;
 
+        // Ambil tahun ajaran dan semester aktif
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+        $semesterAktif = null;
+
+        if ($tahunAjaranAktif) {
+            $semesterAktif = Semester::where('status', 'Aktif')
+                ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+                ->first();
+        }
+
+        // Mulai query
+        $query = $model->newQuery();
+
         // Cek apakah user memiliki role 'gmapel'
         if ($user->hasRole('gmapel')) {
             // Ambil data berdasarkan id_personil yang sesuai dengan personal_id user yang sedang login
-            return $model->newQuery()
-                ->where('id_personil', $personal_id);
+            // Filter berdasarkan id_personil (user login)
+            $query->where('id_personil', $personal_id);
         }
 
-        return $model->newQuery()->orderBy('tingkat', 'asc')
+        // Jika ada tahun ajaran aktif, filter
+        if ($tahunAjaranAktif) {
+            $query->where('tahunajaran', $tahunAjaranAktif->tahunajaran);
+        }
+
+        // Jika ada semester aktif, filter berdasarkan kolom ganjilgenap
+        if ($semesterAktif) {
+            $query->where('ganjilgenap', $semesterAktif->semester);
+        }
+
+        $query->orderBy('tingkat', 'asc')
             ->orderBy('semester', 'asc')
             ->orderBy('kel_mapel', 'asc');
 
         // Jika user tidak memiliki role 'gmapel', kembalikan query kosong atau hentikan
-        return $model->newQuery()->whereNull('id'); // Mengembalikan query yang tidak akan mengembalikan data
+        //return $model->newQuery()->whereNull('id'); // Mengembalikan query yang tidak akan mengembalikan data
+        return $query;
     }
 
     /**

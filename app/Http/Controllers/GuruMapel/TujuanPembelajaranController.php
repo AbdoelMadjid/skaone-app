@@ -51,6 +51,8 @@ class TujuanPembelajaranController extends Controller
             : 'Unknown';
 
         $cpOptions = CpTerpilih::where('cp_terpilihs.id_personil', $personal_id)
+            ->where('tahunajaran', $tahunAjaran->tahunajaran)
+            ->where('ganjilgenap', $semester->semester)
             ->join('capaian_pembelajarans', 'cp_terpilihs.kode_cp', '=', 'capaian_pembelajarans.kode_cp')
             ->orderBy('cp_terpilihs.kode_cp') // Mengurutkan berdasarkan kode_cp
             ->get([
@@ -162,9 +164,21 @@ class TujuanPembelajaranController extends Controller
         $personalId = $request->input('personal_id');
         $kodeCp = $request->input('kode_cp');
 
+        // Ambil tahun ajaran dan semester aktif
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+        $semesterAktif = null;
+
+        if ($tahunAjaranAktif) {
+            $semesterAktif = Semester::where('status', 'Aktif')
+                ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+                ->first();
+        }
+
         $rombels = DB::table('cp_terpilihs')
             ->where('cp_terpilihs.id_personil', $personalId)
             ->where('cp_terpilihs.kode_cp', $kodeCp)
+            ->where('cp_terpilihs.tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('cp_terpilihs.ganjilgenap', $semesterAktif->semester)
             ->select('cp_terpilihs.*')
             ->get();
 
@@ -201,10 +215,23 @@ class TujuanPembelajaranController extends Controller
         $personalId = $request->get('id_personil'); // Get the personal_id from the request
         $kodeCp = $request->get('kode_cp'); // Get the kode_cp from the request
 
+        // Ambil tahun ajaran dan semester aktif
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+        $semesterAktif = null;
+
+        if ($tahunAjaranAktif) {
+            $semesterAktif = Semester::where('status', 'Aktif')
+                ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+                ->first();
+        }
+
+
         // Query the database for matching records in cp_terpilihs
         $kodeRombels = DB::table('cp_terpilihs')
             ->where('cp_terpilihs.id_personil', $personalId)
             ->where('cp_terpilihs.kode_cp', $kodeCp)
+            ->where('cp_terpilihs.tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('cp_terpilihs.ganjilgenap', $semesterAktif->semester)
             ->pluck('kode_rombel'); // Get all matching kode_rombel values
 
         // Return the array of kode_rombel values as a JSON response
@@ -216,10 +243,23 @@ class TujuanPembelajaranController extends Controller
         $personalId = $request->get('id_personil'); // Get the personal_id from the request
         $kodeCp = $request->get('kode_cp'); // Get the kode_cp from the request
 
+
+        // Ambil tahun ajaran dan semester aktif
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+        $semesterAktif = null;
+
+        if ($tahunAjaranAktif) {
+            $semesterAktif = Semester::where('status', 'Aktif')
+                ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+                ->first();
+        }
+
         // Query the database for matching records in cp_terpilihs
         $kodeMapels = DB::table('cp_terpilihs')
             ->where('cp_terpilihs.id_personil', $personalId)
             ->where('cp_terpilihs.kode_cp', $kodeCp)
+            ->where('cp_terpilihs.tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('cp_terpilihs.ganjilgenap', $semesterAktif->semester)
             ->pluck('kel_mapel'); // Get all matching kode_rombel values
 
         // Return the array of kode_rombel values as a JSON response
@@ -231,10 +271,23 @@ class TujuanPembelajaranController extends Controller
         $kodeCp = $request->input('kode_cp');
         $idPersonil = $request->input('id_personil');
 
+        // Ambil tahun ajaran dan semester aktif
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+        $semesterAktif = null;
+
+        if ($tahunAjaranAktif) {
+            $semesterAktif = Semester::where('status', 'Aktif')
+                ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+                ->first();
+        }
+
+
         // Cek apakah kode_cp sudah ada di tabel materi_ajars
         $exists = DB::table('tujuan_pembelajarans')
             ->where('id_personil', $idPersonil)
             ->where('kode_cp', $kodeCp)
+            ->where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('ganjilgenap', $semesterAktif->semester)
             ->exists();
 
         if ($exists) {

@@ -68,6 +68,8 @@ class DataCpTerpilihController extends Controller
 
 
         $mapelOptions = KbmPerRombel::where('id_personil', $personal_id)
+            ->where('tahunajaran', $tahunAjaran->tahunajaran)
+            ->where('ganjilgenap', $semester->semester)
             ->get()
             ->mapWithKeys(function ($item) {
                 return [
@@ -165,11 +167,25 @@ class DataCpTerpilihController extends Controller
         $personalId = $request->input('id_personil');
         $tingkat = $request->input('tingkat');
 
+
+        // Ambil tahun ajaran dan semester aktif
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+        $semesterAktif = null;
+
+        if ($tahunAjaranAktif) {
+            $semesterAktif = Semester::where('status', 'Aktif')
+                ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+                ->first();
+        }
+
+
         // Cek apakah kode_cp sudah ada di tabel materi_ajars
         $exists = DB::table('cp_terpilihs')
             ->where('tingkat', $tingkat)
             ->where('kel_mapel', $kelMapel)
             ->where('id_personil', $personalId)
+            ->where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('ganjilgenap', $semesterAktif->semester)
             ->exists();
 
         if ($exists) {
@@ -185,11 +201,25 @@ class DataCpTerpilihController extends Controller
         $tingkat = $request->input('tingkat');
         $personalId = $request->input('personal_id');
 
+
+        // Ambil tahun ajaran dan semester aktif
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+        $semesterAktif = null;
+
+        if ($tahunAjaranAktif) {
+            $semesterAktif = Semester::where('status', 'Aktif')
+                ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+                ->first();
+        }
+
+
         // Cek apakah sudah ada data di tabel cp_terpilihs
         $cpExists = DB::table('cp_terpilihs')
             ->where('tingkat', $tingkat)
             ->where('kel_mapel', $kelMapel)
             ->where('id_personil', $personalId)
+            ->where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('ganjilgenap', $semesterAktif->semester)
             ->exists();
 
         if ($cpExists) {
@@ -200,6 +230,8 @@ class DataCpTerpilihController extends Controller
         $rombels = KbmPerRombel::where('id_personil', $personalId)
             ->where('kel_mapel', $kelMapel)
             ->where('tingkat', $tingkat)
+            ->where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('ganjilgenap', $semesterAktif->semester)
             ->get(['kode_rombel', 'rombel']);
 
         return response()->json($rombels);
@@ -213,11 +245,25 @@ class DataCpTerpilihController extends Controller
         $tingkat = $request->tingkat;
         $personalId = $request->input('personal_id');
 
+
+        // Ambil tahun ajaran dan semester aktif
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+        $semesterAktif = null;
+
+        if ($tahunAjaranAktif) {
+            $semesterAktif = Semester::where('status', 'Aktif')
+                ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+                ->first();
+        }
+
+
         // Cek apakah sudah ada data di tabel cp_terpilihs
         $cpExists = DB::table('cp_terpilihs')
             ->where('tingkat', $tingkat)
             ->where('kel_mapel', $kelMapel)
             ->where('id_personil', $personalId)
+            ->where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('ganjilgenap', $semesterAktif->semester)
             ->exists();
 
         if ($cpExists) {
