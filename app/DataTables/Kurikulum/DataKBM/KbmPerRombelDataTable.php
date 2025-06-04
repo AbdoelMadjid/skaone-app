@@ -4,6 +4,8 @@ namespace App\DataTables\Kurikulum\DataKBM;
 
 use App\Models\Kurikulum\DataKBM\KbmPerRombel;
 use App\Models\ManajemenSekolah\PersonilSekolah;
+use App\Models\ManajemenSekolah\Semester;
+use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
@@ -79,26 +81,52 @@ class KbmPerRombelDataTable extends DataTable
     {
         $query = $model->newQuery();
 
-        // Default query with ordering
-        $query->orderBy('rombel', 'asc')
-            ->orderBy('kode_mapel_rombel', 'asc');
+        // Ambil tahun ajaran dan semester aktif
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+        $semesterAktif = null;
+
+        if ($tahunAjaranAktif) {
+            $semesterAktif = Semester::where('status', 'Aktif')
+                ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+                ->first();
+        }
 
         // Ambil parameter filter dari request
         if (request()->has('search') && !empty(request('search'))) {
             $query->where('mata_pelajaran', 'like', '%' . request('search') . '%');
         }
 
+        // Filter tahun ajaran
         if (request()->has('thAjar') && request('thAjar') != 'all') {
             $query->where('tahunajaran', request('thAjar'));
+        } elseif ($tahunAjaranAktif) {
+            // Default: pakai tahun ajaran aktif
+            $query->where('tahunajaran', $tahunAjaranAktif->tahunajaran);
+        }
+
+        // Filter semester
+        if (request()->has('seMester') && request('seMester') != 'all') {
+            $query->where('ganjilgenap', request('seMester'));
+        } elseif ($semesterAktif) {
+            // Default: pakai semester aktif
+            $query->where('ganjilgenap', $semesterAktif->semester);
         }
 
         if (request()->has('kodeKK') && request('kodeKK') != 'all') {
             $query->where('kode_kk', request('kodeKK'));
         }
 
+        if (request()->has('tingKat') && request('tingKat') != 'all') {
+            $query->where('tingkat', request('tingKat'));
+        }
+
         if (request()->has('romBel') && request('romBel') != 'all') {
             $query->where('kode_rombel', request('romBel'));
         }
+
+        // Default query with ordering
+        $query->orderBy('rombel', 'asc')
+            ->orderBy('kode_mapel_rombel', 'asc');
 
         /* $query->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
             ->join('kompetensi_keahlians', 'peserta_didik_rombels.kode_kk', '=', 'kompetensi_keahlians.idkk')
@@ -120,7 +148,9 @@ class KbmPerRombelDataTable extends DataTable
                 'function(d) {
                     d.search = $(".search").val();
                     d.thAjar = $("#idThnAjaran").val();
+                    d.seMester = $("#idSemester").val();
                     d.kodeKK = $("#idKodeKK").val();
+                    d.tingKat = $("#idTingkat").val();
                     d.romBel = $("#idRombel").val();
                 }'
             ])

@@ -80,6 +80,16 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-lg-auto">
+                                <div>
+                                    <select class="form-control" data-plugin="choices" data-choices
+                                        data-choices-search-false name="choices-single-default" id="idSemester">
+                                        <option value="all" selected>Pilih Semester</option>
+                                        <option value="Ganjil">Ganjil</option>
+                                        <option value="Genap">Genap</option>
+                                    </select>
+                                </div>
+                            </div>
                             <!--end col-->
                             <div class="col-lg-auto">
                                 <div>
@@ -90,6 +100,19 @@
                                             <option value="{{ $id }}">{{ $kode_kk }}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                            </div>
+                            <!--end col-->
+                            <div class="col-lg-auto">
+                                <div>
+                                    <select class="form-control" data-plugin="choices" data-choices
+                                        data-choices-search-false name="choices-single-default" id="idTingkat">
+                                        <option value="all" selected>Pilih Tingkat</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                    </select>
+
                                 </div>
                             </div>
                             <!--end col-->
@@ -126,6 +149,7 @@
     <script>
         const datatable = 'kbmperrombel-table';
 
+        // PENCARIAN DATA KBM PER ROMBEL
         function handleFilterAndReload(tableId) {
             var table = $('#' + tableId).DataTable();
 
@@ -135,43 +159,49 @@
                 table.search(searchValue).draw(); // Lakukan pencarian dan gambar ulang tabel
             });
 
-            $('#idThnAjaran, #idKodeKK, #idRombel').on('change', function() {
+            $('#idThnAjaran, #idSemester, #idKodeKK, #idTingkat, #idRombel').on('change', function() {
                 table.ajax.reload(null, false); // Reload tabel saat dropdown berubah
             });
 
             // Override data yang dikirim ke server
             table.on('preXhr.dt', function(e, settings, data) {
                 data.thajarSiswa = $('#idThnAjaran').val(); // Ambil nilai dari dropdown idKK
+                data.smstrSiswa = $('#idSemester').val(); // Ambil nilai dari dropdown idSemester
                 data.kodeKKSiswa = $('#idKodeKK').val(); // Ambil nilai dari dropdown idJenkel
-                data.rombelSiswa = $('#idRombel').val(); // Ambil nilai dari dropdown idJenkel
+                data.tingkatSiswa = $('#idTingkat').val(); // Ambil nilai dari dropdown idTingkat
+                data.rombelSiswa = $('#idRombel').val(); // Ambil nilai dari dropdown idRombel
             });
         }
 
         // Function untuk mengecek apakah dropdown rombel harus di-disable atau tidak
         function checkDisableRombel() {
             var tahunAjaran = $('#idThnAjaran').val();
+            var semesterA = $('#idSemester').val();
+            var tingKat = $('#idTingkat').val();
             var kodeKK = $('#idKodeKK').val();
 
             // Jika salah satu dari Tahun Ajaran atau Kompetensi Keahlian belum dipilih
-            if (tahunAjaran === 'all' || kodeKK === 'all') {
+            if (tahunAjaran === 'all' || semesterA === 'all' || kodeKK === 'all' || tingKat === 'all') {
                 // Disable dropdown Rombel
                 $('#idRombel').attr('disabled', true);
                 $('#idRombel').empty().append('<option value="all" selected>Rombel</option>'); // Kosongkan pilihan Rombel
             } else {
                 // Jika sudah dipilih keduanya, enable dropdown Rombel dan muat datanya
                 $('#idRombel').attr('disabled', false);
-                loadRombelData(tahunAjaran, kodeKK); // Panggil AJAX untuk load data
+                loadRombelData(tahunAjaran, semesterA, kodeKK, tingKat); // Panggil AJAX untuk load data
             }
         }
 
         // Function untuk load data rombel sesuai pilihan Tahun Ajaran dan Kompetensi Keahlian
-        function loadRombelData(tahunAjaran, kodeKK) {
+        function loadRombelData(tahunAjaran, semesterA, kodeKK, tingKat) {
             $.ajax({
                 url: "{{ route('kurikulum.datakbm.getRombel') }}", // Route untuk request data rombel
                 type: "GET",
                 data: {
                     tahun_ajaran: tahunAjaran,
-                    kode_kk: kodeKK
+                    semester: semesterA,
+                    kode_kk: kodeKK,
+                    tingkat: tingKat
                 },
                 success: function(data) {
                     console.log('Response dari server:', data); // Cek apakah response data sudah benar
@@ -198,6 +228,7 @@
             });
         }
 
+        // UPDATE PENGAJAR DI TIAP MATA PELAJARAN
         function updatePersonil(kbmId, personilId) {
             $.ajax({
                 url: '/kurikulum/datakbm/update-personil',
@@ -219,7 +250,7 @@
         $(document).ready(function() {
 
             // Event listener ketika dropdown Tahun Ajaran atau Kompetensi Keahlian berubah
-            $('#idThnAjaran, #idKodeKK').on('change', function() {
+            $('#idThnAjaran, #idSemester, #idKodeKK, #idTingkat').on('change', function() {
                 checkDisableRombel(); // Panggil fungsi untuk mengecek apakah Rombel harus di-disable
             });
 

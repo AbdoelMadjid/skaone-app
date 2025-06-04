@@ -3,6 +3,7 @@
 namespace App\DataTables\Kurikulum\DataKBM;
 
 use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
+use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Support\Facades\DB;
@@ -46,14 +47,24 @@ class PesertaDidikRombelDataTable extends DataTable
     {
         $query = $model->newQuery();
 
+        // Ambil tahun ajaran aktif (hanya sekali di awal)
+        $thAktif = TahunAjaran::aktif()->first()?->tahunajaran;
+
         // Ambil parameter filter dari request
         if (request()->has('search') && !empty(request('search'))) {
             $query->where('peserta_didiks.nama_lengkap', 'like', '%' . request('search') . '%');
         }
 
-        if (request()->has('thAjar') && request('thAjar') != 'all') {
+        // Jika request punya thAjar, pakai itu. Kalau tidak, pakai tahun ajaran aktif.
+        if (request('thAjar') && request('thAjar') !== 'all') {
             $query->where('tahun_ajaran', request('thAjar'));
+        } elseif ($thAktif) {
+            $query->where('tahun_ajaran', $thAktif);
         }
+
+        /* if (request()->has('thAjar') && request('thAjar') != 'all') {
+            $query->where('tahun_ajaran', request('thAjar'));
+        } */
 
         if (request()->has('tingKat') && request('tingKat') != 'all') {
             $query->where('peserta_didik_rombels.rombel_tingkat', request('tingKat'));

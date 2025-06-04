@@ -155,14 +155,33 @@ class KbmPerRombelController extends Controller
     }
 
 
-    public function getKBMRombel(Request $request)
+    /*     public function getKBMRombel(Request $request)
     {
         $rombonganBelajar = RombonganBelajar::where('tahunajaran', $request->tahun_ajaran)
+            ->where('ganjilgenap', $request->semester)
             ->where('id_kk', $request->kode_kk)
             ->where('tingkat', $request->tingkat)
+            ->groupBy('kode_rombel', 'rombel')
             ->pluck('rombel', 'kode_rombel');
 
         return response()->json($rombonganBelajar);
+    } */
+
+    public function getKBMRombel(Request $request)
+    {
+        $tahunAjaran = $request->get('tahun_ajaran');
+        $seMester = $request->get('semester');
+        $kodeKK = $request->get('kode_kk');
+        $tingKat = $request->get('tingkat');
+
+        // Mengambil data rombongan belajar sesuai tahun ajaran dan kompetensi keahlian
+        $rombonganBelajar = RombonganBelajar::where('tahunajaran', $tahunAjaran)
+            ->where('id_kk', $kodeKK)
+            ->where('semester', $seMester)
+            ->where('tingkat', $tingKat)
+            ->pluck('rombel', 'kode_rombel'); // Mengambil kolom rombel dan kode_rombel
+
+        return response()->json($rombonganBelajar); // Mengembalikan data sebagai JSON
     }
 
     public function getMataPelajaranByKK(Request $request)
