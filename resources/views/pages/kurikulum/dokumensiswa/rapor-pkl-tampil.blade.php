@@ -318,18 +318,6 @@
                             </tr>
                         </table>
                     </td>
-                    @php
-                        if ($data->nip_pembimbing) {
-                            $nomor_pembimbing = 'NIP. ' . $data->nip_pembimbing;
-                        } elseif ($data->nidn_pembimbing) {
-                            $nomor_pembimbing = 'NIDN. ' . $data->nidn_pembimbing;
-                        } else {
-                            $nomor_pembimbing = '';
-                        }
-                        if ($data->nama_perusahaan = 'UNIVERSITAS YPIB') {
-                            $style = 'font-size:10px;';
-                        }
-                    @endphp
                     <td class="ttd-section">
                         <table style="line-height: 1.2;">
                             <tr>
@@ -341,10 +329,18 @@
                             <tr class="ttd-spacing">
                                 <td></td>
                             </tr>
-
+                            @php
+                                if ($data->nip_pembimbing) {
+                                    $nomor_pembimbing = 'NIP. ' . $data->nip_pembimbing;
+                                } elseif ($data->nidn_pembimbing) {
+                                    $nomor_pembimbing = 'NIDN. ' . $data->nidn_pembimbing;
+                                } else {
+                                    $nomor_pembimbing = '';
+                                }
+                            @endphp
                             <tr>
                                 <td>
-                                    <strong style="{{ $style }}">{{ $data->nama_pembimbing }}</strong>
+                                    <strong>{{ $data->nama_pembimbing }}</strong>
                                     <br>{{ $nomor_pembimbing }}
                                 </td>
                             </tr>
