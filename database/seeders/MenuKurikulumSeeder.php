@@ -61,7 +61,9 @@ class MenuKurikulumSeeder extends Seeder
         $sm = $mm->subMenus()->create(['name' => 'Dokumen Guru', 'url' => $mm->url . '/dokumenguru', 'category' => $mm->category]);
         $this->attachMenupermission($sm, ['read'], ['admin']);
 
-        $csm = $sm->subMenus()->create(['name' => 'Arsip', 'url' => $sm->url . '/arsip', 'category' => $sm->category]);
+        $csm = $sm->subMenus()->create(['name' => 'Guru Mata Pelajaran', 'url' => $sm->url . '/arsip-gurumapel', 'category' => $sm->category]);
+        $this->attachMenupermission($csm, ['read'], ['admin']);
+        $csm = $sm->subMenus()->create(['name' => 'Wali Kelas', 'url' => $sm->url . '/arsip-walikelas', 'category' => $sm->category]);
         $this->attachMenupermission($csm, ['read'], ['admin']);
         // end childmenu dokumen guru
 
