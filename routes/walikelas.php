@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth', 'roleonly:walikelas')->group(function () {
     Route::group(['prefix' => 'walikelas', 'as' => 'walikelas.'], function () {
         Route::resource('data-kelas', DataKelasController::class);
         Route::post('/data-kelas/simpantitimangsa', [DataKelasController::class, 'simpantitimangsa'])

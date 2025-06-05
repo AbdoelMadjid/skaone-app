@@ -9,3 +9,13 @@
 @yield('script')
 <script src="{{ URL::asset('build/js/main.js') }}"></script>
 @yield('script-bottom')
+@if (session('errorRole'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: "{{ session('errorRole') }}",
+            confirmButtonText: 'OK'
+        })
+    </script>
+@endif
