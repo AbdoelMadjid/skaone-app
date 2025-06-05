@@ -16,10 +16,10 @@ class ArsipGuruController extends Controller
      */
     public function index(ArsipNgajarDataTable $arsipNgajarDataTable)
     {
-        $tahunAjaran = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
-
+        //$tahunAjaran = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
+        $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
         return $arsipNgajarDataTable->render('pages.kurikulum.dokumenguru.arsip-guru', [
-            'tahunAjaran' => $tahunAjaran,
+            'tahunAjaranOptions' => $tahunAjaranOptions,
         ]);
     }
 

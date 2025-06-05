@@ -1,238 +1,200 @@
 @extends('layouts.master')
 @section('title')
-    @lang('translation.arsip')
+    @lang('translation.to-do')
 @endsection
 @section('css')
-    <link href="{{ URL::asset('build/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
-    <style>
-        .list-rombel-wrapper {
-            display: none;
-            /* Sembunyikan dropdown sementara */
-        }
-
-        .list-gurumapel-wrapper {
-            display: none;
-            /* Sembunyikan dropdown sementara */
-        }
-
-        .loading-message {
-            display: block;
-            text-align: center;
-            font-size: 14px;
-            color: #666;
-        }
-    </style>
+    <link href="{{ URL::asset('build/libs/dragula/dragula.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
-    @component('layouts.breadcrumb')
-        @slot('li_1')
-            @lang('translation.kurikulum')
-        @endslot
-        @slot('li_2')
-            @lang('translation.dokumenguru')
-        @endslot
-    @endcomponent
+    <div class="chat-wrapper d-lg-flex gap-1 mx-n4 mt-n4 p-1">
+        <div class="file-manager-sidebar">
+            <div class="p-4 d-flex flex-column h-100">
+                <div class="mb-3">
+                    <button class="btn btn-success w-100" data-bs-target="#createProjectModal" data-bs-toggle="modal"><i
+                            class="ri-add-line align-bottom"></i> Add Project</button>
+                </div>
 
-    <div class="card">
-        <div class="card-body">
-            <form>
-                <div class="row g-3">
+                <div class="px-4 mx-n4" data-simplebar style="height: calc(100vh - 468px);">
+                    <ul class="to-do-menu list-unstyled" id="projectlist-data">
+                        <li>
+                            <a data-bs-toggle="collapse" href="#velzonAdmin" class="nav-link fs-13 active">Velzon Admin &
+                                Dashboard</a>
+                            <div class="collapse show" id="velzonAdmin">
+                                <ul class="mb-0 sub-menu list-unstyled ps-3 vstack gap-2 mb-2">
+                                    <li>
+                                        <a href="#!"><i class="ri-stop-mini-fill align-middle fs-15 text-danger"></i>
+                                            v1.4.0</a>
+                                    </li>
+                                    <li>
+                                        <a href="#!"><i
+                                                class="ri-stop-mini-fill align-middle fs-15 text-secondary"></i> v1.5.0</a>
+                                    </li>
+                                    <li>
+                                        <a href="#!"><i class="ri-stop-mini-fill align-middle fs-15 text-info"></i>
+                                            v1.6.0</a>
+                                    </li>
+                                    <li>
+                                        <a href="#!"><i class="ri-stop-mini-fill align-middle fs-15 text-primary"></i>
+                                            v1.7.0</a>
+                                    </li>
+                                    <li>
+                                        <a href="#!"><i class="ri-stop-mini-fill align-middle fs-15 text-warning"></i>
+                                            v1.8.0</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <a data-bs-toggle="collapse" href="#projectManagement" class="nav-link fs-13">Project
+                                Management</a>
+                            <div class="collapse" id="projectManagement">
+                                <ul class="mb-0 sub-menu list-unstyled ps-3 vstack gap-2 mb-2">
+                                    <li>
+                                        <a href="#!"><i class="ri-stop-mini-fill align-middle fs-15 text-danger"></i>
+                                            v2.1.0</a>
+                                    </li>
+                                    <li>
+                                        <a href="#!"><i
+                                                class="ri-stop-mini-fill align-middle fs-15 text-secondary"></i> v2.2.0</a>
+                                    </li>
+                                    <li>
+                                        <a href="#!"><i class="ri-stop-mini-fill align-middle fs-15 text-info"></i>
+                                            v2.3.0</a>
+                                    </li>
+                                    <li>
+                                        <a href="#!"><i class="ri-stop-mini-fill align-middle fs-15 text-primary"></i>
+                                            v2.4.0</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <a data-bs-toggle="collapse" href="#skoteAdmin" class="nav-link fs-13">Skote Admin &
+                                Dashboard</a>
+                            <div class="collapse" id="skoteAdmin">
+                                <ul class="mb-0 sub-menu list-unstyled ps-3 vstack gap-2 mb-2">
+                                    <li>
+                                        <a href="#!"><i class="ri-stop-mini-fill align-middle fs-15 text-danger"></i>
+                                            v4.1.0</a>
+                                    </li>
+                                    <li>
+                                        <a href="#!"><i
+                                                class="ri-stop-mini-fill align-middle fs-15 text-secondary"></i> v4.2.0</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <a data-bs-toggle="collapse" href="#ecommerceProject" class="nav-link fs-13">Doot - Chat App
+                                Template</a>
+                            <div class="collapse" id="ecommerceProject">
+                                <ul class="mb-0 sub-menu list-unstyled ps-3 vstack gap-2 mb-2">
+                                    <li>
+                                        <a href="#!"><i class="ri-stop-mini-fill align-middle fs-15 text-danger"></i>
+                                            v1.0.0</a>
+                                    </li>
+                                    <li>
+                                        <a href="#!"><i
+                                                class="ri-stop-mini-fill align-middle fs-15 text-secondary"></i> v1.1.0</a>
+                                    </li>
+                                    <li>
+                                        <a href="#!"><i class="ri-stop-mini-fill align-middle fs-15 text-info"></i>
+                                            v1.2.0</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <div class="mt-auto text-center">
+                    <img src="{{ URL::asset('build/images/task.png') }}" alt="Task" class="img-fluid" />
+                </div>
+            </div>
+        </div>
+        <!--end side content-->
+        <div class="file-manager-content w-100 p-4 pb-0">
+            <div class="row mb-4">
+                <div class="col-auto order-1 d-block d-lg-none">
+                    <button type="button" class="btn btn-soft-success btn-icon btn-sm fs-16 file-menu-btn">
+                        <i class="ri-menu-2-fill align-bottom"></i>
+                    </button>
+                </div>
+                <div class="col-sm order-3 order-sm-2 mt-3 mt-sm-0">
+                    <h5 class="fw-semibold mb-0">Arsip Dokumen Guru </h5>
+                </div>
+
+                <div class="col-auto order-2 order-sm-3 ms-auto">
+                    <div class="hstack gap-2">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <button class="btn btn-icon fw-semibold btn-soft-danger"><i
+                                    class="ri-arrow-go-back-line"></i></button>
+                            <button class="btn btn-icon fw-semibold btn-soft-success"><i
+                                    class="ri-arrow-go-forward-line"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-3 bg-light rounded mb-4">
+                <div class="row g-2">
                     <div class="col-lg">
-                        <select class="form-control mb-3" name="tahunajaran" id="tahunajaran" required>
-                            <option value="" selected>Pilih TA</option>
-                            @foreach ($tahunAjaran as $tahunajaran => $thajar)
-                                <option value="{{ $tahunajaran }}">{{ $thajar }}</option>
+                        {{-- <div class="search-box">
+                            <input type="text" id="searchTaskList" class="form-control search"
+                                placeholder="Search task name">
+                            <i class="ri-search-line search-icon"></i>
+                        </div> --}}
+                    </div>
+                    <div class="col-lg-auto">
+                        <select class="form-control" data-plugin="choices" data-choices data-choices-search-false
+                            name="choices-select-tahunajaran" id="idThnAjaran">
+                            <option value="" selected>Pilih Tahun Ajaran</option>
+                            @foreach ($tahunAjaranOptions as $thnajar)
+                                <option value="{{ $thnajar }}">{{ $thnajar }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-lg-auto">
-                        <select class="form-control mb-3" name="semester" id="semester" required>
+                        <select class="form-control" data-plugin="choices" data-choices data-choices-search-false
+                            name="choices-select-semester" id="idSemester">
                             <option value="" selected>Pilih Semester</option>
                             <option value="Ganjil">Ganjil</option>
                             <option value="Genap">Genap</option>
                         </select>
                     </div>
                     <div class="col-lg-auto">
-                        <select class="form-select mb-3 filter-selector" aria-label="Default select example" name="filter"
-                            id="filter" required>
-                            <option value="">Pilih Filter</option>
-                            <option value="gurumapel">Guru Mata Pelajaran</option>
-                            <option value="rombel">Rombongan Belajar</option>
+                        <select class="form-control" data-plugin="choices" data-choices data-choices-search-false
+                            name="choices-select-jenis-doc" id="idJenisDoc">
+                            <option value="" selected>Pilih Jenis Dokumen</option>
+                            <option value="GuruMapel">Guru Mata Pelajaran</option>
+                            <option value="WaliKelas">Wali Kelas</option>
                         </select>
                     </div>
-                    <div class="col-xxl-4 col-sm-4">
-                        <div class="loading-message">Memuat data...</div>
-                        <div class="list-gurumapel-wrapper">
-                            <select class="form-control list-gurumapel" name="gurumapel" id="gurumapel" style="width: 100%;"
-                                disabled></select>
-                        </div>
-                    </div>
-                    <div class="col-xxl-3 col-sm-4">
-                        <div class="loading-message">Memuat data...</div>
-                        <div class="list-rombel-wrapper">
-                            <select class="form-control list-rombel" name="rombel" id="rombel" style="width: 100%;"
-                                disabled></select>
-                        </div>
+                    <div class="col-lg-auto">
+                        <button class="btn btn-primary createTask" type="button" data-bs-toggle="modal"
+                            data-bs-target="#createTask">
+                            <i class="ri-add-fill align-bottom"></i> Add Tasks
+                        </button>
                     </div>
                 </div>
-            </form>
-        </div>
-        <div class="card-body">
-            <div class="table-card">
-                {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+            </div>
+
+            <div class="todo-content position-relative px-4 mx-n4" id="todo-content">
+                <div id="elmLoader">
+                    <div class="spinner-border text-primary avatar-sm" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <div class="todo-task" id="todo-task">
+
+                </div>
             </div>
         </div>
     </div>
-    @include('pages.gurumapel.formatif-upload-nilai')
 @endsection
 @section('script')
-    <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/select2/js/select2.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/dragula/dragula.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/dom-autoscroller/dom-autoscroller.min.js') }}"></script>
 
-    {!! $dataTable->scripts() !!}
-@endsection
-@section('script-bottom')
-    <script>
-        const datatable = 'arsipngajar-table';
-
-        $(document).ready(function() {
-
-            const table = $("#arsipngajar-table").DataTable();
-
-            // Reload tabel setiap dropdown filter berubah
-            $(".form-control").on("change", function() {
-                table.ajax.reload();
-            });
-
-
-            // Event handler untuk perubahan dropdown filter
-            $(".filter-selector").on("change", function() {
-                var selectedValue = $(this).val();
-
-                // Reset semua dropdown ke disabled
-                $(".list-gurumapel").prop("disabled", true);
-                $(".list-rombel").prop("disabled", true);
-
-                // Kembali ke opsi default ("All") untuk dropdown yang dinonaktifkan
-                $(".list-gurumapel").val("All").trigger("change");
-                $(".list-rombel").val("All").trigger("change");
-
-                // Aktifkan dropdown sesuai pilihan
-                if (selectedValue === "gurumapel") {
-                    $(".list-gurumapel").prop("disabled", false);
-                } else if (selectedValue === "rombel") {
-                    $(".list-rombel").prop("disabled", false);
-                }
-            });
-
-            // Inisialisasi Select2 untuk Guru Mapel
-            $(".list-gurumapel").select2({
-                placeholder: "Pilih Guru Mapel",
-            });
-
-            // Simulasi Memuat Data untuk Guru Mapel
-            // Fetch data
-            $.ajax({
-                url: '/kurikulum/dokumenguru/get-guru', // Endpoint backend
-                method: 'GET',
-                success: function(data) {
-                    // Tambahkan opsi "Pilih Guru Mapel"
-                    var options = [{
-                            id: 'All',
-                            text: 'Pilih Guru Mapel'
-                        }, // Opsi pertama dengan value All
-                    ];
-
-                    // Tambahkan data guru ke dalam opsi
-                    data.forEach(function(guru) {
-                        options.push({
-                            id: guru.id_personil,
-                            text: `${guru.gelardepan ? guru.gelardepan + ' ' : ''}${guru.namalengkap}${guru.gelarbelakang ? ', ' + guru.gelarbelakang : ''}`
-                        });
-                    });
-
-                    // Masukkan data ke dalam dropdown
-                    $(".list-gurumapel").select2({
-                        data: options,
-                        placeholder: "Pilih Guru",
-                    });
-
-                    // Tampilkan dropdown setelah data selesai dimuat
-                    $(".loading-message").hide();
-                    $(".list-gurumapel-wrapper").fadeIn();
-                },
-                error: function(error) {
-                    console.error('Error fetching data:', error);
-
-                    // Tampilkan pesan error dan sembunyikan dropdown
-                    $(".loading-message").text("Gagal memuat data.");
-                    $(".list-gurumapel-wrapper").hide();
-                }
-            });
-
-            // Inisialisasi Select2 untuk Rombel
-            $(".list-rombel").select2({
-                placeholder: "Pilih Rombongan Belajar",
-            });
-
-            // Simulasi Memuat Data untuk Rombel
-            $.ajax({
-                url: '/kurikulum/dokumenguru/get-rombel',
-                method: 'GET',
-                beforeSend: function() {
-                    // Pastikan dropdown tersembunyi saat data belum siap
-                    $(".list-rombel-wrapper").hide();
-                    $(".loading-message").show();
-                },
-                success: function(data) {
-                    // Clear existing options
-                    $(".list-rombel").empty();
-
-                    // Add default option
-                    $(".list-rombel").append(
-                        $("<option>", {
-                            value: "All",
-                            text: "Pilih Rombel"
-                        })
-                    );
-
-                    // Loop through grouped data
-                    $.each(data, function(id_kk, rombels) {
-                        const groupLabel = rombels[0]?.nama_kk || 'Unknown';
-
-                        // Create optgroup
-                        const optgroup = $("<optgroup>", {
-                            label: groupLabel
-                        });
-
-                        // Add options to the optgroup
-                        rombels.forEach(function(rombel) {
-                            optgroup.append(
-                                $("<option>", {
-                                    value: rombel.kode_rombel,
-                                    text: rombel.rombel
-                                })
-                            );
-                        });
-
-                        // Append optgroup to the select
-                        $(".list-rombel").append(optgroup);
-                    });
-
-                    // Tampilkan dropdown setelah data selesai dimuat
-                    $(".loading-message").hide();
-                    $(".list-rombel-wrapper").fadeIn();
-                },
-                error: function(error) {
-                    console.error('Error fetching data:', error);
-                    $(".loading-message").text('Gagal memuat data.');
-                }
-            });
-        });
-    </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection
