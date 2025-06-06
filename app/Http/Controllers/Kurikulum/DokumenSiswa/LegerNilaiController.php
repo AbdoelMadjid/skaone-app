@@ -56,7 +56,7 @@ class LegerNilaiController extends Controller
 
             // Ambil data tahun ajaran dan semester berdasarkan data di KunciDataKbm atau fallback ke aktif
             $tahunajaran = $pilihData->tahunajaran ?? $tahunAjaranAktif->tahunajaran;
-            $ganjilgenap = $pilihData->ganjilgenap ?? $semester->semester;
+            $ganjilgenap = $pilihData->semester ?? $semester->semester;
 
             // Ambil kode_rombel dari $pilihData
             $kodeRombel = $pilihData ? $pilihData->kode_rombel : null;
@@ -66,6 +66,8 @@ class LegerNilaiController extends Controller
                 ->select('kel_mapel')
                 ->distinct()
                 ->where('kode_rombel', $kodeRombel)
+                ->where('tahunajaran', $tahunajaran)
+                ->where('ganjilgenap', $ganjilgenap)
                 ->get();
 
             // Dapatkan nilai rata-rata per kel_mapel untuk setiap siswa
@@ -87,9 +89,25 @@ class LegerNilaiController extends Controller
                     nilai_sumatif ns ON pr.nis = ns.nis AND kr.kel_mapel = ns.kel_mapel
                 WHERE
                     pr.rombel_kode = ?
+                    AND pr.tahun_ajaran = ?
+                    AND kr.tahunajaran = ?
+                    AND kr.ganjilgenap = ?
+                    AND nf.tahunajaran = ?
+                    AND nf.ganjilgenap = ?
+                    AND ns.tahunajaran = ?
+                    AND ns.ganjilgenap = ?
                 ORDER BY
                     pd.nis, kr.kel_mapel
-            ", [$kodeRombel]);
+            ", [
+                $kodeRombel,
+                $tahunajaran,
+                $tahunajaran,
+                $ganjilgenap,
+                $tahunajaran,
+                $ganjilgenap,
+                $tahunajaran,
+                $ganjilgenap,
+            ]);
 
             // Pivoting data programatis di PHP
             $pivotData = [];
