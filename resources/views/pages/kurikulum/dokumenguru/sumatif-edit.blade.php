@@ -25,7 +25,8 @@
                             data-tahunajaran="{{ $data->tahunajaran }}" data-ganjilgenap="{{ $data->ganjilgenap }}">
                             <i class="ri-delete-bin-2-line"></i>
                         </button>
-                        <a class="btn btn-soft-primary" href="{{ route('gurumapel.penilaian.sumatif.index') }}">Kembali</a>
+                        <a class="btn btn-soft-primary"
+                            href="{{ route('kurikulum.dokumenguru.arsip-gurumapel.index') }}">Kembali</a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -51,7 +52,8 @@
                             </div>
                         </div>
                     </div><!--end row-->
-                    <form action="{{ route('gurumapel.penilaian.sumatif.update', $data->id) }}" method="post">
+                    <form action="{{ route('kurikulum.dokumenguru.sumatif.updatenilaiSumatif', $data->id) }}"
+                        method="post">
                         @csrf
                         @method('PUT') <!-- Tambahkan method PUT untuk update -->
                         <input type="hidden" name="kode_mapel_rombel" value="{{ $data->kode_mapel_rombel }}">
@@ -289,7 +291,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: "{{ route('gurumapel.penilaian.hapusnilaisumatif') }}", // Ganti dengan route sesuai
+                            url: "{{ route('kurikulum.dokumenguru.hapusnilaisumatif') }}", // Ganti dengan route sesuai
                             type: 'POST', // Atau gunakan DELETE jika sesuai
                             data: {
                                 _token: '{{ csrf_token() }}',
@@ -303,7 +305,7 @@
                                 showToast('success', 'Data berhasil dihapus!');
                                 // Reload tabel atau halaman jika perlu
                                 window.location.href =
-                                    "{{ route('gurumapel.penilaian.sumatif.index') }}";
+                                    "{{ route('kurikulum.dokumenguru.arsip-gurumapel.index') }}";
                             },
                             error: function(xhr) {
                                 showToast('error',

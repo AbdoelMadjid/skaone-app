@@ -18,19 +18,27 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1">Edit Nilai @yield('title') - {{ $fullName }}</h5>
+                    <h5 class="card-title mb-0 flex-grow-1">Tambah Nilai @yield('title') - {{ $fullName }}</h5>
                     <div>
-                        <button id="hapusdata" class="btn btn-soft-danger" data-kode-rombel="{{ $data->kode_rombel }}"
-                            data-kel-mapel="{{ $data->kel_mapel }}" data-id-personil="{{ $data->id_personil }}"
-                            data-tahunajaran="{{ $data->tahunajaran }}" data-ganjilgenap="{{ $data->ganjilgenap }}">
-                            <i class="ri-delete-bin-2-line"></i>
-                        </button>
-                        <a class="btn btn-soft-primary" href="{{ route('gurumapel.penilaian.formatif.index') }}">Kembali</a>
+                        {{-- <div class="btn-group dropstart">
+                            <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
+                                class="btn btn-soft-info btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                <li><a href="{{ route('gurumapel.penilaian.exportformatif', ['kode_rombel' => $data->kode_rombel, 'kel_mapel' => $data->kel_mapel, 'id_personil' => $data->id_personil]) }}"
+                                        class="dropdown-item btn btn-soft-primary" tittle="Download Format Nilai Formatif">
+                                        <i class="bx bx-download"></i> Download</a></li>
+                                <li><button class="dropdown-item btn btn-soft-success" data-bs-toggle="modal"
+                                        data-bs-target="#modalUploadFormatif" tittle="Upload Nilai Formatif">
+                                        <i class="bx bx-upload"></i> Upload</button></li>
+                            </ul>
+                        </div> --}}
+                        <a class="btn btn-soft-primary"
+                            href="{{ route('kurikulum.dokumenguru.arsip-gurumapel.index') }}">Kembali</a>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        @include('pages.gurumapel.ident-kbm')
+                        @include('pages.kurikulum.dokumenguru.ident-kbm')
                         <div class="col-xl-6 col-md-6">
                             <!-- Rounded Ribbon -->
                             <div class="card ribbon-box border shadow-none mb-lg-3">
@@ -52,9 +60,8 @@
                         </div>
                     </div><!--end row-->
 
-                    <form action="{{ route('gurumapel.penilaian.formatif.update', $data->id) }}" method="post">
+                    <form action="{{ route('kurikulum.dokumenguru.formatif.storenilaiFormatif') }}" method="post">
                         @csrf
-                        @method('PUT') <!-- Tambahkan method PUT untuk update -->
                         <input type="hidden" name="kode_mapel_rombel" value="{{ $data->kode_mapel_rombel }}">
                         <input type="hidden" name="tahunajaran" value="{{ $data->tahunajaran }}">
                         <input type="hidden" name="kode_kk" value="{{ $data->kode_kk }}">
@@ -93,30 +100,31 @@
                                             <td class="text-center">
                                                 <input type="text" class="tp-input"
                                                     name="tp_nilai[{{ $siswa->nis }}][tp_{{ $i }}]"
-                                                    id="tp_nilai_{{ $siswa->nis }}_{{ $i }}"
-                                                    value="{{ $siswa->{'tp_nilai_' . $i} }}"
+                                                    id="tp_nilai_{{ $siswa->nis }}_{{ $i }}" value=""
                                                     style="width: 65px; text-align: center;" />
-
-                                                <textarea name="tp_isi_{{ $siswa->nis }}_{{ $i }}" id="tp_isi_{{ $siswa->nis }}_{{ $i }}"
-                                                    class="d-none">{{ $tujuanPembelajaran[$i - 1]->tp_isi ?? '' }}</textarea>
+                                                <!-- Textarea untuk tujuan pembelajaran -->
+                                                @if (isset($tujuanPembelajaran[$i - 1]))
+                                                    <textarea name="tp_isi_{{ $siswa->nis }}_{{ $i }}" id="tp_isi_{{ $siswa->nis }}_{{ $i }}"
+                                                        rows="5" class="d-none">{{ $tujuanPembelajaran[$i - 1]->tp_isi }}</textarea>
+                                                @else
+                                                    <textarea name="tp_isi_{{ $siswa->nis }}_{{ $i }}" id="tp_isi_{{ $siswa->nis }}_{{ $i }}"
+                                                        rows="5" class="d-none"></textarea>
+                                                @endif
                                             </td>
                                         @endfor
                                         <td class="bg-primary-subtle text-center">
                                             <input type="text" class="rerata_formatif"
                                                 name="rerata_formatif_{{ $siswa->nis }}"
-                                                id="rerata_formatif_{{ $siswa->nis }}"
-                                                value="{{ $siswa->rerata_formatif }}" readonly
+                                                id="rerata_formatif_{{ $siswa->nis }}" readonly
                                                 style="width: 75px; text-align: center;" />
                                         </td>
                                     </tr>
                                 @endforeach
-
                             </tbody>
                         </table>
                         <div class="col-lg-12">
                             <div class="gap-2 hstack justify-content-end">
-                                <button type="submit" class="btn btn-primary">Updates</button>
-                                {{-- <button type="button" class="btn btn-soft-success">Cancel</button> --}}
+                                <button type="submit" class="btn btn-primary">Create</button>
                             </div>
                         </div>
                     </form>
@@ -124,6 +132,9 @@
             </div>
         </div>
     </div>
+    @if (session('success'))
+        <div id="session-message" data-message="{{ session('success') }}"></div>
+    @endif
 @endsection
 @section('script')
     <script>
@@ -169,105 +180,9 @@
                 }
             }
         });
-        // Fungsi untuk memvalidasi nilai input
-        function validateInputs() {
-            const jumlahTP = parseInt(document.getElementById('jml_tp').value); // Ambil jumlah TP
-            const kkm = parseFloat(document.getElementById('kkm').value); // Ambil KKM dari input dengan ID 'kkm'
-
-            // Ambil semua input dengan class 'tp-input'
-            const inputs = document.querySelectorAll('.tp-input');
-
-            inputs.forEach(input => {
-                const siswaNis = input.getAttribute('name').match(/\[(.*?)\]/)[1]; // Ambil NIS siswa
-                const nilai = parseFloat(input.value);
-
-                // Validasi nilai
-                if (input.value.trim() === "" || isNaN(nilai)) {
-                    // Jika nilai kosong atau tidak valid
-                    input.style.backgroundColor = 'yellow'; // Ubah warna latar belakang menjadi kuning
-                    input.style.color = 'black'; // Ubah warna teks menjadi hitam
-                } else if (nilai < kkm || nilai > 100) {
-                    // Jika nilai kurang dari KKM atau lebih dari 100
-                    input.style.backgroundColor = 'red'; // Ubah warna latar belakang menjadi merah
-                    input.style.color = 'white'; // Ubah warna teks menjadi putih
-                } else {
-                    // Jika nilai valid
-                    input.style.backgroundColor = ''; // Reset warna latar belakang
-                    input.style.color = ''; // Reset warna teks
-                }
-
-                // Ambil nilai rerata_formatif langsung
-                const rerataInput = document.getElementById(`rerata_formatif_${siswaNis}`);
-                const rerataValue = parseFloat(rerataInput.value);
-
-                // Validasi rerata_formatif jika kurang dari KKM atau lebih dari 100
-                if (isNaN(rerataValue) || rerataValue < kkm || rerataValue > 100) {
-                    rerataInput.style.backgroundColor = 'red'; // Ubah warna latar belakang menjadi merah
-                    rerataInput.style.color = 'white'; // Ubah warna teks menjadi putih
-                } else {
-                    rerataInput.style.backgroundColor = ''; // Reset warna latar belakang
-                    rerataInput.style.color = ''; // Reset warna teks
-                }
-            });
-        }
-
-
-        // Jalankan validasi saat halaman selesai dimuat
-        document.addEventListener('DOMContentLoaded', validateInputs);
     </script>
 @endsection
 @section('script-bottom')
-    <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
-    <script>
-        @if (session('toast_success'))
-            showToast('success', '{{ session('toast_success') }}');
-        @endif
-
-        $(document).ready(function() {
-            $('#hapusdata').on('click', function() {
-                // Ambil data dari atribut data-* pada tombol
-                var kodeRombel = $(this).data('kode-rombel');
-                var kelMapel = $(this).data('kel-mapel');
-                var idPersonil = $(this).data('id-personil');
-                var thnAjaran = $(this).data('tahunajaran');
-                var ganjilGenap = $(this).data('ganjilgenap');
-
-                Swal.fire({
-                    title: 'Apa Anda yakin?',
-                    text: "Data ini akan dihapus secara permanen!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, Hapus!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: "{{ route('gurumapel.penilaian.hapusnilaiformatif') }}", // Ganti dengan route sesuai
-                            type: 'POST', // Atau gunakan DELETE jika sesuai
-                            data: {
-                                _token: '{{ csrf_token() }}',
-                                kode_rombel: kodeRombel,
-                                kel_mapel: kelMapel,
-                                id_personil: idPersonil,
-                                tahunajaran: thnAjaran,
-                                ganjilgenap: ganjilGenap
-                            },
-                            success: function(response) {
-                                showToast('success', 'Data berhasil dihapus!');
-                                // Reload tabel atau halaman jika perlu
-                                window.location.href =
-                                    "{{ route('gurumapel.penilaian.formatif.index') }}";
-                            },
-                            error: function(xhr) {
-                                showToast('error',
-                                    'Terjadi kesalahan saat menghapus data!');
-                            }
-                        });
-                    }
-                });
-            });
-        });
-    </script>
+    {{--  --}}
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

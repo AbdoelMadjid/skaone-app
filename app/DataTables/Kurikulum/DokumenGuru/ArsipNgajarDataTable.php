@@ -73,6 +73,8 @@ class ArsipNgajarDataTable extends DataTable
                 $jumlahTP = DB::table('tujuan_pembelajarans')
                     ->where('kode_rombel', $row->kode_rombel)
                     ->where('kel_mapel', $row->kel_mapel)
+                    ->where('tahunajaran', $row->tahunajaran)
+                    ->where('ganjilgenap', $row->ganjilgenap)
                     ->count();
 
                 $dataExists = DB::table('nilai_formatif')
@@ -92,12 +94,14 @@ class ArsipNgajarDataTable extends DataTable
                             <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
                                 class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
-                                <li><a class="dropdown-item" href="' . route('gurumapel.penilaian.formatif.create', [
+                                <li><a class="dropdown-item" href="' . route('kurikulum.dokumenguru.arsip-gurumapel.formatif.createNilai', [
                             'kode_rombel' => $row->kode_rombel,
                             'kel_mapel' => $row->kel_mapel,
                             'id_personil' => $row->id_personil,
+                            'tahunajaran' => $row->tahunajaran,
+                            'ganjilgenap' => $row->ganjilgenap,
                         ]) . '"><i class="bx bx-edit-alt"></i> Create</a></li>
-                        <li><a href="' . route('gurumapel.penilaian.exportformatif', ['kode_rombel' => $row->kode_rombel, 'kel_mapel' => $row->kel_mapel, 'id_personil' => $row->id_personil]) . '"
+                        <li><a href="' . route('kurikulum.dokumenguru.exportformatif', ['kode_rombel' => $row->kode_rombel, 'kel_mapel' => $row->kel_mapel, 'id_personil' => $row->id_personil, 'tahunajaran' => $row->tahunajaran, 'ganjilgenap' => $row->ganjilgenap]) . '"
                                         class="dropdown-item btn btn-soft-primary" tittle="Download Format Nilai Formatif"><i class="bx bx-download"></i> Download</a></li>
                                         <li>
                                         <button class="dropdown-item btn btn-soft-success"
@@ -123,10 +127,12 @@ class ArsipNgajarDataTable extends DataTable
                             <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
                                 class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
-                                <li><a class="dropdown-item" href="' . route('gurumapel.penilaian.formatif.edit', [
+                                <li><a class="dropdown-item" href="' . route('kurikulum.dokumenguru.arsip-gurumapel.formatif.editNilai', [
                             'kode_rombel' => $row->kode_rombel,
                             'kel_mapel' => $row->kel_mapel,
                             'id_personil' => $row->id_personil,
+                            'tahunajaran' => $row->tahunajaran,
+                            'ganjilgenap' => $row->ganjilgenap,
                         ]) . '">Edit</a></li>
                             </ul>
                         </div>';
@@ -148,6 +154,8 @@ class ArsipNgajarDataTable extends DataTable
                 $jumlahTP = DB::table('tujuan_pembelajarans')
                     ->where('kode_rombel', $row->kode_rombel)
                     ->where('kel_mapel', $row->kel_mapel)
+                    ->where('tahunajaran', $row->tahunajaran)
+                    ->where('ganjilgenap', $row->ganjilgenap)
                     ->count();
 
                 $dataExists = DB::table('nilai_sumatif')
@@ -167,12 +175,14 @@ class ArsipNgajarDataTable extends DataTable
                             <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
                                 class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
-                                <li><a class="dropdown-item" href="' . route('gurumapel.penilaian.sumatif.create', [
+                                <li><a class="dropdown-item" href="' . route('kurikulum.dokumenguru.arsip-gurumapel.sumatif.createNilai', [
                             'kode_rombel' => $row->kode_rombel,
                             'kel_mapel' => $row->kel_mapel,
                             'id_personil' => $row->id_personil,
+                            'tahunajaran' => $row->tahunajaran,
+                            'ganjilgenap' => $row->ganjilgenap,
                         ]) . '"><i class="bx bx-edit-alt"></i> Create</a></li>
-                        <li><a href="' . route('gurumapel.penilaian.exportsumatif', ['kode_rombel' => $row->kode_rombel, 'kel_mapel' => $row->kel_mapel, 'id_personil' => $row->id_personil]) . '""
+                        <li><a href="' . route('kurikulum.dokumenguru.exportsumatif', ['kode_rombel' => $row->kode_rombel, 'kel_mapel' => $row->kel_mapel, 'id_personil' => $row->id_personil, 'tahunajaran' => $row->tahunajaran, 'ganjilgenap' => $row->ganjilgenap]) . '""
                                         class="dropdown-item btn btn-soft-primary" tittle="Download Format Nilai Sumatif">
                                         <i class="bx bx-download"></i> Download</a></li>
                                 <li>
@@ -197,10 +207,12 @@ class ArsipNgajarDataTable extends DataTable
                             <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
                                 class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
-                                <li><a class="dropdown-item" href="' . route('gurumapel.penilaian.sumatif.edit', [
+                                <li><a class="dropdown-item" href="' . route('kurikulum.dokumenguru.arsip-gurumapel.sumatif.editNilai', [
                             'kode_rombel' => $row->kode_rombel,
                             'kel_mapel' => $row->kel_mapel,
                             'id_personil' => $row->id_personil,
+                            'tahunajaran' => $row->tahunajaran,
+                            'ganjilgenap' => $row->ganjilgenap,
                         ]) . '">Edit</a></li>
                             </ul>
                         </div>';

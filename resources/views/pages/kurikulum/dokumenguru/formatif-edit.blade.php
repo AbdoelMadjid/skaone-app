@@ -25,12 +25,13 @@
                             data-tahunajaran="{{ $data->tahunajaran }}" data-ganjilgenap="{{ $data->ganjilgenap }}">
                             <i class="ri-delete-bin-2-line"></i>
                         </button>
-                        <a class="btn btn-soft-primary" href="{{ route('gurumapel.penilaian.formatif.index') }}">Kembali</a>
+                        <a class="btn btn-soft-primary"
+                            href="{{ route('kurikulum.dokumenguru.arsip-gurumapel.index') }}">Kembali</a>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        @include('pages.gurumapel.ident-kbm')
+                        @include('pages.kurikulum.dokumenguru.ident-kbm')
                         <div class="col-xl-6 col-md-6">
                             <!-- Rounded Ribbon -->
                             <div class="card ribbon-box border shadow-none mb-lg-3">
@@ -52,7 +53,8 @@
                         </div>
                     </div><!--end row-->
 
-                    <form action="{{ route('gurumapel.penilaian.formatif.update', $data->id) }}" method="post">
+                    <form action="{{ route('kurikulum.dokumenguru.formatif.updatenilaiFormatif', $data->id) }}"
+                        method="post">
                         @csrf
                         @method('PUT') <!-- Tambahkan method PUT untuk update -->
                         <input type="hidden" name="kode_mapel_rombel" value="{{ $data->kode_mapel_rombel }}">
@@ -243,7 +245,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: "{{ route('gurumapel.penilaian.hapusnilaiformatif') }}", // Ganti dengan route sesuai
+                            url: "{{ route('kurikulum.dokumenguru.hapusnilaiformatif') }}", // Ganti dengan route sesuai
                             type: 'POST', // Atau gunakan DELETE jika sesuai
                             data: {
                                 _token: '{{ csrf_token() }}',
@@ -257,7 +259,7 @@
                                 showToast('success', 'Data berhasil dihapus!');
                                 // Reload tabel atau halaman jika perlu
                                 window.location.href =
-                                    "{{ route('gurumapel.penilaian.formatif.index') }}";
+                                    "{{ route('kurikulum.dokumenguru.arsip-gurumapel.index') }}";
                             },
                             error: function(xhr) {
                                 showToast('error',

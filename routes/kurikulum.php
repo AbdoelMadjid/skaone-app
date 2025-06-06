@@ -8,6 +8,8 @@ use App\Http\Controllers\Kurikulum\DataKBM\MataPelajaranPerJurusanController;
 use App\Http\Controllers\Kurikulum\DataKBM\PesertaDidikRombelController;
 use App\Http\Controllers\Kurikulum\DokumenGuru\AbsensiGuruController;
 use App\Http\Controllers\Kurikulum\DokumenGuru\ArsipGuruController;
+use App\Http\Controllers\Kurikulum\DokumenGuru\ArsipGuruMapelController;
+use App\Http\Controllers\Kurikulum\DokumenGuru\ArsipWaliKelasController;
 use App\Http\Controllers\Kurikulum\DokumenGuru\PerGuruController;
 use App\Http\Controllers\Kurikulum\DokumenGuru\PerRombelController;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\CetakRaporController;
@@ -79,9 +81,31 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::group(['prefix' => 'dokumenguru', 'as' => 'dokumenguru.'], function () {
-            Route::resource('arsip', ArsipGuruController::class);
-            Route::get('/get-guru', [ArsipGuruController::class, 'getGuru']);
-            Route::get('/get-rombel', [ArsipGuruController::class, 'getRombel']);
+            Route::resource('arsip-gurumapel', ArsipGuruMapelController::class);
+            Route::get('/get-guru', [ArsipGuruMapelController::class, 'getGuru']);
+            Route::get('/get-rombel', [ArsipGuruMapelController::class, 'getRombel']);
+
+            Route::post('/simpanpilihan', [ArsipGuruMapelController::class, 'simpanPilihan']);
+            Route::get('/get-pilihan-user', [ArsipGuruMapelController::class, 'getPilihanUser']);
+
+            Route::get('arsip-gurumapel/formatif/createNilai/{kode_rombel}/{kel_mapel}/{id_personil}/{tahunajaran}/{ganjilgenap}', [ArsipGuruMapelController::class, 'createNilaiFormatif'])->name('arsip-gurumapel.formatif.createNilai');
+            Route::get('arsip-gurumapel/formatif/editNilai/{kode_rombel}/{kel_mapel}/{id_personil}/{tahunajaran}/{ganjilgenap}', [ArsipGuruMapelController::class, 'editNilaiFormatif'])->name('arsip-gurumapel.formatif.editNilai');
+            Route::post('/formatif/storenilaiFormatif', [ArsipGuruMapelController::class, 'storeNilaiFormatif'])->name('formatif.storenilaiFormatif');
+            Route::put('/formatif/{id}/updatenilaiFormatif', [ArsipGuruMapelController::class, 'updateNilaiFormatif'])->name('formatif.updatenilaiFormatif');
+            Route::post('/hapusnilaiformatif', [ArsipGuruMapelController::class, 'hapusNilaiFormatif'])->name('hapusnilaiformatif');
+            Route::get('/exportformatif', [ArsipGuruMapelController::class, 'exportExcelFormatif'])->name('exportformatif');
+            Route::post('/uploadformatif', [ArsipGuruMapelController::class, 'uploadNilaiFormatif'])->name('uploadformatif');
+
+            Route::get('arsip-gurumapel/sumatif/createNilai/{kode_rombel}/{kel_mapel}/{id_personil}/{tahunajaran}/{ganjilgenap}', [ArsipGuruMapelController::class, 'createNilaiSumatif'])->name('arsip-gurumapel.sumatif.createNilai');
+            Route::get('arsip-gurumapel/sumatif/editNilai/{kode_rombel}/{kel_mapel}/{id_personil}/{tahunajaran}/{ganjilgenap}', [ArsipGuruMapelController::class, 'editNilaiSumatif'])->name('arsip-gurumapel.sumatif.editNilai');
+            Route::post('/sumatif/storenilaiSumatif', [ArsipGuruMapelController::class, 'storeNilaiSumatif'])->name('sumatif.storenilaiSumatif');
+            Route::put('/sumatif/{id}/updatenilaiSumatif', [ArsipGuruMapelController::class, 'updateNilaiSumatif'])->name('sumatif.updatenilaiSumatif');
+            Route::post('/hapusnilaisumatif', [ArsipGuruMapelController::class, 'hapusNilaiSumatif'])->name('hapusnilaisumatif');
+            Route::get('/exportsumatif', [ArsipGuruMapelController::class, 'exportExcelSumatif'])->name('exportsumatif');
+            Route::post('/uploadsumatif', [ArsipGuruMapelController::class, 'uploadNilaiSumatif'])->name('uploadsumatif');
+
+
+            Route::resource('arsip-walikelas', ArsipWaliKelasController::class);
         });
 
         Route::group(['prefix' => 'dokumentsiswa', 'as' => 'dokumentsiswa.'], function () {

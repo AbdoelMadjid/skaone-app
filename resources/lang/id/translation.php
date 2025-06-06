@@ -292,6 +292,8 @@ return [
     "dokumen-guru" => "Dokumen Guru",
     "absensi" => "Absensi",
     "arsip" => "Arsip",
+    "arsip-wali-kelas" => "Arsip Wali Kelas",
+    "arsip-guru-mata-pelajaran" => "Arsip Guru Mata Pelajaran",
 
     "dokumen-siswa" => "Dokumen Siswa",
     "cetak-rapor" => "Cetak Rapor",

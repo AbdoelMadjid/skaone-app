@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    @lang('translation.arsip')
+    @lang('translation.arsip-guru-mata-pelajaran')
 @endsection
 @section('css')
     <link href="{{ URL::asset('build/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
@@ -29,10 +29,9 @@
             @lang('translation.kurikulum')
         @endslot
         @slot('li_2')
-            @lang('translation.dokumenguru')
+            @lang('translation.dokumen-guru')
         @endslot
     @endcomponent
-
     <div class="card">
         <div class="card-body">
             <form>
@@ -83,7 +82,8 @@
             </div>
         </div>
     </div>
-    @include('pages.gurumapel.formatif-upload-nilai')
+    @include('pages.kurikulum.dokumenguru.formatif-upload-nilai')
+    @include('pages.kurikulum.dokumenguru.sumatif-upload-nilai')
 @endsection
 @section('script')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
@@ -99,6 +99,10 @@
     <script>
         const datatable = 'arsipngajar-table';
 
+        @if (session('toast_success'))
+            showToast('success', '{{ session('toast_success') }}');
+        @endif
+
         $(document).ready(function() {
 
             const table = $("#arsipngajar-table").DataTable();
@@ -106,8 +110,40 @@
             // Reload tabel setiap dropdown filter berubah
             $(".form-control").on("change", function() {
                 table.ajax.reload();
+                simpanPilihanKeDatabase();
             });
 
+            function simpanPilihanKeDatabase() {
+                const tahunajaran = $("#tahunajaran").val();
+                const semester = $("#semester").val();
+                const pilih_filter = $("#filter").val();
+                const id_guru = pilih_filter === "gurumapel" ? $("#gurumapel").val() : null;
+                const id_rombel = pilih_filter === "rombel" ? $("#rombel").val() : null;
+
+                if (!tahunajaran || !semester || !pilih_filter) {
+                    // Minimal validasi sebelum kirim
+                    return;
+                }
+
+                $.ajax({
+                    url: '/kurikulum/dokumenguru/simpanpilihan', // Buat route untuk ini
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        tahunajaran: tahunajaran,
+                        semester: semester,
+                        pilih_filter: pilih_filter,
+                        id_guru: id_guru,
+                        id_rombel: id_rombel
+                    },
+                    success: function(response) {
+                        console.log('Pilihan berhasil disimpan atau diperbarui.');
+                    },
+                    error: function(xhr) {
+                        console.error('Gagal menyimpan data:', xhr.responseText);
+                    }
+                });
+            }
 
             // Event handler untuk perubahan dropdown filter
             $(".filter-selector").on("change", function() {
@@ -232,7 +268,38 @@
                     $(".loading-message").text('Gagal memuat data.');
                 }
             });
+
+            $.ajax({
+                url: '/kurikulum/dokumenguru/get-pilihan-user',
+                method: 'GET',
+                success: function(data) {
+                    if (data) {
+                        // Isi nilai dropdown
+                        $("#tahunajaran").val(data.tahunajaran).trigger("change");
+                        $("#semester").val(data.semester).trigger("change");
+                        $("#filter").val(data.pilih_filter).trigger("change");
+
+                        // Tunggu 500ms agar select2 selesai inisialisasi, lalu set guru/rombel
+                        setTimeout(function() {
+                            if (data.pilih_filter === 'gurumapel') {
+                                $("#gurumapel").val(data.id_guru).trigger("change").prop(
+                                    "disabled", false);
+                            } else if (data.pilih_filter === 'rombel') {
+                                $("#rombel").val(data.id_rombel).trigger("change").prop(
+                                    "disabled", false);
+                            }
+                        }, 500);
+                    }
+                },
+                error: function(xhr) {
+                    console.error('Gagal mengambil data pilihan user:', xhr.responseText);
+                }
+            });
         });
+
+        /* handleDataTableEvents(datatable);
+        handleAction(datatable)
+        handleDelete(datatable) */
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

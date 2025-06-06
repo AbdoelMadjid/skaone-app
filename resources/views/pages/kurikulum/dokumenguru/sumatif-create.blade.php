@@ -20,7 +20,8 @@
                 <div class="card-header d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">Tambah Nilai @yield('title') - {{ $fullName }}</h5>
                     <div>
-                        <a class="btn btn-soft-primary" href="{{ route('gurumapel.penilaian.sumatif.index') }}">Kembali</a>
+                        <a class="btn btn-soft-primary"
+                            href="{{ route('kurikulum.dokumenguru.arsip-gurumapel.index') }}">Kembali</a>
                         {{--
                         @if (auth()->check() &&
     auth()->user()->hasAnyRole(['master']))
@@ -33,7 +34,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        @include('pages.gurumapel.ident-kbm')
+                        @include('pages.kurikulum.dokumenguru.ident-kbm')
                         <div class="col-xl-6 col-md-6">
                             <!-- Rounded Ribbon -->
                             <div class="card ribbon-box border shadow-none mb-lg-3">
@@ -54,7 +55,7 @@
                             </div>
                         </div>
                     </div><!--end row-->
-                    <form action="{{ route('gurumapel.penilaian.sumatif.store') }}" method="post">
+                    <form action="{{ route('kurikulum.dokumenguru.sumatif.storenilaiSumatif') }}" method="post">
                         @csrf
                         <input type="hidden" name="kode_mapel_rombel" value="{{ $data->kode_mapel_rombel }}">
                         <input type="hidden" name="tahunajaran" value="{{ $data->tahunajaran }}">

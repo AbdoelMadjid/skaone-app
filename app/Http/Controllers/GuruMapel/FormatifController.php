@@ -551,7 +551,7 @@ class FormatifController extends Controller
             // Insert data ke database
             NilaiFormatif::insert($data);
 
-            return redirect()->route('gurumapel.penilaian.formatif.edit', [
+            return redirect()->route('gurumapel.penilaian.formatif.editNilai', [
                 'kode_rombel' => $kode_rombel,
                 'kel_mapel' => $kel_mapel,
                 'id_personil' => $id_personil,

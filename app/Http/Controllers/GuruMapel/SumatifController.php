@@ -504,10 +504,12 @@ class SumatifController extends Controller
             // Insert data ke database
             NilaiSumatif::insert($data);
 
-            return redirect()->route('gurumapel.penilaian.sumatif.edit', [
+            return redirect()->route('gurumapel.penilaian.sumatif.editNilai', [
                 'kode_rombel' => $kode_rombel,
                 'kel_mapel' => $kel_mapel,
                 'id_personil' => $id_personil,
+                'tahunajaran' => $tahunajaran,
+                'ganjilgenap' => $ganjilgenap,
             ])->with('toast_success', 'Data Nilai Sumatif berhasil diunggah ke database.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());

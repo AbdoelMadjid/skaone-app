@@ -13,7 +13,8 @@ class PilihArsipGuru extends Model
         'id_user',
         'tahunajaran',
         'semester',
-        'jenis_arsip',
+        'pilih_filter',
         'id_guru',
+        'id_rombel',
     ];
 }
