@@ -129,6 +129,7 @@ Route::middleware('auth')->group(function () {
             Route::get('transkriprapor/{nis}', [TranskripNilaiController::class, 'getTranskrip']);
 
             Route::resource('remedial-peserta-didik', RemedialPesertaDidikNilaiController::class);
+            Route::get('/get-kode-rombel-remedial', [RemedialPesertaDidikNilaiController::class, 'getKodeRombelRemedial']);
         });
 
         Route::group(['prefix' => 'perangkatujian', 'as' => 'perangkatujian.'], function () {
