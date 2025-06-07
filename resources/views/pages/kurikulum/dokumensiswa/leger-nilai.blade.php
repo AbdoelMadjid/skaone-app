@@ -293,7 +293,7 @@
                 if (!tahunAjaran || !kodeKk || !tingkat) return;
 
                 fetch(
-                        `/kurikulum/dokumentsiswa/get-kode-rombel?tahunajaran=${tahunAjaran}&kode_kk=${kodeKk}&tingkat=${tingkat}`
+                        `/kurikulum/dokumentsiswa/get-kode-rombel-leger?tahunajaran=${tahunAjaran}&kode_kk=${kodeKk}&tingkat=${tingkat}`
                     )
                     .then(response => response.json())
                     .then(data => {

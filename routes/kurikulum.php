@@ -117,6 +117,7 @@ Route::middleware('auth')->group(function () {
                 ->name('simpanpilihcetakrapor');
 
             Route::resource('leger-nilai', LegerNilaiController::class);
+            Route::get('/get-kode-rombel-leger', [LegerNilaiController::class, 'getKodeRombelLeger']);
             Route::get('/export-pivot-data', [LegerNilaiController::class, 'exportPivotData'])->name('exportpivotData');
 
             Route::resource('ijazah', IjazahController::class);

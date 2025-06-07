@@ -68,6 +68,7 @@ class LegerNilaiController extends Controller
                 ->where('kode_rombel', $kodeRombel)
                 ->where('tahunajaran', $tahunajaran)
                 ->where('ganjilgenap', $ganjilgenap)
+                ->orderBy('kel_mapel')
                 ->get();
 
             // Dapatkan nilai rata-rata per kel_mapel untuk setiap siswa
@@ -136,6 +137,7 @@ class LegerNilaiController extends Controller
                     'personil_sekolahs.gelarbelakang',
                 )
                 ->where('kbm_per_rombels.kode_rombel', $kodeRombel)
+                ->orderBy('kbm_per_rombels.kel_mapel')
                 ->get();
 
             return view("pages.kurikulum.dokumensiswa.leger-nilai", [
@@ -246,16 +248,54 @@ class LegerNilaiController extends Controller
         //
     }
 
+    public function getKodeRombelLeger(Request $request)
+    {
+        $tahunAjaran = $request->query('tahunajaran');
+        $kodeKk = $request->query('kode_kk');
+        $tingkat = $request->query('tingkat');
+
+        $rombonganBelajar = RombonganBelajar::where('tahunajaran', $tahunAjaran)
+            ->where('id_kk', $kodeKk)
+            ->where('tingkat', $tingkat)
+            ->get(['rombel', 'kode_rombel']);
+
+        return response()->json($rombonganBelajar);
+    }
+
+
     public function exportPivotData(Request $request)
     {
-        $kodeRombel = $request->input('kode_rombel');
+        if (auth()->check()) {
+            $user = User::find(Auth::user()->id);
+            $personal_id = $user->personal_id;
 
-        if (!$kodeRombel) {
-            return redirect()->back()->with('error', 'Kode Rombel tidak ditemukan.');
-        }
+            // Cek apakah ada tahun ajaran aktif
+            $tahunAjaranAktif = TahunAjaran::aktif()->first();
+            if (!$tahunAjaranAktif) {
+                return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
+            }
 
-        // Data untuk Sheet 1
-        $nilaiRataSiswa = DB::select("
+            // Cek apakah ada semester aktif untuk tahun ajaran tersebut
+            $semester = $tahunAjaranAktif->semesters()->where('status', 'Aktif')->first();
+            if (!$semester) {
+                return redirect()->back()->with('error', 'Tidak ada semester aktif.');
+            }
+
+            // Cek apakah ada data pada KunciDataKbm untuk id_personil
+            $pilihData = MilihData::where('id_personil', $personal_id)->first();
+
+            // Ambil data tahun ajaran dan semester berdasarkan data di KunciDataKbm atau fallback ke aktif
+            $tahunajaran = $pilihData->tahunajaran ?? $tahunAjaranAktif->tahunajaran;
+            $ganjilgenap = $pilihData->semester ?? $semester->semester;
+
+            $kodeRombel = $request->input('kode_rombel');
+
+            if (!$kodeRombel) {
+                return redirect()->back()->with('error', 'Kode Rombel tidak ditemukan.');
+            }
+
+            // Data untuk Sheet 1
+            $nilaiRataSiswa = DB::select("
         SELECT
             pd.nis,
             pd.nama_lengkap,
@@ -273,38 +313,56 @@ class LegerNilaiController extends Controller
             nilai_sumatif ns ON pr.nis = ns.nis AND kr.kel_mapel = ns.kel_mapel
         WHERE
             pr.rombel_kode = ?
+            AND pr.tahun_ajaran = ?
+            AND kr.tahunajaran = ?
+            AND kr.ganjilgenap = ?
+            AND nf.tahunajaran = ?
+            AND nf.ganjilgenap = ?
+            AND ns.tahunajaran = ?
+            AND ns.ganjilgenap = ?
         ORDER BY
             pd.nis, kr.kel_mapel
-        ", [$kodeRombel]);
+        ", [
+                $kodeRombel,
+                $tahunajaran,
+                $tahunajaran,
+                $ganjilgenap,
+                $tahunajaran,
+                $ganjilgenap,
+                $tahunajaran,
+                $ganjilgenap,
+            ]);
 
-        $pivotData = [];
-        foreach ($nilaiRataSiswa as $nilai) {
-            $pivotData[$nilai->nis]['nama_lengkap'] = $nilai->nama_lengkap;
-            $pivotData[$nilai->nis][$nilai->kel_mapel] = $nilai->nilai_kel_mapel;
+            $pivotData = [];
+            foreach ($nilaiRataSiswa as $nilai) {
+                $pivotData[$nilai->nis]['nama_lengkap'] = $nilai->nama_lengkap;
+                $pivotData[$nilai->nis][$nilai->kel_mapel] = $nilai->nilai_kel_mapel;
+            }
+
+            foreach ($pivotData as $nis => &$data) {
+                $sum = array_sum(array_slice($data, 1));
+                $count = count($data) - 1;
+                $data['nil_rata_siswa'] = round($sum / $count, 2);
+            }
+
+            // Data untuk Sheet 2
+            $listMapel = DB::table('kbm_per_rombels')
+                ->join('personil_sekolahs', 'kbm_per_rombels.id_personil', '=', 'personil_sekolahs.id_personil')
+                ->select(
+                    'kbm_per_rombels.kode_rombel',
+                    'kbm_per_rombels.kel_mapel',
+                    'kbm_per_rombels.mata_pelajaran',
+                    'personil_sekolahs.gelardepan',
+                    'personil_sekolahs.namalengkap',
+                    'personil_sekolahs.gelarbelakang',
+                )
+                ->where('kbm_per_rombels.kode_rombel', $kodeRombel)
+                ->orderBy('kbm_per_rombels.kel_mapel')
+                ->get()
+                ->toArray();
+
+            // Ekspor file Excel
+            return Excel::download(new PivotDataExport($pivotData, $listMapel), 'Leger Siswa Rombel ' . $kodeRombel . '.xlsx');
         }
-
-        foreach ($pivotData as $nis => &$data) {
-            $sum = array_sum(array_slice($data, 1));
-            $count = count($data) - 1;
-            $data['nil_rata_siswa'] = round($sum / $count, 2);
-        }
-
-        // Data untuk Sheet 2
-        $listMapel = DB::table('kbm_per_rombels')
-            ->join('personil_sekolahs', 'kbm_per_rombels.id_personil', '=', 'personil_sekolahs.id_personil')
-            ->select(
-                'kbm_per_rombels.kode_rombel',
-                'kbm_per_rombels.kel_mapel',
-                'kbm_per_rombels.mata_pelajaran',
-                'personil_sekolahs.gelardepan',
-                'personil_sekolahs.namalengkap',
-                'personil_sekolahs.gelarbelakang',
-            )
-            ->where('kbm_per_rombels.kode_rombel', $kodeRombel)
-            ->get()
-            ->toArray();
-
-        // Ekspor file Excel
-        return Excel::download(new PivotDataExport($pivotData, $listMapel), 'Leger Siswa Rombel ' . $kodeRombel . '.xlsx');
     }
 }
