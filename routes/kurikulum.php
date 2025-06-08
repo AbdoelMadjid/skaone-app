@@ -130,6 +130,18 @@ Route::middleware('auth')->group(function () {
             Route::get('transkriprapor/{nis}', [TranskripNilaiController::class, 'getTranskrip']);
 
             Route::resource('remedial-peserta-didik', RemedialPesertaDidikNilaiController::class);
+            Route::get('/get-tahun-ajaran', [RemedialPesertaDidikNilaiController::class, 'getTahunAjaran']);
+            Route::get('/get-kompetensi-keahlian/{tahun}', [RemedialPesertaDidikNilaiController::class, 'getKompetensiKeahlian']);
+            Route::get('/filter-siswa', [RemedialPesertaDidikNilaiController::class, 'filterSiswa']);
+
+
+            /*             Route::get('/get-tahun-ajaran-rombel', [RemedialPesertaDidikNilaiController::class, 'getTahunAjaranRombel']);
+            Route::get('/get-rombel-tingkat-by-tahun', [RemedialPesertaDidikNilaiController::class, 'getRombelTingkatByTahun']);
+            Route::get('/get-rombel-list', [RemedialPesertaDidikNilaiController::class, 'getRombelList']);
+            Route::get('/get-table-siswa-rombel', [RemedialPesertaDidikNilaiController::class, 'getTableSiswaByRombel']);
+ */
+
+
             Route::get('/get-kode-rombel-remedial', [RemedialPesertaDidikNilaiController::class, 'getKodeRombelRemedial']);
         });
 

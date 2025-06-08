@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Kurikulum\DokumenSiswa;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
+use App\Models\Kurikulum\DokumenSiswa\PilihRemedial;
 use App\Models\ManajemenSekolah\KompetensiKeahlian;
+use App\Models\ManajemenSekolah\PesertaDidik;
 use App\Models\ManajemenSekolah\RombonganBelajar;
 use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Models\MilihData;
@@ -23,92 +26,27 @@ class RemedialPesertaDidikNilaiController extends Controller
             $user = User::find(Auth::user()->id);
             $personal_id = $user->personal_id;
 
-            // Cek apakah ada tahun ajaran aktif
-            $tahunAjaranAktif = TahunAjaran::aktif()->first();
-            if (!$tahunAjaranAktif) {
-                return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
-            }
-
-            // Cek apakah ada semester aktif untuk tahun ajaran tersebut
-            $semester = $tahunAjaranAktif->semesters()->where('status', 'Aktif')->first();
-            if (!$semester) {
-                return redirect()->back()->with('error', 'Tidak ada semester aktif.');
-            }
-
-            // Ambil semua opsi tahun ajaran
-            $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
-
-            $kompetensiKeahlianOptions = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
-            $rombonganBelajar = RombonganBelajar::pluck('rombel', 'kode_rombel')->toArray();
+            $tahunMasuk = PesertaDidik::select('thnajaran_masuk')
+                ->distinct()
+                ->orderBy('thnajaran_masuk', 'asc')
+                ->pluck('thnajaran_masuk');
 
             // Cek apakah ada data pada KunciDataKbm untuk id_personil
-            $pilihData = MilihData::where('id_personil', $personal_id)->first();
+            $pilihData = PilihRemedial::where('id_user', $personal_id)->first();
 
             // Ambil data tahun ajaran dan semester berdasarkan data di KunciDataKbm atau fallback ke aktif
-            $tahunajaran = $pilihData->tahunajaran ?? $tahunAjaranAktif->tahunajaran;
-            $ganjilgenap = $pilihData->semester ?? $semester->semester;
-
-            // Ambil kode_rombel dari $pilihData
-            $kodeRombel = $pilihData ? $pilihData->kode_rombel : null;
-
-            $pesertaDidik = collect(); // default: empty collection
-            $waliKelas = null;
-
-            if ($kodeRombel) {
-                // Ambil data peserta didik + wali kelas
-                $pesertaDidik = DB::table('peserta_didik_rombels')
-                    ->join('rombongan_belajars', function ($join) {
-                        $join->on('peserta_didik_rombels.tahun_ajaran', '=', 'rombongan_belajars.tahunajaran')
-                            ->on('peserta_didik_rombels.kode_kk', '=', 'rombongan_belajars.id_kk')
-                            ->on('peserta_didik_rombels.rombel_tingkat', '=', 'rombongan_belajars.tingkat')
-                            ->on('peserta_didik_rombels.rombel_kode', '=', 'rombongan_belajars.kode_rombel');
-                    })
-                    ->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
-                    ->leftJoin('personil_sekolahs', 'rombongan_belajars.wali_kelas', '=', 'personil_sekolahs.id_personil')
-                    ->select(
-                        'peserta_didik_rombels.rombel_nama',
-                        'peserta_didik_rombels.nis',
-                        'peserta_didiks.nama_lengkap',
-                        'peserta_didiks.jenis_kelamin',
-                        'personil_sekolahs.nip',
-                        'personil_sekolahs.gelardepan',
-                        'personil_sekolahs.namalengkap as nama_wali',
-                        'personil_sekolahs.gelarbelakang'
-                    )
-                    ->where('peserta_didik_rombels.rombel_kode', $kodeRombel) // <- Tambahkan ini
-                    ->get();
-
-                // Ambil data wali kelas dari baris pertama saja (karena diasumsikan 1 rombel)
-                $waliKelas = null;
-                if ($pesertaDidik->count()) {
-                    $first = $pesertaDidik->first();
-                    $namaWali = trim("{$first->gelardepan} {$first->nama_wali} {$first->gelarbelakang}");
-                    $waliKelas = [
-                        'nama' => $namaWali,
-                        'nip' => $first->nip ?? '-'
-                    ];
-                }
-            }
+            $thnMasuk = $pilihData ? $pilihData->tahun_masuk : null;
 
             return view("pages.kurikulum.dokumensiswa.remedial-peserta-didik", [
                 'user' => $user,
                 'personal_id' => $personal_id,
-                'tahunAjaranAktif' => $tahunAjaranAktif,
-                'semester' => $semester,
-                'tahunAjaranOptions' => $tahunAjaranOptions,
-                'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
-                'rombonganBelajar' => $rombonganBelajar,
-                'pilihData' => $pilihData,
-                'tahunajaran' => $tahunajaran,
-                'ganjilgenap' => $ganjilgenap,
-                'pesertaDidik' => $pesertaDidik,
-                'waliKelas' => $waliKelas,
+                'tahunMasuk' => $tahunMasuk,
+                'thnMasuk' => $thnMasuk,
             ]);
         }
 
         // Jika user tidak login, redirect ke halaman login
         return redirect()->route('login')->with('error', 'Anda harus login untuk mengakses halaman ini.');
-        //return view('pages.kurikulum.dokumensiswa.remedial-peserta-didik');
     }
 
     /**
@@ -198,6 +136,137 @@ class RemedialPesertaDidikNilaiController extends Controller
         //
     }
 
+
+    public function getTahunAjaran()
+    {
+        $tahunAjaran = PesertaDidik::select('thnajaran_masuk')
+            ->distinct()
+            ->orderBy('thnajaran_masuk', 'desc')
+            ->pluck('thnajaran_masuk');
+
+        return response()->json($tahunAjaran);
+    }
+
+    public function getKompetensiKeahlian($tahun)
+    {
+        // Ambil kode_kk dari peserta_didik berdasarkan thnajaran_masuk
+        $kodeKks = PesertaDidik::where('thnajaran_masuk', $tahun)
+            ->select('kode_kk')
+            ->distinct()
+            ->pluck('kode_kk');
+
+        // Ambil nama_kk dari model KompetensiKeahlian berdasarkan kode_kk
+        $kompetensis = KompetensiKeahlian::whereIn('idkk', $kodeKks)
+            ->select('idkk as kode_kk', 'nama_kk')
+            ->get();
+
+        return response()->json($kompetensis);
+    }
+
+
+    public function filterSiswa(Request $request)
+    {
+        $tahun = $request->thnajaran_masuk;
+        $kodeKk = $request->kode_kk;
+
+        // Step 1: Ambil peserta didik yang sesuai filter
+        $siswas = PesertaDidik::where('thnajaran_masuk', $tahun)
+            ->where('kode_kk', $kodeKk)
+            ->get()
+            ->keyBy('nis'); // Key by NIS untuk lookup cepat
+
+        // Step 2: Ambil NIS siswa yang cocok
+        $nises = $siswas->keys();
+
+        // Step 3: Ambil data rombel siswa berdasarkan NIS (tingkat 10, 11, 12)
+        $rombels = PesertaDidikRombel::whereIn('nis', $nises)
+            ->get()
+            ->groupBy('nis');
+
+        return view('pages.kurikulum.dokumensiswa.remedial-peserta-didik-tampil', compact('rombels', 'siswas'));
+    }
+
+
+
+
+    public function getTahunAjaranRombel(Request $request)
+    {
+        $request->validate([
+            'kode_kk' => 'required',
+        ]);
+
+        $tahunAjarans = PesertaDidikRombel::where('kode_kk', $request->kode_kk)
+            ->select('tahun_ajaran')
+            ->distinct()
+            ->orderBy('tahun_ajaran', 'desc')
+            ->pluck('tahun_ajaran');
+
+        return response()->json($tahunAjarans);
+    }
+
+    public function getRombelTingkatByTahun(Request $request)
+    {
+        $request->validate([
+            'kode_kk' => 'required',
+            'tahun_ajaran' => 'required',
+        ]);
+
+        $tingkats = PesertaDidikRombel::where('kode_kk', $request->kode_kk)
+            ->where('tahun_ajaran', $request->tahun_ajaran)
+            ->select('rombel_tingkat')
+            ->distinct()
+            ->orderBy('rombel_tingkat')
+            ->pluck('rombel_tingkat');
+
+        return response()->json($tingkats);
+    }
+
+    public function getRombelList(Request $request)
+    {
+        $request->validate([
+            'kode_kk' => 'required',
+            'tahun_ajaran' => 'required',
+            'rombel_tingkat' => 'required',
+        ]);
+
+        $rombels = PesertaDidikRombel::where('kode_kk', $request->kode_kk)
+            ->where('tahun_ajaran', $request->tahun_ajaran)
+            ->where('rombel_tingkat', $request->rombel_tingkat)
+            ->select('rombel_kode', 'rombel_nama')
+            ->distinct()
+            ->orderBy('rombel_nama')
+            ->get();
+
+        return response()->json($rombels);
+    }
+
+    public function getTableSiswaByRombel(Request $request)
+    {
+        $request->validate([
+            'kode_kk' => 'required',
+            'tahun_ajaran' => 'required',
+            'rombel_tingkat' => 'required',
+            'rombel_kode' => 'required',
+        ]);
+
+        $siswas = DB::table('peserta_didik_rombels AS pr')
+            ->join('peserta_didiks AS pd', 'pr.nis', '=', 'pd.nis')
+            ->where('pr.kode_kk', $request->kode_kk)
+            ->where('pr.tahun_ajaran', $request->tahun_ajaran)
+            ->where('pr.rombel_tingkat', $request->rombel_tingkat)
+            ->where('pr.rombel_kode', $request->rombel_kode)
+            ->select('pr.nis', 'pd.nama_lengkap', 'pd.jenis_kelamin')
+            ->distinct()
+            ->get();
+
+        return view('pages.kurikulum.dokumensiswa.remedial-peserta-didik-tampil', ['siswas' => $siswas]);
+    }
+
+
+
+
+
+    //// UNTUK DI HAPUS ..................................................
     public function getKodeRombelRemedial(Request $request)
     {
         $tahunAjaran = $request->query('tahunajaran');
