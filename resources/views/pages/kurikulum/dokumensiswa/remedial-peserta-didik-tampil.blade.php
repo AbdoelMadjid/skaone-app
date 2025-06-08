@@ -1,11 +1,11 @@
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th rowspan="2">No</th>
-            <th rowspan="2">Tahun Ajaran</th>
-            <th rowspan="2">Kode KK</th>
-            <th rowspan="2">NIS</th>
-            <th rowspan="2">Nama Lengkap</th>
+            <th rowspan="2" class="text-center align-middle">No</th>
+            <th rowspan="2" class="text-center align-middle">Tahun Ajaran</th>
+            <th rowspan="2" class="text-center align-middle">Kode KK</th>
+            <th rowspan="2" class="text-center align-middle">NIS</th>
+            <th rowspan="2" class="text-center align-middle">Nama Lengkap</th>
             <th colspan="3" class="text-center">Tingkat</th>
         </tr>
         <tr>

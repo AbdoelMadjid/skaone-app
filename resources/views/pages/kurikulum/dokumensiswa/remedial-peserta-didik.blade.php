@@ -20,7 +20,7 @@
                     </div>
                     <div class="mb-3">
                         <select id="kode_kk" class="form-select" style="display: none;">
-                            <option value="">-- Pilih Kompetensi Keahlian --</option>
+                            <option value="">-- Pilih Konsentrasi Keahlian --</option>
                         </select>
                     </div>
                 </div>
@@ -40,15 +40,20 @@
                     </button>
                 </div>
                 <div class="col-sm order-3 order-sm-2 mt-3 mt-sm-0">
-                    <h5 class="fw-semibold mb-0">Velzon Admin & Dashboard <span
-                            class="badge bg-primary align-bottom ms-2">v2.0.0</span></h5>
+                    <h5 id="info-keterangan" class="fw-semibold mb-0"><span
+                            class="badge bg-primary align-bottom ms-2"></span></h5>
                 </div>
 
                 <div class="col-auto order-2 order-sm-3 ms-auto">
                     <div class="hstack gap-2">
-                        <div class="btn-group" role="group" aria-label="Basic example">
-
+                        <div id="search-wrapper" style="display: none;">
+                            <div class="search-box mb-3">
+                                <input type="text" id="search-siswa" class="form-control search"
+                                    placeholder="Search Nama Lengkap Siswa ....">
+                                <i class="ri-search-line search-icon"></i>
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -57,7 +62,7 @@
                     <div class="alert alert-primary alert-dismissible alert-label-icon rounded-label fade show mt-4"
                         role="alert">
                         <i class="ri-user-smile-line label-icon"></i><strong>Mohon di perhatikan !!</strong> -
-                        Silakan pilih peserta didik dulu
+                        Silakan pilih tahun masuk peserta didik dan konsentrasi keahlian
                     </div>
                 </div>
             </div>
@@ -72,6 +77,14 @@
 @section('script-bottom')
     <script>
         $(document).ready(function() {
+
+            $(document).on('keyup', '#search-siswa', function() {
+                const value = $(this).val().toLowerCase();
+                $('#table-data-siswa table tbody tr').filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
             // Load thnajaran_masuk saat halaman pertama kali dibuka
             $.get('/kurikulum/dokumentsiswa/get-tahun-ajaran', function(data) {
                 let options = `<option value="">-- Pilih Tahun Ajaran --</option>`;
@@ -110,6 +123,12 @@
                     }, function(data) {
                         $('#table-data-siswa').html(
                             data); // asumsi ada <div id="datasiswa"></div> di halaman
+                        const selectedText = $('#kode_kk option:selected').text();
+                        $('#info-keterangan').html(
+                            `${selectedText} <span class="badge bg-primary align-bottom ms-2">${tahun}</span>`
+                        );
+                        // ✅ Tampilkan search box
+                        $('#search-wrapper').show();
                     });
                 }
             });
