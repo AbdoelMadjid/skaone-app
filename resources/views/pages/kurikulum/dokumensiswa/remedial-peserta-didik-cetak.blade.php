@@ -1,32 +1,13 @@
-<div style="font-family: Arial; font-size: 14px;">
-    <h3 style="text-align: center;">FORMAT PERBAIKAN NILAI PESERTA DIDIK</h3>
+<div id="print-remedial">
+    <h4>FORMAT PERBAIKAN NILAI PESERTA DIDIK</h4>
+    <p>Tahun Pelajaran: {{ $tahunajaran }}</p>
+    <p>Semester: {{ $semester }}</p>
+    <p>Nama Siswa: {{ $siswa->nama_lengkap }}</p>
+    <p>NIS: {{ $siswa->nis }}</p>
+    <p>Mata Pelajaran: {{ $mapel->mata_pelajaran }}</p>
 
-    <table style="width: 100%; margin-bottom: 20px;">
-        <tr>
-            <td style="width: 20%;">Tahun Pelajaran</td>
-            <td>: {{ $mapel->tahunajaran }}</td>
-        </tr>
-        <tr>
-            <td>Semester</td>
-            <td>: {{ $mapel->ganjilgenap }}</td>
-        </tr>
-        <tr>
-            <td>Nama Siswa</td>
-            <td>: {{ $siswa->nama_lengkap }}</td>
-        </tr>
-        <tr>
-            <td>NIS</td>
-            <td>: {{ $siswa->nis }}</td>
-        </tr>
-        <tr>
-            <td>Mata Pelajaran</td>
-            <td>: {{ $mapel->mata_pelajaran }}</td>
-        </tr>
-    </table>
-
-    <div style="display: flex; justify-content: space-between;">
-        <!-- Tabel Nilai Formatif -->
-        <table border="1" cellspacing="0" cellpadding="5" style="width: 48%;">
+    <div style="display: flex; gap: 30px;">
+        <table>
             <thead>
                 <tr>
                     <th>TP</th>
@@ -38,22 +19,19 @@
                 @for ($i = 1; $i <= $mapel->jumlah_tp; $i++)
                     <tr>
                         <td>{{ $i }}</td>
-                        <td>
-                            {{ $nilaiFormatif["tp_nilai_{$i}"] ?? '-' }}
-                        </td>
+                        <td>{{ $mapel->nilai_formatif_array[$i] ?? '' }}</td>
                         <td></td>
                     </tr>
                 @endfor
                 <tr>
-                    <td colspan="1"><strong>Rata-Rata</strong></td>
-                    <td>{{ $mapel->rerata_formatif ?? '-' }}</td>
+                    <td>Rata-rata</td>
+                    <td>{!! $mapel->rerata_formatif_label !!}</td>
                     <td></td>
                 </tr>
             </tbody>
         </table>
 
-        <!-- Tabel Nilai Sumatif -->
-        <table border="1" cellspacing="0" cellpadding="5" style="width: 48%;">
+        <table>
             <thead>
                 <tr>
                     <th>Jenis</th>
@@ -64,46 +42,27 @@
             <tbody>
                 <tr>
                     <td>STS</td>
-                    <td>{{ $nilaiSumatif->sts ?? '-' }}</td>
+                    <td>{!! $mapel->nilai_sumatif_sts !!}</td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>SAS</td>
-                    <td>{{ $nilaiSumatif->sas ?? '-' }}</td>
+                    <td>{!! $mapel->nilai_sumatif_sas !!}</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td><strong>Rata-rata</strong></td>
-                    <td>{{ $mapel->rerata_sumatif ?? '-' }}</td>
+                    <td>Rata-rata</td>
+                    <td>{!! $mapel->rerata_sumatif_label !!}</td>
                     <td></td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <!-- Nilai Akhir -->
-    <br><br>
-    <table style="width: 30%;">
-        <tr>
-            <td><strong>Nilai Akhir</strong></td>
-            <td>: {{ $mapel->nilai_akhir ?? '-' }}</td>
-        </tr>
-    </table>
-
-    <!-- TTD -->
-    <div style="margin-top: 40px; width: 100%; display: flex; justify-content: space-between;">
-        <div>
-            <p>Validator dan Input</p>
-            <br><br>
-            <p>____________________</p>
-        </div>
-        <div style="text-align: right;">
-            <p>Kadipaten, hari ini</p>
-            <p>Guru mata Pelajaran</p>
-            <br><br>
-            <p>____________________</p>
-            <p>{{ $mapel->nama_guru }}</p>
-            <p>NIP. {{ $mapel->nip_guru }}</p>
-        </div>
-    </div>
+    <br><br><br>
+    <p>Kadipaten, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+    <p>Guru mata pelajaran</p>
+    <br><br><br>
+    <p>______________________________</p>
+    <p>{{ $mapel->guru_nama }}</p>
 </div>

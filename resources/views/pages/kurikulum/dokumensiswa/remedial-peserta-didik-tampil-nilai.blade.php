@@ -65,9 +65,20 @@
                         <td class="text-center">{!! $mapel->rerata_sumatif ?? '-' !!}</td>
                         <td class="text-center">{!! $mapel->nilai_akhir ?? '-' !!}</td>
                         <td class="text-center">
-                            <button class="btn btn-sm btn-soft-primary cetak-remedial">
-                                <i class="ri-printer-line"></i>
-                            </button>
+                            @if ($mapel->show_cetak_remedial)
+                                <button id="btn-cetak-remedial-{{ $loop->index }}"
+                                    class="btn btn-sm btn-soft-primary">
+                                    <i class="ri-printer-line"></i>
+                                </button>
+
+                                <script>
+                                    setupPrintHandler({
+                                        printButtonId: 'btn-cetak-remedial-{{ $loop->index }}',
+                                        tableContentId: 'print-remedial',
+                                        title: 'Format Perbaikan Nilai',
+                                    });
+                                </script>
+                            @endif
                         </td>
                     </tr>
                 @empty

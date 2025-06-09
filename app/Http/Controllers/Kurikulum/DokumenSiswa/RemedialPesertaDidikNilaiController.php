@@ -197,11 +197,11 @@ class RemedialPesertaDidikNilaiController extends Controller
 
                 foreach ($mapels as $mapel) {
                     $tpQuery = TujuanPembelajaran::where([
-                        'tahunajaran' => $tahunAjarans[$tingkat],
-                        'ganjilgenap' => $semester,
-                        'tingkat' => $tingkat,
-                        'kode_rombel' => $rombelKode,
-                        'kel_mapel' => $mapel->kel_mapel,
+                        'tahunajaran'   => $tahunAjarans[$tingkat],
+                        'ganjilgenap'   => $semester,
+                        'tingkat'       => $tingkat,
+                        'kode_rombel'   => $rombelKode,
+                        'kel_mapel'     => $mapel->kel_mapel,
                     ]);
 
                     $mapel->jumlah_tp = $tpQuery->count();
@@ -215,36 +215,41 @@ class RemedialPesertaDidikNilaiController extends Controller
 
                     // Ambil nilai formatif
                     $nilaiFormatif = NilaiFormatif::where([
-                        'tahunajaran' => $tahunAjarans[$tingkat],
-                        'ganjilgenap' => $semester,
-                        'tingkat' => $tingkat,
-                        'kode_rombel' => $rombelKode,
-                        'kel_mapel' => $mapel->kel_mapel,
-                        'nis' => $nis,
+                        'tahunajaran'   => $tahunAjarans[$tingkat],
+                        'ganjilgenap'   => $semester,
+                        'tingkat'       => $tingkat,
+                        'kode_rombel'   => $rombelKode,
+                        'kel_mapel'     => $mapel->kel_mapel,
+                        'nis'           => $nis,
                     ])->whereIn('id_personil', $personilIds)->first();
 
+                    $nilai_formatif_kurang_kkm = false;
+                    $nilaiList = [];
+
                     if ($nilaiFormatif) {
-                        $nilaiList = [];
                         for ($i = 1; $i <= $mapel->jumlah_tp; $i++) {
                             $field = "tp_nilai_$i";
-                            $val = $nilaiFormatif->$field;
-                            if (!is_null($val)) {
-                                $class = ($val < $mapel->kkm) ? 'text-danger' : '';
-                                $nilaiList[] = "<span class='{$class}'>($val)</span>";
+                            $nilai = $nilaiFormatif->$field;
+
+                            if (!is_null($nilai)) {
+                                $warna = $nilai < $mapel->kkm ? 'text-danger' : '';
+                                if ($warna) $nilai_formatif_kurang_kkm = true;
+                                $nilaiList[] = "<span class='$warna'>($nilai)</span>";
                             }
                         }
 
-                        $rr = $nilaiFormatif->rerata_formatif;
-                        $rrClass = ($rr < $mapel->kkm) ? 'text-danger' : '';
                         $mapel->nilai_formatif = implode(' ', $nilaiList);
-                        $mapel->rerata_formatif = "<span class='{$rrClass}'>$rr</span>";
-                        $mapel->rerata_formatif_angka = $rr; // simpan nilai mentah
+                        $mapel->rerata_formatif = $nilaiFormatif->rerata_formatif;
+                        $mapel->rerata_formatif_label = $nilaiFormatif->rerata_formatif < $mapel->kkm
+                            ? "<span class='text-danger'>{$nilaiFormatif->rerata_formatif}</span>"
+                            : $nilaiFormatif->rerata_formatif;
                     } else {
                         $mapel->nilai_formatif = '-';
                         $mapel->rerata_formatif = '-';
+                        $mapel->rerata_formatif_label = '-';
                     }
 
-                    // NILAI SUMATIF
+                    // Nilai Sumatif
                     $nilaiSumatif = NilaiSumatif::where([
                         'tahunajaran'   => $tahunAjarans[$tingkat],
                         'ganjilgenap'   => $semester,
@@ -254,32 +259,42 @@ class RemedialPesertaDidikNilaiController extends Controller
                         'nis'           => $nis,
                     ])->whereIn('id_personil', $personilIds)->first();
 
+                    $nilai_sumatif_kurang_kkm = false;
+
                     if ($nilaiSumatif) {
                         $sts = $nilaiSumatif->sts;
                         $sas = $nilaiSumatif->sas;
-                        $rerataSumatif = $nilaiSumatif->rerata_sumatif;
 
-                        $stsClass = ($sts < $mapel->kkm) ? 'text-danger' : '';
-                        $sasClass = ($sas < $mapel->kkm) ? 'text-danger' : '';
-                        $rrClass  = ($rerataSumatif < $mapel->kkm) ? 'text-danger' : '';
+                        $stsLabel = $sts < $mapel->kkm ? "<span class='text-danger'>($sts)</span>" : "($sts)";
+                        $sasLabel = $sas < $mapel->kkm ? "<span class='text-danger'>($sas)</span>" : "($sas)";
+                        if ($sts < $mapel->kkm || $sas < $mapel->kkm) $nilai_sumatif_kurang_kkm = true;
 
-                        $mapel->nilai_sumatif = "<span class='{$stsClass}'>($sts)</span> <span class='{$sasClass}'>($sas)</span>";
-                        $mapel->rerata_sumatif = "<span class='{$rrClass}'>$rerataSumatif</span>";
-                        $mapel->rerata_sumatif_angka = $rerataSumatif;
-
-                        // Hitung Nilai Akhir
-                        if (is_numeric($mapel->rerata_formatif_angka ?? null) && is_numeric($mapel->rerata_sumatif_angka ?? null)) {
-                            $na = round(($mapel->rerata_formatif_angka + $mapel->rerata_sumatif_angka) / 2);
-                            $naClass = ($na < $mapel->kkm) ? 'text-danger' : '';
-                            $mapel->nilai_akhir = "<span class='{$naClass}'>$na</span>";
-                        } else {
-                            $mapel->nilai_akhir = '-';
-                        }
+                        $mapel->nilai_sumatif = $stsLabel . ' ' . $sasLabel;
+                        $mapel->rerata_sumatif = $nilaiSumatif->rerata_sumatif;
+                        $mapel->rerata_sumatif_label = $nilaiSumatif->rerata_sumatif < $mapel->kkm
+                            ? "<span class='text-danger'>{$nilaiSumatif->rerata_sumatif}</span>"
+                            : $nilaiSumatif->rerata_sumatif;
                     } else {
                         $mapel->nilai_sumatif = '-';
                         $mapel->rerata_sumatif = '-';
-                        $mapel->nilai_akhir = '-';
+                        $mapel->rerata_sumatif_label = '-';
                     }
+
+                    // Nilai Akhir (rerata kedua rerata)
+                    if (is_numeric($mapel->rerata_formatif) && is_numeric($mapel->rerata_sumatif)) {
+                        $na = round(($mapel->rerata_formatif + $mapel->rerata_sumatif) / 2);
+                        $mapel->nilai_akhir = $na;
+                        $mapel->nilai_akhir_label = $na < $mapel->kkm
+                            ? "<span class='text-danger'>{$na}</span>"
+                            : $na;
+                    } else {
+                        $mapel->nilai_akhir = '-';
+                        $mapel->nilai_akhir_label = '-';
+                    }
+
+                    $mapel->show_cetak_remedial = $nilai_formatif_kurang_kkm || $nilai_sumatif_kurang_kkm || (
+                        is_numeric($mapel->nilai_akhir) && $mapel->nilai_akhir < $mapel->kkm
+                    );
                 }
 
                 $data[$tingkat][strtolower($semester)] = $mapels;
@@ -294,6 +309,7 @@ class RemedialPesertaDidikNilaiController extends Controller
             'tahunAjarans' => $tahunAjarans,
         ]);
     }
+
 
     public function cetakRemedial(Request $request)
     {
