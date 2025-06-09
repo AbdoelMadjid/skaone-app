@@ -23,6 +23,7 @@
                             <option value="">-- Pilih Konsentrasi Keahlian --</option>
                         </select>
                     </div>
+
                 </div>
 
 
@@ -53,7 +54,9 @@
                                 <i class="ri-search-line search-icon"></i>
                             </div>
                         </div>
-
+                        <button class="btn btn-sm btn-soft-primary" id="kembali-daftar-siswa" style="display: none;">
+                            <i class="ri-arrow-left-line"></i> Kembali ke Daftar Siswa
+                        </button>
                     </div>
                 </div>
             </div>
@@ -129,6 +132,7 @@
                         );
                         // ✅ Tampilkan search box
                         $('#search-wrapper').show();
+                        $('#kembali-daftar-siswa').hide();
                     });
                 }
             });
@@ -143,6 +147,7 @@
                 const thnajaran11 = $(this).data('thnajaran11');
                 const thnajaran12 = $(this).data('thnajaran12');
 
+
                 $.get('/kurikulum/dokumentsiswa/cek-mata-pelajaran', {
                     nis: nis,
                     kode_kk: kode_kk,
@@ -154,6 +159,8 @@
                     thnajaran12: thnajaran12,
                 }, function(data) {
                     $('#table-data-siswa').html(data);
+                    $('#search-wrapper').hide();
+                    $('#kembali-daftar-siswa').show();
                 });
             });
 
@@ -167,6 +174,8 @@
                         kode_kk: kode_kk
                     }, function(data) {
                         $('#table-data-siswa').html(data);
+                        $('#search-wrapper').show();
+                        $('#kembali-daftar-siswa').hide();
                     });
                 }
             });

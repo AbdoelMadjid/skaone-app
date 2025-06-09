@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Kurikulum\DokumenSiswa;
 
 use App\Http\Controllers\Controller;
+use App\Models\GuruMapel\NilaiFormatif;
+use App\Models\GuruMapel\NilaiSumatif;
+use App\Models\GuruMapel\TujuanPembelajaran;
 use App\Models\Kurikulum\DataKBM\KbmPerRombel;
 use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
 use App\Models\ManajemenSekolah\KompetensiKeahlian;
+use App\Models\ManajemenSekolah\PersonilSekolah;
 use App\Models\ManajemenSekolah\PesertaDidik;
 use App\Models\ManajemenSekolah\RombonganBelajar;
 use App\Models\MilihData;
@@ -183,31 +187,158 @@ class RemedialPesertaDidikNilaiController extends Controller
             $rombelKode = $rombels[$tingkat];
             if (!$rombelKode) continue;
 
-            $ganjil = KbmPerRombel::where([
-                'kode_kk' => $kodeKk,
-                'tingkat' => $tingkat,
-                'ganjilgenap' => 'Ganjil',
-                'kode_rombel' => $rombelKode,
-            ])->get();
+            foreach (['Ganjil', 'Genap'] as $semester) {
+                $mapels = KbmPerRombel::where([
+                    'kode_kk' => $kodeKk,
+                    'tingkat' => $tingkat,
+                    'ganjilgenap' => $semester,
+                    'kode_rombel' => $rombelKode,
+                ])->get();
 
-            $genap = KbmPerRombel::where([
-                'kode_kk' => $kodeKk,
-                'tingkat' => $tingkat,
-                'ganjilgenap' => 'Genap',
-                'kode_rombel' => $rombelKode,
-            ])->get();
+                foreach ($mapels as $mapel) {
+                    $tpQuery = TujuanPembelajaran::where([
+                        'tahunajaran' => $tahunAjarans[$tingkat],
+                        'ganjilgenap' => $semester,
+                        'tingkat' => $tingkat,
+                        'kode_rombel' => $rombelKode,
+                        'kel_mapel' => $mapel->kel_mapel,
+                    ]);
 
-            $data[$tingkat] = [
-                'ganjil' => $ganjil,
-                'genap' => $genap
-            ];
+                    $mapel->jumlah_tp = $tpQuery->count();
+
+                    $personilIds = $tpQuery->distinct()->pluck('id_personil');
+                    $personils = PersonilSekolah::whereIn('id_personil', $personilIds)->get();
+
+                    $mapel->personil_info = $personils->map(function ($p) {
+                        return $p->id_personil . ' – ' . trim("{$p->gelardepan} {$p->namalengkap} {$p->gelarbelakang}");
+                    })->implode(', ');
+
+                    // Ambil nilai formatif
+                    $nilaiFormatif = NilaiFormatif::where([
+                        'tahunajaran' => $tahunAjarans[$tingkat],
+                        'ganjilgenap' => $semester,
+                        'tingkat' => $tingkat,
+                        'kode_rombel' => $rombelKode,
+                        'kel_mapel' => $mapel->kel_mapel,
+                        'nis' => $nis,
+                    ])->whereIn('id_personil', $personilIds)->first();
+
+                    if ($nilaiFormatif) {
+                        $nilaiList = [];
+                        for ($i = 1; $i <= $mapel->jumlah_tp; $i++) {
+                            $field = "tp_nilai_$i";
+                            $val = $nilaiFormatif->$field;
+                            if (!is_null($val)) {
+                                $class = ($val < $mapel->kkm) ? 'text-danger' : '';
+                                $nilaiList[] = "<span class='{$class}'>($val)</span>";
+                            }
+                        }
+
+                        $rr = $nilaiFormatif->rerata_formatif;
+                        $rrClass = ($rr < $mapel->kkm) ? 'text-danger' : '';
+                        $mapel->nilai_formatif = implode(' ', $nilaiList);
+                        $mapel->rerata_formatif = "<span class='{$rrClass}'>$rr</span>";
+                        $mapel->rerata_formatif_angka = $rr; // simpan nilai mentah
+                    } else {
+                        $mapel->nilai_formatif = '-';
+                        $mapel->rerata_formatif = '-';
+                    }
+
+                    // NILAI SUMATIF
+                    $nilaiSumatif = NilaiSumatif::where([
+                        'tahunajaran'   => $tahunAjarans[$tingkat],
+                        'ganjilgenap'   => $semester,
+                        'tingkat'       => $tingkat,
+                        'kode_rombel'   => $rombelKode,
+                        'kel_mapel'     => $mapel->kel_mapel,
+                        'nis'           => $nis,
+                    ])->whereIn('id_personil', $personilIds)->first();
+
+                    if ($nilaiSumatif) {
+                        $sts = $nilaiSumatif->sts;
+                        $sas = $nilaiSumatif->sas;
+                        $rerataSumatif = $nilaiSumatif->rerata_sumatif;
+
+                        $stsClass = ($sts < $mapel->kkm) ? 'text-danger' : '';
+                        $sasClass = ($sas < $mapel->kkm) ? 'text-danger' : '';
+                        $rrClass  = ($rerataSumatif < $mapel->kkm) ? 'text-danger' : '';
+
+                        $mapel->nilai_sumatif = "<span class='{$stsClass}'>($sts)</span> <span class='{$sasClass}'>($sas)</span>";
+                        $mapel->rerata_sumatif = "<span class='{$rrClass}'>$rerataSumatif</span>";
+                        $mapel->rerata_sumatif_angka = $rerataSumatif;
+
+                        // Hitung Nilai Akhir
+                        if (is_numeric($mapel->rerata_formatif_angka ?? null) && is_numeric($mapel->rerata_sumatif_angka ?? null)) {
+                            $na = round(($mapel->rerata_formatif_angka + $mapel->rerata_sumatif_angka) / 2);
+                            $naClass = ($na < $mapel->kkm) ? 'text-danger' : '';
+                            $mapel->nilai_akhir = "<span class='{$naClass}'>$na</span>";
+                        } else {
+                            $mapel->nilai_akhir = '-';
+                        }
+                    } else {
+                        $mapel->nilai_sumatif = '-';
+                        $mapel->rerata_sumatif = '-';
+                        $mapel->nilai_akhir = '-';
+                    }
+                }
+
+                $data[$tingkat][strtolower($semester)] = $mapels;
+            }
         }
+
         $siswa = PesertaDidik::where('nis', $nis)->first();
 
         return view('pages.kurikulum.dokumensiswa.remedial-peserta-didik-tampil-nilai', [
             'data' => $data,
             'siswa' => $siswa,
             'tahunAjarans' => $tahunAjarans,
+        ]);
+    }
+
+    public function cetakRemedial(Request $request)
+    {
+        $siswa = PesertaDidik::where('nis', $request->nis)->firstOrFail();
+        $mapel = KbmPerRombel::where([
+            'kode_rombel' => $request->kode_rombel,
+            'kel_mapel' => $request->kel_mapel,
+        ])->firstOrFail();
+
+        $nilaiFormatif = NilaiFormatif::where([
+            'tahunajaran' => $request->tahunajaran,
+            'ganjilgenap' => $request->ganjilgenap,
+            'tingkat' => $request->tingkat,
+            'kode_rombel' => $request->kode_rombel,
+            'kel_mapel' => $request->kel_mapel,
+            'nis' => $request->nis,
+            'id_personil' => $request->id_personil,
+        ])->first();
+
+        $nilaiSumatif = NilaiSumatif::where([
+            'tahunajaran' => $request->tahunajaran,
+            'ganjilgenap' => $request->ganjilgenap,
+            'tingkat' => $request->tingkat,
+            'kode_rombel' => $request->kode_rombel,
+            'kel_mapel' => $request->kel_mapel,
+            'nis' => $request->nis,
+            'id_personil' => $request->id_personil,
+        ])->first();
+
+        $jumlahTp = TujuanPembelajaran::where([
+            'tahunajaran' => $request->tahunajaran,
+            'ganjilgenap' => $request->ganjilgenap,
+            'tingkat' => $request->tingkat,
+            'kode_rombel' => $request->kode_rombel,
+            'kel_mapel' => $request->kel_mapel,
+        ])->count();
+
+        return view('pages.kurikulum.dokumensiswa.remedial-peserta-didik-cetak', [
+            'siswa' => $siswa,
+            'mapel' => $mapel,
+            'nilaiFormatif' => $nilaiFormatif,
+            'nilaiSumatif' => $nilaiSumatif,
+            'jumlahTp' => $jumlahTp,
+            'tahunajaran' => $request->tahunajaran,
+            'ganjilgenap' => $request->ganjilgenap,
         ]);
     }
 }

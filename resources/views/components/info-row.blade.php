@@ -1,8 +1,8 @@
-@props(['label', 'content', 'textColor' => 'text-info'])
+@props(['label', 'content', 'textColor' => 'text-dark', 'labelCol' => 'col-md-4', 'contentCol' => 'col-md-8'])
 
-<div class="row mb-2">
-    <div class="col-md-4">{{ $label }}</div>
-    <div class="col-md-8">
+<div class="row mb-0">
+    <div class="{{ $labelCol }}">{{ $label }}</div>
+    <div class="{{ $contentCol }}">
         <p class="mb-0 fs-12 {{ $textColor }}"><strong>{{ $content }}</strong></p>
     </div>
 </div>
