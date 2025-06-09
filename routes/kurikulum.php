@@ -133,6 +133,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/get-tahun-ajaran', [RemedialPesertaDidikNilaiController::class, 'getTahunAjaran']);
             Route::get('/get-kompetensi-keahlian/{tahun}', [RemedialPesertaDidikNilaiController::class, 'getKompetensiKeahlian']);
             Route::get('/filter-siswa', [RemedialPesertaDidikNilaiController::class, 'filterSiswa']);
+            Route::get('/lihat-mata-pelajaran', [RemedialPesertaDidikNilaiController::class, 'lihatMapel']);
+            Route::get('/cek-mata-pelajaran', [RemedialPesertaDidikNilaiController::class, 'cekMataPelajaran']);
         });
 
         Route::group(['prefix' => 'perangkatujian', 'as' => 'perangkatujian.'], function () {

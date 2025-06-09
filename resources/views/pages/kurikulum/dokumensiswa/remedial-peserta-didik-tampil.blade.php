@@ -7,6 +7,7 @@
             <th rowspan="2" class="text-center align-middle">NIS</th>
             <th rowspan="2" class="text-center align-middle">Nama Lengkap</th>
             <th colspan="3" class="text-center">Tingkat</th>
+            <th rowspan="2" class="text-center align-middle">Cek Nilai</th>
         </tr>
         <tr>
             <th>10</th>
@@ -32,15 +33,27 @@
 
                 @foreach ([10, 11, 12] as $tingkat)
                     @if ($tingkatMap[$tingkat])
-                        <td>
+                        <td width="150">
                             {{ $tingkatMap[$tingkat]->tahun_ajaran }}<br>
                             {{ $tingkatMap[$tingkat]->rombel_kode }}<br>
                             {{ $tingkatMap[$tingkat]->rombel_nama }}
                         </td>
                     @else
-                        <td>-</td>
+                        <td width="150">-</td>
                     @endif
                 @endforeach
+                <td class="text-center align-middle">
+                    <button class="btn btn-sm btn-soft-primary cek-nilai" data-nis="{{ $nis ?? '' }}"
+                        data-thnajaran10="{{ $tingkatMap[10]->tahun_ajaran ?? '' }}"
+                        data-thnajaran11="{{ $tingkatMap[11]->tahun_ajaran ?? '' }}"
+                        data-thnajaran12="{{ $tingkatMap[12]->tahun_ajaran ?? '' }}"
+                        data-kodekk="{{ $siswa->kode_kk ?? '' }}"
+                        data-rombel10="{{ $tingkatMap[10]->rombel_kode ?? '' }}"
+                        data-rombel11="{{ $tingkatMap[11]->rombel_kode ?? '' }}"
+                        data-rombel12="{{ $tingkatMap[12]->rombel_kode ?? '' }}">
+                        <i class="ri-newspaper-line"></i>
+                    </button>
+                </td>
             </tr>
         @endforeach
 

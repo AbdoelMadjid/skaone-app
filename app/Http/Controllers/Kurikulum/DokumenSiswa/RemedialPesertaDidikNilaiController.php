@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Kurikulum\DokumenSiswa;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kurikulum\DataKBM\KbmPerRombel;
 use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
 use App\Models\ManajemenSekolah\KompetensiKeahlian;
 use App\Models\ManajemenSekolah\PesertaDidik;
@@ -157,5 +158,56 @@ class RemedialPesertaDidikNilaiController extends Controller
             ->groupBy('nis');
 
         return view('pages.kurikulum.dokumensiswa.remedial-peserta-didik-tampil', compact('rombels', 'siswas'));
+    }
+
+    public function cekMataPelajaran(Request $request)
+    {
+        $nis = $request->nis;
+        $kodeKk = $request->kode_kk;
+
+        $rombels = [
+            10 => $request->rombel10,
+            11 => $request->rombel11,
+            12 => $request->rombel12,
+        ];
+
+        $tahunAjarans = [
+            10 => $request->thnajaran10,
+            11 => $request->thnajaran11,
+            12 => $request->thnajaran12,
+        ];
+
+        $data = [];
+
+        foreach ([10, 11, 12] as $tingkat) {
+            $rombelKode = $rombels[$tingkat];
+            if (!$rombelKode) continue;
+
+            $ganjil = KbmPerRombel::where([
+                'kode_kk' => $kodeKk,
+                'tingkat' => $tingkat,
+                'ganjilgenap' => 'Ganjil',
+                'kode_rombel' => $rombelKode,
+            ])->get();
+
+            $genap = KbmPerRombel::where([
+                'kode_kk' => $kodeKk,
+                'tingkat' => $tingkat,
+                'ganjilgenap' => 'Genap',
+                'kode_rombel' => $rombelKode,
+            ])->get();
+
+            $data[$tingkat] = [
+                'ganjil' => $ganjil,
+                'genap' => $genap
+            ];
+        }
+        $siswa = PesertaDidik::where('nis', $nis)->first();
+
+        return view('pages.kurikulum.dokumensiswa.remedial-peserta-didik-tampil-nilai', [
+            'data' => $data,
+            'siswa' => $siswa,
+            'tahunAjarans' => $tahunAjarans,
+        ]);
     }
 }

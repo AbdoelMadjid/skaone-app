@@ -49,7 +49,7 @@
                         <div id="search-wrapper" style="display: none;">
                             <div class="search-box mb-3">
                                 <input type="text" id="search-siswa" class="form-control search"
-                                    placeholder="Search Nama Lengkap Siswa ....">
+                                    placeholder="Search Nama Lengkap">
                                 <i class="ri-search-line search-icon"></i>
                             </div>
                         </div>
@@ -132,6 +132,45 @@
                     });
                 }
             });
+
+            $(document).on('click', '.cek-nilai', function() {
+                const nis = $(this).data('nis');
+                const kode_kk = $(this).data('kodekk');
+                const rombel10 = $(this).data('rombel10');
+                const rombel11 = $(this).data('rombel11');
+                const rombel12 = $(this).data('rombel12');
+                const thnajaran10 = $(this).data('thnajaran10');
+                const thnajaran11 = $(this).data('thnajaran11');
+                const thnajaran12 = $(this).data('thnajaran12');
+
+                $.get('/kurikulum/dokumentsiswa/cek-mata-pelajaran', {
+                    nis: nis,
+                    kode_kk: kode_kk,
+                    rombel10: rombel10,
+                    rombel11: rombel11,
+                    rombel12: rombel12,
+                    thnajaran10: thnajaran10,
+                    thnajaran11: thnajaran11,
+                    thnajaran12: thnajaran12,
+                }, function(data) {
+                    $('#table-data-siswa').html(data);
+                });
+            });
+
+            $(document).on('click', '#kembali-daftar-siswa', function() {
+                const tahun = $('#thnajaran_masuk').val();
+                const kode_kk = $('#kode_kk').val();
+
+                if (tahun && kode_kk) {
+                    $.get('/kurikulum/dokumentsiswa/filter-siswa', {
+                        thnajaran_masuk: tahun,
+                        kode_kk: kode_kk
+                    }, function(data) {
+                        $('#table-data-siswa').html(data);
+                    });
+                }
+            });
+
         });
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
