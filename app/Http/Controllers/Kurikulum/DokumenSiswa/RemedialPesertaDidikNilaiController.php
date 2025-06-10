@@ -201,6 +201,19 @@ class RemedialPesertaDidikNilaiController extends Controller
                     $mapel->tkt = $tingkat;
                     $mapel->kode_kk = $kodeKk;
 
+                    $waliKelas = DB::table('rombongan_belajars')
+                        ->join('personil_sekolahs', 'rombongan_belajars.wali_kelas', '=', 'personil_sekolahs.id_personil')
+                        ->where('rombongan_belajars.kode_rombel', $rombelKode)
+                        ->select(
+                            'rombongan_belajars.*',
+                            'personil_sekolahs.nip',
+                            'personil_sekolahs.gelardepan',
+                            'personil_sekolahs.namalengkap',
+                            'personil_sekolahs.gelarbelakang'
+                        )
+                        ->first();
+
+
                     $tpQuery = TujuanPembelajaran::where([
                         'tahunajaran'   => $tahunAjarans[$tingkat],
                         'ganjilgenap'   => $semester,
@@ -217,6 +230,7 @@ class RemedialPesertaDidikNilaiController extends Controller
                     $mapel->personil_info = $personils->map(function ($p) {
                         return $p->id_personil . ' – ' . trim("{$p->gelardepan} {$p->namalengkap} {$p->gelarbelakang}");
                     })->implode(', ');
+
 
                     // Ambil nilai formatif
                     $nilaiFormatif = NilaiFormatif::where([
@@ -312,6 +326,7 @@ class RemedialPesertaDidikNilaiController extends Controller
             'data' => $data,
             'siswa' => $siswa,
             'tahunAjarans' => $tahunAjarans,
+            'waliKelas' => $waliKelas,
         ]);
     }
 

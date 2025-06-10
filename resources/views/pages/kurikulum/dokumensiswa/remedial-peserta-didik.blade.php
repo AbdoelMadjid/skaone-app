@@ -6,73 +6,79 @@
     <link href="{{ URL::asset('build/libs/dragula/dragula.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
-    <div class="chat-wrapper d-lg-flex gap-1 mx-n4 mt-n4 p-1">
-        <div class="file-manager-sidebar">
-            <div class="p-4 d-flex flex-column h-100">
-                <div class="mb-3">
-                    PILIH DATA
-                </div>
-                <div class="px-4 mx-n4" data-simplebar style="height: calc(110vh - 468px);">
-                    <div class="mb-3">
-                        <select id="thnajaran_masuk" class="form-select">
-                            <option value="">-- Pilih Tahun Ajaran --</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <select id="kode_kk" class="form-select" style="display: none;">
-                            <option value="">-- Pilih Konsentrasi Keahlian --</option>
-                        </select>
-                    </div>
+    @component('layouts.breadcrumb')
+        @slot('li_1')
+            @lang('translation.kurikulum')
+        @endslot
+        @slot('li_2')
+            @lang('translation.dokumensiswa')
+        @endslot
+    @endcomponent
+    <div class="row" #top>
+        <div class="col-lg-12">
+            <div class="card" id="customerList">
+                <div class="card-header border-bottom-dashed">
 
-                </div>
-
-
-                <div class="mt-auto text-center">
-                    <img src="{{ URL::asset('build/images/task.png') }}" alt="Task" class="img-fluid" />
-                </div>
-            </div>
-        </div>
-        <!--end side content-->
-        <div class="file-manager-content w-100 p-4 pb-0">
-            <div class="row mb-4">
-                <div class="col-auto order-1 d-block d-lg-none">
-                    <button type="button" class="btn btn-soft-success btn-icon btn-sm fs-16 file-menu-btn">
-                        <i class="ri-menu-2-fill align-bottom"></i>
-                    </button>
-                </div>
-                <div class="col-sm order-3 order-sm-2 mt-3 mt-sm-0">
-                    <h5 id="info-keterangan" class="fw-semibold mb-0"><span
-                            class="badge bg-primary align-bottom ms-2"></span></h5>
-                </div>
-
-                <div class="col-auto order-2 order-sm-3 ms-auto">
-                    <div class="hstack gap-2">
-                        <div id="search-wrapper" style="display: none;">
-                            <div class="search-box mb-3">
-                                <input type="text" id="search-siswa" class="form-control search"
-                                    placeholder="Search Nama Lengkap">
-                                <i class="ri-search-line search-icon"></i>
+                    <div class="row g-4 align-items-center">
+                        <div class="col-sm">
+                            <div>
+                                <h3 id="info-keterangan" class="card-title mb-0">Remedial Peserta Didik<span
+                                        class="badge bg-primary align-bottom ms-2"></span></h3>
                             </div>
                         </div>
-                        <button class="btn btn-sm btn-soft-primary" id="kembali-daftar-siswa" style="display: none;">
-                            <i class="ri-arrow-left-line"></i> Kembali ke Daftar Siswa
-                        </button>
-                        <button type="button" class="btn btn-sm btn-soft-danger" id="btn-nyetak-format-remedial"
-                            style="display: none;">
-                            <i class="ri-printer-line"></i> Cetak
-                        </button>
-                        <button class="btn btn-sm btn-soft-primary" id="kembali-pilihan-siswa" style="display: none;">
-                            <i class="ri-arrow-left-line"></i> Kembali ke Siswa
-                        </button>
+                        <div class="col-sm-auto">
+                            <div class="d-flex flex-wrap align-items-start gap-2">
+                                <select id="thnajaran_masuk" class="form-select">
+                                    <option value="">-- Pilih Tahun Ajaran --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-auto">
+                            <div class="d-flex flex-wrap align-items-start gap-2">
+                                <select id="kode_kk" class="form-select" style="display: none;">
+                                    <option value="">-- Pilih Konsentrasi Keahlian --</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="px-4 mx-n4" data-simplebar style="height: calc(110vh - 356px);">
-                <div id="table-data-siswa">
-                    <div class="alert alert-primary alert-dismissible alert-label-icon rounded-label fade show mt-4"
-                        role="alert">
-                        <i class="ri-user-smile-line label-icon"></i><strong>Mohon di perhatikan !!</strong> -
-                        Silakan pilih tahun masuk peserta didik dan konsentrasi keahlian
+                <div class="card-body border-bottom-dashed border-bottom">
+                    <div class="row g-3">
+                        <div class="col-lg">
+                            {{--  --}}
+                        </div>
+                        <!--end col-->
+                        <div class="col-lg-auto">
+                            <div class="mb-3 d-flex align-items-center gap-2">
+                                <div id="search-wrapper" style="display: none;">
+                                    <div class="search-box mb-3">
+                                        <input type="text" id="search-siswa" class="form-control search"
+                                            placeholder="Search Nama Lengkap">
+                                        <i class="ri-search-line search-icon"></i>
+                                    </div>
+                                </div>
+                                <button class="btn btn-sm btn-soft-primary" id="kembali-daftar-siswa"
+                                    style="display: none;">
+                                    <i class="ri-arrow-left-line"></i> Kembali ke Daftar Siswa
+                                </button>
+                                <button type="button" class="btn btn-sm btn-soft-info" id="btn-nyetak-format-remedial"
+                                    style="display: none;">
+                                    <i class="ri-printer-line"></i> Cetak
+                                </button>
+                                <button class="btn btn-sm btn-soft-primary" id="kembali-pilihan-siswa"
+                                    style="display: none;">
+                                    <i class="ri-arrow-left-line"></i> Kembali ke Siswa
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="table-data-siswa">
+                        <div class="alert alert-primary alert-dismissible alert-label-icon rounded-label fade show mt-4"
+                            role="alert">
+                            <i class="ri-user-smile-line label-icon"></i><strong>Mohon di perhatikan !!</strong>
+                            -
+                            Silakan pilih tahun masuk peserta didik dan konsentrasi keahlian
+                        </div>
                     </div>
                 </div>
             </div>
@@ -164,6 +170,11 @@
 
                 $.get('/kurikulum/dokumentsiswa/cek-mata-pelajaran', dataSiswa, function(data) {
                     $('#table-data-siswa').html(data);
+
+                    $('html, body').animate({
+                        scrollTop: 0
+                    }, 'slow');
+
                     $('#search-wrapper').hide();
                     $('#kembali-daftar-siswa').show();
                     $('#kembali-pilihan-siswa').hide();

@@ -8,24 +8,36 @@
 
 @foreach ($data as $tingkat => $mapelTingkat)
     <h5 class="mt-3">Tingkat {{ $tingkat }} Tahun Ajaran {{ $tahunAjarans[$tingkat] ?? '-' }}</h5>
+
     <hr>
-    <x-info-row label="Nama Lengkap" content="{{ $siswa->nama_lengkap ?? '-' }}" icon-color="text-primary"
-        label-col="col-sm-2" content-col="col-sm-10" />
-    <x-info-row label="NIS" content="{{ $siswa->nis ?? '-' }}" icon-color="text-primary" label-col="col-sm-2"
-        content-col="col-sm-10" />
-    @php
-        // Ambil salah satu entri dari semester ganjil atau genap
-        $sampleMapel = $mapelTingkat['ganjil']->first() ?? $mapelTingkat['genap']->first();
-    @endphp
+    <div class="row">
+        <div class="col-md-6">
+            <x-info-row label="Nama Lengkap" content="{{ $siswa->nama_lengkap ?? '-' }}" icon-color="text-primary"
+                label-col="col-sm-4" content-col="col-sm-8" />
+            <x-info-row label="NIS" content="{{ $siswa->nis ?? '-' }}" icon-color="text-primary" label-col="col-sm-4"
+                content-col="col-sm-8" />
+            @php
+                // Ambil salah satu entri dari semester ganjil atau genap
+                $sampleMapel = $mapelTingkat['ganjil']->first() ?? $mapelTingkat['genap']->first();
+            @endphp
 
-    @if ($sampleMapel)
-        <x-info-row label="Kode Rombel" content="{{ $sampleMapel->kode_rombel }}" icon-color="text-primary"
-            label-col="col-sm-2" content-col="col-sm-10" />
-        <x-info-row label="Rombel" content="{{ $sampleMapel->rombel }}" icon-color="text-primary" label-col="col-sm-2"
-            content-col="col-sm-10" />
+            @if ($sampleMapel)
+                <x-info-row label="Kode Rombel" content="{{ $sampleMapel->kode_rombel }}" icon-color="text-primary"
+                    label-col="col-sm-4" content-col="col-sm-8" />
+                <x-info-row label="Rombel" content="{{ $sampleMapel->rombel }}" icon-color="text-primary"
+                    label-col="col-sm-4" content-col="col-sm-8" />
+            @endif
+        </div>
+        <div class="col-md-6">
+            Wali Kelas : <br>
+            <strong>{{ $waliKelas->gelardepan }}
+                {{ $waliKelas->namalengkap }}
+                {{ $waliKelas->gelarbelakang }}
+            </strong><br>
+            NIP. {{ $waliKelas->nip ?? '-' }}
+        </div>
         <hr>
-    @endif
-
+    </div>
     @foreach (['ganjil' => 'Ganjil', 'genap' => 'Genap'] as $key => $label)
         <h6 class="mt-2">Semester {{ $label }}</h6>
         <table class="table table-bordered mb-4">
@@ -74,7 +86,7 @@
                         <td class="text-center">{!! $mapel->nilai_akhir ?? '-' !!}</td>
                         <td class="text-center">
                             @if ($mapel->show_cetak_remedial)
-                                <button class="btn btn-sm btn-soft-primary cetak-format-remedial"
+                                <button onclick="topFunction()" class="btn btn-sm btn-soft-info cetak-format-remedial"
                                     data-nis="{{ $siswa->nis }}" data-tahunajaran="{{ $mapel->thnajaran }}"
                                     data-tingkat="{{ $mapel->tkt }}" data-ganjilgenap="{{ $mapel->gg }}"
                                     data-kode_rombel="{{ $mapel->kode_rombel }}"

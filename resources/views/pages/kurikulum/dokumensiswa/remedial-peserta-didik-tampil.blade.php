@@ -1,5 +1,5 @@
-<table class="table table-bordered">
-    <thead>
+<table class="table table-bordered align-middle">
+    <thead class="table-light text-muted">
         <tr>
             <th rowspan="2" class="text-center align-middle">No</th>
             <th rowspan="2" class="text-center align-middle">Tahun Ajaran</th>
@@ -43,8 +43,8 @@
                     @endif
                 @endforeach
                 <td class="text-center align-middle">
-                    <button class="btn btn-sm btn-soft-primary cek-nilai" data-nis="{{ $nis ?? '' }}"
-                        data-thnajaran10="{{ $tingkatMap[10]->tahun_ajaran ?? '' }}"
+                    <button onclick="topFunction()" class="btn btn-sm btn-soft-primary cek-nilai"
+                        data-nis="{{ $nis ?? '' }}" data-thnajaran10="{{ $tingkatMap[10]->tahun_ajaran ?? '' }}"
                         data-thnajaran11="{{ $tingkatMap[11]->tahun_ajaran ?? '' }}"
                         data-thnajaran12="{{ $tingkatMap[12]->tahun_ajaran ?? '' }}"
                         data-kodekk="{{ $siswa->kode_kk ?? '' }}"

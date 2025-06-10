@@ -117,7 +117,7 @@
         <tr>
             <td width="50%" style="border: none !important;text-align:left;"><strong>Nilai Akhir</strong></td>
             <td style="border: none !important;text-align:left; {{ $isKurangAkhir ? 'color:red;' : '' }}">
-                : {{ $nilaiAkhir ?? '-' }}</td>
+                : {{ $nilaiAkhir ?? '-' }} ({{ terbilang($nilaiAkhir) }})</td>
         </tr>
     </table>
     <br>
