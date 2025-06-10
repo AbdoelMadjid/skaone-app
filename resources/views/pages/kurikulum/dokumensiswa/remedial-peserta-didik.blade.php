@@ -57,6 +57,13 @@
                         <button class="btn btn-sm btn-soft-primary" id="kembali-daftar-siswa" style="display: none;">
                             <i class="ri-arrow-left-line"></i> Kembali ke Daftar Siswa
                         </button>
+                        <button type="button" class="btn btn-sm btn-soft-danger" id="btn-nyetak-format-remedial"
+                            style="display: none;">
+                            <i class="ri-printer-line"></i> Cetak
+                        </button>
+                        <button class="btn btn-sm btn-soft-primary" id="kembali-pilihan-siswa" style="display: none;">
+                            <i class="ri-arrow-left-line"></i> Kembali ke Siswa
+                        </button>
                     </div>
                 </div>
             </div>
@@ -76,6 +83,7 @@
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/dragula/dragula.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/dom-autoscroller/dom-autoscroller.min.js') }}"></script>
+    <script src="{{ URL::asset('build/js/ngeprint.js') }}"></script>
 @endsection
 @section('script-bottom')
     <script>
@@ -133,34 +141,33 @@
                         // ✅ Tampilkan search box
                         $('#search-wrapper').show();
                         $('#kembali-daftar-siswa').hide();
+                        $('#kembali-pilihan-siswa').hide();
+                        $('#btn-nyetak-format-remedial').hide();
                     });
                 }
             });
 
             $(document).on('click', '.cek-nilai', function() {
-                const nis = $(this).data('nis');
-                const kode_kk = $(this).data('kodekk');
-                const rombel10 = $(this).data('rombel10');
-                const rombel11 = $(this).data('rombel11');
-                const rombel12 = $(this).data('rombel12');
-                const thnajaran10 = $(this).data('thnajaran10');
-                const thnajaran11 = $(this).data('thnajaran11');
-                const thnajaran12 = $(this).data('thnajaran12');
+                const dataSiswa = {
+                    nis: $(this).data('nis'),
+                    kode_kk: $(this).data('kodekk'),
+                    rombel10: $(this).data('rombel10'),
+                    rombel11: $(this).data('rombel11'),
+                    rombel12: $(this).data('rombel12'),
+                    thnajaran10: $(this).data('thnajaran10'),
+                    thnajaran11: $(this).data('thnajaran11'),
+                    thnajaran12: $(this).data('thnajaran12')
+                };
 
+                // Simpan ke global
+                window.lastCekNilaiData = dataSiswa;
 
-                $.get('/kurikulum/dokumentsiswa/cek-mata-pelajaran', {
-                    nis: nis,
-                    kode_kk: kode_kk,
-                    rombel10: rombel10,
-                    rombel11: rombel11,
-                    rombel12: rombel12,
-                    thnajaran10: thnajaran10,
-                    thnajaran11: thnajaran11,
-                    thnajaran12: thnajaran12,
-                }, function(data) {
+                $.get('/kurikulum/dokumentsiswa/cek-mata-pelajaran', dataSiswa, function(data) {
                     $('#table-data-siswa').html(data);
                     $('#search-wrapper').hide();
                     $('#kembali-daftar-siswa').show();
+                    $('#kembali-pilihan-siswa').hide();
+                    $('#btn-nyetak-format-remedial').hide();
                 });
             });
 
@@ -176,10 +183,65 @@
                         $('#table-data-siswa').html(data);
                         $('#search-wrapper').show();
                         $('#kembali-daftar-siswa').hide();
+                        $('#kembali-pilihan-siswa').hide();
+                        $('#btn-nyetak-format-remedial').hide();
                     });
                 }
             });
 
+            $(document).on('click', '.cetak-format-remedial', function() {
+                const nis = $(this).data('nis');
+                const tahunajaran = $(this).data('tahunajaran');
+                const tingkat = $(this).data('tingkat');
+                const ganjilgenap = $(this).data('ganjilgenap');
+                const kode_rombel = $(this).data('kode_rombel');
+                const kel_mapel = $(this).data('kel_mapel');
+                const kode_mapel = $(this).data('kode_mapel');
+                const id_personil = $(this).data('id_personil');
+
+                // Simpan ke variabel global sementara
+                window.lastCetakNis = nis;
+
+                $.get('/kurikulum/dokumentsiswa/cetakremedial', {
+                    nis: nis,
+                    tahunajaran: tahunajaran,
+                    tingkat: tingkat,
+                    ganjilgenap: ganjilgenap,
+                    kode_rombel: kode_rombel,
+                    kel_mapel: kel_mapel,
+                    kode_mapel: kode_mapel,
+                    id_personil: id_personil,
+                }, function(data) {
+                    $('#table-data-siswa').html(data);
+                    $('#search-wrapper').hide();
+                    $('#kembali-daftar-siswa').hide();
+                    $('#kembali-pilihan-siswa').show();
+                    $('#btn-nyetak-format-remedial').show();
+                });
+            });
+
+
+            $(document).on('click', '#kembali-pilihan-siswa', function() {
+                const dataSiswa = window.lastCekNilaiData;
+
+                if (dataSiswa && dataSiswa.nis && dataSiswa.kode_kk) {
+                    $.get('/kurikulum/dokumentsiswa/cek-mata-pelajaran', dataSiswa, function(data) {
+                        $('#table-data-siswa').html(data);
+                        $('#search-wrapper').hide();
+                        $('#kembali-daftar-siswa').show();
+                        $('#kembali-pilihan-siswa').hide();
+                        $('#btn-nyetak-format-remedial').hide();
+                    });
+                }
+            });
+
+        });
+    </script>
+    <script>
+        setupPrintHandler({
+            printButtonId: 'btn-nyetak-format-remedial',
+            tableContentId: 'nyetak-format-remedial',
+            title: 'Format Remedial',
         });
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>

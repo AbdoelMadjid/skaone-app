@@ -196,6 +196,11 @@ class RemedialPesertaDidikNilaiController extends Controller
                 ])->get();
 
                 foreach ($mapels as $mapel) {
+                    $mapel->thnajaran = $tahunAjarans[$tingkat];
+                    $mapel->gg = $semester;
+                    $mapel->tkt = $tingkat;
+                    $mapel->kode_kk = $kodeKk;
+
                     $tpQuery = TujuanPembelajaran::where([
                         'tahunajaran'   => $tahunAjarans[$tingkat],
                         'ganjilgenap'   => $semester,
@@ -312,6 +317,138 @@ class RemedialPesertaDidikNilaiController extends Controller
 
 
     public function cetakRemedial(Request $request)
+    {
+        $nis = $request->nis;
+        $tahunajaran = $request->tahunajaran;
+        $tingkat = $request->tingkat;
+        $ganjilgenap = $request->ganjilgenap;
+        $kode_rombel = $request->kode_rombel;
+        $kel_mapel = $request->kel_mapel;
+        $kode_mapel = $request->kode_mapel;
+        $id_personil = $request->id_personil;
+
+        $siswa = PesertaDidik::where('nis', $nis)->first();
+        $datapersonil = PersonilSekolah::where('id_personil', $id_personil)->first();
+
+        $mapel = KbmPerRombel::where([
+            //'peserta_didik_nis' => $nis,
+            'tahunajaran' => $tahunajaran,
+            'tingkat' => $tingkat,
+            'ganjilgenap' => $ganjilgenap,
+            'kode_rombel' => $kode_rombel,
+            'kel_mapel' => $kel_mapel,
+            'kode_mapel' => $kode_mapel,
+            'id_personil' => $id_personil,
+        ])->first();
+
+        $tpQuery = TujuanPembelajaran::where([
+            'tahunajaran'   => $tahunajaran,
+            'ganjilgenap'   => $ganjilgenap,
+            'tingkat'       => $tingkat,
+            'kode_rombel'   => $kode_rombel,
+            'kel_mapel'     => $mapel->kel_mapel,
+        ]);
+
+        $mapel->jumlah_tp = $tpQuery->count();
+
+        $personilIds = $tpQuery->distinct()->pluck('id_personil');
+        $personils = PersonilSekolah::whereIn('id_personil', $personilIds)->get();
+
+        $mapel->personil_info = $personils->map(function ($p) {
+            return trim("{$p->gelardepan} {$p->namalengkap} {$p->gelarbelakang}");
+        })->implode(', ');
+
+        // Ambil nilai formatif
+        $nilaiFormatif = NilaiFormatif::where([
+            'tahunajaran'   => $tahunajaran,
+            'ganjilgenap'   => $ganjilgenap,
+            'tingkat'       => $tingkat,
+            'kode_rombel'   => $kode_rombel,
+            'kel_mapel'     => $mapel->kel_mapel,
+            'nis'           => $nis,
+        ])->whereIn('id_personil', $personilIds)->first();
+
+        $nilai_formatif_kurang_kkm = false;
+        $nilaiList = [];
+
+        if ($nilaiFormatif) {
+            for ($i = 1; $i <= $mapel->jumlah_tp; $i++) {
+                $field = "tp_nilai_$i";
+                $nilai = $nilaiFormatif->$field;
+
+                if (!is_null($nilai)) {
+                    $warna = $nilai < $mapel->kkm ? 'text-danger' : '';
+                    if ($warna) $nilai_formatif_kurang_kkm = true;
+                    $nilaiList[] = "<span class='$warna'>($nilai)</span>";
+                }
+            }
+
+            $mapel->nilai_formatif = implode(' ', $nilaiList);
+            $mapel->rerata_formatif = $nilaiFormatif->rerata_formatif;
+            $mapel->rerata_formatif_label = $nilaiFormatif->rerata_formatif < $mapel->kkm
+                ? "<span class='text-danger'>{$nilaiFormatif->rerata_formatif}</span>"
+                : $nilaiFormatif->rerata_formatif;
+        } else {
+            $mapel->nilai_formatif = '-';
+            $mapel->rerata_formatif = '-';
+            $mapel->rerata_formatif_label = '-';
+        }
+
+        // Nilai Sumatif
+        $nilaiSumatif = NilaiSumatif::where([
+            'tahunajaran'   => $tahunajaran,
+            'ganjilgenap'   => $ganjilgenap,
+            'tingkat'       => $tingkat,
+            'kode_rombel'   => $kode_rombel,
+            'kel_mapel'     => $mapel->kel_mapel,
+            'nis'           => $nis,
+        ])->whereIn('id_personil', $personilIds)->first();
+
+        $nilai_sumatif_kurang_kkm = false;
+
+        if ($nilaiSumatif) {
+            $sts = $nilaiSumatif->sts;
+            $sas = $nilaiSumatif->sas;
+
+            $stsLabel = $sts < $mapel->kkm ? "<span class='text-danger'>($sts)</span>" : "($sts)";
+            $sasLabel = $sas < $mapel->kkm ? "<span class='text-danger'>($sas)</span>" : "($sas)";
+            if ($sts < $mapel->kkm || $sas < $mapel->kkm) $nilai_sumatif_kurang_kkm = true;
+
+            $mapel->nilai_sumatif = $stsLabel . ' ' . $sasLabel;
+            $mapel->rerata_sumatif = $nilaiSumatif->rerata_sumatif;
+            $mapel->rerata_sumatif_label = $nilaiSumatif->rerata_sumatif < $mapel->kkm
+                ? "<span class='text-danger'>{$nilaiSumatif->rerata_sumatif}</span>"
+                : $nilaiSumatif->rerata_sumatif;
+        } else {
+            $mapel->nilai_sumatif = '-';
+            $mapel->rerata_sumatif = '-';
+            $mapel->rerata_sumatif_label = '-';
+        }
+
+        // Nilai Akhir (rerata kedua rerata)
+        if (is_numeric($mapel->rerata_formatif) && is_numeric($mapel->rerata_sumatif)) {
+            $na = round(($mapel->rerata_formatif + $mapel->rerata_sumatif) / 2);
+            $mapel->nilai_akhir = $na;
+            $mapel->nilai_akhir_label = $na < $mapel->kkm
+                ? "<span class='text-danger'>{$na}</span>"
+                : $na;
+        } else {
+            $mapel->nilai_akhir = '-';
+            $mapel->nilai_akhir_label = '-';
+        }
+
+
+        return view('pages.kurikulum.dokumensiswa.remedial-peserta-didik-cetak', [
+            'siswa' => $siswa,
+            'datapersonil' => $datapersonil,
+            'mapel' => $mapel,
+            'nilaiFormatif' => $nilaiFormatif,
+            'nilaiSumatif' => $nilaiSumatif,
+        ]);
+    }
+
+
+    public function cetakRemedialOLD(Request $request)
     {
         $siswa = PesertaDidik::where('nis', $request->nis)->firstOrFail();
         $mapel = KbmPerRombel::where([

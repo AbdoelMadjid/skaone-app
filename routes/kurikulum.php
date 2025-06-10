@@ -135,7 +135,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/filter-siswa', [RemedialPesertaDidikNilaiController::class, 'filterSiswa']);
             Route::get('/lihat-mata-pelajaran', [RemedialPesertaDidikNilaiController::class, 'lihatMapel']);
             Route::get('/cek-mata-pelajaran', [RemedialPesertaDidikNilaiController::class, 'cekMataPelajaran']);
-            Route::post('/cetakremedial', [RemedialPesertaDidikNilaiController::class, 'cetakRemedial'])->name('cetakremedial');
+            Route::get('/cetakremedial', [RemedialPesertaDidikNilaiController::class, 'cetakRemedial']);
         });
 
         Route::group(['prefix' => 'perangkatujian', 'as' => 'perangkatujian.'], function () {

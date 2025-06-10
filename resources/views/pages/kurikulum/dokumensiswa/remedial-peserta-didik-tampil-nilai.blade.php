@@ -35,6 +35,10 @@
                     <th>Rombel</th> --}}
                     {{-- <th>Kel. Mapel</th>
                     <th>Kode Mapel</th> --}}
+                    {{-- <th class="text-center align-middle">Tahun Ajaran</th>
+                    <th class="text-center align-middle">Ganjil Genap</th>
+                    <th class="text-center align-middle">Kode KK</th>
+                    <th class="text-center align-middle">Tingkat</th> --}}
                     <th class="text-center align-middle">Mata Pelajaran</th>
                     <th class="text-center align-middle">KKM</th>
                     <th class="text-center align-middle">Jml TP</th>
@@ -53,6 +57,10 @@
                         <td>{{ $mapel->rombel }}</td> --}}
                         {{-- <td>{{ $mapel->kel_mapel }}</td>
                         <td>{{ $mapel->kode_mapel }}</td> --}}
+                        {{-- <td>{{ $mapel->thnajaran }}</td>
+                        <td>{{ $mapel->gg }}</td>
+                        <td>{{ $mapel->kode_kk }}</td>
+                        <td>{{ $mapel->tkt }}</td> --}}
                         <td>
                             {{ $mapel->mata_pelajaran }}<br>
                             <small class="text-muted">{{ $mapel->personil_info ?? '-' }}</small>
@@ -66,18 +74,15 @@
                         <td class="text-center">{!! $mapel->nilai_akhir ?? '-' !!}</td>
                         <td class="text-center">
                             @if ($mapel->show_cetak_remedial)
-                                <button id="btn-cetak-remedial-{{ $loop->index }}"
-                                    class="btn btn-sm btn-soft-primary">
+                                <button class="btn btn-sm btn-soft-primary cetak-format-remedial"
+                                    data-nis="{{ $siswa->nis }}" data-tahunajaran="{{ $mapel->thnajaran }}"
+                                    data-tingkat="{{ $mapel->tkt }}" data-ganjilgenap="{{ $mapel->gg }}"
+                                    data-kode_rombel="{{ $mapel->kode_rombel }}"
+                                    data-kel_mapel="{{ $mapel->kel_mapel }}"
+                                    data-kode_mapel="{{ $mapel->kode_mapel }}"
+                                    data-id_personil="{{ $mapel->id_personil }}">
                                     <i class="ri-printer-line"></i>
                                 </button>
-
-                                <script>
-                                    setupPrintHandler({
-                                        printButtonId: 'btn-cetak-remedial-{{ $loop->index }}',
-                                        tableContentId: 'print-remedial',
-                                        title: 'Format Perbaikan Nilai',
-                                    });
-                                </script>
                             @endif
                         </td>
                     </tr>
