@@ -3,6 +3,7 @@
 use App\Http\Controllers\ManajemenSekolah\WaliKelasController;
 use App\Http\Controllers\WaliKelas\AbsensiSiswaWalasController;
 use App\Http\Controllers\WaliKelas\CatatanWalikelasController;
+use App\Http\Controllers\WaliKelas\CekRemedialSiswaController;
 use App\Http\Controllers\WaliKelas\DataKelasController;
 use App\Http\Controllers\WaliKelas\EkstrakurikulerController;
 use App\Http\Controllers\WaliKelas\IdentitasSiswaController;
@@ -49,5 +50,7 @@ Route::middleware('auth', 'roleonly:walas')->group(function () {
         Route::resource('catatan-wali-kelas', CatatanWalikelasController::class);
         Route::post('/catatan-wali-kelas/generatecatatanwalikelas', [CatatanWalikelasController::class, 'generatecatatanwalikelas'])->name('catatan-wali-kelas.generatecatatanwalikelas');
         Route::post('/catatan-wali-kelas/update-catatan', [CatatanWalikelasController::class, 'updateCatatan']);
+
+        Route::resource('cek-remedial-siswa', CekRemedialSiswaController::class);
     });
 });

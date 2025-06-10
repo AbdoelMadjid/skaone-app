@@ -328,11 +328,10 @@ return [
     "data-kelas" => "Data Kelas",
     "identitas-siswa" => "Identitas Siswa",
     "prestasi-siswa" => "Prestasi Siswa",
-
     "ekstrakulikuler" => "Ekstrakurikuler",
-
     "praktek-kerja" => "Praktek Kerja",
     "catatan-wali-kelas" => "Catatan Wali Kelas",
+    "cek-remedial" => "Cek Remedial",
 
     "fitur-coding" => "Fitur Coding",
     "team-pengembang" => "Tim Pengembang",
