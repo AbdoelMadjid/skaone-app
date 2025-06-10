@@ -39,17 +39,26 @@
             </thead>
             <tbody>
                 @for ($i = 1; $i <= $mapel->jumlah_tp; $i++)
+                    @php
+                        $nilai = $nilaiFormatif["tp_nilai_{$i}"] ?? null;
+                        $isKurang = $nilai !== null && $nilai < $mapel->kkm;
+                    @endphp
                     <tr>
                         <td style="text-align:center;border: 1px solid #000000;">{{ $i }}</td>
-                        <td style="text-align:center;border: 1px solid #000000;">
-                            {{ $nilaiFormatif["tp_nilai_{$i}"] ?? '-' }}
+                        <td style="text-align:center;border: 1px solid #000000;{{ $isKurang ? 'color:red;' : '' }}">
+                            {{ $nilai ?? '-' }}
                         </td>
                         <td style="text-align:center;border: 1px solid #000000;"></td>
                     </tr>
                 @endfor
+                @php
+                    $rataFormatif = $mapel->rerata_formatif;
+                    $isKurangRata = is_numeric($rataFormatif) && $rataFormatif < $mapel->kkm;
+                @endphp
                 <tr>
                     <td style="text-align:center;border: 1px solid #000000;"><strong>Rata-Rata</strong></td>
-                    <td style="text-align:center;border: 1px solid #000000;">{{ $mapel->rerata_formatif ?? '-' }}</td>
+                    <td style="text-align:center;border: 1px solid #000000; {{ $isKurangRata ? 'color:red;' : '' }}">
+                        {{ $rataFormatif ?? '-' }}</td>
                     <td style="text-align:center;border: 1px solid #000000;"></td>
                 </tr>
             </tbody>
@@ -67,19 +76,33 @@
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $sts = $nilaiSumatif->sts ?? null;
+                    $sas = $nilaiSumatif->sas ?? null;
+                @endphp
                 <tr>
                     <td style="text-align:center;border: 1px solid #000000;">STS</td>
-                    <td style="text-align:center;border: 1px solid #000000;">{{ $nilaiSumatif->sts ?? '-' }}</td>
+                    <td
+                        style="text-align:center;border: 1px solid #000000; {{ $sts !== null && $sts < $mapel->kkm ? 'color:red;' : '' }}">
+                        {{ $sts ?? '-' }}</td>
                     <td style="text-align:center;border: 1px solid #000000;"></td>
                 </tr>
                 <tr>
                     <td style="text-align:center;border: 1px solid #000000;">SAS</td>
-                    <td style="text-align:center;border: 1px solid #000000;">{{ $nilaiSumatif->sas ?? '-' }}</td>
+                    <td
+                        style="text-align:center;border: 1px solid #000000; {{ $sas !== null && $sas < $mapel->kkm ? 'color:red;' : '' }}">
+                        {{ $sas ?? '-' }}</td>
                     <td style="text-align:center;border: 1px solid #000000;"></td>
                 </tr>
+                @php
+                    $rataSumatif = $mapel->rerata_sumatif;
+                    $isKurangSumatif = is_numeric($rataSumatif) && $rataSumatif < $mapel->kkm;
+                @endphp
                 <tr>
                     <td style="text-align:center;border: 1px solid #000000;"><strong>Rata-rata</strong></td>
-                    <td style="text-align:center;border: 1px solid #000000;">{{ $mapel->rerata_sumatif ?? '-' }}</td>
+                    <td
+                        style="text-align:center;border: 1px solid #000000;; {{ $isKurangSumatif ? 'color:red;' : '' }}">
+                        {{ $rataSumatif ?? '-' }}</td>
                     <td style="text-align:center;border: 1px solid #000000;"></td>
                 </tr>
             </tbody>
@@ -87,9 +110,14 @@
     </div>
     <br><br>
     <table style="width: 40%;border: none !important;font:12px Times New Roman;">
+        @php
+            $nilaiAkhir = $mapel->nilai_akhir;
+            $isKurangAkhir = is_numeric($nilaiAkhir) && $nilaiAkhir < $mapel->kkm;
+        @endphp
         <tr>
             <td width="50%" style="border: none !important;text-align:left;"><strong>Nilai Akhir</strong></td>
-            <td style="border: none !important;text-align:left;">: {{ $mapel->nilai_akhir ?? '-' }}</td>
+            <td style="border: none !important;text-align:left; {{ $isKurangAkhir ? 'color:red;' : '' }}">
+                : {{ $nilaiAkhir ?? '-' }}</td>
         </tr>
     </table>
     <br>
