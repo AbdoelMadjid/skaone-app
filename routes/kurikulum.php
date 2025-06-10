@@ -104,8 +104,10 @@ Route::middleware('auth')->group(function () {
             Route::get('/exportsumatif', [ArsipGuruMapelController::class, 'exportExcelSumatif'])->name('exportsumatif');
             Route::post('/uploadsumatif', [ArsipGuruMapelController::class, 'uploadNilaiSumatif'])->name('uploadsumatif');
 
-
             Route::resource('arsip-walikelas', ArsipWaliKelasController::class);
+            Route::get('/get-rombels', [ArsipWaliKelasController::class, 'getRombels']);
+            Route::get('/get-wali-kelas', [ArsipWaliKelasController::class, 'getWaliKelas']);
+            Route::get('/get-dokumen-walas', [ArsipWaliKelasController::class, 'getDokumenWalas']);
         });
 
         Route::group(['prefix' => 'dokumentsiswa', 'as' => 'dokumentsiswa.'], function () {
