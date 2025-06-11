@@ -18,10 +18,10 @@
                     <td>{{ $i + 1 }}</td>
                     <td>{{ $item->nis }}</td>
                     <td>{{ $item->pesertaDidik->nama_lengkap ?? '-' }}</td>
-                    <td>{{ $item->sakit }}</td>
-                    <td>{{ $item->izin }}</td>
-                    <td>{{ $item->alfa }}</td>
-                    <td>{{ $item->jmlhabsen }}</td>
+                    <td style="text-align:center;">{{ $item->sakit }}</td>
+                    <td style="text-align:center;">{{ $item->izin }}</td>
+                    <td style="text-align:center;">{{ $item->alfa }}</td>
+                    <td style="text-align:center;">{{ $item->jmlhabsen }}</td>
                 </tr>
             @empty
                 <tr>

@@ -108,6 +108,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/get-rombels', [ArsipWaliKelasController::class, 'getRombels']);
             Route::get('/get-wali-kelas', [ArsipWaliKelasController::class, 'getWaliKelas']);
             Route::get('/get-dokumen-walas', [ArsipWaliKelasController::class, 'getDokumenWalas']);
+            Route::post('/simpan-pilihan', [ArsipWaliKelasController::class, 'simpanPilihan']);
         });
 
         Route::group(['prefix' => 'dokumentsiswa', 'as' => 'dokumentsiswa.'], function () {

@@ -47,6 +47,6 @@ class PesertaDidik extends Model
     // Relasi ke PesertaDidikOrtu
     public function ortus()
     {
-        return $this->hasMany(PesertaDidikOrtu::class, 'nis', 'nis');
+        return $this->hasOne(PesertaDidikOrtu::class, 'nis', 'nis');
     }
 }
