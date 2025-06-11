@@ -23,8 +23,6 @@ class ArsipWaliKelasController extends Controller
      */
     public function index()
     {
-        $id_user = auth()->user()->id_personil;
-
         $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
         if (!$tahunAjaranAktif) {
             return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
@@ -40,14 +38,14 @@ class ArsipWaliKelasController extends Controller
         $kompetensiKeahlianOptions = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
         $rombonganBelajar = RombonganBelajar::pluck('rombel', 'kode_rombel')->toArray();
 
-        $pilihanTerakhir = PilihArsipWaliKelas::where('id_user', $id_user)->first();
+        /* $userId = Auth::id();
+        $pilihan = PilihArsipWaliKelas::where('id_user', $userId)->first(); */
 
         return view('pages.kurikulum.dokumenguru.arsip-walikelas', [
             'tahunAjaranOption' => $tahunAjaranOption,
             'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
             'rombonganBelajar' => $rombonganBelajar,
-            'id_user' => $id_user,
-            'pilihanTerakhir' => $pilihanTerakhir,
+            /* 'pilihan' => $pilihan, */
         ]);
     }
 
@@ -99,21 +97,25 @@ class ArsipWaliKelasController extends Controller
         //
     }
 
-
-    public function simpanPilihan(Request $request)
+    public function simpanPilihanWalas(Request $request)
     {
+        $userId = Auth::id();
+
+        $data = [
+            'tahunajaran' => $request->tahunajaran,
+            'kode_kk' => $request->kode_kk,
+            'tingkat' => $request->tingkat,
+            'kode_rombel' => $request->kode_rombel,
+            'ganjilgenap' => $request->ganjilgenap,
+            'pilih_dokumen' => $request->pilih_dokumen,
+        ];
+
         PilihArsipWaliKelas::updateOrCreate(
-            ['id_user' => $request->id_user],
-            [
-                'tahunajaran' => $request->tahunajaran,
-                'kode_kk' => $request->kode_kk,
-                'tingkat' => $request->tingkat,
-                'kode_rombel' => $request->kode_rombel,
-                'ganjilgenap' => $request->ganjilgenap,
-                'pilih_dokumen' => $request->pilih_dokumen,
-            ]
+            ['id_user' => $userId],
+            $data
         );
-        return response()->json(['status' => 'ok']);
+
+        return response()->json(['success' => true]);
     }
 
     public function getRombels(Request $request)
@@ -240,5 +242,25 @@ class ArsipWaliKelasController extends Controller
         }
 
         return response('Dokumen tidak dikenali.', 400);
+    }
+
+    public function getPilihanWalikelas()
+    {
+        $userId = Auth::id();
+
+        $data = PilihArsipWaliKelas::where('id_user', $userId)->first();
+
+        if ($data) {
+            return response()->json([
+                'tahunajaran' => $data->tahunajaran,
+                'kode_kk' => $data->kode_kk,
+                'tingkat' => $data->tingkat,
+                'kode_rombel' => $data->kode_rombel,
+                'ganjilgenap' => $data->ganjilgenap,
+                'pilih_dokumen' => $data->pilih_dokumen,
+            ]);
+        }
+
+        return response()->json(null);
     }
 }
