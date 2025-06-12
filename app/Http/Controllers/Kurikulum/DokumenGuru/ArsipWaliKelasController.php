@@ -15,6 +15,7 @@ use App\Models\WaliKelas\CatatanWaliKelas;
 use App\Models\WaliKelas\Ekstrakurikuler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ArsipWaliKelasController extends Controller
 {
@@ -166,39 +167,37 @@ class ArsipWaliKelasController extends Controller
         $kode_rombel = $request->query('kode_rombel');
 
         if ($dokumen === 'dataKelas') {
-            $data = PesertaDidikRombel::where('tahun_ajaran', $tahunajaran)
-                ->where('kode_kk', $kode_kk)
-                ->where('rombel_tingkat', $tingkat)
-                ->where('rombel_kode', $kode_rombel)
-                ->with(['pesertaDidik' => function ($query) {
-                    $query->select(
-                        'nis',
-                        'nama_lengkap',
-                        'jenis_kelamin',
-                        'tempat_lahir',
-                        'tanggal_lahir',
-                        'alamat_desa',
-                        'alamat_kec'
-                    )->with(['ortus' => function ($q) {
-                        $q->select(
-                            'nis',
-                            'nm_ayah',
-                            'nm_ibu',
-                            'pekerjaan_ayah',
-                            'pekerjaan_ibu',
-                            'ortu_alamat_blok',
-                            'ortu_alamat_norumah',
-                            'ortu_alamat_rt',
-                            'ortu_alamat_rw',
-                            'ortu_alamat_desa',
-                            'ortu_alamat_kec',
-                            'ortu_alamat_kab',
-                            'ortu_alamat_kodepos',
-                            'ortu_kontak_telepon',
-                            'ortu_kontak_email'
-                        );
-                    }]);
-                }])
+            $data = DB::table('peserta_didik_rombels')
+                ->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
+                ->leftJoin('peserta_didik_ortus', 'peserta_didiks.nis', '=', 'peserta_didik_ortus.nis')
+                ->where('peserta_didik_rombels.tahun_ajaran', $tahunajaran)
+                ->where('peserta_didik_rombels.kode_kk', $kode_kk)
+                ->where('peserta_didik_rombels.rombel_tingkat', $tingkat)
+                ->where('peserta_didik_rombels.rombel_kode', $kode_rombel)
+                ->select(
+                    'peserta_didik_rombels.nis',
+                    'peserta_didiks.nama_lengkap',
+                    'peserta_didiks.jenis_kelamin',
+                    'peserta_didiks.tempat_lahir',
+                    'peserta_didiks.tanggal_lahir',
+                    'peserta_didiks.alamat_desa',
+                    'peserta_didiks.alamat_kec',
+                    'peserta_didiks.alamat_kab',
+                    'peserta_didik_ortus.nm_ayah',
+                    'peserta_didik_ortus.nm_ibu',
+                    'peserta_didik_ortus.pekerjaan_ayah',
+                    'peserta_didik_ortus.pekerjaan_ibu',
+                    'peserta_didik_ortus.ortu_alamat_blok',
+                    'peserta_didik_ortus.ortu_alamat_norumah',
+                    'peserta_didik_ortus.ortu_alamat_rt',
+                    'peserta_didik_ortus.ortu_alamat_rw',
+                    'peserta_didik_ortus.ortu_alamat_desa',
+                    'peserta_didik_ortus.ortu_alamat_kec',
+                    'peserta_didik_ortus.ortu_alamat_kab',
+                    'peserta_didik_ortus.ortu_alamat_kodepos',
+                    'peserta_didik_ortus.ortu_kontak_telepon',
+                    'peserta_didik_ortus.ortu_kontak_email',
+                )
                 ->get();
 
             return view('pages.kurikulum.dokumenguru.arsip-walikelas-datakelas', compact('data', 'semester'));

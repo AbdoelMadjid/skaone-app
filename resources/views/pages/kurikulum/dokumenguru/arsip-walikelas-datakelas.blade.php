@@ -15,24 +15,21 @@
         </thead>
         <tbody>
             @forelse ($data as $i => $item)
-                @php
-                    $siswa = $item->pesertaDidik;
-                    $ortu = $siswa->ortu ?? null;
-                @endphp
                 <tr>
                     <td>{{ $i + 1 }}</td>
                     <td>{{ $item->nis }}</td>
-                    <td>{{ $siswa->nama_lengkap ?? '-' }}</td>
-                    <td>{{ $siswa->jenis_kelamin ?? '-' }}</td>
+                    <td>{{ $item->nama_lengkap ?? '-' }}</td>
+                    <td>{{ $item->jenis_kelamin ?? '-' }}</td>
                     <td>
-                        {{ $siswa->tempat_lahir ? ucwords(strtolower($siswa->tempat_lahir)) : '-' }},
-                        {{ $siswa->tanggal_lahir ? formatTanggalIndonesia($siswa->tanggal_lahir) : '-' }}
+                        {{ $item->tempat_lahir ? ucwords(strtolower($item->tempat_lahir)) : '-' }},
+                        {{ $item->tanggal_lahir ? formatTanggalIndonesia($item->tanggal_lahir) : '-' }}
                     </td>
-                    <td>{{ $ortu?->nm_ayah ? ucwords(strtolower($ortu?->nm_ayah)) : '-' }}</td>
-                    <td>{{ $ortu?->nm_ibu ? ucwords(strtolower($ortu?->nm_ibu)) : '-' }}</td>
+                    <td>{{ $item->nm_ayah ? ucwords(strtolower($item->nm_ayah)) : '-' }}</td>
+                    <td>{{ $item->nm_ibu ? ucwords(strtolower($item->nm_ibu)) : '-' }}</td>
                     <td>
-                        {{ $siswa->alamat_desa ? ucwords(strtolower($siswa->alamat_desa)) : '-' }},
-                        {{ $siswa->alamat_kec ? ucwords(strtolower($siswa->alamat_kec)) : '-' }}
+                        Desa/Kel. {{ $item->alamat_desa ? ucwords(strtolower($item->alamat_desa)) : '-' }}<br>
+                        Kec. {{ $item->alamat_kec ? ucwords(strtolower($item->alamat_kec)) : '-' }}<br>
+                        Kab. {{ $item->alamat_kab ? ucwords(strtolower($item->alamat_kab)) : '-' }}
                     </td>
                 </tr>
             @empty
@@ -40,7 +37,6 @@
                     <td colspan="7" class="text-center">Tidak ada data peserta didik.</td>
                 </tr>
             @endforelse
-
         </tbody>
     </table>
 </div>
