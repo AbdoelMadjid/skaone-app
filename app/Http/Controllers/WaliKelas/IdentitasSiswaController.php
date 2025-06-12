@@ -7,6 +7,7 @@ use App\Models\ManajemenSekolah\PesertaDidik;
 use App\Http\Controllers\Controller;
 use App\Models\AppSupport\Referensi;
 use App\Models\ManajemenSekolah\KompetensiKeahlian;
+use App\Models\ManajemenSekolah\PesertaDidikOrtu;
 use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -87,9 +88,13 @@ class IdentitasSiswaController extends Controller
                 ->where('peserta_didik_rombels.rombel_tingkat', $waliKelas->tingkat)
                 ->select('peserta_didik_rombels.nis', 'peserta_didiks.nama_lengkap')
                 ->get();
+
+            // Ambil seluruh data dari tabel peserta_didik_ortus
+            $ortuData = DB::table('peserta_didik_ortus')->get();
         } else {
             $kbmData = collect(); // Jika wali kelas tidak ditemukan, kirim koleksi kosong
             $siswaData = collect(); // Jika wali kelas tidak ditemukan, kirim koleksi kosong
+            $ortuData = collect();    // Jika wali kelas tidak ditemukan, kirim koleksi kosong
         }
 
         return $waliKelasDtSiswaDataTable->render(
@@ -137,11 +142,18 @@ class IdentitasSiswaController extends Controller
         $agamaOptions = Referensi::where('jenis', 'Agama')->pluck('data', 'data')->toArray();
         $tahunAjaran = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
         $kompetensiKeahlian = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
+
+        $ortu = PesertaDidikOrtu::where('nis', $identitasSiswa->nis)->first();
+
+        $pekerjaanOrtu = Referensi::where('jenis', 'Pekerjaan')->pluck('data', 'data')->toArray();
+
         return view('pages.walikelas.identitas-siswa-form', [
             'data' => $identitasSiswa,
             'tahunAjaran' => $tahunAjaran,
             'kompetensiKeahlian' => $kompetensiKeahlian,
             'agamaOptions' => $agamaOptions,
+            'ortu' => $ortu,
+            'pekerjaanOrtu' => $pekerjaanOrtu,
             'action' => route('walikelas.identitas-siswa.update', $identitasSiswa->id)
         ]);
     }
@@ -198,6 +210,26 @@ class IdentitasSiswaController extends Controller
         $identitasSiswa->fill($request->except('foto'));
         $identitasSiswa->foto = $imageName; // Perbarui nama foto jika ada
         $identitasSiswa->save();
+
+        PesertaDidikOrtu::updateOrCreate(
+            ['nis' => $identitasSiswa->nis],
+            $request->only([
+                'nm_ayah',
+                'nm_ibu',
+                'pekerjaan_ayah',
+                'pekerjaan_ibu',
+                'ortu_alamat_blok',
+                'ortu_alamat_norumah',
+                'ortu_alamat_rt',
+                'ortu_alamat_rw',
+                'ortu_alamat_desa',
+                'ortu_alamat_kec',
+                'ortu_alamat_kab',
+                'ortu_alamat_kodepos',
+                'ortu_kontak_telepon',
+                'ortu_kontak_email'
+            ])
+        );
 
         // Perbarui data di tabel `users` sesuai kondisi
         $user = User::where('nis', $identitasSiswa->nis)->first();
