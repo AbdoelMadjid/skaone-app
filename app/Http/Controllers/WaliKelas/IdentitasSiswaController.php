@@ -143,7 +143,8 @@ class IdentitasSiswaController extends Controller
         $tahunAjaran = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
         $kompetensiKeahlian = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
 
-        $ortu = PesertaDidikOrtu::where('nis', $identitasSiswa->nis)->first();
+        //$ortu = PesertaDidikOrtu::where('nis', $identitasSiswa->nis)->first();
+        $ortu = PesertaDidikOrtu::firstOrNew(['nis' => $identitasSiswa->nis]);
 
         $pekerjaanOrtu = Referensi::where('jenis', 'Pekerjaan')->pluck('data', 'data')->toArray();
 
