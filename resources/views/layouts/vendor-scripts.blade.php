@@ -19,3 +19,14 @@
         })
     </script>
 @endif
+<!-- Tampilkan notifikasi sukses -->
+@if (session('success-chache'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Clear Chache Berhasil di Eksekusi',
+            text: @json(session('success')),
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif

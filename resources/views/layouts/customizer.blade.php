@@ -795,12 +795,38 @@
     </div>
     <div class="offcanvas-footer border-top p-3 text-center">
         <div class="row">
-            <div class="col-6">
+            <div class="col-4">
                 <button type="button" class="btn btn-light w-100" id="reset-layout">Reset</button>
             </div>
-            <div class="col-6">
+            <div class="col-4">
                 <button type="button" class="btn btn-primary w-100">Preview</button>
+            </div>
+            <div class="col-4">
+                <form action="{{ route('clear.cache') }}" method="GET">
+                    @csrf
+                    <button id="clear-cache-btn" class="btn btn-danger w-100">
+                        Cache
+                    </button>
+                </form>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById('clear-cache-btn').addEventListener('click', function() {
+        Swal.fire({
+            title: 'Yakin ingin bersihkan cache?',
+            text: "Tindakan ini akan menghapus cache aplikasi.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, bersihkan!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "{{ route('clear.cache') }}";
+            }
+        });
+    });
+</script>

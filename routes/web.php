@@ -35,6 +35,7 @@ use App\Http\Controllers\Pengguna\PesanController;
 use App\Http\Controllers\WelcomeController;
 use App\Models\ManajemenPengguna\LoginRecord;
 use App\Models\User;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -98,6 +99,10 @@ Route::get('/real-time-stats', function () {
     ]);
 });
 
+Route::middleware(['auth', 'master'])->get('/clear-cache', function () {
+    Artisan::call('optimize:clear');
+    return redirect()->back()->with('success-chache', 'Cache berhasil dibersihkan!');
+})->name('clear.cache');
 
 Route::middleware(['auth', 'master'])->post('/switch-account', [UserController::class, 'switchAccount'])->name('switch.account');
 // Rute untuk kembali ke akun asal
