@@ -105,11 +105,9 @@ Route::middleware('auth')->group(function () {
             Route::post('/uploadsumatif', [ArsipGuruMapelController::class, 'uploadNilaiSumatif'])->name('uploadsumatif');
 
             Route::resource('arsip-walikelas', ArsipWaliKelasController::class);
-            Route::get('/get-rombels', [ArsipWaliKelasController::class, 'getRombels']);
-            Route::get('/get-wali-kelas', [ArsipWaliKelasController::class, 'getWaliKelas']);
-            Route::get('/get-dokumen-walas', [ArsipWaliKelasController::class, 'getDokumenWalas']);
-            Route::post('/simpan-pilihan-walas', [ArsipWaliKelasController::class, 'simpanPilihanWalas']);
-            Route::get('/get-pilihan-walikelas', [ArsipGuruMapelController::class, 'getPilihanWalikelas']);
+            Route::get('/get-rombel-walas', [ArsipWaliKelasController::class, 'getRombelWalas'])->name('getRombelWalas');
+            Route::get('/tab-content', [ArsipWaliKelasController::class, 'getTabContent'])
+                ->name('getTabContent');
         });
 
         Route::group(['prefix' => 'dokumentsiswa', 'as' => 'dokumentsiswa.'], function () {

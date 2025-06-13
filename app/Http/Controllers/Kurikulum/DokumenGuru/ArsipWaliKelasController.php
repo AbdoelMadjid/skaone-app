@@ -119,147 +119,100 @@ class ArsipWaliKelasController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function getRombels(Request $request)
+    public function getRombelWalas(Request $request)
     {
-        $tahunajaran = $request->query('tahunajaran');
-        $kode_kk = $request->query('kode_kk');
-        $tingkat = $request->query('tingkat');
+        $tahunAjaran = $request->get('tahun_ajaran');
+        $kodeKK = $request->get('kode_kk');
+        $tingKat = $request->get('tingkat');
 
-        $rombels = RombonganBelajar::where('tahunajaran', $tahunajaran)
-            ->where('id_kk', $kode_kk)
-            ->where('tingkat', $tingkat)
-            ->select('kode_rombel', 'rombel')
-            ->orderBy('rombel')
-            ->get();
+        // Mengambil data rombongan belajar sesuai tahun ajaran dan kompetensi keahlian
+        $rombonganBelajar = RombonganBelajar::where('tahunajaran', $tahunAjaran)
+            ->where('id_kk', $kodeKK)
+            ->where('tingkat', $tingKat)
+            ->pluck('rombel', 'kode_rombel'); // Mengambil kolom rombel dan kode_rombel
 
-        return response()->json($rombels);
+        return response()->json($rombonganBelajar); // Mengembalikan data sebagai JSON
     }
 
-    public function getWaliKelas(Request $request)
+    public function getTabContent(Request $request)
     {
-        $tahunajaran = $request->query('tahunajaran');
-        $id_kk = $request->query('id_kk');
-        $tingkat = $request->query('tingkat');
-        $kode_rombel = $request->query('kode_rombel');
+        $tahunajaran = $request->tahun_ajaran;
+        $semester = $request->semester;
+        $kode_kk = $request->kode_kk;
+        $tingkat = $request->tingkat;
+        $kode_rombel = $request->kode_rombel;
 
+        // Data Kelas
+        $dataKelas = DB::table('peserta_didik_rombels')
+            ->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
+            ->leftJoin('peserta_didik_ortus', 'peserta_didiks.nis', '=', 'peserta_didik_ortus.nis')
+            ->where('peserta_didik_rombels.tahun_ajaran', $tahunajaran)
+            ->where('peserta_didik_rombels.kode_kk', $kode_kk)
+            ->where('peserta_didik_rombels.rombel_tingkat', $tingkat)
+            ->where('peserta_didik_rombels.rombel_kode', $kode_rombel)
+            ->select(
+                'peserta_didik_rombels.nis',
+                'peserta_didiks.nama_lengkap',
+                'peserta_didiks.jenis_kelamin',
+                'peserta_didiks.tempat_lahir',
+                'peserta_didiks.tanggal_lahir',
+                'peserta_didiks.alamat_desa',
+                'peserta_didiks.alamat_kec',
+                'peserta_didiks.alamat_kab',
+                'peserta_didik_ortus.nm_ayah',
+                'peserta_didik_ortus.nm_ibu'
+            )
+            ->get();
+
+        $absensi = AbsensiSiswa::where('tahunajaran', $tahunajaran)
+            ->where('ganjilgenap', $semester)
+            ->where('kode_rombel', $kode_rombel)
+            ->with(['pesertaDidik' => function ($q) {
+                $q->select('nis', 'nama_lengkap');
+            }])
+            ->get();
+
+        $eskul = Ekstrakurikuler::where('tahunajaran', $tahunajaran)
+            ->where('ganjilgenap', $semester)
+            ->where('kode_rombel', $kode_rombel)
+            ->with(['pesertaDidik' => function ($q) {
+                $q->select('nis', 'nama_lengkap');
+            }])
+            ->get();
+
+        $catatanWalas = CatatanWaliKelas::where('tahunajaran', $tahunajaran)
+            ->where('ganjilgenap', $semester)
+            ->where('kode_rombel', $kode_rombel)
+            ->with(['pesertaDidik' => function ($q) {
+                $q->select('nis', 'nama_lengkap');
+            }])
+            ->get();
+
+
+        // Ambil wali kelas
         $rombongan = RombonganBelajar::where('tahunajaran', $tahunajaran)
-            ->where('id_kk', $id_kk)
+            ->where('id_kk', $kode_kk)
             ->where('tingkat', $tingkat)
             ->where('kode_rombel', $kode_rombel)
             ->first();
 
-        if (!$rombongan || !$rombongan->wali_kelas) {
-            return view('pages.kurikulum.dokumenguru.arsip-walikelas-nama', ['wali' => null]);
-        }
-
-        $wali = PersonilSekolah::where('id_personil', $rombongan->wali_kelas)->first();
-
-        return view('pages.kurikulum.dokumenguru.arsip-walikelas-nama', compact('wali'));
-    }
-
-    public function getDokumenWalas(Request $request)
-    {
-        $dokumen = $request->query('dokumen');
-        $semester = $request->query('semester');
-        $tahunajaran = $request->query('tahunajaran');
-        $kode_kk = $request->query('kode_kk');
-        $tingkat = $request->query('tingkat');
-        $kode_rombel = $request->query('kode_rombel');
-
-        if ($dokumen === 'dataKelas') {
-            $data = DB::table('peserta_didik_rombels')
-                ->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
-                ->leftJoin('peserta_didik_ortus', 'peserta_didiks.nis', '=', 'peserta_didik_ortus.nis')
-                ->where('peserta_didik_rombels.tahun_ajaran', $tahunajaran)
-                ->where('peserta_didik_rombels.kode_kk', $kode_kk)
-                ->where('peserta_didik_rombels.rombel_tingkat', $tingkat)
-                ->where('peserta_didik_rombels.rombel_kode', $kode_rombel)
-                ->select(
-                    'peserta_didik_rombels.nis',
-                    'peserta_didiks.nama_lengkap',
-                    'peserta_didiks.jenis_kelamin',
-                    'peserta_didiks.tempat_lahir',
-                    'peserta_didiks.tanggal_lahir',
-                    'peserta_didiks.alamat_desa',
-                    'peserta_didiks.alamat_kec',
-                    'peserta_didiks.alamat_kab',
-                    'peserta_didik_ortus.nm_ayah',
-                    'peserta_didik_ortus.nm_ibu',
-                    'peserta_didik_ortus.pekerjaan_ayah',
-                    'peserta_didik_ortus.pekerjaan_ibu',
-                    'peserta_didik_ortus.ortu_alamat_blok',
-                    'peserta_didik_ortus.ortu_alamat_norumah',
-                    'peserta_didik_ortus.ortu_alamat_rt',
-                    'peserta_didik_ortus.ortu_alamat_rw',
-                    'peserta_didik_ortus.ortu_alamat_desa',
-                    'peserta_didik_ortus.ortu_alamat_kec',
-                    'peserta_didik_ortus.ortu_alamat_kab',
-                    'peserta_didik_ortus.ortu_alamat_kodepos',
-                    'peserta_didik_ortus.ortu_kontak_telepon',
-                    'peserta_didik_ortus.ortu_kontak_email',
-                )
-                ->get();
-
-            return view('pages.kurikulum.dokumenguru.arsip-walikelas-datakelas', compact('data', 'semester'));
-        }
+        $wali = $rombongan && $rombongan->wali_kelas
+            ? PersonilSekolah::where('id_personil', $rombongan->wali_kelas)->first()
+            : null;
 
 
-        if ($dokumen === 'absensiSiswa') {
-            $data = AbsensiSiswa::where('tahunajaran', $tahunajaran)
-                ->where('ganjilgenap', $semester)
-                ->where('kode_rombel', $kode_rombel)
-                ->with(['pesertaDidik' => function ($q) {
-                    $q->select('nis', 'nama_lengkap');
-                }])
-                ->get();
+        $viewDataKelas = view('pages.kurikulum.dokumenguru.arsip-walikelas-datakelas', compact('dataKelas', 'semester'))->render();
+        $viewAbsensi = view('pages.kurikulum.dokumenguru.arsip-walikelas-absensi', compact('absensi', 'semester'))->render();
+        $viewEskul = view('pages.kurikulum.dokumenguru.arsip-walikelas-eskul', compact('eskul', 'semester'))->render();
+        $viewCatatanWalas = view('pages.kurikulum.dokumenguru.arsip-walikelas-catatanwalas', compact('catatanWalas', 'semester'))->render();
+        $viewNamaWali = view('pages.kurikulum.dokumenguru.arsip-walikelas-nama', compact('wali'))->render();
 
-            return view('pages.kurikulum.dokumenguru.arsip-walikelas-absensi', compact('data', 'semester'));
-        }
-
-        if ($dokumen === 'catatanWalas') {
-            $data = CatatanWaliKelas::where('tahunajaran', $tahunajaran)
-                ->where('ganjilgenap', $semester)
-                ->where('kode_rombel', $kode_rombel)
-                ->with(['pesertaDidik' => function ($q) {
-                    $q->select('nis', 'nama_lengkap');
-                }])
-                ->get();
-
-            return view('pages.kurikulum.dokumenguru.arsip-walikelas-catatanwalas', compact('data', 'semester'));
-        }
-
-        if ($dokumen === 'eskulSiswa') {
-            $data = Ekstrakurikuler::where('tahunajaran', $tahunajaran)
-                ->where('ganjilgenap', $semester)
-                ->where('kode_rombel', $kode_rombel)
-                ->with(['pesertaDidik' => function ($q) {
-                    $q->select('nis', 'nama_lengkap');
-                }])
-                ->get();
-
-            return view('pages.kurikulum.dokumenguru.arsip-walikelas-eskul', compact('data', 'semester'));
-        }
-
-        return response('Dokumen tidak dikenali.', 400);
-    }
-
-    public function getPilihanWalikelas()
-    {
-        $userId = Auth::id();
-
-        $data = PilihArsipWaliKelas::where('id_user', $userId)->first();
-
-        if ($data) {
-            return response()->json([
-                'tahunajaran' => $data->tahunajaran,
-                'kode_kk' => $data->kode_kk,
-                'tingkat' => $data->tingkat,
-                'kode_rombel' => $data->kode_rombel,
-                'ganjilgenap' => $data->ganjilgenap,
-                'pilih_dokumen' => $data->pilih_dokumen,
-            ]);
-        }
-
-        return response()->json(null);
+        return response()->json([
+            'data_kelas' => $viewDataKelas,
+            'absensi' => $viewAbsensi,
+            'eskul' => $viewEskul,
+            'catatanWalas' => $viewCatatanWalas,
+            'nama_wali' => $viewNamaWali,
+        ]);
     }
 }

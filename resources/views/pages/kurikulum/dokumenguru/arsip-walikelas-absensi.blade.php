@@ -13,15 +13,15 @@
             </tr>
         </thead>
         <tbody>
-            @forelse ($data as $i => $item)
+            @forelse ($absensi as $i => $item)
                 <tr>
                     <td>{{ $i + 1 }}</td>
                     <td>{{ $item->nis }}</td>
                     <td>{{ $item->pesertaDidik->nama_lengkap ?? '-' }}</td>
-                    <td style="text-align:center;">{{ $item->sakit }}</td>
-                    <td style="text-align:center;">{{ $item->izin }}</td>
-                    <td style="text-align:center;">{{ $item->alfa }}</td>
-                    <td style="text-align:center;">{{ $item->jmlhabsen }}</td>
+                    <td class="text-center">{{ $item->sakit ?? 0 }}</td>
+                    <td class="text-center">{{ $item->izin ?? 0 }}</td>
+                    <td class="text-center">{{ $item->alpa ?? 0 }}</td>
+                    <td class="text-center">{{ $item->sakit + $item->izin + $item->alpa }}</td>
                 </tr>
             @empty
                 <tr>

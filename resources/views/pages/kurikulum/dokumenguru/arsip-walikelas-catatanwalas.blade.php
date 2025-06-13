@@ -10,7 +10,7 @@
             </tr>
         </thead>
         <tbody>
-            @forelse ($data as $i => $item)
+            @forelse ($catatanWalas as $i => $item)
                 <tr>
                     <td>{{ $i + 1 }}</td>
                     <td>{{ $item->pesertaDidik->nis ?? '-' }}</td>

@@ -17,240 +17,281 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-body border-bottom-dashed border-bottom">
-                    <div class="row g-3">
-                        <div class="col-lg">
-                            {{--  --}}
+                <div class="card-header border-0">
+                    <div class="row justify-content-center mb-4">
+                        <div class="col-lg-12">
+                            <h5 class="fs-16 fw-semibold text-center mb-0">ARSIP WALI KELAS</h5>
                         </div>
+                        <div class="col-lg-12 mt-4 mb-4">
+                            <form>
+                                <div class="row justify-content-center g-3">
+                                    <div class="col-lg-auto">
+                                        <div>
+                                            <select class="form-control" data-plugin="choices" data-choices
+                                                data-choices-search-false name="choices-single-default" id="idThnAjaran">
+                                                <option value="all" selected>Pilih Tahun Ajaran</option>
+                                                @foreach ($tahunAjaranOption as $thnajar)
+                                                    <option value="{{ $thnajar }}">{{ $thnajar }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-auto">
+                                        <div>
+                                            <select class="form-control" data-plugin="choices" data-choices
+                                                data-choices-search-false name="choices-single-default" id="idSemester">
+                                                <option value="all" selected>Pilih Semester</option>
+                                                <option value="Ganjil">Ganjil</option>
+                                                <option value="Genap">Genap</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-lg-auto">
+                                        <div>
+                                            <select class="form-control" data-plugin="choices" data-choices
+                                                data-choices-search-false name="choices-single-default" id="idKodeKK">
+                                                <option value="all" selected>Pilih Kompetensi Keahlian</option>
+                                                @foreach ($kompetensiKeahlianOptions as $id => $kode_kk)
+                                                    <option value="{{ $id }}">{{ $kode_kk }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-lg-auto">
+                                        <div>
+                                            <select class="form-control" data-plugin="choices" data-choices
+                                                data-choices-search-false name="choices-single-default" id="idTingkat">
+                                                <option value="all" selected>Pilih Tingkat</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                            </select>
 
-                        <div class="col-lg-auto">
-                            <div class="mb-3 d-flex align-items-center gap-2">
-                                <select class="form-control mb-3" name="tahunajaran" id="tahunajaran" required>
-                                    <option value="All" selected>Pilih TA</option>
-                                    @foreach ($tahunAjaranOption as $tahunajaran => $thajar)
-                                        <option value="{{ $tahunajaran }}">{{ $thajar }}</option>
-                                    @endforeach
-                                </select>
+                                        </div>
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-lg-auto">
+                                        <div>
+                                            <select class="form-control" data-plugin="choices" data-choices
+                                                data-choices-search-false name="choices-single-default" id="idRombel"
+                                                disabled>
+                                                <option value="all" selected>Pilih Rombel</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div><!--end row-->
+                        <div class="border border-dashed mb-4"></div>
+                        <div id="nama-wali-kelas" class="mb-0"></div>
+                    </div>
+                </div>
+                <div>
+                    <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#dataKelas" role="tab"
+                                aria-selected="false">
+                                <i class="las la-address-card text-muted align-bottom me-1 fs-4"></i> Data Kelas
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" id="images-tab" href="#abSensi" role="tab"
+                                aria-selected="true">
+                                <i class="las la-calendar-check text-muted align-bottom me-1 fs-4"></i> Absensi
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#ekstraKurikuler" role="tab"
+                                aria-selected="false">
+                                <i class="las la-table-tennis text-muted align-bottom me-1 fs-4"></i> Ekstrakurikuler
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#prestasiSiswa" role="tab"
+                                aria-selected="false">
+                                <i class="las la-trophy text-muted align-bottom me-1 fs-4"></i> Prestasi Siswa
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#catatanWaliKelas" role="tab"
+                                aria-selected="false">
+                                <i class="las la-file-alt text-muted align-bottom me-1 fs-4"></i> Catatan Wali Kelas
+                            </a>
+                        </li>
+                        <li class="nav-item ms-auto">
+                            <div class="dropdown">
+                                <a class="nav-link fw-medium text-reset mb-n1" href="#" role="button"
+                                    id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="ri-settings-4-line align-middle me-1"></i> Settings
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                    <li><a class="dropdown-item" href="#">Search Settings</a></li>
+                                    <li><a class="dropdown-item" href="#">Advanced Search</a></li>
+                                    <li><a class="dropdown-item" href="#">Search History</a></li>
+                                    <li><a class="dropdown-item" href="#">Search Help</a></li>
+                                    <div class="dropdown-divider"></div>
+                                    <li><a class="dropdown-item" href="#">Dark Mode:Off</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body p-2">
+                    <div class="tab-content text-muted">
+                        <div class="tab-pane active" id="dataKelas" role="tabpanel">
+                            <div class="pb-3">
+                                Data Kelas
                             </div>
                         </div>
-                        <div class="col-lg-auto">
-                            <select class="form-control mb-3" name="kode_kk" id="kode_kk" required>
-                                <option value="All" selected>Pilih Konsentrasi Keahlian</option>
-                                @foreach ($kompetensiKeahlianOptions as $id => $kode_kk)
-                                    <option value="{{ $id }}">{{ $kode_kk }}</option>
-                                @endforeach
-                            </select>
+                        <div class="tab-pane" id="abSensi" role="tabpanel">
+                            <div class="pb-3">
+                                Absensi
+                            </div>
                         </div>
-                        <div class="col-lg-auto">
-                            <select class="form-control" name="tingkat" id="idTingkat">
-                                <option value="All" selected>Pilih Tingkat</option>
-                                <option value="10">10</option>
-                                <option value="11">11</option>
-                                <option value="12">12</option>
-                            </select>
+                        <div class="tab-pane" id="ekstraKurikuler" role="tabpanel">
+                            <div class="pb-3">
+                                Ekstrakurikuler
+                            </div>
                         </div>
-
-                        <div class="col-lg-auto">
-                            <select class="form-control" name="kode_rombel" id="idRombel" disabled>
-                                <option value="All" selected>Pilih Rombel</option>
-                            </select>
+                        <div class="tab-pane" id="prestasiSiswa" role="tabpanel">
+                            <div class="pb-3">
+                                Prestasi Siswa
+                            </div>
                         </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 2: Nama Wali dan Dokumen -->
-            <div class="card">
-                <div class="card-body">
-                    <div class="row g-3 align-items-end">
-                        <!-- Nama Wali -->
-                        <div class="col-lg">
-                            <h3><i class="ri-file-user-line text-muted align-bottom me-1"></i> Wali Kelas :</h3>
-                            <div id="nama-wali-kelas"></div>
+                        <div class="tab-pane" id="catatanWaliKelas" role="tabpanel">
+                            <div class="pb-3">
+                                Catatan wali Kelas
+                            </div>
                         </div>
+                    </div><!--end tab-content-->
 
-                        <div class="col-lg-auto">
-                            <select class="form-control mb-3" name="ganjilgenap" id="GanjilGenap" style="display: none;">
-                                <option value="" selected>Pilih Semester</option>
-                                <option value="Ganjil">Ganjil</option>
-                                <option value="Genap">Genap</option>
-                            </select>
-                        </div>
-
-                        <div class="col-lg-auto">
-                            <select class="form-control mb-3" name="dokumenwalas" id="dokumenWaliKelas"
-                                style="display: none;">
-                                <option value="" selected>Pilih Dokumen</option>
-                                <option value="dataKelas">Data Kelas</option>
-                                <option value="absensiSiswa">Absensi</option>
-                                <option value="eskulSiswa">Ekstrakurikuler</option>
-                                <option value="prestasiSiswa">Prestasi Siswa</option>
-                                <option value="catatanWalas">Catatan Wali Kelas</option>
-                            </select>
-                        </div>
-
-                    </div>
-                    <hr>
-                    <div id="data-wali-kelas"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--end col-->
+                </div><!--end card-body-->
+            </div><!--end card -->
+        </div><!--end card -->
+    </div><!--end row-->
 @endsection
 @section('script')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
 @endsection
 @section('script-bottom')
     <script>
+        // Function untuk mengecek apakah dropdown rombel harus di-disable atau tidak
+        function checkDisableRombel() {
+            var tahunAjaran = $('#idThnAjaran').val();
+            var semesterA = $('#idSemester').val();
+            var tingKat = $('#idTingkat').val();
+            var kodeKK = $('#idKodeKK').val();
+
+            // Jika salah satu dari Tahun Ajaran atau Kompetensi Keahlian belum dipilih
+            if (tahunAjaran === 'all' || semesterA === 'all' || kodeKK === 'all' || tingKat === 'all') {
+                // Disable dropdown Rombel
+                $('#idRombel').attr('disabled', true);
+                $('#idRombel').empty().append(
+                    '<option value="all" selected>Pilih Rombel</option>'); // Kosongkan pilihan Rombel
+            } else {
+                // Jika sudah dipilih keduanya, enable dropdown Rombel dan muat datanya
+                $('#idRombel').attr('disabled', false);
+                loadRombelData(tahunAjaran, semesterA, kodeKK, tingKat); // Panggil AJAX untuk load data
+            }
+        }
+
+        // Function untuk load data rombel sesuai pilihan Tahun Ajaran dan Kompetensi Keahlian
+        function loadRombelData(tahunAjaran, semesterA, kodeKK, tingKat) {
+            $.ajax({
+                url: "{{ route('kurikulum.dokumenguru.getRombelWalas') }}", // Route untuk request data rombel
+                type: "GET",
+                data: {
+                    tahun_ajaran: tahunAjaran,
+                    semester: semesterA,
+                    kode_kk: kodeKK,
+                    tingkat: tingKat
+                },
+                success: function(data) {
+                    console.log('Response dari server:', data); // Cek apakah response data sudah benar
+
+                    var rombelSelect = $('#idRombel');
+                    rombelSelect.empty(); // Kosongkan pilihan sebelumnya
+
+                    rombelSelect.append(
+                        '<option value="all" selected>Pilih Rombel</option>'); // Tambahkan default option
+
+                    if (Object.keys(data).length > 0) {
+                        $.each(data, function(key, value) {
+                            rombelSelect.append('<option value="' + key + '">' + value + '</option>');
+                        });
+                    } else {
+                        rombelSelect.append('<option value="none">Tidak ada rombel tersedia</option>');
+                    }
+
+                    $('#idRombel').trigger('change');
+                },
+                error: function(xhr) {
+                    console.error('Error pada AJAX:', xhr.responseText); // Handle error
+                }
+            });
+        }
+
+        function loadDataTabContent(tahunAjaran, semesterA, kodeKK, tingKat, kodeRombel) {
+            $.ajax({
+                url: "{{ route('kurikulum.dokumenguru.getTabContent') }}", // rute baru gabungan
+                type: "GET",
+                data: {
+                    tahun_ajaran: tahunAjaran,
+                    semester: semesterA,
+                    kode_kk: kodeKK,
+                    tingkat: tingKat,
+                    kode_rombel: kodeRombel
+                },
+                success: function(response) {
+                    $('#dataKelas').html(response.data_kelas); // isi tab Data Kelas
+                    $('#abSensi').html(response.absensi); // isi tab Absensi
+                    $('#ekstraKurikuler').html(response.eskul); // isi tab Absensi
+                    $('#catatanWaliKelas').html(response.catatanWalas); // isi tab Absensi
+                    $('#nama-wali-kelas').html(response.nama_wali);
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                    $('#dataKelas').html('<div class="text-danger">Gagal memuat data kelas.</div>');
+                    $('#abSensi').html('<div class="text-danger">Gagal memuat data absensi.</div>');
+                    $('#ekstraKurikuler').html(
+                        '<div class="text-danger">Gagal memuat data ekstrakurikuler.</div>');
+                    $('#catatanWaliKelas').html(
+                        '<div class="text-danger">Gagal memuat data catatan wali kelas.</div>');
+                    $('#catatanWaliKelas').html('<div class="text-danger">Gagal memuat nama wali kelas.</div>');
+                }
+            });
+        }
+
         $(document).ready(function() {
 
-            // Reload tabel setiap dropdown filter berubah
-            $(".form-control").on("change", function() {
-                simpanPilihanKeDatabase();
+            // Event listener ketika dropdown Tahun Ajaran atau Kompetensi Keahlian berubah
+            $('#idThnAjaran, #idSemester, #idKodeKK, #idTingkat').on('change', function() {
+                checkDisableRombel(); // Panggil fungsi untuk mengecek apakah Rombel harus di-disable
             });
 
-            function simpanPilihanKeDatabase() {
-                const tahunajaran = $('#tahunajaran').val();
-                const kode_kk = $('#kode_kk').val();
-                const tingkat = $('#idTingkat').val();
-                const kode_rombel = $('#idRombel').val();
-                const ganjilgenap = $('#GanjilGenap').val();
-                const pilih_dokumen = $('#dokumenWaliKelas').val();
-
-
-                if (!tahunajaran || !kode_kk || !tingkat || !kode_rombel || !ganjilgenap || !pilih_dokumen) {
-                    // Minimal validasi sebelum kirim
-                    return;
-                }
-
-                $.ajax({
-                    url: '/kurikulum/dokumenguru/simpan-pilihan-walas', // Buat route untuk ini
-                    method: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        tahunajaran: tahunajaran,
-                        kode_kk: kode_kk,
-                        tingkat: tingkat,
-                        kode_rombel: kode_rombel,
-                        ganjilgenap: ganjilgenap,
-                        pilih_dokumen: pilih_dokumen,
-                    },
-                    success: function(response) {
-                        console.log('Pilihan berhasil disimpan atau diperbarui.');
-                    },
-                    error: function(xhr) {
-                        console.error('Gagal menyimpan data:', xhr.responseText);
-                    }
-                });
-            }
-
-            const tahunajaranSelect = document.getElementById('tahunajaran');
-            const kodeKkSelect = document.getElementById('kode_kk');
-            const tingkatSelect = document.getElementById('idTingkat');
-            const rombelSelect = document.getElementById('idRombel');
-
-            function fetchRombelOptions() {
-                const tahunajaran = tahunajaranSelect.value;
-                const kode_kk = kodeKkSelect.value;
-                const tingkat = tingkatSelect.value;
-
-                if (tahunajaran !== 'All' && kode_kk !== 'All' && tingkat !== 'All') {
-                    fetch(
-                            `/kurikulum/dokumenguru/get-rombels?tahunajaran=${tahunajaran}&kode_kk=${kode_kk}&tingkat=${tingkat}`
-                        )
-                        .then(response => response.json())
-                        .then(data => {
-                            rombelSelect.innerHTML = '';
-                            rombelSelect.disabled = false;
-
-                            const defaultOption = document.createElement('option');
-                            defaultOption.value = 'All';
-                            defaultOption.text = 'Pilih Rombel';
-                            rombelSelect.appendChild(defaultOption);
-
-                            data.forEach(item => {
-                                const option = document.createElement('option');
-                                option.value = item.kode_rombel;
-                                option.text = item.rombel;
-                                rombelSelect.appendChild(option);
-                            });
-                        });
-                } else {
-                    rombelSelect.innerHTML = '<option value="All" selected>Pilih Rombel</option>';
-                    rombelSelect.disabled = true;
-                }
-            }
-
-            tahunajaranSelect.addEventListener('change', fetchRombelOptions);
-            kodeKkSelect.addEventListener('change', fetchRombelOptions);
-            tingkatSelect.addEventListener('change', fetchRombelOptions);
+            // Cek status Rombel saat halaman pertama kali dimuat
+            checkDisableRombel();
 
             $('#idRombel').on('change', function() {
-                const tahunajaran = $('#tahunajaran').val();
-                const kode_kk = $('#kode_kk').val();
-                const tingkat = $('#idTingkat').val();
-                const kode_rombel = $(this).val();
+                var tahunAjaran = $('#idThnAjaran').val();
+                var semesterA = $('#idSemester').val();
+                var kodeKK = $('#idKodeKK').val();
+                var tingKat = $('#idTingkat').val();
+                var kodeRombel = $(this).val();
 
-                if (tahunajaran !== 'All' && kode_kk !== 'All' && tingkat !== 'All' && kode_rombel !==
-                    'All') {
-                    fetch(
-                            `/kurikulum/dokumenguru/get-wali-kelas?tahunajaran=${tahunajaran}&id_kk=${kode_kk}&tingkat=${tingkat}&kode_rombel=${kode_rombel}`
-                        )
-                        .then(response => response.text())
-                        .then(html => {
-                            $('#nama-wali-kelas').html(html);
-                            $('#dokumenWaliKelas').show();
-                            $('#GanjilGenap').show();
-                        });
+                if (kodeRombel !== 'all') {
+                    loadDataTabContent(tahunAjaran, semesterA, kodeKK, tingKat, kodeRombel);
                 } else {
+                    $('#dataKelas').html('<div class="pb-3">Data Kelas</div>');
+                    $('#abSensi').html('<div class="pb-3">Absensi</div>');
+                    $('#ekstrakurikuler').html('<div class="pb-3">Ekstrakulikuler</div>');
                     $('#nama-wali-kelas').html('');
                 }
             });
-
-            function loadWaliKelasDokumen() {
-                const dokumen = $('#dokumenWaliKelas').val();
-                const semester = $('#GanjilGenap').val();
-                const tahunajaran = $('#tahunajaran').val();
-                const kode_kk = $('#kode_kk').val();
-                const tingkat = $('#idTingkat').val();
-                const kode_rombel = $('#idRombel').val();
-
-                const isValid = dokumen !== '' && semester !== '' &&
-                    tahunajaran !== 'All' && kode_kk !== 'All' && tingkat !== 'All' && kode_rombel !== 'All';
-
-                if (isValid) {
-                    fetch(
-                            `/kurikulum/dokumenguru/get-dokumen-walas?dokumen=${dokumen}&semester=${semester}&tahunajaran=${tahunajaran}&kode_kk=${kode_kk}&tingkat=${tingkat}&kode_rombel=${kode_rombel}`
-                        )
-                        .then(res => res.text())
-                        .then(html => {
-                            $('#data-wali-kelas').html(html);
-                        })
-                        .catch(err => {
-                            console.error('Error:', err);
-                            $('#data-wali-kelas').html(
-                                '<div class="alert alert-danger">Gagal memuat data.</div>');
-                        });
-                } else {
-                    $('#data-wali-kelas').html('');
-                }
-            }
-
-            ['tahunajaran', 'kode_kk', 'idTingkat', 'idRombel', 'GanjilGenap', 'dokumenWaliKelas'].forEach(id => {
-                $(`#${id}`).on('change', function() {
-                    loadWaliKelasDokumen();
-                });
-            });
-
-            ['GanjilGenap', 'idRombel'].forEach(id => {
-                $(`#${id}`).on('change', function() {
-                    $('#dokumenWaliKelas').val('');
-                    $('#data-wali-kelas').html('');
-                });
-            });
         });
     </script>
+
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

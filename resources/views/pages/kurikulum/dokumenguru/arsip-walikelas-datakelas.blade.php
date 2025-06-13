@@ -14,7 +14,7 @@
             </tr>
         </thead>
         <tbody>
-            @forelse ($data as $i => $item)
+            @forelse ($dataKelas as $i => $item)
                 <tr>
                     <td>{{ $i + 1 }}</td>
                     <td>{{ $item->nis }}</td>
@@ -34,7 +34,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7" class="text-center">Tidak ada data peserta didik.</td>
+                    <td colspan="8" class="text-center">Tidak ada data peserta didik.</td>
                 </tr>
             @endforelse
         </tbody>

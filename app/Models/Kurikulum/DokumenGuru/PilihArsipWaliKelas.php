@@ -12,10 +12,9 @@ class PilihArsipWaliKelas extends Model
     protected $fillable = [
         'id_user',
         'tahunajaran',
+        'ganjilgenap',
         'kode_kk',
         'tingkat',
         'kode_rombel',
-        'ganjilgenap',
-        'pilih_dokumen',
     ];
 }
