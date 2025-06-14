@@ -3,7 +3,7 @@
 @endphp
 
 @if ($isMainMenuActive)
-    <!-- right offcanvas -->
+    {{-- <!-- right offcanvas -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header">
             <h5 id="offcanvasRightLabel"><i data-feather="check-circle" class="text-success icon-dual-success icon-xs"></i>
@@ -73,87 +73,90 @@
             <a href="javascript:void(0);" class="link-success">View All Acitivity <i
                     class="ri-arrow-right-s-line align-middle ms-1"></i></a>
         </div>
-    </div>
-@endif
+    </div> --}}
 
-<div id="InfoEvenModals" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content border-0 overflow-hidden">
-            <div class="modal-header login-modal p-3">
-                <h5 class="text-white fs-20">Informasi Terkini</h5>
-                <p class="text-white-50 mt-2">Kegiatan Belajar Mengajar</p>
-            </div>
-            <div class="modal-body p-3">
-                <div class="card card-overlay">
-                    <img class="card-img img-fluid" src="{{ URL::asset('images/galery/1730179060.jpg') }}"
-                        alt="Card image">
-                    <div class="card-img-overlay p-0 d-flex flex-column">
-                        @forelse ($judulUtama as $judul)
-                            <div class="card-header bg-transparent">
-                                <h4 class="card-title text-white mb-0">{{ $judul->judul }}</h4>
-                            </div>
-                            <div class="card-body">
-                                @forelse ($judul->pengumumanTerkiniAktif as $index => $pengumuman)
-                                    <div class="mini-stats-wid d-flex align-items-center mt-3">
-                                        <div class="flex-shrink-0 avatar-sm">
-                                            <span
-                                                class="mini-stat-icon avatar-title rounded-circle text-success bg-success-subtle fs-4">
-                                                {{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}
-                                            </span>
+
+    <div id="InfoEvenModals" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 overflow-hidden">
+                <div class="modal-header login-modal p-3">
+                    <h5 class="text-white fs-20">Informasi Terkini</h5>
+                    <p class="text-white-50 mt-2">Kegiatan Belajar Mengajar</p>
+                </div>
+                <div class="modal-body p-3">
+                    <div class="card card-overlay">
+                        <img class="card-img img-fluid" src="{{ URL::asset('images/galery/1730179060.jpg') }}"
+                            alt="Card image">
+                        <div class="card-img-overlay p-0 d-flex flex-column">
+                            @forelse ($judulUtama as $judul)
+                                <div class="card-header bg-transparent">
+                                    <h4 class="card-title text-white mb-0">{{ $judul->judul }}</h4>
+                                </div>
+                                <div class="card-body">
+                                    @forelse ($judul->pengumumanTerkiniAktif as $index => $pengumuman)
+                                        <div class="mini-stats-wid d-flex align-items-center mt-3">
+                                            <div class="flex-shrink-0 avatar-sm">
+                                                <span
+                                                    class="mini-stat-icon avatar-title rounded-circle text-success bg-success-subtle fs-4">
+                                                    {{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}
+                                                </span>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h6 class="mb-1 card-text text-white fs-4">{{ $pengumuman->judul }}
+                                                </h6>
+                                                @foreach ($pengumuman->poin as $poin)
+                                                    <p class="mb-0 card-text text-white">{{ $poin->isi }}</p>
+                                                @endforeach
+                                            </div>
+                                        </div><!-- end -->
+                                    @empty
+                                        <div class="alert alert-danger alert-dismissible alert-label-icon rounded-label fade show"
+                                            role="alert">
+                                            <i class="ri-error-warning-line label-icon"></i><strong>Mohon Maaf
+                                                !</strong> -
+                                            Poin Pengumuman Masih Kosong
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                aria-label="Close"></button>
                                         </div>
-                                        <div class="flex-grow-1 ms-3">
-                                            <h6 class="mb-1 card-text text-white fs-4">{{ $pengumuman->judul }}</h6>
-                                            @foreach ($pengumuman->poin as $poin)
-                                                <p class="mb-0 card-text text-white">{{ $poin->isi }}</p>
-                                            @endforeach
-                                        </div>
-                                    </div><!-- end -->
-                                @empty
+                                    @endforelse
+                                </div>
+                            @empty
+                                <div class="card-body">
+                                    <!-- Danger Alert -->
                                     <div class="alert alert-danger alert-dismissible alert-label-icon rounded-label fade show"
                                         role="alert">
                                         <i class="ri-error-warning-line label-icon"></i><strong>Mohon Maaf !</strong> -
-                                        Poin Pengumuman Masih Kosong
+                                        Tidak ada
+                                        pengumuman
                                         <button type="button" class="btn-close" data-bs-dismiss="alert"
                                             aria-label="Close"></button>
                                     </div>
-                                @endforelse
-                            </div>
-                        @empty
-                            <div class="card-body">
-                                <!-- Danger Alert -->
-                                <div class="alert alert-danger alert-dismissible alert-label-icon rounded-label fade show"
-                                    role="alert">
-                                    <i class="ri-error-warning-line label-icon"></i><strong>Mohon Maaf !</strong> -
-                                    Tidak ada
-                                    pengumuman
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
+
                                 </div>
+                            @endforelse
+                            <div class="mini-stats-wid d-flex align-items-center mt-3">
+                                <div class="flex-shrink-0 avatar-sm">
 
-                            </div>
-                        @endforelse
-                        <div class="mini-stats-wid d-flex align-items-center mt-3">
-                            <div class="flex-shrink-0 avatar-sm">
-
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                            </div>
-                            <div class="flex-shrink-0">
-                                <p class="card-text p-4 flex-shrink-2">
-                                    <small class="text-white">Team Kurikulum 2025</small>
-                                </p>
-                            </div>
-                        </div><!-- end -->
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <p class="card-text p-4 flex-shrink-2">
+                                        <small class="text-white">Team Kurikulum 2025</small>
+                                    </p>
+                                </div>
+                            </div><!-- end -->
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer bg-light p-3 justify-content-center">
-                <p class="mb-0 text-muted text-white">Scripting & Desing by. Abdul Madjid, S.Pd., M.Pd.</p>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+                <div class="modal-footer bg-light p-3 justify-content-center">
+                    <p class="mb-0 text-muted text-white">Scripting & Desing by. Abdul Madjid, S.Pd., M.Pd.</p>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
+@endif
 <div class="row">
     <div class="col-lg-12">
         <div class="card overflow-hidden shadow-none">
