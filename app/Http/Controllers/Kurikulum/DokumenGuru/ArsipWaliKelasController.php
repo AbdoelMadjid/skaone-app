@@ -104,11 +104,10 @@ class ArsipWaliKelasController extends Controller
 
         $data = [
             'tahunajaran' => $request->tahunajaran,
+            'ganjilgenap' => $request->ganjilgenap,
             'kode_kk' => $request->kode_kk,
             'tingkat' => $request->tingkat,
             'kode_rombel' => $request->kode_rombel,
-            'ganjilgenap' => $request->ganjilgenap,
-            'pilih_dokumen' => $request->pilih_dokumen,
         ];
 
         PilihArsipWaliKelas::updateOrCreate(
@@ -117,6 +116,15 @@ class ArsipWaliKelasController extends Controller
         );
 
         return response()->json(['success' => true]);
+    }
+
+    public function getPilihanWaliKelas()
+    {
+        $userId = Auth::id();
+
+        $data = PilihArsipWaliKelas::where('id_user', $userId)->first();
+
+        return response()->json($data);
     }
 
     public function getRombelWalas(Request $request)

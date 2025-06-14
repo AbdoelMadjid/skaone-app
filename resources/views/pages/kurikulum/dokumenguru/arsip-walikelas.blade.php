@@ -177,6 +177,44 @@
 @endsection
 @section('script-bottom')
     <script>
+        // Reload tabel setiap dropdown filter berubah
+        $(".form-control").on("change", function() {
+            simpanPilihanKeDatabase();
+        });
+
+        function simpanPilihanKeDatabase() {
+            const tahunajaran = $('#idThnAjaran').val();
+            const ganjilgenap = $('#idSemester').val();
+            const kode_kk = $('#idKodeKK').val();
+            const tingkat = $('#idTingkat').val();
+            const kode_rombel = $('#idRombel').val();
+
+
+            if (!tahunajaran || !ganjilgenap || !kode_kk || !tingkat || !kode_rombel) {
+                // Minimal validasi sebelum kirim
+                return;
+            }
+
+            $.ajax({
+                url: '/kurikulum/dokumenguru/simpan-pilihan-walas', // Buat route untuk ini
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    tahunajaran: tahunajaran,
+                    ganjilgenap: ganjilgenap,
+                    kode_kk: kode_kk,
+                    tingkat: tingkat,
+                    kode_rombel: kode_rombel,
+                },
+                success: function(response) {
+                    console.log('Pilihan berhasil disimpan atau diperbarui.');
+                },
+                error: function(xhr) {
+                    console.error('Gagal menyimpan data:', xhr.responseText);
+                }
+            });
+        }
+
         // Function untuk mengecek apakah dropdown rombel harus di-disable atau tidak
         function checkDisableRombel() {
             var tahunAjaran = $('#idThnAjaran').val();
@@ -288,6 +326,29 @@
                     $('#abSensi').html('<div class="pb-3">Absensi</div>');
                     $('#ekstrakurikuler').html('<div class="pb-3">Ekstrakulikuler</div>');
                     $('#nama-wali-kelas').html('');
+                }
+            });
+
+            $.ajax({
+                url: '/kurikulum/dokumenguru/get-pilihan-walikelas',
+                method: 'GET',
+                success: function(data) {
+                    if (data) {
+                        // Isi nilai dropdown
+                        $("#idThnAjaran").val(data.tahunajaran).trigger("change");
+                        $("#idSemester").val(data.ganjilgenap).trigger("change");
+                        $("#idKodeKK").val(data.kode_kk).trigger("change");
+                        $("#idTingkat").val(data.tingkat).trigger("change");
+
+                        // Tunggu 500ms agar select2 selesai inisialisasi, lalu set guru/rombel
+                        setTimeout(function() {
+                            $("#idRombel").val(data.kode_rombel).trigger("change").prop(
+                                "disabled", false);
+                        }, 500);
+                    }
+                },
+                error: function(xhr) {
+                    console.error('Gagal mengambil data pilihan user:', xhr.responseText);
                 }
             });
         });

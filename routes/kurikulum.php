@@ -105,6 +105,8 @@ Route::middleware('auth')->group(function () {
             Route::post('/uploadsumatif', [ArsipGuruMapelController::class, 'uploadNilaiSumatif'])->name('uploadsumatif');
 
             Route::resource('arsip-walikelas', ArsipWaliKelasController::class);
+            Route::post('/simpan-pilihan-walas', [ArsipWaliKelasController::class, 'simpanPilihanWalas']);
+            Route::get('/get-pilihan-walikelas', [ArsipWaliKelasController::class, 'getPilihanWaliKelas']);
             Route::get('/get-rombel-walas', [ArsipWaliKelasController::class, 'getRombelWalas'])->name('getRombelWalas');
             Route::get('/tab-content', [ArsipWaliKelasController::class, 'getTabContent'])
                 ->name('getTabContent');
