@@ -6,80 +6,112 @@ use App\DataTables\Kurikulum\PerangkatKurikulum\PengumumanDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Kurikulum\PerangkatKurikulum\PengumumanRequest;
 use App\Models\Kurikulum\PerangkatKurikulum\Pengumuman;
+use App\Models\PengumumanJudul;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class PengumumanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(PengumumanDataTable $pengumumanDataTable)
+    public function index()
     {
-        return $pengumumanDataTable->render('pages.kurikulum.perangkatkurikulum.pengumuman');
+        $data = PengumumanJudul::with(['pengumumanTerkiniAktif.poin'])
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return view('pages.kurikulum.perangkatkurikulum.pengumuman', compact('data'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(Request $request)
     {
-        return view('pages.kurikulum.perangkatkurikulum.pengumuman-form', [
-            'data' => new Pengumuman(),
-            'action' => route('kurikulum.perangkatkurikulum.pengumuman.store')
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'status' => 'required|in:Y,N',
+            'pengumuman' => 'required|array',
+            'pengumuman.*.judul' => 'required|string|max:255',
+            'pengumuman.*.urutan' => 'required|integer|min:1',
+            'pengumuman.*.poin' => 'required|array|min:1',
+            'pengumuman.*.poin.*' => 'required|string|max:1000',
         ]);
+
+        DB::transaction(function () use ($request) {
+            $judul = PengumumanJudul::create([
+                'judul' => $request->judul,
+                'status' => $request->status,
+            ]);
+
+            foreach ($request->pengumuman as $item) {
+                $terkini = $judul->pengumumanTerkiniAktif()->create([
+                    'judul' => $item['judul'],
+                    'urutan' => $item['urutan'],
+                ]);
+
+                foreach ($item['poin'] as $isi) {
+                    $terkini->poin()->create([
+                        'isi' => $isi,
+                    ]);
+                }
+            }
+        });
+
+        return redirect()->route('kurikulum.perangkatkurikulum.pengumuman.index')
+            ->with('success', 'Pengumuman berhasil ditambahkan.');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(PengumumanRequest $request)
+    public function edit($id)
     {
-        $pengumuman = new Pengumuman($request->validated());
-        $pengumuman->save();
-
-        return responseSuccess();
+        $judul = PengumumanJudul::with('pengumumanTerkiniAktif.poin')->findOrFail($id);
+        return view('pengumuman.index', compact('judul'));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Pengumuman $pengumuman)
+    public function update(Request $request, $id)
     {
-        return view('pages.kurikulum.perangkatkurikulum.pengumuman-form', [
-            'data' => $pengumuman,
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'status' => 'required|in:Y,N',
+            'pengumuman' => 'array',
+            'pengumuman.*.judul' => 'required|string|max:255',
+            'pengumuman.*.poin' => 'array',
+            'pengumuman.*.poin.*' => 'required|string',
         ]);
+
+        DB::transaction(function () use ($request, $id) {
+            $judul = PengumumanJudul::findOrFail($id);
+            $judul->update($request->only('judul', 'status'));
+
+            foreach ($judul->pengumumanTerkiniAktif as $terkini) {
+                $terkini->poin()->delete();
+                $terkini->delete();
+            }
+
+            foreach ($request->pengumuman as $item) {
+                $terkini = $judul->pengumumanTerkiniAktif()->create([
+                    'judul' => $item['judul'],
+                    'urutan' => $item['urutan'],
+                ]);
+
+                foreach ($item['poin'] as $isi) {
+                    $terkini->poin()->create(['isi' => $isi]);
+                }
+            }
+        });
+
+        return redirect()->route('kurikulum.perangkatkurikulum.pengumuman.index')
+            ->with('success', 'Pengumuman berhasil diperbarui.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Pengumuman $pengumuman)
+    public function destroy($id)
     {
-        return view('pages.kurikulum.perangkatkurikulum.pengumuman-form', [
-            'data' => $pengumuman,
-            'action' => route('kurikulum.perangkatkurikulum.pengumuman.update', $pengumuman->id)
-        ]);
-    }
+        DB::transaction(function () use ($id) {
+            $judul = PengumumanJudul::findOrFail($id);
+            foreach ($judul->pengumumanTerkiniAktif as $terkini) {
+                $terkini->poin()->delete();
+                $terkini->delete();
+            }
+            $judul->delete();
+        });
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(PengumumanRequest $request, Pengumuman $pengumuman)
-    {
-        $pengumuman->fill($request->validated());
-        $pengumuman->save();
-
-        return responseSuccess(true);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Pengumuman $pengumuman)
-    {
-        $pengumuman->delete();
-
-        return responseSuccessDelete();
+        return redirect()->route('kurikulum.perangkatkurikulum.pengumuman.index')
+            ->with('success', 'Pengumuman berhasil dihapus.');
     }
 }

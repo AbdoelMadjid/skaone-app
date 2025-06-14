@@ -6,6 +6,8 @@ use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
 use App\Models\Kurikulum\PerangkatKurikulum\Pengumuman;
 use App\Models\ManajemenPengguna\LoginRecord;
 use App\Models\ManajemenSekolah\PersonilSekolah;
+use App\Models\PengumumanJudul;
+use App\Models\PengumumanTerkini;
 use App\Models\PesertaDidikPkl\AbsensiSiswaPkl;
 use App\Models\User;
 use Carbon\Carbon;
@@ -130,6 +132,12 @@ class HomeController extends Controller
 
         $dataRombel = PesertaDidikRombel::where('nis', $nis)->first();
 
+
+        $judulUtama = PengumumanJudul::where('status', 'Y')->with(['pengumumanTerkiniAktif' => function ($query) {
+            $query->with('poin')
+                ->orderBy('urutan');
+        }])->get();
+
         return view('dashboard', [
             'activeUsers' => $activeUsers,
             'activeUsersCount' => $activeUsersCount,
@@ -153,6 +161,7 @@ class HomeController extends Controller
             'pengumumanHariIni' => $pengumumanHariIni,
             'pengumumanAll' => $pengumumanAll,
             'dataRombel' => $dataRombel,
+            'judulUtama' => $judulUtama,
         ]);
     }
 

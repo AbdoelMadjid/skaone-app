@@ -1,0 +1,105 @@
+@foreach ($data as $judul)
+    <!-- Modal Edit -->
+    <div class="modal fade" id="editModal-{{ $judul->id }}" tabindex="-1" aria-labelledby="editModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <form method="POST" action="{{ route('kurikulum.perangkatkurikulum.pengumuman.update', $judul->id) }}">
+                @csrf
+                @method('PUT')
+                <div class="modal-content">
+                    <div class="modal-header bg-warning text-dark">
+                        <h5 class="modal-title">Edit Pengumuman</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Judul Utama</label>
+                            <input type="text" name="judul" class="form-control" value="{{ $judul->judul }}"
+                                required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Status</label>
+                            <select name="status" class="form-select" required>
+                                <option value="Y" {{ $judul->status == 'Y' ? 'selected' : '' }}>Tampil</option>
+                                <option value="N" {{ $judul->status == 'N' ? 'selected' : '' }}>Sembunyi</option>
+                            </select>
+                        </div>
+
+                        <div id="editPengumumanWrapper-{{ $judul->id }}">
+                            @foreach ($judul->pengumumanTerkiniAktif as $i => $item)
+                                <div class="border p-3 rounded mb-3 pengumuman-item" data-index="{{ $i }}">
+                                    <div class="row mb-2">
+                                        <div class="col-md-6">
+                                            <label>Judul Grup</label>
+                                            <input type="text" name="pengumuman[{{ $i }}][judul]"
+                                                class="form-control" value="{{ $item->judul }}" required>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>Urutan</label>
+                                            <input type="number" name="pengumuman[{{ $i }}][urutan]"
+                                                class="form-control" value="{{ $item->urutan }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label>Poin</label>
+                                        <div class="poin-wrapper">
+                                            @foreach ($item->poin as $p)
+                                                <input type="text" name="pengumuman[{{ $i }}][poin][]"
+                                                    class="form-control mb-2" value="{{ $p->isi }}" required>
+                                            @endforeach
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-primary"
+                                            onclick="addPoin(this, {{ $i }})">+ Tambah Poin</button>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <button type="button" class="btn btn-outline-success mt-2"
+                            onclick="addPengumumanGroup({{ $judul->id }})">+ Tambah Grup Pengumuman</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+@endforeach
+
+<script>
+    function addPengumumanGroup(id) {
+        const wrapper = document.getElementById(`editPengumumanWrapper-${id}`);
+        const index = wrapper.querySelectorAll('.pengumuman-item').length;
+
+        const html = `
+        <div class="border p-3 rounded mb-3 pengumuman-item" data-index="${index}">
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <label>Judul Grup</label>
+                    <input type="text" name="pengumuman[${index}][judul]" class="form-control" required>
+                </div>
+                <div class="col-md-3">
+                    <label>Urutan</label>
+                    <input type="number" name="pengumuman[${index}][urutan]" class="form-control" value="0" required>
+                </div>
+            </div>
+            <div class="mb-2">
+                <label>Poin</label>
+                <div class="poin-wrapper"></div>
+                <button type="button" class="btn btn-sm btn-outline-primary" onclick="addPoin(this, ${index})">+ Tambah Poin</button>
+            </div>
+        </div>`;
+
+        wrapper.insertAdjacentHTML('beforeend', html);
+    }
+
+    function addPoin(button, index) {
+        const container = button.closest('.pengumuman-item').querySelector('.poin-wrapper');
+        container.insertAdjacentHTML('beforeend',
+            `<input type="text" name="pengumuman[${index}][poin][]" class="form-control mb-2" required>`
+        );
+    }
+</script>
