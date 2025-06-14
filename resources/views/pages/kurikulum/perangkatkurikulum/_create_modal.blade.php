@@ -1,35 +1,39 @@
 <!-- Modal Tambah Pengumuman -->
 <div class="modal fade" id="createModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-lg">
         <form method="POST" action="{{ route('kurikulum.perangkatkurikulum.pengumuman.store') }}">
             @csrf
-            <div class="modal-content bg-dark text-white">
+            <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Tambah Judul Pengumuman</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                 </div>
                 <div class="modal-body">
-
-                    <!-- Judul Pengumuman -->
-                    <div class="mb-3">
-                        <label class="form-label">Judul Utama</label>
-                        <input type="text" name="judul" class="form-control" required>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <!-- Judul Pengumuman -->
+                            <div class="mb-3">
+                                <label class="form-label">Judul Utama</label>
+                                <input type="text" name="judul" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <!-- Status -->
+                            <div class="mb-3">
+                                <label class="form-label">Status</label>
+                                <select name="status" class="form-select" required>
+                                    <option value="Y">Tampilkan</option>
+                                    <option value="N">Sembunyikan</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-
-                    <!-- Status -->
-                    <div class="mb-3">
-                        <label class="form-label">Status</label>
-                        <select name="status" class="form-select" required>
-                            <option value="Y">Tampilkan</option>
-                            <option value="N">Sembunyikan</option>
-                        </select>
-                    </div>
-
                     <!-- Container Grup Pengumuman -->
                     <hr>
                     <h5 class="text-info">Grup Pengumuman</h5>
                     <div id="grup-container"></div>
-                    <button type="button" id="addGrup" class="btn btn-outline-light mt-3">+ Tambah Grup</button>
+                    <button type="button" id="addGrup" class="btn btn-outline-success mt-3">+ Tambah
+                        Grup</button>
                 </div>
 
                 <div class="modal-footer">
@@ -56,7 +60,7 @@
     function grupTemplate(index) {
         return `
         <div class="border rounded p-3 mb-4 bg-secondary-subtle" data-grup-index="${index}">
-            <h6 class="text-light">Grup #${index + 1}</h6>
+            <h6>Grup #${index + 1}</h6>
             <div class="mb-2">
                 <label>Judul Grup Pengumuman</label>
                 <input type="text" name="pengumuman[${index}][judul]" class="form-control" required>
@@ -70,7 +74,7 @@
                 <div class="poin-container">
                     ${poinInput(index)}
                 </div>
-                <button type="button" class="btn btn-outline-light btn-sm add-poin">+ Tambah Poin</button>
+                <button type="button" class="btn btn-soft-primary btn-sm add-poin">+ Tambah Poin</button>
             </div>
         </div>
     `;

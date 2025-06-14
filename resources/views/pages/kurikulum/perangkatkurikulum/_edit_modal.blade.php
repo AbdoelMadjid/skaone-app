@@ -1,31 +1,37 @@
 @foreach ($data as $judul)
     <!-- Modal Edit -->
-    <div class="modal fade" id="editModal-{{ $judul->id }}" tabindex="-1" aria-labelledby="editModalLabel"
+    <div class="modal zoomIn" id="editModal-{{ $judul->id }}" tabindex="-1" aria-labelledby="editModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-xl">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <form method="POST" action="{{ route('kurikulum.perangkatkurikulum.pengumuman.update', $judul->id) }}">
                 @csrf
                 @method('PUT')
                 <div class="modal-content">
-                    <div class="modal-header bg-warning text-dark">
+                    <div class="modal-header">
                         <h5 class="modal-title">Edit Pengumuman</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="mb-3">
-                            <label class="form-label">Judul Utama</label>
-                            <input type="text" name="judul" class="form-control" value="{{ $judul->judul }}"
-                                required>
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="mb-3">
+                                    <label class="form-label">Judul Utama</label>
+                                    <input type="text" name="judul" class="form-control"
+                                        value="{{ $judul->judul }}" required>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="mb-3">
+                                    <label class="form-label">Status</label>
+                                    <select name="status" class="form-select" required>
+                                        <option value="Y" {{ $judul->status == 'Y' ? 'selected' : '' }}>Tampil
+                                        </option>
+                                        <option value="N" {{ $judul->status == 'N' ? 'selected' : '' }}>Sembunyi
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Status</label>
-                            <select name="status" class="form-select" required>
-                                <option value="Y" {{ $judul->status == 'Y' ? 'selected' : '' }}>Tampil</option>
-                                <option value="N" {{ $judul->status == 'N' ? 'selected' : '' }}>Sembunyi</option>
-                            </select>
-                        </div>
-
                         <div id="editPengumumanWrapper-{{ $judul->id }}">
                             @foreach ($judul->pengumumanTerkiniAktif as $i => $item)
                                 <div class="border p-3 rounded mb-3 pengumuman-item" data-index="{{ $i }}">
@@ -49,7 +55,7 @@
                                                     class="form-control mb-2" value="{{ $p->isi }}" required>
                                             @endforeach
                                         </div>
-                                        <button type="button" class="btn btn-sm btn-outline-primary"
+                                        <button type="button" class="btn btn-sm btn-soft-primary"
                                             onclick="addPoin(this, {{ $i }})">+ Tambah Poin</button>
                                     </div>
                                 </div>
@@ -60,7 +66,7 @@
                             onclick="addPengumumanGroup({{ $judul->id }})">+ Tambah Grup Pengumuman</button>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                        <button type="submit" class="btn btn-success">Simpan Perubahan</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     </div>
                 </div>
@@ -89,7 +95,7 @@
             <div class="mb-2">
                 <label>Poin</label>
                 <div class="poin-wrapper"></div>
-                <button type="button" class="btn btn-sm btn-outline-primary" onclick="addPoin(this, ${index})">+ Tambah Poin</button>
+                <button type="button" class="btn btn-sm btn-soft-primary" onclick="addPoin(this, ${index})">+ Tambah Poin</button>
             </div>
         </div>`;
 

@@ -51,11 +51,11 @@
                                                     {{ $judul->status == 'Y' ? 'Tampil' : 'Sembunyi' }}
                                                 </span>
                                             </td>
-                                            <td>{{ $judul->pengumumanTerkiniAktif->count() }}</td>
-                                            <td>
+                                            <td class="text-center">{{ $judul->pengumumanTerkiniAktif->count() }}</td>
+                                            <td class="text-center">
                                                 {{ $judul->pengumumanTerkiniAktif->sum(fn($item) => $item->poin->count()) }}
                                             </td>
-                                            <td>
+                                            <td class="text-center">
                                                 <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
                                                     data-bs-target="#editModal-{{ $judul->id }}">
                                                     Edit
