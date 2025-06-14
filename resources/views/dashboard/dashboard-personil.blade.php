@@ -81,7 +81,7 @@
         <div class="modal-content border-0 overflow-hidden">
             <div class="modal-body login-modal p-3">
                 <h5 class="text-white fs-20">Informasi Terkini</h5>
-                <p class="text-white-50 mb-4">Tanggal : 16 Juli 2025 - 23 Juli 2025</p>
+                <p class="text-white-50 mb-4">Kegiatan Belajar Mengajar</p>
             </div>
             <div class="modal-body p-5">
                 <h5 class="mb-4 text-info">Aplikasi LCKS :</h5>
