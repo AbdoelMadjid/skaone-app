@@ -3,7 +3,6 @@
 @endphp
 
 @if ($isMainMenuActive)
-
     <!-- right offcanvas -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header">
@@ -76,6 +75,32 @@
         </div>
     </div>
 @endif
+
+<div id="InfoEvenModals" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 overflow-hidden">
+            <div class="modal-body login-modal p-3">
+                <h5 class="text-white fs-20">Informasi Terkini</h5>
+                <p class="text-white-50 mb-4">Tanggal : 16 Juli 2025 - 23 Juli 2025</p>
+            </div>
+            <div class="modal-body p-5">
+                <h5 class="mb-4 text-info">Aplikasi LCKS :</h5>
+                <p class="fs-15 mb-4">
+                    <strong>Guru Mata Pelajaran</strong> <br>
+                    Batas input nilai sampai tanggal 23 Juni 2025.<br><br>
+                    <strong>Wali Kelas</strong> <br>
+                    Batas kelengkapan administrasi sampai tanggal 20 Juni 2025.<br>
+                    Titimangsa rapor semester genap 26 Juni 2025<br><br>
+                    <strong>Pembagian Rapor</strong> <br>
+                    Kamis, 26 Juni 2025.
+                </p>
+            </div>
+            <div class="modal-footer bg-light p-3 justify-content-center">
+                <p class="mb-0 text-muted">Scripting & Desing by. Abdul Madjid, S.Pd., M.Pd.</p>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <div class="row">
     <div class="col-lg-12">

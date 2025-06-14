@@ -148,6 +148,12 @@
     </script>
 
     <script>
+        $(document).ready(function() {
+            $('#InfoEvenModals').modal('show');
+        });
+    </script>
+
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
             const nis = '{{ auth()->user()->nis }}'; // Pastikan ini adalah NIS dari pengguna yang login
 
