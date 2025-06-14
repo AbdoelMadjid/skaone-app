@@ -288,6 +288,7 @@
                     $('#ekstraKurikuler').html(response.eskul); // isi tab Absensi
                     $('#catatanWaliKelas').html(response.catatanWalas); // isi tab Absensi
                     $('#nama-wali-kelas').html(response.nama_wali);
+                    $('#prestasiSiswa').html(response.prestasiSiswa);
                 },
                 error: function(xhr) {
                     console.error(xhr.responseText);
@@ -298,6 +299,7 @@
                     $('#catatanWaliKelas').html(
                         '<div class="text-danger">Gagal memuat data catatan wali kelas.</div>');
                     $('#catatanWaliKelas').html('<div class="text-danger">Gagal memuat nama wali kelas.</div>');
+                    $('#prestasiSiswa').html('<div class="text-danger">Gagal memuat nama wali kelas.</div>');
                 }
             });
         }
@@ -325,6 +327,7 @@
                     $('#dataKelas').html('<div class="pb-3">Data Kelas</div>');
                     $('#abSensi').html('<div class="pb-3">Absensi</div>');
                     $('#ekstrakurikuler').html('<div class="pb-3">Ekstrakulikuler</div>');
+                    $('#prestasiSiswa').html('<div class="pb-3">Prestasi Siswa</div>');
                     $('#nama-wali-kelas').html('');
                 }
             });

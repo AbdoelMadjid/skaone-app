@@ -13,6 +13,7 @@ use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Models\WaliKelas\AbsensiSiswa;
 use App\Models\WaliKelas\CatatanWaliKelas;
 use App\Models\WaliKelas\Ekstrakurikuler;
+use App\Models\WaliKelas\PrestasiSiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -196,6 +197,15 @@ class ArsipWaliKelasController extends Controller
             }])
             ->get();
 
+        $prestasiSiswa = PrestasiSiswa::where('tahunajaran', $tahunajaran)
+            ->where('ganjilgenap', $semester)
+            ->where('kode_rombel', $kode_rombel)
+            ->with(['pesertaDidik' => function ($q) {
+                $q->select('nis', 'nama_lengkap');
+            }])
+            ->get();
+
+        $prestasiGrouped = $prestasiSiswa->groupBy('nis');
 
         // Ambil wali kelas
         $rombongan = RombonganBelajar::where('tahunajaran', $tahunajaran)
@@ -213,7 +223,11 @@ class ArsipWaliKelasController extends Controller
         $viewAbsensi = view('pages.kurikulum.dokumenguru.arsip-walikelas-absensi', compact('absensi', 'semester'))->render();
         $viewEskul = view('pages.kurikulum.dokumenguru.arsip-walikelas-eskul', compact('eskul', 'semester'))->render();
         $viewCatatanWalas = view('pages.kurikulum.dokumenguru.arsip-walikelas-catatanwalas', compact('catatanWalas', 'semester'))->render();
-        $viewNamaWali = view('pages.kurikulum.dokumenguru.arsip-walikelas-nama', compact('wali'))->render();
+        $viewNamaWali = view('pages.kurikulum.dokumenguru.arsip-walikelas-nama', compact('wali', 'semester'))->render();
+        $viewPrestasiSiswa = view('pages.kurikulum.dokumenguru.arsip-walikelas-prestasisiswa', [
+            'prestasiGrouped' => $prestasiGrouped,
+            'semester' => $semester,
+        ])->render();
 
         return response()->json([
             'data_kelas' => $viewDataKelas,
@@ -221,6 +235,7 @@ class ArsipWaliKelasController extends Controller
             'eskul' => $viewEskul,
             'catatanWalas' => $viewCatatanWalas,
             'nama_wali' => $viewNamaWali,
+            'prestasiSiswa' => $viewPrestasiSiswa,
         ]);
     }
 }
