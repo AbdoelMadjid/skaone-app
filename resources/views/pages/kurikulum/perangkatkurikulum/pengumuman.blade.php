@@ -23,10 +23,6 @@
                 </div>
 
                 <div class="card-body">
-                    @if (session('success'))
-                        <div class="alert alert-success">{{ session('success') }}</div>
-                    @endif
-
                     @if ($data->count())
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover align-middle">
@@ -56,6 +52,8 @@
                                                 {{ $judul->pengumumanTerkiniAktif->sum(fn($item) => $item->poin->count()) }}
                                             </td>
                                             <td class="text-center">
+                                                <a href="#" class="btn btn-sm btn-info"
+                                                    onclick="lihatDetail({{ $judul->id }})">Detail</a>
                                                 <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
                                                     data-bs-target="#editModal-{{ $judul->id }}">
                                                     Edit
@@ -76,6 +74,7 @@
                         <div class="alert alert-info">Belum ada data pengumuman.</div>
                     @endif
                 </div>
+                <div class="p-2" id="tampil-detail-pengumuman"></div>
             </div>
         </div>
         <!--end col-->
@@ -88,6 +87,9 @@
 @endsection
 @section('script-bottom')
     <script>
+        @if (session('toast_success'))
+            showToast('success', '{{ session('toast_success') }}');
+        @endif
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.btn-edit').forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -120,6 +122,25 @@
                 });
             });
         });
+    </script>
+    <script>
+        function lihatDetail(id) {
+            fetch(`/kurikulum/perangkatkurikulum/pengumuman/${id}`)
+                .then(response => {
+                    if (!response.ok) throw new Error("Gagal mengambil data.");
+                    return response.text();
+                })
+                .then(html => {
+                    document.getElementById("tampil-detail-pengumuman").innerHTML = html;
+                    document.getElementById("tampil-detail-pengumuman").scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                })
+                .catch(error => {
+                    alert("Gagal menampilkan detail pengumuman.");
+                    console.error(error);
+                });
+        }
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

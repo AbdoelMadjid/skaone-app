@@ -55,7 +55,7 @@ class PengumumanController extends Controller
         });
 
         return redirect()->route('kurikulum.perangkatkurikulum.pengumuman.index')
-            ->with('success', 'Pengumuman berhasil ditambahkan.');
+            ->with('toast_success', 'Pengumuman berhasil ditambahkan.');
     }
 
     public function edit($id)
@@ -97,7 +97,7 @@ class PengumumanController extends Controller
         });
 
         return redirect()->route('kurikulum.perangkatkurikulum.pengumuman.index')
-            ->with('success', 'Pengumuman berhasil diperbarui.');
+            ->with('toast_success', 'Pengumuman berhasil diperbarui.');
     }
 
     public function destroy($id)
@@ -112,6 +112,13 @@ class PengumumanController extends Controller
         });
 
         return redirect()->route('kurikulum.perangkatkurikulum.pengumuman.index')
-            ->with('success', 'Pengumuman berhasil dihapus.');
+            ->with('toast_success', 'Pengumuman berhasil dihapus.');
+    }
+
+    public function show($id)
+    {
+        $judul = PengumumanJudul::with(['pengumumanTerkiniAktif.poin'])->findOrFail($id);
+
+        return view('pages.kurikulum.perangkatkurikulum._detail', compact('judul'));
     }
 }

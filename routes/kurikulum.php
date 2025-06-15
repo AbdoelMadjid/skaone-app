@@ -73,6 +73,7 @@ Route::middleware('auth')->group(function () {
         Route::group(['prefix' => 'perangkatkurikulum', 'as' => 'perangkatkurikulum.'], function () {
             Route::resource('versi-kurikulum', VersiKurikulumController::class);
             Route::resource('pengumuman', PengumumanController::class);
+            Route::get('/pengumuman/{id}', [PengumumanController::class, 'show'])->name('pengumuman.show');
         });
 
         Route::group(['prefix' => 'dokumenguru', 'as' => 'dokumenguru.'], function () {

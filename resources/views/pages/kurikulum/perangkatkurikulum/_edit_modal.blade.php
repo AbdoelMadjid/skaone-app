@@ -32,6 +32,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div id="editPengumumanWrapper-{{ $judul->id }}">
                             @foreach ($judul->pengumumanTerkiniAktif as $i => $item)
                                 <div class="border p-3 rounded mb-3 pengumuman-item" data-index="{{ $i }}">
@@ -51,12 +52,22 @@
                                         <label>Poin</label>
                                         <div class="poin-wrapper">
                                             @foreach ($item->poin as $p)
-                                                <input type="text" name="pengumuman[{{ $i }}][poin][]"
-                                                    class="form-control mb-2" value="{{ $p->isi }}" required>
+                                                <div class="input-group mb-2">
+                                                    <input type="text"
+                                                        name="pengumuman[{{ $i }}][poin][]"
+                                                        class="form-control" value="{{ $p->isi }}" required>
+                                                    <button type="button" class="btn btn-danger btn-sm"
+                                                        onclick="removeElement(this)">🗑</button>
+                                                </div>
                                             @endforeach
                                         </div>
                                         <button type="button" class="btn btn-sm btn-soft-primary"
                                             onclick="addPoin(this, {{ $i }})">+ Tambah Poin</button>
+                                    </div>
+
+                                    <div class="text-end">
+                                        <button type="button" class="btn btn-danger btn-sm"
+                                            onclick="removeGroup(this)">🗑 Hapus Grup</button>
                                     </div>
                                 </div>
                             @endforeach
@@ -74,6 +85,7 @@
         </div>
     </div>
 @endforeach
+
 
 <script>
     function addPengumumanGroup(id) {
@@ -97,6 +109,9 @@
                 <div class="poin-wrapper"></div>
                 <button type="button" class="btn btn-sm btn-soft-primary" onclick="addPoin(this, ${index})">+ Tambah Poin</button>
             </div>
+            <div class="text-end">
+                <button type="button" class="btn btn-danger btn-sm" onclick="removeGroup(this)">🗑 Hapus Grup</button>
+            </div>
         </div>`;
 
         wrapper.insertAdjacentHTML('beforeend', html);
@@ -104,8 +119,19 @@
 
     function addPoin(button, index) {
         const container = button.closest('.pengumuman-item').querySelector('.poin-wrapper');
-        container.insertAdjacentHTML('beforeend',
-            `<input type="text" name="pengumuman[${index}][poin][]" class="form-control mb-2" required>`
-        );
+        container.insertAdjacentHTML('beforeend', `
+            <div class="input-group mb-2">
+                <input type="text" name="pengumuman[${index}][poin][]" class="form-control" required>
+                <button type="button" class="btn btn-danger btn-sm" onclick="removeElement(this)">🗑</button>
+            </div>
+        `);
+    }
+
+    function removeElement(button) {
+        button.closest('.input-group').remove();
+    }
+
+    function removeGroup(button) {
+        button.closest('.pengumuman-item').remove();
     }
 </script>
