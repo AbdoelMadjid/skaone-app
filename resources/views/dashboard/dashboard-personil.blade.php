@@ -74,20 +74,49 @@
                     class="ri-arrow-right-s-line align-middle ms-1"></i></a>
         </div>
     </div> --}}
+    <style>
+        .flexible-banner {
+            background-image: url('{{ URL::asset('images/galery/1730179060.jpg') }}');
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
 
+        .flexible-banner::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Lapisan hitam transparan */
+            backdrop-filter: blur(2px);
+            /* Efek blur ringan */
+            z-index: 0;
+        }
+
+        /* Pastikan isi tetap di atas overlay */
+        .flexible-banner {
+            position: relative;
+            z-index: 1;
+        }
+
+        .flexible-banner>* {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
 
     <div id="InfoEvenModals" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content border-0 overflow-hidden">
+        <div class="modal-dialog modal-dialog-centered modal-fullscreen-md-down">
+            <div class="modal-content border-0 overflow-hidden flexible-banner">
                 <div class="modal-header login-modal p-3">
-                    <h5 class="text-white fs-20">Informasi Terkini</h5>
-                    <p class="text-white-50 mt-2">Kegiatan Belajar Mengajar</p>
+                    <h5 class="text-white fs-20 mt-2">Informasi Terkini</h5>
+                    <button type="button" class="btn-close text-end" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-3">
-                    <div class="card card-overlay">
-                        <img class="card-img img-fluid" src="{{ URL::asset('images/galery/1730179060.jpg') }}"
-                            alt="Card image">
-                        <div class="card-img-overlay p-0 d-flex flex-column">
+                    <div class="card card-overlay bg-transparent">
+                        {{-- <img class="card-img" src="{{ URL::asset('images/galery/1730179060.jpg') }}" alt="Card image"> --}}
+                        <div class="p-0 d-flex flex-column">
                             @forelse ($judulUtama as $judul)
                                 <div class="card-header bg-transparent">
                                     <h4 class="card-title text-white mb-0">{{ $judul->judul }}</h4>
@@ -134,7 +163,7 @@
 
                                 </div>
                             @endforelse
-                            <div class="mini-stats-wid d-flex align-items-center mt-3">
+                            {{-- <div class="mini-stats-wid d-flex align-items-center mt-3">
                                 <div class="flex-shrink-0 avatar-sm">
 
                                 </div>
@@ -145,12 +174,12 @@
                                         <small class="text-white">Team Kurikulum 2025</small>
                                     </p>
                                 </div>
-                            </div><!-- end -->
+                            </div><!-- end --> --}}
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer bg-light p-3 justify-content-center">
-                    <p class="mb-0 text-muted text-white">Scripting & Desing by. Abdul Madjid, S.Pd., M.Pd.</p>
+                <div class="modal-footer bg-transparent p-3 justify-content-center">
+                    <p class="mb-0 text-muted text-white fs-10">Scripting & Desing by. Abdul Madjid, S.Pd., M.Pd.</p>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
