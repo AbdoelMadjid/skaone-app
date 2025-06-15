@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="alert-content">
-                            <p class="mb-0">Scripting & Desing by. Abdul Madjid, S.Pd., M.Pd.</p>
+                            <p class="mb-0">Scripting & Design by. Abdul Madjid, S.Pd., M.Pd.</p>
                         </div>
                     </div>
                 </div>

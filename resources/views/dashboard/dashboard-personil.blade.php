@@ -179,7 +179,7 @@
                     </div>
                 </div>
                 <div class="modal-footer bg-transparent p-3 justify-content-center">
-                    <p class="mb-0 text-muted text-white fs-10">Scripting & Desing by. Abdul Madjid, S.Pd., M.Pd.</p>
+                    <p class="mb-0 text-muted text-white fs-10">Scripting & Design by. Abdul Madjid, S.Pd., M.Pd.</p>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
