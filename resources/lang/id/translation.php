@@ -281,6 +281,7 @@ return [
     "versi-kurikulum" => "Versi Kurikulum",
     "pengumuman" => "Pengumuman",
 
+    "hari-efektif" => "Hari Efektif",
     "peserta-didik-rombel" => "Peserta Didik Rombel",
     'master-mata-pelajaran' => "Master Mata Pelajaran",
     "data-kbm" => "Data KBM",
