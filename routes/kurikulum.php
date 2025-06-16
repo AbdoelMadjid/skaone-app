@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Kurikulum\DataKBM\CapaianPembelajaranController;
+use App\Http\Controllers\Kurikulum\DataKBM\HariEfektifController;
 use App\Http\Controllers\Kurikulum\DataKBM\KbmPerRombelController;
 use App\Http\Controllers\Kurikulum\DataKBM\KunciDataKbmController;
 use App\Http\Controllers\Kurikulum\DataKBM\MataPelajaranController;
@@ -44,6 +45,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'kurikulum', 'as' => 'kurikulum.'], function () {
         Route::group(['prefix' => 'datakbm', 'as' => 'datakbm.'], function () {
+
+            Route::get('/hari-efektif', [HariEfektifController::class, 'index'])->name('hari-efektif.index');
+            Route::post('/hari-efektif-generate', [HariEfektifController::class, 'generateKalender'])->name('hari-efektif-generate');
+            Route::post('/hari-efektif-toggle-libur', [HariEfektifController::class, 'toggleLibur'])->name('hari-efektif-toggle-libur');
+            Route::post('/hari-efektif-hitung', [HariEfektifController::class, 'hitungHariEfektif'])->name('hari-efektif-hitung');
+
+
             Route::resource('peserta-didik-rombel', PesertaDidikRombelController::class);
             Route::get('/get-rombongan-belajar', [PesertaDidikRombelController::class, 'getRombonganBelajar'])->name('get-rombonganbelajar');
             Route::get('get-siswa', [PesertaDidikController::class, 'getSiswa'])->name('get-siswa');
