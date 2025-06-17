@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\WaliKelas;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kurikulum\DataKBM\HariEfektif;
 use App\Models\ManajemenSekolah\TahunAjaran;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Dompdf\Dompdf;
@@ -120,6 +121,16 @@ class DataKelasController extends Controller
             $waliKelas->kode_rombel
         ]);
 
+        $tahunAjaran = TahunAjaran::where('status', 'Aktif')->first(); // Ambil tahun ajaran aktif
+        $persenKehadiran = $request->persen ?? 80;
+
+        $ganjil = HariEfektif::where('tahun_ajaran_id', $tahunAjaran->id)
+            ->where('semester', 'Ganjil')->get();
+        $genap = HariEfektif::where('tahun_ajaran_id', $tahunAjaran->id)
+            ->where('semester', 'Genap')->get();
+
+        $rekapGanjil = $this->buildRekap($ganjil, $persenKehadiran);
+        $rekapGenap = $this->buildRekap($genap, $persenKehadiran);
 
         // Kirim data ke view
         return view(
@@ -132,7 +143,11 @@ class DataKelasController extends Controller
                 'titimangsa',
                 'kbmData',
                 'siswaData',
-                'nilaiRataSiswa'
+                'nilaiRataSiswa',
+                'tahunAjaran',
+                'persenKehadiran',
+                'rekapGanjil',
+                'rekapGenap',
             )
         );
     }
@@ -183,6 +198,31 @@ class DataKelasController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    private function buildRekap($data, $persen)
+    {
+        $result = [];
+        $total = ['jumlah' => 0, 'kehadiran_ideal' => 0, 'toleransi_alfa' => 0];
+
+        foreach ($data as $item) {
+            $jumlah = $item->jumlah_hari_efektif;
+            $ideal = round($jumlah * $persen / 100);
+            $alfa = $jumlah - $ideal;
+
+            $result[] = [
+                'bulan' => $item->bulan,
+                'jumlah' => $jumlah,
+                'kehadiran_ideal' => $ideal,
+                'toleransi_alfa' => $alfa,
+            ];
+
+            $total['jumlah'] += $jumlah;
+            $total['kehadiran_ideal'] += $ideal;
+            $total['toleransi_alfa'] += $alfa;
+        }
+
+        return ['data' => $result, 'total' => $total];
     }
 
     public function simpantitimangsa(Request $request)

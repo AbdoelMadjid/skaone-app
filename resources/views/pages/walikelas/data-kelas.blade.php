@@ -216,6 +216,122 @@
             </div>
         </div><!-- end col -->
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card ribbon-box border shadow-none mb-lg-4">
+                <div class="card-body">
+                    <div class="ribbon ribbon-primary round-shape mt-2">Rekap Hari Efektif - Tahun Ajaran
+                        {{ $tahunAjaran->tahunajaran }}</div>
+                    <h5 class="fs-14 text-end"></h5>
+                    <div class="ribbon-content mt-5">
+                        {{-- <form method="GET" class="mb-3 d-flex align-items-center gap-2">
+                            <label for="persen" class="mb-0">Kehadiran Ideal:</label>
+                            <select name="persen" id="persen" onchange="this.form.submit()" class="form-select w-auto">
+                                @foreach ([80, 85, 90] as $val)
+                                    <option value="{{ $val }}" {{ $val == $persenKehadiran ? 'selected' : '' }}>
+                                        {{ $val }}%</option>
+                                @endforeach
+                            </select>
+                        </form> --}}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card ribbon-box border shadow-none mb-lg-4">
+                                    <div class="card-body">
+                                        <div class="ribbon ribbon-primary round-shape mt-2">Semester Ganjil</div>
+                                        <h5 class="fs-14 text-end"></h5>
+                                        <div class="ribbon-content mt-5">
+                                            {{-- Tabel Semester Ganjil --}}
+                                            <div class="table-responsive mb-4">
+                                                <table class="table table-bordered text-center table-striped align-middle">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>Bulan</th>
+                                                            <th>Hari Efektif</th>
+                                                            <th>Kehadiran Ideal ({{ $persenKehadiran }}%)</th>
+                                                            <th>Toleransi Alfa ({{ 100 - $persenKehadiran }}%)</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($rekapGanjil['data'] as $item)
+                                                            <tr>
+                                                                <td>
+                                                                    {{ \Carbon\Carbon::create()->month($item['bulan'])->translatedFormat('F') }}
+                                                                </td>
+                                                                <td class="text-center">{{ $item['jumlah'] }}</td>
+                                                                <td class="text-center">{{ $item['kehadiran_ideal'] }}</td>
+                                                                <td class="text-center">{{ $item['toleransi_alfa'] }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                    <tfoot class="table-secondary fw-bold">
+                                                        <tr>
+                                                            <td>Total</td>
+                                                            <td class="text-center">{{ $rekapGanjil['total']['jumlah'] }}
+                                                            </td>
+                                                            <td class="text-center">
+                                                                {{ $rekapGanjil['total']['kehadiran_ideal'] }}</td>
+                                                            <td class="text-center">
+                                                                {{ $rekapGanjil['total']['toleransi_alfa'] }}</td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card ribbon-box border shadow-none mb-lg-4">
+                                    <div class="card-body">
+                                        <div class="ribbon ribbon-primary round-shape mt-2">Semester Genap</div>
+                                        <h5 class="fs-14 text-end"></h5>
+                                        <div class="ribbon-content mt-5">
+                                            {{-- Tabel Semester Genap --}}
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered text-center table-striped align-middle">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>Bulan</th>
+                                                            <th>Hari Efektif</th>
+                                                            <th>Kehadiran Ideal ({{ $persenKehadiran }}%)</th>
+                                                            <th>Toleransi Alfa ({{ 100 - $persenKehadiran }}%)</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($rekapGenap['data'] as $item)
+                                                            <tr>
+                                                                <td>{{ \Carbon\Carbon::create()->month($item['bulan'])->translatedFormat('F') }}
+                                                                </td>
+                                                                <td class="text-center">{{ $item['jumlah'] }}</td>
+                                                                <td class="text-center">{{ $item['kehadiran_ideal'] }}
+                                                                </td>
+                                                                <td class="text-center">{{ $item['toleransi_alfa'] }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                    <tfoot class="table-secondary fw-bold">
+                                                        <tr>
+                                                            <td>Total</td>
+                                                            <td class="text-center">{{ $rekapGenap['total']['jumlah'] }}
+                                                            </td>
+                                                            <td class="text-center">
+                                                                {{ $rekapGenap['total']['kehadiran_ideal'] }}</td>
+                                                            <td class="text-center">
+                                                                {{ $rekapGenap['total']['toleransi_alfa'] }}</td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('script')
     <script src="{{ URL::asset('build/js/grid-helper.js') }}"></script>
