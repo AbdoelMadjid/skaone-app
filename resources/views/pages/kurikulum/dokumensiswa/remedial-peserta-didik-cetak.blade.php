@@ -12,6 +12,10 @@
                 <td style="border: none !important;text-align:left;">: {{ $mapel->ganjilgenap }}</td>
             </tr>
             <tr>
+                <td style="border: none !important;text-align:left;">Kelas</td>
+                <td style="border: none !important;text-align:left;">: {{ $mapel->rombel }}</td>
+            </tr>
+            <tr>
                 <td style="border: none !important;text-align:left;">Nama Siswa</td>
                 <td style="border: none !important;text-align:left;">: {{ $siswa->nama_lengkap }}</td>
             </tr>
