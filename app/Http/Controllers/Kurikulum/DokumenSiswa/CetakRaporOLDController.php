@@ -74,6 +74,45 @@ class CetakRaporController extends Controller
             )
             ->get();
 
+        $dataSiswa = DB::table('peserta_didiks')
+            ->select(
+                'peserta_didiks.*',
+                'bidang_keahlians.nama_bk',
+                'program_keahlians.nama_pk',
+                'kompetensi_keahlians.nama_kk',
+                'peserta_didik_rombels.tahun_ajaran',
+                'peserta_didik_rombels.rombel_tingkat',
+                'peserta_didik_rombels.rombel_kode',
+                'peserta_didik_rombels.rombel_nama',
+                'peserta_didik_ortus.status',
+                'peserta_didik_ortus.nm_ayah',
+                'peserta_didik_ortus.nm_ibu',
+                'peserta_didik_ortus.pekerjaan_ayah',
+                'peserta_didik_ortus.pekerjaan_ibu',
+                'peserta_didik_ortus.ortu_alamat_blok',
+                'peserta_didik_ortus.ortu_alamat_norumah',
+                'peserta_didik_ortus.ortu_alamat_rt',
+                'peserta_didik_ortus.ortu_alamat_rw',
+                'peserta_didik_ortus.ortu_alamat_desa',
+                'peserta_didik_ortus.ortu_alamat_kec',
+                'peserta_didik_ortus.ortu_alamat_kab',
+                'peserta_didik_ortus.ortu_alamat_kodepos',
+                'peserta_didik_ortus.ortu_kontak_telepon',
+                'peserta_didik_ortus.ortu_kontak_email',
+            )
+            ->join('kompetensi_keahlians', 'peserta_didiks.kode_kk', '=', 'kompetensi_keahlians.idkk')
+            ->join('program_keahlians', 'kompetensi_keahlians.id_pk', '=', 'program_keahlians.idpk')
+            ->join('bidang_keahlians', 'kompetensi_keahlians.id_bk', '=', 'bidang_keahlians.idbk')
+            ->join('peserta_didik_rombels', 'peserta_didiks.nis', '=', 'peserta_didik_rombels.nis')
+            ->leftJoin('peserta_didik_ortus', 'peserta_didiks.nis', '=', 'peserta_didik_ortus.nis')
+            ->where('peserta_didiks.nis', $dataPilCR->nis)
+            ->where('peserta_didik_rombels.tahun_ajaran', $dataPilCR->tahunajaran)
+            ->first();
+
+        if (!$dataSiswa) {
+            return redirect()->back()->with('error', 'Data siswa tidak ditemukan.');
+        }
+
         $waliKelas = DB::table('wali_kelas')
             ->select(
                 'wali_kelas.*',
@@ -163,6 +202,20 @@ class CetakRaporController extends Controller
 
         $dataPilCR = PilihCetakRapor::where('id_personil', $personal_id)->first();
 
+        $siswaData = DB::table('peserta_didik_rombels')
+            ->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
+            ->where('peserta_didik_rombels.tahun_ajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('peserta_didik_rombels.rombel_kode', $dataPilCR->kode_rombel)
+            ->where('peserta_didik_rombels.rombel_tingkat', $dataPilCR->tingkat)
+            ->select(
+                'peserta_didik_rombels.nis',
+                'peserta_didiks.nama_lengkap',
+                'peserta_didiks.jenis_kelamin',
+                'peserta_didiks.foto',
+                'peserta_didiks.kontak_email'
+            )
+            ->get();
+
         $dataSiswa = DB::table('peserta_didiks')
             ->select(
                 'peserta_didiks.*',
@@ -198,68 +251,22 @@ class CetakRaporController extends Controller
             ->where('peserta_didik_rombels.tahun_ajaran', $dataPilCR->tahunajaran)
             ->first();
 
+        if (!$dataSiswa) {
+            return redirect()->back()->with('error', 'Data siswa tidak ditemukan.');
+        }
+
         $school = IdentitasSekolah::first();
-
-        // BARCOOOOOOOOOOOOOOOOOOOOOOOOOOOOD
-        $barcode = new DNS1D();
-        $barcode->setStorPath(public_path('barcode/'));
-
-        // URL yang ingin dijadikan barcode
-        $url = "https://smkn1kadipaten.sch.id";
-
-        // Generate barcode dalam format PNG
-        $barcodeImage = $barcode->getBarcodePNG($url, 'C128', 1, 33);
-
-        // Generate QR Code
-        $qrcode = new DNS2D();
-        $qrcodeImage = $qrcode->getBarcodePNG("https://smkn1kadipaten.sch.id/kurikulum/dokumentsiswa/cetak-rapor", 'QRCODE', 5, 5);
 
         $kepsekCover = KepalaSekolah::where('tahunajaran', $dataSiswa->thnajaran_masuk)
             ->where('semester', 'Ganjil')
             ->first();
 
+        /* if (!$kepsekCover) {
+            return redirect()->back()->with('error', 'Data sekolah tidak ditemukan.');
+        } */
+
         $kepsekttd = KepalaSekolah::where('tahunajaran', $dataPilCR->tahunajaran)
             ->where('semester', $dataPilCR->semester)
-            ->first();
-
-        $angkaSemester = null;
-
-        if ($dataPilCR->semester == 'Ganjil') {
-            switch ($dataPilCR->tingkat) {
-                case 10:
-                    $angkaSemester = 1;
-                    break;
-                case 11:
-                    $angkaSemester = 3;
-                    break;
-                case 12:
-                    $angkaSemester = 5;
-                    break;
-                default:
-                    $angkaSemester = 'Invalid year for Ganjil';
-            }
-        } elseif ($dataPilCR->semester == 'Genap') {
-            switch ($dataPilCR->tingkat) {
-                case 10:
-                    $angkaSemester = 2;
-                    break;
-                case 11:
-                    $angkaSemester = 4;
-                    break;
-                case 12:
-                    $angkaSemester = 6;
-                    break;
-                default:
-                    $angkaSemester = 'Invalid year for Genap';
-            }
-        } else {
-            $angkaSemester = 'Invalid semester type';
-        }
-
-        $titiMangsa = DB::table('titi_mangsas')
-            ->where('tahunajaran', $dataPilCR->tahunajaran)
-            ->where('ganjilgenap', $dataPilCR->semester)
-            ->where('kode_rombel', $dataPilCR->kode_rombel)
             ->first();
 
         $waliKelas = DB::table('wali_kelas')
@@ -276,8 +283,7 @@ class CetakRaporController extends Controller
             ->where('wali_kelas.kode_rombel', $dataPilCR->kode_rombel)
             ->first();
 
-        $absensiSiswa = DB::table('absensi_siswas')
-            ->where('nis', $dataSiswa->nis)
+        $titiMangsa = DB::table('titi_mangsas')
             ->where('tahunajaran', $dataPilCR->tahunajaran)
             ->where('ganjilgenap', $dataPilCR->semester)
             ->where('kode_rombel', $dataPilCR->kode_rombel)
@@ -288,6 +294,13 @@ class CetakRaporController extends Controller
             ->where('ganjilgenap', $dataPilCR->semester)
             ->where('kode_rombel', $dataPilCR->kode_rombel)
             ->where('nis', $dataSiswa->nis)
+            ->first();
+
+        $absensiSiswa = DB::table('absensi_siswas')
+            ->where('nis', $dataSiswa->nis)
+            ->where('tahunajaran', $dataPilCR->tahunajaran)
+            ->where('ganjilgenap', $dataPilCR->semester)
+            ->where('kode_rombel', $dataPilCR->kode_rombel)
             ->first();
 
         $prestasiSiswas = PrestasiSiswa::where('kode_rombel', $dataPilCR->kode_rombel)
@@ -343,6 +356,56 @@ class CetakRaporController extends Controller
             }
         }
 
+
+        $angkaSemester = null;
+
+        if ($dataPilCR->semester == 'Ganjil') {
+            switch ($dataPilCR->tingkat) {
+                case 10:
+                    $angkaSemester = 1;
+                    break;
+                case 11:
+                    $angkaSemester = 3;
+                    break;
+                case 12:
+                    $angkaSemester = 5;
+                    break;
+                default:
+                    $angkaSemester = 'Invalid year for Ganjil';
+            }
+        } elseif ($dataPilCR->semester == 'Genap') {
+            switch ($dataPilCR->tingkat) {
+                case 10:
+                    $angkaSemester = 2;
+                    break;
+                case 11:
+                    $angkaSemester = 4;
+                    break;
+                case 12:
+                    $angkaSemester = 6;
+                    break;
+                default:
+                    $angkaSemester = 'Invalid year for Genap';
+            }
+        } else {
+            $angkaSemester = 'Invalid semester type';
+        }
+
+        // BARCOOOOOOOOOOOOOOOOOOOOOOOOOOOOD
+        $barcode = new DNS1D();
+        $barcode->setStorPath(public_path('barcode/'));
+
+        // URL yang ingin dijadikan barcode
+        $url = "https://smkn1kadipaten.sch.id";
+
+        // Generate barcode dalam format PNG
+        $barcodeImage = $barcode->getBarcodePNG($url, 'C128', 1, 33);
+
+        // Generate QR Code
+        $qrcode = new DNS2D();
+        $qrcodeImage = $qrcode->getBarcodePNG("https://smkn1kadipaten.sch.id/kurikulum/dokumentsiswa/cetak-rapor", 'QRCODE', 5, 5);
+
+        //nilai-raport eung
         $dataNilai = DB::select("
            SELECT
                 kbm_per_rombels.id_personil,
@@ -495,31 +558,31 @@ class CetakRaporController extends Controller
             $nilai->deskripsi_nilai = implode(', ', $deskripsi);
         }
 
+
         // Jika data siswa ditemukan
-        if ($dataPilCR) {
+        if ($dataSiswa) {
             return view('pages.kurikulum.dokumensiswa.cetak-rapor-data',  [
-                'dataPilCR' => $dataPilCR,
+                'siswaData' => $siswaData,
                 'personal_id' => $personal_id,
                 'tahunAjaranAktif' => $tahunAjaranAktif,
                 'semester' => $semester,
-                'dataSiswa' => $dataSiswa,
                 'school' => $school,
                 'barcodeImage' => $barcodeImage,
                 'qrcodeImage' => $qrcodeImage,
+                'dataSiswa' => $dataSiswa,
+                //'siswaOrtu' => $siswaOrtu,
                 'kepsekCover' => $kepsekCover,
-                'kepsekttd' => $kepsekttd,
-                'angkaSemester' => $angkaSemester,
-
-                'titiMangsa' => $titiMangsa,
-                'waliKelas' => $waliKelas,
-                'catatanWaliKelas' => $catatanWaliKelas,
-                'absensiSiswa' => $absensiSiswa,
-                'prestasiSiswas' => $prestasiSiswas,
-                'ekstrakurikulers' => $ekstrakurikulers,
-                'activities' => $activities,
-
                 'dataNilai' => $dataNilai,
                 'firstNilai' => $firstNilai,
+                'dataPilCR' => $dataPilCR,
+                'kepsekttd' => $kepsekttd,
+                'waliKelas' => $waliKelas,
+                'titiMangsa' => $titiMangsa,
+                'absensiSiswa' => $absensiSiswa,
+                'activities' => $activities,
+                'catatanWaliKelas' => $catatanWaliKelas,
+                'prestasiSiswas' => $prestasiSiswas,
+                'angkaSemester' => $angkaSemester,
             ])->render(); // Render hanya bagian detail
         }
 
