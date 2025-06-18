@@ -344,88 +344,77 @@ class CetakRaporController extends Controller
         }
 
         $dataNilai = DB::select("
-           SELECT
-                kbm_per_rombels.id_personil,
-                personil_sekolahs.gelardepan,
-                personil_sekolahs.namalengkap,
-                personil_sekolahs.gelarbelakang,
-                kbm_per_rombels.kode_rombel,
-                kbm_per_rombels.rombel,
-                kbm_per_rombels.tingkat,
-                kbm_per_rombels.kel_mapel,
-                kbm_per_rombels.semester,
-                kbm_per_rombels.ganjilgenap,
-                mata_pelajarans.mata_pelajaran,
-                mata_pelajarans.kelompok,
-                mata_pelajarans.kode,
-                peserta_didik_rombels.nis,
-                peserta_didiks.nama_lengkap,
-                nilai_formatif.tp_isi_1,
-                nilai_formatif.tp_isi_2,
-                nilai_formatif.tp_isi_3,
-                nilai_formatif.tp_isi_4,
-                nilai_formatif.tp_isi_5,
-                nilai_formatif.tp_isi_6,
-                nilai_formatif.tp_isi_7,
-                nilai_formatif.tp_isi_8,
-                nilai_formatif.tp_isi_9,
-                nilai_formatif.tp_nilai_1,
-                nilai_formatif.tp_nilai_2,
-                nilai_formatif.tp_nilai_3,
-                nilai_formatif.tp_nilai_4,
-                nilai_formatif.tp_nilai_5,
-                nilai_formatif.tp_nilai_6,
-                nilai_formatif.tp_nilai_7,
-                nilai_formatif.tp_nilai_8,
-                nilai_formatif.tp_nilai_9,
-                nilai_formatif.rerata_formatif,
-                nilai_sumatif.sts,
-                nilai_sumatif.sas,
-                nilai_sumatif.kel_mapel AS kel_mapel_sumatif,
-                nilai_sumatif.rerata_sumatif,
-                ((COALESCE(nilai_formatif.rerata_formatif, 0) + COALESCE(nilai_sumatif.rerata_sumatif, 0)) / 2) AS nilai_na
-            FROM kbm_per_rombels
-                INNER JOIN peserta_didik_rombels ON kbm_per_rombels.kode_rombel = peserta_didik_rombels.rombel_kode
-                INNER JOIN peserta_didiks ON peserta_didik_rombels.nis = peserta_didiks.nis
-                INNER JOIN personil_sekolahs ON kbm_per_rombels.id_personil=personil_sekolahs.id_personil
-                INNER JOIN mata_pelajarans ON kbm_per_rombels.kel_mapel=mata_pelajarans.kel_mapel
-            LEFT JOIN nilai_formatif ON peserta_didik_rombels.nis = nilai_formatif.nis AND kbm_per_rombels.kel_mapel=nilai_formatif.kel_mapel
-                AND nilai_formatif.nis = ?
-                AND nilai_formatif.kode_rombel = ?
-                AND nilai_formatif.tingkat = ?
-                AND nilai_formatif.tahunajaran = ?
-                AND nilai_formatif.ganjilgenap = ?
-            LEFT JOIN nilai_sumatif ON peserta_didik_rombels.nis = nilai_sumatif.nis AND kbm_per_rombels.kel_mapel=nilai_sumatif.kel_mapel
-                AND nilai_sumatif.nis = ?
-                AND nilai_sumatif.kode_rombel = ?
-                AND nilai_formatif.tingkat = ?
-                AND nilai_formatif.tahunajaran = ?
-                AND nilai_formatif.ganjilgenap = ?
-            WHERE
-                peserta_didik_rombels.nis = ?
-                AND kbm_per_rombels.kode_rombel = ?
-                AND kbm_per_rombels.tingkat = ?
-                AND kbm_per_rombels.tahunajaran = ?
-                AND kbm_per_rombels.ganjilgenap = ?
-            ORDER BY kbm_per_rombels.kel_mapel
-        ", [
+    SELECT
+        kbm.id_personil,
+        ps.gelardepan,
+        ps.namalengkap,
+        ps.gelarbelakang,
+        kbm.kode_rombel,
+        kbm.rombel,
+        kbm.tingkat,
+        kbm.kel_mapel,
+        kbm.semester,
+        kbm.ganjilgenap,
+        mp.mata_pelajaran,
+        mp.kelompok,
+        mp.kode,
+        pdr.nis,
+        pd.nama_lengkap,
+        nf.tp_isi_1, nf.tp_isi_2, nf.tp_isi_3, nf.tp_isi_4, nf.tp_isi_5,
+        nf.tp_isi_6, nf.tp_isi_7, nf.tp_isi_8, nf.tp_isi_9,
+        nf.tp_nilai_1, nf.tp_nilai_2, nf.tp_nilai_3, nf.tp_nilai_4, nf.tp_nilai_5,
+        nf.tp_nilai_6, nf.tp_nilai_7, nf.tp_nilai_8, nf.tp_nilai_9,
+        nf.rerata_formatif,
+        ns.sts,
+        ns.sas,
+        ns.kel_mapel AS kel_mapel_sumatif,
+        ns.rerata_sumatif,
+        ((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2) AS nilai_na
+    FROM kbm_per_rombels kbm
+    INNER JOIN peserta_didik_rombels pdr
+        ON kbm.kode_rombel = pdr.rombel_kode
+    INNER JOIN peserta_didiks pd
+        ON pdr.nis = pd.nis
+    INNER JOIN personil_sekolahs ps
+        ON kbm.id_personil = ps.id_personil
+    INNER JOIN mata_pelajarans mp
+        ON kbm.kel_mapel = mp.kel_mapel
+    LEFT JOIN nilai_formatif nf
+        ON pdr.nis = nf.nis
+        AND kbm.kel_mapel = nf.kel_mapel
+        AND nf.kode_rombel = ?
+        AND nf.tingkat = ?
+        AND nf.tahunajaran = ?
+        AND nf.ganjilgenap = ?
+    LEFT JOIN nilai_sumatif ns
+        ON pdr.nis = ns.nis
+        AND kbm.kel_mapel = ns.kel_mapel
+        AND ns.kode_rombel = ?
+        AND ns.tingkat = ?
+        AND ns.tahunajaran = ?
+        AND ns.ganjilgenap = ?
+    WHERE
+        pdr.nis = ?
+        AND kbm.kode_rombel = ?
+        AND kbm.tingkat = ?
+        AND kbm.tahunajaran = ?
+        AND kbm.ganjilgenap = ?
+    ORDER BY kbm.kel_mapel
+", [
+            $dataPilCR->kode_rombel,
+            $dataPilCR->tingkat,
+            $dataPilCR->tahunajaran,
+            $dataPilCR->semester, // untuk nilai_formatif
+            $dataPilCR->kode_rombel,
+            $dataPilCR->tingkat,
+            $dataPilCR->tahunajaran,
+            $dataPilCR->semester, // untuk nilai_sumatif
             $dataSiswa->nis,
             $dataPilCR->kode_rombel,
             $dataPilCR->tingkat,
             $dataPilCR->tahunajaran,
-            $dataPilCR->semester,
-            $dataSiswa->nis,
-            $dataPilCR->kode_rombel,
-            $dataPilCR->tingkat,
-            $dataPilCR->tahunajaran,
-            $dataPilCR->semester,
-            $dataSiswa->nis,
-            $dataPilCR->kode_rombel,
-            $dataPilCR->tingkat,
-            $dataPilCR->tahunajaran,
-            $dataPilCR->semester,
+            $dataPilCR->semester, // filter utama
         ]);
-
         // Ambil elemen pertama jika hanya satu data yang perlu diakses
         $firstNilai = $dataNilai[0] ?? null;
 
@@ -434,6 +423,7 @@ class CetakRaporController extends Controller
                 ->where('kode_rombel', $nilai->kode_rombel)
                 ->where('kel_mapel', $nilai->kel_mapel)
                 ->where('id_personil', $nilai->id_personil)
+                ->where('ganjilgenap', $nilai->ganjilgenap)
                 ->count();
 
             $rerataFormatif = $nilai->rerata_formatif;
