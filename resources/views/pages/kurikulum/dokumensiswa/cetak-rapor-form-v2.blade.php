@@ -170,6 +170,13 @@
                 return;
             }
 
+            // 👉 Paksa aktifkan tab #cover
+            const coverTabTrigger = document.querySelector('.nav-link[href="#cover"]');
+            if (coverTabTrigger) {
+                const coverTab = new bootstrap.Tab(coverTabTrigger);
+                coverTab.show();
+            }
+
             document.getElementById('siswa-detail').innerHTML = '<p>Memuat data siswa...</p>';
 
             fetch(`/kurikulum/dokumentsiswa/tampil-rapor/${nis}`)
