@@ -517,48 +517,6 @@ class CetakRaporController extends Controller
         return response()->json(['message' => 'Data siswa tidak ditemukan'], 404);
     }
 
-    public function getSiswaDetail($nis)
-    {
-        $dataSiswa = DB::table('peserta_didiks')
-            ->select(
-                'peserta_didiks.*',
-                'bidang_keahlians.nama_bk',
-                'program_keahlians.nama_pk',
-                'kompetensi_keahlians.nama_kk',
-                'peserta_didik_rombels.tahun_ajaran',
-                'peserta_didik_rombels.rombel_tingkat',
-                'peserta_didik_rombels.rombel_kode',
-                'peserta_didik_rombels.rombel_nama',
-                'peserta_didik_ortus.status',
-                'peserta_didik_ortus.nm_ayah',
-                'peserta_didik_ortus.nm_ibu',
-                'peserta_didik_ortus.pekerjaan_ayah',
-                'peserta_didik_ortus.pekerjaan_ibu',
-                'peserta_didik_ortus.ortu_alamat_blok',
-                'peserta_didik_ortus.ortu_alamat_norumah',
-                'peserta_didik_ortus.ortu_alamat_rt',
-                'peserta_didik_ortus.ortu_alamat_rw',
-                'peserta_didik_ortus.ortu_alamat_desa',
-                'peserta_didik_ortus.ortu_alamat_kec',
-                'peserta_didik_ortus.ortu_alamat_kab',
-                'peserta_didik_ortus.ortu_alamat_kodepos',
-                'peserta_didik_ortus.ortu_kontak_telepon',
-                'peserta_didik_ortus.ortu_kontak_email',
-            )
-            ->join('kompetensi_keahlians', 'peserta_didiks.kode_kk', '=', 'kompetensi_keahlians.idkk')
-            ->join('program_keahlians', 'kompetensi_keahlians.id_pk', '=', 'program_keahlians.idpk')
-            ->join('bidang_keahlians', 'kompetensi_keahlians.id_bk', '=', 'bidang_keahlians.idbk')
-            ->join('peserta_didik_rombels', 'peserta_didiks.nis', '=', 'peserta_didik_rombels.nis')
-            ->leftJoin('peserta_didik_ortus', 'peserta_didiks.nis', '=', 'peserta_didik_ortus.nis')
-            ->where('peserta_didiks.nis', $nis)
-            ->first();
-
-        if ($dataSiswa) {
-            return response()->json($dataSiswa);
-        } else {
-            return response()->json(['message' => 'Data siswa tidak ditemukan.'], 404);
-        }
-    }
     /**
      * Show the form for editing the specified resource.
      */

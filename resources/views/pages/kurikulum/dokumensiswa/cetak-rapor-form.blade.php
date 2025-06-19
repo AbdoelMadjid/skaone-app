@@ -1,10 +1,7 @@
 <form id="form-rapor" action="{{ route('kurikulum.dokumentsiswa.simpanpilihcetakrapor') }}" method="post">
     @csrf
     <div class="row">
-        <div class="col-md-12">
-            <x-form.input size="sm" name="id_personil" value="{{ $personal_id }}" label="ID Personil" id="id_personil"
-                readonly />
-        </div>
+        <input type="hidden" name="id_personil" id="id_personil" value="{{ $personal_id }}">
         <div class="col-md-6">
             <x-form.select size="sm" name="tahunajaran" label="Tahun Ajaran" :options="$tahunAjaranOptions"
                 value="{{ old('tahunajaran', isset($dataPilCR) ? $dataPilCR->tahunajaran : '') }}" id="tahun_ajaran" />
@@ -44,7 +41,7 @@
                     Simpan
                 @endif
             </button> --}}
-            <button type="button" id="btn-data-rapor" class="btn btn-soft-primary">
+            <button type="button" id="btn-data-rapor" class="btn btn-sm btn-soft-primary">
                 Simpan & Tampilkan Rapor
             </button>
         </div>

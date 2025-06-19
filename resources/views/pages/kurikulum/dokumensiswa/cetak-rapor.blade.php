@@ -69,12 +69,14 @@
             <div class="card">
                 <div class="row g-0">
                     <div class="col-lg-9">
-                        <div class="card-body">
-                            <div class="row mb-4" id="info-wali-siswa">
+                        <div class="card-header">
+                            <div class="row" id="info-wali-siswa">
                                 @include('pages.kurikulum.dokumensiswa.cetak-rapor-info')
                             </div>
+                        </div>
+                        <div class="card-body">
                             <div class="tab-pane active" id="nilai" role="tabpanel">
-                                <div class="row align-items-end mt-3">
+                                <div class="row align-items-end mt-2">
                                     <div class="col">
                                         <div id="mail-filter-navlist">
                                             <ul class="nav nav-tabs nav-tabs-custom nav-info gap-1 text-center border-bottom-0"
