@@ -637,4 +637,58 @@ class CetakRaporVDuaController extends Controller
 
         return redirect()->back()->with('toast_success', 'Data berhasil disimpan.');
     }
+
+    public function infoWaliSiswa()
+    {
+        $user = Auth::user();
+        $personal_id = $user->personal_id;
+
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+
+        if (!$tahunAjaranAktif) {
+            return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
+        }
+
+        $semester = Semester::where('status', 'Aktif')
+            ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+            ->first();
+
+        if (!$semester) {
+            return redirect()->back()->with('error', 'Tidak ada semester aktif.');
+        }
+
+        $dataPilCR = PilihCetakRapor::where('id_personil', $personal_id)->first();
+
+        $siswaData = DB::table('peserta_didik_rombels')
+            ->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
+            ->where('peserta_didik_rombels.tahun_ajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('peserta_didik_rombels.rombel_kode', $dataPilCR->kode_rombel)
+            ->where('peserta_didik_rombels.rombel_tingkat', $dataPilCR->tingkat)
+            ->where('peserta_didik_rombels.nis', $dataPilCR->nis)
+            ->select(
+                'peserta_didik_rombels.nis',
+                'peserta_didiks.nama_lengkap',
+                'peserta_didiks.jenis_kelamin',
+                'peserta_didiks.foto',
+                'peserta_didiks.kontak_email'
+            )
+            ->first();
+
+        $waliKelas = DB::table('wali_kelas')
+            ->select(
+                'wali_kelas.*',
+                'personil_sekolahs.id_personil',
+                'personil_sekolahs.nip',
+                'personil_sekolahs.gelardepan',
+                'personil_sekolahs.namalengkap',
+                'personil_sekolahs.gelarbelakang',
+                'personil_sekolahs.photo'
+            )
+            ->join('personil_sekolahs', 'wali_kelas.wali_kelas', '=', 'personil_sekolahs.id_personil')
+            ->where('wali_kelas.tahunajaran', $dataPilCR->tahunajaran)
+            ->where('wali_kelas.kode_rombel', $dataPilCR->kode_rombel)
+            ->first();
+
+        return view('pages.kurikulum.dokumensiswa.cetak-rapor-info', compact('siswaData', 'waliKelas'));
+    }
 }

@@ -131,6 +131,8 @@ Route::middleware('auth')->group(function () {
             Route::post('/simpanpilihcetakrapor', [CetakRaporVDuaController::class, 'simpanPilihCetakRapor'])
                 ->name('simpanpilihcetakrapor');
             Route::get('/tampil-rapor/{nis}', [CetakRaporVDuaController::class, 'tampilRapor']);
+            Route::get('/info-wali-siswa', [CetakRaporVDuaController::class, 'infoWaliSiswa']);
+
             //Route::post('/simpanpilihcetakrapor', [CetakRaporVDuaController::class, 'simpanPilihCetakRapor'])->name('simpanPilihanRapor');
 
             Route::resource('leger-nilai', LegerNilaiController::class);

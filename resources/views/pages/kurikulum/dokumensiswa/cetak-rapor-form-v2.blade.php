@@ -1,4 +1,4 @@
-<form action="{{ route('kurikulum.dokumentsiswa.simpanpilihcetakrapor') }}" method="post">
+<form id="form-rapor" action="{{ route('kurikulum.dokumentsiswa.simpanpilihcetakrapor') }}" method="post">
     @csrf
     <div class="row">
         <div class="col-md-12">
@@ -37,12 +37,15 @@
 
     <div class="col-lg-12">
         <div class="gap-2 hstack justify-content-end">
-            <button type="submit" id="btn-data-rapor" class="btn btn-soft-primary">
+            {{-- <button type="submit" class="btn btn-soft-primary">
                 @if ($dataPilCR)
                     Update
                 @else
                     Simpan
                 @endif
+            </button> --}}
+            <button type="button" id="btn-data-rapor" class="btn btn-soft-primary">
+                Simpan & Tampilkan Rapor
             </button>
         </div>
     </div>
@@ -156,7 +159,7 @@
         }
     });
 </script>
-<script>
+{{-- <script>
     document.addEventListener('DOMContentLoaded', function() {
         const btnRapor = document.getElementById('btn-tampil-rapor');
 
@@ -195,5 +198,85 @@
                         '<div class="alert alert-danger">Gagal memuat data siswa.</div>';
                 });
         });
+    });
+</script> --}}
+<script>
+    function tampilkanInfoWaliDanSiswa() {
+        fetch(`/kurikulum/dokumentsiswa/info-wali-siswa`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Gagal memuat info wali dan siswa.');
+                }
+                return response.text();
+            })
+            .then(html => {
+                document.getElementById('info-wali-siswa').innerHTML = html;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const btn = document.getElementById('btn-data-rapor');
+        const form = document.getElementById('form-rapor');
+
+        btn.addEventListener('click', function() {
+            // 1. Kirim form via fetch (submit manual)
+            const formData = new FormData(form);
+            const nis = formData.get('nis');
+
+            fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Gagal menyimpan data.');
+                    }
+                    return response.text(); // biarkan respons apapun
+                })
+                .then(() => {
+                    // 2. Setelah form disimpan, paksa aktifkan tab cover (jika ada)
+                    const coverTabTrigger = document.querySelector('.nav-link[href="#cover"]');
+                    if (coverTabTrigger) {
+                        const coverTab = new bootstrap.Tab(coverTabTrigger);
+                        coverTab.show();
+                    }
+
+                    // 3. Tampilkan data siswa
+                    tampilkanRapor(nis);
+                    tampilkanInfoWaliDanSiswa();
+                })
+                .catch(error => {
+                    console.error(error);
+                    document.getElementById('siswa-detail').innerHTML =
+                        '<div class="alert alert-danger">Gagal menyimpan atau menampilkan rapor.</div>';
+                });
+        });
+
+        function tampilkanRapor(nis) {
+            const detailDiv = document.getElementById('siswa-detail');
+            detailDiv.innerHTML = '<p>Memuat data siswa...</p>';
+
+            fetch(`/kurikulum/dokumentsiswa/tampil-rapor/${nis}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Gagal mengambil data siswa.');
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    detailDiv.innerHTML = html;
+                })
+                .catch(error => {
+                    console.error(error);
+                    detailDiv.innerHTML =
+                        '<div class="alert alert-danger">Gagal memuat data siswa.</div>';
+                });
+        }
     });
 </script>
