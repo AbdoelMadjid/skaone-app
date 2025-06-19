@@ -145,8 +145,8 @@
                         </div>
                     </div>
                     <div class="col-lg-3 border-start">
-                        <div class="card-header">
-                            Pilih Data Catak
+                        <div class="card-header p-2 align-items-center">
+                            <h6 class="mt-2"><i class="ri-printer-line text-danger"></i> Pilih Data Cetak Rapor</h6>
                         </div>
                         <div class="card-body">
                             @include('pages.kurikulum.dokumensiswa.cetak-rapor-form')
