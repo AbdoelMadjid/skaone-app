@@ -10,6 +10,7 @@ use App\Http\Controllers\Kurikulum\DataKBM\PesertaDidikRombelController;
 use App\Http\Controllers\Kurikulum\DokumenGuru\ArsipGuruMapelController;
 use App\Http\Controllers\Kurikulum\DokumenGuru\ArsipWaliKelasController;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\CetakRaporController;
+use App\Http\Controllers\Kurikulum\DokumenSiswa\CetakRaporVDuaController;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\IjazahController;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\LegerNilaiController;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\RaporPklController;
@@ -117,12 +118,20 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::group(['prefix' => 'dokumentsiswa', 'as' => 'dokumentsiswa.'], function () {
-            Route::resource('cetak-rapor', CetakRaporController::class);
+            /* Route::resource('cetak-rapor', CetakRaporController::class);
             Route::get('/cetak-rapor/detail-peserta-didik/{nis}', [CetakRaporController::class, 'getSiswaDetail']);
             Route::get('/get-kode-rombel', [CetakRaporController::class, 'getKodeRombel']);
             Route::get('/get-peserta-didik', [CetakRaporController::class, 'getPesertaDidik']);
             Route::post('/simpanpilihcetakrapor', [CetakRaporController::class, 'simpanPilihCetakRapor'])
+                ->name('simpanpilihcetakrapor'); */
+
+            Route::resource('cetak-rapor', CetakRaporVDuaController::class);
+            Route::get('/get-kode-rombel', [CetakRaporVDuaController::class, 'getKodeRombel']);
+            Route::get('/get-peserta-didik', [CetakRaporVDuaController::class, 'getPesertaDidik']);
+            Route::post('/simpanpilihcetakrapor', [CetakRaporVDuaController::class, 'simpanPilihCetakRapor'])
                 ->name('simpanpilihcetakrapor');
+            Route::get('/tampil-rapor/{nis}', [CetakRaporVDuaController::class, 'tampilRapor']);
+            //Route::post('/simpanpilihcetakrapor', [CetakRaporVDuaController::class, 'simpanPilihCetakRapor'])->name('simpanPilihanRapor');
 
             Route::resource('leger-nilai', LegerNilaiController::class);
             Route::get('/get-kode-rombel-leger', [LegerNilaiController::class, 'getKodeRombelLeger']);
