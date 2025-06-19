@@ -182,7 +182,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="px-4 mx-n4" data-simplebar style="height: calc(110vh - 356px);">
+                                <div class="px-4 mx-n4" data-simplebar style="height: calc(100vh - 332px);">
                                     <div id="siswa-detail">
                                         <div class="alert alert-primary alert-dismissible alert-label-icon rounded-label fade show mt-4"
                                             role="alert">
