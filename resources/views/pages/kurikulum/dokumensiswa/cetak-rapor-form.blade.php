@@ -1,34 +1,35 @@
-<form action="{{ route('kurikulum.dokumentsiswa.simpanpilihcetakrapor') }}" method="post">
+<form id="form-rapor" action="{{ route('kurikulum.dokumentsiswa.simpanpilihcetakrapor') }}" method="post">
     @csrf
     <div class="row">
         <div class="col-md-12">
-            <x-form.input name="id_personil" value="{{ $personal_id }}" label="ID Personil" id="id_personil" readonly />
+            <x-form.input size="sm" name="id_personil" value="{{ $personal_id }}" label="ID Personil" id="id_personil"
+                readonly />
         </div>
-        <div class="col-md-3">
-            <x-form.select name="tahunajaran" label="Tahun Ajaran" :options="$tahunAjaranOptions"
+        <div class="col-md-6">
+            <x-form.select size="sm" name="tahunajaran" label="Tahun Ajaran" :options="$tahunAjaranOptions"
                 value="{{ old('tahunajaran', isset($dataPilCR) ? $dataPilCR->tahunajaran : '') }}" id="tahun_ajaran" />
         </div>
-        <div class="col-md-3">
-            <x-form.select name="semester" :options="['Ganjil' => 'Ganjil', 'Genap' => 'Genap']"
+        <div class="col-md-6">
+            <x-form.select size="sm" name="semester" :options="['Ganjil' => 'Ganjil', 'Genap' => 'Genap']"
                 value="{{ old('semester', isset($dataPilCR) ? $dataPilCR->semester : '') }}" label="Semester"
                 id="semester" />
         </div>
-        <div class="col-md-6">
-            <x-form.select name="kode_kk" label="Kompetensi Keahlian" :options="$kompetensiKeahlianOptions"
+        <div class="col-md-12">
+            <x-form.select size="sm" name="kode_kk" label="Kompetensi Keahlian" :options="$kompetensiKeahlianOptions"
                 value="{{ old('kode_kk', isset($dataPilCR) ? $dataPilCR->kode_kk : '') }}" id="kode_kk" />
         </div>
-        <div class="col-md-2">
-            <x-form.select name="tingkat" :options="['10' => '10', '11' => '11', '12' => '12']"
+        <div class="col-md-6">
+            <x-form.select size="sm" name="tingkat" :options="['10' => '10', '11' => '11', '12' => '12']"
                 value="{{ old('tingkat', isset($dataPilCR) ? $dataPilCR->tingkat : '') }}" label="Tingkat"
                 id="tingkat" />
         </div>
-        <div class="col-md-3">
-            <x-form.select name="kode_rombel" :options="$rombonganBelajar"
+        <div class="col-md-6">
+            <x-form.select size="sm" name="kode_rombel" :options="$rombonganBelajar"
                 value="{{ old('kode_rombel', isset($dataPilCR) ? $dataPilCR->kode_rombel : '') }}" label="Kode Rombel"
                 id="kode_rombel" />
         </div>
-        <div class="col-md-7">
-            <x-form.select name="nis" :options="$pesertadidikOptions"
+        <div class="col-md-12">
+            <x-form.select size="sm" name="nis" :options="$pesertadidikOptions"
                 value="{{ old('nis', isset($dataPilCR) ? $dataPilCR->nis : '') }}" label="Peserta Didik" id="nis"
                 data-selected="{{ old('nis', isset($dataPilCR) ? $dataPilCR->nis : '') }}" />
         </div>
@@ -36,12 +37,15 @@
 
     <div class="col-lg-12">
         <div class="gap-2 hstack justify-content-end">
-            <button type="submit" class="btn btn-soft-primary">
+            {{-- <button type="submit" class="btn btn-soft-primary">
                 @if ($dataPilCR)
                     Update
                 @else
                     Simpan
                 @endif
+            </button> --}}
+            <button type="button" id="btn-data-rapor" class="btn btn-soft-primary">
+                Simpan & Tampilkan Rapor
             </button>
         </div>
     </div>
@@ -152,6 +156,87 @@
                     }
                 })
                 .catch(error => console.error('Error fetching peserta didik:', error));
+        }
+    });
+</script>
+<script>
+    function tampilkanInfoWaliDanSiswa() {
+        fetch(`/kurikulum/dokumentsiswa/info-wali-siswa`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Gagal memuat info wali dan siswa.');
+                }
+                return response.text();
+            })
+            .then(html => {
+                document.getElementById('info-wali-siswa').innerHTML = html;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const btn = document.getElementById('btn-data-rapor');
+        const form = document.getElementById('form-rapor');
+
+        btn.addEventListener('click', function() {
+            // 1. Kirim form via fetch (submit manual)
+            const formData = new FormData(form);
+            const nis = formData.get('nis');
+
+            fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Gagal menyimpan data.');
+                    }
+                    return response.text(); // biarkan respons apapun
+                })
+                .then(() => {
+                    // 2. Setelah form disimpan, paksa aktifkan tab cover (jika ada)
+                    const coverTabTrigger = document.querySelector('.nav-link[href="#cover"]');
+                    if (coverTabTrigger) {
+                        const coverTab = new bootstrap.Tab(coverTabTrigger);
+                        coverTab.show();
+                    }
+
+                    // 3. Tampilkan data siswa
+                    tampilkanRapor(nis);
+                    tampilkanInfoWaliDanSiswa();
+                })
+                .catch(error => {
+                    console.error(error);
+                    document.getElementById('siswa-detail').innerHTML =
+                        '<div class="alert alert-danger">Gagal menyimpan atau menampilkan rapor.</div>';
+                });
+        });
+
+        function tampilkanRapor(nis) {
+            const detailDiv = document.getElementById('siswa-detail');
+            detailDiv.innerHTML =
+                '<div class="position-absolute top-50 start-50 translate-middle"><div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading... </span></div></div>';
+
+            fetch(`/kurikulum/dokumentsiswa/tampil-rapor/${nis}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Gagal mengambil data siswa.');
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    detailDiv.innerHTML = html;
+                })
+                .catch(error => {
+                    console.error(error);
+                    detailDiv.innerHTML =
+                        '<div class="alert alert-danger">Gagal memuat data siswa.</div>';
+                });
         }
     });
 </script>

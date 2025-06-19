@@ -149,7 +149,7 @@
                                                         <strong>{{ $mataPelajaran }}</strong><br>
                                                         {{ $guruMapel }}
                                                     </td>
-                                                    <td class="text-center">
+                                                    <td style='text-align:center;'>
                                                         {{ round(((float) $nilai->rerata_formatif + (float) $nilai->rerata_sumatif) / 2) }}
                                                     </td>
                                                     <td style='padding:4px 8px;font-size:12px;text-align:justify;'>
@@ -177,7 +177,7 @@
                                                         {{ ucwords(strtolower($nilai->namalengkap)) ?? '' }},
                                                         {{ $nilai->gelarbelakang ?? '' }}
                                                     </td>
-                                                    <td class="text-center">
+                                                    <td style='text-align:center;'>
                                                         {{ round(((float) $nilai->rerata_formatif + (float) $nilai->rerata_sumatif) / 2) }}
                                                     </td>
                                                     <td style='padding:4px 8px;font-size:12px;text-align:justify;'>

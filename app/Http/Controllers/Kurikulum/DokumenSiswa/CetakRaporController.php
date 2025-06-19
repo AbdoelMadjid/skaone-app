@@ -10,7 +10,6 @@ use App\Models\ManajemenSekolah\KepalaSekolah;
 use App\Models\ManajemenSekolah\KompetensiKeahlian;
 use App\Models\ManajemenSekolah\PersonilSekolah;
 use App\Models\ManajemenSekolah\PesertaDidik;
-use App\Models\ManajemenSekolah\PesertaDidikOrtu;
 use App\Models\ManajemenSekolah\RombonganBelajar;
 use App\Models\ManajemenSekolah\Semester;
 use App\Models\ManajemenSekolah\TahunAjaran;
@@ -21,7 +20,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Milon\Barcode\DNS1D;
 use Milon\Barcode\DNS2D;
-use Illuminate\Support\Facades\Log;
 
 class CetakRaporController extends Controller
 {
@@ -65,6 +63,7 @@ class CetakRaporController extends Controller
             ->where('peserta_didik_rombels.tahun_ajaran', $tahunAjaranAktif->tahunajaran)
             ->where('peserta_didik_rombels.rombel_kode', $dataPilCR->kode_rombel)
             ->where('peserta_didik_rombels.rombel_tingkat', $dataPilCR->tingkat)
+            ->where('peserta_didik_rombels.nis', $dataPilCR->nis)
             ->select(
                 'peserta_didik_rombels.nis',
                 'peserta_didiks.nama_lengkap',
@@ -72,7 +71,7 @@ class CetakRaporController extends Controller
                 'peserta_didiks.foto',
                 'peserta_didiks.kontak_email'
             )
-            ->get();
+            ->first();
 
         $waliKelas = DB::table('wali_kelas')
             ->select(
@@ -81,7 +80,8 @@ class CetakRaporController extends Controller
                 'personil_sekolahs.nip',
                 'personil_sekolahs.gelardepan',
                 'personil_sekolahs.namalengkap',
-                'personil_sekolahs.gelarbelakang'
+                'personil_sekolahs.gelarbelakang',
+                'personil_sekolahs.photo'
             )
             ->join('personil_sekolahs', 'wali_kelas.wali_kelas', '=', 'personil_sekolahs.id_personil')
             ->where('wali_kelas.tahunajaran', $dataPilCR->tahunajaran)
@@ -100,6 +100,7 @@ class CetakRaporController extends Controller
             'waliKelas' => $waliKelas,
             'personilSekolah' => $personilSekolah,
             'dataPilCR' => $dataPilCR,
+            'nis' => $dataPilCR->nis,
         ]);
     }
 
@@ -123,7 +124,7 @@ class CetakRaporController extends Controller
             'kode_kk' => 'required|string',
             'tingkat' => 'required|string',
             'kode_rombel' => 'required|string',
-            'kode_peserta_didik' => 'required|string',
+            'nis' => 'required|string',
         ]);
 
         PilihCetakRapor::create([
@@ -133,16 +134,15 @@ class CetakRaporController extends Controller
             'kode_kk' => $validatedData['kode_kk'],
             'tingkat' => $validatedData['tingkat'],
             'kode_rombel' => $validatedData['kode_rombel'],
-            'nis' => $validatedData['kode_peserta_didik'],
+            'nis' => $validatedData['nis'],
         ]);
 
         return redirect()->back()->with('toast_success', 'Data berhasil disimpan!');
     }
-
     /**
      * Display the specified resource.
      */
-    public function show(string $nis)
+    public function tampilRapor($nis)
     {
         $user = Auth::user();
         $personal_id = $user->personal_id;
@@ -618,7 +618,6 @@ class CetakRaporController extends Controller
 
     public function simpanPilihCetakRapor(Request $request)
     {
-        // Validasi input
         $validatedData = $request->validate([
             'id_personil' => 'required|string',
             'tahunajaran' => 'required|string',
@@ -629,40 +628,65 @@ class CetakRaporController extends Controller
             'nis' => 'required|string',
         ]);
 
-        // Cek apakah data sudah ada di tabel titi_mangsas
-        $pilihcetak = DB::table('pilih_cetak_rapors')
-            ->where('id_personil', $request->id_personil)
-            ->first();
-
-        // Jika data sudah ada, lakukan update
-        if ($pilihcetak) {
-            DB::table('pilih_cetak_rapors')
-                ->where('id_personil', $pilihcetak->id_personil)
-                ->update([
-                    'tahunajaran' => $validatedData['tahunajaran'],
-                    'semester' => $validatedData['semester'],
-                    'kode_kk' => $validatedData['kode_kk'],
-                    'tingkat' => $validatedData['tingkat'],
-                    'kode_rombel' => $validatedData['kode_rombel'],
-                    'nis' => $validatedData['nis'],
-                    'updated_at' => now(),
-                ]);
-            return redirect()->back()->with('toast_success', 'Data berhasil diperbarui.');
-        }
-
-        // Jika belum ada, lakukan insert
-        DB::table('pilih_cetak_rapors')->insert([
-            'id_personil' => $validatedData['id_personil'],
-            'tahunajaran' => $validatedData['tahunajaran'],
-            'semester' => $validatedData['semester'],
-            'kode_kk' => $validatedData['kode_kk'],
-            'tingkat' => $validatedData['tingkat'],
-            'kode_rombel' => $validatedData['kode_rombel'],
-            'nis' => $validatedData['nis'],
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        PilihCetakRapor::updateOrCreate(
+            ['id_personil' => $validatedData['id_personil']],
+            $validatedData
+        );
 
         return redirect()->back()->with('toast_success', 'Data berhasil disimpan.');
+    }
+
+    public function infoWaliSiswa()
+    {
+        $user = Auth::user();
+        $personal_id = $user->personal_id;
+
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+
+        if (!$tahunAjaranAktif) {
+            return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
+        }
+
+        $semester = Semester::where('status', 'Aktif')
+            ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+            ->first();
+
+        if (!$semester) {
+            return redirect()->back()->with('error', 'Tidak ada semester aktif.');
+        }
+
+        $dataPilCR = PilihCetakRapor::where('id_personil', $personal_id)->first();
+
+        $siswaData = DB::table('peserta_didik_rombels')
+            ->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
+            ->where('peserta_didik_rombels.tahun_ajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('peserta_didik_rombels.rombel_kode', $dataPilCR->kode_rombel)
+            ->where('peserta_didik_rombels.rombel_tingkat', $dataPilCR->tingkat)
+            ->where('peserta_didik_rombels.nis', $dataPilCR->nis)
+            ->select(
+                'peserta_didik_rombels.nis',
+                'peserta_didiks.nama_lengkap',
+                'peserta_didiks.jenis_kelamin',
+                'peserta_didiks.foto',
+                'peserta_didiks.kontak_email'
+            )
+            ->first();
+
+        $waliKelas = DB::table('wali_kelas')
+            ->select(
+                'wali_kelas.*',
+                'personil_sekolahs.id_personil',
+                'personil_sekolahs.nip',
+                'personil_sekolahs.gelardepan',
+                'personil_sekolahs.namalengkap',
+                'personil_sekolahs.gelarbelakang',
+                'personil_sekolahs.photo'
+            )
+            ->join('personil_sekolahs', 'wali_kelas.wali_kelas', '=', 'personil_sekolahs.id_personil')
+            ->where('wali_kelas.tahunajaran', $dataPilCR->tahunajaran)
+            ->where('wali_kelas.kode_rombel', $dataPilCR->kode_rombel)
+            ->first();
+
+        return view('pages.kurikulum.dokumensiswa.cetak-rapor-info', compact('siswaData', 'waliKelas'));
     }
 }

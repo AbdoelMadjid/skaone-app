@@ -10,7 +10,6 @@ use App\Http\Controllers\Kurikulum\DataKBM\PesertaDidikRombelController;
 use App\Http\Controllers\Kurikulum\DokumenGuru\ArsipGuruMapelController;
 use App\Http\Controllers\Kurikulum\DokumenGuru\ArsipWaliKelasController;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\CetakRaporController;
-use App\Http\Controllers\Kurikulum\DokumenSiswa\CetakRaporVDuaController;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\IjazahController;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\LegerNilaiController;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\RaporPklController;
@@ -118,22 +117,13 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::group(['prefix' => 'dokumentsiswa', 'as' => 'dokumentsiswa.'], function () {
-            /* Route::resource('cetak-rapor', CetakRaporController::class);
-            Route::get('/cetak-rapor/detail-peserta-didik/{nis}', [CetakRaporController::class, 'getSiswaDetail']);
+            Route::resource('cetak-rapor', CetakRaporController::class);
             Route::get('/get-kode-rombel', [CetakRaporController::class, 'getKodeRombel']);
             Route::get('/get-peserta-didik', [CetakRaporController::class, 'getPesertaDidik']);
             Route::post('/simpanpilihcetakrapor', [CetakRaporController::class, 'simpanPilihCetakRapor'])
-                ->name('simpanpilihcetakrapor'); */
-
-            Route::resource('cetak-rapor', CetakRaporVDuaController::class);
-            Route::get('/get-kode-rombel', [CetakRaporVDuaController::class, 'getKodeRombel']);
-            Route::get('/get-peserta-didik', [CetakRaporVDuaController::class, 'getPesertaDidik']);
-            Route::post('/simpanpilihcetakrapor', [CetakRaporVDuaController::class, 'simpanPilihCetakRapor'])
                 ->name('simpanpilihcetakrapor');
-            Route::get('/tampil-rapor/{nis}', [CetakRaporVDuaController::class, 'tampilRapor']);
-            Route::get('/info-wali-siswa', [CetakRaporVDuaController::class, 'infoWaliSiswa']);
-
-            //Route::post('/simpanpilihcetakrapor', [CetakRaporVDuaController::class, 'simpanPilihCetakRapor'])->name('simpanPilihanRapor');
+            Route::get('/tampil-rapor/{nis}', [CetakRaporController::class, 'tampilRapor']);
+            Route::get('/info-wali-siswa', [CetakRaporController::class, 'infoWaliSiswa']);
 
             Route::resource('leger-nilai', LegerNilaiController::class);
             Route::get('/get-kode-rombel-leger', [LegerNilaiController::class, 'getKodeRombelLeger']);
@@ -173,31 +163,19 @@ Route::middleware('auth')->group(function () {
             Route::get('/denahdata', [AdministrasiUjianController::class, 'getDenahData'])->name('denahdata');
 
             Route::get('/cetak-kartu-ujian/{kelas}', [AdministrasiUjianController::class, 'cetakKartuUjianByKelas']);
-
             Route::get('/get-mapel/{kode_kk}', [JadwalUjianController::class, 'getMapelByKK']);
-
             Route::get('/generatejadwalmassal', [JadwalUjianController::class, 'generateMassal']);
             Route::post('/simpan-massal', [JadwalUjianController::class, 'simpanMassal']);
-
             Route::get('load-jadwal-tingkat', [AdministrasiUjianController::class, 'loadJadwalTingkat']);
-
             Route::get('denahtempatduduk/{ruangan}', [AdministrasiUjianController::class, 'showDenahTempatDuduk']);
-
             Route::get('/daftar-pengawas-ujian', [PengawasUjianController::class, 'loadFormPengawas'])->name('daftar-pengawas-ujian');
-
             Route::post('/simpan-daftar-pengawas-massal', [PengawasUjianController::class, 'simpanpengawasMassal'])->name('simpan-daftar-pengawas-massal');
-
             Route::get('/jadwal-massal-table', [PengawasUjianController::class, 'generateMassalTable'])->name('jadwal-massal-table');
-
             Route::post('/jadwal-massal-simpan', [PengawasUjianController::class, 'storeJadwalpengawasMassal'])->name('jadwal-massal-simpan');
-
             //Route::get('/daftar-siswa-ruangan/{nomor_ruang}', [AdministrasiUjianController::class, 'daftarSiswaPerRuang']);
-
             Route::get('/daftar-siswa-ruangan/{nomorRuang}', [AdministrasiUjianController::class, 'daftarSiswaPerRuang'])
                 ->name('daftar-siswa-ruangan');
-
             Route::get('/get-tempelan-ruang', [AdministrasiUjianController::class, 'getTempelanPesertaByRuang'])->name('get-tempelan-ruang');
-
             Route::get('pelaksanaan-ujian', [PelaksanaanUjianController::class, 'index'])->name('pelaksanaan-ujian.index');
             Route::prefix('pelaksanaan-ujian')->as('pelaksanaan-ujian.')->group(function () {
                 Route::resource('panitia-ujian', PanitiaUjianController::class);
@@ -206,20 +184,13 @@ Route::middleware('auth')->group(function () {
             });
 
             Route::get('/get-personil-panitia', [PanitiaUjianController::class, 'getPersonilPanitia'])->name('getpersonilPanitia');
-
             Route::get('/peserta-by-ruang', [PelaksanaanUjianController::class, 'getByRuang'])->name('peserta-by-ruang');
-
             Route::get('/pengawasruangan', [PelaksanaanUjianController::class, 'getPengawasSesi'])->name('pengawasruangan');
-
             Route::get('/cek-jadwal-untuk-token', [TokenSoalUjianController::class, 'cekJadwaluntukToken'])->name('cek-jadwal-untuk-token');
-
             Route::get('/get-rombel-by-kk', [TokenSoalUjianController::class, 'getByKkTahun']);
-
             Route::post('/simpan-token-massal', [TokenSoalUjianController::class, 'simpanTokenMassal'])->name('simpan-token-massal');
-
             Route::get('/token-soal-ujian', [PelaksanaanUjianController::class, 'filterToken'])->name('token-soal-ujian');
             Route::delete('/hapus-token-soal-ujian/{id}', [PelaksanaanUjianController::class, 'hapusToken'])->name('hapus-token-soal-ujian');
-
             Route::post('/denah-update-position/{id}', [PelaksanaanUjianController::class, 'updatePosition']);
         });
     });
