@@ -127,17 +127,10 @@ class LegerNilaiController extends Controller
 
             // Dapatkan semua kel_mapel
             $listMapel = DB::table('kbm_per_rombels')
-                ->join('personil_sekolahs', 'kbm_per_rombels.id_personil', '=', 'personil_sekolahs.id_personil')
-                ->select(
-                    'kbm_per_rombels.kode_rombel',
-                    'kbm_per_rombels.kel_mapel',
-                    'kbm_per_rombels.mata_pelajaran',
-                    'personil_sekolahs.gelardepan',
-                    'personil_sekolahs.namalengkap',
-                    'personil_sekolahs.gelarbelakang',
-                )
-                ->where('kbm_per_rombels.kode_rombel', $kodeRombel)
-                ->orderBy('kbm_per_rombels.kel_mapel')
+                ->where('kode_rombel', $kodeRombel)
+                ->where('tahunajaran', $tahunajaran)
+                ->where('ganjilgenap', $ganjilgenap)
+                ->orderBy('kel_mapel')
                 ->get();
 
             return view("pages.kurikulum.dokumensiswa.leger-nilai", [
@@ -347,17 +340,10 @@ class LegerNilaiController extends Controller
 
             // Data untuk Sheet 2
             $listMapel = DB::table('kbm_per_rombels')
-                ->join('personil_sekolahs', 'kbm_per_rombels.id_personil', '=', 'personil_sekolahs.id_personil')
-                ->select(
-                    'kbm_per_rombels.kode_rombel',
-                    'kbm_per_rombels.kel_mapel',
-                    'kbm_per_rombels.mata_pelajaran',
-                    'personil_sekolahs.gelardepan',
-                    'personil_sekolahs.namalengkap',
-                    'personil_sekolahs.gelarbelakang',
-                )
-                ->where('kbm_per_rombels.kode_rombel', $kodeRombel)
-                ->orderBy('kbm_per_rombels.kel_mapel')
+                ->where('kode_rombel', $kodeRombel)
+                ->where('tahunajaran', $tahunajaran)
+                ->where('ganjilgenap', $ganjilgenap)
+                ->orderBy('kel_mapel')
                 ->get()
                 ->toArray();
 
