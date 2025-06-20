@@ -314,6 +314,9 @@
                 type: 'GET',
                 success: function(response) {
                     $('#siswa-detail').html(response);
+                    var defaultTab = new bootstrap.Tab(document.querySelector(
+                        '.nav-link[href="#cover"]'));
+                    defaultTab.show();
                 },
                 error: function(xhr) {
                     $('#siswa-detail').html(`
