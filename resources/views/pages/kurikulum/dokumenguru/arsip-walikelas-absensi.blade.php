@@ -20,8 +20,8 @@
                     <td>{{ $item->pesertaDidik->nama_lengkap ?? '-' }}</td>
                     <td class="text-center">{{ $item->sakit ?? 0 }}</td>
                     <td class="text-center">{{ $item->izin ?? 0 }}</td>
-                    <td class="text-center">{{ $item->alpa ?? 0 }}</td>
-                    <td class="text-center">{{ $item->sakit + $item->izin + $item->alpa }}</td>
+                    <td class="text-center">{{ $item->alfa ?? 0 }}</td>
+                    <td class="text-center">{{ $item->sakit + $item->izin + $item->alfa }}</td>
                 </tr>
             @empty
                 <tr>
