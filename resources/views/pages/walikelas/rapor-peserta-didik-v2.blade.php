@@ -109,16 +109,9 @@
                                 </div>
                             </div>
                             <div class="col-md-auto">
-                                <div class="hstack gap-1 flex-wrap">
-                                    <button type="button" class="btn py-0 fs-16 favourite-btn active">
-                                        <i class="ri-star-fill"></i>
-                                    </button>
-                                    <button type="button" class="btn py-0 fs-16 text-body">
-                                        <i class="ri-share-line"></i>
-                                    </button>
-                                    <button type="button" class="btn py-0 fs-16 text-body">
-                                        <i class="ri-flag-line"></i>
-                                    </button>
+                                <div class="hstack gap-1 flex-wrap mt-3">
+                                    Tahun Ajaran : {{ $activeTahunAjaran->tahunajaran ?? 'Tidak Ada' }}<br>
+                                    Semester : {{ $activeSemester->semester ?? 'Tidak Ada' }}
                                 </div>
                             </div>
                         </div>
