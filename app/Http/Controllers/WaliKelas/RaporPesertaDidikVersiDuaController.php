@@ -38,6 +38,7 @@ class RaporPesertaDidikVersiDuaController extends Controller
         }
 
         // Ambil wali kelas berdasarkan personal_id dari user yang sedang login dan tahun ajaran aktif
+
         $waliKelas = DB::table('rombongan_belajars')
             ->where('wali_kelas', $user->personal_id)
             ->where('tahunajaran', $tahunAjaranAktif->tahunajaran)
