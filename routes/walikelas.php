@@ -9,6 +9,7 @@ use App\Http\Controllers\WaliKelas\EkstrakurikulerController;
 use App\Http\Controllers\WaliKelas\IdentitasSiswaController;
 use App\Http\Controllers\WaliKelas\PrestasiSiswaController;
 use App\Http\Controllers\WaliKelas\RaporPesertaDidikController;
+use App\Http\Controllers\WaliKelas\RaporPesertaDidikVersiDuaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,8 +44,12 @@ Route::middleware('auth', 'roleonly:walas')->group(function () {
         Route::post('/ekstrakulikuler/{id}/save-eskul-pilihan3', [EkstrakurikulerController::class, 'saveEskulPilihan3'])->name('ekstrakulikuler.save-eskul-pilihan3');
         Route::post('/ekstrakulikuler/{id}/save-eskul-pilihan4', [EkstrakurikulerController::class, 'saveEskulPilihan4'])->name('ekstrakulikuler.save-eskul-pilihan4');
         //Route::post('/ekstrakulikuler/save-penilaian-eskul', [WaliKelasController::class, 'savePenilaianEskul']);
+
         Route::resource('prestasi-siswa', PrestasiSiswaController::class);
-        Route::resource('rapor-peserta-didik', RaporPesertaDidikController::class);
+
+        Route::resource('rapor-peserta-didik', RaporPesertaDidikVersiDuaController::class);
+        Route::get('/raporsiswa/{nis}', [RaporPesertaDidikVersiDuaController::class, 'tampilRaporSiswa'])->name('raporsiswa');
+
         Route::get('/rapor-peserta-didik/detail-peserta-didik/{nis}', [RaporPesertaDidikController::class, 'getSiswaDetail']);
 
         Route::resource('catatan-wali-kelas', CatatanWalikelasController::class);
