@@ -47,10 +47,8 @@ Route::middleware('auth', 'roleonly:walas')->group(function () {
 
         Route::resource('prestasi-siswa', PrestasiSiswaController::class);
 
-        Route::resource('rapor-peserta-didik', RaporPesertaDidikVersiDuaController::class);
-        Route::get('/raporsiswa/{nis}', [RaporPesertaDidikVersiDuaController::class, 'tampilRaporSiswa'])->name('raporsiswa');
-
-        Route::get('/rapor-peserta-didik/detail-peserta-didik/{nis}', [RaporPesertaDidikController::class, 'getSiswaDetail']);
+        Route::resource('rapor-peserta-didik', RaporPesertaDidikController::class);
+        Route::get('/raporsiswa/{nis}', [RaporPesertaDidikController::class, 'tampilRaporSiswa'])->name('raporsiswa');
 
         Route::resource('catatan-wali-kelas', CatatanWalikelasController::class);
         Route::post('/catatan-wali-kelas/generatecatatanwalikelas', [CatatanWalikelasController::class, 'generatecatatanwalikelas'])->name('catatan-wali-kelas.generatecatatanwalikelas');
