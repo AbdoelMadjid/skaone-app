@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\WaliKelas;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
 use App\Models\ManajemenSekolah\IdentitasSekolah;
 use App\Models\ManajemenSekolah\KepalaSekolah;
+use App\Models\ManajemenSekolah\RombonganBelajar;
 use App\Models\ManajemenSekolah\Semester;
 use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Models\WaliKelas\Ekstrakurikuler;
+use App\Models\WaliKelas\PesertaDidikNaik;
 use App\Models\WaliKelas\PrestasiSiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -47,6 +50,7 @@ class RaporPesertaDidikController extends Controller
         // Jika wali kelas ditemukan, ambil data personil dan hitung semester angka
         $personil = null;
         $semesterAngka = null;
+        $kenaikanExists = false;
 
         if ($waliKelas) {
             // Ambil data personil
@@ -97,9 +101,15 @@ class RaporPesertaDidikController extends Controller
                     'peserta_didiks.kontak_email'
                 )
                 ->get();
+
+            // Cek apakah data sudah ada di tabel absensi_siswas
+            $kenaikanExists = PesertaDidikNaik::where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+                ->where('kode_rombel', $waliKelas->kode_rombel)
+                ->exists();
         } else {
             $kbmData = collect(); // Jika wali kelas tidak ditemukan, kirim koleksi kosong
             $siswaData = collect(); // Jika wali kelas tidak ditemukan, kirim koleksi kosong
+            $kenaikanExists = collect(); // Jika wali kelas tidak ditemukan, kirim koleksi kosong
         }
 
         // Ambil data titi_mangsa jika sudah ada untuk wali kelas dan tahun ajaran aktif
@@ -144,6 +154,19 @@ class RaporPesertaDidikController extends Controller
             $semesterAktif,
         ]);
 
+        $kenaikanSiswa = DB::table('peserta_didik_naiks')
+            ->join('peserta_didiks', 'peserta_didik_naiks.nis', '=', 'peserta_didiks.nis')
+            ->where('peserta_didik_naiks.tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('peserta_didik_naiks.kode_rombel', $waliKelas->kode_rombel)
+            ->select(
+                'peserta_didiks.nis',
+                'peserta_didiks.nama_lengkap',
+                'peserta_didik_naiks.status',
+                'peserta_didik_naiks.tahunajaran',
+                'peserta_didik_naiks.kode_rombel',
+            )
+            ->get();
+
         return view(
             'pages.walikelas.rapor-peserta-didik',
             compact(
@@ -154,7 +177,9 @@ class RaporPesertaDidikController extends Controller
                 'titimangsa',
                 'kbmData',
                 'siswaData',
-                'nilaiRataSiswa'
+                'nilaiRataSiswa',
+                'kenaikanExists',
+                'kenaikanSiswa',
             )
         );
     }
@@ -597,6 +622,74 @@ class RaporPesertaDidikController extends Controller
             return response()->json(['message' => 'Data siswa tidak ditemukan.'], 404);
         }
     }
+
+    public function generateKenaikan()
+    {
+        // Ambil tahun ajaran dan semester aktif
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+
+        // Ambil data rombongan belajar berdasarkan wali kelas yang login
+        $rombonganBelajar = RombonganBelajar::where('wali_kelas', auth()->user()->personal_id)
+            ->where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->first();
+
+        // Ambil data siswa dari peserta_didik_rombels yang sesuai dengan rombongan belajar
+        $pesertaDidikRombels = PesertaDidikRombel::where('rombel_kode', $rombonganBelajar->kode_rombel)
+            ->where('tahun_ajaran', $tahunAjaranAktif->tahunajaran)
+            ->get();
+
+        // Loop melalui setiap peserta didik untuk mengisi tabel absensi_siswas
+        foreach ($pesertaDidikRombels as $peserta) {
+            // Cek apakah data sudah ada di tabel absensi_siswas
+            $kenaikanExists = PesertaDidikNaik::where('nis', $peserta->nis)
+                ->where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+                ->where('kode_rombel', $rombonganBelajar->kode_rombel)
+                ->exists();
+
+            // Jika data belum ada, lakukan insert
+            if (!$kenaikanExists) {
+                PesertaDidikNaik::create([
+                    'kode_rombel' => $rombonganBelajar->kode_rombel,
+                    'tahunajaran' => $tahunAjaranAktif->tahunajaran,
+                    'nis' => $peserta->nis,
+                    'status' => "Naik",
+                ]);
+            }
+        }
+
+        return redirect()
+            ->route('walikelas.rapor-peserta-didik.index')
+            ->with('open_tab', 'kenaikan-kelas')
+            ->with('success', 'Data kenaikan berhasil di-generate!');
+    }
+
+    public function updateKenaikan(Request $request)
+    {
+        $request->validate([
+            'nis' => 'required',
+            'status' => 'required|in:Naik,Naik Pindah,Tidak Naik',
+            'tahunajaran' => 'required',
+            'kode_rombel' => 'required',
+        ]);
+
+        PesertaDidikNaik::updateOrCreate(
+            [
+                'nis' => $request->nis,
+                'tahunajaran' => $request->tahunajaran,
+                'kode_rombel' => $request->kode_rombel,
+            ],
+            [
+                'status' => $request->status
+            ]
+        );
+
+        return redirect()
+            ->route('walikelas.rapor-peserta-didik.index')
+            ->with('open_tab', 'kenaikan-kelas')
+            ->with('success', 'Status kenaikan berhasil diupdate!');
+    }
+
+
 
     /**
      * Show the form for editing the specified resource.

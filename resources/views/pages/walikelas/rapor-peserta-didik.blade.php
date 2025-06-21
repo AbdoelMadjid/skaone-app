@@ -118,26 +118,24 @@
 
                         <ul class="nav nav-tabs-custom border-bottom-0" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active fw-semibold" data-bs-toggle="tab" href="#project-overview"
+                                <a class="nav-link active fw-semibold" data-bs-toggle="tab" href="#rapor-siswa"
                                     role="tab">
                                     Rapor Siswa
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#project-documents"
-                                    role="tab">
+                                <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#guru-pengajar" role="tab">
                                     Guru Pengajar
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#project-activities"
-                                    role="tab">
+                                <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#ranking-siswa" role="tab">
                                     Ranking
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#project-team" role="tab">
-                                    Statistik
+                                <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#kenaikan-kelas" role="tab">
+                                    Kenaikan Kelas
                                 </a>
                             </li>
                         </ul>
@@ -153,7 +151,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="tab-content text-muted">
-                <div class="tab-pane fade show active" id="project-overview" role="tabpanel">
+                <div class="tab-pane fade show active" id="rapor-siswa" role="tabpanel">
                     <div class="row">
                         <div class="col-xl-9 col-lg-8">
                             <div class="card">
@@ -247,7 +245,7 @@
                     <!-- end row -->
                 </div>
                 <!-- end tab pane -->
-                <div class="tab-pane fade" id="project-documents" role="tabpanel">
+                <div class="tab-pane fade" id="guru-pengajar" role="tabpanel">
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
@@ -257,7 +255,7 @@
                     </div>
                 </div>
                 <!-- end tab pane -->
-                <div class="tab-pane fade" id="project-activities" role="tabpanel">
+                <div class="tab-pane fade" id="ranking-siswa" role="tabpanel">
                     <div class="card">
                         <div class="card-body">
                             <div class="col-lg-12">
@@ -276,8 +274,30 @@
                     <!--end card-->
                 </div>
                 <!-- end tab pane -->
-                <div class="tab-pane fade" id="project-team" role="tabpanel">
-
+                <div class="tab-pane fade" id="kenaikan-kelas" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="col-lg-12">
+                                <div class="gap-2 hstack justify-content-end mb-4">
+                                    <div>
+                                        @if (!$kenaikanExists)
+                                            <form action="{{ route('walikelas.rapor-peserta-didik.generatekenaikan') }}"
+                                                method="POST">
+                                                @csrf
+                                                <button type="submit" class="btn btn-soft-primary">Generate
+                                                    Kenaikan</button>
+                                            </form>
+                                        @else
+                                            <div></div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                @include('pages.walikelas.rapor-peserta-didik-kenaikan')
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- end tab pane -->
             </div>
@@ -296,6 +316,36 @@
             document.getElementById('wrapperSiswa').classList.remove('invisible');
         });
     </script>
+    <!-- Tambahkan ini di layout atau di bagian akhir Blade -->
+    <script>
+        function showToast(status = 'success', message) {
+            iziToast[status]({
+                title: status === 'success' ? 'Success' : (status === 'warning' ? 'Warning' : 'Error'),
+                message: message,
+                position: 'topRight',
+                close: true,
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Tampilkan toast
+            @if (session('success'))
+                showToast('success', "{{ session('success') }}");
+            @endif
+
+            @if (session('error'))
+                showToast('error', "{{ session('error') }}");
+            @endif
+
+            // Aktifkan tab "kenaikan-kelas" jika diset di session
+            @if (session('open_tab') === 'kenaikan-kelas')
+                var defaultTab = new bootstrap.Tab(document.querySelector('.nav-link[href="#kenaikan-kelas"]'));
+                defaultTab.show();
+            @endif
+        });
+    </script>
+
+
     <script>
         $(document).on('click', '.link-detail-siswa', function(e) {
             e.preventDefault();
