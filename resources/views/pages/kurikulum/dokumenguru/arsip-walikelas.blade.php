@@ -36,7 +36,7 @@
                             <li class="nav-item">
                                 <a class="nav-link active" data-bs-toggle="tab" href="#dataKelas" role="tab"
                                     aria-selected="false">
-                                    <i class="las la-address-card text-muted align-bottom me-1 fs-4"></i> Data Kelas
+                                    <i class="las la-address-card text-muted align-bottom me-1 fs-4"></i> Siswa
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -49,20 +49,25 @@
                                 <a class="nav-link" data-bs-toggle="tab" href="#ekstraKurikuler" role="tab"
                                     aria-selected="false">
                                     <i class="las la-table-tennis text-muted align-bottom me-1 fs-4"></i>
-                                    Ekstrakurikuler
+                                    Eskul
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-bs-toggle="tab" href="#prestasiSiswa" role="tab"
                                     aria-selected="false">
-                                    <i class="las la-trophy text-muted align-bottom me-1 fs-4"></i> Prestasi Siswa
+                                    <i class="las la-trophy text-muted align-bottom me-1 fs-4"></i> Prestasi
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-bs-toggle="tab" href="#catatanWaliKelas" role="tab"
                                     aria-selected="false">
-                                    <i class="las la-file-alt text-muted align-bottom me-1 fs-4"></i> Catatan Wali
-                                    Kelas
+                                    <i class="las la-file-alt text-muted align-bottom me-1 fs-4"></i> Catatan
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#kenaikan" role="tab"
+                                    aria-selected="false">
+                                    <i class="las la-upload text-muted align-bottom me-1 fs-4"></i> Kenaikan
                                 </a>
                             </li>
                             {{-- <li class="nav-item ms-auto">

@@ -1,4 +1,4 @@
-<div class="tab-content text-muted">
+<div class="tab-content">
     <div class="tab-pane active" id="dataKelas" role="tabpanel">
         <div class="pb-3">
             @include('pages.kurikulum.dokumenguru.arsip-walikelas-datakelas')
@@ -22,6 +22,11 @@
     <div class="tab-pane" id="catatanWaliKelas" role="tabpanel">
         <div class="pb-3">
             @include('pages.kurikulum.dokumenguru.arsip-walikelas-catatanwalas')
+        </div>
+    </div>
+    <div class="tab-pane" id="kenaikan" role="tabpanel">
+        <div class="pb-3">
+            @include('pages.kurikulum.dokumenguru.arsip-walikelas-kenaikan')
         </div>
     </div>
 </div><!--end tab-content-->

@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Models\WaliKelas\AbsensiSiswa;
 use App\Models\WaliKelas\CatatanWaliKelas;
 use App\Models\WaliKelas\Ekstrakurikuler;
+use App\Models\WaliKelas\PesertaDidikNaik;
 use App\Models\WaliKelas\PrestasiSiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -191,7 +192,6 @@ class ArsipWaliKelasController extends Controller
 
         $dataPilWalas = PilihArsipWaliKelas::where('id_personil', $personal_id)->first();
 
-
         // Data Kelas
         $dataKelas = DB::table('peserta_didik_rombels')
             ->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
@@ -255,6 +255,13 @@ class ArsipWaliKelasController extends Controller
             ->where('kode_rombel', $kode_rombel)
             ->first();
 
+        $kenaikanKelas = PesertaDidikNaik::where('tahunajaran', $dataPilWalas->tahunajaran)
+            ->where('kode_rombel', $kode_rombel)
+            ->with(['pesertaDidik' => function ($q) {
+                $q->select('nis', 'nama_lengkap');
+            }])
+            ->get();
+
         if ($dataPilWalas) {
             return view('pages.kurikulum.dokumenguru.arsip-walikelas-tab-content',  [
                 'dataPilWalas' => $dataPilWalas,
@@ -267,6 +274,7 @@ class ArsipWaliKelasController extends Controller
                 'catatanWalas' => $catatanWalas,
                 'prestasiGrouped' => $prestasiGrouped,
                 'rombongan' => $rombongan,
+                'kenaikanKelas' => $kenaikanKelas,
             ])->render(); // Render hanya bagian detail
         }
 
