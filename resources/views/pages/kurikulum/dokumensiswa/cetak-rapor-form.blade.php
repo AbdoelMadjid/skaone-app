@@ -32,20 +32,11 @@
         </div>
     </div>
 
-    <div class="col-lg-12">
-        <div class="gap-2 hstack justify-content-end">
-            {{-- <button type="submit" class="btn btn-soft-primary">
-                @if ($dataPilCR)
-                    Update
-                @else
-                    Simpan
-                @endif
-            </button> --}}
-            <button type="button" id="btn-data-rapor" class="btn btn-sm btn-soft-primary">
-                Simpan & Tampilkan Rapor
-            </button>
-        </div>
-    </div>
+    <button type="button" id="btn-data-rapor" class="btn btn-soft-primary w-100 mt-3">Confirm</button>
+    @if ($personal_id == 'Pgw_0016')
+        <button type="button" class="btn btn-soft-primary w-100 mt-3" data-bs-toggle="modal"
+            data-bs-target="#tambahPilihCetakRapor">Tambah Pengguna</button>
+    @endif
 </form>
 <script>
     // JavaScript untuk menangani perubahan dan permintaan AJAX

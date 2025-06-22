@@ -13,6 +13,7 @@ use App\Models\ManajemenSekolah\PesertaDidik;
 use App\Models\ManajemenSekolah\RombonganBelajar;
 use App\Models\ManajemenSekolah\Semester;
 use App\Models\ManajemenSekolah\TahunAjaran;
+use App\Models\User;
 use App\Models\WaliKelas\Ekstrakurikuler;
 use App\Models\WaliKelas\PrestasiSiswa;
 use Illuminate\Http\Request;
@@ -48,7 +49,17 @@ class CetakRaporController extends Controller
         $kompetensiKeahlianOptions = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
         $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
         $rombonganBelajar = RombonganBelajar::pluck('rombel', 'kode_rombel')->toArray();
-        $personilSekolah = PersonilSekolah::pluck('namalengkap', 'id_personil')->toArray();
+        // Ambil semua user yang punya role 'master'
+        $usersWithMasterRole = User::role('master')->get();
+
+        // Ambil semua id_personil dari user tersebut
+        $idPersonilList = $usersWithMasterRole->pluck('personal_id')->filter()->unique();
+
+        // Ambil data PersonilSekolah berdasarkan id_personil
+        $personilSekolah = PersonilSekolah::whereIn('id_personil', $idPersonilList)
+            ->pluck('namalengkap', 'id_personil')
+            ->toArray();
+
         $pesertadidikOptions = PesertaDidik::select('nis', 'nama_lengkap')
             ->get()
             ->mapWithKeys(function ($item) {

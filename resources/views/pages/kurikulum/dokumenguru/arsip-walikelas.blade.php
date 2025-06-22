@@ -106,12 +106,19 @@
                     <div class="card-body pt-2">
                         @include('pages.kurikulum.dokumenguru.arsip-walikelas-form')
                         <!-- end table-responsive -->
+                        @if ($personal_id == 'Pgw_0016')
+                            <button type="button" class="btn btn-soft-primary w-100 mt-3" data-bs-toggle="modal"
+                                data-bs-target="#tambahPilihArsipWaliKelas"><i
+                                    class="ri-file-download-line align-bottom me-1"></i>
+                                Tambah</button>
+                        @endif
                     </div>
                 </div>
             </div>
             <!-- end stickey -->
         </div>
     </div>
+    @include('pages.kurikulum.dokumenguru.arsip-walikelas-tambah-form')
 @endsection
 @section('script')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>

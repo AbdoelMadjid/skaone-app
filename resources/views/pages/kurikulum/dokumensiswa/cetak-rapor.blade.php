@@ -110,12 +110,6 @@
                                     </div>
                                     <div class="col-auto">
                                         <div class="text-muted mb-2">
-                                            @if ($personal_id == 'Pgw_0016')
-                                                <button type="button" class="btn btn-soft-info btn-sm"
-                                                    data-bs-toggle="modal" data-bs-target="#tambahPilihCetakRapor"><i
-                                                        class="ri-file-download-line align-bottom me-1"></i>
-                                                    Tambah</button>
-                                            @endif
                                             <button class="btn btn-soft-info btn-sm"
                                                 onclick="printContent('printable-area-cover')">
                                                 Cover</button>
@@ -137,7 +131,7 @@
                                             role="alert">
                                             <i class="ri-user-smile-line label-icon"></i><strong>Mohon di perhatikan
                                                 !!</strong> -
-                                            Silakan pilih peserta didik dulu
+                                            Silakan klik tombol konfirmasi untuk menampilkan data.
                                         </div>
                                     </div>
                                 </div>
