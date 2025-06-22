@@ -10,7 +10,7 @@ class PilihArsipWaliKelas extends Model
     use HasFactory;
     protected $table = 'pilih_arsip_wali_kelas';
     protected $fillable = [
-        'id_user',
+        'id_personil',
         'tahunajaran',
         'ganjilgenap',
         'kode_kk',

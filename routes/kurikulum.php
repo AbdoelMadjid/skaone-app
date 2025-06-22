@@ -9,6 +9,7 @@ use App\Http\Controllers\Kurikulum\DataKBM\MataPelajaranPerJurusanController;
 use App\Http\Controllers\Kurikulum\DataKBM\PesertaDidikRombelController;
 use App\Http\Controllers\Kurikulum\DokumenGuru\ArsipGuruMapelController;
 use App\Http\Controllers\Kurikulum\DokumenGuru\ArsipWaliKelasController;
+use App\Http\Controllers\Kurikulum\DokumenGuru\ArsipWaliKelasV2Controller;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\CetakRaporController;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\IjazahController;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\LegerNilaiController;
@@ -109,11 +110,11 @@ Route::middleware('auth')->group(function () {
             Route::post('/uploadsumatif', [ArsipGuruMapelController::class, 'uploadNilaiSumatif'])->name('uploadsumatif');
 
             Route::resource('arsip-walikelas', ArsipWaliKelasController::class);
-            Route::post('/simpan-pilihan-walas', [ArsipWaliKelasController::class, 'simpanPilihanWalas']);
-            Route::get('/get-pilihan-walikelas', [ArsipWaliKelasController::class, 'getPilihanWaliKelas']);
-            Route::get('/get-rombel-walas', [ArsipWaliKelasController::class, 'getRombelWalas'])->name('getRombelWalas');
-            Route::get('/tab-content', [ArsipWaliKelasController::class, 'getTabContent'])
-                ->name('getTabContent');
+            Route::post('/simpanpilihwalas', [ArsipWaliKelasController::class, 'simpanPilihanWalas'])
+                ->name('simpanpilihwalas');
+            Route::get('/tampil-walikelas/{kode_rombel}', [ArsipWaliKelasController::class, 'tampilWaliKelas']);
+            Route::get('/get-kode-rombel', [ArsipWaliKelasController::class, 'getKodeRombel']);
+            Route::get('/info-wali-siswa', [ArsipWaliKelasController::class, 'infoWaliSiswa']);
         });
 
         Route::group(['prefix' => 'dokumentsiswa', 'as' => 'dokumentsiswa.'], function () {
