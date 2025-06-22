@@ -58,6 +58,11 @@ class CetakRaporController extends Controller
 
         $dataPilCR = PilihCetakRapor::where('id_personil', $personal_id)->first();
 
+        // CEK apakah dataPilWalas ADA
+        if (!$dataPilCR) {
+            return redirect()->route('dashboard')->with('errorAmbilData', '<p class="text-danger mx-4 mb-0">Anda belum memiliki akses ke menu ini.</p> <p class="fs-6">Silakan hubungi Developer Aplikasi ini. </p> <p class="fs-1"><i class="lab las la-grin"></i> <i class="lab las la-grin"></i> <i class="lab las la-grin"></i></p>');
+        }
+
         $siswaData = DB::table('peserta_didik_rombels')
             ->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
             ->where('peserta_didik_rombels.tahun_ajaran', $tahunAjaranAktif->tahunajaran)

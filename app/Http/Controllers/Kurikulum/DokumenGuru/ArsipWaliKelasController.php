@@ -45,6 +45,11 @@ class ArsipWaliKelasController extends Controller
 
         $dataPilWalas = PilihArsipWaliKelas::where('id_personil', $personal_id)->first();
 
+        // CEK apakah dataPilWalas ADA
+        if (!$dataPilWalas) {
+            return redirect()->route('dashboard')->with('errorAmbilData', '<p class="text-danger mx-4 mb-0">Anda belum memiliki akses ke menu ini.</p> <p class="fs-6">Silakan hubungi Developer Aplikasi ini. </p> <p class="fs-1"><i class="lab las la-grin"></i> <i class="lab las la-grin"></i> <i class="lab las la-grin"></i></p>');
+        }
+
         $waliKelas = DB::table('wali_kelas')
             ->select(
                 'wali_kelas.*',

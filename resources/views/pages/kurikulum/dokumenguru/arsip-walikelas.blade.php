@@ -101,7 +101,7 @@
             <div class="sticky-side-div">
                 <div class="card">
                     <div class="card-header border-bottom-dashed">
-                        <h5 class="card-title mb-0">Order Summary</h5>
+                        <h5 class="card-title mb-0">Pilih Rombongan Belajar</h5>
                     </div>
                     <div class="card-body pt-2">
                         @include('pages.kurikulum.dokumenguru.arsip-walikelas-form')
