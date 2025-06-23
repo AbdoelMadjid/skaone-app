@@ -406,37 +406,92 @@ class DataKelasController extends Controller
 
     public function downloadPDFRanking()
     {
+        // Ambil user yang sedang login
         $user = auth()->user();
 
-        // Ambil data yang sama seperti di view
+        // Ambil tahun ajaran yang aktif
         $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')
             ->with(['semesters' => function ($query) {
                 $query->where('status', 'Aktif');
             }])
             ->first();
 
+        // Pastikan tahun ajaran aktif ada sebelum melanjutkan
         if (!$tahunAjaranAktif) {
             return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
         }
+
+        // Ambil wali kelas berdasarkan personal_id dari user yang sedang login dan tahun ajaran aktif
 
         $waliKelas = DB::table('rombongan_belajars')
             ->where('wali_kelas', $user->personal_id)
             ->where('tahunajaran', $tahunAjaranAktif->tahunajaran)
             ->first();
 
-        if (!$waliKelas) {
-            return redirect()->back()->with('error', 'Data wali kelas tidak ditemukan.');
+        // Jika wali kelas ditemukan, ambil data personil dan hitung semester angka
+        $personil = null;
+        $semesterAngka = null;
+        $kenaikanExists = false;
+
+        if ($waliKelas) {
+            // Ambil data personil
+            $personil = DB::table('personil_sekolahs')
+                ->where('id_personil', $waliKelas->wali_kelas)
+                ->first();
+
+            // Menentukan angka semester berdasarkan semester aktif dan tingkat
+            $semesterAktif = $tahunAjaranAktif->semesters->first()->semester ?? null;
+
+            if ($semesterAktif) {
+                if ($semesterAktif === 'Ganjil') {
+                    if ($waliKelas->tingkat == 10) {
+                        $semesterAngka = 1;
+                    } elseif ($waliKelas->tingkat == 11) {
+                        $semesterAngka = 3;
+                    } elseif ($waliKelas->tingkat == 12) {
+                        $semesterAngka = 5;
+                    }
+                } elseif ($semesterAktif === 'Genap') {
+                    if ($waliKelas->tingkat == 10) {
+                        $semesterAngka = 2;
+                    } elseif ($waliKelas->tingkat == 11) {
+                        $semesterAngka = 4;
+                    } elseif ($waliKelas->tingkat == 12) {
+                        $semesterAngka = 6;
+                    }
+                }
+            }
+            // Ambil data dari tabel kbm_per_rombels berdasarkan kode_rombel
+            $kbmData = DB::table('kbm_per_rombels')
+                ->where('kode_rombel', $waliKelas->kode_rombel)
+                ->where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+                ->where('ganjilgenap', $semesterAktif)
+                ->get();
+
+            // Ambil data siswa berdasarkan tahun ajaran, kode rombel, dan tingkat
+            $siswaData = DB::table('peserta_didik_rombels')
+                ->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
+                ->where('peserta_didik_rombels.tahun_ajaran', $tahunAjaranAktif->tahunajaran)
+                ->where('peserta_didik_rombels.rombel_kode', $waliKelas->kode_rombel)
+                ->where('peserta_didik_rombels.rombel_tingkat', $waliKelas->tingkat)
+                ->select(
+                    'peserta_didik_rombels.nis',
+                    'peserta_didiks.nama_lengkap',
+                    'peserta_didiks.jenis_kelamin',
+                    'peserta_didiks.foto',
+                    'peserta_didiks.kontak_email'
+                )
+                ->get();
+        } else {
+            $kbmData = collect(); // Jika wali kelas tidak ditemukan, kirim koleksi kosong
+            $siswaData = collect(); // Jika wali kelas tidak ditemukan, kirim koleksi kosong
         }
 
-        $siswaData = DB::table('peserta_didik_rombels')
-            ->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
-            ->where('peserta_didik_rombels.tahun_ajaran', $tahunAjaranAktif->tahunajaran)
-            ->where('peserta_didik_rombels.rombel_kode', $waliKelas->kode_rombel)
-            ->select('peserta_didik_rombels.nis', 'peserta_didiks.nama_lengkap', 'peserta_didiks.kontak_email')
-            ->get();
-
-        $personil = DB::table('personil_sekolahs')
-            ->where('id_personil', $waliKelas->wali_kelas)
+        // Ambil data titi_mangsa jika sudah ada untuk wali kelas dan tahun ajaran aktif
+        $titimangsa = DB::table('titi_mangsas')
+            ->where('kode_rombel', $waliKelas->kode_rombel ?? '')
+            ->where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('ganjilgenap', $semesterAktif)
             ->first();
 
         $nilaiRataSiswa = DB::select("
@@ -451,17 +506,27 @@ class DataKelasController extends Controller
             INNER JOIN
                 kbm_per_rombels kr ON pr.rombel_kode = kr.kode_rombel
             LEFT JOIN
-                nilai_formatif nf ON pr.nis = nf.nis AND kr.kel_mapel = nf.kel_mapel
+                nilai_formatif nf ON pr.nis = nf.nis
+                    AND kr.kel_mapel = nf.kel_mapel
+                    AND kr.tahunajaran = nf.tahunajaran
+                    AND kr.ganjilgenap = nf.ganjilgenap
             LEFT JOIN
-                nilai_sumatif ns ON pr.nis = ns.nis AND kr.kel_mapel = ns.kel_mapel
+                nilai_sumatif ns ON pr.nis = ns.nis
+                    AND kr.kel_mapel = ns.kel_mapel
+                    AND kr.tahunajaran = ns.tahunajaran
+                    AND kr.ganjilgenap = ns.ganjilgenap
             WHERE
                 pr.rombel_kode = ?
+                AND kr.tahunajaran = ?
+                AND kr.ganjilgenap = ?
             GROUP BY
                 pd.nis, pd.nama_lengkap
             ORDER BY
                 nil_rata_siswa DESC
         ", [
-            $waliKelas->kode_rombel
+            $waliKelas->kode_rombel,
+            $tahunAjaranAktif->tahunajaran,
+            $semesterAktif,
         ]);
 
         // Load view PDF
