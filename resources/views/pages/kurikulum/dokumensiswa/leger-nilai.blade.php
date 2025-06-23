@@ -148,7 +148,7 @@
                                             Mata Pelajaran
                                         </a>
                                     </li>
-                                    <li class="nav-item">
+                                    {{-- <li class="nav-item">
                                         <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#rankingPerTingkat"
                                             role="tab">
                                             Ranking Per Tingkat
@@ -159,7 +159,7 @@
                                             role="tab">
                                             Ranking Per Tingkat Per KK
                                         </a>
-                                    </li>
+                                    </li> --}}
                                 </ul>
                             </div>
                             <div class="col-auto">
@@ -211,8 +211,7 @@
                                                     </tr>
                                                 @empty
                                                     <tr>
-                                                        <td colspan="{{ 3 + $kelMapelList->count() }}"
-                                                            class="text-center">
+                                                        <td colspan="{{ 3 + $kelMapelList->count() }}" class="text-center">
                                                             Tidak
                                                             ada data</td>
                                                     </tr>
@@ -248,7 +247,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="tab-pane" id="rankingPerTingkat" role="tabpanel">
+                            {{-- <div class="tab-pane" id="rankingPerTingkat" role="tabpanel">
                                 <div class="p-3">
                                     @if ($pilihData)
                                         @foreach ($groupedRanking as $tingkat => $rankingList)
@@ -315,7 +314,7 @@
                                         @endforeach
                                     @endif
                                 </div>
-                            </div>
+                            </div> --}}
                             <!-- end tab pane -->
                             <!-- end tab pane -->
                         </div>

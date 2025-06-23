@@ -135,7 +135,7 @@ class LegerNilaiController extends Controller
                 ->orderBy('kel_mapel')
                 ->get();
 
-            //ranking
+            /* //ranking
             $rankingPerTingkat = DB::select("
                 SELECT * FROM (
                     SELECT
@@ -233,7 +233,7 @@ class LegerNilaiController extends Controller
                 '811' => 'Bisnis Digital',
                 '821' => 'Manajemen Perkantoran',
                 '833' => 'Akuntansi',
-            ];
+            ]; */
 
             return view("pages.kurikulum.dokumensiswa.leger-nilai", [
                 'user' => $user,
@@ -251,11 +251,11 @@ class LegerNilaiController extends Controller
                 'pivotData' => $pivotData,
                 'kelMapelList' => $kelMapelList,
                 'listMapel' => $listMapel,
-                'rankingPerTingkat' => $rankingPerTingkat,
+                /* 'rankingPerTingkat' => $rankingPerTingkat,
                 'rankingPerTingkatPerKK' => $rankingPerTingkatPerKK,
                 'groupedData' => $groupedData,
                 'kodeKKList' => $kodeKKList,
-                'groupedRanking' => $groupedRanking,
+                'groupedRanking' => $groupedRanking, */
             ]);
         }
 
