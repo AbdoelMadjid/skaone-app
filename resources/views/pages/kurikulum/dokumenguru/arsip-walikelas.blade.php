@@ -105,6 +105,8 @@
                 </div>
             </div>
             <!-- end card -->
+            <div id="tampil-ranking" class="mt-4"></div>
+
         </div>
         <!-- end col -->
 

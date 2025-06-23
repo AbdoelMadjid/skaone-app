@@ -29,6 +29,9 @@
     </div>
     <button type="button" id="btn-data-walikelas" class="btn btn-soft-primary w-100 mt-3">Confirm</button>
 </form>
+<button type="button" id="btn-ranking-pertk" class="btn btn-soft-primary w-100 mt-3">Ranking pertingkat</button>
+<button type="button" id="btn-ranking-pertkkk" class="btn btn-soft-primary w-100 mt-3">Ranking pertingkat per
+    kk</button>
 <script>
     // JavaScript untuk menangani perubahan dan permintaan AJAX
     document.addEventListener('DOMContentLoaded', function() {
@@ -170,5 +173,55 @@
                         '<div class="alert alert-danger">Gagal memuat data walikelas.</div>';
                 });
         }
+    });
+</script>
+<script>
+    document.getElementById('btn-ranking-pertk').addEventListener('click', function() {
+        const btn = this;
+        btn.innerText = 'Memuat...';
+        btn.disabled = true;
+
+        fetch("{{ route('kurikulum.dokumenguru.ranking.tingkat') }}")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Gagal memuat data ranking.");
+                }
+                return response.text();
+            })
+            .then(html => {
+                document.getElementById('tampil-ranking').innerHTML = html;
+            })
+            .catch(error => {
+                alert(error.message);
+            })
+            .finally(() => {
+                btn.innerText = 'Ranking pertingkat';
+                btn.disabled = false;
+            });
+    });
+</script>
+<script>
+    document.getElementById('btn-ranking-pertkkk').addEventListener('click', function() {
+        const btn = this;
+        btn.innerText = 'Memuat...';
+        btn.disabled = true;
+
+        fetch("{{ route('kurikulum.dokumenguru.ranking.tingkat.kk') }}")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Gagal memuat data ranking.");
+                }
+                return response.text();
+            })
+            .then(html => {
+                document.getElementById('tampil-ranking').innerHTML = html;
+            })
+            .catch(error => {
+                alert(error.message);
+            })
+            .finally(() => {
+                btn.innerText = 'Ranking pertingkat per kk';
+                btn.disabled = false;
+            });
     });
 </script>
