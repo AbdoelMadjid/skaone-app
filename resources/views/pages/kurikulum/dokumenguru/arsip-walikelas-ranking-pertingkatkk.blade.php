@@ -1,15 +1,16 @@
-@foreach ($groupedData as $tingkat => $kkGroups)
-    <div class="card">
-        <div class="card-header border-bottom-dashed">
-            <h5 class="card-title mb-0">Ranking Tingkat {{ $tingkat }}</h5>
-        </div>
-        <div class="card-body">
-            @foreach ($kkGroups as $kodeKK => $rankingList)
-                <h4 class="mt-3">{{ $kodeKKList[$kodeKK] ?? $kodeKK }}</h4>
+@foreach ($ranking as $tingkat => $kodeKKs)
+    @foreach ($kodeKKs as $kodeKK => $list)
+        <div class="card">
+            <div class="card-header border-bottom-dashed">
+                <h5 class="card-title mb-0">
+                    Ranking Tingkat {{ $tingkat }} - {{ $kodeKKList[$kodeKK] ?? $kodeKK }}
+                </h5>
+            </div>
+            <div class="card-body">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th class="text-center">Ranking</th>
+                            <th class="text-center">#</th>
                             <th class="text-center">NIS</th>
                             <th>Nama Lengkap</th>
                             <th>Rombel</th>
@@ -17,19 +18,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($rankingList as $nilai)
+                        @foreach ($list as $index => $siswa)
                             <tr>
-                                <td class="text-center">{{ $nilai->ranking }}</td>
-                                <td class="text-center">{{ $nilai->nis }}</td>
-                                <td>{{ $nilai->nama_lengkap }}</td>
-                                <td>{{ $nilai->rombel_nama }}</td>
-                                <td class="text-center">
-                                    {{ $nilai->nil_rata_siswa }}</td>
+                                <td class="text-center">{{ $index + 1 }}</td>
+                                <td class="text-center">{{ $siswa->nis }}</td>
+                                <td>{{ $siswa->nama_lengkap }}</td>
+                                <td>{{ $siswa->rombel_nama }}</td>
+                                <td class="text-center">{{ $siswa->nilai_rata2 }}</td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
-            @endforeach
+            </div>
         </div>
-    </div>
+    @endforeach
 @endforeach

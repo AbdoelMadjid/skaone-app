@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Kurikulum\DokumenGuru;
 use App\Http\Controllers\Controller;
 use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
 use App\Models\Kurikulum\DokumenGuru\PilihArsipWaliKelas;
+use App\Models\Kurikulum\DokumenGuru\RankingSiswa;
 use App\Models\ManajemenSekolah\KompetensiKeahlian;
 use App\Models\ManajemenSekolah\PersonilSekolah;
 use App\Models\ManajemenSekolah\RombonganBelajar;
@@ -364,67 +365,17 @@ class ArsipWaliKelasController extends Controller
         $dataPilWalas = PilihArsipWaliKelas::where('id_personil', $personal_id)->first();
 
         if (!$dataPilWalas) {
-            return response()->json(['message' => 'Data wali kelas tidak ditemukan'], 404);
+            return response('<div class="alert alert-warning">Data wali kelas tidak ditemukan.</div>', 200);
         }
 
-        $rankingPerTingkat = DB::select("
-            WITH nilai_siswa AS (
-                SELECT
-                    pr.nis,
-                    kr.tingkat,
-                    pd.nama_lengkap,
-                    pd.kode_kk,
-                    pr.rombel_nama,
-                    pr.tahun_ajaran,
-                    kr.ganjilgenap,
-                    ((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2) AS nilai
-                FROM
-                    peserta_didik_rombels pr
-                JOIN
-                    peserta_didiks pd ON pd.nis = pr.nis
-                JOIN
-                    kbm_per_rombels kr ON kr.kode_rombel = pr.rombel_kode
-                LEFT JOIN
-                    nilai_formatif nf ON nf.nis = pr.nis AND nf.kel_mapel = kr.kel_mapel
-                        AND nf.tahunajaran = ? AND nf.ganjilgenap = ?
-                LEFT JOIN
-                    nilai_sumatif ns ON ns.nis = pr.nis AND ns.kel_mapel = kr.kel_mapel
-                        AND ns.tahunajaran = ? AND ns.ganjilgenap = ?
-                WHERE
-                    kr.tahunajaran = ? AND kr.ganjilgenap = ?
-                    AND kr.tingkat IN (10, 11, 12)
-            ),
-            nilai_rata AS (
-                SELECT
-                    nis,
-                    tingkat,
-                    nama_lengkap,
-                    kode_kk,
-                    rombel_nama,
-                    tahun_ajaran,
-                    ganjilgenap,
-                    ROUND(AVG(nilai), 2) AS nil_rata_siswa
-                FROM nilai_siswa
-                GROUP BY nis, tingkat, nama_lengkap, kode_kk, rombel_nama, tahun_ajaran, ganjilgenap
-            ),
-            ranking AS (
-                SELECT *,
-                    ROW_NUMBER() OVER (PARTITION BY tingkat ORDER BY nil_rata_siswa DESC) AS ranking
-                FROM nilai_rata
-            )
-            SELECT * FROM ranking
-            WHERE ranking <= 12
-            ORDER BY tingkat, ranking;
-        ", [
-            $dataPilWalas->tahunajaran,
-            $dataPilWalas->ganjilgenap,
-            $dataPilWalas->tahunajaran,
-            $dataPilWalas->ganjilgenap,
-            $dataPilWalas->tahunajaran,
-            $dataPilWalas->ganjilgenap,
-        ]);
-
-        $groupedRanking = collect($rankingPerTingkat)->groupBy('tingkat');
+        // Ambil data ranking per tingkat (top 15 saja)
+        $rankingData = RankingSiswa::where('tahunajaran', $dataPilWalas->tahunajaran)
+            ->where('ganjilgenap', $dataPilWalas->ganjilgenap)
+            ->get()
+            ->groupBy('tingkat')
+            ->map(function ($items) {
+                return $items->sortByDesc('nilai_rata2')->take(15)->values();
+            });
 
         $kodeKKList = [
             '411' => 'Rekayasa Perangkat Lunak',
@@ -434,14 +385,12 @@ class ArsipWaliKelasController extends Controller
             '833' => 'Akuntansi',
         ];
 
-        if ($dataPilWalas) {
-            return view('pages.kurikulum.dokumenguru.arsip-walikelas-ranking-pertingkat',  [
-                'dataPilWalas' => $dataPilWalas,
-                'personal_id' => $personal_id,
-                'groupedRanking' => $groupedRanking,
-                'kodeKKList' => $kodeKKList,
-            ])->render(); // Render hanya bagian detail
-        }
+        return view('pages.kurikulum.dokumenguru.arsip-walikelas-ranking-pertingkat', [
+            'dataPilWalas' => $dataPilWalas,
+            'personal_id' => $personal_id,
+            'ranking' => $rankingData,
+            'kodeKKList' => $kodeKKList,
+        ])->render(); // dikembalikan sebagai HTML
     }
 
     public function rankingTingkatKK()
@@ -451,68 +400,15 @@ class ArsipWaliKelasController extends Controller
 
         $dataPilWalas = PilihArsipWaliKelas::where('id_personil', $personal_id)->first();
 
-        $rankingPerTingkatPerKK = DB::select("
-            WITH nilai_siswa AS (
-                SELECT
-                    pr.nis,
-                    kr.tingkat,
-                    pd.nama_lengkap,
-                    pd.kode_kk,
-                    pr.rombel_nama,
-                    pr.tahun_ajaran,
-                    kr.ganjilgenap,
-                    ((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2) AS nilai
-                FROM
-                    peserta_didik_rombels pr
-                JOIN
-                    peserta_didiks pd ON pd.nis = pr.nis
-                JOIN
-                    kbm_per_rombels kr ON kr.kode_rombel = pr.rombel_kode
-                LEFT JOIN
-                    nilai_formatif nf ON nf.nis = pr.nis AND nf.kel_mapel = kr.kel_mapel
-                        AND nf.tahunajaran = ? AND nf.ganjilgenap = ?
-                LEFT JOIN
-                    nilai_sumatif ns ON ns.nis = pr.nis AND ns.kel_mapel = kr.kel_mapel
-                        AND ns.tahunajaran = ? AND ns.ganjilgenap = ?
-                WHERE
-                    kr.tahunajaran = ? AND kr.ganjilgenap = ?
-            ),
-            nilai_rata AS (
-                SELECT
-                    nis,
-                    tingkat,
-                    nama_lengkap,
-                    kode_kk,
-                    rombel_nama,
-                    tahun_ajaran,
-                    ganjilgenap,
-                    ROUND(AVG(nilai), 2) AS nil_rata_siswa
-                FROM nilai_siswa
-                GROUP BY nis, tingkat, nama_lengkap, kode_kk, rombel_nama, tahun_ajaran, ganjilgenap
-            ),
-            ranking AS (
-                SELECT *,
-                    ROW_NUMBER() OVER (
-                        PARTITION BY tingkat, kode_kk ORDER BY nil_rata_siswa DESC
-                    ) AS ranking
-                FROM nilai_rata
-            )
-            SELECT * FROM ranking
-            WHERE ranking <= 12
-            ORDER BY tingkat, kode_kk, ranking;
-        ", [
-            $dataPilWalas->tahunajaran,
-            $dataPilWalas->ganjilgenap,
-            $dataPilWalas->tahunajaran,
-            $dataPilWalas->ganjilgenap,
-            $dataPilWalas->tahunajaran,
-            $dataPilWalas->ganjilgenap,
-        ]);
-
-
-        $groupedData = collect($rankingPerTingkatPerKK)->groupBy('tingkat')->map(function ($items) {
-            return $items->groupBy('kode_kk');
-        });
+        $rankingData = RankingSiswa::where('tahunajaran', $dataPilWalas->tahunajaran)
+            ->where('ganjilgenap', $dataPilWalas->ganjilgenap)
+            ->get()
+            ->groupBy(['tingkat', 'kode_kk'])
+            ->map(function ($byTingkat) {
+                return collect($byTingkat)->map(function ($items) {
+                    return $items->sortByDesc('nilai_rata2')->take(15)->values();
+                });
+            });
 
         $kodeKKList = [
             '411' => 'Rekayasa Perangkat Lunak',
@@ -526,9 +422,83 @@ class ArsipWaliKelasController extends Controller
             return view('pages.kurikulum.dokumenguru.arsip-walikelas-ranking-pertingkatkk',  [
                 'dataPilWalas' => $dataPilWalas,
                 'personal_id' => $personal_id,
-                'groupedData' => $groupedData,
+                'ranking' => $rankingData,
                 'kodeKKList' => $kodeKKList,
             ])->render(); // Render hanya bagian detail
         }
+    }
+
+    public function generateManual()
+    {
+        $user = Auth::user();
+        $personal_id = $user->personal_id;
+
+        $dataPilWalas = PilihArsipWaliKelas::where('id_personil', $personal_id)->first();
+        if (!$dataPilWalas) {
+            return back()->with('error', 'Data wali kelas tidak ditemukan.');
+        }
+
+        $tahunajaran = $dataPilWalas->tahunajaran;
+        $ganjilgenap = $dataPilWalas->ganjilgenap;
+
+        // Cek apakah sudah ada data ranking untuk kombinasi ini
+        $existing = RankingSiswa::where('tahunajaran', $tahunajaran)
+            ->where('ganjilgenap', $ganjilgenap)
+            ->exists();
+
+        if ($existing) {
+            // Hapus hanya data dengan kombinasi tahunajaran & ganjilgenap tersebut
+            RankingSiswa::where('tahunajaran', $tahunajaran)
+                ->where('ganjilgenap', $ganjilgenap)
+                ->delete();
+        }
+
+        // Ambil data nilai rata-rata dari query gabungan
+        $data = DB::select("
+        SELECT
+            pr.nis,
+            kr.tingkat,
+            pd.nama_lengkap,
+            pd.kode_kk,
+            pr.rombel_nama,
+            pr.rombel_kode,
+            pr.tahun_ajaran,
+            kr.ganjilgenap,
+            ROUND(AVG(COALESCE(((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2), 0)), 2) AS nilai_rata2
+        FROM peserta_didik_rombels pr
+        INNER JOIN peserta_didiks pd ON pr.nis = pd.nis
+        INNER JOIN kbm_per_rombels kr ON pr.rombel_kode = kr.kode_rombel
+        LEFT JOIN nilai_formatif nf ON pr.nis = nf.nis
+            AND kr.kel_mapel = nf.kel_mapel
+            AND kr.tahunajaran = nf.tahunajaran
+            AND kr.ganjilgenap = nf.ganjilgenap
+        LEFT JOIN nilai_sumatif ns ON pr.nis = ns.nis
+            AND kr.kel_mapel = ns.kel_mapel
+            AND kr.tahunajaran = ns.tahunajaran
+            AND kr.ganjilgenap = ns.ganjilgenap
+        WHERE kr.tahunajaran = ?
+            AND kr.ganjilgenap = ?
+        GROUP BY pr.nis, kr.tingkat, pd.nama_lengkap, pd.kode_kk, pr.rombel_nama, pr.rombel_kode, pr.tahun_ajaran, kr.ganjilgenap
+    ", [
+            $tahunajaran,
+            $ganjilgenap,
+        ]);
+
+        // Simpan hasil ke tabel ranking
+        foreach ($data as $item) {
+            RankingSiswa::create([
+                'tahunajaran' => $tahunajaran,
+                'ganjilgenap' => $ganjilgenap,
+                'kode_kk' => $item->kode_kk,
+                'rombel_kode' => $item->rombel_kode,
+                'rombel_nama' => $item->rombel_nama,
+                'tingkat' => $item->tingkat,
+                'nis' => $item->nis,
+                'nama_lengkap' => $item->nama_lengkap,
+                'nilai_rata2' => $item->nilai_rata2,
+            ]);
+        }
+
+        return redirect()->back()->with('toast_success', 'Data ranking berhasil digenerate untuk ' . $tahunajaran . ' - ' . $ganjilgenap);
     }
 }

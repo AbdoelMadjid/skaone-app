@@ -1,4 +1,4 @@
-@foreach ($groupedRanking as $tingkat => $rankingList)
+@foreach ($ranking as $tingkat => $list)
     <div class="card">
         <div class="card-header border-bottom-dashed">
             <h5 class="card-title mb-0">Ranking Tingkat {{ $tingkat }}</h5>
@@ -16,14 +16,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($rankingList as $siswa)
+                    @foreach ($list as $i => $siswa)
                         <tr>
-                            <td class="text-center">{{ $siswa->ranking }}</td>
+                            <td class="text-center">{{ $i + 1 }}</td>
                             <td class="text-center">{{ $siswa->nis }}</td>
                             <td>{{ $siswa->nama_lengkap }}</td>
                             <td class="text-center">{{ $kodeKKList[$siswa->kode_kk] ?? $siswa->kode_kk }}</td>
                             <td>{{ $siswa->rombel_nama }}</td>
-                            <td class="text-center">{{ $siswa->nil_rata_siswa }}</td>
+                            <td class="text-center">{{ $siswa->nilai_rata2 }}</td>
                         </tr>
                     @endforeach
                 </tbody>
