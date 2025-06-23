@@ -70,6 +70,12 @@
                                     <i class="las la-upload text-muted align-bottom me-1 fs-4"></i> Kenaikan
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#ranking" role="tab"
+                                    aria-selected="false">
+                                    <i class="las la-list text-muted align-bottom me-1 fs-4"></i> Ranking
+                                </a>
+                            </li>
                             {{-- <li class="nav-item ms-auto">
                                 <div class="dropdown">
                                     <a class="nav-link fw-medium text-reset mb-n1" href="#" role="button"

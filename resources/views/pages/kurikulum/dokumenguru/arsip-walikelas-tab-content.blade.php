@@ -29,4 +29,9 @@
             @include('pages.kurikulum.dokumenguru.arsip-walikelas-kenaikan')
         </div>
     </div>
+    <div class="tab-pane" id="ranking" role="tabpanel">
+        <div class="pb-3">
+            @include('pages.kurikulum.dokumenguru.arsip-walikelas-ranking')
+        </div>
+    </div>
 </div><!--end tab-content-->

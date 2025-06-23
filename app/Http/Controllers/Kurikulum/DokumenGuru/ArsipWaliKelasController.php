@@ -86,7 +86,6 @@ class ArsipWaliKelasController extends Controller
             'personal_id' => $personal_id,
             'waliKelas' => $waliKelas,
             'personilSekolah' => $personilSekolah,
-            /* 'pilihan' => $pilihan, */
         ]);
     }
 
@@ -262,6 +261,41 @@ class ArsipWaliKelasController extends Controller
             }])
             ->get();
 
+        $nilaiRataSiswa = DB::select("
+            SELECT
+                pd.nis,
+                pd.nama_lengkap,
+                ROUND(AVG(COALESCE(((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2), 0)), 2) AS nil_rata_siswa
+            FROM
+                peserta_didik_rombels pr
+            INNER JOIN
+                peserta_didiks pd ON pr.nis = pd.nis
+            INNER JOIN
+                kbm_per_rombels kr ON pr.rombel_kode = kr.kode_rombel
+            LEFT JOIN
+                nilai_formatif nf ON pr.nis = nf.nis
+                    AND kr.kel_mapel = nf.kel_mapel
+                    AND kr.tahunajaran = nf.tahunajaran
+                    AND kr.ganjilgenap = nf.ganjilgenap
+            LEFT JOIN
+                nilai_sumatif ns ON pr.nis = ns.nis
+                    AND kr.kel_mapel = ns.kel_mapel
+                    AND kr.tahunajaran = ns.tahunajaran
+                    AND kr.ganjilgenap = ns.ganjilgenap
+            WHERE
+                pr.rombel_kode = ?
+                AND kr.tahunajaran = ?
+                AND kr.ganjilgenap = ?
+            GROUP BY
+                pd.nis, pd.nama_lengkap
+            ORDER BY
+                nil_rata_siswa DESC
+        ", [
+            $dataPilWalas->kode_rombel,
+            $dataPilWalas->tahunajaran,
+            $dataPilWalas->ganjilgenap,
+        ]);
+
         if ($dataPilWalas) {
             return view('pages.kurikulum.dokumenguru.arsip-walikelas-tab-content',  [
                 'dataPilWalas' => $dataPilWalas,
@@ -275,6 +309,7 @@ class ArsipWaliKelasController extends Controller
                 'prestasiGrouped' => $prestasiGrouped,
                 'rombongan' => $rombongan,
                 'kenaikanKelas' => $kenaikanKelas,
+                'nilaiRataSiswa' => $nilaiRataSiswa,
             ])->render(); // Render hanya bagian detail
         }
 
