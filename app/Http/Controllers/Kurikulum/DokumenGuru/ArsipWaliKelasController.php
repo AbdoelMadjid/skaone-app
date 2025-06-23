@@ -368,45 +368,58 @@ class ArsipWaliKelasController extends Controller
         }
 
         $rankingPerTingkat = DB::select("
-                SELECT * FROM (
-                    SELECT
-                        kr.tingkat,
-                        pd.nis,
-                        pd.nama_lengkap,
-                        pd.kode_kk,
-                        pr.rombel_nama,
-                        pr.tahun_ajaran,
-                        kr.ganjilgenap,
-                        ROUND(AVG(COALESCE(((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2), 0)), 2) AS nil_rata_siswa,
-                        ROW_NUMBER() OVER (PARTITION BY kr.tingkat ORDER BY
-                            ROUND(AVG(COALESCE(((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2), 0)), 2) DESC
-                        ) AS ranking
-                    FROM
-                        peserta_didik_rombels pr
-                    INNER JOIN
-                        peserta_didiks pd ON pr.nis = pd.nis
-                    INNER JOIN
-                        kbm_per_rombels kr ON pr.rombel_kode = kr.kode_rombel
-                    LEFT JOIN
-                        nilai_formatif nf ON pr.nis = nf.nis
-                            AND kr.kel_mapel = nf.kel_mapel
-                            AND kr.tahunajaran = nf.tahunajaran
-                            AND kr.ganjilgenap = nf.ganjilgenap
-                    LEFT JOIN
-                        nilai_sumatif ns ON pr.nis = ns.nis
-                            AND kr.kel_mapel = ns.kel_mapel
-                            AND kr.tahunajaran = ns.tahunajaran
-                            AND kr.ganjilgenap = ns.ganjilgenap
-                    WHERE
-                        kr.tahunajaran = ?
-                        AND kr.ganjilgenap = ?
-                        AND kr.tingkat IN (10, 11, 12)
-                    GROUP BY
-                        kr.tingkat, pd.nis, pd.nama_lengkap, pd.kode_kk, pr.rombel_nama, pr.tahun_ajaran, kr.ganjilgenap
-                ) AS ranked
-                WHERE ranked.ranking <= 12
-                ORDER BY ranked.tingkat, ranked.ranking;
-            ", [
+            WITH nilai_siswa AS (
+                SELECT
+                    pr.nis,
+                    kr.tingkat,
+                    pd.nama_lengkap,
+                    pd.kode_kk,
+                    pr.rombel_nama,
+                    pr.tahun_ajaran,
+                    kr.ganjilgenap,
+                    ((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2) AS nilai
+                FROM
+                    peserta_didik_rombels pr
+                JOIN
+                    peserta_didiks pd ON pd.nis = pr.nis
+                JOIN
+                    kbm_per_rombels kr ON kr.kode_rombel = pr.rombel_kode
+                LEFT JOIN
+                    nilai_formatif nf ON nf.nis = pr.nis AND nf.kel_mapel = kr.kel_mapel
+                        AND nf.tahunajaran = ? AND nf.ganjilgenap = ?
+                LEFT JOIN
+                    nilai_sumatif ns ON ns.nis = pr.nis AND ns.kel_mapel = kr.kel_mapel
+                        AND ns.tahunajaran = ? AND ns.ganjilgenap = ?
+                WHERE
+                    kr.tahunajaran = ? AND kr.ganjilgenap = ?
+                    AND kr.tingkat IN (10, 11, 12)
+            ),
+            nilai_rata AS (
+                SELECT
+                    nis,
+                    tingkat,
+                    nama_lengkap,
+                    kode_kk,
+                    rombel_nama,
+                    tahun_ajaran,
+                    ganjilgenap,
+                    ROUND(AVG(nilai), 2) AS nil_rata_siswa
+                FROM nilai_siswa
+                GROUP BY nis, tingkat, nama_lengkap, kode_kk, rombel_nama, tahun_ajaran, ganjilgenap
+            ),
+            ranking AS (
+                SELECT *,
+                    ROW_NUMBER() OVER (PARTITION BY tingkat ORDER BY nil_rata_siswa DESC) AS ranking
+                FROM nilai_rata
+            )
+            SELECT * FROM ranking
+            WHERE ranking <= 12
+            ORDER BY tingkat, ranking;
+        ", [
+            $dataPilWalas->tahunajaran,
+            $dataPilWalas->ganjilgenap,
+            $dataPilWalas->tahunajaran,
+            $dataPilWalas->ganjilgenap,
             $dataPilWalas->tahunajaran,
             $dataPilWalas->ganjilgenap,
         ]);
@@ -439,44 +452,63 @@ class ArsipWaliKelasController extends Controller
         $dataPilWalas = PilihArsipWaliKelas::where('id_personil', $personal_id)->first();
 
         $rankingPerTingkatPerKK = DB::select("
-                SELECT * FROM (
-                    SELECT
-                        kr.tingkat,
-                        pd.nis,
-                        pd.nama_lengkap,
-                        pd.kode_kk,
-                        pr.rombel_nama,
-                        pr.tahun_ajaran,
-                        kr.ganjilgenap,
-                        ROUND(AVG(COALESCE(((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2), 0)), 2) AS nil_rata_siswa,
-                        ROW_NUMBER() OVER (
-                            PARTITION BY kr.tingkat, pd.kode_kk
-                            ORDER BY ROUND(AVG(COALESCE(((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2), 0)), 2) DESC
-                        ) AS ranking
-                    FROM
-                        peserta_didik_rombels pr
-                    INNER JOIN peserta_didiks pd ON pr.nis = pd.nis
-                    INNER JOIN kbm_per_rombels kr ON pr.rombel_kode = kr.kode_rombel
-                    LEFT JOIN nilai_formatif nf ON pr.nis = nf.nis
-                        AND kr.kel_mapel = nf.kel_mapel
-                        AND kr.tahunajaran = nf.tahunajaran
-                        AND kr.ganjilgenap = nf.ganjilgenap
-                    LEFT JOIN nilai_sumatif ns ON pr.nis = ns.nis
-                        AND kr.kel_mapel = ns.kel_mapel
-                        AND kr.tahunajaran = ns.tahunajaran
-                        AND kr.ganjilgenap = ns.ganjilgenap
-                    WHERE
-                        kr.tahunajaran = ?
-                        AND kr.ganjilgenap = ?
-                    GROUP BY
-                        kr.tingkat, pd.nis, pd.nama_lengkap, pd.kode_kk, pr.rombel_nama, pr.tahun_ajaran, kr.ganjilgenap
-                ) AS ranked
-                WHERE ranked.ranking <= 12
-                ORDER BY ranked.tingkat, ranked.kode_kk, ranked.ranking
-            ", [
+            WITH nilai_siswa AS (
+                SELECT
+                    pr.nis,
+                    kr.tingkat,
+                    pd.nama_lengkap,
+                    pd.kode_kk,
+                    pr.rombel_nama,
+                    pr.tahun_ajaran,
+                    kr.ganjilgenap,
+                    ((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2) AS nilai
+                FROM
+                    peserta_didik_rombels pr
+                JOIN
+                    peserta_didiks pd ON pd.nis = pr.nis
+                JOIN
+                    kbm_per_rombels kr ON kr.kode_rombel = pr.rombel_kode
+                LEFT JOIN
+                    nilai_formatif nf ON nf.nis = pr.nis AND nf.kel_mapel = kr.kel_mapel
+                        AND nf.tahunajaran = ? AND nf.ganjilgenap = ?
+                LEFT JOIN
+                    nilai_sumatif ns ON ns.nis = pr.nis AND ns.kel_mapel = kr.kel_mapel
+                        AND ns.tahunajaran = ? AND ns.ganjilgenap = ?
+                WHERE
+                    kr.tahunajaran = ? AND kr.ganjilgenap = ?
+            ),
+            nilai_rata AS (
+                SELECT
+                    nis,
+                    tingkat,
+                    nama_lengkap,
+                    kode_kk,
+                    rombel_nama,
+                    tahun_ajaran,
+                    ganjilgenap,
+                    ROUND(AVG(nilai), 2) AS nil_rata_siswa
+                FROM nilai_siswa
+                GROUP BY nis, tingkat, nama_lengkap, kode_kk, rombel_nama, tahun_ajaran, ganjilgenap
+            ),
+            ranking AS (
+                SELECT *,
+                    ROW_NUMBER() OVER (
+                        PARTITION BY tingkat, kode_kk ORDER BY nil_rata_siswa DESC
+                    ) AS ranking
+                FROM nilai_rata
+            )
+            SELECT * FROM ranking
+            WHERE ranking <= 12
+            ORDER BY tingkat, kode_kk, ranking;
+        ", [
+            $dataPilWalas->tahunajaran,
+            $dataPilWalas->ganjilgenap,
+            $dataPilWalas->tahunajaran,
+            $dataPilWalas->ganjilgenap,
             $dataPilWalas->tahunajaran,
             $dataPilWalas->ganjilgenap,
         ]);
+
 
         $groupedData = collect($rankingPerTingkatPerKK)->groupBy('tingkat')->map(function ($items) {
             return $items->groupBy('kode_kk');
