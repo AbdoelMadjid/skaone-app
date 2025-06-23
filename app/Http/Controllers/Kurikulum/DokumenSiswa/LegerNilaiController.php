@@ -60,6 +60,8 @@ class LegerNilaiController extends Controller
 
             // Ambil kode_rombel dari $pilihData
             $kodeRombel = $pilihData ? $pilihData->kode_rombel : null;
+            $tingkat = $pilihData ? $pilihData->tingkat : null;
+            $kodeKK = $pilihData ? $pilihData->kode_kk : null;
 
             // Dapatkan semua kel_mapel
             $kelMapelList = DB::table('kbm_per_rombels')
@@ -133,6 +135,106 @@ class LegerNilaiController extends Controller
                 ->orderBy('kel_mapel')
                 ->get();
 
+            //ranking
+            $rankingPerTingkat = DB::select("
+                SELECT * FROM (
+                    SELECT
+                        kr.tingkat,
+                        pd.nis,
+                        pd.nama_lengkap,
+                        pd.kode_kk,
+                        pr.rombel_nama,
+                        pr.tahun_ajaran,
+                        kr.ganjilgenap,
+                        ROUND(AVG(COALESCE(((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2), 0)), 2) AS nil_rata_siswa,
+                        ROW_NUMBER() OVER (PARTITION BY kr.tingkat ORDER BY
+                            ROUND(AVG(COALESCE(((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2), 0)), 2) DESC
+                        ) AS ranking
+                    FROM
+                        peserta_didik_rombels pr
+                    INNER JOIN
+                        peserta_didiks pd ON pr.nis = pd.nis
+                    INNER JOIN
+                        kbm_per_rombels kr ON pr.rombel_kode = kr.kode_rombel
+                    LEFT JOIN
+                        nilai_formatif nf ON pr.nis = nf.nis
+                            AND kr.kel_mapel = nf.kel_mapel
+                            AND kr.tahunajaran = nf.tahunajaran
+                            AND kr.ganjilgenap = nf.ganjilgenap
+                    LEFT JOIN
+                        nilai_sumatif ns ON pr.nis = ns.nis
+                            AND kr.kel_mapel = ns.kel_mapel
+                            AND kr.tahunajaran = ns.tahunajaran
+                            AND kr.ganjilgenap = ns.ganjilgenap
+                    WHERE
+                        kr.tahunajaran = ?
+                        AND kr.ganjilgenap = ?
+                        AND kr.tingkat IN (10, 11, 12)
+                    GROUP BY
+                        kr.tingkat, pd.nis, pd.nama_lengkap, pd.kode_kk, pr.rombel_nama, pr.tahun_ajaran, kr.ganjilgenap
+                ) AS ranked
+                WHERE ranked.ranking <= 12
+                ORDER BY ranked.tingkat, ranked.ranking;
+            ", [
+                $tahunajaran,
+                $ganjilgenap,
+            ]);
+
+            $groupedRanking = collect($rankingPerTingkat)->groupBy('tingkat');
+
+
+            $rankingPerTingkatPerKK = DB::select("
+                SELECT * FROM (
+                    SELECT
+                        kr.tingkat,
+                        pd.nis,
+                        pd.nama_lengkap,
+                        pd.kode_kk,
+                        pr.rombel_nama,
+                        pr.tahun_ajaran,
+                        kr.ganjilgenap,
+                        ROUND(AVG(COALESCE(((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2), 0)), 2) AS nil_rata_siswa,
+                        ROW_NUMBER() OVER (
+                            PARTITION BY kr.tingkat, pd.kode_kk
+                            ORDER BY ROUND(AVG(COALESCE(((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2), 0)), 2) DESC
+                        ) AS ranking
+                    FROM
+                        peserta_didik_rombels pr
+                    INNER JOIN peserta_didiks pd ON pr.nis = pd.nis
+                    INNER JOIN kbm_per_rombels kr ON pr.rombel_kode = kr.kode_rombel
+                    LEFT JOIN nilai_formatif nf ON pr.nis = nf.nis
+                        AND kr.kel_mapel = nf.kel_mapel
+                        AND kr.tahunajaran = nf.tahunajaran
+                        AND kr.ganjilgenap = nf.ganjilgenap
+                    LEFT JOIN nilai_sumatif ns ON pr.nis = ns.nis
+                        AND kr.kel_mapel = ns.kel_mapel
+                        AND kr.tahunajaran = ns.tahunajaran
+                        AND kr.ganjilgenap = ns.ganjilgenap
+                    WHERE
+                        kr.tahunajaran = ?
+                        AND kr.ganjilgenap = ?
+                    GROUP BY
+                        kr.tingkat, pd.nis, pd.nama_lengkap, pd.kode_kk, pr.rombel_nama, pr.tahun_ajaran, kr.ganjilgenap
+                ) AS ranked
+                WHERE ranked.ranking <= 12
+                ORDER BY ranked.tingkat, ranked.kode_kk, ranked.ranking
+            ", [
+                $tahunajaran,
+                $ganjilgenap,
+            ]);
+
+            $groupedData = collect($rankingPerTingkatPerKK)->groupBy('tingkat')->map(function ($items) {
+                return $items->groupBy('kode_kk');
+            });
+
+            $kodeKKList = [
+                '411' => 'Rekayasa Perangkat Lunak',
+                '421' => 'Teknik Komputer dan Jaringan',
+                '811' => 'Bisnis Digital',
+                '821' => 'Manajemen Perkantoran',
+                '833' => 'Akuntansi',
+            ];
+
             return view("pages.kurikulum.dokumensiswa.leger-nilai", [
                 'user' => $user,
                 'personal_id' => $personal_id,
@@ -144,9 +246,16 @@ class LegerNilaiController extends Controller
                 'pilihData' => $pilihData,
                 'tahunajaran' => $tahunajaran,
                 'ganjilgenap' => $ganjilgenap,
+                'tingkat' => $tingkat,
+                'kodeKK' => $kodeKK,
                 'pivotData' => $pivotData,
                 'kelMapelList' => $kelMapelList,
                 'listMapel' => $listMapel,
+                'rankingPerTingkat' => $rankingPerTingkat,
+                'rankingPerTingkatPerKK' => $rankingPerTingkatPerKK,
+                'groupedData' => $groupedData,
+                'kodeKKList' => $kodeKKList,
+                'groupedRanking' => $groupedRanking,
             ]);
         }
 

@@ -137,15 +137,27 @@
                             <div class="col">
                                 <ul class="nav nav-tabs-custom card-header-tabs border-bottom-0" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active fw-semibold" data-bs-toggle="tab" href="#productnav-all"
+                                        <a class="nav-link active fw-semibold" data-bs-toggle="tab" href="#legerNilai"
                                             role="tab">
                                             Leger
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#productnav-published"
+                                        <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#mataPelajaran"
                                             role="tab">
                                             Mata Pelajaran
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#rankingPerTingkat"
+                                            role="tab">
+                                            Ranking Per Tingkat
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#rankingPerTingkatperKK"
+                                            role="tab">
+                                            Ranking Per Tingkat Per KK
                                         </a>
                                     </li>
                                 </ul>
@@ -170,7 +182,7 @@
                     <div class="card-body">
 
                         <div class="tab-content">
-                            <div class="tab-pane active" id="productnav-all" role="tabpanel">
+                            <div class="tab-pane active" id="legerNilai" role="tabpanel">
                                 <div id="table-product-list-all" class="table-card gridjs-border-none">
                                     @if ($pilihData)
                                         <table class="table table-bordered table-striped mt-3">
@@ -199,7 +211,8 @@
                                                     </tr>
                                                 @empty
                                                     <tr>
-                                                        <td colspan="{{ 3 + $kelMapelList->count() }}" class="text-center">
+                                                        <td colspan="{{ 3 + $kelMapelList->count() }}"
+                                                            class="text-center">
                                                             Tidak
                                                             ada data</td>
                                                     </tr>
@@ -211,14 +224,14 @@
                             </div>
                             <!-- end tab pane -->
 
-                            <div class="tab-pane" id="productnav-published" role="tabpanel">
+                            <div class="tab-pane" id="mataPelajaran" role="tabpanel">
                                 <div id="table-product-list-published" class="table-card gridjs-border-none">
                                     @if ($pilihData)
                                         <table class="table table-bordered">
                                             <thead>
                                                 <tr>
                                                     <th>No.</th>
-                                                    <th>Kelompok Mapel</th>
+                                                    <th>NIS</th>
                                                     <th>Mata Pelajaran</th>
                                                 </tr>
                                             </thead>
@@ -232,6 +245,74 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="rankingPerTingkat" role="tabpanel">
+                                <div class="p-3">
+                                    @if ($pilihData)
+                                        @foreach ($groupedRanking as $tingkat => $rankingList)
+                                            <h2 class="mt-5 mb-3">Ranking Tingkat {{ $tingkat }}</h2>
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">Ranking</th>
+                                                        <th class="text-center">NIS</th>
+                                                        <th>Nama Lengkap</th>
+                                                        <th>Kode KK</th>
+                                                        <th>Rombel</th>
+                                                        <th class="text-center">Nilai Rata-rata</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($rankingList as $siswa)
+                                                        <tr>
+                                                            <td class="text-center">{{ $siswa->ranking }}</td>
+                                                            <td class="text-center">{{ $siswa->nis }}</td>
+                                                            <td>{{ $siswa->nama_lengkap }}</td>
+                                                            <td class="text-center">{{ $siswa->kode_kk }}</td>
+                                                            <td>{{ $siswa->rombel_nama }}</td>
+                                                            <td class="text-center">{{ $siswa->nil_rata_siswa }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        @endforeach
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="rankingPerTingkatperKK" role="tabpanel">
+                                <div class="p-3">
+                                    @if ($pilihData)
+                                        @foreach ($groupedData as $tingkat => $kkGroups)
+                                            <h2 class="mt-5">Tingkat: {{ $tingkat }}</h2>
+                                            @foreach ($kkGroups as $kodeKK => $rankingList)
+                                                <h4 class="mt-3">{{ $kodeKKList[$kodeKK] ?? $kodeKK }}</h4>
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center">Ranking</th>
+                                                            <th class="text-center">NIS</th>
+                                                            <th>Nama Lengkap</th>
+                                                            <th>Rombel</th>
+                                                            <th class="text-center">Nilai Rata-rata</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($rankingList as $nilai)
+                                                            <tr>
+                                                                <td class="text-center">{{ $nilai->ranking }}</td>
+                                                                <td class="text-center">{{ $nilai->nis }}</td>
+                                                                <td>{{ $nilai->nama_lengkap }}</td>
+                                                                <td>{{ $nilai->rombel_nama }}</td>
+                                                                <td class="text-center">
+                                                                    {{ $nilai->nil_rata_siswa }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            @endforeach
+                                        @endforeach
                                     @endif
                                 </div>
                             </div>
