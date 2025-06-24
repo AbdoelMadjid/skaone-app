@@ -15,7 +15,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Data KBM untuk: {{ $fullName }}</h4>
+                    <h4 class="card-title">Data KBM : <span class="text-success">{{ $fullName }}</span></h4>
                 </div>
                 <div class="card-body">
                     @forelse ($data as $tahun => $ganjilGenapGroup)
@@ -36,7 +36,8 @@
                                 @isset($ganjilGenapGroup['ganjil'])
                                     @foreach ($ganjilGenapGroup['ganjil'] as $tingkat => $items)
                                         <h5>Tingkat: <span class="text-success">{{ $tingkat }}</span>
-                                            ({{ terbilang($tingkat) }})</h5>
+                                            ({{ terbilang($tingkat) }})
+                                        </h5>
                                         <table class="table table-bordered table-sm">
                                             <thead>
                                                 <tr>
