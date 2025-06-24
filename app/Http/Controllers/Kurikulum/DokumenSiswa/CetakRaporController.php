@@ -724,4 +724,19 @@ class CetakRaporController extends Controller
 
         return response()->json(['message' => 'Checklist berhasil disimpan']);
     }
+
+    public function getCeklistTerupdate()
+    {
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+        $semester = Semester::where('status', 'Aktif')
+            ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+            ->first();
+
+        $ceklistTersimpan = CeklistCetakRapor::where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('ganjilgenap', $semester->semester)
+            ->where('status', 'Sudah')
+            ->pluck('kode_rombel');
+
+        return response()->json($ceklistTersimpan);
+    }
 }

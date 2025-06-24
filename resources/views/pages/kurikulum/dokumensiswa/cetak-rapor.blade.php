@@ -301,5 +301,23 @@
             });
         });
     </script>
+    <script>
+        // Polling setiap 5 detik
+        setInterval(() => {
+            $.ajax({
+                url: '{{ route('kurikulum.dokumentsiswa.ceklistcetakraporterupdate') }}',
+                method: 'GET',
+                success: function(checkedList) {
+                    $('.checklist-checkbox').each(function() {
+                        let kode = $(this).val();
+                        $(this).prop('checked', checkedList.includes(kode));
+                    });
+                },
+                error: function() {
+                    console.warn('Gagal memuat status ceklist terbaru.');
+                }
+            });
+        }, 5000); // 5 detik
+    </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection
