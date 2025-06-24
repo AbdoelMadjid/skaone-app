@@ -17,7 +17,7 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-8 col-sm-10">
                                 <div class="text-center mt-lg-2 pt-3">
-                                    <h1 class="display-6 fw-semibold mb-3 lh-base">A better way to manage student assessment
+                                    <h1 class="display-7 fw-semibold mb-3 lh-base">A better way to manage student assessment
                                         results with the <span class="text-success">{{ $profileApp->app_nama ?? '' }}
                                         </span>
                                     </h1>

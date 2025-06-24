@@ -12,6 +12,8 @@ use App\Http\Controllers\About\GaleryController;
 use App\Http\Controllers\About\KumpulanFaqController;
 use App\Http\Controllers\About\PhotoJurusanController;
 use App\Http\Controllers\About\PhotoSlideController;
+use App\Http\Controllers\About\PollingController;
+use App\Http\Controllers\About\QuestionController;
 use App\Http\Controllers\About\TeamPengembangController;
 use App\Http\Controllers\AdministratorPkl\PerusahaanController;
 use App\Http\Controllers\AdministratorPkl\PesertaPrakerinController;
@@ -120,6 +122,8 @@ Route::group(['prefix' => 'about', 'as' => 'about.'], function () {
     Route::resource('daily-messages', DailyMessagesController::class);
     Route::get('events/list', [EventController::class, 'listEvent'])->name('events.list');
     Route::resource('events', EventController::class);
+    Route::resource('polling', PollingController::class);
+    Route::resource('question', QuestionController::class);
 });
 
 // Kelompok rute untuk profil, hanya dapat diakses oleh pengguna yang sudah terotentikasi

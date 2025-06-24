@@ -30,6 +30,9 @@
                 <li>
                     <a href="{{ route('about.events.index') }}" class="dropdown-item">Event</a>
                 </li>
+                <li>
+                    <a href="{{ route('about.polling.index') }}" class="dropdown-item">Polling</a>
+                </li>
                 {{-- <li><a class="dropdown-item" href="#">Search Settings</a></li>
                 <li><a class="dropdown-item" href="#">Advanced Search</a></li>
                 <li><a class="dropdown-item" href="#">Search History</a></li>
