@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\GuruMapel;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kurikulum\DataKBM\KbmPerRombel;
+use App\Models\ManajemenSekolah\PersonilSekolah;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ArsipKbmGmapelController extends Controller
 {
@@ -12,7 +15,33 @@ class ArsipKbmGmapelController extends Controller
      */
     public function index()
     {
-        return view('pages.gurumapel.arsip-kbm');
+        $user = Auth::user();
+        $personal_id = $user->personal_id;
+        // Ambil data personil
+        $personil = PersonilSekolah::where('id_personil', $personal_id)->first();
+        $fullName = $personil
+            ? trim(($personil->gelardepan ? $personil->gelardepan . ' ' : '') . $personil->namalengkap . ($personil->gelarbelakang ? ', ' . $personil->gelarbelakang : ''))
+            : 'Unknown';
+
+        // Ambil semua data untuk personil login
+        $kbmList = KbmPerRombel::where('id_personil', $personal_id)->get();
+
+        // Normalisasi ganjilgenap ke lowercase
+        foreach ($kbmList as $item) {
+            $item->ganjilgenap = strtolower($item->ganjilgenap);
+        }
+
+        // Kelompokkan secara bersarang: tahunajaran → ganjilgenap → tingkat
+        $data = $kbmList->groupBy([
+            'tahunajaran',
+            function ($item) {
+                return $item->ganjilgenap; // Sudah lowercase
+            },
+            'tingkat',
+        ]);
+
+
+        return view('pages.gurumapel.arsip-kbm', compact('data', 'fullName'));
     }
 
     /**
