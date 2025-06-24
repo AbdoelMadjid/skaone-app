@@ -518,6 +518,15 @@
                                                             <p>&nbsp;</p>
                                                             Mengetahui :<br>
                                                             Kepala Sekolah,
+                                                            <div>
+                                                                <img src='{{ URL::asset('images/damudin.png') }}'
+                                                                    border='0' height='100'
+                                                                    style=' position: absolute; padding: 0px 2px 15px -200px; margin-left: -120px;margin-top:-15px;'>
+                                                            </div>
+                                                            {{-- <div><img src='{{ URL::asset('images/stempel.png') }}'
+                                                                    border='0' height='180' width='184'
+                                                                    style=' position: absolute; padding: 0px 2px 15px -650px; margin-left: -135px;margin-top:-50px;'>
+                                                            </div> --}}
                                                             <p>&nbsp;</p>
                                                             <p>&nbsp;</p>
                                                             <strong>{!! $kepsekttd->nama ?? '' !!}</strong><br>
