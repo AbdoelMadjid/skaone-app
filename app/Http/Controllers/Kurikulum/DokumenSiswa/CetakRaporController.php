@@ -51,25 +51,6 @@ class CetakRaporController extends Controller
         $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
         $rombonganBelajar = RombonganBelajar::pluck('rombel', 'kode_rombel')->toArray();
 
-        //option untuk memilih ceklist cetak rapor
-        // ambil kelasnya dari rombongan belajar
-        $optionCeklistRombel = RombonganBelajar::where('tahunajaran', $tahunAjaranAktif->tahunajaran)
-            ->orderBy('tingkat')->orderBy('rombel')
-            ->get(['rombel', 'kode_rombel', 'tingkat']);
-
-        $dataKelasCeklist = $optionCeklistRombel->mapWithKeys(function ($item) {
-            return [$item->kode_rombel => $item->rombel . ' - ' . $item->kode_rombel];
-        })->toArray();
-
-        $dataKelasCeklistGrouped = $optionCeklistRombel->groupBy('tingkat');
-
-        // Ambil checklist yang SUDAH tersimpan
-        $ceklistTersimpan = CeklistCetakRapor::where('tahunajaran', $tahunAjaranAktif->tahunajaran)
-            ->where('ganjilgenap', $semester->semester)
-            ->where('status', 'Sudah')
-            ->pluck('kode_rombel')
-            ->toArray();
-
         // Ambil semua user yang punya role 'master'
         $usersWithMasterRole = User::role('master')->get();
 
@@ -125,7 +106,40 @@ class CetakRaporController extends Controller
             ->where('wali_kelas.kode_rombel', $dataPilCR->kode_rombel)
             ->first();
 
-        // ambil kelas untuk ceklist sudah di cetak rapor
+
+        //option untuk memilih ceklist cetak rapor
+        // ambil kelasnya dari rombongan belajar
+        $optionCeklistRombel = DB::table('rombongan_belajars')
+            ->select(
+                'rombongan_belajars.rombel',
+                'rombongan_belajars.kode_rombel',
+                'rombongan_belajars.tingkat',
+                'personil_sekolahs.gelardepan',
+                'personil_sekolahs.namalengkap',
+                'personil_sekolahs.gelarbelakang'
+            )
+            ->leftJoin('wali_kelas', function ($join) use ($tahunAjaranAktif) {
+                $join->on('rombongan_belajars.kode_rombel', '=', 'wali_kelas.kode_rombel')
+                    ->where('wali_kelas.tahunajaran', '=', $tahunAjaranAktif->tahunajaran);
+            })
+            ->leftJoin('personil_sekolahs', 'wali_kelas.wali_kelas', '=', 'personil_sekolahs.id_personil')
+            ->where('rombongan_belajars.tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->orderBy('rombongan_belajars.tingkat')
+            ->orderBy('rombongan_belajars.rombel')
+            ->get();
+
+        $dataKelasCeklist = $optionCeklistRombel->mapWithKeys(function ($item) {
+            return [$item->kode_rombel => $item->rombel . ' - ' . $item->kode_rombel];
+        })->toArray();
+
+        $dataKelasCeklistGrouped = $optionCeklistRombel->groupBy('tingkat');
+
+        // Ambil checklist yang SUDAH tersimpan
+        $ceklistTersimpan = CeklistCetakRapor::where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('ganjilgenap', $semester->semester)
+            ->where('status', 'Sudah')
+            ->pluck('kode_rombel')
+            ->toArray();
 
 
         return view('pages.kurikulum.dokumensiswa.cetak-rapor', [
