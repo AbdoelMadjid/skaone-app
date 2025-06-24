@@ -34,7 +34,7 @@
 
     <button type="button" id="btn-data-rapor" class="btn btn-soft-primary w-100 mt-3">Confirm</button>
     @if ($personal_id == 'Pgw_0016')
-        <button type="button" class="btn btn-soft-primary w-100 mt-3" data-bs-toggle="modal"
+        <button type="button" class="btn btn-soft-primary w-100 mt-3 mb-3" data-bs-toggle="modal"
             data-bs-target="#tambahPilihCetakRapor">Tambah Pengguna</button>
     @endif
 </form>

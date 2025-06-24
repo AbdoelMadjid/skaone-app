@@ -129,6 +129,7 @@ Route::middleware('auth')->group(function () {
                 ->name('simpanpilihcetakrapor');
             Route::get('/tampil-rapor/{nis}', [CetakRaporController::class, 'tampilRapor']);
             Route::get('/info-wali-siswa', [CetakRaporController::class, 'infoWaliSiswa']);
+            Route::post('/ceklistcetakrapor', [CetakRaporController::class, 'ceklisCetakRapor'])->name('ceklistcetakrapor');
 
             Route::resource('leger-nilai', LegerNilaiController::class);
             Route::get('/get-kode-rombel-leger', [LegerNilaiController::class, 'getKodeRombelLeger']);

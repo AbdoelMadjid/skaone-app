@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Kurikulum\DokumenSiswa;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
+use App\Models\Kurikulum\DokumenSiswa\CeklistCetakRapor;
 use App\Models\Kurikulum\DokumenSiswa\PilihCetakRapor;
 use App\Models\ManajemenSekolah\IdentitasSekolah;
 use App\Models\ManajemenSekolah\KepalaSekolah;
@@ -49,6 +50,26 @@ class CetakRaporController extends Controller
         $kompetensiKeahlianOptions = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
         $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
         $rombonganBelajar = RombonganBelajar::pluck('rombel', 'kode_rombel')->toArray();
+
+        //option untuk memilih ceklist cetak rapor
+        // ambil kelasnya dari rombongan belajar
+        $optionCeklistRombel = RombonganBelajar::where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->orderBy('tingkat')->orderBy('rombel')
+            ->get(['rombel', 'kode_rombel', 'tingkat']);
+
+        $dataKelasCeklist = $optionCeklistRombel->mapWithKeys(function ($item) {
+            return [$item->kode_rombel => $item->rombel . ' - ' . $item->kode_rombel];
+        })->toArray();
+
+        $dataKelasCeklistGrouped = $optionCeklistRombel->groupBy('tingkat');
+
+        // Ambil checklist yang SUDAH tersimpan
+        $ceklistTersimpan = CeklistCetakRapor::where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('ganjilgenap', $semester->semester)
+            ->where('status', 'Sudah')
+            ->pluck('kode_rombel')
+            ->toArray();
+
         // Ambil semua user yang punya role 'master'
         $usersWithMasterRole = User::role('master')->get();
 
@@ -104,6 +125,9 @@ class CetakRaporController extends Controller
             ->where('wali_kelas.kode_rombel', $dataPilCR->kode_rombel)
             ->first();
 
+        // ambil kelas untuk ceklist sudah di cetak rapor
+
+
         return view('pages.kurikulum.dokumensiswa.cetak-rapor', [
             'siswaData' => $siswaData,
             'personal_id' => $personal_id,
@@ -117,6 +141,9 @@ class CetakRaporController extends Controller
             'personilSekolah' => $personilSekolah,
             'dataPilCR' => $dataPilCR,
             'nis' => $dataPilCR->nis,
+            'dataKelasCeklist' => $dataKelasCeklist,
+            'ceklistTersimpan' => $ceklistTersimpan,
+            'dataKelasCeklistGrouped' => $dataKelasCeklistGrouped,
         ]);
     }
 
@@ -662,5 +689,39 @@ class CetakRaporController extends Controller
             ->first();
 
         return view('pages.kurikulum.dokumensiswa.cetak-rapor-info', compact('siswaData', 'waliKelas'));
+    }
+
+    public function ceklisCetakRapor(Request $request)
+    {
+        $request->validate([
+            'kode_rombel' => 'required|string',
+            'status' => 'required|in:Sudah,Belum',
+        ]);
+
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+        if (!$tahunAjaranAktif) {
+            return response()->json(['message' => 'Tidak ada tahun ajaran aktif.'], 400);
+        }
+
+        $semester = Semester::where('status', 'Aktif')
+            ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+            ->first();
+
+        if (!$semester) {
+            return response()->json(['message' => 'Tidak ada semester aktif.'], 400);
+        }
+
+        CeklistCetakRapor::updateOrCreate(
+            [
+                'tahunajaran' => $tahunAjaranAktif->tahunajaran, // asumsi field ini teks
+                'ganjilgenap' => $semester->semester,
+                'kode_rombel' => $request->kode_rombel,
+            ],
+            [
+                'status' => $request->status,
+            ]
+        );
+
+        return response()->json(['message' => 'Checklist berhasil disimpan']);
     }
 }

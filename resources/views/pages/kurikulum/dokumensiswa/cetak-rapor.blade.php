@@ -144,6 +144,36 @@
                         </div>
                         <div class="card-body">
                             @include('pages.kurikulum.dokumensiswa.cetak-rapor-form')
+
+                            <!-- Rounded Ribbon -->
+                            <div class="card ribbon-box border shadow-none mb-lg-0 mt-4 mt-lg-0">
+                                <div class="card-body">
+                                    <div class="ribbon ribbon-primary round-shape">Ceklist Kelas Sudah Cetak</div>
+                                    <h5 class="fs-14 text-end"></h5>
+                                    <div class="ribbon-content mt-4 text-muted">
+                                        <form id="cetak-rapor-checklist-form">
+                                            <div class="mb-3">
+                                                @foreach ($dataKelasCeklistGrouped as $tingkat => $rombels)
+                                                    <h5 class="mt-3">Tingkat {{ $tingkat }} ({{ $rombels->count() }}
+                                                        kelas)</h5>
+                                                    @foreach ($rombels as $rombel)
+                                                        <div class="form-check ms-3">
+                                                            <input class="form-check-input checklist-checkbox"
+                                                                type="checkbox" id="checklist-{{ $rombel->kode_rombel }}"
+                                                                name="checklist[]" value="{{ $rombel->kode_rombel }}"
+                                                                {{ in_array($rombel->kode_rombel, $ceklistTersimpan) ? 'checked' : '' }}>
+                                                            <label class="form-check-label"
+                                                                for="checklist-{{ $rombel->kode_rombel }}">
+                                                                {{ $rombel->rombel }} - {{ $rombel->kode_rombel }}
+                                                            </label>
+                                                        </div>
+                                                    @endforeach
+                                                @endforeach
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -248,6 +278,28 @@
             newWin.document.close();
         }
     </script>
+    <script>
+        $('.checklist-checkbox').on('change', function() {
+            let kodeRombel = $(this).val();
+            let isChecked = $(this).is(':checked');
 
+            $.ajax({
+                url: '{{ route('kurikulum.dokumentsiswa.ceklistcetakrapor') }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    kode_rombel: kodeRombel,
+                    status: isChecked ? 'Sudah' : 'Belum'
+                },
+                success: function(response) {
+                    //console.log(response.message);
+                    showToast('success', response.message);
+                },
+                error: function(xhr) {
+                    alert('Gagal menyimpan ceklist.');
+                }
+            });
+        });
+    </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection
