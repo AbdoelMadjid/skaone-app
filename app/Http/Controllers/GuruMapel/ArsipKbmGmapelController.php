@@ -40,6 +40,13 @@ class ArsipKbmGmapelController extends Controller
             'tingkat',
         ]);
 
+        // Urutkan berdasarkan tingkat di dalam setiap tahunajaran → ganjilgenap
+        $data = $data->map(function ($semesterGroup) {
+            return $semesterGroup->map(function ($tingkatGroup) {
+                // Urutkan tingkat (pastikan key-nya numerik, 10, 11, 12)
+                return $tingkatGroup->sortKeys();
+            });
+        });
 
         return view('pages.gurumapel.arsip-kbm', compact('data', 'fullName'));
     }
