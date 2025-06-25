@@ -119,57 +119,62 @@ class AboutController extends Controller
 
     public function submitPolling(Request $request)
     {
+        // Cek user login
         $user = Auth::user();
+        if (!$user || !$user->personal_id) {
+            return back()->with('error', 'Anda belum login atau tidak memiliki ID personal.');
+        }
+
         $personalId = $user->personal_id;
 
-        $request->validate([
+        // Validasi awal
+        $validated = $request->validate([
             'polling_id' => 'required|exists:pollings,id',
             'answers' => 'required|array',
             'answers.*' => 'required',
         ]);
 
-        $pollingId = $request->input('polling_id');
+        $pollingId = $validated['polling_id'];
 
+        // Cek apakah user sudah pernah menjawab polling ini
         $alreadyResponded = Response::where('user_id', $personalId)
-            ->whereHas('question', function ($query) use ($pollingId) {
-                $query->where('polling_id', $pollingId->id);
-            })
-            ->exists();
+            ->whereIn('question_id', function ($q) use ($pollingId) {
+                $q->select('id')->from('questions')->where('polling_id', $pollingId);
+            })->exists();
 
         if ($alreadyResponded) {
             return back()->with('error', 'Anda sudah mengisi polling ini sebelumnya.');
         }
 
-        foreach ($request->input('answers') as $questionId => $answerValue) {
+        // Loop jawaban
+        foreach ($validated['answers'] as $questionId => $answerValue) {
             $question = Question::find($questionId);
-
             if (!$question || $question->polling_id != $pollingId) {
                 continue;
             }
 
-            $data = [
+            $responseData = [
                 'question_id' => $questionId,
                 'user_id' => $personalId,
             ];
 
             if ($question->question_type === 'multiple_choice') {
-                if (!in_array($answerValue, ['1', '2', '3', '4', '5'])) {
-                    return back()->withErrors(['answers.' . $questionId => 'Pilihan tidak valid.']);
-                }
-                $data['choice_answer'] = (int) $answerValue;
-                $data['text_answer'] = null;
+                $responseData['choice_answer'] = (int)$answerValue;
+                $responseData['text_answer'] = null;
             } else {
-                $wordCount = preg_match_all('/\b\w+\b/u', strip_tags($answerValue));
+                // Hitung jumlah kata
+                $wordCount = str_word_count(strip_tags($answerValue));
                 if ($wordCount < 15 || $wordCount > 100) {
                     return back()->withErrors([
                         'answers.' . $questionId => 'Jawaban harus minimal 15 kata dan maksimal 100 kata.'
                     ]);
                 }
-                $data['text_answer'] = $answerValue;
-                $data['choice_answer'] = null;
+
+                $responseData['choice_answer'] = null;
+                $responseData['text_answer'] = $answerValue;
             }
 
-            Response::create($data);
+            Response::create($responseData);
         }
 
         return back()->with('toast_success', 'Terima kasih, jawaban Anda telah berhasil dikirim.');

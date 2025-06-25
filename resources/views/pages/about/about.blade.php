@@ -8,8 +8,10 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 @endsection
 @section('content')
-    @if (auth()->check() &&
-            auth()->user()->hasAnyRole(['master']))
+    @php
+        $user = auth()->user();
+    @endphp
+    @if ($user && method_exists($user, 'hasAnyRole') && $user->hasAnyRole(['master']))
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
@@ -131,7 +133,7 @@
                 </div><!--end card -->
             </div><!--end card -->
         </div><!--end row-->
-    @else
+    @elseif ($user && method_exists($user, 'hasRole') && $user->hasRole('guru'))
         <div class="row justify-content-center">
             <div class="col-lg-12">
                 <div class="card">
@@ -223,7 +225,7 @@
                                                 {{ \Carbon\Carbon::parse($polling->end_time)->format('d M Y H:i') }}</small>
                                         </div>
                                         <div class="card-body">
-                                            <form action="{{ route('about.pollingsubmit') }}" method="POST">
+                                            <form action="{{ route('about.about.pollingsubmit') }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="polling_id" value="{{ $polling->id }}">
 
@@ -247,8 +249,8 @@
                                                                 </div>
                                                             @endfor
                                                         @elseif ($question->question_type === 'text')
-                                                            <textarea name="answers[{{ $question->id }}]" rows="3" class="form-control" minlength="15" maxlength="100"
-                                                                required placeholder="Jawaban minimal 15 kata, maksimal 100 kata."></textarea>
+                                                            <textarea name="answers[{{ $question->id }}]" rows="3" class="form-control" minlength="0" maxlength="100"
+                                                                required placeholder="Jawaban maksimal 100 kata."></textarea>
                                                         @endif
                                                     </div>
                                                 @endforeach

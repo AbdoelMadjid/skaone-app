@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Polling extends Model
 {
     use HasFactory;
+    protected $table = 'pollings';
     protected $fillable = ['title', 'start_time', 'end_time'];
 
     public function questions()
