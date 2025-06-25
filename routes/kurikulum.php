@@ -115,10 +115,10 @@ Route::middleware('auth')->group(function () {
             Route::get('/tampil-walikelas/{kode_rombel}', [ArsipWaliKelasController::class, 'tampilWaliKelas']);
             Route::get('/get-kode-rombel', [ArsipWaliKelasController::class, 'getKodeRombel']);
             Route::get('/info-wali-siswa', [ArsipWaliKelasController::class, 'infoWaliSiswa']);
-            Route::get('/generaterankingsiswa', [ArsipWaliKelasController::class, 'generateManual'])->name('generaterankingsiswa');
 
+            /* Route::get('/generaterankingsiswa', [ArsipWaliKelasController::class, 'generateManual'])->name('generaterankingsiswa');
             Route::get('/ranking-tingkat', [ArsipWaliKelasController::class, 'rankingTingkat'])->name('ranking.tingkat');
-            Route::get('/ranking-tingkat-kk', [ArsipWaliKelasController::class, 'rankingTingkatKK'])->name('ranking.tingkat.kk');
+            Route::get('/ranking-tingkat-kk', [ArsipWaliKelasController::class, 'rankingTingkatKK'])->name('ranking.tingkat.kk'); */
         });
 
         Route::group(['prefix' => 'dokumentsiswa', 'as' => 'dokumentsiswa.'], function () {
