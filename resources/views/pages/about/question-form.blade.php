@@ -24,6 +24,9 @@
 
             @php
                 $choices = old('choice_descriptions', $data->choice_descriptions ?? []);
+                if (!is_array($choices)) {
+                    $choices = json_decode($choices, true) ?? [];
+                }
                 $isMultiple = old('question_type', $data->question_type ?? '') === 'multiple_choice';
             @endphp
 

@@ -48,11 +48,11 @@ class QuestionController extends Controller
             'choice_descriptions.*' => 'nullable|string|max:255',
         ]);
 
-        if ($data['question_type'] === 'multiple_choice') {
-            $data['choice_descriptions'] = json_encode($data['choice_descriptions']);
-        } else {
+        // Biarkan array dikirim langsung jika multiple_choice
+        if ($data['question_type'] !== 'multiple_choice') {
             $data['choice_descriptions'] = null;
         }
+
 
         Question::create($data);
 

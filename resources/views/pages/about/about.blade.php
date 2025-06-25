@@ -225,12 +225,24 @@
                                                 {{ \Carbon\Carbon::parse($polling->start_time)->format('d M Y H:i') }} -
                                                 {{ \Carbon\Carbon::parse($polling->end_time)->format('d M Y H:i') }}</small>
                                         </div>
+
                                         <div class="card-body">
                                             <form action="{{ route('about.pollingsubmit') }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="polling_id" value="{{ $polling->id }}">
 
-                                                @foreach ($polling->questions as $question)
+                                                {{-- ✅ Letakkan logic pengurutan/acak soal di sini --}}
+                                                @php
+                                                    $mcQuestions = $polling->questions
+                                                        ->where('question_type', 'multiple_choice')
+                                                        ->shuffle();
+                                                    $textQuestions = $polling->questions
+                                                        ->where('question_type', 'text')
+                                                        ->shuffle();
+                                                    $sortedQuestions = $mcQuestions->concat($textQuestions);
+                                                @endphp
+
+                                                @foreach ($sortedQuestions as $question)
                                                     <div class="mb-4">
                                                         <label
                                                             class="form-label fw-bold">{{ $question->question_text }}</label>
@@ -262,6 +274,7 @@
                                     </div>
                                 @endif
                             @endforeach
+
                         </div>
                     </div>
                 </div>
