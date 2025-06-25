@@ -35,3 +35,21 @@
         </div>
     </div>
 </div><!--end tab-content-->
+<div id="ttd-wali" style="display:none;">
+    <table width='100%' style='border: none !important;'>
+        <tr>
+            <td width="400" style='border: none !important;'></td>
+            <td style='border: none !important;'>
+                Kadipaten, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}<br>
+                Wali Kelas,
+                <p>&nbsp;</p>
+                <strong>
+                    {!! $datawaliKelas->gelardepan ?? '' !!}
+                    {!! strtoupper(strtolower($datawaliKelas->namalengkap)) ?? '' !!},
+                    {!! $datawaliKelas->gelarbelakang ?? '' !!}
+                </strong><br>
+                NIP. {!! $datawaliKelas->nip ?? '' !!}
+            </td>
+        </tr>
+    </table>
+</div>

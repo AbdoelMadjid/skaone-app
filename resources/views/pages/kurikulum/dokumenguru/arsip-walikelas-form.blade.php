@@ -172,6 +172,11 @@
                 })
                 .then(html => {
                     detailDiv.innerHTML = html;
+                    // Re-bind tombol cetak setelah konten AJAX selesai dimuat
+                    const btnCetak = document.getElementById('btn-cetak-ranking');
+                    if (btnCetak) {
+                        btnCetak.addEventListener('click', printRanking);
+                    }
                 })
                 .catch(error => {
                     console.error(error);
@@ -181,6 +186,74 @@
         }
     });
 </script>
+
+<script>
+    function printRanking() {
+        const content = document.getElementById("cetak-ranking-walikelas");
+        const ttdWali = document.getElementById("ttd-wali");
+
+        if (!content) {
+            showToast('error', 'Data ranking belum tersedia. silakan pilih rombel terlebih dahulu. dan Confirmasi.');
+            return;
+        }
+
+        const tambahan = ttdWali ? ttdWali.innerHTML : "";
+
+        const printWindow = window.open("", "", "width=800,height=600");
+        printWindow.document.write(`
+        <html>
+            <head>
+                <title>Cetak Ranking</title>
+                <style>
+                    body { font-family: 'Times New Roman', serif; font-size: 12px; }
+                        table { width: 100%; border-collapse: collapse; }
+                        table, th, td { border: 1px solid black; }
+                        th { padding: 4px; text-align: center; }
+                        h4 { margin: 5px 0; text-align: center; }
+                </style>
+            </head>
+            <body onload="window.print(); window.close();">
+                <h4>RANKING SISWA KELAS {{ $waliKelas->rombel }}</h4>
+                <h4>TAHUN AJARAN {{ $dataPilWalas->tahunajaran }} - SEMESTER {{ $dataPilWalas->ganjilgenap }}</h4>
+                ${content.innerHTML}
+                <br><br>
+                ${tambahan}
+            </body>
+        </html>
+    `);
+        printWindow.document.close();
+    }
+</script>
+{{-- <script>
+    function printRanking() {
+        const content = document.getElementById("cetak-ranking-walikelas");
+        if (!content) {
+            alert("Data ranking belum tersedia.");
+            return;
+        }
+
+        const printWindow = window.open("", "", "width=800,height=600");
+        printWindow.document.write(`
+            <html>
+                <head>
+                    <title>Cetak Ranking</title>
+                    <style>
+                        body { font-family: 'Times New Roman', serif; font-size: 12px; }
+                        table { width: 100%; border-collapse: collapse; }
+                        table, th, td { border: 1px solid black; }
+                        th { padding: 4px; text-align: center; }
+                        h4 { margin: 5px 0; text-align: center; }
+                    </style>
+                </head>
+                <body onload="window.print(); window.close();">
+                    ${content.innerHTML}
+                </body>
+            </html>
+        `);
+        printWindow.document.close();
+    }
+</script> --}}
+
 <script>
     document.getElementById('btn-ranking-pertk').addEventListener('click', function() {
         const btn = this;

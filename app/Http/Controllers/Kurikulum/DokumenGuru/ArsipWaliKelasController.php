@@ -297,6 +297,21 @@ class ArsipWaliKelasController extends Controller
             $dataPilWalas->ganjilgenap,
         ]);
 
+        $datawaliKelas = DB::table('wali_kelas')
+            ->select(
+                'wali_kelas.*',
+                'personil_sekolahs.id_personil',
+                'personil_sekolahs.nip',
+                'personil_sekolahs.gelardepan',
+                'personil_sekolahs.namalengkap',
+                'personil_sekolahs.gelarbelakang',
+                'personil_sekolahs.photo'
+            )
+            ->join('personil_sekolahs', 'wali_kelas.wali_kelas', '=', 'personil_sekolahs.id_personil')
+            ->where('wali_kelas.tahunajaran', $dataPilWalas->tahunajaran)
+            ->where('wali_kelas.kode_rombel', $dataPilWalas->kode_rombel)
+            ->first();
+
         if ($dataPilWalas) {
             return view('pages.kurikulum.dokumenguru.arsip-walikelas-tab-content',  [
                 'dataPilWalas' => $dataPilWalas,
@@ -311,6 +326,7 @@ class ArsipWaliKelasController extends Controller
                 'rombongan' => $rombongan,
                 'kenaikanKelas' => $kenaikanKelas,
                 'nilaiRataSiswa' => $nilaiRataSiswa,
+                'datawaliKelas' => $datawaliKelas,
             ])->render(); // Render hanya bagian detail
         }
 

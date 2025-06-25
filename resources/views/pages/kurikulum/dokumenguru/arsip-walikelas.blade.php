@@ -125,6 +125,7 @@
                                     class="ri-file-download-line align-bottom me-1"></i>
                                 Tambah</button>
                         @endif
+                        <button onclick="printRanking()" class="btn btn-primary w-100 mt-3">Cetak Ranking</button>
                     </div>
                 </div>
             </div>
