@@ -92,3 +92,33 @@
         </div>
     @endforeach
 </div>
+<h4 class="mt-5">📝 Statistik Jawaban Teks</h4>
+
+<div class="accordion" id="textResponsesAccordion">
+    @foreach ($textResponses as $index => $stat)
+        <div class="accordion-item mb-2">
+            <h2 class="accordion-header" id="heading{{ $index }}">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapse{{ $index }}" aria-expanded="false"
+                    aria-controls="collapse{{ $index }}">
+                    {{ $stat['question_text'] }}
+                    <span class="badge bg-info ms-2">{{ $stat['count'] }} jawaban</span>
+                </button>
+            </h2>
+            <div id="collapse{{ $index }}" class="accordion-collapse collapse"
+                aria-labelledby="heading{{ $index }}" data-bs-parent="#textResponsesAccordion">
+                <div class="accordion-body">
+                    @if (!empty($stat['responses']))
+                        <ul class="list-group">
+                            @foreach ($stat['responses'] as $response)
+                                <li class="list-group-item">{{ $response }}</li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <p class="text-muted">Belum ada jawaban untuk pertanyaan ini.</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+    @endforeach
+</div>
