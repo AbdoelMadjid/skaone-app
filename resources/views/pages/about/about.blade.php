@@ -131,7 +131,8 @@
                 </div><!--end card -->
             </div><!--end card -->
         </div><!--end row-->
-    @else
+    @elseif (auth()->check() &&
+            auth()->user()->hasAnyRole(['guru']))
         <div class="row justify-content-center">
             <div class="col-lg-12">
                 <div class="card">
@@ -282,6 +283,75 @@
                     </div>
                 </div>
             </div>
+        </div>
+    @else
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="bg-info-subtle position-relative">
+                        <div class="card-body p-5">
+                            <div class="text-center mt-sm-1 mb-5 text-black-50">
+                                <div>
+                                    <a href="/" class="d-inline-block auth-logo">
+                                        <img src="{{ URL::asset('build/images/lcks3.png') }}" alt=""
+                                            height="100">
+                                    </a>
+                                </div>
+                                <p class="mt-3 fs-15 fw-medium">{{ $profileApp->app_deskripsi ?? '' }}</p>
+                            </div>
+                        </div>
+                        <div class="shape">
+                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs"
+                                width="1440" height="60" preserveAspectRatio="none" viewBox="0 0 1440 60">
+                                <g mask="url(&quot;#SvgjsMask1001&quot;)" fill="none">
+                                    <path d="M 0,4 C 144,13 432,48 720,49 C 1008,50 1296,17 1440,9L1440 60L0 60z"
+                                        style="fill: var(--vz-secondary-bg);"></path>
+                                </g>
+                                <defs>
+                                    <mask id="SvgjsMask1001">
+                                        <rect width="1440" height="80" fill="#ffffff"></rect>
+                                    </mask>
+                                </defs>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="card-body p-6">
+                        <div class="row">
+                            @foreach ($teamPengembang as $team)
+                                <div class="col-lg-3">
+                                    <div class="card text-center">
+                                        <div class="card-body p-4 bg-info-subtle">
+                                            <!-- Display the team member's photo -->
+                                            <img src="{{ asset('images/team/' . $team->photo) }}"
+                                                alt="{{ $team->namalengkap }}"
+                                                class="rounded-circle avatar-xl mx-auto d-block">
+                                            <!-- Display the team member's name -->
+                                            <h5 class="fs-17 mt-3 mb-2">{{ $team->namalengkap }}</h5>
+
+                                            <!-- Display the team member's position -->
+                                            <p class="text-muted fs-13 mb-3">{{ $team->jabatan }}</p>
+
+                                            <!-- Optional: Display a description or location -->
+                                            <p class="text-muted mb-4 fs-14">
+                                                {{ $team->deskripsi }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        {{-- <div class="text-end hstack gap-2 justify-content-end">
+                            <a href="#!" class="btn btn-success">Accept</a>
+                            <a href="#!" class="btn btn-outline-danger"><i
+                                    class="ri-close-line align-bottom me-1"></i>
+                                Decline</a>
+                        </div> --}}
+                    </div>
+                </div>
+            </div>
+            <!--end col-->
         </div>
     @endif
 @endsection
