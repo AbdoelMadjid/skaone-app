@@ -25,10 +25,13 @@ class QuestionController extends Controller
     public function create()
     {
         $pollingId = Polling::pluck('title', 'id')->toArray();
+        $data = new Question();
+        $data->choice_descriptions = []; // Untuk mencegah error saat blade render
+
         return view('pages.about.question-form', [
-            'data' => new Question(),
+            'data' => $data,
             'action' => route('about.question.store'),
-            'pollingId' => $pollingId
+            'pollingId' => $pollingId,
         ]);
     }
 
@@ -38,6 +41,7 @@ class QuestionController extends Controller
     public function store(Request $request, Question $question)
     {
         $data = $request->validate([
+            'polling_id' => 'required|exists:pollings,id',
             'question_text' => 'required|string',
             'question_type' => 'required|in:multiple_choice,text',
             'choice_descriptions' => 'nullable|array',
@@ -50,7 +54,7 @@ class QuestionController extends Controller
             $data['choice_descriptions'] = null;
         }
 
-        $question->create($data);
+        Question::create($data);
 
         return responseSuccess();
     }
@@ -66,24 +70,54 @@ class QuestionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Question $question)
     {
-        //
+
+        $pollingId = Polling::pluck('title', 'id')->toArray();
+
+        // Decode choice_descriptions jika multiple_choice
+        if ($question->question_type === 'multiple_choice' && is_string($question->choice_descriptions)) {
+            $question->choice_descriptions = json_decode($question->choice_descriptions, true);
+        }
+
+        return view('pages.about.question-form', [
+            'data' => $question,
+            'action' => route('about.question.update', $question->id),
+            'pollingId' => $pollingId,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Question $question)
     {
-        //
+        $data = $request->validate([
+            'polling_id' => 'required|exists:pollings,id',
+            'question_text' => 'required|string',
+            'question_type' => 'required|in:multiple_choice,text',
+            'choice_descriptions' => 'nullable|array',
+            'choice_descriptions.*' => 'nullable|string|max:255',
+        ]);
+
+        if ($data['question_type'] === 'multiple_choice') {
+            $data['choice_descriptions'] = json_encode($data['choice_descriptions']);
+        } else {
+            $data['choice_descriptions'] = null;
+        }
+
+        $question->update($data);
+
+        return responseSuccess(true);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Question $question)
     {
-        //
+        $question->delete();
+
+        return responseSuccessDelete();
     }
 }

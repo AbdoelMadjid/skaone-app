@@ -14,4 +14,8 @@ class Polling extends Model
     {
         return $this->hasMany(Question::class);
     }
+    public function responses()
+    {
+        return $this->hasManyThrough(Response::class, Question::class);
+    }
 }
