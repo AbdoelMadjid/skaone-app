@@ -8,10 +8,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 @endsection
 @section('content')
-    @php
-        $user = auth()->user();
-    @endphp
-    @if ($user && method_exists($user, 'hasAnyRole') && $user->hasAnyRole(['master']))
+    @if (auth()->check() &&
+            auth()->user()->hasAnyRole(['master']))
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
@@ -92,12 +90,6 @@
                                     <i class="ri-image-line text-muted align-bottom me-1"></i> Daily Messages
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" href="#polling" role="tab"
-                                    aria-selected="false">
-                                    <i class="ri-image-line text-muted align-bottom me-1"></i> Polling
-                                </a>
-                            </li>
                             @include('abouts.master-akses')
                         </ul>
                     </div>
@@ -124,16 +116,13 @@
                             <div class="tab-pane" id="dailymessages" role="tabpanel">
                                 @include('abouts.daily-massage')
                             </div><!--end tab-pane-->
-                            <div class="tab-pane" id="dailymessages" role="tabpanel">
-                                @include('abouts.polling')
-                            </div><!--end tab-pane-->
                         </div><!--end tab-content-->
 
                     </div><!--end card-body-->
                 </div><!--end card -->
             </div><!--end card -->
         </div><!--end row-->
-    @elseif ($user && method_exists($user, 'hasRole') && $user->hasRole('guru'))
+    @else
         <div class="row justify-content-center">
             <div class="col-lg-12">
                 <div class="card">
@@ -202,72 +191,6 @@
             </div>
             <!--end col-->
         </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card border">
-                    <div class="card-body">
-                        <div class="row">
-                            @foreach ($pollings as $polling)
-                                @php
-                                    $alreadyResponded = in_array($polling->id, $respondedPollingIds);
-                                @endphp
-
-                                @if ($alreadyResponded)
-                                    <div class="alert alert-success">
-                                        Anda sudah menjawab polling: <strong>{{ $polling->title }}</strong>
-                                    </div>
-                                @else
-                                    <div class="card mb-4 border">
-                                        <div class="card-header bg-primary text-white">
-                                            <h5 class="mb-0">{{ $polling->title }}</h5>
-                                            <small>Periode:
-                                                {{ \Carbon\Carbon::parse($polling->start_time)->format('d M Y H:i') }} -
-                                                {{ \Carbon\Carbon::parse($polling->end_time)->format('d M Y H:i') }}</small>
-                                        </div>
-                                        <div class="card-body">
-                                            <form action="{{ route('about.about.pollingsubmit') }}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="polling_id" value="{{ $polling->id }}">
-
-                                                @foreach ($polling->questions as $question)
-                                                    <div class="mb-4">
-                                                        <label
-                                                            class="form-label fw-bold">{{ $question->question_text }}</label>
-
-                                                        @if ($question->question_type === 'multiple_choice')
-                                                            @for ($i = 1; $i <= 5; $i++)
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="radio"
-                                                                        name="answers[{{ $question->id }}]"
-                                                                        id="q{{ $question->id }}_{{ $i }}"
-                                                                        value="{{ $i }}" required>
-                                                                    <label class="form-check-label"
-                                                                        for="q{{ $question->id }}_{{ $i }}">
-                                                                        {{ $i }} -
-                                                                        {{ $question->choice_descriptions[$i] ?? '' }}
-                                                                    </label>
-                                                                </div>
-                                                            @endfor
-                                                        @elseif ($question->question_type === 'text')
-                                                            <textarea name="answers[{{ $question->id }}]" rows="3" class="form-control" minlength="0" maxlength="100"
-                                                                required placeholder="Jawaban maksimal 100 kata."></textarea>
-                                                        @endif
-                                                    </div>
-                                                @endforeach
-
-                                                <button type="submit" class="btn btn-success">Kirim Jawaban</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                @endif
-                            @endforeach
-
-                            <!-- end col -->
-                        </div>
-                    </div>
-                </div><!--end card-->
-            </div><!--end col-->
-        </div><!--end row-->
     @endif
 @endsection
 @section('script')
@@ -288,9 +211,6 @@
     </script>
 @endsection
 @section('script-bottom')
-    @if (session('toast_success'))
-        showToast('success', '{{ session('toast_success') }}');
-    @endif
     <script src="{{ URL::asset('build/libs/prismjs/prism.js') }}"></script>
     <script src="{{ URL::asset('build/libs/swiper/swiper-bundle.min.js') }}"></script>
     <script src="{{ URL::asset('build/js/pages/swiper.init.js') }}"></script>

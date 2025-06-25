@@ -124,8 +124,6 @@ Route::group(['prefix' => 'about', 'as' => 'about.'], function () {
     Route::resource('events', EventController::class);
     Route::resource('polling', PollingController::class);
     Route::resource('question', QuestionController::class);
-    // web.php
-    Route::post('/about/pollingsubmit', [AboutController::class, 'submitPolling'])->name('about.pollingsubmit');
 });
 
 // Kelompok rute untuk profil, hanya dapat diakses oleh pengguna yang sudah terotentikasi
