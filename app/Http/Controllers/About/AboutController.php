@@ -11,8 +11,11 @@ use App\Models\About\Galery;
 use App\Models\About\KumpulanFaq;
 use App\Models\About\PhotoSlide;
 use App\Models\About\Polling;
+use App\Models\About\Response;
 use App\Models\About\TeamPengembang;
 use App\Models\AppSupport\Referensi;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class AboutController extends Controller
 {
@@ -30,12 +33,40 @@ class AboutController extends Controller
         $galleries = Galery::all();
         $dailyMessages = DailyMessages::all(); // Fetch data dari DailyMessage
 
+        $aingPengguna = User::find(Auth::user()->id);
 
-        $pollings = Polling::with('questions.responses')->get();
+        $pollings = Polling::with('questions') // include relasi
+            ->where('start_time', '<=', now())
+            ->where('end_time', '>=', now())
+            ->get();
+
+
+        // Ambil semua polling yang sudah dijawab user (berdasarkan polling_id dari response -> question)
+        $respondedPollingIds = Response::where('user_id', $aingPengguna->id)
+            ->whereIn('question_id', function ($query) {
+                $query->select('id')->from('questions');
+            })
+            ->with('question')
+            ->get()
+            ->pluck('question.polling_id')
+            ->unique()
+            ->toArray();
+
+        $pollingIds = Polling::where('start_time', '<=', now())
+            ->where('end_time', '>=', now())
+            ->pluck('id');
+
+        $userIds = Response::whereHas('question', function ($q) use ($pollingIds) {
+            $q->whereIn('polling_id', $pollingIds);
+        })->pluck('user_id')->unique();
+
+        $usersWhoPolled = User::whereIn('id', $userIds)->get();
+
+        $pollingsQstats = Polling::with('questions.responses')->get();
         $pollingStats = [];
         $textResponses = [];
 
-        foreach ($pollings as $polling) {
+        foreach ($pollingsQstats as $polling) {
             foreach ($polling->questions as $question) {
                 if ($question->question_type === 'multiple_choice') {
                     $stats = [];
@@ -52,11 +83,27 @@ class AboutController extends Controller
                 } elseif ($question->question_type === 'text') {
                     $responses = $question->responses->pluck('text_answer')->filter()->toArray();
 
+                    $wordFrequency = [];
+
+                    foreach ($responses as $response) {
+                        $words = preg_split('/\s+/', strip_tags(strtolower($response))); // lowercase dan strip tag
+                        foreach ($words as $word) {
+                            $word = trim($word, ".,!?\"'()[]{}"); // bersihkan simbol
+                            if (mb_strlen($word) < 4) continue; // abaikan kata pendek (opsional)
+                            $wordFrequency[$word] = ($wordFrequency[$word] ?? 0) + 1;
+                        }
+                    }
+
+                    // Ambil 10 kata paling sering
+                    arsort($wordFrequency);
+                    $topWords = array_slice($wordFrequency, 0, 10);
+
                     $textResponses[] = [
                         'question_id' => $question->id,
                         'question_text' => $question->question_text,
                         'responses' => $responses,
                         'count' => count($responses),
+                        'top_words' => $topWords,
                     ];
                 }
             }
@@ -74,6 +121,10 @@ class AboutController extends Controller
                 'dailyMessages' => $dailyMessages,
                 'pollingStats' => $pollingStats,
                 'textResponses' => $textResponses,
+                'aingPengguna' => $aingPengguna,
+                'pollings' => $pollings,
+                'respondedPollingIds' => $respondedPollingIds,
+                'usersWhoPolled' => $usersWhoPolled,
             ]
         );
     }

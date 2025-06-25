@@ -127,7 +127,7 @@ class PollingController extends Controller
                 $data['text_answer'] = null;
             } else {
                 $wordCount = preg_match_all('/\b\w+\b/u', strip_tags($answerValue));
-                if ($wordCount < 15 || $wordCount > 100) {
+                if ($wordCount < 3 || $wordCount > 100) {
                     return back()->withErrors([
                         'answers.' . $questionId => 'Jawaban harus minimal 15 kata dan maksimal 100 kata.'
                     ]);

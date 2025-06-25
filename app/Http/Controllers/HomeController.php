@@ -140,34 +140,6 @@ class HomeController extends Controller
                 ->orderBy('urutan');
         }])->get();
 
-
-        $pollings = Polling::with('questions') // include relasi
-            ->where('start_time', '<=', now())
-            ->where('end_time', '>=', now())
-            ->get();
-
-
-        // Ambil semua polling yang sudah dijawab user (berdasarkan polling_id dari response -> question)
-        $respondedPollingIds = Response::where('user_id', $aingPengguna->id)
-            ->whereIn('question_id', function ($query) {
-                $query->select('id')->from('questions');
-            })
-            ->with('question')
-            ->get()
-            ->pluck('question.polling_id')
-            ->unique()
-            ->toArray();
-
-        $pollingIds = Polling::where('start_time', '<=', now())
-            ->where('end_time', '>=', now())
-            ->pluck('id');
-
-        $userIds = Response::whereHas('question', function ($q) use ($pollingIds) {
-            $q->whereIn('polling_id', $pollingIds);
-        })->pluck('user_id')->unique();
-
-        $usersWhoPolled = User::whereIn('id', $userIds)->get();
-
         return view('dashboard', [
             'activeUsers' => $activeUsers,
             'activeUsersCount' => $activeUsersCount,
@@ -192,11 +164,6 @@ class HomeController extends Controller
             'pengumumanAll' => $pengumumanAll,
             'dataRombel' => $dataRombel,
             'judulUtama' => $judulUtama,
-
-            'pollings' => $pollings,
-            'respondedPollingIds' => $respondedPollingIds,
-            'usersWhoPolled' => $usersWhoPolled,
-
         ]);
     }
 
