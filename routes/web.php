@@ -126,6 +126,8 @@ Route::group(['prefix' => 'about', 'as' => 'about.'], function () {
     Route::resource('question', QuestionController::class);
 });
 
+Route::middleware(['auth'])->post('/about/pollingsubmit', [PollingController::class, 'submitPolling'])->name('about.pollingsubmit');
+
 // Kelompok rute untuk profil, hanya dapat diakses oleh pengguna yang sudah terotentikasi
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

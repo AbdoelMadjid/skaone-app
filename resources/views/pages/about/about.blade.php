@@ -90,6 +90,12 @@
                                     <i class="ri-image-line text-muted align-bottom me-1"></i> Daily Messages
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#polling" role="tab"
+                                    aria-selected="false">
+                                    <i class="ri-image-line text-muted align-bottom me-1"></i> Polling
+                                </a>
+                            </li>
                             @include('abouts.master-akses')
                         </ul>
                     </div>
@@ -115,6 +121,9 @@
                             </div><!--end tab-pane-->
                             <div class="tab-pane" id="dailymessages" role="tabpanel">
                                 @include('abouts.daily-massage')
+                            </div><!--end tab-pane-->
+                            <div class="tab-pane" id="polling" role="tabpanel">
+                                @include('abouts.polling')
                             </div><!--end tab-pane-->
                         </div><!--end tab-content-->
 

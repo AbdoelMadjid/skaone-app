@@ -10,6 +10,7 @@ use App\Models\About\FiturCoding;
 use App\Models\About\Galery;
 use App\Models\About\KumpulanFaq;
 use App\Models\About\PhotoSlide;
+use App\Models\About\Polling;
 use App\Models\About\TeamPengembang;
 use App\Models\AppSupport\Referensi;
 
@@ -29,6 +30,38 @@ class AboutController extends Controller
         $galleries = Galery::all();
         $dailyMessages = DailyMessages::all(); // Fetch data dari DailyMessage
 
+
+        $pollings = Polling::with('questions.responses')->get();
+        $pollingStats = [];
+        $textResponses = [];
+
+        foreach ($pollings as $polling) {
+            foreach ($polling->questions as $question) {
+                if ($question->question_type === 'multiple_choice') {
+                    $stats = [];
+
+                    for ($i = 1; $i <= 5; $i++) {
+                        $stats[$i] = $question->responses->where('choice_answer', $i)->count();
+                    }
+
+                    $pollingStats[] = [
+                        'question_id' => $question->id,
+                        'question_text' => $question->question_text,
+                        'answers' => $stats,
+                    ];
+                } elseif ($question->question_type === 'text') {
+                    $responses = $question->responses->pluck('text_answer')->filter()->toArray();
+
+                    $textResponses[] = [
+                        'question_id' => $question->id,
+                        'question_text' => $question->question_text,
+                        'responses' => $responses,
+                        'count' => count($responses),
+                    ];
+                }
+            }
+        }
+
         return view(
             'pages.about.about',
             [
@@ -38,7 +71,9 @@ class AboutController extends Controller
                 'photoSlides' => $photoSlides,
                 'categoryGalery' => $categoryGalery,
                 'galleries' => $galleries,
-                'dailyMessages' => $dailyMessages
+                'dailyMessages' => $dailyMessages,
+                'pollingStats' => $pollingStats,
+                'textResponses' => $textResponses,
             ]
         );
     }
