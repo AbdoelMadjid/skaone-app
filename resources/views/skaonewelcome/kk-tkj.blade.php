@@ -11,7 +11,7 @@
         <!-- Lightbox Single Image -->
         <div class="row">
             <div class="col-md-3">
-                <img class="img-fluid" src="{{ URL::asset('images/logojurusan/logo-tkj.png') }}" alt="Image Description">
+                <img class="img-fluid" src="{{ URL::asset('images/jurusan_logo/logo-tkj.png') }}" alt="Image Description">
                 <hr class="g-brd-gray-light-v4 g-my-60">
                 <header class="text-center mx-auto g-mb-10">
                     <div class="u-heading-v6-2 text-center text-uppercase g-mb-20">
@@ -99,8 +99,8 @@
                                 // Tentukan path gambar
                                 $imagePath =
                                     $photo && $photo->image
-                                        ? asset('images/thumbnail/' . $photo->image)
-                                        : asset('images/thumbnail/default.jpg');
+                                        ? asset('images/jurusan_gmb/' . $photo->image)
+                                        : asset('images/jurusan_gmb/default.jpg');
                             @endphp
                             <img src="{{ $imagePath }}" alt="client-img" class="mx-auto img-fluid d-block mt-5">
                         </div>
