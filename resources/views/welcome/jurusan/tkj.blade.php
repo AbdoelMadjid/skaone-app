@@ -11,7 +11,7 @@
         <hr>
         <div class="row">
             <div class="col-lg-3">
-                <img src="{{ URL::asset('images/logojurusan/logo-tkj.png') }}" alt="client-img"
+                <img src="{{ URL::asset('images/jurusan_logo/logo-tkj.png') }}" alt="client-img"
                     class="mx-auto img-fluid d-block">
                 <table class="table mt-5">
                     <thead>
