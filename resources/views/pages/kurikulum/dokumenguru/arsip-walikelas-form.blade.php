@@ -30,13 +30,13 @@
     <button type="button" id="btn-data-walikelas" class="btn btn-soft-primary w-100 mt-3">Confirm</button>
 </form>
 
-{{-- <button type="button" id="btn-ranking-pertk" class="btn btn-soft-primary w-100 mt-3">Ranking pertingkat</button>
+<button type="button" id="btn-ranking-pertk" class="btn btn-soft-primary w-100 mt-3">Ranking pertingkat</button>
 <button type="button" id="btn-ranking-pertkkk" class="btn btn-soft-primary w-100 mt-3">Ranking pertingkat per
     kk</button>
 
 <form method="GET" action="{{ route('kurikulum.dokumenguru.generaterankingsiswa') }}">
     <button class="btn btn-success w-100 mt-3">Generate Ranking Manual</button>
-</form> --}}
+</form>
 
 <script>
     // JavaScript untuk menangani perubahan dan permintaan AJAX
@@ -254,7 +254,7 @@
     }
 </script> --}}
 
-{{-- <script>
+<script>
     document.getElementById('btn-ranking-pertk').addEventListener('click', function() {
         const btn = this;
         btn.innerText = 'Memuat...';
@@ -304,4 +304,3 @@
             });
     });
 </script>
- --}}

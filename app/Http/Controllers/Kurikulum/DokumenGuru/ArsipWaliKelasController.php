@@ -373,7 +373,7 @@ class ArsipWaliKelasController extends Controller
         return view('pages.kurikulum.dokumenguru.arsip-walikelas-info', compact('waliKelas'));
     }
 
-    /* public function rankingTingkat()
+    public function rankingTingkat()
     {
         $user = Auth::user();
         $personal_id = $user->personal_id;
@@ -516,5 +516,5 @@ class ArsipWaliKelasController extends Controller
         }
 
         return redirect()->back()->with('toast_success', 'Data ranking berhasil digenerate untuk ' . $tahunajaran . ' - ' . $ganjilgenap);
-    } */
+    }
 }
