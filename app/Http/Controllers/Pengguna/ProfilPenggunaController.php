@@ -15,7 +15,7 @@ use App\Models\PesertaDidik\IdentitasPesertaDidik;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Str;
 
 class ProfilPenggunaController extends Controller
 {
@@ -208,49 +208,25 @@ class ProfilPenggunaController extends Controller
         if ($request->hasFile('profile_image')) {
             // Hapus gambar dan thumbnail lama jika ada
             if ($personil->photo) {
-                //$oldImagePath = base_path('images/personil/' . $personil->photo);
-                $oldThumbnailPath = base_path('images/thumbnail/' . $personil->photo);
-                /* if (file_exists($oldImagePath)) {
+                $oldImagePath = base_path('images/personil/' . $personil->photo);
+                if (file_exists($oldImagePath)) {
                     unlink($oldImagePath);
-                } */
-                if (file_exists($oldThumbnailPath)) {
-                    unlink($oldThumbnailPath);
                 }
             }
 
-            // Upload gambar baru dan buat thumbnail
-            $personilFile = $request->file('profile_image');
-            $personilName = 'pgw_' . time() . '.' . $personilFile->extension();
-
-            // Buat dan simpan thumbnail di `public/images/thumbnail`
-            $destinationPathThumbnail = base_path('images/thumbnail');
-            $img = Image::make($personilFile->path());
-
-            // Tentukan persentase ukuran (misalnya 50% dari ukuran asli)
-            $percentage = 50; // 50% dari ukuran asli
-
-            // Hitung dimensi baru berdasarkan persentase
-            $newWidth = $img->width() * ($percentage / 100);
-            $newHeight = $img->height() * ($percentage / 100);
-
-            // Resize dengan persentase
-            $img->resize($newWidth, $newHeight, function ($constraint) {
-                $constraint->aspectRatio();
-            })->save($destinationPathThumbnail . '/' . $personilName);
-
-            // Simpan gambar asli di `public/images/personil`
-            //$destinationPath = base_path('images/personil');
-            //$personilFile->move($destinationPath, $personilName);
+            $imageFile = $request->file('profile_image');
+            $imageName = 'pgw_' . Str::uuid() . '.' . $imageFile->extension();
+            $imageFile->move(base_path('images/personil/'), $imageName);
 
             // Perbarui nama file gambar di database
-            $personil->photo = $personilName;
+            $personil->photo = $imageName;
         }
 
         // Simpan data ke database
         $personil->save();
 
         if ($user instanceof User) { // Ensure $user is an instance of User model
-            $user->avatar = $personilName;
+            $user->avatar = $imageName;
             $user->save(); // Save user changes
         }
 
@@ -294,7 +270,7 @@ class ProfilPenggunaController extends Controller
         return response()->json(['success' => 'Profile picture updated successfully.']);
     }
 
-    public function updateProfilePictureSiswa(Request $request)
+    /* public function updateProfilePictureSiswa(Request $request)
     {
         // Validasi input gambar
         $request->validate([
@@ -360,7 +336,7 @@ class ProfilPenggunaController extends Controller
         }
 
         return response()->json(['success' => 'Profile picture updated successfully.']);
-    }
+    } */
 
     public function updateOrtuSiswa(Request $request)
     {

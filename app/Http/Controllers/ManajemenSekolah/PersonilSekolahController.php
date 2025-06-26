@@ -17,6 +17,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use Illuminate\Support\Str;
 
 class PersonilSekolahController extends Controller
 {
@@ -70,16 +71,16 @@ class PersonilSekolahController extends Controller
         if ($request->hasFile('photo')) {
             // Delete the old icon if it exists
             if ($personilSekolah->photo) {
-                $oldIconPath = base_path('images/personil' . $personilSekolah->photo);
-                if (file_exists($oldIconPath)) {
-                    unlink($oldIconPath);
+                $oldImagePath = base_path('images/personil' . $personilSekolah->photo);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
                 }
             }
             // Upload the new icon
-            $personilSekolahFile = $request->file('photo');
-            $personilSekolahName = time() . '_' . $personilSekolahFile->getClientOriginalName();
-            $personilSekolahFile->move(base_path('images/personil'), $personilSekolahName);
-            $personilSekolah->photo = $personilSekolahName;
+            $imageFile = $request->file('photo');
+            $imageName = 'pgw_' . Str::uuid() . '.' . $imageFile->extension();
+            $imageFile->move(base_path('images/personil'), $imageName);
+            $personilSekolah->photo = $imageName;
         }
 
         $personilSekolah->save();
@@ -121,19 +122,18 @@ class PersonilSekolahController extends Controller
         if ($request->hasFile('photo')) {
             // Hapus foto lama jika ada
             if ($personilSekolah->photo) {
-                $oldPhotoPath = base_path('images/personil/' . $personilSekolah->photo);
-                if (file_exists($oldPhotoPath)) {
-                    unlink($oldPhotoPath);
+                $oldImagePath = base_path('images/personil/' . $personilSekolah->photo);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
                 }
             }
 
-            // Unggah foto baru
-            $appPhotoFile = $request->file('photo');
-            $appPhotoName = time() . '_' . $appPhotoFile->getClientOriginalName();
-            $appPhotoFile->move(base_path('images/personil/'), $appPhotoName);
+            $imageFile = $request->file('photo');
+            $imageName = 'pgw_' . Str::uuid() . '.' . $imageFile->extension();
+            $imageFile->move(base_path('images/personil/'), $imageName);
 
             // Setel nama file baru pada model
-            $personilSekolah->photo = $appPhotoName;
+            $personilSekolah->photo = $imageName;
         }
 
         // Isi atribut lain dari request kecuali 'photo'
