@@ -197,7 +197,7 @@
                                         @foreach ($photoSlides as $index => $slide)
                                             <div class="carousel-item {{ $index === 0 ? 'active' : '' }}"
                                                 data-bs-interval="{{ $slide->interval }}">
-                                                <img src="{{ asset('images/thumbnail/' . $slide->gambar) }}"
+                                                <img src="{{ asset('images/photoslide/' . $slide->gambar) }}"
                                                     class="d-block w-100" alt="{{ $slide->alt_text ?? 'Photo Slide' }}">
                                             </div>
                                         @endforeach

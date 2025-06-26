@@ -29,7 +29,7 @@
                                 <img src="{{ URL::asset('images/siswacowok.png') }}" alt="User Avatar"
                                     class="rounded-circle avatar-xl img-thumbnail user-profile-image">
                             @else
-                                <img src="{{ URL::asset('images/thumbnail/' . $pesertaDidik->foto) }}" alt="User Avatar"
+                                <img src="{{ URL::asset('images/peserta_didik/' . $pesertaDidik->foto) }}" alt="User Avatar"
                                     class="rounded-circle avatar-xl img-thumbnail user-profile-image">
                             @endif
                             {{-- <div class="p-0 avatar-xs rounded-circle profile-photo-edit">

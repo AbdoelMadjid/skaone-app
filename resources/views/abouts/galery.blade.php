@@ -18,7 +18,7 @@
                             <tbody>
                                 @foreach ($galleries as $gallery)
                                     <tr>
-                                        <td><img src="{{ asset('images/thumbnail/' . $gallery->image) }}" alt="Image"
+                                        <td><img src="{{ asset('images/galery/' . $gallery->image) }}" alt="Image"
                                                 width="150"></td>
                                         <td>{{ $gallery->title }}</td>
                                         <td>{{ $gallery->author }}</td>

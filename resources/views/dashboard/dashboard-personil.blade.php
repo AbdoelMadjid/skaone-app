@@ -386,7 +386,7 @@
                                                             <img src="{{ URL::asset('build/images/users/user-dummy-img.jpg') }}"
                                                                 alt="" class="avatar-xs rounded-circle me-2">
                                                         @else
-                                                            <img src="{{ URL::asset('images/thumbnail/' . $user->avatar . '') }}"
+                                                            <img src="{{ URL::asset('images/personil/' . $user->avatar . '') }}"
                                                                 alt="" class="avatar-xs rounded-circle me-2">
                                                         @endif
                                                         {{ str_replace('Pgw_', '', $user->personal_id) }} -
@@ -429,7 +429,7 @@
                                                             <img src="{{ URL::asset('build/images/users/user-dummy-img.jpg') }}"
                                                                 alt="" class="avatar-xs rounded-circle me-2">
                                                         @else
-                                                            <img src="{{ URL::asset('images/thumbnail/' . $user->avatar . '') }}"
+                                                            <img src="{{ URL::asset('images/peserta_didik/' . $user->avatar . '') }}"
                                                                 alt="" class="avatar-xs rounded-circle me-2">
                                                         @endif
                                                         {{ $user->nis }} -

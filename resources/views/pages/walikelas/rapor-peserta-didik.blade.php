@@ -84,7 +84,7 @@
                                     <div class="col-md-auto">
                                         <div class="avatar-md">
                                             @if ($personil?->photo)
-                                                <img src="{{ URL::asset('images/thumbnail/' . $personil->photo) }}"
+                                                <img src="{{ URL::asset('images/personil/' . $personil->photo) }}"
                                                     alt="User Avatar" class="rounded-circle avatar-md user-profile-image">
                                             @else
                                                 <img src="{{ URL::asset('/images/user-dummy-img.jpg') }}" alt=""

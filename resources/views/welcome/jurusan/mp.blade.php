@@ -98,8 +98,8 @@
                     // Tentukan path gambar
                     $imagePath =
                         $photo && $photo->image
-                            ? asset('images/thumbnail/' . $photo->image)
-                            : asset('images/thumbnail/default.jpg');
+                            ? asset('images/jurusan_gmb/' . $photo->image)
+                            : asset('images/jurusan_gmb/default.png');
                 @endphp
                 <img src="{{ $imagePath }}" alt="client-img" class="mx-auto img-fluid d-block mt-5">
             </div>

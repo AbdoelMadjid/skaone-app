@@ -22,7 +22,7 @@
                         <div class="text-center mt-sm-1 mb-5 text-black-50">
                             <div>
                                 <a href="/" class="d-inline-block auth-logo">
-                                    <img src="{{ $data->first()->photo ? URL::asset('images/thumbnail/' . $data->first()->photo) : URL::asset('images/user-dummy-img.jpg') }}"
+                                    <img src="{{ $data->first()->photo ? URL::asset('images/personil/' . $data->first()->photo) : URL::asset('images/user-dummy-img.jpg') }}"
                                         alt="User Avatar" class="rounded-circle avatar-xl img-thumbnail user-profile-image">
                                 </a>
                             </div>
@@ -62,7 +62,7 @@
                                             <img src="{{ URL::asset('images/siswacewek.png') }}" alt="User Avatar"
                                                 class="rounded-circle avatar-xl img-thumbnail user-profile-image">
                                         @else
-                                            <img src="{{ URL::asset('images/thumbnail/' . $siswa->foto) }}"
+                                            <img src="{{ URL::asset('images/peserta_didik/' . $siswa->foto) }}"
                                                 alt="User Avatar"
                                                 class="rounded-circle avatar-xl img-thumbnail user-profile-image">
                                         @endif

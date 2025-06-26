@@ -9,9 +9,9 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0 me-2">
                                     <div class="avatar-xxs">
-                                        @if (!empty($contact->avatar) && file_exists(base_path('images/thumbnail/' . $contact->avatar)))
+                                        @if (!empty($contact->avatar) && file_exists(base_path('images/personil/' . $contact->avatar)))
                                             <!-- Avatar ditemukan di folder personil -->
-                                            <img src="{{ asset('images/thumbnail/' . $contact->avatar) }}"
+                                            <img src="{{ asset('images/personil/' . $contact->avatar) }}"
                                                 class="rounded-circle avatar-xxs" alt="">
                                         @else
                                             <!-- Gunakan inisial jika avatar tidak tersedia -->

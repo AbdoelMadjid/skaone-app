@@ -17,7 +17,7 @@
                         <div class="card-body text-center p-4">
                             <div class="avatar-xl mx-auto mb-4 position-relative">
                                 <img class="img-thumbnail rounded-circle avatar-xl" alt="{{ $team->namalengkap }}"
-                                    src="{{ asset('images/thumbnail/' . $team->photo) }}">
+                                    src="{{ asset('images/team/' . $team->photo) }}">
                             </div>
                             <!-- end card body -->
                             <h5 class="mb-1"><a href="" class="text-body">{{ $team->namalengkap }}</a>

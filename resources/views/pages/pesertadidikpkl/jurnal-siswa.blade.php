@@ -137,7 +137,7 @@
                 // Update image preview
                 const imagePreview = modal.querySelector('#image-preview');
                 if (gambar) {
-                    imagePreview.src = `/images/thumbnail/${gambar}`;
+                    imagePreview.src = `/images/jurnal-2024-2025/${gambar}`;
                 } else {
                     imagePreview.src = '{{ asset('images/noimagejurnal.jpg') }}';
                 }

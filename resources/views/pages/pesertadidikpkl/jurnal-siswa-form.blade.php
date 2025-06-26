@@ -44,7 +44,7 @@
             </div>
             <div class="col-md-6">
                 <img id="image-preview"
-                    src="{{ $data->gambar && file_exists(base_path('images/thumbnail/' . $data->gambar)) ? asset('images/thumbnail/' . $data->gambar) : asset('images/noimagejurnal.jpg') }}"
+                    src="{{ $data->gambar && file_exists(base_path('images/jurnal-2024-2025/' . $data->gambar)) ? asset('images/jurnal-2024-2025/' . $data->gambar) : asset('images/noimagejurnal.jpg') }}"
                     width="250" alt="Photo" />
             </div>
         </div>

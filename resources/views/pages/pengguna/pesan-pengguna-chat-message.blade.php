@@ -24,9 +24,9 @@
                             <div
                                 class="flex-shrink-0 chat-user-img {{ $partner->status == 'online' ? 'online' : 'offline' }} align-self-center me-2 ms-0">
                                 <div class="avatar-xxs">
-                                    @if (!empty($partner->avatar) && file_exists(base_path('images/thumbnail/' . $partner->avatar)))
+                                    @if (!empty($partner->avatar) && file_exists(base_path('images/personil/' . $partner->avatar)))
                                         <!-- Avatar ditemukan di folder -->
-                                        <img src="{{ asset('images/thumbnail/' . $partner->avatar) }}"
+                                        <img src="{{ asset('images/personil/' . $partner->avatar) }}"
                                             class="rounded-circle avatar-xxs" alt="{{ $partner->name }}">
                                     @else
                                         <!-- Gunakan inisial jika avatar tidak tersedia -->
