@@ -83,11 +83,11 @@ class User extends Authenticatable
             $personil = PersonilSekolah::where('id_personil', $this->personal_id)->first();
 
             if ($personil && $personil->photo) {
-                $avatarPath = base_path('images/thumbnail/' . $personil->photo);
+                $avatarPath = base_path('images/personil/' . $personil->photo);
 
                 // Cek apakah file avatar ada di folder public/images/personil/
                 if (file_exists($avatarPath)) {
-                    return asset('images/thumbnail/' . $personil->photo);
+                    return asset('images/personil/' . $personil->photo);
                 }
 
                 // Jika avatar tidak ada, tampilkan gambar berdasarkan jenis kelamin
@@ -104,11 +104,11 @@ class User extends Authenticatable
             $pesertaDidik = PesertaDidik::where('nis', $this->nis)->first();
 
             if ($pesertaDidik && $pesertaDidik->foto) {
-                $avatarPath = base_path('images/thumbnail/' . $pesertaDidik->foto);
+                $avatarPath = base_path('images/peserta_didik/' . $pesertaDidik->foto);
 
                 // Cek apakah file avatar ada di folder public/images/pesertadidik/
                 if (file_exists($avatarPath)) {
-                    return asset('images/thumbnail/' . $pesertaDidik->foto);
+                    return asset('images/peserta_didik/' . $pesertaDidik->foto);
                 }
 
                 // Jika avatar tidak ada, tampilkan gambar berdasarkan jenis kelamin

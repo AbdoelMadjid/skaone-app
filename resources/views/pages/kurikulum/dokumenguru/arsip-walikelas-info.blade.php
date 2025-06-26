@@ -3,7 +3,7 @@
     <div class="hstack gap-2">
         <div class="flex-shrink-0 me-2">
             @if ($waliKelas?->photo)
-                <img src="{{ URL::asset('images/thumbnail/' . $waliKelas->photo) }}" alt="User Avatar"
+                <img src="{{ URL::asset('images/personil/' . $waliKelas->photo) }}" alt="User Avatar"
                     class="rounded-circle avatar-xs user-profile-image">
             @else
                 <img src="{{ URL::asset('/images/user-dummy-img.jpg') }}" alt=""

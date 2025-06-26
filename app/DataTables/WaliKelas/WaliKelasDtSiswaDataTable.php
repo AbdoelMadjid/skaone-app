@@ -33,12 +33,12 @@ class WaliKelasDtSiswaDataTable extends DataTable
                     : asset('images/siswacewek.png');
 
                 // Tentukan path foto dari database
-                $imagePath = base_path('images/thumbnail/' . $row->foto);
+                $imagePath = base_path('images/peserta_didik/' . $row->foto);
                 $logoPath = '';
 
                 // Cek apakah file foto ada di folder 'images/personil'
                 if ($row->foto && file_exists($imagePath)) {
-                    $logoPath = asset('images/thumbnail/' . $row->foto);
+                    $logoPath = asset('images/peserta_didik/' . $row->foto);
                 } else {
                     // Jika file tidak ditemukan, gunakan foto default berdasarkan jenis kelamin
                     $logoPath = $defaultPhotoPath;
