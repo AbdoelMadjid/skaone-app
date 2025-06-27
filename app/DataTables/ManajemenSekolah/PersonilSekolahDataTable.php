@@ -2,6 +2,7 @@
 
 namespace App\DataTables\ManajemenSekolah;
 
+use App\Helpers\ImageHelper;
 use App\Models\ManajemenSekolah\PersonilSekolah;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
@@ -41,25 +42,15 @@ class PersonilSekolahDataTable extends DataTable
                 return $row->tempatlahir . ', ' . \Carbon\Carbon::parse($row->tanggallahir)->format('d-m-Y');
             })
             ->addColumn('photo', function ($row) {
-                // Tentukan path default berdasarkan jenis kelamin
-                $defaultPhotoPath = $row->jeniskelamin === 'Laki-laki'
-                    ? asset('images/gurulaki.png')
-                    : asset('images/gurucewek.png');
-
-                // Tentukan path foto dari database
-                $imagePath = base_path('images/personil/' . $row->photo);
-                $logoPath = '';
-
-                // Cek apakah file foto ada di folder 'images/personil'
-                if ($row->photo && file_exists($imagePath)) {
-                    $logoPath = asset('images/personil/' . $row->photo);
-                } else {
-                    // Jika file tidak ditemukan, gunakan foto default berdasarkan jenis kelamin
-                    $logoPath = $defaultPhotoPath;
-                }
-
-                // Mengembalikan tag img dengan path gambar
-                return '<img src="' . $logoPath . '" alt="Photo" width="150" class="rounded-circle avatar-lg" />';
+                return ImageHelper::getAvatarImageTag(
+                    filename: $row->photo,
+                    gender: $row->jeniskelamin,
+                    folder: 'personil',
+                    defaultMaleImage: 'gurulaki.png',
+                    defaultFemaleImage: 'gurucewek.png',
+                    width: 150,
+                    class: 'rounded-circle avatar-sm'
+                );
             })
             ->addColumn('login_count', function ($row) {
                 // Pastikan kolom login_count tersedia dalam query

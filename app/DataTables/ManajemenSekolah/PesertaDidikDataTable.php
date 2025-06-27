@@ -2,6 +2,7 @@
 
 namespace App\DataTables\ManajemenSekolah;
 
+use App\Helpers\ImageHelper;
 use App\Models\ManajemenSekolah\PesertaDidik;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
@@ -39,47 +40,17 @@ class PesertaDidikDataTable extends DataTable
                 return view('action', compact('actions'));
             })
             ->addColumn('foto', function ($row) {
-                // Tentukan path default berdasarkan jenis kelamin
-                $defaultPhotoPath = $row->jenis_kelamin === 'Laki-laki'
-                    ? asset('images/siswacowok.png')
-                    : asset('images/siswacewek.png');
-
-                // Tentukan path foto dari database
-                $imagePath = base_path('images/peserta_didik/' . $row->foto);
-                $logoPath = '';
-
-                // Cek apakah file foto ada di folder 'images/personil'
-                if ($row->foto && file_exists($imagePath)) {
-                    $logoPath = asset('images/peserta_didik/' . $row->foto);
-                } else {
-                    // Jika file tidak ditemukan, gunakan foto default berdasarkan jenis kelamin
-                    $logoPath = $defaultPhotoPath;
-                }
-
-                /* $AvatarUser = DB::table('users')
-                    ->select('avatar')
-                    ->where('nis', $row->nis)
-                    ->first(); // Mengambil satu baris data
-
-                $avataruserPath = ''; // Inisialisasi
-
-                if ($AvatarUser && $AvatarUser->avatar) {
-                    $avatarPath = base_path('images/peserta_didik/' . $AvatarUser->avatar);
-
-                    // Periksa apakah file avatar ada
-                    if (file_exists($avatarPath)) {
-                        $avataruserPath = asset('images/peserta_didik/' . $AvatarUser->avatar);
-                    } else {
-                        // Jika file tidak ada, gunakan foto default berdasarkan jenis kelamin
-                        $avataruserPath = $defaultPhotoPath;
-                    }
-                } else {
-                    // Jika tidak ada data avatar, gunakan foto default
-                    $avataruserPath = $defaultPhotoPath;
-                } */
-
-                // Mengembalikan tag img dengan path gambar
-                return '<img src="' . $logoPath . '" alt="Foto" width="50" />';
+                // Menggunakan ImageHelper untuk mendapatkan tag gambar avatar
+                // Pastikan kolom 'foto' ada dalam query
+                return ImageHelper::getAvatarImageTag(
+                    filename: $row->foto,
+                    gender: $row->jenis_kelamin,
+                    folder: 'peserta_didik',
+                    defaultMaleImage: 'siswacowok.png',
+                    defaultFemaleImage: 'siswacewek.png',
+                    width: 50,
+                    class: 'rounded avatar-sm'
+                );
             })
             ->addColumn('tempat_tanggal_lahir', function ($row) {
                 return $row->tempat_lahir . ', ' . \Carbon\Carbon::parse($row->tanggal_lahir)->format('d-m-Y');

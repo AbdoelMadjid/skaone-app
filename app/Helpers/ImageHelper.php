@@ -51,4 +51,33 @@ class ImageHelper
 
         return $imageName;
     }
+
+    public static function getAvatarImageTag(
+        ?string $filename,
+        string $gender,
+        string $folder,
+        string $defaultMaleImage,
+        string $defaultFemaleImage,
+        int $width = 50,
+        string $class = 'rounded avatar-sm'
+    ): string {
+        // Tentukan path absolut ke gambar
+        $imagePath = base_path("images/{$folder}/{$filename}");
+        $photoprofilPath = '';
+
+        // Tentukan default berdasarkan jenis kelamin
+        $defaultPhotoPath = $gender === 'Laki-laki'
+            ? asset("images/{$defaultMaleImage}")
+            : asset("images/{$defaultFemaleImage}");
+
+        // Jika file ada, gunakan file dari folder
+        if ($filename && file_exists($imagePath)) {
+            $photoprofilPath = asset("images/{$folder}/{$filename}");
+        } else {
+            $photoprofilPath = $defaultPhotoPath;
+        }
+
+        // Kembalikan tag img HTML
+        return '<img src="' . $photoprofilPath . '" alt="Foto" width="' . $width . '" class="' . $class . '" />';
+    }
 }
