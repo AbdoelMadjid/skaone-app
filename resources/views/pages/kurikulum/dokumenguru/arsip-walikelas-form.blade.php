@@ -224,35 +224,6 @@
         printWindow.document.close();
     }
 </script>
-{{-- <script>
-    function printRanking() {
-        const content = document.getElementById("cetak-ranking-walikelas");
-        if (!content) {
-            alert("Data ranking belum tersedia.");
-            return;
-        }
-
-        const printWindow = window.open("", "", "width=800,height=600");
-        printWindow.document.write(`
-            <html>
-                <head>
-                    <title>Cetak Ranking</title>
-                    <style>
-                        body { font-family: 'Times New Roman', serif; font-size: 12px; }
-                        table { width: 100%; border-collapse: collapse; }
-                        table, th, td { border: 1px solid black; }
-                        th { padding: 4px; text-align: center; }
-                        h4 { margin: 5px 0; text-align: center; }
-                    </style>
-                </head>
-                <body onload="window.print(); window.close();">
-                    ${content.innerHTML}
-                </body>
-            </html>
-        `);
-        printWindow.document.close();
-    }
-</script> --}}
 
 <script>
     document.getElementById('btn-ranking-pertk').addEventListener('click', function() {

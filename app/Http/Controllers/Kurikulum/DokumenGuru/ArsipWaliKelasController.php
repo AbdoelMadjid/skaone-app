@@ -370,7 +370,7 @@ class ArsipWaliKelasController extends Controller
             ->where('wali_kelas.kode_rombel', $dataPilWalas->kode_rombel)
             ->first();
 
-        return view('pages.kurikulum.dokumenguru.arsip-walikelas-info', compact('waliKelas'));
+        return view('pages.kurikulum.dokumenguru.arsip-walikelas-info', compact('waliKelas', 'dataPilWalas'));
     }
 
     public function rankingTingkat()
