@@ -239,27 +239,38 @@ class ArsipNgajarDataTable extends DataTable
      */
     public function query(KbmPerRombel $model): QueryBuilder
     {
+        $tahunajaran = request('tahunajaran');
+        $semester = request('semester');
+        $gurumapel = request('gurumapel');
+        $rombel = request('rombel');
+
         $query = $model->newQuery();
 
-        // Filter Tahun Ajaran
-        if (request()->has('tahunajaran') && request('tahunajaran')) {
-            $query->where('tahunajaran', request('tahunajaran'));
+        // Jika tahunajaran atau semester belum dipilih, return kosong
+        if (!$tahunajaran || !$semester) {
+            return $query->whereRaw('1 = 0');
         }
 
-        // Filter Semester
-        if (request()->has('semester') && request('semester')) {
-            $query->where('ganjilgenap', request('semester'));
+        // Jika belum pilih salah satu dari guru mapel atau rombel (atau dua-duanya 'All')
+        $guruMapelDipilih = $gurumapel && $gurumapel !== 'All';
+        $rombelDipilih = $rombel && $rombel !== 'All';
+
+        if (!$guruMapelDipilih && !$rombelDipilih) {
+            return $query->whereRaw('1 = 0');
         }
 
-        // Filter Guru Mapel
-        if (request()->has('gurumapel') && request('gurumapel') !== 'All') {
-            $query->where('id_personil', request('gurumapel'));
+        // Filter jika valid
+        $query->where('tahunajaran', $tahunajaran)
+            ->where('ganjilgenap', $semester);
+
+        if ($guruMapelDipilih) {
+            $query->where('id_personil', $gurumapel);
         }
 
-        // Filter Rombel
-        if (request()->has('rombel') && request('rombel') !== 'All') {
-            $query->where('kode_rombel', request('rombel'));
+        if ($rombelDipilih) {
+            $query->where('kode_rombel', $rombel);
         }
+
 
         return $query;
     }
@@ -302,10 +313,10 @@ class ArsipNgajarDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
-            Column::make('rombel')->title('Rombel')->addClass('text-center'),
+            Column::make('rombel')->title('Rombel')->addClass('text-center')->width(75),
             Column::make('mata_pelajaran')->title('Nama Mapel'),
             Column::make('namaguru')->title('Guru Mapel'),
-            Column::make('cek_sudahbelum')->title('Cek Formatif'),
+            Column::make('cek_sudahbelum')->title('Cek Formatif')->width(150),
             Column::computed('actionformatif')
                 ->exportable(false)
                 ->printable(false)
