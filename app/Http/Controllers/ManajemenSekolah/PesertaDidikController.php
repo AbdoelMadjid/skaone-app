@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ManajemenSekolah;
 
 use App\DataTables\ManajemenSekolah\PesertaDidikDataTable;
 use App\Exports\PesertaDidikExport;
+use App\Helpers\ImageHelper;
 use App\Models\ManajemenSekolah\PesertaDidik;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ManajemenSekolah\PesertaDidikRequest;
@@ -23,7 +24,6 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
-use Intervention\Image\ImageManagerStatic as Image;
 
 class PesertaDidikController extends Controller
 {
@@ -92,44 +92,18 @@ class PesertaDidikController extends Controller
     {
         $pesertaDidik = new PesertaDidik($request->except(['foto']));
 
-        // Check if a new icon is uploaded
-        /* if ($request->hasFile('foto')) {
-            // Delete the old icon if it exists
-            if ($pesertaDidik->foto) {
-                $oldIconPath = base_path('images/peserta_didik' . $pesertaDidik->foto);
-                if (file_exists($oldIconPath)) {
-                    unlink($oldIconPath);
-                }
-            }
-            // Upload the new icon
-            $pesertaDidikFile = $request->file('foto');
-            $pesertaDidikName = time() . '_' . $pesertaDidikFile->getClientOriginalName();
-            $pesertaDidikFile->move(base_path('images/peserta_didik'), $pesertaDidikName);
-            $pesertaDidik->foto = $pesertaDidikName;
-        } */
-
         if ($request->hasFile('foto')) {
-            // Upload dan proses file gambar
-            $image = $request->file('foto');
-            $imageName = 'pd_' . time() . '.' . $image->extension();
+            $imageFile = $request->file('foto');
 
-            // Membuat dan menyimpan thumbnail di `public/images/thumbnail`
-            $destinationPathThumbnail = base_path('images/thumbnail');
-            $img = Image::make($image->path());
+            $imageName = ImageHelper::uploadCompressedImage(
+                file: $request->file('foto'),
+                directory: 'images/peserta_didik',
+                oldFileName: $pesertaDidik->foto ?? null,
+                maxWidth: 600,
+                quality: 75,
+                prefix: 'pd_'
+            );
 
-            // Tentukan persentase ukuran yang diinginkan (misalnya 50% dari ukuran asli)
-            $percentage = 50; // 50% dari ukuran asli
-
-            // Hitung dimensi baru berdasarkan persentase
-            $newWidth = $img->width() * ($percentage / 100);
-            $newHeight = $img->height() * ($percentage / 100);
-
-            // Resize dengan persentase
-            $img->resize($newWidth, $newHeight, function ($constraint) {
-                $constraint->aspectRatio();
-            })->save($destinationPathThumbnail . '/' . $imageName);
-
-            // Menyimpan nama file ke database
             $pesertaDidik->foto = $imageName;
         }
 
@@ -184,34 +158,19 @@ class PesertaDidikController extends Controller
         $isPhotoUpdated = false; // Untuk melacak apakah foto diperbarui
 
         if ($request->hasFile('foto')) {
-            // Hapus foto lama dan thumbnail jika ada
-            if ($pesertaDidik->foto) {
-                //$oldImagePath = base_path('images/peserta_didik/' . $pesertaDidik->foto);
-                $oldThumbnailPath = base_path('images/thumbnail/' . $pesertaDidik->foto);
-                /* if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath);
-                } */
-                if (file_exists($oldThumbnailPath)) {
-                    unlink($oldThumbnailPath);
-                }
-            }
-
-            // Proses upload foto baru
             $imageFile = $request->file('foto');
-            $imageName = 'pd_' . time() . '.' . $imageFile->extension();
 
-            // Simpan thumbnail di `images/thumbnail`
-            $thumbnailPath = base_path('images/thumbnail');
-            $img = Image::make($imageFile->path());
-            $img->resize(150, 150, function ($constraint) {
-                $constraint->aspectRatio();
-            })->save($thumbnailPath . '/' . $imageName);
+            $imageName = ImageHelper::uploadCompressedImage(
+                file: $request->file('foto'),
+                directory: 'images/peserta_didik',
+                oldFileName: $pesertaDidik->foto ?? null,
+                maxWidth: 600,
+                quality: 75,
+                prefix: 'pd_'
+            );
 
-            // Simpan foto asli di `images/peserta_didik`
-            //$destinationPath = base_path('images/peserta_didik');
-            //$imageFile->move($destinationPath, $imageName);
-
-            $isPhotoUpdated = true; // Tandai bahwa foto diperbarui
+            $pesertaDidik->foto = $imageName;
+            $isPhotoUpdated = true;
         }
 
         // Cek perubahan nama atau email
@@ -256,6 +215,14 @@ class PesertaDidikController extends Controller
      */
     public function destroy(PesertaDidik $pesertaDidik)
     {
+        if ($pesertaDidik->foto) {
+            $imagePath = base_path('images/peserta_didik/' . $pesertaDidik->foto);
+            // Periksa dan hapus file image
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+        }
+
         $pesertaDidik->delete();
 
         return responseSuccessDelete();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\About;
 
 use App\DataTables\About\PhotoSlideDataTable;
+use App\Helpers\ImageHelper;
 use App\Models\About\PhotoSlide;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\About\PhotoSlideRequest;
@@ -38,31 +39,17 @@ class PhotoSlideController extends Controller
         $photoSlide = new PhotoSlide($request->except(['gambar']));
 
         if ($request->hasFile('gambar')) {
-            // Upload dan proses file gambar
-            $image = $request->file('gambar');
-            $imageName = 'slide_' . Str::uuid() . '.' . $image->extension();
+            $imageFile = $request->file('gambar');
 
-            // Membuat dan menyimpan thumbnail di `public/images/thumbnail`
-            $destinationPathThumbnail = base_path('images/thumbnail');
-            $img = Image::make($image->path());
+            $imageName = ImageHelper::uploadCompressedImage(
+                file: $request->file('gambar'),
+                directory: 'images/photoslide',
+                oldFileName: $photoSlide->gambar ?? null,
+                maxWidth: 600,
+                quality: 75,
+                prefix: 'slide_'
+            );
 
-            // Tentukan persentase ukuran yang diinginkan (misalnya 50% dari ukuran asli)
-            $percentage = 75; // 50% dari ukuran asli
-
-            // Hitung dimensi baru berdasarkan persentase
-            $newWidth = $img->width() * ($percentage / 100);
-            $newHeight = $img->height() * ($percentage / 100);
-
-            // Resize dengan persentase
-            $img->resize($newWidth, $newHeight, function ($constraint) {
-                $constraint->aspectRatio();
-            })->save($destinationPathThumbnail . '/' . $imageName);
-
-            // Menyimpan file gambar asli di `public/images/galery`
-            //$destinationPath = base_path('images/galery');
-            //$image->move($destinationPath, $imageName);
-
-            // Menyimpan nama file ke database
             $photoSlide->gambar = $imageName;
         }
 
@@ -98,45 +85,18 @@ class PhotoSlideController extends Controller
      */
     public function update(PhotoSlideRequest $request, PhotoSlide $photoSlide)
     {
-        //$photoSlide = new PhotoSlide($request->except(['gambar']));
         if ($request->hasFile('gambar')) {
-            // Hapus gambar dan thumbnail lama jika ada
-            if ($photoSlide->gambar) {
-                //$oldImagePath = base_path('images/gambarjurusan/' . $photoSlide->image);
-                $oldThumbnailPath = base_path('images/thumbnail/' . $photoSlide->gambar);
-                /* if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath);
-                } */
-                if (file_exists($oldThumbnailPath)) {
-                    unlink($oldThumbnailPath);
-                }
-            }
-
-            // Upload gambar baru dan buat thumbnail
             $imageFile = $request->file('gambar');
-            $imageName = 'slide_' . Str::uuid() . '.' . $imageFile->extension();
 
-            // Buat dan simpan thumbnail di `public/images/thumbnail`
-            $destinationPathThumbnail = base_path('images/thumbnail');
-            $img = Image::make($imageFile->path());
+            $imageName = ImageHelper::uploadCompressedImage(
+                file: $request->file('gambar'),
+                directory: 'images/photoslide',
+                oldFileName: $photoSlide->gambar ?? null,
+                maxWidth: 600,
+                quality: 75,
+                prefix: 'slide_'
+            );
 
-            // Tentukan persentase ukuran (misalnya 50% dari ukuran asli)
-            $percentage = 50; // 50% dari ukuran asli
-
-            // Hitung dimensi baru berdasarkan persentase
-            $newWidth = $img->width() * ($percentage / 100);
-            $newHeight = $img->height() * ($percentage / 100);
-
-            // Resize dengan persentase
-            $img->resize($newWidth, $newHeight, function ($constraint) {
-                $constraint->aspectRatio();
-            })->save($destinationPathThumbnail . '/' . $imageName);
-
-            // Simpan gambar asli di `public/images/galery`
-            //$destinationPath = base_path('images/gambarjurusan');
-            //$imageFile->move($destinationPath, $imageName);
-
-            // Perbarui nama file gambar di database
             $photoSlide->gambar = $imageName;
         }
 
@@ -152,19 +112,12 @@ class PhotoSlideController extends Controller
      */
     public function destroy(PhotoSlide $photoSlide)
     {
-        // Hapus file gambar dan thumbnail jika ada
         if ($photoSlide->gambar) {
-            //$imagePath = base_path('images/galery/' . $galery->image);
-            $thumbnailPath = base_path('images/thumbnail/' . $photoSlide->gambar);
+            $imagePath = base_path('images/photoslide/' . $photoSlide->gambar);
 
-            // Periksa dan hapus file gambar asli
-            /* if (file_exists($imagePath)) {
+            // Periksa dan hapus file image
+            if (file_exists($imagePath)) {
                 unlink($imagePath);
-            } */
-
-            // Periksa dan hapus file thumbnail
-            if (file_exists($thumbnailPath)) {
-                unlink($thumbnailPath);
             }
         }
         $photoSlide->delete();

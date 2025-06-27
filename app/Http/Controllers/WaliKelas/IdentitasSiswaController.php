@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\WaliKelas;
 
 use App\DataTables\WaliKelas\WaliKelasDtSiswaDataTable;
+use App\Helpers\ImageHelper;
 use App\Models\ManajemenSekolah\PesertaDidik;
 use App\Http\Controllers\Controller;
 use App\Models\AppSupport\Referensi;
@@ -13,7 +14,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Intervention\Image\ImageManagerStatic as Image;
 
 class IdentitasSiswaController extends Controller
 {
@@ -169,38 +169,23 @@ class IdentitasSiswaController extends Controller
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:256000',
         ]);
 
-        $imageName = $identitasSiswa->foto; // Nama foto default (sebelum diubah)
+        //$imageName = $identitasSiswa->foto; // Nama foto default (sebelum diubah)
         $isPhotoUpdated = false; // Untuk melacak apakah foto diperbarui
 
         if ($request->hasFile('foto')) {
-            // Hapus foto lama dan thumbnail jika ada
-            if ($identitasSiswa->foto) {
-                //$oldImagePath = base_path('images/peserta_didik/' . $identitasSiswa->foto);
-                $oldThumbnailPath = base_path('images/thumbnail/' . $identitasSiswa->foto);
-                /* if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath);
-                } */
-                if (file_exists($oldThumbnailPath)) {
-                    unlink($oldThumbnailPath);
-                }
-            }
-
-            // Proses upload foto baru
             $imageFile = $request->file('foto');
-            $imageName = 'pd_' . time() . '.' . $imageFile->extension();
 
-            // Simpan thumbnail di `images/thumbnail`
-            $thumbnailPath = base_path('images/thumbnail');
-            $img = Image::make($imageFile->path());
-            $img->resize(150, 150, function ($constraint) {
-                $constraint->aspectRatio();
-            })->save($thumbnailPath . '/' . $imageName);
+            $imageName = ImageHelper::uploadCompressedImage(
+                file: $request->file('foto'),
+                directory: 'images/peserta_didik',
+                oldFileName: $identitasSiswa->foto ?? null,
+                maxWidth: 600,
+                quality: 75,
+                prefix: 'pd_'
+            );
 
-            // Simpan foto asli di `images/peserta_didik`
-            //$destinationPath = base_path('images/peserta_didik');
-            //$imageFile->move($destinationPath, $imageName);
-
-            $isPhotoUpdated = true; // Tandai bahwa foto diperbarui
+            $identitasSiswa->foto = $imageName;
+            $isPhotoUpdated = true;
         }
 
         // Cek perubahan nama atau email

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\PesertaDidikPkl;
 
 use App\DataTables\PesertaDidikPkl\JurnalSiswaDataTable;
+use App\Helpers\ImageHelper;
 use App\Models\PesertaDidikPkl\JurnalPkl;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PesertaDidikPkl\JurnalPklRequest;
@@ -12,7 +13,6 @@ use App\Models\ManajemenSekolah\KompetensiKeahlian;
 use App\Models\ManajemenSekolah\TahunAjaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Str;
 
 
@@ -90,27 +90,17 @@ class JurnalPklController extends Controller
         $jurnalPkl = new JurnalPkl($request->except(['gambar']));
 
         if ($request->hasFile('gambar')) {
-            // Upload dan proses file gambar
-            $image = $request->file('gambar');
-            $imageName = 'jurnal_' . Str::uuid() . '.' . $image->extension();
+            $imageFile = $request->file('gambar');
 
-            // Membuat dan menyimpan thumbnail di `public/images/thumbnail`
-            $destinationPathThumbnail = base_path('images/thumbnail');
-            $img = Image::make($image->path());
+            $imageName = ImageHelper::uploadCompressedImage(
+                file: $request->file('gambar'),
+                directory: 'images/jurnal-2024-2025',
+                oldFileName: $jurnalPkl->gambar ?? null,
+                maxWidth: 600,
+                quality: 75,
+                prefix: 'jurnal_'
+            );
 
-            // Tentukan persentase ukuran yang diinginkan (misalnya 50% dari ukuran asli)
-            $percentage = 40; // 50% dari ukuran asli
-
-            // Hitung dimensi baru berdasarkan persentase
-            $newWidth = $img->width() * ($percentage / 100);
-            $newHeight = $img->height() * ($percentage / 100);
-
-            // Resize dengan persentase
-            $img->resize($newWidth, $newHeight, function ($constraint) {
-                $constraint->aspectRatio();
-            })->save($destinationPathThumbnail . '/' . $imageName);
-
-            // Menyimpan nama file ke database
             $jurnalPkl->gambar = $imageName;
         }
 
@@ -214,27 +204,17 @@ class JurnalPklController extends Controller
         $jurnalPkl = new JurnalPkl($request->except(['gambar']));
 
         if ($request->hasFile('gambar')) {
-            // Upload dan proses file gambar
-            $image = $request->file('gambar');
-            $imageName = 'jurnal_' . time() . '.' . $image->extension();
+            $imageFile = $request->file('gambar');
 
-            // Membuat dan menyimpan thumbnail di `public/images/thumbnail`
-            $destinationPathThumbnail = base_path('images/thumbnail');
-            $img = Image::make($image->path());
+            $imageName = ImageHelper::uploadCompressedImage(
+                file: $request->file('gambar'),
+                directory: 'images/jurnal-2024-2025',
+                oldFileName: $jurnalPkl->gambar ?? null,
+                maxWidth: 600,
+                quality: 75,
+                prefix: 'jurnal_'
+            );
 
-            // Tentukan persentase ukuran yang diinginkan (misalnya 50% dari ukuran asli)
-            $percentage = 40; // 50% dari ukuran asli
-
-            // Hitung dimensi baru berdasarkan persentase
-            $newWidth = $img->width() * ($percentage / 100);
-            $newHeight = $img->height() * ($percentage / 100);
-
-            // Resize dengan persentase
-            $img->resize($newWidth, $newHeight, function ($constraint) {
-                $constraint->aspectRatio();
-            })->save($destinationPathThumbnail . '/' . $imageName);
-
-            // Menyimpan nama file ke database
             $jurnalPkl->gambar = $imageName;
         }
 

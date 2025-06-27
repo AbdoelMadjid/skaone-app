@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Pengguna;
 
+use App\Helpers\ImageHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ManajemenSekolah\PersonilSekolahRequest;
 use App\Http\Requests\ManajemenSekolah\PesertaDidikRequest;
@@ -15,7 +16,6 @@ use App\Models\PesertaDidik\IdentitasPesertaDidik;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 
 class ProfilPenggunaController extends Controller
 {
@@ -204,21 +204,18 @@ class ProfilPenggunaController extends Controller
             $personil = new PersonilSekolah($request->except(['profile_image']));
         }
 
-        // Check if a new image is uploaded
         if ($request->hasFile('profile_image')) {
-            // Hapus gambar dan thumbnail lama jika ada
-            if ($personil->photo) {
-                $oldImagePath = base_path('images/personil/' . $personil->photo);
-                if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath);
-                }
-            }
-
             $imageFile = $request->file('profile_image');
-            $imageName = 'pgw_' . Str::uuid() . '.' . $imageFile->extension();
-            $imageFile->move(base_path('images/personil/'), $imageName);
 
-            // Perbarui nama file gambar di database
+            $imageName = ImageHelper::uploadCompressedImage(
+                file: $request->file('profile_image'),
+                directory: 'images/personil',
+                oldFileName: $personil->photo ?? null,
+                maxWidth: 600,
+                quality: 75,
+                prefix: 'Pgw_'
+            );
+
             $personil->photo = $imageName;
         }
 
@@ -248,21 +245,20 @@ class ProfilPenggunaController extends Controller
             $personil = new PersonilSekolah($request->except(['bg_profil']));
         }
 
-        // Cek jika pengguna sudah memiliki foto
-        if ($request->hasFile('bg_profil')) {
-            // Jika sudah ada foto, hapus foto lama
-            if ($personil->bg_profil) {
-                $oldPhotoPath = base_path('images/bgprofil/' . $personil->bg_profil);
-                if (file_exists($oldPhotoPath)) {
-                    unlink($oldPhotoPath); // Hapus foto lama
-                }
-            }
 
-            // Upload foto baru
-            $photoFile = $request->file('bg_profil');
-            $photoName = 'bgp_' . time() . '.' . $photoFile->extension();
-            $photoFile->move(base_path('images/bgprofil'), $photoName);
-            $personil->bg_profil = $photoName; // Simpan nama foto baru
+        if ($request->hasFile('bg_profil')) {
+            $imageFile = $request->file('bg_profil');
+
+            $imageName = ImageHelper::uploadCompressedImage(
+                file: $request->file('bg_profil'),
+                directory: 'images/bgprofil',
+                oldFileName: $personil->bg_profil ?? null,
+                maxWidth: 600,
+                quality: 75,
+                prefix: 'Bgp_'
+            );
+
+            $personil->bg_profil = $imageName;
         }
 
         $personil->save();

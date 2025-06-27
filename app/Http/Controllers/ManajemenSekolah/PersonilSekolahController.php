@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ManajemenSekolah;
 
 use App\DataTables\ManajemenSekolah\PersonilSekolahDataTable;
+use App\Helpers\ImageHelper;
 use App\Models\ManajemenSekolah\PersonilSekolah;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ManajemenSekolah\PersonilSekolahRequest;
@@ -67,19 +68,18 @@ class PersonilSekolahController extends Controller
     {
         $personilSekolah = new PersonilSekolah($request->except(['photo']));
 
-        // Check if a new icon is uploaded
         if ($request->hasFile('photo')) {
-            // Delete the old icon if it exists
-            if ($personilSekolah->photo) {
-                $oldImagePath = base_path('images/personil' . $personilSekolah->photo);
-                if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath);
-                }
-            }
-            // Upload the new icon
             $imageFile = $request->file('photo');
-            $imageName = 'pgw_' . Str::uuid() . '.' . $imageFile->extension();
-            $imageFile->move(base_path('images/personil'), $imageName);
+
+            $imageName = ImageHelper::uploadCompressedImage(
+                file: $request->file('photo'),
+                directory: 'images/personil',
+                oldFileName: $personilSekolah->photo ?? null,
+                maxWidth: 600,
+                quality: 75,
+                prefix: 'pgw_'
+            );
+
             $personilSekolah->photo = $imageName;
         }
 
@@ -120,19 +120,17 @@ class PersonilSekolahController extends Controller
     {
         // Proses file foto jika ada yang diunggah
         if ($request->hasFile('photo')) {
-            // Hapus foto lama jika ada
-            if ($personilSekolah->photo) {
-                $oldImagePath = base_path('images/personil/' . $personilSekolah->photo);
-                if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath);
-                }
-            }
-
             $imageFile = $request->file('photo');
-            $imageName = 'pgw_' . Str::uuid() . '.' . $imageFile->extension();
-            $imageFile->move(base_path('images/personil/'), $imageName);
 
-            // Setel nama file baru pada model
+            $imageName = ImageHelper::uploadCompressedImage(
+                file: $request->file('photo'),
+                directory: 'images/personil',
+                oldFileName: $personilSekolah->photo ?? null,
+                maxWidth: 600,
+                quality: 75,
+                prefix: 'pgw_'
+            );
+
             $personilSekolah->photo = $imageName;
         }
 

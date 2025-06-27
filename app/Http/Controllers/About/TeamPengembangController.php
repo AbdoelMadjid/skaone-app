@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\About;
 
 use App\DataTables\About\TeamPengembangDataTable;
+use App\Helpers\ImageHelper;
 use App\Models\About\TeamPengembang;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\About\TeamPengembangRequest;
 use App\Models\AppSupport\Referensi;
-use Intervention\Image\ImageManagerStatic as Image;
 
 
 class TeamPengembangController extends Controller
@@ -42,31 +42,17 @@ class TeamPengembangController extends Controller
         $teamPengembang = new TeamPengembang($request->except(['photo']));
 
         if ($request->hasFile('photo')) {
-            // Upload dan proses file gambar
-            $image = $request->file('photo');
-            $imageName = 'team_' . time() . '.' . $image->extension();
+            $imageFile = $request->file('photo');
 
-            // Membuat dan menyimpan thumbnail di `public/images/thumbnail`
-            $destinationPathThumbnail = base_path('images/thumbnail');
-            $img = Image::make($image->path());
+            $imageName = ImageHelper::uploadCompressedImage(
+                file: $request->file('photo'),
+                directory: 'images/team',
+                oldFileName: $teamPengembang->photo ?? null,
+                maxWidth: 600,
+                quality: 75,
+                prefix: 'team_'
+            );
 
-            // Tentukan persentase ukuran yang diinginkan (misalnya 50% dari ukuran asli)
-            $percentage = 50; // 50% dari ukuran asli
-
-            // Hitung dimensi baru berdasarkan persentase
-            $newWidth = $img->width() * ($percentage / 100);
-            $newHeight = $img->height() * ($percentage / 100);
-
-            // Resize dengan persentase
-            $img->resize($newWidth, $newHeight, function ($constraint) {
-                $constraint->aspectRatio();
-            })->save($destinationPathThumbnail . '/' . $imageName);
-
-            // Menyimpan file gambar asli di `public/images/galery`
-            //$destinationPath = base_path('images/team');
-            //$image->move($destinationPath, $imageName);
-
-            // Menyimpan nama file ke database
             $teamPengembang->photo = $imageName;
         }
 
@@ -106,43 +92,17 @@ class TeamPengembangController extends Controller
     public function update(TeamPengembangRequest $request, TeamPengembang $teamPengembang)
     {
         if ($request->hasFile('photo')) {
-            // Hapus gambar dan thumbnail lama jika ada
-            if ($teamPengembang->photo) {
-                //$oldImagePath = base_path('images/team/' . $teamPengembang->photo);
-                $oldThumbnailPath = base_path('images/thumbnail/' . $teamPengembang->photo);
-                /* if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath);
-                } */
-                if (file_exists($oldThumbnailPath)) {
-                    unlink($oldThumbnailPath);
-                }
-            }
-
-            // Upload gambar baru dan buat thumbnail
             $imageFile = $request->file('photo');
-            $imageName = 'team_' . time() . '.' . $imageFile->extension();
 
-            // Buat dan simpan thumbnail di `public/images/thumbnail`
-            $destinationPathThumbnail = base_path('images/thumbnail');
-            $img = Image::make($imageFile->path());
+            $imageName = ImageHelper::uploadCompressedImage(
+                file: $request->file('photo'),
+                directory: 'images/team',
+                oldFileName: $teamPengembang->photo ?? null,
+                maxWidth: 600,
+                quality: 75,
+                prefix: 'team_'
+            );
 
-            // Tentukan persentase ukuran (misalnya 50% dari ukuran asli)
-            $percentage = 50; // 50% dari ukuran asli
-
-            // Hitung dimensi baru berdasarkan persentase
-            $newWidth = $img->width() * ($percentage / 100);
-            $newHeight = $img->height() * ($percentage / 100);
-
-            // Resize dengan persentase
-            $img->resize($newWidth, $newHeight, function ($constraint) {
-                $constraint->aspectRatio();
-            })->save($destinationPathThumbnail . '/' . $imageName);
-
-            // Simpan gambar asli di `public/images/galery`
-            //$destinationPath = base_path('images/team');
-            //$imageFile->move($destinationPath, $imageName);
-
-            // Perbarui nama file gambar di database
             $teamPengembang->photo = $imageName;
         }
 
@@ -157,19 +117,12 @@ class TeamPengembangController extends Controller
      */
     public function destroy(TeamPengembang $teamPengembang)
     {
-        // Hapus file gambar dan thumbnail jika ada
+
         if ($teamPengembang->image) {
-            //$imagePath = base_path('images/galery/' . $galery->image);
-            $thumbnailPath = base_path('images/thumbnail/' . $teamPengembang->image);
-
-            // Periksa dan hapus file gambar asli
-            /* if (file_exists($imagePath)) {
+            $imagePath = base_path('images/team/' . $teamPengembang->image);
+            // Periksa dan hapus file image
+            if (file_exists($imagePath)) {
                 unlink($imagePath);
-            } */
-
-            // Periksa dan hapus file thumbnail
-            if (file_exists($thumbnailPath)) {
-                unlink($thumbnailPath);
             }
         }
 
