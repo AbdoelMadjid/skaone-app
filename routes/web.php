@@ -199,6 +199,7 @@ require __DIR__ . '/kaprodi.php';
 require __DIR__ . '/bpbk.php';
 require __DIR__ . '/ketatausahaan.php';
 require __DIR__ . '/skaonewelcome.php';
+require __DIR__ . '/alumni.php';
 
 // Rute fallback untuk `auth`, menangani view dalam folder `auth`
 Route::get('auth/{page}', function ($page) {
