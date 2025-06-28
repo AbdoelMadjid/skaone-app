@@ -426,6 +426,8 @@ return [
     'pesan-prakerin' => 'Kirim dan Baca Pesan',
     'informasi-bimbingan' => 'Informasi Bimbingan PKL',
 
+    'MANAJEMEN SEKOLAH' => 'MANAJEMEN SEKOLAH',
+
     'WAKIL KEPALA SEKOLAH' => 'WAKIL KEPALA SEKOLAH',
     'agenda-kegiatan' => 'Agenda Kegiatan',
     'anggaran' => 'Anggaran',
