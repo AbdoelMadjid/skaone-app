@@ -12,90 +12,82 @@
             @lang('translation.app-support')
         @endslot
     @endcomponent
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header d-flex align-items-center">
-                    <h5 class="card-title">Backup Database</h5>
+    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-4">
+        <div class="card-header d-flex align-items-center">
+            <h5 class="card-title">Backup Database</h5>
+        </div>
+        <div class="card-body">
+            <p>Backup database adalah proses untuk menyimpan data yang ada di database ke dalam file.</p>
+            <form action="{{ route('appsupport.backup-db.process') }}" method="POST">
+                @csrf
+                <table class="table table-bordered" id="tables-list">
+                    <thead>
+                        <tr>
+                            <th>Pilih</th>
+                            <th>Nama Tabel</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($tables as $table)
+                            <tr>
+                                <td class="text-center">
+                                    <div class="form-check form-switch form-switch-md text-center" dir="ltr">
+                                        <input type="checkbox" class="form-check-input" name="tables[]"
+                                            value="{{ $table }}" id="customSwitch{{ $loop->index }}">
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="table-name" data-target="#customSwitch{{ $loop->index }}">
+                                        {{ ucwords(str_replace('_', ' ', $table)) }}
+                                    </span>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <div class="col-lg-12 mt-3">
+                    <div class="gap-2 hstack justify-content-end">
+                        <button type="submit" class="btn btn-primary">Backup Tabel yang Dipilih</button>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <p>Backup database adalah proses untuk menyimpan data yang ada di database ke dalam file.</p>
-                    <form action="{{ route('appsupport.backup-db.process') }}" method="POST">
-                        @csrf
-                        <table class="table table-bordered" id="tables-list">
-                            <thead>
-                                <tr>
-                                    <th>Pilih</th>
-                                    <th>Nama Tabel</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($tables as $table)
-                                    <tr>
-                                        <td class="text-center">
-                                            <div class="form-check form-switch form-switch-md text-center" dir="ltr">
-                                                <input type="checkbox" class="form-check-input" name="tables[]"
-                                                    value="{{ $table }}" id="customSwitch{{ $loop->index }}">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="table-name" data-target="#customSwitch{{ $loop->index }}">
-                                                {{ ucwords(str_replace('_', ' ', $table)) }}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        <div class="col-lg-12 mt-3">
-                            <div class="gap-2 hstack justify-content-end">
-                                <button type="submit" class="btn btn-primary">Backup Tabel yang Dipilih</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header d-flex align-items-center">
-                    <h5 class="card-title">Download hasil Backup Database</h5>
-                </div>
-                <div class="card-body">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nama File</th>
-                                <th>Ukuran</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($backupFiles as $index => $file)
-                                <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>{{ $file }}</td>
-                                    <td>{{ number_format(Storage::size('backups/' . now()->format('Y-m-d') . '/' . $file) / 1024, 2) }}
-                                        KB</td>
-                                    <td>
-                                        <a href="{{ Storage::url('backups/' . now()->format('Y-m-d') . '/' . $file) }}"
-                                            class="btn btn-info btn-sm" download>Download</a>
-                                        <form action="{{ route('appsupport.backup-db.delete', $file) }}" method="POST"
-                                            style="display:inline-block;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
+        <div class="card-header d-flex align-items-center">
+            <h5 class="card-title">Download hasil Backup Database</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama File</th>
+                        <th>Ukuran</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($backupFiles as $index => $file)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $file }}</td>
+                            <td>{{ number_format(Storage::size('backups/' . now()->format('Y-m-d') . '/' . $file) / 1024, 2) }}
+                                KB</td>
+                            <td>
+                                <a href="{{ Storage::url('backups/' . now()->format('Y-m-d') . '/' . $file) }}"
+                                    class="btn btn-info btn-sm" download>Download</a>
+                                <form action="{{ route('appsupport.backup-db.delete', $file) }}" method="POST"
+                                    style="display:inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 @endsection

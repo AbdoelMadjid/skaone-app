@@ -10,30 +10,26 @@
             @lang('translation.app-support')
         @endslot
     @endcomponent
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1">@yield('title')</h5>
-                    <div>
-                        @can('create appsupport/menu')
-                            <a class="btn btn-soft-info btn-icon action" href="{{ route('appsupport.menu.create') }}"
-                                data-bs-toggle="tooltip" data-bs-placement="left" title="Tambah Menu"><i
-                                    class="ri-add-line fs-16"></i></a>
-                        @endcan
-                        @can('sort appsupport/menu')
-                            <a class="btn btn-soft-success btn-icon sort" href="{{ route('appsupport.menu.sort') }}"
-                                data-bs-toggle="tooltip" data-bs-placement="left" title="Sort Menu"><i
-                                    class="ri-sort-asc fs-16"></i></a>
-                        @endcan
-                    </div>
-                </div>
-                <div class="card-body">
-                    {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
-                </div>
+    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-0">
+        <div class="card-header d-flex align-items-center">
+            <h5 class="card-title mb-0 flex-grow-1">@yield('title')</h5>
+            <div>
+                @can('create appsupport/menu')
+                    <a class="btn btn-soft-info btn-icon btn-sm action" href="{{ route('appsupport.menu.create') }}"
+                        data-bs-toggle="tooltip" data-bs-placement="left" title="Tambah Menu"><i class="ri-add-line fs-16"></i></a>
+                @endcan
+                @can('sort appsupport/menu')
+                    <a class="btn btn-soft-success btn-sm btn-icon sort" href="{{ route('appsupport.menu.sort') }}"
+                        data-bs-toggle="tooltip" data-bs-placement="left" title="Sort Menu"><i
+                            class="ri-sort-asc fs-16"></i></a>
+                @endcan
             </div>
         </div>
-        <!--end col-->
+        <div class="card-body">
+            <div class="px-4 mx-n4 mt-n3 mb-0" data-simplebar style="height: calc(100vh - 278px);">
+                {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+            </div>
+        </div>
     </div>
 @endsection
 @section('script')

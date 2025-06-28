@@ -52,14 +52,16 @@ class MenuDataTable extends DataTable
             ->minifiedAjax()
             //->dom('Bfrtip')
             ->orderBy(1)
-            ->selectStyleSingle()
-            ->buttons([
-                Button::make('excel'),
-                Button::make('csv'),
-                Button::make('pdf'),
-                Button::make('print'),
-                Button::make('reset'),
-                Button::make('reload')
+            ->parameters([
+                'lengthChange' => false,
+                'searching' => true, // Mengaktifkan pencarian
+                'searchDelay' => 500, // Delay pencarian untuk mengurangi beban server
+                'pageLength' => 100,
+                // ⬇️ Tambahan fitur scroll dan fixedHeader
+                'scrollY' => '330px',
+                'scrollCollapse' => true,
+                'paging' => true,
+                'fixedHeader' => true,
             ]);
     }
 
