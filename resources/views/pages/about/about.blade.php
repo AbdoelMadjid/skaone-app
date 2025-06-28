@@ -9,129 +9,6 @@
 @endsection
 @section('content')
     @if (auth()->check() &&
-            auth()->user()->hasAnyRole(['master']))
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header border-0">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-8 col-sm-10">
-                                <div class="text-center mt-lg-2 pt-3">
-                                    <h1 class="display-7 fw-semibold mb-3 lh-base">A better way to manage student assessment
-                                        results with the <span class="text-success">{{ $profileApp->app_nama ?? '' }}
-                                        </span>
-                                    </h1>
-                                    <p class="lead text-muted lh-base">{{ $profileApp->app_nama ?? '' }} is a fully
-                                        responsive,
-                                        multipurpose and
-                                        premium Bootstrap 5 Admin & Dashboard Template built in multiple frameworks.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasExample"
-                            aria-labelledby="offcanvasExampleLabel">
-                            <div class="offcanvas-body">
-                                <button type="button" class="btn-close text-reset float-end" data-bs-dismiss="offcanvas"
-                                    aria-label="Close"></button>
-                                <div class="d-flex flex-column h-100 justify-content-center align-items-center">
-                                    <div class="search-voice">
-                                        <i class="ri-mic-fill align-middle"></i>
-                                        <span class="voice-wave"></span>
-                                        <span class="voice-wave"></span>
-                                        <span class="voice-wave"></span>
-                                    </div>
-                                    <h4>Talk to me, what can I do for you?</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-bs-toggle="tab" href="#about" role="tab"
-                                    aria-selected="false">
-                                    <i class="ri-question-line text-muted align-bottom me-1"></i> About
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" id="images-tab" href="#team" role="tab"
-                                    aria-selected="true">
-                                    <i class="mdi mdi-account-circle text-muted align-bottom me-1"></i> Team
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" href="#faqs" role="tab"
-                                    aria-selected="false">
-                                    <i class="ri-list-unordered text-muted align-bottom me-1"></i> FAQs
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" href="#develop" role="tab"
-                                    aria-selected="false">
-                                    <i class="ri-video-line text-muted align-bottom me-1"></i> Result
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" href="#photoslide" role="tab"
-                                    aria-selected="false">
-                                    <i class="ri-image-line text-muted align-bottom me-1"></i> Photo Slide
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" href="#galery" role="tab"
-                                    aria-selected="false">
-                                    <i class="ri-image-line text-muted align-bottom me-1"></i> Galery
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" href="#dailymessages" role="tab"
-                                    aria-selected="false">
-                                    <i class="ri-image-line text-muted align-bottom me-1"></i> Daily Messages
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" href="#polling" role="tab"
-                                    aria-selected="false">
-                                    <i class="ri-image-line text-muted align-bottom me-1"></i> Polling
-                                </a>
-                            </li>
-                            @include('abouts.master-akses')
-                        </ul>
-                    </div>
-                    <div class="card-body p-4">
-                        <div class="tab-content text-muted">
-                            <div class="tab-pane active" id="about" role="tabpanel">
-                                @include('abouts.about')
-                            </div>
-                            <div class="tab-pane" id="team" role="tabpanel">
-                                @include('abouts.team')
-                            </div><!--end tab-pane-->
-                            <div class="tab-pane" id="faqs" role="tabpanel">
-                                @include('abouts.faqs')
-                            </div><!--end tab-pane-->
-                            <div class="tab-pane" id="develop" role="tabpanel">
-                                @include('abouts.develop')
-                            </div><!--end tab-pane-->
-                            <div class="tab-pane" id="photoslide" role="tabpanel">
-                                @include('abouts.photoslide')
-                            </div><!--end tab-pane-->
-                            <div class="tab-pane" id="galery" role="tabpanel">
-                                @include('abouts.galery')
-                            </div><!--end tab-pane-->
-                            <div class="tab-pane" id="dailymessages" role="tabpanel">
-                                @include('abouts.daily-massage')
-                            </div><!--end tab-pane-->
-                            <div class="tab-pane" id="polling" role="tabpanel">
-                                @include('abouts.polling')
-                            </div><!--end tab-pane-->
-                        </div><!--end tab-content-->
-
-                    </div><!--end card-body-->
-                </div><!--end card -->
-            </div><!--end card -->
-        </div><!--end row-->
-    @elseif (auth()->check() &&
             auth()->user()->hasAnyRole(['guru']))
         <div class="row justify-content-center">
             <div class="col-lg-12">
@@ -141,8 +18,7 @@
                             <div class="text-center mt-sm-1 mb-5 text-black-50">
                                 <div>
                                     <a href="/" class="d-inline-block auth-logo">
-                                        <img src="{{ URL::asset('build/images/lcks3.png') }}" alt=""
-                                            height="100">
+                                        <img src="{{ URL::asset('build/images/lcks3.png') }}" alt="" height="100">
                                     </a>
                                 </div>
                                 <p class="mt-3 fs-15 fw-medium">{{ $profileApp->app_deskripsi ?? '' }}</p>
@@ -227,7 +103,7 @@
                                         </div>
 
                                         <div class="card-body">
-                                            <form action="{{ route('about.pollingsubmit') }}" method="POST">
+                                            <form action="{{ route('websiteapp.pollingsubmit') }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="polling_id" value="{{ $polling->id }}">
 

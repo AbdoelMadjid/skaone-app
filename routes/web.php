@@ -3,20 +3,6 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\About\AboutController;
-use App\Http\Controllers\About\BeritaCommentController;
-use App\Http\Controllers\About\BeritaController;
-use App\Http\Controllers\About\BeritaLikeController;
-use App\Http\Controllers\About\DailyMessagesController;
-use App\Http\Controllers\About\FiturCodingController;
-use App\Http\Controllers\About\GaleryController;
-use App\Http\Controllers\About\KumpulanFaqController;
-use App\Http\Controllers\About\PhotoJurusanController;
-use App\Http\Controllers\About\PhotoSlideController;
-use App\Http\Controllers\About\PollingController;
-use App\Http\Controllers\About\QuestionController;
-use App\Http\Controllers\About\TeamPengembangController;
-use App\Http\Controllers\AdministratorPkl\PerusahaanController;
-use App\Http\Controllers\AdministratorPkl\PesertaPrakerinController;
 use App\Http\Controllers\Pengguna\ProfilPenggunaController;
 use App\Http\Controllers\AppSupport\MenuController;
 use App\Http\Controllers\AppSupport\AppFiturController;
@@ -26,7 +12,6 @@ use App\Http\Controllers\AppSupport\DataLoginController;
 use App\Http\Controllers\AppSupport\EksporDataMasterController;
 use App\Http\Controllers\AppSupport\ImporDataMasterController;
 use App\Http\Controllers\AppSupport\ReferensiController;
-use App\Http\Controllers\EventController;
 use App\Http\Controllers\ManajemenPengguna\AksesRoleController;
 use App\Http\Controllers\ManajemenPengguna\AksesUserController;
 use App\Http\Controllers\ManajemenPengguna\PermissionController;
@@ -34,6 +19,7 @@ use App\Http\Controllers\ManajemenPengguna\RoleController;
 use App\Http\Controllers\ManajemenPengguna\UserController;
 use App\Http\Controllers\Pengguna\GantiPasswordController;
 use App\Http\Controllers\Pengguna\PesanController;
+use App\Http\Controllers\WebSite\PollingController;
 use App\Http\Controllers\WelcomeController;
 use App\Models\ManajemenPengguna\LoginRecord;
 use App\Models\User;
@@ -114,7 +100,7 @@ Route::group(['prefix' => 'about', 'as' => 'about.'], function () {
     Route::resource('about', AboutController::class);
 });
 
-//Route::middleware(['auth'])->post('/about/pollingsubmit', [PollingController::class, 'submitPolling'])->name('about.pollingsubmit');
+Route::middleware(['auth'])->post('/websiteapp/pollingsubmit', [PollingController::class, 'submitPolling'])->name('websiteapp.pollingsubmit');
 
 // Kelompok rute untuk profil, hanya dapat diakses oleh pengguna yang sudah terotentikasi
 Route::middleware('auth')->group(function () {
