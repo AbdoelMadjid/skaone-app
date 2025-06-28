@@ -32,6 +32,7 @@
                     {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
                 </div>
                 <div class="card-body">
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                     <h4 class="mt-5">📈 Statistik Polling (Pilihan Ganda)</h4>
                     <div class="row">
                         @foreach ($pollingStats as $index => $stat)
@@ -164,7 +165,7 @@
     <script src="{{ URL::asset('build/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
     {!! $dataTable->scripts() !!}
 @endsection
