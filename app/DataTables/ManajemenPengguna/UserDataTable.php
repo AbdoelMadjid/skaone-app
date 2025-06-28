@@ -97,10 +97,17 @@ class UserDataTable extends DataTable
             ->minifiedAjax('', null, [
                 'searchName' => 'function() { return $(".search-box .search").val(); }',
             ])
-            ->orderBy(1)->parameters([
+            ->orderBy(1)
+            ->parameters([
                 'lengthChange' => false,
                 'searching' => false,
-                'pageLength' => 30,
+                'searchDelay' => 500, // Delay pencarian untuk mengurangi beban server
+                'pageLength' => 50,
+                // ⬇️ Tambahan fitur scroll dan fixedHeader
+                'scrollY' => '271px',
+                'scrollCollapse' => true,
+                'paging' => true,
+                'fixedHeader' => true,
             ]);
     }
 

@@ -3,34 +3,31 @@
     @lang('translation.permissions')
 @endsection
 @section('css')
-@endsection
+    {{--  --}}
 @section('content')
     @component('layouts.breadcrumb')
         @slot('li_1')
             @lang('translation.manajemen-pengguna')
         @endslot
     @endcomponent
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @lang('translation.permissions')</h5>
-                    <div>
-                        @can('create manajemenpengguna/permissions')
-                            <a class="btn btn-soft-primary action"
-                                href="{{ route('manajemenpengguna.permissions.create') }}">Tambah</a>
-                        @endcan
-                    </div>
-                </div>
-                <div class="card-body">
-                    {!! $dataTable->table([
-                        'class' => 'table table-striped hover',
-                        'style' => 'width:100%',
-                    ]) !!}
-                </div>
+    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-0">
+        <div class="card-header d-flex align-items-center">
+            <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @lang('translation.permissions')</h5>
+            <div>
+                @can('create manajemenpengguna/permissions')
+                    <a class="btn btn-soft-primary btn-sm action"
+                        href="{{ route('manajemenpengguna.permissions.create') }}">Tambah</a>
+                @endcan
             </div>
         </div>
-        <!--end col-->
+        <div class="card-body">
+            <div class="px-4 mx-n4 mt-n3 mb-0" data-simplebar style="height: calc(100vh - 277px);">
+                {!! $dataTable->table([
+                    'class' => 'table table-striped hover',
+                    'style' => 'width:100%',
+                ]) !!}
+            </div>
+        </div>
     </div>
 @endsection
 @section('script')
