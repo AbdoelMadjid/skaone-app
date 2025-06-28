@@ -21,10 +21,13 @@ class MenuWakasekSeeder extends Seeder
          * @var Menu $mm
          */
 
-        $mm = Menu::firstOrCreate(['url' => 'wakilkepalasekolah/agenda-kegiatan-wakasek'], ['name' => 'Agenda Wakasek', 'category' => 'WAKIL KEPALA SEKOLAH', 'icon' => 'calendar']);
-        $this->attachMenupermission($mm, null, ['wakasek']);
+        $mm = Menu::firstOrCreate(['url' => 'wakilkepalasekolah'], ['name' => 'Wakil Kepala Sekolah', 'category' => 'MANAJEMEN SEKOLAH', 'icon' => 'contacts-book-2']);
+        $this->attachMenupermission($mm, ['read'], ['wakasek']);
 
-        $mm = Menu::firstOrCreate(['url' => 'wakilkepalasekolah/anggaran-wakasek'], ['name' => 'Anggaran Wakasek', 'category' => 'WAKIL KEPALA SEKOLAH', 'icon' => 'shopping-cart-2']);
-        $this->attachMenupermission($mm, null, ['wakasek']);
+        $sm = $mm->subMenus()->create(['name' => 'Agenda Wakasek', 'url' => $mm->url . '/agenda-kegiatan-wakasek', 'category' => $mm->category]);
+        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['wakasek']);
+
+        $sm = $mm->subMenus()->create(['name' => 'Anggaran Wakasek', 'url' => $mm->url . '/anggaran-wakasek', 'category' => $mm->category]);
+        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['wakasek']);
     }
 }

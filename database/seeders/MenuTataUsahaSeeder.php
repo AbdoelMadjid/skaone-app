@@ -21,19 +21,22 @@ class MenuTataUsahaSeeder extends Seeder
          * @var Menu $mm
          */
 
-        $mm = Menu::firstOrCreate(['url' => 'ketatausahaan/persuratan'], ['name' => 'Persuratan', 'category' => 'KETATAUSAHAAN', 'icon' => 'mail-settings']);
-        $this->attachMenupermission($mm, null, ['tatausaha']);
+        $mm = Menu::firstOrCreate(['url' => 'ketatausahaan'], ['name' => 'Tata Usaha', 'category' => 'MANAJEMEN SEKOLAH', 'icon' => 'pages']);
+        $this->attachMenupermission($mm, ['read'], ['tatausaha']);
 
-        $mm = Menu::firstOrCreate(['url' => 'ketatausahaan/sarana-prasarana'], ['name' => 'Sarana Prasarana', 'category' => 'KETATAUSAHAAN', 'icon' => 'community']);
-        $this->attachMenupermission($mm, null, ['tatausaha']);
+        $sm = $mm->subMenus()->create(['name' => 'Persuratan', 'url' => $mm->url . '/persuratan', 'category' => $mm->category]);
+        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['tatausaha']);
 
-        $mm = Menu::firstOrCreate(['url' => 'ketatausahaan/manajemen-barang'], ['name' => 'Manajemen Barang', 'category' => 'KETATAUSAHAAN', 'icon' => 'briefcase']);
-        $this->attachMenupermission($mm, null, ['tatausaha']);
+        $sm = $mm->subMenus()->create(['name' => 'Sarana Prasarana', 'url' => $mm->url . '/sarana-prasarana', 'category' => $mm->category]);
+        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['tatausaha']);
 
-        $mm = Menu::firstOrCreate(['url' => 'ketatausahaan/agenda-ketatausahaan'], ['name' => 'Agenda Ketatausahaan', 'category' => 'KETATAUSAHAAN', 'icon' => 'calendar']);
-        $this->attachMenupermission($mm, null, ['tatausaha']);
+        $sm = $mm->subMenus()->create(['name' => 'Manajemen Barang', 'url' => $mm->url . '/manajemen-barang', 'category' => $mm->category]);
+        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['tatausaha']);
 
-        $mm = Menu::firstOrCreate(['url' => 'ketatausahaan/anggaran-ketatausahaan'], ['name' => 'Anggaran Ketatausahaan', 'category' => 'KETATAUSAHAAN', 'icon' => 'shopping-cart-2']);
-        $this->attachMenupermission($mm, null, ['tatausaha']);
+        $sm = $mm->subMenus()->create(['name' => 'Agenda Ketatausahaan', 'url' => $mm->url . '/agenda-ketatausahaan', 'category' => $mm->category]);
+        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['tatausaha']);
+
+        $sm = $mm->subMenus()->create(['name' => 'Anggaran Ketatausahaan', 'url' => $mm->url . '/anggaran-ketatausahaan', 'category' => $mm->category]);
+        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['tatausaha']);
     }
 }

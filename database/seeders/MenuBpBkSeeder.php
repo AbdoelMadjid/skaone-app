@@ -21,22 +21,25 @@ class MenuBpBkSeeder extends Seeder
          * @var Menu $mm
          */
 
-        $mm = Menu::firstOrCreate(['url' => 'bpbk/konseling'], ['name' => 'Konseling', 'category' => 'BIMBINGAN KONSELING', 'icon' => 'chat-smile-3']);
-        $this->attachMenupermission($mm, null, ['bpbk']);
+        $mm = Menu::firstOrCreate(['url' => 'bpbk'], ['name' => 'Bimbingan Konseling', 'category' => 'MANAJEMEN SEKOLAH', 'icon' => 'user-settings']);
+        $this->attachMenupermission($mm, ['read'], ['bpbk']);
 
-        $mm = Menu::firstOrCreate(['url' => 'bpbk/data-kip'], ['name' => 'Data KIP', 'category' => 'BIMBINGAN KONSELING', 'icon' => 'clockwise']);
-        $this->attachMenupermission($mm, null, ['bpbk']);
+        $sm = $mm->subMenus()->create(['name' => 'Konseling', 'url' => $mm->url . '/konseling', 'category' => $mm->category]);
+        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['bpbk']);
 
-        $mm = Menu::firstOrCreate(['url' => 'bpbk/home-visit'], ['name' => 'Home Visit', 'category' => 'BIMBINGAN KONSELING', 'icon' => 'home-smile']);
-        $this->attachMenupermission($mm, null, ['bpbk']);
+        $sm = $mm->subMenus()->create(['name' => 'Data KIP', 'url' => $mm->url . '/data-kip', 'category' => $mm->category]);
+        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['bpbk']);
 
-        $mm = Menu::firstOrCreate(['url' => 'bpbk/melanjutkan-kuliah'], ['name' => 'Melanjutkan Kuliah', 'category' => 'BIMBINGAN KONSELING', 'icon' => 'folder-upload']);
-        $this->attachMenupermission($mm, null, ['bpbk']);
+        $sm = $mm->subMenus()->create(['name' => 'Home Visit', 'url' => $mm->url . '/home-visit', 'category' => $mm->category]);
+        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['bpbk']);
 
-        $mm = Menu::firstOrCreate(['url' => 'bpbk/penelusuran-lulusan'], ['name' => 'Penelusuran Lulusan', 'category' => 'BIMBINGAN KONSELING', 'icon' => 'map-pin-user']);
-        $this->attachMenupermission($mm, null, ['bpbk']);
+        $sm = $mm->subMenus()->create(['name' => 'Melanjutkan Kuliah', 'url' => $mm->url . '/melanjutkan-kuliah', 'category' => $mm->category]);
+        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['bpbk']);
 
-        $mm = Menu::firstOrCreate(['url' => 'bpbk/anggaran-bpbk'], ['name' => 'Anggaran BP', 'category' => 'BIMBINGAN KONSELING', 'icon' => 'shopping-cart-2']);
-        $this->attachMenupermission($mm, null, ['bpbk']);
+        $sm = $mm->subMenus()->create(['name' => 'Penelusuran Lulusan', 'url' => $mm->url . '/penelusuran-lulusan', 'category' => $mm->category]);
+        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['bpbk']);
+
+        $sm = $mm->subMenus()->create(['name' => 'Anggaran BP BK', 'url' => $mm->url . '/anggaran-bpbk', 'category' => $mm->category]);
+        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['bpbk']);
     }
 }

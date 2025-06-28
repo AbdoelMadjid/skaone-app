@@ -21,19 +21,22 @@ class MenuKaprodiSeeder extends Seeder
          * @var Menu $mm
          */
 
-        $mm = Menu::firstOrCreate(['url' => 'kaprodi/uji-kompetensi-keahlian'], ['name' => 'Uji Kompetensi Keahlian', 'category' => 'KEPALA PROGRAM STUDI', 'icon' => 'checkbox-multiple']);
-        $this->attachMenupermission($mm, null, ['kaprog']);
+        $mm = Menu::firstOrCreate(['url' => 'kaprodi'], ['name' => 'Kepala Program Studi', 'category' => 'MANAJEMEN SEKOLAH', 'icon' => 'file-user']);
+        $this->attachMenupermission($mm, ['read'], ['kaprog']);
 
-        $mm = Menu::firstOrCreate(['url' => 'kaprodi/agenda-kegiatan-kaprodi'], ['name' => 'Agenda Kaprodi', 'category' => 'KEPALA PROGRAM STUDI', 'icon' => 'calendar']);
-        $this->attachMenupermission($mm, null, ['kaprog']);
+        $sm = $mm->subMenus()->create(['name' => 'Uji Kompetensi Keahlian', 'url' => $mm->url . '/uji-kompetensi-keahlian', 'category' => $mm->category]);
+        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['kaprog']);
 
-        $mm = Menu::firstOrCreate(['url' => 'kaprodi/pembagian-jam-ngajar'], ['name' => 'Pembagian Jam Ngajar', 'category' => 'KEPALA PROGRAM STUDI', 'icon' => 'time']);
-        $this->attachMenupermission($mm, null, ['kaprog']);
+        $sm = $mm->subMenus()->create(['name' => 'Agenda Kaprodi', 'url' => $mm->url . '/agenda-kegiatan-kaprodi', 'category' => $mm->category]);
+        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['kaprog']);
 
-        $mm = Menu::firstOrCreate(['url' => 'kaprodi/laboratorium'], ['name' => 'Laboratorium', 'category' => 'KEPALA PROGRAM STUDI', 'icon' => 'computer']);
-        $this->attachMenupermission($mm, null, ['kaprog']);
+        $sm = $mm->subMenus()->create(['name' => 'Pembagian Jam Ngajar', 'url' => $mm->url . '/pembagian-jam-ngajar', 'category' => $mm->category]);
+        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['kaprog']);
 
-        $mm = Menu::firstOrCreate(['url' => 'kaprodi/anggaran-kaprodi'], ['name' => 'Anggaran Kaprodi', 'category' => 'KEPALA PROGRAM STUDI', 'icon' => 'shopping-cart-2']);
-        $this->attachMenupermission($mm, null, ['kaprog']);
+        $sm = $mm->subMenus()->create(['name' => 'Laboratorium', 'url' => $mm->url . '/laboratorium', 'category' => $mm->category]);
+        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['kaprog']);
+
+        $sm = $mm->subMenus()->create(['name' => 'Anggaran Kaprodi', 'url' => $mm->url . '/anggaran-kaprodi', 'category' => $mm->category]);
+        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['kaprog']);
     }
 }
