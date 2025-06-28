@@ -30,10 +30,10 @@ class MenuTataUsahaSeeder extends Seeder
         $mm = Menu::firstOrCreate(['url' => 'ketatausahaan/manajemen-barang'], ['name' => 'Manajemen Barang', 'category' => 'KETATAUSAHAAN', 'icon' => 'briefcase']);
         $this->attachMenupermission($mm, null, ['tatausaha']);
 
-        $mm = Menu::firstOrCreate(['url' => 'ketatausahaan/agenda-ketatausahaan'], ['name' => 'Agenda', 'category' => 'KETATAUSAHAAN', 'icon' => 'calendar']);
+        $mm = Menu::firstOrCreate(['url' => 'ketatausahaan/agenda-ketatausahaan'], ['name' => 'Agenda Ketatausahaan', 'category' => 'KETATAUSAHAAN', 'icon' => 'calendar']);
         $this->attachMenupermission($mm, null, ['tatausaha']);
 
-        $mm = Menu::firstOrCreate(['url' => 'ketatausahaan/anggaran-ketatausahaan'], ['name' => 'Anggaran', 'category' => 'KETATAUSAHAAN', 'icon' => 'shopping-cart-2']);
+        $mm = Menu::firstOrCreate(['url' => 'ketatausahaan/anggaran-ketatausahaan'], ['name' => 'Anggaran Ketatausahaan', 'category' => 'KETATAUSAHAAN', 'icon' => 'shopping-cart-2']);
         $this->attachMenupermission($mm, null, ['tatausaha']);
     }
 }

@@ -48,5 +48,8 @@ class MenuWalasSeeder extends Seeder
 
         $sm = $mm->subMenus()->create(['name' => 'Cek Remedial', 'url' => $mm->url . '/cek-remedial-siswa', 'category' => $mm->category]);
         $this->attachMenupermission($sm, ['read'], ['walas']);
+
+        $sm = $mm->subMenus()->create(['name' => 'Arsip Walas', 'url' => $mm->url . '/arsip-walas', 'category' => $mm->category]);
+        $this->attachMenupermission($sm, ['read'], ['walas']);
     }
 }

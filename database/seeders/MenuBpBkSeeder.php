@@ -36,7 +36,7 @@ class MenuBpBkSeeder extends Seeder
         $mm = Menu::firstOrCreate(['url' => 'bpbk/penelusuran-lulusan'], ['name' => 'Penelusuran Lulusan', 'category' => 'BIMBINGAN KONSELING', 'icon' => 'map-pin-user']);
         $this->attachMenupermission($mm, null, ['bpbk']);
 
-        $mm = Menu::firstOrCreate(['url' => 'bpbk/anggaran-bpbk'], ['name' => 'Anggaran', 'category' => 'BIMBINGAN KONSELING', 'icon' => 'shopping-cart-2']);
+        $mm = Menu::firstOrCreate(['url' => 'bpbk/anggaran-bpbk'], ['name' => 'Anggaran BP', 'category' => 'BIMBINGAN KONSELING', 'icon' => 'shopping-cart-2']);
         $this->attachMenupermission($mm, null, ['bpbk']);
     }
 }

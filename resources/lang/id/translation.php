@@ -269,7 +269,11 @@ return [
     "tim-manajemen" => "Tim Manajemen",
     "kepala-sekolah" => "Kepala Sekolah",
     "wakil-kepala-sekolah" => "Wakil Kepala Sekolah",
+    "agenda-wakasek" => "Agenda Wakasek",
+    "anggaran-wakasek" => "Anggaran Wakasek",
     "ketua-program-studi" => "Ketua Program Studi",
+    "agenda-kaprodi" => "Agenda Kaprodi",
+    "anggaran-kaprodi" => "Anggaran Kaprodi",
     "jabatan-lain" => "Jabatan Lain",
     "rombongan-belajar" => "Rombongan Belajar",
     "wali-kelas" => "Wali Kelas",
@@ -313,7 +317,6 @@ return [
     "panitia-ujian" => "Panitia Ujian",
     "token-soal-ujian" => "Token Soal Ujian",
     "denah-ruangan-ujian" => "Denah Ruangan Ujian",
-
 
     "guru-mata-pelajaran" => "Guru Mata Pelajaran",
     "administrasi-guru" => "Administrasi Guru",
@@ -439,13 +442,15 @@ return [
     'home-visit' => 'Home Visit',
     'melanjutkan-kuliah' => 'Melanjutkan Kuliah',
     'penelusuran-lulusan' => 'Penelusuran Lulusan',
+    'anggaran-bp' => 'Anggaran Bimbingan Konseling',
 
     'KETATAUSAHAAN' => 'KETATAUSAHAAN',
     'persuratan' => 'Persuratan',
     'sarana-prasarana' => 'Sarana Prasarana',
     'manajemen-barang' => 'Manajemen Barang',
-    'agenda' => 'Agenda',
+    'agenda-ketatausahaan' => 'Agenda Ketatausahaan',
     'tata-usaha' => 'Ketatausahaan',
+    'anggaran-ketatausahaan' => 'Anggaran Ketatausahaan',
 
     'KBM PESERTA DIDIK' => 'KBM PESERTA DIDIK',
     'ujian-semester' => 'Ujian Semester',
@@ -469,5 +474,19 @@ return [
     'daftar' => 'Daftar',
     'berita' => 'Berita',
     'kelulusan' => 'Kelulusan',
+
+    'ALUMNI' => 'ALUMNI',
+    'ruang-alumni' => 'Ruang Alumni',
+    'riwayat-kerja' => 'Riwayat Kerja',
+    'informasi-alumni' => 'Informasi Alumni',
+    'arsip-alumni' => 'Arsip Alumni',
+    'transkrip' => 'Transkrip',
+
+    'web-site-app' => 'Web Site App',
+    'faq' => 'Frequently Asked Questions',
+    'photo-jurusan' => 'Photo Jurusan',
+    'event' => 'Kalendar Pendidikan',
+    'polling' => 'Polling',
+
 
 ];

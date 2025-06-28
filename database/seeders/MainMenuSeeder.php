@@ -31,6 +31,7 @@ class MainMenuSeeder extends Seeder
             MenuProfilSeeder::class,
             MenuPenggunaSeeder::class,
             MenuAppSupportSeeder::class,
+            MenuWebSiteSeeder::class,
             MenuManajemenSekolahSeeder::class,
             MenuKurikulumSeeder::class,
             MenuGuruMapelSeeder::class,
@@ -41,6 +42,7 @@ class MainMenuSeeder extends Seeder
             MenuTataUsahaSeeder::class,
             MenuSiswaSeeder::class,
             MenuPklSeeder::class,
+            MenuAlumniSeeder::class,
         ]);
     }
 }

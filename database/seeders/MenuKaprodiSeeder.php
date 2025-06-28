@@ -24,7 +24,7 @@ class MenuKaprodiSeeder extends Seeder
         $mm = Menu::firstOrCreate(['url' => 'kaprodi/uji-kompetensi-keahlian'], ['name' => 'Uji Kompetensi Keahlian', 'category' => 'KEPALA PROGRAM STUDI', 'icon' => 'checkbox-multiple']);
         $this->attachMenupermission($mm, null, ['kaprog']);
 
-        $mm = Menu::firstOrCreate(['url' => 'kaprodi/agenda-kegiatan-kaprodi'], ['name' => 'Agenda Kegiatan', 'category' => 'KEPALA PROGRAM STUDI', 'icon' => 'calendar']);
+        $mm = Menu::firstOrCreate(['url' => 'kaprodi/agenda-kegiatan-kaprodi'], ['name' => 'Agenda Kaprodi', 'category' => 'KEPALA PROGRAM STUDI', 'icon' => 'calendar']);
         $this->attachMenupermission($mm, null, ['kaprog']);
 
         $mm = Menu::firstOrCreate(['url' => 'kaprodi/pembagian-jam-ngajar'], ['name' => 'Pembagian Jam Ngajar', 'category' => 'KEPALA PROGRAM STUDI', 'icon' => 'time']);
@@ -33,7 +33,7 @@ class MenuKaprodiSeeder extends Seeder
         $mm = Menu::firstOrCreate(['url' => 'kaprodi/laboratorium'], ['name' => 'Laboratorium', 'category' => 'KEPALA PROGRAM STUDI', 'icon' => 'computer']);
         $this->attachMenupermission($mm, null, ['kaprog']);
 
-        $mm = Menu::firstOrCreate(['url' => 'kaprodi/anggaran-kaprodi'], ['name' => 'Anggaran', 'category' => 'KEPALA PROGRAM STUDI', 'icon' => 'shopping-cart-2']);
+        $mm = Menu::firstOrCreate(['url' => 'kaprodi/anggaran-kaprodi'], ['name' => 'Anggaran Kaprodi', 'category' => 'KEPALA PROGRAM STUDI', 'icon' => 'shopping-cart-2']);
         $this->attachMenupermission($mm, null, ['kaprog']);
     }
 }
