@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\About\Galery;
-use App\Models\About\PhotoJurusan;
-use App\Models\About\PhotoSlide;
-use App\Models\About\TeamPengembang;
+use App\Models\WebSite\Galery;
+use App\Models\WebSite\PhotoJurusan;
+use App\Models\WebSite\PhotoSlide;
+use App\Models\WebSite\TeamPengembang;
 use App\Models\AppSupport\Referensi;
 use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
 use App\Models\Kurikulum\PerangkatUjian\ExamSchedule;

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\About\Polling;
-use App\Models\About\Response;
+use App\Models\WebSite\Polling;
+use App\Models\WebSite\Response;
 use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
 use App\Models\Kurikulum\PerangkatKurikulum\Pengumuman;
 use App\Models\ManajemenPengguna\LoginRecord;
