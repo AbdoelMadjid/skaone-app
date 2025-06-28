@@ -112,21 +112,9 @@ Route::middleware(['auth'])->get('/return-account', [UserController::class, 'ret
 
 Route::group(['prefix' => 'about', 'as' => 'about.'], function () {
     Route::resource('about', AboutController::class);
-    Route::resource('kumpulan-faqs', KumpulanFaqController::class);
-    Route::resource('team-pengembang', TeamPengembangController::class);
-    Route::resource('fitur-coding', FiturCodingController::class);
-    Route::resource('photo-slides', PhotoSlideController::class);
-    Route::resource('galery', GaleryController::class);
-    Route::resource('photo-jurusan', PhotoJurusanController::class);
-    Route::resource('photo-jurusan', PhotoJurusanController::class);
-    Route::resource('daily-messages', DailyMessagesController::class);
-    Route::get('events/list', [EventController::class, 'listEvent'])->name('events.list');
-    Route::resource('events', EventController::class);
-    Route::resource('polling', PollingController::class);
-    Route::resource('question', QuestionController::class);
 });
 
-Route::middleware(['auth'])->post('/about/pollingsubmit', [PollingController::class, 'submitPolling'])->name('about.pollingsubmit');
+//Route::middleware(['auth'])->post('/about/pollingsubmit', [PollingController::class, 'submitPolling'])->name('about.pollingsubmit');
 
 // Kelompok rute untuk profil, hanya dapat diakses oleh pengguna yang sudah terotentikasi
 Route::middleware('auth')->group(function () {
@@ -200,6 +188,7 @@ require __DIR__ . '/bpbk.php';
 require __DIR__ . '/ketatausahaan.php';
 require __DIR__ . '/skaonewelcome.php';
 require __DIR__ . '/alumni.php';
+require __DIR__ . '/websiteapp.php';
 
 // Rute fallback untuk `auth`, menangani view dalam folder `auth`
 Route::get('auth/{page}', function ($page) {

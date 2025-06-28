@@ -4,12 +4,6 @@ use App\Http\Controllers\Alumni\InformasiAlumniController;
 use App\Http\Controllers\Alumni\KelulusanAlumniController;
 use App\Http\Controllers\Alumni\RiwayatKerjaController;
 use App\Http\Controllers\Alumni\TranskripAlumniController;
-use App\Http\Controllers\BpBk\AnggaranController;
-use App\Http\Controllers\BpBk\DataKipController;
-use App\Http\Controllers\BpBk\HomeVisitController;
-use App\Http\Controllers\BpBk\KonselingController;
-use App\Http\Controllers\BpBk\MelanjutkanKuliahController;
-use App\Http\Controllers\BpBk\PenelusuranLulusanController;
 use Illuminate\Support\Facades\Route;
 
 /*

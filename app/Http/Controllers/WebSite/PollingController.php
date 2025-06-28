@@ -1,38 +1,25 @@
 <?php
 
-namespace App\Http\Controllers\About;
+namespace App\Http\Controllers\WebSite;
 
-use App\Http\Requests\About\AboutRequest;
-use App\Models\About\About;
+use App\DataTables\WebSite\PollingDataTable;
 use App\Http\Controllers\Controller;
-use App\Models\WebSite\DailyMessages;
-use App\Models\WebSite\FiturCoding;
-use App\Models\WebSite\Galery;
-use App\Models\WebSite\KumpulanFaq;
-use App\Models\WebSite\PhotoSlide;
+use App\Http\Requests\WebSite\PollingRequest;
 use App\Models\WebSite\Polling;
+use App\Models\WebSite\Question;
 use App\Models\WebSite\Response;
-use App\Models\WebSite\TeamPengembang;
-use App\Models\AppSupport\Referensi;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AboutController extends Controller
+class PollingController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(PollingDataTable $pollingDataTable)
     {
-        $fiturCodings = FiturCoding::all();
-        $faqs = KumpulanFaq::all()->groupBy('kategori');
-        $teamPengembang = TeamPengembang::all(); // Fetch all team members
-        $photoSlides = PhotoSlide::all(); // Fetch all team members
-
-        $categoryGalery = Referensi::where('jenis', 'KategoriGalery')->pluck('data', 'data')->toArray();
-        $galleries = Galery::all();
-        $dailyMessages = DailyMessages::all(); // Fetch data dari DailyMessage
-
+        // Handle the polling section
         $aingPengguna = User::find(Auth::user()->id);
 
         $pollings = Polling::with('questions') // include relasi
@@ -109,24 +96,14 @@ class AboutController extends Controller
             }
         }
 
-        return view(
-            'pages.about.about',
-            [
-                'faqs' => $faqs,
-                'fiturCodings' => $fiturCodings,
-                'teamPengembang' => $teamPengembang,
-                'photoSlides' => $photoSlides,
-                'categoryGalery' => $categoryGalery,
-                'galleries' => $galleries,
-                'dailyMessages' => $dailyMessages,
-                'pollingStats' => $pollingStats,
-                'textResponses' => $textResponses,
-                'aingPengguna' => $aingPengguna,
-                'pollings' => $pollings,
-                'respondedPollingIds' => $respondedPollingIds,
-                'usersWhoPolled' => $usersWhoPolled,
-            ]
-        );
+        return $pollingDataTable->render('pages.website.polling', [
+            'aingPengguna' => $aingPengguna,
+            'pollings' => $pollings,
+            'respondedPollingIds' => $respondedPollingIds,
+            'usersWhoPolled' => $usersWhoPolled,
+            'pollingStats' => $pollingStats,
+            'textResponses' => $textResponses,
+        ]);
     }
 
     /**
@@ -134,46 +111,117 @@ class AboutController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.website.polling-form', [
+            'data' => new Polling(),
+            'action' => route('websiteapp.polling.store')
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(AboutRequest $request)
+    public function store(PollingRequest $request)
     {
-        //
+        $polling = new Polling($request->validated());
+        $polling->save();
+
+        return responseSuccess();
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(About $about)
+    public function show(Polling $polling)
     {
-        //
+        return view('pages.website.polling-form', [
+            'data' => $polling
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(About $about)
+    public function edit(Polling $polling)
     {
-        //
+        return view('pages.website.polling-form', [
+            'data' => $polling,
+            'action' => route('websiteapp.polling.update', $polling->id)
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(AboutRequest $request, About $about)
+    public function update(PollingRequest $request, Polling $polling)
     {
-        //
+        $polling->fill($request->validated());
+        $polling->save();
+
+        return responseSuccess(true);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(About $about)
+    public function destroy(Polling $polling)
     {
-        //
+        $polling->delete();
+
+        return responseSuccessDelete();
+    }
+
+    public function submitPolling(Request $request)
+    {
+        $user = User::find(Auth::user()->id);
+
+        $request->validate([
+            'polling_id' => 'required|exists:pollings,id',
+            'answers' => 'required|array',
+            'answers.*' => 'required',
+        ]);
+
+        $pollingId = $request->input('polling_id');
+
+        $alreadyResponded = Response::whereHas('question', function ($query) use ($pollingId) {
+            $query->where('polling_id', $pollingId);
+        })->where('user_id', $user->id)->exists();
+
+        if ($alreadyResponded) {
+            return back()->with('error', 'Anda sudah mengisi polling ini sebelumnya.');
+        }
+
+        foreach ($request->input('answers') as $questionId => $answerValue) {
+            $question = Question::find($questionId);
+
+            if (!$question || $question->polling_id != $pollingId) {
+                continue;
+            }
+
+            $data = [
+                'question_id' => $questionId,
+                'user_id' => $user->id,
+            ];
+
+            if ($question->question_type === 'multiple_choice') {
+                if (!in_array($answerValue, ['1', '2', '3', '4', '5'])) {
+                    return back()->withErrors(['answers.' . $questionId => 'Pilihan tidak valid.']);
+                }
+                $data['choice_answer'] = (int) $answerValue;
+                $data['text_answer'] = null;
+            } else {
+                $wordCount = preg_match_all('/\b\w+\b/u', strip_tags($answerValue));
+                if ($wordCount < 3 || $wordCount > 100) {
+                    return back()->withErrors([
+                        'answers.' . $questionId => 'Jawaban harus minimal 15 kata dan maksimal 100 kata.'
+                    ]);
+                }
+                $data['text_answer'] = $answerValue;
+                $data['choice_answer'] = null;
+            }
+
+            Response::create($data);
+        }
+
+        return back()->with('toast_success', 'Terima kasih, jawaban Anda telah berhasil dikirim.');
     }
 }

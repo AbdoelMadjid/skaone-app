@@ -380,7 +380,7 @@
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 themeSystem: 'bootstrap5',
-                events: `{{ route('about.events.list') }}`,
+                events: `{{ route('websiteapp.events.list') }}`,
                 editable: false,
                 eventDidMount: function() {
                     // Update the event list when events are rendered

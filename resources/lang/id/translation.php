@@ -486,9 +486,9 @@ return [
     'alumni' => 'Alumni',
 
     'web-site-app' => 'Web Site App',
-    'faq' => 'Frequently Asked Questions',
+    'kumpulan-faqs' => 'Frequently Asked Questions',
     'photo-jurusan' => 'Photo Jurusan',
-    'event' => 'Kalendar Pendidikan',
+    'events' => 'Kalendar Pendidikan',
     'polling' => 'Polling',
 
 
