@@ -16,7 +16,7 @@
     @endcomponent
     <div class="row">
         <div class="col-lg-12">
-            <div class="card">
+            <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
                 <div class="card-body border-bottom-dashed border-bottom">
                     <form>
                         <div class="row g-3">
@@ -76,7 +76,9 @@
                     </form>
                 </div>
                 <div class="card-body">
-                    {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+                    <div class="px-4 mx-n4 mt-n2 mb-0" data-simplebar style="height: calc(100vh - 295px);">
+                        {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+                    </div>
                 </div>
             </div>
         </div>

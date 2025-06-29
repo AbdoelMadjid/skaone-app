@@ -37,7 +37,7 @@
     <div class="row">
         <div class="col-xl-12 col-lg-12">
             <div>
-                <div class="card">
+                <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
                     <div class="card-header border-0">
                         <div class="row g-4">
                             <div class="col-sm-auto">

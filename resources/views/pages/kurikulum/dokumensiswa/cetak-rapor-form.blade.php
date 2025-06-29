@@ -32,9 +32,9 @@
         </div>
     </div>
 
-    <button type="button" id="btn-data-rapor" class="btn btn-soft-primary w-100 mt-3">Confirm</button>
+    <button type="button" id="btn-data-rapor" class="btn btn-soft-primary btn-sm w-100">Confirm</button>
     @if ($personal_id == 'Pgw_0016')
-        <button type="button" class="btn btn-soft-primary w-100 mt-3 mb-3" data-bs-toggle="modal"
+        <button type="button" class="btn btn-soft-primary btn-sm w-100 mt-2 mb-2" data-bs-toggle="modal"
             data-bs-target="#tambahPilihCetakRapor">Tambah Pengguna</button>
     @endif
 </form>

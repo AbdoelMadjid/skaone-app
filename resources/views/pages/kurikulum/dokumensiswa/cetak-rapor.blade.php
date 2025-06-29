@@ -66,7 +66,7 @@
 @section('content')
     <div class="row">
         <div class="col-xxl-12">
-            <div class="card">
+            <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
                 <div class="row g-0">
                     <div class="col-lg-9">
                         <div class="card-header">

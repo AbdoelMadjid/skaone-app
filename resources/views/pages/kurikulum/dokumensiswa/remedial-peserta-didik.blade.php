@@ -16,7 +16,7 @@
     @endcomponent
     <div class="row" #top>
         <div class="col-lg-12">
-            <div class="card" id="customerList">
+            <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
                 <div class="card-header border-bottom-dashed">
 
                     <div class="row g-4 align-items-center">
