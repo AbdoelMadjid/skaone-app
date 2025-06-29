@@ -44,23 +44,23 @@
     @endcomponent
     <div class="row">
         <div class="col-lg-12">
-            <div class="card">
+            <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
                 <div class="card-header d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @yield('title') - {{ $fullName }}</h5>
                     <div>
-                        <button type="button" class="btn btn-soft-primary" data-bs-toggle="modal"
+                        <button type="button" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal"
                             data-bs-target="#pilihCapaianPembelajaran" id="pilihCapaianPembelajaranBtn" title="Pilih CP">Pilih
                             Capaian Pembelajaran</button>
-                        <button class="btn btn-soft-primary" type="button" data-bs-toggle="collapse"
+                        <button class="btn btn-soft-primary btn-sm" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseWithicon2" aria-expanded="false" aria-controls="collapseWithicon2"
                             title="Cek Capaian Pembelajaran Terpilih">
                             <i class="ri-filter-2-line"></i>
                         </button>
-                        <button id="deleteSelected" class="btn btn-soft-danger" style="display: none;"><i
+                        <button id="deleteSelected" class="btn btn-soft-danger btn-sm" style="display: none;"><i
                                 class="ri-delete-bin-2-line"></i></button>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-1">
                     <div class="collapse" id="collapseWithicon2">
                         <div class="card ribbon-box border shadow-none mb-lg-2">
                             <div class="card-body">
