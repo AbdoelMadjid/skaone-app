@@ -69,8 +69,8 @@ class PollingDataTable extends DataTable
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('title')->title('Judul'),
-            Column::make('start_time')->title('Waktu Mulai')->width('15%'),
-            Column::make('end_time')->title('Waktu Selesai')->width('15%'),
+            Column::make('start_time')->title('Waktu Mulai'),
+            Column::make('end_time')->title('Waktu Selesai'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

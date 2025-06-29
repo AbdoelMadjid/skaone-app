@@ -38,22 +38,18 @@
             @lang('translation.web-site-app')
         @endslot
     @endcomponent
-    <div class="row">
-        <div class="col-lg-12">
-            <!-- Rounded Ribbon -->
-            <div class="card ribbon-box border shadow-none mb-lg-0">
-                <div class="card-body">
-                    <div class="ribbon ribbon-primary round-shape">Event Calendar</div>
-                    <div class="ribbon-content mt-4">
-                        <div id="calendar"></div>
-                    </div>
+    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
+        <!-- Rounded Ribbon -->
+        <div class="card ribbon-box border shadow-none mb-lg-0">
+            <div class="card-body">
+                <div class="ribbon ribbon-primary round-shape">Event Calendar</div>
+                <div class="ribbon-content mt-4">
+                    <div id="calendar"></div>
                 </div>
             </div>
         </div>
     </div>
-    <div id="modal-action-calendar" class="modal" tabindex="-1">
-
-    </div>
+    <div id="modal-action-calendar" class="modal" tabindex="-1"></div>
 @endsection
 @section('script')
     {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script> --}}
