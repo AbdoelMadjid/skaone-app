@@ -17,37 +17,40 @@
             <h5 class="card-title">Backup Database</h5>
         </div>
         <div class="card-body">
+
             <p>Backup database adalah proses untuk menyimpan data yang ada di database ke dalam file.</p>
             <form action="{{ route('appsupport.backup-db.process') }}" method="POST">
                 @csrf
-                <table class="table table-bordered" id="tables-list">
-                    <thead>
-                        <tr>
-                            <th>Pilih</th>
-                            <th>Nama Tabel</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($tables as $table)
+                <div class="px-4 mx-n4 mt-n2 mb-0" data-simplebar style="height: calc(100vh - 300px);">
+                    <table class="table table-bordered" id="tables-list">
+                        <thead>
                             <tr>
-                                <td class="text-center">
-                                    <div class="form-check form-switch form-switch-md text-center" dir="ltr">
-                                        <input type="checkbox" class="form-check-input" name="tables[]"
-                                            value="{{ $table }}" id="customSwitch{{ $loop->index }}">
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="table-name" data-target="#customSwitch{{ $loop->index }}">
-                                        {{ ucwords(str_replace('_', ' ', $table)) }}
-                                    </span>
-                                </td>
+                                <th>Pilih</th>
+                                <th>Nama Tabel</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($tables as $table)
+                                <tr>
+                                    <td class="text-center">
+                                        <div class="form-check form-switch form-switch-md text-center" dir="ltr">
+                                            <input type="checkbox" class="form-check-input" name="tables[]"
+                                                value="{{ $table }}" id="customSwitch{{ $loop->index }}">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="table-name" data-target="#customSwitch{{ $loop->index }}">
+                                            {{ ucwords(str_replace('_', ' ', $table)) }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
                 <div class="col-lg-12 mt-3">
                     <div class="gap-2 hstack justify-content-end">
-                        <button type="submit" class="btn btn-primary">Backup Tabel yang Dipilih</button>
+                        <button type="submit" class="btn btn-soft-primary btn-sm">Backup Tabel yang Dipilih</button>
                     </div>
                 </div>
             </form>
@@ -104,7 +107,7 @@
         $(document).ready(function() {
             var table = $('#tables-list').DataTable({
                 dom: 'Bfrtip',
-                pageLength: 20
+                pageLength: 8,
             });
 
             $('#tables-list').on('click', '.table-name', function() {
