@@ -27,15 +27,15 @@
                 label="Kode Rombel" id="kode_rombel" />
         </div>
     </div>
-    <button type="button" id="btn-data-walikelas" class="btn btn-soft-primary w-100 mt-3">Confirm</button>
+    <button type="button" id="btn-data-walikelas" class="btn btn-soft-primary btn-sm w-100 mt-3">Confirm</button>
 </form>
 
-<button type="button" id="btn-ranking-pertk" class="btn btn-soft-primary w-100 mt-3">Ranking pertingkat</button>
-<button type="button" id="btn-ranking-pertkkk" class="btn btn-soft-primary w-100 mt-3">Ranking pertingkat per
+<button type="button" id="btn-ranking-pertk" class="btn btn-soft-primary btn-sm w-100 mt-3">Ranking pertingkat</button>
+<button type="button" id="btn-ranking-pertkkk" class="btn btn-soft-primary btn-sm w-100 mt-3">Ranking pertingkat per
     kk</button>
 @if ($personal_id == 'Pgw_0016')
     <form method="GET" action="{{ route('kurikulum.dokumenguru.generaterankingsiswa') }}">
-        <button class="btn btn-success w-100 mt-3">Generate Ranking Manual</button>
+        <button class="btn btn-success btn-sm w-100 mt-3">Generate Ranking Manual</button>
     </form>
 @endif
 <script>

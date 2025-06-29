@@ -14,72 +14,72 @@
             @lang('translation.dokumen-guru')
         @endslot
     @endcomponent
-    <div class="row mb-3">
-        <div class="col-xl-9">
-            <div class="card">
-                <div class="card-header border-0">
-                    <div class="row align-items-center gy-3 mb-3">
-                        <div class="col-sm">
-                            <div>
-                                <div class="row" id="info-wali-siswa">
-                                    @include('pages.kurikulum.dokumenguru.arsip-walikelas-info')
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-auto">
-                            <div>
-                                <div class="row p-2">
-                                    Tahun Ajaran : {{ $dataPilWalas->tahunajaran ?? '' }}<br>
-                                    Semester : {{ $dataPilWalas->ganjilgenap ?? '' }}
-                                </div>
-                            </div>
+    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
+        <div class="card-header border-0">
+            <div class="row align-items-center gy-3 mb-3">
+                <div class="col-sm">
+                    <div>
+                        <div class="row" id="info-wali-siswa">
+                            @include('pages.kurikulum.dokumenguru.arsip-walikelas-info')
                         </div>
                     </div>
                 </div>
-                <div>
-                    <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-bs-toggle="tab" href="#dataKelas" role="tab"
-                                aria-selected="false">
-                                <i class="las la-address-card text-muted align-bottom me-1 fs-4"></i> Siswa
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" id="images-tab" href="#abSensi" role="tab"
-                                aria-selected="true">
-                                <i class="las la-calendar-check text-muted align-bottom me-1 fs-4"></i> Absensi
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#ekstraKurikuler" role="tab"
-                                aria-selected="false">
-                                <i class="las la-table-tennis text-muted align-bottom me-1 fs-4"></i>
-                                Eskul
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#prestasiSiswa" role="tab"
-                                aria-selected="false">
-                                <i class="las la-trophy text-muted align-bottom me-1 fs-4"></i> Prestasi
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#catatanWaliKelas" role="tab"
-                                aria-selected="false">
-                                <i class="las la-file-alt text-muted align-bottom me-1 fs-4"></i> Catatan
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#kenaikan" role="tab" aria-selected="false">
-                                <i class="las la-upload text-muted align-bottom me-1 fs-4"></i> Kenaikan
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#ranking" role="tab" aria-selected="false">
-                                <i class="las la-list text-muted align-bottom me-1 fs-4"></i> Ranking
-                            </a>
-                        </li>
-                        {{-- <li class="nav-item ms-auto">
+                <div class="col-sm-auto">
+                    <div>
+                        {{--  --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-xl-9">
+                    <div class="mb-3">
+                        <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#dataKelas" role="tab"
+                                    aria-selected="false">
+                                    <i class="las la-address-card text-muted align-bottom me-1 fs-4"></i> Siswa
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" id="images-tab" href="#abSensi" role="tab"
+                                    aria-selected="true">
+                                    <i class="las la-calendar-check text-muted align-bottom me-1 fs-4"></i> Absensi
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#ekstraKurikuler" role="tab"
+                                    aria-selected="false">
+                                    <i class="las la-table-tennis text-muted align-bottom me-1 fs-4"></i>
+                                    Eskul
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#prestasiSiswa" role="tab"
+                                    aria-selected="false">
+                                    <i class="las la-trophy text-muted align-bottom me-1 fs-4"></i> Prestasi
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#catatanWaliKelas" role="tab"
+                                    aria-selected="false">
+                                    <i class="las la-file-alt text-muted align-bottom me-1 fs-4"></i> Catatan
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#kenaikan" role="tab"
+                                    aria-selected="false">
+                                    <i class="las la-upload text-muted align-bottom me-1 fs-4"></i> Kenaikan
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#ranking" role="tab"
+                                    aria-selected="false">
+                                    <i class="las la-list text-muted align-bottom me-1 fs-4"></i> Ranking
+                                </a>
+                            </li>
+                            {{-- <li class="nav-item ms-auto">
                                 <div class="dropdown">
                                     <a class="nav-link fw-medium text-reset mb-n1" href="#" role="button"
                                         id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -95,10 +95,9 @@
                                     </ul>
                                 </div>
                             </li> --}}
-                    </ul>
-                </div>
-                <div class="card-body p-4">
-                    <div class="px-4 mx-n4" data-simplebar style="height: calc(100vh - 332px);">
+                        </ul>
+                    </div>
+                    <div class="px-4 mx-n4" data-simplebar style="height: calc(100vh - 300px);">
                         <div id="walikelas-detail">
                             <div class="alert alert-primary alert-dismissible alert-label-icon rounded-label fade show mt-4"
                                 role="alert">
@@ -108,34 +107,34 @@
                             </div>
                         </div>
                     </div>
+                    <!-- end card -->
+                    <div id="tampil-ranking" class="mt-4"></div>
+                </div>
+                <!-- end col -->
+
+                <div class="col-xl-3">
+                    <div class="sticky-side-div">
+                        <div class="card">
+                            <div class="card-header border-bottom-dashed">
+                                <h5 class="card-title mb-0">Pilih Rombongan Belajar</h5>
+                            </div>
+                            <div class="card-body pt-2">
+                                @include('pages.kurikulum.dokumenguru.arsip-walikelas-form')
+                                <!-- end table-responsive -->
+                                <button onclick="printRanking()" class="btn btn-primary btn-sm w-100 mt-3">Cetak
+                                    Ranking</button>
+                                @if ($personal_id == 'Pgw_0016')
+                                    <button type="button" class="btn btn-soft-primary btn-sm w-100 mt-3"
+                                        data-bs-toggle="modal" data-bs-target="#tambahPilihArsipWaliKelas"><i
+                                            class="ri-file-download-line align-bottom me-1"></i>
+                                        Tambah</button>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end stickey -->
                 </div>
             </div>
-            <!-- end card -->
-            <div id="tampil-ranking" class="mt-4"></div>
-
-        </div>
-        <!-- end col -->
-
-        <div class="col-xl-3">
-            <div class="sticky-side-div">
-                <div class="card">
-                    <div class="card-header border-bottom-dashed">
-                        <h5 class="card-title mb-0">Pilih Rombongan Belajar</h5>
-                    </div>
-                    <div class="card-body pt-2">
-                        @include('pages.kurikulum.dokumenguru.arsip-walikelas-form')
-                        <!-- end table-responsive -->
-                        <button onclick="printRanking()" class="btn btn-primary w-100 mt-3">Cetak Ranking</button>
-                        @if ($personal_id == 'Pgw_0016')
-                            <button type="button" class="btn btn-soft-primary w-100 mt-3" data-bs-toggle="modal"
-                                data-bs-target="#tambahPilihArsipWaliKelas"><i
-                                    class="ri-file-download-line align-bottom me-1"></i>
-                                Tambah</button>
-                        @endif
-                    </div>
-                </div>
-            </div>
-            <!-- end stickey -->
         </div>
     </div>
     @include('pages.kurikulum.dokumenguru.arsip-walikelas-tambah-form')
