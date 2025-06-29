@@ -14,58 +14,55 @@
             @lang('translation.data-kbm')
         @endslot
     @endcomponent
-    <div class="row">
-        <div class="col-lg-12">
-            <!-- Rounded Ribbon -->
-            <div class="card ribbon-box border shadow-none mb-lg-0">
-                <div class="card-body">
-                    <div class="ribbon ribbon-primary round-shape">Perhitungan Hari Efektif Pembelajaran</div>
-                    <h5 class="fs-14 text-end"></h5>
-                    <div class="ribbon-content mt-4">
-                        <form id="filter-form" class="row g-4 mb-4">
-                            <div class="col-sm"></div>
-                            <div class="col-md-auto">
-                                <label for="tahun_ajaran">Tahun Ajaran</label>
-                                <select class="form-control" id="tahun_ajaran" name="tahun_ajaran_id">
-                                    @foreach ($tahunList as $tahun)
-                                        <option value="{{ $tahun->id }}"
-                                            {{ $tahun->id == $tahunAktif->id ? 'selected' : '' }}>
-                                            {{ $tahun->tahunajaran }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-auto">
-                                <label for="semester">Semester</label>
-                                <select class="form-control" id="semester" name="semester">
-                                    <option value="Ganjil" {{ $semesterAktif->semester == 'Ganjil' ? 'selected' : '' }}>
-                                        Ganjil
+    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
+        <!-- Rounded Ribbon -->
+        <div class="card ribbon-box border shadow-none mb-lg-0">
+            <div class="card-body">
+                <div class="ribbon ribbon-primary round-shape">Perhitungan Hari Efektif Pembelajaran</div>
+                <h5 class="fs-14 text-end"></h5>
+                <div class="ribbon-content mt-4">
+                    <form id="filter-form" class="row g-4 mb-4">
+                        <div class="col-sm"></div>
+                        <div class="col-md-auto">
+                            <label for="tahun_ajaran">Tahun Ajaran</label>
+                            <select class="form-control" id="tahun_ajaran" name="tahun_ajaran_id">
+                                @foreach ($tahunList as $tahun)
+                                    <option value="{{ $tahun->id }}"
+                                        {{ $tahun->id == $tahunAktif->id ? 'selected' : '' }}>
+                                        {{ $tahun->tahunajaran }}
                                     </option>
-                                    <option value="Genap" {{ $semesterAktif->semester == 'Genap' ? 'selected' : '' }}>
-                                        Genap
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="col-md-auto d-flex align-items-end">
-                                <button type="submit" class="btn btn-soft-primary">Tampilkan Kalender</button>
-                            </div>
-                        </form>
-
-                        <div id="kalender-wrapper" class="row"></div>
-                        <div class="d-flex align-items-center gap-2 my-3">
-                            <label for="kehadiranPersen" class="mb-0">Kehadiran Ideal:</label>
-                            <select id="kehadiranPersen" class="form-select w-auto">
-                                <option value="80" selected>80%</option>
-                                <option value="85">85%</option>
-                                <option value="90">90%</option>
+                                @endforeach
                             </select>
                         </div>
-                        <div id="rekap-hari" class="mt-5"></div>
+                        <div class="col-md-auto">
+                            <label for="semester">Semester</label>
+                            <select class="form-control" id="semester" name="semester">
+                                <option value="Ganjil" {{ $semesterAktif->semester == 'Ganjil' ? 'selected' : '' }}>
+                                    Ganjil
+                                </option>
+                                <option value="Genap" {{ $semesterAktif->semester == 'Genap' ? 'selected' : '' }}>
+                                    Genap
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-auto d-flex align-items-end">
+                            <button type="submit" class="btn btn-soft-primary">Tampilkan Kalender</button>
+                        </div>
+                    </form>
+
+                    <div id="kalender-wrapper" class="row"></div>
+                    <div class="d-flex align-items-center gap-2 my-3">
+                        <label for="kehadiranPersen" class="mb-0">Kehadiran Ideal:</label>
+                        <select id="kehadiranPersen" class="form-select w-auto">
+                            <option value="80" selected>80%</option>
+                            <option value="85">85%</option>
+                            <option value="90">90%</option>
+                        </select>
                     </div>
+                    <div id="rekap-hari" class="mt-5"></div>
                 </div>
             </div>
         </div>
-        <!--end col-->
     </div>
 @endsection
 @section('script')

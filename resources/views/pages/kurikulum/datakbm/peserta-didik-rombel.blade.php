@@ -16,102 +16,98 @@
             @lang('translation.data-kbm')
         @endslot
     @endcomponent
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header border-bottom-dashed">
-                    <div class="row g-4 align-items-center">
-                        <div class="col-sm">
-                            <div>
-                                <h5 class="card-title mb-0">@lang('translation.tables') @lang('translation.peserta-didik-rombel')</h5>
-                            </div>
-                        </div>
-                        <div class="col-sm-auto">
-                            <div class="d-flex flex-wrap align-items-start gap-2">
-                                <button type="button" class="btn btn-soft-primary" data-bs-toggle="modal"
-                                    data-bs-target="#generateAkun" id="generateAkunBtn" title="generateAkun">Generate
-                                    Akun Siswa</button>
-                                <a href="{{ route('manajemensekolah.peserta-didik.index') }}"
-                                    class="btn btn-soft-primary">Peserta
-                                    Didik</a>
-                                @can('create kurikulum/datakbm/peserta-didik-rombel')
-                                    <a class="btn btn-soft-primary add-btn action"
-                                        href="{{ route('kurikulum.datakbm.peserta-didik-rombel.create') }}"><i
-                                            class="ri-add-line align-bottom me-1"></i> Peserta Didik Rombel</a>
-                                @endcan
-                                {{-- <a href="{{ route('ps_exportExcel') }}" class="btn btn-primary"><i
+    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-0">
+        <div class="card-header border-bottom-dashed">
+            <div class="row g-4 align-items-center">
+                <div class="col-sm">
+                    <div>
+                        <h5 class="card-title mb-0">@lang('translation.tables') @lang('translation.peserta-didik-rombel')</h5>
+                    </div>
+                </div>
+                <div class="col-sm-auto">
+                    <div class="d-flex flex-wrap align-items-start gap-2">
+                        <button type="button" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#generateAkun" id="generateAkunBtn" title="generateAkun">Generate
+                            Akun Siswa</button>
+                        <a href="{{ route('manajemensekolah.peserta-didik.index') }}"
+                            class="btn btn-soft-primary btn-sm">Peserta
+                            Didik</a>
+                        @can('create kurikulum/datakbm/peserta-didik-rombel')
+                            <a class="btn btn-soft-primary btn-sm add-btn action"
+                                href="{{ route('kurikulum.datakbm.peserta-didik-rombel.create') }}"><i
+                                    class="ri-add-line align-bottom me-1"></i> Peserta Didik Rombel</a>
+                        @endcan
+                        {{-- <a href="{{ route('ps_exportExcel') }}" class="btn btn-primary"><i
                                         class="ri-file-upload-line align-bottom me-1"></i> Unduh</a>
                                 <button type="button" class="btn btn-info" data-bs-toggle="modal"
                                     data-bs-target="#importModal"><i class="ri-file-download-line align-bottom me-1"></i>
                                     Unggah</button> --}}
-                            </div>
-                        </div>
                     </div>
-                </div>
-                <div class="card-body border-bottom-dashed border-bottom">
-                    <form>
-                        <div class="row g-3">
-                            <div class="col-lg">
-                                <div class="search-box">
-                                    <input type="text" class="form-control search"
-                                        placeholder="Search Nama Lengkap Siswa ....">
-                                    <i class="ri-search-line search-icon"></i>
-                                </div>
-                            </div>
-                            <!--end col-->
-
-                            <div class="col-lg-auto">
-                                <div>
-                                    <select class="form-control" data-plugin="choices" data-choices
-                                        data-choices-search-false name="choices-single-default" id="idThnAjaran">
-                                        <option value="all" selected>Pilih Tahun Ajaran</option>
-                                        @foreach ($tahunAjaranOptions as $thnajar)
-                                            <option value="{{ $thnajar }}">{{ $thnajar }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <!--end col-->
-                            <div class="col-lg-auto">
-                                <div>
-                                    <select class="form-control" data-plugin="choices" data-choices
-                                        data-choices-search-false name="choices-single-default" id="idKodeKK">
-                                        <option value="all" selected>Pilih Kompetensi Keahlian</option>
-                                        @foreach ($kompetensiKeahlianOptions as $id => $kode_kk)
-                                            <option value="{{ $id }}">{{ $kode_kk }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-auto">
-                                <div>
-                                    <select class="form-control" data-plugin="choices" data-choices
-                                        data-choices-search-false name="choices-single-default" id="idTingkat">
-                                        <option value="all" selected>Pilih Tingkat</option>
-                                        <option value="10">10</option>
-                                        <option value="11">11</option>
-                                        <option value="12">12</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!--end col-->
-                            <div class="col-lg-auto">
-                                <div>
-                                    <select class="form-control" data-plugin="choices" data-choices
-                                        data-choices-search-false name="choices-single-default" id="idRombel" disabled>
-                                        <option value="all" selected>Pilih Rombel</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="card-body">
-                    {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
                 </div>
             </div>
         </div>
-        <!--end col-->
+        <div class="card-body border-bottom-dashed border-bottom">
+            <form>
+                <div class="row g-3">
+                    <div class="col-lg">
+                        <div class="search-box">
+                            <input type="text" class="form-control search" placeholder="Search Nama Lengkap Siswa ....">
+                            <i class="ri-search-line search-icon"></i>
+                        </div>
+                    </div>
+                    <!--end col-->
+
+                    <div class="col-lg-auto">
+                        <div>
+                            <select class="form-control" data-plugin="choices" data-choices data-choices-search-false
+                                name="choices-single-default" id="idThnAjaran">
+                                <option value="all" selected>Pilih Tahun Ajaran</option>
+                                @foreach ($tahunAjaranOptions as $thnajar)
+                                    <option value="{{ $thnajar }}">{{ $thnajar }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <!--end col-->
+                    <div class="col-lg-auto">
+                        <div>
+                            <select class="form-control" data-plugin="choices" data-choices data-choices-search-false
+                                name="choices-single-default" id="idKodeKK">
+                                <option value="all" selected>Pilih Kompetensi Keahlian</option>
+                                @foreach ($kompetensiKeahlianOptions as $id => $kode_kk)
+                                    <option value="{{ $id }}">{{ $kode_kk }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-auto">
+                        <div>
+                            <select class="form-control" data-plugin="choices" data-choices data-choices-search-false
+                                name="choices-single-default" id="idTingkat">
+                                <option value="all" selected>Pilih Tingkat</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!--end col-->
+                    <div class="col-lg-auto">
+                        <div>
+                            <select class="form-control" data-plugin="choices" data-choices data-choices-search-false
+                                name="choices-single-default" id="idRombel" disabled>
+                                <option value="all" selected>Pilih Rombel</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-body">
+            <div class="px-4 mx-n4 mt-n2 mb-0" data-simplebar style="height: calc(100vh - 358px);">
+                {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+            </div>
+        </div>
     </div>
     @include('pages.kurikulum.datakbm.peserta-didik-rombel-generateakun')
 @endsection

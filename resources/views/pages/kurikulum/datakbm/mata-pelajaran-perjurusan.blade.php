@@ -16,71 +16,67 @@
             @lang('translation.data-kbm')
         @endslot
     @endcomponent
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @lang('translation.mata-pelajaran')</h5>
-                    <div>
-                        <button type="button" class="btn btn-soft-primary" data-bs-toggle="modal"
-                            data-bs-target="#distribusiMapel" id="distribusiMapelBtn" title="Distribusikan Mapel yang dipilih"
-                            disabled>Distribusi
-                            Mapel</button>
-                        <a class="btn btn-soft-primary"
-                            href="{{ route('kurikulum.datakbm.mata-pelajaran.index') }}">Kembali</a>
+    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-0">
+        <div class="card-header d-flex align-items-center">
+            <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @lang('translation.mata-pelajaran')</h5>
+            <div>
+                <button type="button" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#distribusiMapel" id="distribusiMapelBtn" title="Distribusikan Mapel yang dipilih"
+                    disabled>Distribusi
+                    Mapel</button>
+                <a class="btn btn-soft-primary btn-sm"
+                    href="{{ route('kurikulum.datakbm.mata-pelajaran.index') }}">Kembali</a>
+            </div>
+        </div>
+        <div class="card-body border-bottom-dashed border-bottom">
+            <form>
+                <div class="row g-3">
+                    <div class="col-xl-8">
+                        <div class="search-box">
+                            <input type="text" class="form-control search" placeholder="Search Nama Mata Pelajaran ....">
+                            <i class="ri-search-line search-icon"></i>
+                        </div>
                     </div>
-                </div>
-                <div class="card-body border-bottom-dashed border-bottom">
-                    <form>
+                    <!--end col-->
+                    <div class="col-xl-4">
                         <div class="row g-3">
-                            <div class="col-xl-8">
-                                <div class="search-box">
-                                    <input type="text" class="form-control search"
-                                        placeholder="Search Nama Mata Pelajaran ....">
-                                    <i class="ri-search-line search-icon"></i>
+                            <div class="col-sm-8">
+                                <div>
+                                    <select class="form-control" data-plugin="choices" data-choices
+                                        data-choices-search-false name="choices-single-default" id="idKK">
+                                        <option value="all" selected>Pilih Kompetensi Keahlian</option>
+                                        @foreach ($kompetensiKeahlian as $id => $kk)
+                                            <option value="{{ $id }}">{{ $kk }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div>
+                                    <select class="form-control" data-plugin="choices" data-choices
+                                        data-choices-search-false name="semesterSelect" id="semesterSelect">
+                                        <option value="all" selected>All Semesters</option>
+                                        <option value="1">Semester 1</option>
+                                        <option value="2">Semester 2</option>
+                                        <option value="3">Semester 3</option>
+                                        <option value="4">Semester 4</option>
+                                        <option value="5">Semester 5</option>
+                                        <option value="6">Semester 6</option>
+                                    </select>
                                 </div>
                             </div>
                             <!--end col-->
-                            <div class="col-xl-4">
-                                <div class="row g-3">
-                                    <div class="col-sm-8">
-                                        <div>
-                                            <select class="form-control" data-plugin="choices" data-choices
-                                                data-choices-search-false name="choices-single-default" id="idKK">
-                                                <option value="all" selected>Pilih Kompetensi Keahlian</option>
-                                                @foreach ($kompetensiKeahlian as $id => $kk)
-                                                    <option value="{{ $id }}">{{ $kk }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <div>
-                                            <select class="form-control" data-plugin="choices" data-choices
-                                                data-choices-search-false name="semesterSelect" id="semesterSelect">
-                                                <option value="all" selected>All Semesters</option>
-                                                <option value="1">Semester 1</option>
-                                                <option value="2">Semester 2</option>
-                                                <option value="3">Semester 3</option>
-                                                <option value="4">Semester 4</option>
-                                                <option value="5">Semester 5</option>
-                                                <option value="6">Semester 6</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
-                                </div>
-                            </div>
                         </div>
-                        <!--end row-->
-                    </form>
+                    </div>
                 </div>
-                <div class="card-body">
-                    {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
-                </div>
+                <!--end row-->
+            </form>
+        </div>
+        <div class="card-body">
+            <div class="px-4 mx-n4 mt-n2 mb-0" data-simplebar style="height: calc(100vh - 358px);">
+                {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
             </div>
         </div>
-        <!--end col-->
     </div>
     @include('pages.kurikulum.datakbm.mata-pelajaran-perjurusan-distribusi')
 @endsection

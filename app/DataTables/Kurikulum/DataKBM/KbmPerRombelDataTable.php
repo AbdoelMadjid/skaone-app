@@ -65,13 +65,16 @@ class KbmPerRombelDataTable extends DataTable
 
                 return $select . $script; // Kembalikan dropdown dan script sebagai output
             })
+            ->addColumn('identitas_rombel', function ($row) {
+                return $row->tahunajaran . '<br>' . $row->semester . ' (' . $row->ganjilgenap . ')<br>' . $row->rombel; // Menggabungkan nomor_urut dan isi_cp
+            })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
                 return view('action', compact('actions'));
             })
             ->addIndexColumn()
-            ->rawColumns(['semester', 'id_personil', 'action']);
+            ->rawColumns(['semester', 'id_personil', 'action', 'identitas_rombel']);
     }
 
     /**
@@ -156,18 +159,16 @@ class KbmPerRombelDataTable extends DataTable
             ])
             //->dom('Bfrtip')
             ->orderBy(1)
-            ->selectStyleSingle()
-            ->buttons([
-                Button::make('excel'),
-                Button::make('csv'),
-                Button::make('pdf'),
-                Button::make('print'),
-                Button::make('reset'),
-                Button::make('reload')
-            ])->parameters([
-                'lengthChange' => false, // Menghilangkan dropdown "Show entries"
-                'searching' => false,    // Menghilangkan kotak pencarian
-                'pageLength' => 50,       // Menampilkan 50 baris per halaman
+            ->parameters([
+                'lengthChange' => false,
+                'searching' => false, // Mengaktifkan pencarian
+                'searchDelay' => 500, // Delay pencarian untuk mengurangi beban server
+                'pageLength' => 25,
+                // ⬇️ Tambahan fitur scroll dan fixedHeader
+                'scrollY' => '285px',
+                'scrollCollapse' => true,
+                'paging' => true,
+                'fixedHeader' => true,
             ]);
     }
 
@@ -178,13 +179,11 @@ class KbmPerRombelDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
-            Column::make('kode_mapel_rombel')->title('Kode Mapel Rombel'),
-            Column::make('tahunajaran')->title('Thn Ajaran')->addClass('text-center'),
-            Column::make('semester'),
-            Column::make('rombel')->title('Rombel')->addClass('text-center'),
-            Column::make('mata_pelajaran')->title('Nama Mapel'),
-            Column::make('kkm')->title('KKM')->addClass('text-center'),
-            Column::make('id_personil')->title('Guru Pengajar'),
+            Column::make('kode_mapel_rombel')->title('Kode Mapel Rombel')->width(100),
+            Column::make('identitas_rombel')->title('Thn Ajaran')->addClass('text-center')->width(50),
+            Column::make('mata_pelajaran')->title('Nama Mapel')->width(180),
+            Column::make('kkm')->title('KKM')->addClass('text-center')->width(25),
+            Column::make('id_personil')->title('Guru Pengajar')->width(150),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

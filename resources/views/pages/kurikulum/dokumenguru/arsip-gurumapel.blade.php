@@ -32,7 +32,7 @@
             @lang('translation.dokumen-guru')
         @endslot
     @endcomponent
-    <div class="card">
+    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-0">
         <div class="card-body">
             <form>
                 <div class="row g-3">
@@ -77,7 +77,7 @@
             </form>
         </div>
         <div class="card-body">
-            <div class="table-card">
+            <div class="px-4 mx-n4 mt-n2 mb-0" data-simplebar style="height: calc(100vh - 308px);">
                 {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
             </div>
         </div>

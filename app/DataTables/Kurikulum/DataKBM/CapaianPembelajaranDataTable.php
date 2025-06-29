@@ -64,14 +64,16 @@ class CapaianPembelajaranDataTable extends DataTable
             ->minifiedAjax()
             //->dom('Bfrtip')
             ->orderBy(1)
-            ->selectStyleSingle()
-            ->buttons([
-                Button::make('excel'),
-                Button::make('csv'),
-                Button::make('pdf'),
-                Button::make('print'),
-                Button::make('reset'),
-                Button::make('reload')
+            ->parameters([
+                'lengthChange' => false,
+                'searching' => false, // Mengaktifkan pencarian
+                'searchDelay' => 500, // Delay pencarian untuk mengurangi beban server
+                'pageLength' => 25,
+                // ⬇️ Tambahan fitur scroll dan fixedHeader
+                'scrollY' => '365px',
+                'scrollCollapse' => true,
+                'paging' => true,
+                'fixedHeader' => true,
             ]);
     }
 
@@ -85,7 +87,7 @@ class CapaianPembelajaranDataTable extends DataTable
             Column::make('kode_cp')->title('Kode CP')->width(150)->searchable(false)->addClass('text-center')->width(100),
             Column::make('nama_matapelajaran')->title('Nama Mata Pelajaran')->searchable(true)->width(200),
             Column::make('element')->title('Elemen')->searchable(true),
-            Column::make('inisial_mp')->title('Inisial MP')->searchable(true),
+            Column::make('inisial_mp')->title('Inisial MP')->searchable(true)->width(75)->addClass('text-center'),
             Column::make('nomor_urut_isi_cp')->title('Capaian Pembelajaran')->searchable(true),
             Column::computed('action')
                 ->exportable(false)

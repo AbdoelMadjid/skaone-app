@@ -52,16 +52,16 @@ class MataPelajaranDataTable extends DataTable
             ->minifiedAjax()
             //->dom('Bfrtip')
             ->orderBy(1)
-            ->selectStyleSingle()
-            ->buttons([
-                Button::make('excel'),
-                Button::make('csv'),
-                Button::make('pdf'),
-                Button::make('print'),
-                Button::make('reset'),
-                Button::make('reload')
-            ])->parameters([
-                'pageLength' => 100,       // Menampilkan 50 baris per halaman
+            ->parameters([
+                'lengthChange' => false,
+                'searching' => false, // Mengaktifkan pencarian
+                'searchDelay' => 500, // Delay pencarian untuk mengurangi beban server
+                'pageLength' => 25,
+                // ⬇️ Tambahan fitur scroll dan fixedHeader
+                'scrollY' => '365px',
+                'scrollCollapse' => true,
+                'paging' => true,
+                'fixedHeader' => true,
             ]);
     }
 
