@@ -19,20 +19,22 @@
     @endcomponent
     <div class="row">
         <div class="col-lg-12">
-            <div class="card">
+            <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-0">
                 <div class="card-header d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">Panitia Ujian</h5>
                     <div>
                         @can('create kurikulum/perangkatujian/pelaksanaan-ujian/panitia-ujian')
-                            <a class="btn btn-soft-primary action"
+                            <a class="btn btn-soft-primary btn-sm action"
                                 href="{{ route('kurikulum.perangkatujian.pelaksanaan-ujian.panitia-ujian.create') }}">Tambah</a>
                         @endcan
-                        <a class="btn btn-soft-danger"
+                        <a class="btn btn-soft-danger btn-sm"
                             href="{{ route('kurikulum.perangkatujian.pelaksanaan-ujian.index') }}">Kembali</a>
                     </div>
                 </div>
-                <div class="card-body">
-                    {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+                <div class="card-body p-1">
+                    <div class="px-4 mx-n4 mt-n2 mb-0" data-simplebar style="height: calc(100vh - 275px);">
+                        {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+                    </div>
                 </div>
             </div>
         </div>

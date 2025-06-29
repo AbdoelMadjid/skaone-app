@@ -19,12 +19,13 @@
     @endcomponent
     <div class="row">
         <div class="col-lg-12">
-            <div class="card">
+            <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
                 <div class="card-header d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">Pengawas Ujian</h5>
                     <div>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-soft-primary dropdown-toggle" data-bs-toggle="dropdown">
+                            <button type="button" class="btn btn-soft-primary btn-sm dropdown-toggle"
+                                data-bs-toggle="dropdown">
                                 Tambah Jadwal
                             </button>
                             <ul class="dropdown-menu">
@@ -39,7 +40,7 @@
                             </ul>
                         </div>
 
-                        <a class="btn btn-soft-danger"
+                        <a class="btn btn-soft-danger btn-sm"
                             href="{{ route('kurikulum.perangkatujian.administrasi-ujian.index') }}">Kembali</a>
                     </div>
                 </div>

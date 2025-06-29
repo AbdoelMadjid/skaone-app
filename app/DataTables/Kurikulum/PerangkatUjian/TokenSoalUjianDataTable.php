@@ -67,7 +67,7 @@ class TokenSoalUjianDataTable extends DataTable
                 'searchDelay' => 500, // Delay pencarian untuk mengurangi beban server
                 'pageLength' => 25,
                 // ⬇️ Tambahan fitur scroll dan fixedHeader
-                'scrollY' => '365px',
+                'scrollY' => '376px',
                 'scrollCollapse' => true,
                 'paging' => true,
                 'fixedHeader' => true,
