@@ -41,8 +41,8 @@ class MainMenuSeeder extends Seeder
             MenuTataUsahaSeeder::class,
             MenuBpBkSeeder::class,
             MenuSiswaSeeder::class,
-            MenuPklSeeder::class,
             MenuAlumniSeeder::class,
+            MenuPklSeeder::class,
         ]);
     }
 }

@@ -478,14 +478,10 @@ return [
     'berita' => 'Berita',
     'kelulusan' => 'Kelulusan',
 
-    'ALUMNI' => 'ALUMNI',
-    'ruang-alumni' => 'Ruang Alumni',
     'riwayat-kerja' => 'Riwayat Kerja',
     'informasi-alumni' => 'Informasi Alumni',
-    'arsip-alumni' => 'Arsip Alumni',
-    'transkrip-alumni' => 'Transkrip Alumni',
-    'transkrip' => 'Transkrip',
-    'kelulusan-alumni' => 'Kelulusan Alumni',
+    'arsip-transkrip' => 'Arsip Transkrip',
+    'arsip-kelulusan' => 'Arsip Kelulusan',
     'alumni' => 'Alumni',
 
     'web-site-app' => 'Web Site App',

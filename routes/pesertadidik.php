@@ -21,17 +21,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth')->group(function () {
-    Route::group(['prefix' => 'kbmpesertadidik', 'as' => 'kbmpesertadidik.'], function () {
+Route::middleware('auth', 'roleonly:siswa')->group(function () {
+    Route::group(['prefix' => 'pesertadidik', 'as' => 'pesertadidik.'], function () {
+        Route::resource('test-formatif', TestFormatifController::class);
+        Route::resource('test-sumatif', TestSumatifController::class);
         Route::resource('transkrip-peserta-didik', TranskripPesertaDidikController::class);
         Route::resource('raport-peserta-didik', RaportPesertaDidikController::class);
         Route::resource('remedial-peserta-didik', RemedialPesertaDidikController::class);
         Route::resource('kelulusan-peserta-didik', KelulusanPesertaDidikController::class);
         Route::get('download-transkrip-skl', [PDFController::class, 'downloadSKL'])->name('download.skl');
         Route::get('download-transkrip-skkb', [PDFController::class, 'downloadSKKB'])->name('download.skkb');
-    });
-    Route::group(['prefix' => 'ujiansemester', 'as' => 'ujiansemester.'], function () {
-        Route::resource('test-formatif', TestFormatifController::class);
-        Route::resource('test-sumatif', TestSumatifController::class);
     });
 });

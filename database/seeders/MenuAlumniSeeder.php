@@ -21,7 +21,7 @@ class MenuAlumniSeeder extends Seeder
          * @var Menu $mm
          */
 
-        $mm = Menu::firstOrCreate(['url' => 'ruangalumni'], ['name' => 'Ruang Alumni', 'category' => 'ALUMNI', 'icon' => 'home-smile']);
+        $mm = Menu::firstOrCreate(['url' => 'alumni'], ['name' => 'Alumni', 'category' => 'PESERTA DIDIK', 'icon' => 'group']);
         $this->attachMenupermission($mm, ['read'], ['alumni']);
 
         $sm = $mm->subMenus()->create(['name' => 'Riwayat Kerja', 'url' => $mm->url . '/riwayat-kerja', 'category' => $mm->category]);
@@ -30,13 +30,10 @@ class MenuAlumniSeeder extends Seeder
         $sm = $mm->subMenus()->create(['name' => 'Informasi Alumni', 'url' => $mm->url . '/informasi-alumni', 'category' => $mm->category]);
         $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['alumni']);
 
-        $mm = Menu::firstOrCreate(['url' => 'arsipalumni'], ['name' => 'Arsip Alumni', 'category' => 'ALUMNI', 'icon' => 'contacts']);
-        $this->attachMenupermission($mm, ['read'], ['alumni']);
-
-        $sm = $mm->subMenus()->create(['name' => 'Transkrip', 'url' => $mm->url . '/transkrip-alumni', 'category' => $mm->category]);
+        $sm = $mm->subMenus()->create(['name' => 'Arsip Transkrip', 'url' => $mm->url . '/arsip-transkrip', 'category' => $mm->category]);
         $this->attachMenupermission($sm, ['read'], ['alumni']);
 
-        $sm = $mm->subMenus()->create(['name' => 'Kelulusan', 'url' => $mm->url . '/kelulusan-alumni', 'category' => $mm->category]);
+        $sm = $mm->subMenus()->create(['name' => 'Arsip Kelulusan', 'url' => $mm->url . '/arsip-kelulusan', 'category' => $mm->category]);
         $this->attachMenupermission($sm, ['read'], ['alumni']);
     }
 }

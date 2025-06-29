@@ -21,7 +21,7 @@ class MenuSiswaSeeder extends Seeder
          * @var Menu $mm
          */
 
-        $mm = Menu::firstOrCreate(['url' => 'ujiansemester'], ['name' => 'Ujian Semester', 'category' => 'KBM PESERTA DIDIK', 'icon' => 'edit-2']);
+        $mm = Menu::firstOrCreate(['url' => 'pesertadidik'], ['name' => 'Peserta Didik', 'category' => 'PESERTA DIDIK', 'icon' => 'account-pin-box']);
         $this->attachMenupermission($mm, ['read'], ['siswa']);
 
         $sm = $mm->subMenus()->create(['name' => 'Formatif', 'url' => $mm->url . '/test-formatif', 'category' => $mm->category]);
@@ -29,9 +29,6 @@ class MenuSiswaSeeder extends Seeder
 
         $sm = $mm->subMenus()->create(['name' => 'Sumatif', 'url' => $mm->url . '/test-sumatif', 'category' => $mm->category]);
         $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['siswa']);
-
-        $mm = Menu::firstOrCreate(['url' => 'kbmpesertadidik'], ['name' => 'KBM Peserta Didik', 'category' => 'KBM PESERTA DIDIK', 'icon' => 'contacts']);
-        $this->attachMenupermission($mm, ['read'], ['siswa']);
 
         $sm = $mm->subMenus()->create(['name' => 'Raport', 'url' => $mm->url . '/raport-peserta-didik', 'category' => $mm->category]);
         $this->attachMenupermission($sm, ['read'], ['siswa']);

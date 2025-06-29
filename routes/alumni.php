@@ -17,13 +17,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth')->group(function () {
-    Route::group(['prefix' => 'ruangalumni', 'as' => 'ruangalumni.'], function () {
+Route::middleware('auth', 'roleonly:alumni')->group(function () {
+    Route::group(['prefix' => 'alumni', 'as' => 'alumni.'], function () {
         Route::resource('riwayat-kerja', RiwayatKerjaController::class);
         Route::resource('informasi-alumni', InformasiAlumniController::class);
-    });
-    Route::group(['prefix' => 'arsipalumni', 'as' => 'arsipalumni.'], function () {
-        Route::resource('transkrip-alumni', TranskripAlumniController::class);
-        Route::resource('kelulusan-alumni', KelulusanAlumniController::class);
+        Route::resource('arsip-transkrip', TranskripAlumniController::class);
+        Route::resource('arsip-kelulusan', KelulusanAlumniController::class);
     });
 });
