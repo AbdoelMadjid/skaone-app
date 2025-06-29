@@ -133,14 +133,16 @@ class IdentitasSekolahDataTable extends DataTable
             ->minifiedAjax()
             ->dom('rt')
             ->orderBy(1)
-            ->selectStyleSingle()
-            ->buttons([
-                Button::make('excel'),
-                Button::make('csv'),
-                Button::make('pdf'),
-                Button::make('print'),
-                Button::make('reset'),
-                Button::make('reload')
+            ->parameters([
+                'lengthChange' => false,
+                'searching' => false, // Mengaktifkan pencarian
+                'searchDelay' => 500, // Delay pencarian untuk mengurangi beban server
+                'pageLength' => 25,
+                // ⬇️ Tambahan fitur scroll dan fixedHeader
+                'scrollY' => '395px',
+                'scrollCollapse' => true,
+                'paging' => true,
+                'fixedHeader' => true,
             ]);
     }
 

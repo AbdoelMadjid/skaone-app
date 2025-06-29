@@ -10,79 +10,76 @@
             @lang('translation.manajemen-sekolah')
         @endslot
     @endcomponent
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header border-bottom-dashed">
-                    <div class="row g-4 align-items-center">
-                        <div class="col-sm">
-                            <div>
-                                <h5 class="card-title mb-0">@lang('translation.tables') @lang('translation.personil-sekolah')</h5>
-                            </div>
-                        </div>
-                        <div class="col-sm-auto">
-                            <div class="d-flex flex-wrap align-items-start gap-2">
-                                <button type="button" class="btn btn-soft-danger" data-bs-toggle="modal"
-                                    data-bs-target="#simpanakunPersonil" id="simpanakunPersonilBtn"
-                                    title="Buat Akun Terpilih" disabled>Buat Akun Personil</button>
-                                <a href="{{ route('ps_exportExcel') }}" class="btn btn-soft-primary"><i
-                                        class="ri-file-upload-line align-bottom me-1"></i> Unduh</a>
-                                <button type="button" class="btn btn-soft-primary" data-bs-toggle="modal"
-                                    data-bs-target="#importModal"><i class="ri-file-download-line align-bottom me-1"></i>
-                                    Unggah</button>
-                                @can('create manajemensekolah/personil-sekolah')
-                                    <a class="btn btn-soft-primary add-btn action"
-                                        href="{{ route('manajemensekolah.personil-sekolah.create') }}">Tambah</a>
-                                @endcan
-                            </div>
-                        </div>
+    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-0">
+        <div class="card-header border-bottom-dashed">
+            <div class="row g-4 align-items-center">
+                <div class="col-sm">
+                    <div>
+                        <h5 class="card-title mb-0">@lang('translation.tables') @lang('translation.personil-sekolah')</h5>
                     </div>
                 </div>
-                <div class="card-body border-bottom-dashed border-bottom">
-                    <form>
-                        <div class="row g-3">
-                            <div class="col-lg">
-                                <div class="search-box">
-                                    <input type="text" class="form-control search"
-                                        placeholder="Search Nama Lengkap Personil ....">
-                                    <i class="ri-search-line search-icon"></i>
-                                </div>
-                            </div>
-                            <div class="col-lg-auto">
-                                <div>
-                                    <select class="form-control" id="idJenis">
-                                        <option value="all" selected>Pilih Jenis Personil</option>
-                                        @foreach ($jenisPersonilOptions as $jenis)
-                                            <option value="{{ $jenis }}">{{ $jenis }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-auto">
-                                <div>
-                                    <select class="form-control" id="idStatus">
-                                        <option value="all" selected>Pilih Status</option>
-                                        @foreach ($statusOptions as $status)
-                                            <option value="{{ $status }}">{{ $status }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <!--end col-->
-                        </div>
-                        <!--end row-->
-                    </form>
-                </div>
-
-                <div class="card-body">
-                    {!! $dataTable->table([
-                        'class' => 'table table-striped hover',
-                        'style' => 'width:100%',
-                    ]) !!}
+                <div class="col-sm-auto">
+                    <div class="d-flex flex-wrap align-items-start gap-2">
+                        <button type="button" class="btn btn-soft-danger btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#simpanakunPersonil" id="simpanakunPersonilBtn" title="Buat Akun Terpilih"
+                            disabled>Buat Akun Personil</button>
+                        <a href="{{ route('ps_exportExcel') }}" class="btn btn-soft-primary btn-sm"><i
+                                class="ri-file-upload-line align-bottom me-1"></i> Unduh</a>
+                        <button type="button" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#importModal"><i class="ri-file-download-line align-bottom me-1"></i>
+                            Unggah</button>
+                        @can('create manajemensekolah/personil-sekolah')
+                            <a class="btn btn-soft-primary btn-sm add-btn action"
+                                href="{{ route('manajemensekolah.personil-sekolah.create') }}">Tambah</a>
+                        @endcan
+                    </div>
                 </div>
             </div>
         </div>
-        <!--end col-->
+        <div class="card-body border-bottom-dashed border-bottom">
+            <form>
+                <div class="row g-3">
+                    <div class="col-lg">
+                        <div class="search-box">
+                            <input type="text" class="form-control search"
+                                placeholder="Search Nama Lengkap Personil ....">
+                            <i class="ri-search-line search-icon"></i>
+                        </div>
+                    </div>
+                    <div class="col-lg-auto">
+                        <div>
+                            <select class="form-control" id="idJenis">
+                                <option value="all" selected>Pilih Jenis Personil</option>
+                                @foreach ($jenisPersonilOptions as $jenis)
+                                    <option value="{{ $jenis }}">{{ $jenis }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-auto">
+                        <div>
+                            <select class="form-control" id="idStatus">
+                                <option value="all" selected>Pilih Status</option>
+                                @foreach ($statusOptions as $status)
+                                    <option value="{{ $status }}">{{ $status }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </form>
+        </div>
+
+        <div class="card-body">
+            <div class="px-4 mx-n4 mt-n2 mb-0" data-simplebar style="height: calc(100vh - 358px);">
+                {!! $dataTable->table([
+                    'class' => 'table table-striped hover',
+                    'style' => 'width:100%',
+                ]) !!}
+            </div>
+        </div>
     </div>
     @include('pages.manajemensekolah.personil-sekolah-import')
     @include('pages.manajemensekolah.personil-sekolah-buat-akun')

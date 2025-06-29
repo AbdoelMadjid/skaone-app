@@ -111,18 +111,16 @@ class PesertaDidikDataTable extends DataTable
             ])
             //->dom('Bfrtip')
             ->orderBy(1)
-            ->selectStyleSingle()
-            ->buttons([
-                Button::make('excel'),
-                Button::make('csv'),
-                Button::make('pdf'),
-                Button::make('print'),
-                Button::make('reset'),
-                Button::make('reload')
-            ])->parameters([
-                'lengthChange' => false, // Menghilangkan dropdown "Show entries"
-                'searching' => false,    // Menghilangkan kotak pencarian
-                'pageLength' => 36,       // Menampilkan 50 baris per halaman
+            ->parameters([
+                'lengthChange' => false,
+                'searching' => false, // Mengaktifkan pencarian
+                'searchDelay' => 500, // Delay pencarian untuk mengurangi beban server
+                'pageLength' => 36,
+                // ⬇️ Tambahan fitur scroll dan fixedHeader
+                'scrollY' => '285px',
+                'scrollCollapse' => true,
+                'paging' => true,
+                'fixedHeader' => true,
             ]);
     }
 
