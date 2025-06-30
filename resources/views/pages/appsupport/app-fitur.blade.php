@@ -71,8 +71,6 @@
     <script>
         const datatable = 'appfitur-table';
 
-        ScrollDinamicDataTable(datatable); // Initialize dynamic scrolling for DataTable
-
         function saveAktif(checkbox, id) {
             const aktifValue = checkbox.checked ? 'Aktif' : 'Non Aktif';
 
@@ -111,6 +109,7 @@
         handleDataTableEvents(datatable);
         handleAction(datatable)
         handleDelete(datatable)
+        ScrollDinamicDataTable(datatable); // Initialize dynamic scrolling for DataTable
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

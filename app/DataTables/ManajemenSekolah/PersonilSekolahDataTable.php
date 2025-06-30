@@ -144,9 +144,9 @@ class PersonilSekolahDataTable extends DataTable
             Column::make('nip')->title('N I P')->width(150),
             Column::make('namalengkap')->title('Nama Lengkap'),
             Column::make('jeniskelamin')->title('Jenis Kelamin')->addClass('text-center'),
-            Column::computed('tempat_tanggal_lahir')->title('Tempat/Tanggal Lahir'),
+            Column::computed('tempat_tanggal_lahir')->title('Tempat / <br> Tanggal Lahir'),
             Column::make('jenispersonil')->title('Jenis Personil')->addClass('text-center'),
-            Column::make('login_count')->title('Jumla Login')->addClass('text-center'),
+            Column::make('login_count')->title('Jumlah Login')->addClass('text-center'),
             Column::make('photo')->addClass('text-center'),
             Column::computed('action')
                 ->exportable(false)

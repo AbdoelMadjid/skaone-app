@@ -124,8 +124,8 @@
                 </div>
             </form>
         </div>
-        <div class="card-body">
-            <div id="datatable-wrapper" style="height: calc(100vh - 358px);">
+        <div class="card-body p-1">
+            <div id="datatable-wrapper" style="height: calc(100vh - 342px);">
                 {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
             </div>
         </div>
@@ -144,8 +144,6 @@
 @section('script-bottom')
     <script>
         const datatable = 'kbmperrombel-table';
-
-        ScrollDinamicDataTable(datatable);
 
         // PENCARIAN DATA KBM PER ROMBEL
         function handleFilterAndReload(tableId) {
@@ -261,6 +259,8 @@
             handleDataTableEvents(datatable);
             handleAction(datatable)
             handleDelete(datatable)
+            ScrollDinamicDataTable(datatable, scrollOffsetOverride = 101);
+
         });
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>

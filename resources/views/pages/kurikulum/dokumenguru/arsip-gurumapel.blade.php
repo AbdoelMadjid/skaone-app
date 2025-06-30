@@ -33,11 +33,11 @@
         @endslot
     @endcomponent
     <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-0">
-        <div class="card-body">
+        <div class="card-body p-2 border-bottom-dashed border-bottom">
             <form>
                 <div class="row g-3">
-                    <div class="col-lg">
-                        <select class="form-control mb-3" name="tahunajaran" id="tahunajaran" required>
+                    <div class="col-lg-auto">
+                        <select class="form-control" name="tahunajaran" id="tahunajaran" required>
                             <option value="" selected>Pilih TA</option>
                             @foreach ($tahunAjaran as $tahunajaran => $thajar)
                                 <option value="{{ $tahunajaran }}">{{ $thajar }}</option>
@@ -45,28 +45,28 @@
                         </select>
                     </div>
                     <div class="col-lg-auto">
-                        <select class="form-control mb-3" name="semester" id="semester" required>
+                        <select class="form-control" name="semester" id="semester" required>
                             <option value="" selected>Pilih Semester</option>
                             <option value="Ganjil">Ganjil</option>
                             <option value="Genap">Genap</option>
                         </select>
                     </div>
                     <div class="col-lg-auto">
-                        <select class="form-select mb-3 filter-selector" aria-label="Default select example" name="filter"
+                        <select class="form-select filter-selector" aria-label="Default select example" name="filter"
                             id="filter" required>
                             <option value="">Pilih Filter</option>
                             <option value="gurumapel">Guru Mata Pelajaran</option>
                             <option value="rombel">Rombongan Belajar</option>
                         </select>
                     </div>
-                    <div class="col-xxl-4 col-sm-4">
+                    <div class="col-lg-auto">
                         <div class="loading-message">Memuat data...</div>
                         <div class="list-gurumapel-wrapper">
                             <select class="form-control list-gurumapel" name="gurumapel" id="gurumapel" style="width: 100%;"
                                 disabled></select>
                         </div>
                     </div>
-                    <div class="col-xxl-3 col-sm-4">
+                    <div class="col-lg-auto">
                         <div class="loading-message">Memuat data...</div>
                         <div class="list-rombel-wrapper">
                             <select class="form-control list-rombel" name="rombel" id="rombel" style="width: 100%;"
@@ -76,8 +76,8 @@
                 </div>
             </form>
         </div>
-        <div class="card-body">
-            <div class="px-4 mx-n4 mt-n2 mb-0" id="datatable-wrapper" style="height: calc(100vh - 308px);">
+        <div class="card-body p-1">
+            <div id="datatable-wrapper" style="height: calc(100vh - 264px);">
                 {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
             </div>
         </div>
@@ -98,8 +98,6 @@
 @section('script-bottom')
     <script>
         const datatable = 'arsipngajar-table';
-
-        ScrollDinamicDataTable(datatable);
 
         @if (session('toast_success'))
             showToast('success', '{{ session('toast_success') }}');
@@ -242,6 +240,8 @@
         /*  handleDataTableEvents(datatable);
          handleAction(datatable)
          handleDelete(datatable) */
+
+        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 82);
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

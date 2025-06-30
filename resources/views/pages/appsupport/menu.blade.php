@@ -45,8 +45,6 @@
     <script>
         const datatable = 'menu-table';
 
-        ScrollDinamicDataTable(datatable); // Initialize dynamic scrolling for DataTable
-
         function handleMenuChange() {
             $('[name=level_menu]').on('change', function() {
                 if (this.value == 'sub_menu') {
@@ -70,6 +68,7 @@
         handleAction(datatable, function() {
             handleMenuChange()
         })
+        ScrollDinamicDataTable(datatable); // Initialize dynamic scrolling for DataTable
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

@@ -91,7 +91,7 @@
             </form>
         </div>
         <div class="card-body p-1">
-            <div id="datatable-wrapper" style="height: calc(100vh - 352px);">
+            <div id="datatable-wrapper" style="height: calc(100vh - 342px);">
                 {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
             </div>
         </div>
@@ -111,8 +111,6 @@
 @section('script-bottom')
     <script>
         const datatable = 'pesertadidik-table';
-
-        ScrollDinamicDataTable(datatable); // Initialize dynamic scrolling for DataTable
 
         function handleCheckbokSiswa(tableId) {
             var table = $('#' + tableId).DataTable();
@@ -304,6 +302,7 @@
             handleFilterAndReload(datatable); // Panggil fungsi setelah DataTable diinisialisasi
             handleAction(datatable);
             handleDelete(datatable);
+            ScrollDinamicDataTable(datatable, scrollOffsetOverride = 101);
         });
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>

@@ -43,9 +43,9 @@
     <script>
         const datatable = 'permission-table';
 
-        ScrollDinamicDataTable(datatable); // Initialize dynamic scrolling for DataTable
         handleAction(datatable)
         handleDelete(datatable)
+        ScrollDinamicDataTable(datatable); // Initialize dynamic scrolling for DataTable
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

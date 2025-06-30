@@ -68,7 +68,7 @@ class CapaianPembelajaranDataTable extends DataTable
                 'lengthChange' => false,
                 'searching' => false, // Mengaktifkan pencarian
                 'searchDelay' => 500, // Delay pencarian untuk mengurangi beban server
-                'pageLength' => 25,
+                'pageLength' => 100,
                 // ⬇️ Tambahan fitur scroll dan fixedHeader
                 'scrollY' => '365px',
                 'scrollCollapse' => true,

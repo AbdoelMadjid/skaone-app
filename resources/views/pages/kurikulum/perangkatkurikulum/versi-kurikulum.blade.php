@@ -19,13 +19,17 @@
             <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @lang('translation.versi-kurikulum')</h5>
             <div>
                 @can('create kurikulum/perangkatkurikulum/versi-kurikulum')
-                    <a class="btn btn-soft-primary action"
+                    <a class="btn btn-soft-primary btn-sm action"
                         href="{{ route('kurikulum.perangkatkurikulum.versi-kurikulum.create') }}">Tambah</a>
                 @endcan
             </div>
         </div>
-        <div class="card-body">
-            {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+        <div class="card-body p-1">
+            <div class="card-body p-1">
+                <div id="datatable-wrapper" style="height: calc(100vh - 276px);">
+                    {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+                </div>
+            </div>
         </div>
     </div>
 @endsection
@@ -45,6 +49,7 @@
         handleDataTableEvents(datatable);
         handleAction(datatable)
         handleDelete(datatable)
+        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 82);
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

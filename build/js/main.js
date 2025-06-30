@@ -405,7 +405,7 @@ window.ScrollDinamicDataTable = function (tableId) {
             const wrapperHeight = wrapper.offsetHeight;
 
             // Deteksi elemen-elemen DOM untuk menentukan offset dinamis
-            let scrollOffset = 86; // default offset (footer saja)
+            let scrollOffset = 64; // default offset (footer saja)
             if (document.querySelector('.dataTables_filter')) scrollOffset += 40;
             if (document.querySelector('.dataTables_length')) scrollOffset += 40;
 

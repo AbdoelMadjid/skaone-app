@@ -37,8 +37,6 @@
     <script>
         const datatable = 'role-table';
 
-        ScrollDinamicDataTable(datatable); // Initialize dynamic scrolling for DataTable
-
         function handleCheckMenu() {
             // When a parent checkbox is clicked, toggle the checked state of its children
             $('.parent').on('click', function() {
@@ -95,7 +93,9 @@
                     .execute()
             })
         })
+
         handleDelete(datatable)
+        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 69); // Initialize dynamic scrolling for DataTable
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

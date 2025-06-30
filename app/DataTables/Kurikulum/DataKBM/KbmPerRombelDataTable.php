@@ -163,7 +163,7 @@ class KbmPerRombelDataTable extends DataTable
                 'lengthChange' => false,
                 'searching' => false, // Mengaktifkan pencarian
                 'searchDelay' => 500, // Delay pencarian untuk mengurangi beban server
-                'pageLength' => 25,
+                'pageLength' => 100,
                 // ⬇️ Tambahan fitur scroll dan fixedHeader
                 'scrollY' => '285px',
                 'scrollCollapse' => true,
@@ -179,7 +179,7 @@ class KbmPerRombelDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
-            Column::make('kode_mapel_rombel')->title('Kode Mapel Rombel')->width(100),
+            Column::make('kode_mapel_rombel')->title('Kode Mapel <br>Rombel')->width(100),
             Column::make('identitas_rombel')->title('Thn Ajaran')->addClass('text-center')->width(50),
             Column::make('mata_pelajaran')->title('Nama Mapel')->width(180),
             Column::make('kkm')->title('KKM')->addClass('text-center')->width(25),

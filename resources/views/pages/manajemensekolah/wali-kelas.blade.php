@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="card-body p-1">
-            <div id="datatable-wrapper" style="height: calc(100vh - 265px);">
+            <div id="datatable-wrapper" style="height: calc(100vh - 258px);">
                 {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
             </div>
         </div>
@@ -36,10 +36,9 @@
     <script>
         const datatable = 'walikelas-table';
 
-        ScrollDinamicDataTable(datatable);
-
         handleAction(datatable)
         handleDelete(datatable)
+        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 82);
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

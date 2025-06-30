@@ -95,9 +95,8 @@
 
         })
 
-        const scrollOffsetOverride = 106;
-        ScrollDinamicDataTable(datatable);
         handleDelete(datatable)
+        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 99);
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

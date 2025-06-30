@@ -139,7 +139,7 @@ class PesertaDidikDataTable extends DataTable
             Column::computed('kode_kk_singkatan_kk')->title('KK')->addClass('text-center'),
             Column::computed('nis_nisn')->title('NISN / NISN'),
             Column::make('nama_lengkap'),
-            Column::computed('tempat_tanggal_lahir')->title('Tempat/Tanggal Lahir'),
+            Column::computed('tempat_tanggal_lahir')->title('Tempat/ <br> Tanggal Lahir'),
             Column::make('jenis_kelamin'),
             Column::make('foto')->addClass('text-center'),
             Column::computed('action')

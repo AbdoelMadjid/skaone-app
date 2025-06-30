@@ -1,5 +1,5 @@
 <!-- Rounded Ribbon -->
-<div class="card ribbon-box border shadow-none mb-lg-0">
+<div class="card ribbon-box border shadow-none">
     <div class="card-body">
         <div class="ribbon ribbon-primary round-shape">{{ $judul->judul }}</div>
         <h5 class="fs-14 text-end">Status: {{ $judul->status == 'Y' ? 'Tampil' : 'Tersembunyi' }}</h5>

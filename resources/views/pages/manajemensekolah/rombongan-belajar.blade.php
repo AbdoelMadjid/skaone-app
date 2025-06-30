@@ -28,7 +28,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-body border-bottom-dashed border-bottom">
+        <div class="card-body">
             <form>
                 <div class="row g-3">
                     <div class="col-xl-5">
@@ -84,7 +84,7 @@
         </div>
 
         <div class="card-body p-1">
-            <div id="datatable-wrapper" style="height: calc(100vh - 352px);">
+            <div id="datatable-wrapper" style="height: calc(100vh - 342px);">
                 {!! $dataTable->table([
                     'class' => 'table table-striped hover',
                     'style' => 'width:100%',
@@ -133,10 +133,10 @@
         $(document).ready(function() {
             $('#' + datatable).DataTable();
 
-            handleFilterAndReload(datatable);
             handleDataTableEvents(datatable);
             handleAction(datatable)
             handleDelete(datatable)
+            handleFilterAndReload(datatable, scrollOffsetOverride = 82);
         });
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>

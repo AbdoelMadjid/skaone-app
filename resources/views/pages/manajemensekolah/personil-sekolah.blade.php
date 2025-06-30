@@ -36,7 +36,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-body border-bottom-dashed border-bottom">
+        <div class="card-body">
             <form>
                 <div class="row g-3">
                     <div class="col-lg">
@@ -72,8 +72,8 @@
             </form>
         </div>
 
-        <div class="card-body">
-            <div id="datatable-wrapper" style="height: calc(100vh - 352px);">
+        <div class="card-body p-1">
+            <div id="datatable-wrapper" style="height: calc(100vh - 342px);">
                 {!! $dataTable->table([
                     'class' => 'table table-striped hover',
                     'style' => 'width:100%',
@@ -235,11 +235,11 @@
 
             $('#' + datatable).DataTable(); // Pastikan DataTable diinisialisasi
 
-            ScrollDinamicDataTable(datatable);
             handleCheckbokPersonil(datatable); // Handle checkbox selections
             handleDataTableEvents(datatable);
             handleAction(datatable);
             handleDelete(datatable);
+            ScrollDinamicDataTable(datatable, scrollOffsetOverride = 101);
         });
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>

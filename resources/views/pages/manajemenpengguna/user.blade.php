@@ -225,8 +225,8 @@
         handleAction(datatable, function(res) {
             select2Init()
         })
-        ScrollDinamicDataTable(datatable);
         handleDelete(datatable)
+        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 99);
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

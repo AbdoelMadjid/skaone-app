@@ -42,9 +42,9 @@
     <script>
         const datatable = 'role-table';
 
-        ScrollDinamicDataTable(datatable);
         handleAction(datatable)
         handleDelete(datatable)
+        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 68); // Initialize dynamic scrolling for DataTable
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

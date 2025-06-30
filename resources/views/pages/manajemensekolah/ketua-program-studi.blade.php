@@ -29,7 +29,7 @@
         </div>
         <div class="card-body p-1">
             {{-- <div id="datatable-wrapper" style="height: calc(100vh - 285px);"> --}}
-            <div id="datatable-wrapper" style="height: calc(100vh - 275px);">
+            <div id="datatable-wrapper" style="height: calc(100vh - 268px);">
                 {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
             </div>
         </div>
@@ -48,10 +48,10 @@
     <script>
         const datatable = 'ketuaprogramstudi-table';
 
-        ScrollDinamicDataTable(datatable);
         handleDataTableEvents(datatable);
         handleAction(datatable)
         handleDelete(datatable)
+        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 82);
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

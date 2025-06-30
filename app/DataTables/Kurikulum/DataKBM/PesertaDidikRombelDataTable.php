@@ -120,7 +120,7 @@ class PesertaDidikRombelDataTable extends DataTable
                 'lengthChange' => false,
                 'searching' => false, // Mengaktifkan pencarian
                 'searchDelay' => 500, // Delay pencarian untuk mengurangi beban server
-                'pageLength' => 25,
+                'pageLength' => 36,
                 // ⬇️ Tambahan fitur scroll dan fixedHeader
                 'scrollY' => '285px',
                 'scrollCollapse' => true,
@@ -136,7 +136,7 @@ class PesertaDidikRombelDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
-            Column::make('tahun_ajaran')->title('Thn Ajaran')->addClass('text-center'),
+            Column::make('tahun_ajaran')->title('Tahun <br> Ajaran')->addClass('text-center'),
             Column::make('kode_kk')->title('Kode KK')->addClass('text-center'),
             Column::make('nama_kk')->title('Nama KK'),
             Column::make('rombel_tingkat')->title('Tingkat')->addClass('text-center'),

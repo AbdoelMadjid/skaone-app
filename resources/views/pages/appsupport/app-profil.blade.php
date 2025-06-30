@@ -16,8 +16,8 @@
             {{-- <div class="card-header d-flex align-items-center">
                         <h5 class="card-title mb-0 flex-grow-1">@lang('translation.app-profil')</h5>
                     </div> --}}
-            <div class="card-body">
-                <div id="datatable-wrapper" style="height: calc(100vh - 228px);">
+            <div class="card-body p-1">
+                <div id="datatable-wrapper" style="height: calc(100vh - 204px);">
                     {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
                 </div>
             </div>
@@ -65,10 +65,10 @@
     <script>
         const datatable = 'appprofil-table';
 
-        ScrollDinamicDataTable(datatable); // Initialize dynamic scrolling for DataTable
         handleDataTableEvents(datatable);
         handleAction(datatable)
         handleDelete(datatable)
+        ScrollDinamicDataTable(datatable); // Initialize dynamic scrolling for DataTable
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

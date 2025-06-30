@@ -43,11 +43,11 @@
     <script>
         const datatable = 'kepalasekolah-table';
 
-        ScrollDinamicDataTable(datatable);
 
         handleDataTableEvents(datatable);
         handleAction(datatable)
         handleDelete(datatable)
+        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 82);
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

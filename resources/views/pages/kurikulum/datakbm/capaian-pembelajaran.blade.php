@@ -29,8 +29,8 @@
                 @endcan
             </div>
         </div>
-        <div class="card-body">
-            <div id="datatable-wrapper" style="height: calc(100vh - 285px);">
+        <div class="card-body p-1">
+            <div id="datatable-wrapper" style="height: calc(100vh - 268px);">
                 {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
             </div>
         </div>
@@ -54,8 +54,6 @@
         const datatable = 'capaianpembelajaran-table';
 
         handleDataTableEvents(datatable);
-
-        ScrollDinamicDataTable(datatable);
 
         function handleGenerateKodeCp() {
             // Mengambil nilai dari dropdown
@@ -90,6 +88,7 @@
             handlePageLoad();
         })
         handleDelete(datatable)
+        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 82);
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection
