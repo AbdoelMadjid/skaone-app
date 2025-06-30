@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="px-4 mx-n4 mt-n3 mb-0" data-simplebar style="height: calc(100vh - 271px);">
+            <div id="datatable-wrapper" style="height: calc(100vh - 271px);">
                 {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
             </div>
         </div>
@@ -41,6 +41,8 @@
         const datatable = 'referensi-table';
 
         handleDataTableEvents(datatable);
+
+        ScrollDinamicDataTable(datatable); // Initialize dynamic scrolling for DataTable
 
         function toggleJenisInput() {
             var select = document.getElementById('jenis_select');

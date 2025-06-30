@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="px-4 mx-n4 mt-n2 mb-0" data-simplebar style="height: calc(100vh - 281px);">
+            <div id="datatable-wrapper" style="height: calc(100vh - 294px);">
                 {!! $dataTable->table([
                     'class' => 'table table-striped hover',
                     'style' => 'width:100%',
@@ -43,6 +43,7 @@
     <script>
         const datatable = 'permission-table';
 
+        ScrollDinamicDataTable(datatable); // Initialize dynamic scrolling for DataTable
         handleAction(datatable)
         handleDelete(datatable)
     </script>

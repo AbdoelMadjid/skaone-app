@@ -67,7 +67,7 @@
                                 <div class="ribbon ribbon-primary round-shape">Cek Capaian Pembelajaran</div>
                                 <div class="ribbon-content mt-5 text-muted">
 
-                                    <table class="table " style="no border">
+                                    <table class="table" style="border: none;">
                                         <thead>
                                             <tr>
                                                 <th>No.</th>
@@ -147,7 +147,9 @@
                             </div>
                         </div>
                     </div>
-                    {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+                    <div id="datatable-wrapper" style="height: calc(100vh - 275px);">
+                        {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+                    </div>
                 </div>
             </div>
         </div>
@@ -167,6 +169,8 @@
 @section('script-bottom')
     <script>
         const datatable = 'datacpterpilih-table';
+
+        ScrollDinamicDataTable(datatable);
 
         @if (session('toast_success'))
             showToast('success', '{{ session('toast_success') }}');

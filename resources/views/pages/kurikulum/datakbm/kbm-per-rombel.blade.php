@@ -125,7 +125,7 @@
             </form>
         </div>
         <div class="card-body">
-            <div class="px-4 mx-n4 mt-n2 mb-0" data-simplebar style="height: calc(100vh - 358px);">
+            <div id="datatable-wrapper" style="height: calc(100vh - 358px);">
                 {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
             </div>
         </div>
@@ -144,6 +144,8 @@
 @section('script-bottom')
     <script>
         const datatable = 'kbmperrombel-table';
+
+        ScrollDinamicDataTable(datatable);
 
         // PENCARIAN DATA KBM PER ROMBEL
         function handleFilterAndReload(tableId) {

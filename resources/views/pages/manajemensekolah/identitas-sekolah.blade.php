@@ -14,7 +14,7 @@
         <div class="card-header d-flex align-items-center">
             <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @lang('translation.identitas-sekolah')</h5>
         </div>
-        <div class="card-body">
+        <div class="card-body p-1" id="datatable-wrapper" style="height: calc(100vh - 254px);">
             {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
         </div>
     </div>
@@ -32,6 +32,7 @@
     <script>
         const datatable = 'identitassekolah-table';
 
+        ScrollDinamicDataTable(datatable);
         handleDataTableEvents(datatable);
         handleAction(datatable)
         handleDelete(datatable)

@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="px-4 mx-n4 mt-n2 mb-0" data-simplebar style="height: calc(100vh - 285px);">
+            <div id="datatable-wrapper" style="height: calc(100vh - 285px);">
                 {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
             </div>
         </div>
@@ -55,6 +55,8 @@
 @section('script-bottom')
     <script>
         const datatable = 'matapelajaran-table';
+
+        ScrollDinamicDataTable(datatable);
 
         handleDataTableEvents(datatable);
         handleAction(datatable);

@@ -390,3 +390,60 @@ function initializeDynamicPagination(tableId, rowsPerPage = 10, maxVisiblePages 
         createPagination(1);
     }
 }
+
+window.ScrollDinamicDataTable = function (tableId) {
+    function adjustScrollYDynamic() {
+        const wrapper = document.getElementById('datatable-wrapper');
+        const scrollBody = document.querySelector('.dataTables_scrollBody');
+        const $table = $('#' + tableId);
+
+        if (!$.fn.DataTable.isDataTable($table)) return;
+
+        const table = $table.DataTable();
+
+        if (wrapper && scrollBody && table) {
+            const wrapperHeight = wrapper.offsetHeight;
+
+            // Deteksi elemen-elemen DOM untuk menentukan offset dinamis
+            let scrollOffset = 86; // default offset (footer saja)
+            if (document.querySelector('.dataTables_filter')) scrollOffset += 40;
+            if (document.querySelector('.dataTables_length')) scrollOffset += 40;
+
+            if (typeof scrollOffsetOverride !== 'undefined') {
+                scrollOffset = scrollOffsetOverride;
+            }
+
+            const scrollHeight = wrapperHeight - scrollOffset;
+
+            scrollBody.style.maxHeight = scrollHeight + 'px';
+            scrollBody.style.height = scrollHeight + 'px';
+
+            table.settings()[0].oScroll.sY = scrollHeight + 'px';
+            table.fixedHeader?.adjust();
+        }
+    }
+
+    $('#' + tableId).on('draw.dt', adjustScrollYDynamic);
+    window.addEventListener('resize', adjustScrollYDynamic);
+
+    document.addEventListener('DOMContentLoaded', function () {
+        adjustScrollYDynamic();
+    });
+};
+
+
+window.ScrollStaticTable = function(wrapperId = 'custom-table-wrapper', scrollId = 'custom-scroll-container', offset = 56) {
+    function adjustTableScrollHeight() {
+        const wrapper = document.getElementById(wrapperId);
+        const scrollContainer = document.getElementById(scrollId);
+
+        if (wrapper && scrollContainer) {
+            const availableHeight = wrapper.offsetHeight - offset;
+            scrollContainer.style.maxHeight = availableHeight + 'px';
+            scrollContainer.style.height = availableHeight + 'px';
+        }
+    }
+
+    window.addEventListener('resize', adjustTableScrollHeight);
+    document.addEventListener('DOMContentLoaded', adjustTableScrollHeight);
+};

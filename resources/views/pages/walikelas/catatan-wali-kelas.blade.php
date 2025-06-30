@@ -13,7 +13,7 @@
     @endcomponent
     <div class="row">
         <div class="col-lg-12">
-            <div class="card">
+            <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-0">
                 <div class="card-header d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @lang('translation.catatan-wali-kelas') - {{ $waliKelas->rombel }}
                     </h5>
@@ -29,8 +29,10 @@
                         @endif
                     </div>
                 </div>
-                <div class="card-body">
-                    {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+                <div class="card-body p-1">
+                    <div id="datatable-wrapper" style="height: calc(100vh - 262px);">
+                        {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+                    </div>
                 </div>
             </div>
         </div>
@@ -110,6 +112,7 @@
             });
         });
 
+        ScrollDinamicDataTable(datatable);
         handleDataTableEvents(datatable);
         handleAction(datatable)
         handleDelete(datatable)

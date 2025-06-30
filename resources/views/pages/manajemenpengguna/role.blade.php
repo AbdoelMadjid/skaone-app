@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="px-4 mx-n4 mt-n3 mb-0" data-simplebar style="height: calc(100vh - 278px);">
+            <div {{-- class="px-4 mx-n4 mt-n3 mb-0" --}} id="datatable-wrapper" style="height: calc(100vh - 298px);">
                 {!! $dataTable->table([
                     'class' => 'table table-striped hover',
                     'style' => 'width:100%',
@@ -42,6 +42,7 @@
     <script>
         const datatable = 'role-table';
 
+        ScrollDinamicDataTable(datatable);
         handleAction(datatable)
         handleDelete(datatable)
     </script>

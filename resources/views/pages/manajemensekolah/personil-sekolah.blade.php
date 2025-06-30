@@ -10,7 +10,7 @@
             @lang('translation.manajemen-sekolah')
         @endslot
     @endcomponent
-    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-0">
+    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
         <div class="card-header border-bottom-dashed">
             <div class="row g-4 align-items-center">
                 <div class="col-sm">
@@ -73,7 +73,7 @@
         </div>
 
         <div class="card-body">
-            <div class="px-4 mx-n4 mt-n2 mb-0" data-simplebar style="height: calc(100vh - 358px);">
+            <div id="datatable-wrapper" style="height: calc(100vh - 352px);">
                 {!! $dataTable->table([
                     'class' => 'table table-striped hover',
                     'style' => 'width:100%',
@@ -96,6 +96,8 @@
 @section('script-bottom')
     <script>
         const datatable = 'personilsekolah-table';
+
+        ScrollDinamicDataTable(datatable);
 
         function handleCheckbokPersonil(tableId) {
             var table = $('#' + tableId).DataTable();

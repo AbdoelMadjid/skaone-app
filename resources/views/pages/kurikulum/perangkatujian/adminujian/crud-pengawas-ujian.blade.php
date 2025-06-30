@@ -64,7 +64,9 @@
                     <div class="card-body p-4">
                         <div class="tab-content">
                             <div class="tab-pane active" id="JadwalMengawas" role="tabpanel">
-                                {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+                                <div id="datatable-wrapper" style="height: calc(100vh - 368px);">
+                                    {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+                                </div>
                             </div>
                             <div class="tab-pane" id="DaftarPengawas" role="tabpanel">
                                 <div class="row g-3">
@@ -89,32 +91,34 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="table-responsive">
-                                    <h5 class="mt-4">Daftar Pengawas Ujian</h5>
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Kode Pengawas</th>
-                                                <th>NIP</th>
-                                                <th>Nama Lengkap</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @forelse ($daftarPengawas as $pengawas)
+                                <h5 class="mt-4">Daftar Pengawas Ujian</h5>
+                                <div id="custom-table-wrapper" class="px-4 mx-n4 mt-n2 mb-0"
+                                    style="height: calc(100vh - 475px); overflow: hidden;">
+                                    <div id="custom-scroll-container" style="overflow-y: auto; height: 100%;">
+                                        <table class="table table-bordered mb-0">
+                                            <thead class="table-light position-sticky top-0" style="z-index: 1;">
                                                 <tr>
-                                                    <td class="text-center">{{ $pengawas->kode_pengawas }}</td>
-                                                    <td>{{ $pengawas->nip }}</td>
-                                                    <td>{{ $pengawas->nama_lengkap }}</td>
+                                                    <th>Kode Pengawas</th>
+                                                    <th>NIP</th>
+                                                    <th>Nama Lengkap</th>
                                                 </tr>
-                                            @empty
-                                                <tr>
-                                                    <td colspan="3" class="text-center">Belum ada pengawas ditambahkan.
-                                                    </td>
-                                                </tr>
-                                            @endforelse
-                                        </tbody>
-                                    </table>
-
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($daftarPengawas as $pengawas)
+                                                    <tr>
+                                                        <td class="text-center">{{ $pengawas->kode_pengawas }}</td>
+                                                        <td>{{ $pengawas->nip }}</td>
+                                                        <td>{{ $pengawas->nama_lengkap }}</td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="3" class="text-center">Belum ada pengawas
+                                                            ditambahkan.</td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div><!--end tab-content-->
@@ -150,6 +154,10 @@
 @section('script-bottom')
     <script>
         const datatable = 'pengawasujian-table';
+
+        ScrollDinamicDataTable(datatable);
+
+        ScrollStaticTable('custom-table-wrapper', 'custom-scroll-container', 86);
 
         $(document).ready(function() {
             $('#btn-tambah-pengawas').click(function() {
