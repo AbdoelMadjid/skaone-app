@@ -104,7 +104,7 @@ class UserDataTable extends DataTable
                 'searchDelay' => 500, // Delay pencarian untuk mengurangi beban server
                 'pageLength' => 50,
                 // ⬇️ Tambahan fitur scroll dan fixedHeader
-                'scrollY' => '271px',
+                'scrollY' => '370px',
                 'scrollCollapse' => true,
                 'paging' => true,
                 'fixedHeader' => true,

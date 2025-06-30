@@ -14,8 +14,8 @@
         <div class="card-header d-flex align-items-center">
             <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @lang('translation.akses-user')</h5>
         </div>
-        <div class="card-body">
-            <div {{-- class="px-4 mx-n4 mt-n3 mb-0"  --}}id="datatable-wrapper" style="height: calc(100vh - 286px);">
+        <div class="card-body p-1">
+            <div id="datatable-wrapper" style="height: calc(100vh - 264px);">
                 {!! $dataTable->table([
                     'class' => 'table table-striped hover',
                     'style' => 'width:100%',
@@ -36,8 +36,6 @@
 @section('script-bottom')
     <script>
         const datatable = 'user-table';
-
-        ScrollDinamicDataTable(datatable); // Initialize dynamic scrolling for DataTable
 
         function handleCheckMenu() {
             // When a parent checkbox is clicked, toggle the checked state of its children
@@ -94,7 +92,11 @@
                     }, false)
                     .execute()
             })
+
         })
+
+        const scrollOffsetOverride = 106;
+        ScrollDinamicDataTable(datatable);
         handleDelete(datatable)
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>

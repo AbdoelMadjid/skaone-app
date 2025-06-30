@@ -97,8 +97,6 @@
     <script>
         const datatable = 'personilsekolah-table';
 
-        ScrollDinamicDataTable(datatable);
-
         function handleCheckbokPersonil(tableId) {
             var table = $('#' + tableId).DataTable();
 
@@ -237,6 +235,7 @@
 
             $('#' + datatable).DataTable(); // Pastikan DataTable diinisialisasi
 
+            ScrollDinamicDataTable(datatable);
             handleCheckbokPersonil(datatable); // Handle checkbox selections
             handleDataTableEvents(datatable);
             handleAction(datatable);

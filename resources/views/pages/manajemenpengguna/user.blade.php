@@ -18,36 +18,37 @@
     <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-0">
         <div class="card-header d-flex align-items-center">
             <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @lang('translation.users')</h5>
-            <div></div>
-        </div>
-        <div class="card-header">
-            <div class="row justify-content-between gy-3">
-                <div class="col-lg-3">
-                    <div class="search-box">
-                        <input type="text" class="form-control search" placeholder="Search for name user...">
-                        <i class="ri-search-line search-icon"></i>
+            <div>
+                <div class="row justify-content-between gy-3">
+                    <div class="col-lg">
+                        <div class="search-box">
+                            <input type="text" class="form-control form-control-sm search"
+                                placeholder="Search for name user ...">
+                            <i class="ri-search-line search-icon"></i>
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-auto">
-                    <div class="d-md-flex text-nowrap gap-2">
-                        @can('create manajemenpengguna/users')
-                            <a class="btn btn-soft-primary action" href="{{ route('manajemenpengguna.users.create') }}">
-                                <i class="ri-add-fill me-1 align-bottom"></i> Add User</a>
-                        @endcan
-                        <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
-                            class="btn btn-soft-primary"><i class="ri-more-2-fill"></i></button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
-                            <li><a class="dropdown-item" href="#">All</a></li>
-                            <li><a class="dropdown-item" href="#">Last Week</a></li>
-                            <li><a class="dropdown-item" href="#">Last Month</a></li>
-                            <li><a class="dropdown-item" href="#">Last Year</a></li>
-                        </ul>
+                    <div class="col-lg-auto">
+                        <div class="d-md-flex text-nowrap gap-2">
+                            @can('create manajemenpengguna/users')
+                                <a class="btn btn-soft-primary btn-sm action"
+                                    href="{{ route('manajemenpengguna.users.create') }}">
+                                    <i class="ri-add-fill me-1 align-bottom"></i> Add User</a>
+                            @endcan
+                            <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
+                                class="btn btn-soft-primary btn-sm"><i class="ri-more-2-fill"></i></button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                                <li><a class="dropdown-item" href="#">All</a></li>
+                                <li><a class="dropdown-item" href="#">Last Week</a></li>
+                                <li><a class="dropdown-item" href="#">Last Month</a></li>
+                                <li><a class="dropdown-item" href="#">Last Year</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="card-body">
-            <div {{-- class="px-4 mx-n4 mt-n3 mb-0" --}} id="datatable-wrapper" style="height: calc(100vh - 365px);">
+        <div class="card-body p-1">
+            <div id="datatable-wrapper" style="height: calc(100vh - 270px);">
                 {!! $dataTable->table([
                     'class' => 'table table-striped hover',
                     'style' => 'width:100%',
@@ -110,8 +111,6 @@
 @section('script-bottom')
     <script>
         const datatable = 'user-table';
-
-        ScrollDinamicDataTable(datatable); // Initialize dynamic scrolling for DataTable
 
         $(document).ready(function() {
             const table = $("#user-table").DataTable();
@@ -226,6 +225,7 @@
         handleAction(datatable, function(res) {
             select2Init()
         })
+        ScrollDinamicDataTable(datatable);
         handleDelete(datatable)
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
