@@ -15,8 +15,8 @@
         @endslot
     @endcomponent
     <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
-        <div class="card-header border-0">
-            <div class="row align-items-center gy-3 mb-3">
+        <div class="card-header border-bottom-dashed border-bottom">
+            <div class="row align-items-center gy-3">
                 <div class="col-sm">
                     <div>
                         <div class="row" id="info-wali-siswa">
@@ -25,9 +25,22 @@
                     </div>
                 </div>
                 <div class="col-sm-auto">
-                    <div>
-                        {{--  --}}
-                    </div>
+                    <button type="button" id="btn-ranking-pertk" class="btn btn-soft-primary btn-sm">Ranking
+                        pertingkat</button>
+                </div>
+                <div class="col-sm-auto">
+                    <button type="button" id="btn-ranking-pertkkk" class="btn btn-soft-primary btn-sm">Ranking
+                        pertingkat per kk</button>
+                </div>
+                <div class="col-sm-auto">
+                    @if ($personal_id == 'Pgw_0016')
+                        <form method="GET" action="{{ route('kurikulum.dokumenguru.generaterankingsiswa') }}">
+                            <button class="btn btn-success btn-sm">Generate Ranking Manual</button>
+                        </form>
+                    @endif
+                </div>
+                <div class="col-sm-auto">
+                    <button onclick="printRanking()" class="btn btn-primary btn-sm">Cetak Ranking</button>
                 </div>
             </div>
         </div>
@@ -97,7 +110,7 @@
                             </li> --}}
                         </ul>
                     </div>
-                    <div class="px-4 mx-n4" data-simplebar style="height: calc(100vh - 300px);">
+                    <div class="px-4 mx-n4" data-simplebar style="height: calc(100vh - 376px);">
                         <div id="walikelas-detail">
                             <div class="alert alert-primary alert-dismissible alert-label-icon rounded-label fade show mt-4"
                                 role="alert">
@@ -108,7 +121,7 @@
                         </div>
                     </div>
                     <!-- end card -->
-                    <div id="tampil-ranking" class="mt-4"></div>
+                    {{-- <div id="tampil-ranking" class="mt-4"></div> --}}
                 </div>
                 <!-- end col -->
 
@@ -121,8 +134,7 @@
                             <div class="card-body pt-2">
                                 @include('pages.kurikulum.dokumenguru.arsip-walikelas-form')
                                 <!-- end table-responsive -->
-                                <button onclick="printRanking()" class="btn btn-primary btn-sm w-100 mt-3">Cetak
-                                    Ranking</button>
+
                                 @if ($personal_id == 'Pgw_0016')
                                     <button type="button" class="btn btn-soft-primary btn-sm w-100 mt-3"
                                         data-bs-toggle="modal" data-bs-target="#tambahPilihArsipWaliKelas"><i
@@ -138,6 +150,33 @@
         </div>
     </div>
     @include('pages.kurikulum.dokumenguru.arsip-walikelas-tambah-form')
+    <div class="modal fade" id="modal-ranking-pertk" tabindex="-1" aria-labelledby="rankingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rankingModalLabel">Ranking per Tingkat</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body" id="tampil-ranking">
+                    {{-- Konten ranking akan dimuat di sini --}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-ranking-pertk-kk" tabindex="-1" aria-labelledby="rankingKKModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rankingKKModalLabel">Ranking per Tingkat per Kompetensi Keahlian</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body" id="tampil-ranking-kk">
+                    {{-- Konten akan dimuat di sini --}}
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('script')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>

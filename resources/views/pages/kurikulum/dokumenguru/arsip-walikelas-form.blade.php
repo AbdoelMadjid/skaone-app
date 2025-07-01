@@ -30,14 +30,8 @@
     <button type="button" id="btn-data-walikelas" class="btn btn-soft-primary btn-sm w-100 mt-3">Confirm</button>
 </form>
 
-<button type="button" id="btn-ranking-pertk" class="btn btn-soft-primary btn-sm w-100 mt-3">Ranking pertingkat</button>
-<button type="button" id="btn-ranking-pertkkk" class="btn btn-soft-primary btn-sm w-100 mt-3">Ranking pertingkat per
-    kk</button>
-@if ($personal_id == 'Pgw_0016')
-    <form method="GET" action="{{ route('kurikulum.dokumenguru.generaterankingsiswa') }}">
-        <button class="btn btn-success btn-sm w-100 mt-3">Generate Ranking Manual</button>
-    </form>
-@endif
+
+
 <script>
     // JavaScript untuk menangani perubahan dan permintaan AJAX
     document.addEventListener('DOMContentLoaded', function() {
@@ -225,7 +219,7 @@
     }
 </script>
 
-<script>
+{{-- <script>
     document.getElementById('btn-ranking-pertk').addEventListener('click', function() {
         const btn = this;
         btn.innerText = 'Memuat...';
@@ -249,8 +243,33 @@
                 btn.disabled = false;
             });
     });
-</script>
+</script> --}}
 <script>
+    document.getElementById('btn-ranking-pertk').addEventListener('click', function() {
+        const btn = this;
+        btn.innerText = 'Memuat...';
+        btn.disabled = true;
+
+        fetch("{{ route('kurikulum.dokumenguru.ranking.tingkat') }}")
+            .then(response => {
+                if (!response.ok) throw new Error("Gagal memuat data ranking.");
+                return response.text();
+            })
+            .then(html => {
+                document.getElementById('tampil-ranking').innerHTML = html;
+                const modal = new bootstrap.Modal(document.getElementById('modal-ranking-pertk'));
+                modal.show();
+            })
+            .catch(error => {
+                alert(error.message);
+            })
+            .finally(() => {
+                btn.innerText = 'Ranking pertingkat';
+                btn.disabled = false;
+            });
+    });
+</script>
+{{-- <script>
     document.getElementById('btn-ranking-pertkkk').addEventListener('click', function() {
         const btn = this;
         btn.innerText = 'Memuat...';
@@ -265,6 +284,31 @@
             })
             .then(html => {
                 document.getElementById('tampil-ranking').innerHTML = html;
+            })
+            .catch(error => {
+                alert(error.message);
+            })
+            .finally(() => {
+                btn.innerText = 'Ranking pertingkat per kk';
+                btn.disabled = false;
+            });
+    });
+</script> --}}
+<script>
+    document.getElementById('btn-ranking-pertkkk').addEventListener('click', function() {
+        const btn = this;
+        btn.innerText = 'Memuat...';
+        btn.disabled = true;
+
+        fetch("{{ route('kurikulum.dokumenguru.ranking.tingkat.kk') }}")
+            .then(response => {
+                if (!response.ok) throw new Error("Gagal memuat data ranking.");
+                return response.text();
+            })
+            .then(html => {
+                document.getElementById('tampil-ranking-kk').innerHTML = html;
+                const modal = new bootstrap.Modal(document.getElementById('modal-ranking-pertk-kk'));
+                modal.show();
             })
             .catch(error => {
                 alert(error.message);
