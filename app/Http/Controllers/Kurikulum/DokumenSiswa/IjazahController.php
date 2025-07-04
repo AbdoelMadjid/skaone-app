@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\Kurikulum\DokumenSiswa;
 
+use App\DataTables\Kurikulum\DokumenSiswa\IjazahDataTable;
 use App\Http\Controllers\Controller;
+use App\Models\ManajemenSekolah\KompetensiKeahlian;
+use App\Models\ManajemenSekolah\RombonganBelajar;
+use App\Models\ManajemenSekolah\TahunAjaran;
 use Illuminate\Http\Request;
 
 class IjazahController extends Controller
@@ -10,9 +14,23 @@ class IjazahController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IjazahDataTable $ijazahDataTable)
     {
-        return view('pages.kurikulum.dokumensiswa.ijazah');
+        $angkaSemester = [];
+        for ($i = 1; $i <= 6; $i++) {
+            $angkaSemester[$i] = (string) $i;
+        }
+
+        $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
+        $kompetensiKeahlianOptions = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
+        $rombonganBelajar = RombonganBelajar::pluck('rombel', 'kode_rombel')->toArray();
+
+        return $ijazahDataTable->render('pages.kurikulum.dokumensiswa.ijazah', [
+            'tahunAjaranOptions' => $tahunAjaranOptions,
+            'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
+            'rombonganBelajar' => $rombonganBelajar,
+            'angkaSemester' => $angkaSemester,
+        ]);
     }
 
     /**
