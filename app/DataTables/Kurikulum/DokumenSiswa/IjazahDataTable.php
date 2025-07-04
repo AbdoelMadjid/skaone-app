@@ -140,7 +140,9 @@ class IjazahDataTable extends DataTable
 
         $query->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
             ->join('kompetensi_keahlians', 'peserta_didik_rombels.kode_kk', '=', 'kompetensi_keahlians.idkk')
-            ->select('peserta_didik_rombels.*', 'peserta_didiks.nama_lengkap', 'kompetensi_keahlians.nama_kk'); // Tambahkan nama_kk
+            ->select('peserta_didik_rombels.*', 'peserta_didiks.nama_lengkap', 'kompetensi_keahlians.nama_kk')
+            ->orderBy('peserta_didiks.nama_lengkap'); // Tambahkan nama_kk
+
 
         return $query;
     }
