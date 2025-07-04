@@ -35,7 +35,10 @@
                                         data-choices-search-false name="choices-single-default" id="idThnAjaran">
                                         <option value="all" selected>Pilih Tahun Ajaran</option>
                                         @foreach ($tahunAjaranOptions as $thnajar)
-                                            <option value="{{ $thnajar }}">{{ $thnajar }}</option>
+                                            <option value="{{ $thnajar }}"
+                                                {{ $thnajar == $tahunAjaranAktif ? 'selected' : '' }}>
+                                                {{ $thnajar }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -59,7 +62,7 @@
                                         <option value="all" selected>Pilih Tingkat</option>
                                         <option value="10">10</option>
                                         <option value="11">11</option>
-                                        <option value="12">12</option>
+                                        <option value="12" selected>12</option>
                                     </select>
                                 </div>
                             </div>
@@ -316,6 +319,64 @@
                 }
             });
         }
+
+        $(document).on('change', '.kelulusan-select', function() {
+            const select = $(this);
+            const status = select.val();
+            const nis = select.data('nis');
+            const tahun = select.data('tahun');
+
+            $.ajax({
+                url: "{{ route('kurikulum.dokumentsiswa.ijazah.update-kelulusan') }}",
+                method: "POST",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    nis: nis,
+                    tahun_ajaran: tahun,
+                    status_kelulusan: status
+                },
+                success: function(res) {
+                    showToast('success', 'Status kelulusan diperbarui.');
+                },
+                error: function() {
+                    showToast('error', 'Gagal memperbarui data.');
+                }
+            });
+        });
+
+        // Menyimpan nomor ijazah saat tekan ENTER
+        $(document).on('keypress', '.no-ijazah-input', function(e) {
+            if (e.which === 13) {
+                e.preventDefault(); // cegah form submit kalau ada
+
+                const input = $(this);
+                const noIjazah = input.val();
+                const nis = input.data('nis');
+                const tahun = input.data('tahun');
+                const nm_siswa = input.data('nama');
+
+                $.ajax({
+                    url: "{{ route('kurikulum.dokumentsiswa.ijazah.update-kelulusan') }}",
+                    method: "POST",
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        nis: nis,
+                        tahun_ajaran: tahun,
+                        no_ijazah: noIjazah,
+                        nm_siswa: nm_siswa
+                    },
+                    success: function(res) {
+                        showToast('success',
+                            `No. Ijazah untuk ${nm_siswa} (NIS ${nis}) berhasil disimpan.`);
+                    },
+                    error: function() {
+                        showToast('error',
+                            `Gagal menyimpan No. Ijazah untuk ${nm_siswa} (NIS ${nis}).`
+                        );
+                    }
+                });
+            }
+        });
         // Inisialisasi DataTable
         $(document).ready(function() {
 
@@ -352,29 +413,23 @@
 
                             $.each(data, function(index, item) {
                                 $('#checkbox-kode-rombel').append(`
-                        <div class="form-check form-switch form-check-inline">
-                            <input class="form-check-input kode_rombel_checkbox"
-                                   type="checkbox"
-                                   name="kode_rombel[]"
-                                   value="${item.kode_rombel}"
-                                   id="kode_rombel_${item.kode_rombel}">
-                            <label class="form-check-label" for="kode_rombel_${item.kode_rombel}">
-                                ${item.kode_rombel}
-                            </label>
-                        </div><br>
-                    `);
+    <div class="form-check form-switch form-check-inline">
+        <input class="form-check-input kode_rombel_checkbox" type="checkbox" name="kode_rombel[]"
+            value="${item.kode_rombel}" id="kode_rombel_${item.kode_rombel}">
+        <label class="form-check-label" for="kode_rombel_${item.kode_rombel}">
+            ${item.kode_rombel}
+        </label>
+    </div><br>
+    `);
                                 $('#checkbox-rombel').append(`
-                        <div class="form-check form-switch form-check-inline">
-                            <input class="form-check-input rombel_checkbox"
-                                   type="checkbox"
-                                   name="rombel[]"
-                                   value="${item.rombel}"
-                                   id="rombel_${item.kode_rombel}">
-                            <label class="form-check-label" for="rombel_${item.kode_rombel}">
-                                ${item.rombel}
-                            </label>
-                        </div><br>
-                    `);
+    <div class="form-check form-switch form-check-inline">
+        <input class="form-check-input rombel_checkbox" type="checkbox" name="rombel[]" value="${item.rombel}"
+            id="rombel_${item.kode_rombel}">
+        <label class="form-check-label" for="rombel_${item.kode_rombel}">
+            ${item.rombel}
+        </label>
+    </div><br>
+    `);
                                 $('#jmlsiswa-rombel').append(
                                     `${item.rombel}: ${item.jumlah_siswa}<br>`);
                             });
@@ -443,15 +498,15 @@
                     success: function(data) {
                         $.each(data, function(index, item) {
                             $('#selected_datasiswa_tbody').append(`
-                    <tr data-rombel="${item.kode_rombel}">
-                         <td>${index + 1}</td>
-                        <td>${item.rombel}</td>
-                        <td>${item.nis}</td>
-                        <td>${item.nama_siswa}</td>
-                        <td>${item.foto}</td>
-                        <td>${item.email}</td>
-                    </tr>
-                `);
+    <tr data-rombel="${item.kode_rombel}">
+        <td>${index + 1}</td>
+        <td>${item.rombel}</td>
+        <td>${item.nis}</td>
+        <td>${item.nama_siswa}</td>
+        <td>${item.foto}</td>
+        <td>${item.email}</td>
+    </tr>
+    `);
                         });
                     }
                 });

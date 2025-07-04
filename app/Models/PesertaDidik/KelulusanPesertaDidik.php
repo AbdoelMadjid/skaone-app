@@ -16,5 +16,6 @@ class KelulusanPesertaDidik extends Model
         'tahun_ajaran',
         'nis',
         'status_kelulusan',
+        'no_ijazah',
     ];
 }

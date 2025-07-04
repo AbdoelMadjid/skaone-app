@@ -5,6 +5,7 @@ namespace App\DataTables\Kurikulum\DokumenSiswa;
 use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -30,13 +31,56 @@ class IjazahDataTable extends DataTable
             ->addColumn('nama_kk', function ($row) {
                 return $row->nama_kk; // Mengambil nama kompetensi keahlian dari hasil join
             })
+            ->addColumn('kelulusan', function ($row) {
+                $kelulusan = DB::table('kelulusan')
+                    ->where('nis', $row->nis)
+                    ->where('tahun_ajaran', $row->tahun_ajaran)
+                    ->first();
+
+                $status = $kelulusan->status_kelulusan ?? '';
+                $nis = $row->nis;
+                $tahunAjaran = $row->tahun_ajaran;
+
+                $options = [
+                    '' => '-- Pilih --',
+                    'LULUS' => 'LULUS',
+                    'LULUS BERSYARAT' => 'LULUS BERSYARAT',
+                ];
+
+                $select = "<select class='form-control kelulusan-select' data-nis='{$nis}' data-tahun='{$tahunAjaran}'>";
+                foreach ($options as $value => $label) {
+                    $selected = $status === $value ? 'selected' : '';
+                    $select .= "<option value='{$value}' {$selected}>{$label}</option>";
+                }
+                $select .= "</select>";
+
+                return $select;
+            })
+            ->addColumn('no_ijazah', function ($row) {
+                $kelulusan = DB::table('kelulusan')
+                    ->where('nis', $row->nis)
+                    ->where('tahun_ajaran', $row->tahun_ajaran)
+                    ->first();
+
+                $noIjazah = $kelulusan->no_ijazah ?? '';
+                $nis = $row->nis;
+                $tahunAjaran = $row->tahun_ajaran;
+                $nmSiswa = $row->nama_lengkap;
+
+                return "<input type='text' class='form-control no-ijazah-input'
+                        value='{$noIjazah}'
+                        data-nis='{$nis}'
+                        data-tahun='{$tahunAjaran}'
+                        data-nama='{$nmSiswa}'
+                        placeholder='Isi No. Ijazah'>";
+            })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
                 return view('action', compact('actions'));
             })
             ->addIndexColumn()
-            ->rawColumns(['action', 'nama_siswa', 'nama_kk']);
+            ->rawColumns(['action', 'nama_siswa', 'nama_kk', 'kelulusan', 'no_ijazah']);
     }
 
     /**
@@ -91,31 +135,31 @@ class IjazahDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('ijazah-table')
-                    ->columns($this->getColumns())
-                    ->ajax([
-                        'data' =>
-                        'function(d) {
-                            d.search = $(".search").val();
-                            d.thAjar = $("#idThnAjaran").val();
-                            d.kodeKK = $("#idKodeKK").val();
-                            d.tingKat = $("#idTingkat").val();
-                            d.romBel = $("#idRombel").val();
-                        }'
-                    ])
-                    //->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->parameters([
-                        'lengthChange' => false,
-                        'searching' => false, // Mengaktifkan pencarian
-                        'searchDelay' => 500, // Delay pencarian untuk mengurangi beban server
-                        'pageLength' => 25,
-                        // ⬇️ Tambahan fitur scroll dan fixedHeader
-                        'scrollY' => '345px',
-                        'scrollCollapse' => true,
-                        'paging' => true,
-                        'fixedHeader' => true,
-                    ]);
+            ->setTableId('ijazah-table')
+            ->columns($this->getColumns())
+            ->ajax([
+                'data' =>
+                'function(d) {
+                    d.search = $(".search").val();
+                    d.thAjar = $("#idThnAjaran").val();
+                    d.kodeKK = $("#idKodeKK").val();
+                    d.tingKat = $("#idTingkat").val();
+                    d.romBel = $("#idRombel").val();
+                }'
+            ])
+            //->dom('Bfrtip')
+            ->orderBy(1)
+            ->parameters([
+                'lengthChange' => false,
+                'searching' => false, // Mengaktifkan pencarian
+                'searchDelay' => 500, // Delay pencarian untuk mengurangi beban server
+                'pageLength' => 100,
+                // ⬇️ Tambahan fitur scroll dan fixedHeader
+                'scrollY' => '345px',
+                'scrollCollapse' => true,
+                'paging' => true,
+                'fixedHeader' => true,
+            ]);
     }
 
     /**
@@ -133,6 +177,8 @@ class IjazahDataTable extends DataTable
             Column::make('rombel_nama')->title('Nama rombel')->addClass('text-center'),
             Column::make('nis')->title('NIS')->addClass('text-center'),
             Column::make('nama_siswa')->title('Nama Siswa'),
+            Column::make('kelulusan')->title('Status Kelulusan'),
+            Column::make('no_ijazah')->title('Nomor Ijazah'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

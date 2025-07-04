@@ -139,6 +139,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/export-pivot-data', [LegerNilaiController::class, 'exportPivotData'])->name('exportpivotData');
 
             Route::resource('ijazah', IjazahController::class);
+            Route::post('ijazah/update-kelulusan', [IjazahController::class, 'updateKelulusan'])->name('ijazah.update-kelulusan');
             Route::resource('rapor-pkl', RaporPklController::class);
             Route::get('raporpkl/{nis}', [RaporPklController::class, 'showRaporPKL']);
             Route::resource('rapor-p-lima', RaporPLimaController::class);
