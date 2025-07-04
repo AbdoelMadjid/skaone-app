@@ -29,7 +29,10 @@ class IjazahDataTable extends DataTable
                 return $row->nama_lengkap; // Mengambil nama siswa dari hasil join
             })
             ->addColumn('nama_kk', function ($row) {
-                return $row->nama_kk; // Mengambil nama kompetensi keahlian dari hasil join
+                return "(" . $row->kode_kk . ") " . $row->nama_kk; // Mengambil nama kompetensi keahlian dari hasil join
+            })
+            ->addColumn('kelas', function ($row) {
+                return $row->rombel_kode . "<br>" . $row->rombel_nama; // Mengambil nama kompetensi keahlian dari hasil join
             })
             ->addColumn('kelulusan', function ($row) {
                 $kelulusan = DB::table('kelulusan')
@@ -74,13 +77,26 @@ class IjazahDataTable extends DataTable
                         data-nama='{$nmSiswa}'
                         placeholder='Isi No. Ijazah'>";
             })
-            ->addColumn('action', function ($row) {
+            /* ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
                 return view('action', compact('actions'));
+            }) */
+            ->addColumn('action', function ($row) {
+                $id = $row->nis;
+
+                $tombol = '
+                <div class="btn-group dropstart">
+                    <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
+                        class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                        <li><a href="#" class="dropdown-item showTransIjazah" data-nis="' . $id . '" data-bs-toggle="modal" data-bs-target="#TranskripIjazah"> Transkrip Nilai Ijazah </a></li>
+                    </ul>
+                </div>';
+                return $tombol;
             })
             ->addIndexColumn()
-            ->rawColumns(['action', 'nama_siswa', 'nama_kk', 'kelulusan', 'no_ijazah']);
+            ->rawColumns(['action', 'nama_siswa', 'nama_kk', 'kelulusan', 'no_ijazah', 'kelas']);
     }
 
     /**
@@ -170,11 +186,9 @@ class IjazahDataTable extends DataTable
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('tahun_ajaran')->title('Thn Ajaran')->addClass('text-center'),
-            Column::make('kode_kk')->title('Kode KK')->addClass('text-center'),
             Column::make('nama_kk')->title('Nama KK'),
             Column::make('rombel_tingkat')->title('Tingkat')->addClass('text-center'),
-            Column::make('rombel_kode')->title('Kode Rombel')->addClass('text-center'),
-            Column::make('rombel_nama')->title('Nama rombel')->addClass('text-center'),
+            Column::make('kelas')->title('Rombel')->addClass('text-center'),
             Column::make('nis')->title('NIS')->addClass('text-center'),
             Column::make('nama_siswa')->title('Nama Siswa'),
             Column::make('kelulusan')->title('Status Kelulusan'),

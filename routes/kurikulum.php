@@ -140,12 +140,19 @@ Route::middleware('auth')->group(function () {
 
             Route::resource('ijazah', IjazahController::class);
             Route::post('ijazah/update-kelulusan', [IjazahController::class, 'updateKelulusan'])->name('ijazah.update-kelulusan');
+            Route::get('transkripijazah/{nis}', [IjazahController::class, 'showTranskipIjasah']);
+
             Route::resource('rapor-pkl', RaporPklController::class);
             Route::get('raporpkl/{nis}', [RaporPklController::class, 'showRaporPKL']);
+
             Route::resource('rapor-p-lima', RaporPLimaController::class);
+
             Route::resource('transkrip-nilai', TranskripNilaiController::class);
+
             Route::get('nilaisemester', [TranskripNilaiController::class, 'getBySemester']);
+
             Route::post('updatenilai', [TranskripNilaiController::class, 'updateNilai']);
+
             Route::get('transkriprapor/{nis}', [TranskripNilaiController::class, 'getTranskrip']);
 
             Route::resource('remedial-peserta-didik', RemedialPesertaDidikNilaiController::class);

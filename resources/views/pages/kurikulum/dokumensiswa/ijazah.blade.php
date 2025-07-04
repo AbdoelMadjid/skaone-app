@@ -87,47 +87,25 @@
         </div>
         <!--end col-->
     </div>
-    <div class="modal fade" id="nilaiModal" tabindex="-1" aria-labelledby="nilaiModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+    <div class="modal fade" id="TranskripIjazah" tabindex="-1" aria-labelledby="TranskripIjazahLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="nilaiModalLabel">Nilai Semester</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-bordered" id="nilaiTable">
-                        <thead>
-                            <tr>
-                                <th>Kode Mapel</th>
-                                <th>Nama Mapel</th>
-                                <th>Nilai</th>
-                            </tr>
-                        </thead>
-                        <tbody id="nilaiBody">
-                            <!-- Isi dengan Ajax -->
-                        </tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="simpanNilaiBtn">Simpan</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="TranskripRapor" tabindex="-1" aria-labelledby="TranskripRaporLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Transkrip Nilai </h5>
+                    <h5 class="modal-title">Transkip Nilai Ijazah</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                 </div>
-                <div class="modal-body" id="transkripBody">
-                    <div class="text-center">
+                <div class="modal-body" id="TranskripIjazahBody">
+                    <div>
                         <div class="spinner-border text-primary" role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
+                        {{-- menampilkan blade di pages.kurikulum.dokumensiswa.rapor-pkl-tampil --}}
+
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-soft-secondary" id="btn-cetak-trans-ijazah">Cetak</button>
+                    <button type="button" class="btn btn-sm btn-soft-secondary" data-bs-dismiss="modal">Tutup</button>
                 </div>
             </div>
         </div>
@@ -148,102 +126,6 @@
 @section('script-bottom')
     <script>
         const datatable = 'ijazah-table';
-
-        $(document).on('click', '.showNilai', function(e) {
-            e.preventDefault();
-            var nis = $(this).data('nis');
-            var semester = $(this).data('semester');
-            var nama = $(this).closest('.dropdown-menu').find('.dropdown-item:first').text().trim();
-
-            // Simpan data ke modal
-            $('#nilaiModal').data('nis', nis);
-            $('#nilaiModal').data('semester', semester);
-
-            // Update judul
-            let title = semester === 'PSAJ' ? 'Nilai PSAJ' : `Semester ${semester}`;
-            $('#nilaiModalLabel').text(`${title} - ${nama}`);
-
-            $.ajax({
-                url: '/kurikulum/dokumentsiswa/nilaisemester',
-                method: 'GET',
-                data: {
-                    nis: nis,
-                    semester: semester
-                },
-                success: function(res) {
-                    $('#nilaiBody').empty();
-                    if (res.length > 0) {
-                        res.forEach(function(item) {
-                            $('#nilaiBody').append(`
-                            <tr>
-                                <td>${item.kode_mapel}</td>
-                                <td>${item.nama_mapel}</td>
-                                <td>
-                                    <input type="number" class="form-control nilai-input" name="nilai[${item.kode_mapel}]" value="${item.nilai ?? ''}" />
-                                </td>
-                            </tr>
-                        `);
-                        });
-                    } else {
-                        $('#nilaiBody').html(
-                            '<tr><td colspan="3" class="text-center">Tidak ada data</td></tr>');
-                    }
-                }
-            });
-        });
-
-        $(document).on('click', '#simpanNilaiBtn', function() {
-            const nis = $('#nilaiModal').data('nis');
-            const semester = $('#nilaiModal').data('semester');
-
-            const nilaiData = {};
-            $('.nilai-input').each(function() {
-                const kodeMapel = $(this).attr('name').match(/\[(.*?)\]/)[1];
-                nilaiData[kodeMapel] = $(this).val();
-            });
-
-            $.ajax({
-                url: '/kurikulum/dokumentsiswa/updatenilai',
-                method: 'POST',
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr('content'),
-                    nis: nis,
-                    semester: semester,
-                    nilai: nilaiData
-                },
-                success: function(response) {
-                    showToast('success', 'Nilai berhasil disimpan');
-                    $('#nilaiModal').modal('hide');
-                },
-                error: function(xhr) {
-                    showToast('error', 'Gagal menyimpan nilai');
-                }
-            });
-        });
-
-        $(document).on('click', '.showTranskrip', function(e) {
-            e.preventDefault();
-
-            let nis = $(this).data('nis');
-            $('#transkripBody').html(`<div class="text-center">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-            </div>`);
-
-            $.ajax({
-                url: '/kurikulum/dokumentsiswa/transkriprapor/' + nis,
-                type: 'GET',
-                success: function(res) {
-                    $('#transkripBody').html(res);
-                },
-                error: function(xhr) {
-                    $('#transkripBody').html(
-                        `<div class="alert alert-danger">Gagal memuat data transkrip.</div>`);
-                }
-            });
-        });
-
 
         function handleFilterAndReload(tableId) {
             var table = $('#' + tableId).DataTable();
@@ -319,6 +201,159 @@
                 }
             });
         }
+
+        document.getElementById("btn-cetak-trans-ijazah").addEventListener("click", function() {
+            // Ambil konten yang akan dicetak
+            var printContents = document.getElementById("cetak-transkrip-ijazah").innerHTML;
+
+            // Tutup modal Bootstrap
+            var modalElement = document.getElementById('modal-detail');
+            var modalInstance = bootstrap.Modal.getInstance(modalElement);
+            if (modalInstance) {
+                modalInstance.hide();
+            }
+
+            // Cetak di jendela baru
+            var printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+            <html>
+            <head>
+                <title>Cetak Nilai PKL</title>
+                <style>
+                    .cetak-rapor {
+                        border-collapse: collapse;
+                        width: 100%;
+                        text-decoration-color: black;
+                    }
+                    .cetak-rapor td {
+                        border: 1px solid black;
+                        padding: 1px;
+                        text-align: left;
+                    }
+                    .cetak-rapor th {
+                        border: 1px solid black;
+                        background-color: #f2f2f2;
+                        font-weight: bold;
+                        text-align: center;
+                    }
+                    @media print {
+                        .cetak-rapor tr {
+                            page-break-inside: avoid;
+                        }
+                        .page-break {
+                            page-break-before: always;
+                        }
+                    }
+                    .no-border {
+                        border: 0 !important;
+                        border-collapse: collapse !important;
+                    }
+                    .cetak-rapor .no-border,
+                    .cetak-rapor .no-border th,
+                    .cetak-rapor .no-border td {
+                        border: none !important;
+                    }
+                    .text-center {
+                        text-align: center;
+                    }
+                    .note {
+                        font-size: 11px;
+                        margin-top: 10px;
+                    }
+
+                    .ttd-container {
+                        margin-left: 10%;
+                        width: 90%;
+                        /* Supaya tidak melewati batas kanan */
+                    }
+
+                    .ttd-wrapper {
+                        width: 100%;
+                        margin: 20px auto;
+                        font-family: "Times New Roman", Times, serif;
+                        font-size: 12px;
+                        border-collapse: collapse;
+                    }
+
+                    .ttd-section {
+                        width: 50%;
+                        vertical-align: top;
+                        text-align: left;
+                        /* Rata kiri */
+                    }
+
+                    .ttd-section td {
+                        padding: 3px;
+                    }
+
+                    .ttd-title {
+                        font-weight: bold;
+                    }
+
+                    .ttd-spacing {
+                        height: 45px;
+                    }
+
+                    .relative-wrapper {
+                        position: relative;
+                    }
+
+                    .ttd-img-kepsek {
+                        position: absolute;
+                        top: 35px;
+                        left: -90px;
+                        height: 90px;
+                        z-index: 1;
+                    }
+
+                    .ttd-img-stempel {
+                        position: absolute;
+                        top: 5px;
+                        left: -75px;
+                        height: 150px;
+                        z-index: 0;
+                    }
+
+                    @media print {
+                        .ttd-wrapper {
+                            page-break-inside: avoid;
+                        }
+                    }
+                </style>
+            </head>
+            <body onload="window.print(); window.close();">
+                ${printContents}
+            </body>
+            </html>
+        `);
+            printWindow.document.close();
+        });
+
+        $(document).on('click', '.showTransIjazah', function() {
+            var nis = $(this).data('nis');
+
+            // Tampilkan spinner loading
+            $('#TranskripIjazahBody').html(`
+                <div class="text-center my-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            `);
+
+            // AJAX panggil route untuk ambil data rapor PKL
+            $.ajax({
+                url: '/kurikulum/dokumentsiswa/transkripijazah/' + nis,
+                type: 'GET',
+                success: function(response) {
+                    $('#TranskripIjazahBody').html(response);
+                },
+                error: function() {
+                    $('#TranskripIjazahBody').html(
+                        '<div class="text-danger text-center my-5">Gagal memuat data.</div>');
+                }
+            });
+        });
 
         $(document).on('change', '.kelulusan-select', function() {
             const select = $(this);
