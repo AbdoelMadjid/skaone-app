@@ -124,7 +124,7 @@
     <script>
         const datatable = 'raporpkl-table';
 
-        ScrollDinamicDataTable(datatable);
+
 
         document.getElementById("btn-cetak-pkl").addEventListener("click", function() {
             // Ambil konten yang akan dicetak
@@ -497,6 +497,7 @@
 
             $('#' + datatable).DataTable();
 
+            ScrollDinamicDataTable(datatable, scrollOffsetOverride = 72);
             handleFilterAndReload(datatable);
             handleDataTableEvents(datatable);
             handleAction(datatable)
