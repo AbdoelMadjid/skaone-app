@@ -497,11 +497,11 @@
 
             $('#' + datatable).DataTable();
 
-            ScrollDinamicDataTable(datatable, scrollOffsetOverride = 72);
             handleFilterAndReload(datatable);
             handleDataTableEvents(datatable);
             handleAction(datatable)
             handleDelete(datatable)
+            ScrollDinamicDataTable(datatable, scrollOffsetOverride = 72);
         });
     </script>
 

@@ -19,8 +19,8 @@
                 @endcan
             </div>
         </div>
-        <div class="card-body">
-            <div class="px-4 mx-n4 mt-n2 mb-0" data-simplebar style="height: calc(100vh - 285px);">
+        <div class="card-body p-1">
+            <div class="px-4 mx-n4 mt-n2 mb-0" id="datatable-wrapper" style="height: calc(100vh - 274px);">
                 {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
             </div>
         </div>
@@ -42,6 +42,7 @@
         handleDataTableEvents(datatable);
         handleAction(datatable)
         handleDelete(datatable)
+        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 86);
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection
