@@ -78,7 +78,7 @@ class CetakRaporController extends Controller
 
         $siswaData = DB::table('peserta_didik_rombels')
             ->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
-            ->where('peserta_didik_rombels.tahun_ajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('peserta_didik_rombels.tahun_ajaran', $dataPilCR->tahunajaran)
             ->where('peserta_didik_rombels.rombel_kode', $dataPilCR->kode_rombel)
             ->where('peserta_didik_rombels.rombel_tingkat', $dataPilCR->tingkat)
             ->where('peserta_didik_rombels.nis', $dataPilCR->nis)
@@ -118,12 +118,12 @@ class CetakRaporController extends Controller
                 'personil_sekolahs.namalengkap',
                 'personil_sekolahs.gelarbelakang'
             )
-            ->leftJoin('wali_kelas', function ($join) use ($tahunAjaranAktif) {
+            ->leftJoin('wali_kelas', function ($join) use ($dataPilCR) {
                 $join->on('rombongan_belajars.kode_rombel', '=', 'wali_kelas.kode_rombel')
-                    ->where('wali_kelas.tahunajaran', '=', $tahunAjaranAktif->tahunajaran);
+                    ->where('wali_kelas.tahunajaran', '=', $dataPilCR->tahunajaran);
             })
             ->leftJoin('personil_sekolahs', 'wali_kelas.wali_kelas', '=', 'personil_sekolahs.id_personil')
-            ->where('rombongan_belajars.tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('rombongan_belajars.tahunajaran', $dataPilCR->tahunajaran)
             ->orderBy('rombongan_belajars.tingkat')
             ->orderBy('rombongan_belajars.rombel')
             ->get();
@@ -135,7 +135,7 @@ class CetakRaporController extends Controller
         $dataKelasCeklistGrouped = $optionCeklistRombel->groupBy('tingkat');
 
         // Ambil checklist yang SUDAH tersimpan
-        $ceklistTersimpan = CeklistCetakRapor::where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+        $ceklistTersimpan = CeklistCetakRapor::where('tahunajaran', $dataPilCR->tahunajaran)
             ->where('ganjilgenap', $semester->semester)
             ->where('status', 'Sudah')
             ->pluck('kode_rombel')
