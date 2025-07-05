@@ -13,7 +13,7 @@
     @endcomponent
     <div class="row">
         <div class="col-lg-12">
-            <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-0">
+            <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
                 <div class="card-body">
                     <div class="px-4 mx-n4 mt-n2 mb-0" data-simplebar style="height: calc(100vh - 220px);">
                         <div class="alert alert-warning alert-dismissible alert-additional fade show mb-2" role="alert">
@@ -24,7 +24,8 @@
                                         <i class="ri-alert-line display-6 align-middle"></i>
                                     </div>
                                     <div class="flex-grow-1">
-                                        <h5 class="alert-heading">Mohon Maaf !!. <br>Halaman @yield('title')</h5>
+                                        <h5 class="alert-heading">Mohon Maaf !!. <br><span
+                                                class="text-danger-emphasis">Halaman @yield('title')</span></h5>
                                         <p class="mb-0">Masih proses scripting. </p>
                                     </div>
                                 </div>
@@ -36,7 +37,6 @@
                     </div>
                 </div>
             </div>
-            <!--end col-->
         </div>
     </div>
 @endsection
