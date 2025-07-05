@@ -29,15 +29,15 @@ class AbsensiSiswaDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('izin', function ($row) {
                 // Input untuk izin
-                return '<input type="text" class="form-control absen-input" data-type="izin" data-id="' . $row->id . '" value="' . $row->izin . '" />';
+                return '<input type="text" class="form-control form-control-sm absen-input" data-type="izin" data-id="' . $row->id . '" value="' . $row->izin . '" />';
             })
             ->addColumn('sakit', function ($row) {
                 // Input untuk sakit
-                return '<input type="text" class="form-control absen-input" data-type="sakit" data-id="' . $row->id . '" value="' . $row->sakit . '" />';
+                return '<input type="text" class="form-control form-control-sm absen-input" data-type="sakit" data-id="' . $row->id . '" value="' . $row->sakit . '" />';
             })
             ->addColumn('alfa', function ($row) {
                 // Input untuk alfa
-                return '<input type="text" class="form-control absen-input" data-type="alfa" data-id="' . $row->id . '" value="' . $row->alfa . '" />';
+                return '<input type="text" class="form-control form-control-sm absen-input" data-type="alfa" data-id="' . $row->id . '" value="' . $row->alfa . '" />';
             })
             ->addColumn('jmlhabsen', function ($row) {
                 // Menjumlahkan izin, sakit, dan alfa

@@ -14,8 +14,8 @@
         <div class="card-header d-flex align-items-center">
             <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @lang('translation.akses-role')</h5>
         </div>
-        <div class="card-body">
-            <div {{-- class="px-4 mx-n4 mt-n3 mb-0"  --}}id="datatable-wrapper" style="height: calc(100vh - 286px);">
+        <div class="card-body p-1">
+            <div {{-- class="px-4 mx-n4 mt-n3 mb-0"  --}}id="datatable-wrapper" style="height: calc(100vh - 264px);">
                 {!! $dataTable->table([
                     'class' => 'table table-striped hover',
                     'style' => 'width:100%',
@@ -95,7 +95,7 @@
         })
 
         handleDelete(datatable)
-        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 69); // Initialize dynamic scrolling for DataTable
+        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 84); // Initialize dynamic scrolling for DataTable
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

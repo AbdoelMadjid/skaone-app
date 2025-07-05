@@ -28,14 +28,14 @@
                         </div>
                         <div class="col-sm-auto">
                             <div class="d-flex flex-wrap align-items-start gap-2">
-                                <select id="thnajaran_masuk" class="form-select">
+                                <select id="thnajaran_masuk" class="form-select form-select-sm">
                                     <option value="">-- Pilih Tahun Ajaran --</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-sm-auto">
                             <div class="d-flex flex-wrap align-items-start gap-2">
-                                <select id="kode_kk" class="form-select" style="display: none;">
+                                <select id="kode_kk" class="form-select form-select-sm" style="display: none;">
                                     <option value="">-- Pilih Konsentrasi Keahlian --</option>
                                 </select>
                             </div>
@@ -52,7 +52,7 @@
                             <div class="mb-3 d-flex align-items-center gap-2">
                                 <div id="search-wrapper" style="display: none;">
                                     <div class="search-box mb-3">
-                                        <input type="text" id="search-siswa" class="form-control search"
+                                        <input type="text" id="search-siswa" class="form-control form-select-sm search"
                                             placeholder="Search Nama Lengkap">
                                         <i class="ri-search-line search-icon"></i>
                                     </div>

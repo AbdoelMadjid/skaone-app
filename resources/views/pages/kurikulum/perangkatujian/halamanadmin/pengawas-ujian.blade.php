@@ -9,14 +9,14 @@
 
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
-                    <button type="button" class="btn btn-soft-primary" id="btn-print-jadwal-mengawas">
+                    <button type="button" class="btn btn-soft-primary btn-sm" id="btn-print-jadwal-mengawas">
                         Cetak Jadwal Pengawas
                     </button>
                 </div>
             </div>
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
-                    <button type="button" class="btn btn-soft-primary" id="btn-print-daftar-pengawas">
+                    <button type="button" class="btn btn-soft-primary btn-sm" id="btn-print-daftar-pengawas">
                         Cetak Daftar Pengawas
                     </button>
                 </div>

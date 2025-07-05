@@ -7,7 +7,7 @@
             </div>
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
-                    <select name="pilih_kelas" id="rombel" class="form-select w-auto">
+                    <select name="pilih_kelas" id="rombel" class="form-select form-select-sm w-auto">
                         <option value="">Pilih Kelas</option>
                         @foreach ($rekapKelas as $item)
                             <option value="{{ $item['kelas'] }}">{{ $item['rombel'] }}</option>
@@ -17,7 +17,7 @@
             </div>
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
-                    <button type="button" class="btn btn-soft-primary" id="btn-print-cetak-kartu-ujian">
+                    <button type="button" class="btn btn-soft-primary btn-sm" id="btn-print-cetak-kartu-ujian">
                         Cetak
                     </button>
                 </div>

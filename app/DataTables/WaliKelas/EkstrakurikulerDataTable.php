@@ -33,7 +33,7 @@ class EkstrakurikulerDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('wajib', function ($row) use ($eskulWajibOptions) {
                 // Buat elemen select pertama untuk memilih Eskul Wajib
-                $selectEskulHtml = '<select name="wajib_' . $row->id . '" class="form-control wajib-select" data-id="' . $row->id . '">';
+                $selectEskulHtml = '<select name="wajib_' . $row->id . '" class="form-control form-control-sm wajib-select" data-id="' . $row->id . '">';
                 $selectEskulHtml .= '<option value="">-- Pilih Eskul Wajib --</option>';
                 foreach ($eskulWajibOptions as $key => $option) {
                     $selected = $row->wajib == $key ? 'selected' : '';
@@ -43,7 +43,7 @@ class EkstrakurikulerDataTable extends DataTable
 
                 // Buat elemen select kedua untuk memilih penilaian (Cukup Baik, Baik, Sangat Baik)
                 $penilaianOptions = ['Cukup Baik', 'Baik', 'Sangat Baik'];
-                $selectPenilaianHtml = '<select name="wajib_n_' . $row->id . '" class="form-control penilaian-select mt-2" data-id="' . $row->id . '">';
+                $selectPenilaianHtml = '<select name="wajib_n_' . $row->id . '" class="form-control form-control-sm penilaian-select mt-2" data-id="' . $row->id . '">';
                 $selectPenilaianHtml .= '<option value="">-- Pilih Penilaian --</option>';
                 foreach ($penilaianOptions as $option) {
                     $selected = $row->wajib_n == $option ? 'selected' : '';
@@ -64,7 +64,7 @@ class EkstrakurikulerDataTable extends DataTable
             })
             ->addColumn('pilihan1', function ($row) use ($eskulPilihanOptions) {
                 // Buat elemen select pertama untuk memilih Eskul Wajib
-                $selectEskulHtml = '<select name="pilihan1_' . $row->id . '" class="form-control pilihan1-select" data-id="' . $row->id . '">';
+                $selectEskulHtml = '<select name="pilihan1_' . $row->id . '" class="form-control form-control-sm pilihan1-select" data-id="' . $row->id . '">';
                 $selectEskulHtml .= '<option value="">-- Pilih Eskul Pilihan 1 --</option>';
                 foreach ($eskulPilihanOptions as $key => $option) {
                     $selected = $row->pilihan1 == $key ? 'selected' : '';
@@ -74,7 +74,7 @@ class EkstrakurikulerDataTable extends DataTable
 
                 // Buat elemen select kedua untuk memilih penilaian (Cukup Baik, Baik, Sangat Baik)
                 $penilaianOptions = ['Cukup Baik', 'Baik', 'Sangat Baik'];
-                $selectPenilaianHtml = '<select name="pilihan1_n_' . $row->id . '" class="form-control penilaian1-select mt-2" data-id="' . $row->id . '">';
+                $selectPenilaianHtml = '<select name="pilihan1_n_' . $row->id . '" class="form-control form-control-sm penilaian1-select mt-2" data-id="' . $row->id . '">';
                 $selectPenilaianHtml .= '<option value="">-- Pilih Penilaian --</option>';
                 foreach ($penilaianOptions as $option) {
                     $selected = $row->pilihan1_n == $option ? 'selected' : '';
@@ -95,7 +95,7 @@ class EkstrakurikulerDataTable extends DataTable
             })
             ->addColumn('pilihan2', function ($row) use ($eskulPilihanOptions) {
                 // Buat elemen select pertama untuk memilih Eskul Wajib
-                $selectEskulHtml = '<select name="pilihan2_' . $row->id . '" class="form-control pilihan2-select" data-id="' . $row->id . '">';
+                $selectEskulHtml = '<select name="pilihan2_' . $row->id . '" class="form-control form-control-sm pilihan2-select" data-id="' . $row->id . '">';
                 $selectEskulHtml .= '<option value="">-- Pilih Eskul Pilihan 2 --</option>';
                 foreach ($eskulPilihanOptions as $key => $option) {
                     $selected = $row->pilihan2 == $key ? 'selected' : '';
@@ -105,7 +105,7 @@ class EkstrakurikulerDataTable extends DataTable
 
                 // Buat elemen select kedua untuk memilih penilaian (Cukup Baik, Baik, Sangat Baik)
                 $penilaianOptions = ['Cukup Baik', 'Baik', 'Sangat Baik'];
-                $selectPenilaianHtml = '<select name="pilihan2_n_' . $row->id . '" class="form-control penilaian2-select mt-2" data-id="' . $row->id . '">';
+                $selectPenilaianHtml = '<select name="pilihan2_n_' . $row->id . '" class="form-control form-control-sm penilaian2-select mt-2" data-id="' . $row->id . '">';
                 $selectPenilaianHtml .= '<option value="">-- Pilih Penilaian --</option>';
                 foreach ($penilaianOptions as $option) {
                     $selected = $row->pilihan2_n == $option ? 'selected' : '';
@@ -126,7 +126,7 @@ class EkstrakurikulerDataTable extends DataTable
             })
             ->addColumn('pilihan3', function ($row) use ($eskulPilihanOptions) {
                 // Buat elemen select pertama untuk memilih Eskul Wajib
-                $selectEskulHtml = '<select name="pilihan3_' . $row->id . '" class="form-control pilihan3-select" data-id="' . $row->id . '">';
+                $selectEskulHtml = '<select name="pilihan3_' . $row->id . '" class="form-control form-control-sm pilihan3-select" data-id="' . $row->id . '">';
                 $selectEskulHtml .= '<option value="">-- Pilih Eskul Pilihan 3 --</option>';
                 foreach ($eskulPilihanOptions as $key => $option) {
                     $selected = $row->pilihan3 == $key ? 'selected' : '';
@@ -136,7 +136,7 @@ class EkstrakurikulerDataTable extends DataTable
 
                 // Buat elemen select kedua untuk memilih penilaian (Cukup Baik, Baik, Sangat Baik)
                 $penilaianOptions = ['Cukup Baik', 'Baik', 'Sangat Baik'];
-                $selectPenilaianHtml = '<select name="pilihan3_n_' . $row->id . '" class="form-control penilaian3-select mt-2" data-id="' . $row->id . '">';
+                $selectPenilaianHtml = '<select name="pilihan3_n_' . $row->id . '" class="form-control form-control-sm penilaian3-select mt-2" data-id="' . $row->id . '">';
                 $selectPenilaianHtml .= '<option value="">-- Pilih Penilaian --</option>';
                 foreach ($penilaianOptions as $option) {
                     $selected = $row->pilihan3_n == $option ? 'selected' : '';
@@ -157,7 +157,7 @@ class EkstrakurikulerDataTable extends DataTable
             })
             ->addColumn('pilihan4', function ($row) use ($eskulPilihanOptions) {
                 // Buat elemen select pertama untuk memilih Eskul Wajib
-                $selectEskulHtml = '<select name="pilihan4_' . $row->id . '" class="form-control pilihan4-select" data-id="' . $row->id . '">';
+                $selectEskulHtml = '<select name="pilihan4_' . $row->id . '" class="form-control form-control-sm pilihan4-select" data-id="' . $row->id . '">';
                 $selectEskulHtml .= '<option value="">-- Pilih Eskul Pilihan 4 --</option>';
                 foreach ($eskulPilihanOptions as $key => $option) {
                     $selected = $row->pilihan4 == $key ? 'selected' : '';
@@ -167,7 +167,7 @@ class EkstrakurikulerDataTable extends DataTable
 
                 // Buat elemen select kedua untuk memilih penilaian (Cukup Baik, Baik, Sangat Baik)
                 $penilaianOptions = ['Cukup Baik', 'Baik', 'Sangat Baik'];
-                $selectPenilaianHtml = '<select name="pilihan4_n_' . $row->id . '" class="form-control penilaian4-select mt-2" data-id="' . $row->id . '">';
+                $selectPenilaianHtml = '<select name="pilihan4_n_' . $row->id . '" class="form-control form-control-sm penilaian4-select mt-2" data-id="' . $row->id . '">';
                 $selectPenilaianHtml .= '<option value="">-- Pilih Penilaian --</option>';
                 foreach ($penilaianOptions as $option) {
                     $selected = $row->pilihan4_n == $option ? 'selected' : '';

@@ -150,7 +150,7 @@
     <!-- end row -->
     <div class="row">
         <div class="col-lg-12">
-            <div class="tab-content text-muted">
+            <div class="tab-content">
                 <div class="tab-pane fade show active" id="rapor-siswa" role="tabpanel">
                     <div class="row">
                         <div class="col-xl-9 col-lg-8">
@@ -246,8 +246,8 @@
                 </div>
                 <!-- end tab pane -->
                 <div class="tab-pane fade" id="guru-pengajar" role="tabpanel">
-                    <div class="card">
-                        <div class="card-body">
+                    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
+                        <div class="card-body p-1">
                             <div class="table-responsive">
                                 @include('pages.walikelas.rapor-peserta-didik-pengajar')
                             </div>
@@ -256,8 +256,8 @@
                 </div>
                 <!-- end tab pane -->
                 <div class="tab-pane fade" id="ranking-siswa" role="tabpanel">
-                    <div class="card">
-                        <div class="card-body">
+                    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
+                        <div class="card-body p-1">
                             <div class="col-lg-12">
                                 <div class="gap-2 hstack justify-content-end mb-4">
                                     <a href="{{ route('walikelas.downloadrankingsiswa') }}"
@@ -275,8 +275,8 @@
                 </div>
                 <!-- end tab pane -->
                 <div class="tab-pane fade" id="kenaikan-kelas" role="tabpanel">
-                    <div class="card">
-                        <div class="card-body">
+                    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
+                        <div class="card-body p-1">
                             <div class="col-lg-12">
                                 <div class="gap-2 hstack justify-content-end mb-4">
                                     <div>

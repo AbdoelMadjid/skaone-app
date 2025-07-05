@@ -9,7 +9,7 @@
 
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
-                    <select id="selectTanggalPanitia" class="form-control">
+                    <select id="selectTanggalPanitia" class="form-control form-control-sm">
                         <option value="">-- Pilih Tanggal --</option>
                         @foreach ($tanggalList as $tgl)
                             @php
@@ -22,7 +22,7 @@
             </div>
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
-                    <button type="button" class="btn btn-soft-primary" id="btn-print-daftar-panitia">
+                    <button type="button" class="btn btn-soft-primary btn-sm" id="btn-print-daftar-panitia">
                         Cetak
                     </button>
                 </div>

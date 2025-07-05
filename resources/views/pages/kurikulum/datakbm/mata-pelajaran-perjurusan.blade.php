@@ -28,7 +28,7 @@
                     href="{{ route('kurikulum.datakbm.mata-pelajaran.index') }}">Kembali</a>
             </div>
         </div>
-        <div class="card-body p-2">
+        <div class="card-body p-1">
             <form>
                 <div class="row g-3">
                     <div class="col-xl-8">
@@ -74,7 +74,7 @@
             </form>
         </div>
         <div class="card-body p-1">
-            <div id="datatable-wrapper" style="height: calc(100vh - 318px);">
+            <div id="datatable-wrapper" style="height: calc(100vh - 308px);">
                 {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
             </div>
         </div>
@@ -314,7 +314,7 @@
             handleFilterAndReload(datatable); // Panggil fungsi setelah DataTable diinisialisasi
             handleAction(datatable);
             handleDelete(datatable);
-            ScrollDinamicDataTable(datatable, scrollOffsetOverride = 101);
+            ScrollDinamicDataTable(datatable, scrollOffsetOverride = 106);
 
         });
     </script>

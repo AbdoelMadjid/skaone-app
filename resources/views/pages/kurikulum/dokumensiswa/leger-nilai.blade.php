@@ -53,7 +53,8 @@
                                         <div class="row g-3">
                                             <input type="hidden" name="id_personil" value="{{ $personal_id }}">
                                             <div class="col-md">
-                                                <select name="tahunajaran" id="tahun_ajaran" class="form-control">
+                                                <select name="tahunajaran" id="tahun_ajaran"
+                                                    class="form-control form-control-sm">
                                                     <option value="">Pilih Tahun Ajar</option>
                                                     @foreach ($tahunAjaranOptions as $key => $value)
                                                         <option value="{{ $key }}"
@@ -64,7 +65,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-auto">
-                                                <select name="semester" id="semester" class="form-control">
+                                                <select name="semester" id="semester" class="form-control form-control-sm">
                                                     <option value="">Pilih Semester</option>
                                                     <option value="Ganjil"
                                                         {{ old('semester', isset($pilihData) && $pilihData->semester == 'Ganjil' ? 'selected' : '') }}>
@@ -76,7 +77,8 @@
                                             </div>
                                             @if ($pilihData)
                                                 <div class="col-md-auto">
-                                                    <select name="kode_kk" id="kode_kk" class="form-control">
+                                                    <select name="kode_kk" id="kode_kk"
+                                                        class="form-control form-control-sm">
                                                         <option value="">Pilih Kompetensi Keahlian</option>
                                                         @foreach ($kompetensiKeahlianOptions as $key => $value)
                                                             <option value="{{ $key }}"
@@ -88,7 +90,8 @@
                                                 </div>
 
                                                 <div class="col-md-auto">
-                                                    <select name="tingkat" id="tingkat" class="form-control">
+                                                    <select name="tingkat" id="tingkat"
+                                                        class="form-control form-control-sm">
                                                         <option value="">Pilih Tingkat</option>
                                                         <option value="10"
                                                             {{ old('tingkat', isset($pilihData) && $pilihData->tingkat == '10' ? 'selected' : '') }}>
@@ -103,7 +106,8 @@
                                                 </div>
 
                                                 <div class="col-md-auto">
-                                                    <select name="kode_rombel" id="kode_rombel" class="form-control">
+                                                    <select name="kode_rombel" id="kode_rombel"
+                                                        class="form-control form-control-sm">
                                                         <option value="">Pilih Rombel</option>
                                                         @foreach ($rombonganBelajar as $key => $value)
                                                             <option value="{{ $key }}"
@@ -116,7 +120,7 @@
                                             @endif
 
                                             <div class="col-md-auto">
-                                                <button type="submit" class="btn btn-primary">
+                                                <button type="submit" class="btn btn-soft-primary btn-sm">
                                                     @if (!$pilihData)
                                                         Add
                                                     @else

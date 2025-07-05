@@ -46,12 +46,13 @@
                 </div>
             </div>
         </div>
-        <div class="card-body border-bottom-dashed border-bottom">
+        <div class="card-body p-1">
             <form>
                 <div class="row g-3">
                     <div class="col-lg">
                         <div class="search-box">
-                            <input type="text" class="form-control search" placeholder="Search Nama Lengkap Siswa ....">
+                            <input type="text" class="form-control form-control-sm search"
+                                placeholder="Search Nama Lengkap Siswa ....">
                             <i class="ri-search-line search-icon"></i>
                         </div>
                     </div>
@@ -59,8 +60,8 @@
 
                     <div class="col-lg-auto">
                         <div>
-                            <select class="form-control" data-plugin="choices" data-choices data-choices-search-false
-                                name="choices-single-default" id="idThnAjaran">
+                            <select class="form-control form-control-sm" data-plugin="choices" data-choices
+                                data-choices-search-false name="choices-single-default" id="idThnAjaran">
                                 <option value="all" selected>Pilih Tahun Ajaran</option>
                                 @foreach ($tahunAjaranOptions as $thnajar)
                                     <option value="{{ $thnajar }}">{{ $thnajar }}</option>
@@ -71,8 +72,8 @@
                     <!--end col-->
                     <div class="col-lg-auto">
                         <div>
-                            <select class="form-control" data-plugin="choices" data-choices data-choices-search-false
-                                name="choices-single-default" id="idKodeKK">
+                            <select class="form-control form-control-sm" data-plugin="choices" data-choices
+                                data-choices-search-false name="choices-single-default" id="idKodeKK">
                                 <option value="all" selected>Pilih Kompetensi Keahlian</option>
                                 @foreach ($kompetensiKeahlianOptions as $id => $kode_kk)
                                     <option value="{{ $id }}">{{ $kode_kk }}</option>
@@ -82,8 +83,8 @@
                     </div>
                     <div class="col-lg-auto">
                         <div>
-                            <select class="form-control" data-plugin="choices" data-choices data-choices-search-false
-                                name="choices-single-default" id="idTingkat">
+                            <select class="form-control form-control-sm" data-plugin="choices" data-choices
+                                data-choices-search-false name="choices-single-default" id="idTingkat">
                                 <option value="all" selected>Pilih Tingkat</option>
                                 <option value="10">10</option>
                                 <option value="11">11</option>
@@ -94,8 +95,8 @@
                     <!--end col-->
                     <div class="col-lg-auto">
                         <div>
-                            <select class="form-control" data-plugin="choices" data-choices data-choices-search-false
-                                name="choices-single-default" id="idRombel" disabled>
+                            <select class="form-control form-control-sm" data-plugin="choices" data-choices
+                                data-choices-search-false name="choices-single-default" id="idRombel" disabled>
                                 <option value="all" selected>Pilih Rombel</option>
                             </select>
                         </div>
@@ -104,7 +105,7 @@
             </form>
         </div>
         <div class="card-body p-1">
-            <div id="datatable-wrapper" style="height: calc(100vh - 342px);">
+            <div id="datatable-wrapper" style="height: calc(100vh - 308px);">
                 {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
             </div>
         </div>
@@ -349,7 +350,7 @@
             handleDataTableEvents(datatable);
             handleAction(datatable)
             handleDelete(datatable)
-            ScrollDinamicDataTable(datatable, scrollOffsetOverride = 101);
+            ScrollDinamicDataTable(datatable, scrollOffsetOverride = 106);
         });
     </script>
 

@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="card-body p-1">
-                    <div id="datatable-wrapper" style="height: calc(100vh - 262px);">
+                    <div id="datatable-wrapper" style="height: calc(100vh - 258px);">
                         {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
                     </div>
                 </div>
@@ -64,9 +64,6 @@
     </script>
     <script>
         const datatable = 'absensisiswa-table';
-
-        const scrollOffsetOverride = 110;
-        ScrollDinamicDataTable(datatable, scrollOffsetOverride);
 
         $(document).on('input', '.absen-input', function() {
             let id = $(this).data('id');
@@ -110,6 +107,7 @@
         handleDataTableEvents(datatable);
         handleAction(datatable)
         handleDelete(datatable)
+        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 110);
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

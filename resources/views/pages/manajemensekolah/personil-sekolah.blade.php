@@ -36,19 +36,19 @@
                 </div>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body p-1">
             <form>
                 <div class="row g-3">
                     <div class="col-lg">
                         <div class="search-box">
-                            <input type="text" class="form-control search"
+                            <input type="text" class="form-control form-control-sm search"
                                 placeholder="Search Nama Lengkap Personil ....">
                             <i class="ri-search-line search-icon"></i>
                         </div>
                     </div>
                     <div class="col-lg-auto">
                         <div>
-                            <select class="form-control" id="idJenis">
+                            <select class="form-control form-control-sm" id="idJenis">
                                 <option value="all" selected>Pilih Jenis Personil</option>
                                 @foreach ($jenisPersonilOptions as $jenis)
                                     <option value="{{ $jenis }}">{{ $jenis }}</option>
@@ -58,7 +58,7 @@
                     </div>
                     <div class="col-lg-auto">
                         <div>
-                            <select class="form-control" id="idStatus">
+                            <select class="form-control form-control-sm" id="idStatus">
                                 <option value="all" selected>Pilih Status</option>
                                 @foreach ($statusOptions as $status)
                                     <option value="{{ $status }}">{{ $status }}</option>
@@ -73,7 +73,7 @@
         </div>
 
         <div class="card-body p-1">
-            <div id="datatable-wrapper" style="height: calc(100vh - 342px);">
+            <div id="datatable-wrapper" style="height: calc(100vh - 308px);">
                 {!! $dataTable->table([
                     'class' => 'table table-striped hover',
                     'style' => 'width:100%',
@@ -239,7 +239,7 @@
             handleDataTableEvents(datatable);
             handleAction(datatable);
             handleDelete(datatable);
-            ScrollDinamicDataTable(datatable, scrollOffsetOverride = 101);
+            ScrollDinamicDataTable(datatable, scrollOffsetOverride = 106);
         });
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>

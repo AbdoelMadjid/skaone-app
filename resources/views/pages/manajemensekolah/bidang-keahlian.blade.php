@@ -46,7 +46,7 @@
         handleDataTableEvents(datatable);
         handleAction(datatable)
         handleDelete(datatable)
-        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 82); // Initialize dynamic scrolling for DataTable
+        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 86); // Initialize dynamic scrolling for DataTable
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

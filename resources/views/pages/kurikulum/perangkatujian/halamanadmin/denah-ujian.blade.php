@@ -9,7 +9,7 @@
             <!--end col-->
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
-                    <select name="pilih_ruang" id="ruangan" class="form-select w-auto">
+                    <select name="pilih_ruang" id="ruangan" class="form-select form-select-sm w-auto">
                         <option value="">Pilih Ruangan</option>
                         @foreach ($ruangs as $ruang)
                             <option value="{{ $ruang }}">Ruangan {{ $ruang }}</option>
@@ -19,21 +19,21 @@
             </div>
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
-                    <button type="button" class="btn btn-soft-primary" id="btn-print-denah-ujian">
+                    <button type="button" class="btn btn-soft-primary btn-sm" id="btn-print-denah-ujian">
                         <i class="ri-printer-line"></i> Denah
                     </button>
                 </div>
             </div>
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
-                    <button type="button" class="btn btn-soft-primary" id="btn-print-daftar-peserta-ruangan">
+                    <button type="button" class="btn btn-soft-primary btn-sm" id="btn-print-daftar-peserta-ruangan">
                         <i class="ri-printer-line"></i> Daftar Peserta
                     </button>
                 </div>
             </div>
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
-                    <button type="button" class="btn btn-soft-primary" id="btn-cetak-tempelan-meja">
+                    <button type="button" class="btn btn-soft-primary btn-sm" id="btn-cetak-tempelan-meja">
                         <i class="ri-printer-line"></i> Tempelan Meja
                     </button>
                 </div>

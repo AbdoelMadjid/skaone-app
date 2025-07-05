@@ -8,7 +8,7 @@
                 </div>
                 <div class="col-lg-auto">
                     <div class="mb-3 d-flex align-items-center gap-2">
-                        <select name="tingkat" id="tingkat" class="form-select w-auto">
+                        <select name="tingkat" id="tingkat" class="form-select form-select-sm w-auto">
                             <option value="">Pilih Tingkat</option>
                             @for ($i = 10; $i <= 12; $i++)
                                 <option value="{{ $i }}">Tingkat {{ $i }}</option>
@@ -18,7 +18,7 @@
                 </div>
                 <div class="col-lg-auto">
                     <div class="mb-3 d-flex align-items-center gap-2">
-                        <button type="button" class="btn btn-soft-primary" id="btn-cetak-jadwal">
+                        <button type="button" class="btn btn-soft-primary btn-sm" id="btn-cetak-jadwal">
                             Cetak
                         </button>
                     </div>
@@ -32,4 +32,3 @@
 <div id="tabel-jadwal-ujian" class="mb-3">
 
 </div>
-

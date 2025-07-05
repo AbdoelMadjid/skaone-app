@@ -9,7 +9,7 @@
             <meta name="csrf-token" content="{{ csrf_token() }}">
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
-                    <select id="selectTanggalToken" class="form-control">
+                    <select id="selectTanggalToken" class="form-control form-control-sm">
                         <option value="">-- Pilih Tanggal --</option>
                         @foreach ($tanggalList as $tgl)
                             @php
@@ -22,7 +22,7 @@
             </div>
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
-                    <select id="selectJamKeToken" class="form-control">
+                    <select id="selectJamKeToken" class="form-control form-control-sm">
                         <option value="">-- Pilih Jam Ke --</option>
                         @foreach ($jamKeList as $jk)
                             <option value="{{ $jk }}">{{ $jk }}</option>
@@ -32,7 +32,7 @@
             </div>
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
-                    <button type="button" class="btn btn-soft-primary" id="btn-print-token-soal-ujian">
+                    <button type="button" class="btn btn-soft-primary btn-sm" id="btn-print-token-soal-ujian">
                         Cetak
                     </button>
                 </div>

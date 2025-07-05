@@ -28,12 +28,12 @@
                 </div>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body p-1">
             <form>
                 <div class="row g-3">
                     <div class="col-xl-5">
                         <div class="search-box">
-                            <input type="text" class="form-control search"
+                            <input type="text" class="form-control form-control-sm search"
                                 placeholder="Search Nama Lengkap Personil ....">
                             <i class="ri-search-line search-icon"></i>
                         </div>
@@ -43,7 +43,7 @@
                         <div class="row g-3">
                             <div class="col-sm-4">
                                 <div>
-                                    <select class="form-control" data-plugin="choices" data-choices
+                                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
                                         data-choices-search-false name="choices-single-default" id="idThnAjaran">
                                         <option value="all" selected>Pilih Tahun Ajaran</option>
                                         @foreach ($tahunAjaranOptions as $thnajar)
@@ -55,7 +55,7 @@
                             <!--end col-->
                             <div class="col-sm-5">
                                 <div>
-                                    <select class="form-control" data-plugin="choices" data-choices
+                                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
                                         data-choices-search-false name="choices-single-default" id="idKodeKK">
                                         <option value="all" selected>Pilih Kompetensi Keahlian</option>
                                         @foreach ($kompetensiKeahlianOptions as $id => $kode_kk)
@@ -67,7 +67,7 @@
                             <!--end col-->
                             <div class="col-sm-3">
                                 <div>
-                                    <select class="form-control" data-plugin="choices" data-choices
+                                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
                                         data-choices-search-false name="choices-single-default" id="idLevel">
                                         <option value="all" selected>Pilih Tingkat</option>
                                         <option value="10">10</option>
@@ -84,7 +84,7 @@
         </div>
 
         <div class="card-body p-1">
-            <div id="datatable-wrapper" style="height: calc(100vh - 342px);">
+            <div id="datatable-wrapper" style="height: calc(100vh - 308px);">
                 {!! $dataTable->table([
                     'class' => 'table table-striped hover',
                     'style' => 'width:100%',
@@ -136,7 +136,7 @@
             handleDataTableEvents(datatable);
             handleAction(datatable)
             handleDelete(datatable)
-            handleFilterAndReload(datatable, scrollOffsetOverride = 82);
+            handleFilterAndReload(datatable, scrollOffsetOverride = 86);
         });
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>

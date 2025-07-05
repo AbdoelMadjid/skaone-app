@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="card-body p-1">
-                    <div id="datatable-wrapper" style="height: calc(100vh - 275px);">
+                    <div id="datatable-wrapper" style="height: calc(100vh - 268px);">
                         {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
                     </div>
                 </div>
@@ -62,8 +62,6 @@
         @if (session('toast_success'))
             showToast('success', '{{ session('toast_success') }}');
         @endif
-
-        ScrollDinamicDataTable(datatable);
 
         $('#nomor_ruang').on('change', function() {
             var nomorRuang = $(this).val();
@@ -231,6 +229,7 @@
         handleDataTableEvents(datatable);
         handleAction(datatable)
         handleDelete(datatable)
+        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 86);
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

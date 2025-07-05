@@ -147,7 +147,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="datatable-wrapper" style="height: calc(100vh - 275px);">
+                    <div id="datatable-wrapper" style="height: calc(100vh - 268px);">
                         {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
                     </div>
                 </div>
@@ -169,8 +169,6 @@
 @section('script-bottom')
     <script>
         const datatable = 'datacpterpilih-table';
-
-        ScrollDinamicDataTable(datatable);
 
         @if (session('toast_success'))
             showToast('success', '{{ session('toast_success') }}');
@@ -616,6 +614,7 @@
             handleDataTableEvents(datatable);
             handleAction(datatable);
             handleDelete(datatable);
+            ScrollDinamicDataTable(datatable, scrollOffsetOverride = 86);
         });
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>

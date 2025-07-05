@@ -68,7 +68,7 @@
         handleAction(datatable, function() {
             handleMenuChange()
         })
-        ScrollDinamicDataTable(datatable); // Initialize dynamic scrolling for DataTable
+        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 108); // Initialize dynamic scrolling for DataTable
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

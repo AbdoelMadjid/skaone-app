@@ -369,6 +369,7 @@ return [
 
 
     "walikelas" => "Wali Kelas",
+    "arsip-walas" => "Arsip Wali Kelas",
 
     "pesertadidik" => "Peserta Didik",
     "identitas-peserta-didik" => "Identitas Peserta Didik",

@@ -61,10 +61,10 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="card-body p-4">
+                    <div class="card-body p-1">
                         <div class="tab-content">
                             <div class="tab-pane active" id="JadwalMengawas" role="tabpanel">
-                                <div id="datatable-wrapper" style="height: calc(100vh - 368px);">
+                                <div id="datatable-wrapper" style="height: calc(100vh - 336px);">
                                     {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
                                 </div>
                             </div>
@@ -93,7 +93,7 @@
                                 </div>
                                 <h5 class="mt-4">Daftar Pengawas Ujian</h5>
                                 <div id="custom-table-wrapper" class="px-4 mx-n4 mt-n2 mb-0"
-                                    style="height: calc(100vh - 475px); overflow: hidden;">
+                                    style="height: calc(100vh - 435px); overflow: hidden;">
                                     <div id="custom-scroll-container" style="overflow-y: auto; height: 100%;">
                                         <table class="table table-bordered mb-0">
                                             <thead class="table-light position-sticky top-0" style="z-index: 1;">
@@ -154,10 +154,6 @@
 @section('script-bottom')
     <script>
         const datatable = 'pengawasujian-table';
-
-        ScrollDinamicDataTable(datatable);
-
-        ScrollStaticTable('custom-table-wrapper', 'custom-scroll-container', 86);
 
         $(document).ready(function() {
             $('#btn-tambah-pengawas').click(function() {
@@ -231,6 +227,8 @@
         handleDataTableEvents(datatable);
         handleAction(datatable)
         handleDelete(datatable)
+        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 74);
+        ScrollStaticTable('custom-table-wrapper', 'custom-scroll-container', 86);
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

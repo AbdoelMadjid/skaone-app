@@ -34,7 +34,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-body border-bottom-dashed border-bottom">
+        <div class="card-body p-1">
             <form>
                 <div class="row g-3">
                     <div class="col-lg">
@@ -91,7 +91,7 @@
             </form>
         </div>
         <div class="card-body p-1">
-            <div id="datatable-wrapper" style="height: calc(100vh - 342px);">
+            <div id="datatable-wrapper" style="height: calc(100vh - 318px);">
                 {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
             </div>
         </div>
@@ -302,7 +302,7 @@
             handleFilterAndReload(datatable); // Panggil fungsi setelah DataTable diinisialisasi
             handleAction(datatable);
             handleDelete(datatable);
-            ScrollDinamicDataTable(datatable, scrollOffsetOverride = 101);
+            ScrollDinamicDataTable(datatable, scrollOffsetOverride = 106);
         });
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>

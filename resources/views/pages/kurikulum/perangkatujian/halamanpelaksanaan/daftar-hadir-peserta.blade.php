@@ -10,7 +10,7 @@
 
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
-                    <select name="ruangan" id="ruangan" class="form-select w-auto">
+                    <select name="ruangan" id="ruangan" class="form-select form-select-sm w-auto">
                         <option value="">Pilih Ruangan</option>
                         @foreach ($ruangs as $ruang)
                             <option value="{{ $ruang }}">Ruangan {{ $ruang }}</option>
@@ -20,7 +20,7 @@
             </div>
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
-                    <select name="posisi_duduk" id="posisi_duduk" class="form-select w-auto">
+                    <select name="posisi_duduk" id="posisi_duduk" class="form-select form-select-sm w-auto">
                         <option value="">Pilih Kiri/Kanan</option>
                         <option value="kiri">Kiri</option>
                         <option value="kanan">Kanan</option>
@@ -29,7 +29,7 @@
             </div>
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
-                    <button type="button" class="btn btn-soft-primary" id="btn-print-daftar-peserta">
+                    <button type="button" class="btn btn-soft-primary btn-sm" id="btn-print-daftar-peserta">
                         Cetak
                     </button>
                 </div>

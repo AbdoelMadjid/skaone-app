@@ -36,6 +36,9 @@
         <div class="card-body p-2 border-bottom-dashed border-bottom">
             <form>
                 <div class="row g-3">
+                    <div class="col-lg">
+
+                    </div>
                     <div class="col-lg-auto">
                         <select class="form-control" name="tahunajaran" id="tahunajaran" required>
                             <option value="" selected>Pilih TA</option>
@@ -241,7 +244,7 @@
          handleAction(datatable)
          handleDelete(datatable) */
 
-        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 82);
+        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 86);
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

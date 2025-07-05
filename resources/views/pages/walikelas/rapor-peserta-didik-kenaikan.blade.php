@@ -19,7 +19,7 @@
                         <input type="hidden" name="nis" value="{{ $kenaikan->nis }}">
                         <input type="hidden" name="tahunajaran" value="{{ $kenaikan->tahunajaran }}">
                         <input type="hidden" name="kode_rombel" value="{{ $kenaikan->kode_rombel }}">
-                        <select name="status" class="form-select" onchange="this.form.submit()">
+                        <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
                             <option value="Naik" {{ $kenaikan->status == 'Naik' ? 'selected' : '' }}>Naik</option>
                             <option value="Naik Pindah" {{ $kenaikan->status == 'Naik Pindah' ? 'selected' : '' }}>Naik
                                 Pindah</option>

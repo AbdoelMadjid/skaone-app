@@ -29,14 +29,15 @@
             <!--end col-->
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
-                    <button type="button" class="btn btn-soft-primary" id="btn-print-denah-ruangan-ujian">
+                    <button type="button" class="btn btn-soft-primary btn-sm" id="btn-print-denah-ruangan-ujian">
                         <i class="ri-printer-line align-bottom me-1"></i> Cetak Denah Ruangan Ujian
                     </button>
                 </div>
             </div>
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
-                    <button type="button" class="btn btn-soft-primary" id="btn-print-keterangan-denah-ruangan-ujian">
+                    <button type="button" class="btn btn-soft-primary btn-sm"
+                        id="btn-print-keterangan-denah-ruangan-ujian">
                         <i class="ri-printer-line align-bottom me-1"></i> Cetak Keterangan Denah
                     </button>
                 </div>

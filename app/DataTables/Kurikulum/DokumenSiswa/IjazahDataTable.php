@@ -50,7 +50,7 @@ class IjazahDataTable extends DataTable
                     'LULUS BERSYARAT' => 'LULUS BERSYARAT',
                 ];
 
-                $select = "<select class='form-control kelulusan-select' data-nis='{$nis}' data-tahun='{$tahunAjaran}'>";
+                $select = "<select class='form-control form-control-sm kelulusan-select' data-nis='{$nis}' data-tahun='{$tahunAjaran}'>";
                 foreach ($options as $value => $label) {
                     $selected = $status === $value ? 'selected' : '';
                     $select .= "<option value='{$value}' {$selected}>{$label}</option>";
@@ -70,7 +70,7 @@ class IjazahDataTable extends DataTable
                 $tahunAjaran = $row->tahun_ajaran;
                 $nmSiswa = $row->nama_lengkap;
 
-                return "<input type='text' class='form-control no-ijazah-input'
+                return "<input type='text' class='form-control form-control-sm no-ijazah-input'
                         value='{$noIjazah}'
                         data-nis='{$nis}'
                         data-tahun='{$tahunAjaran}'
