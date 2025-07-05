@@ -216,7 +216,7 @@ function handleAjax(url, method = 'get'){
     }
 }
 
-function handleDataTableEvents(tableId) {
+function handleDataTableEvents(tableId, emptyMessage = 'Silakan untuk ditambahkan terlebih dahulu.') {
     $.fn.dataTable.ext.errMode = 'none'; // Disable default error alert
 
     $('#' + tableId).on('error.dt', function(e, settings, techNote, message) {
@@ -238,7 +238,7 @@ function handleDataTableEvents(tableId) {
             Swal.fire({
                 icon: 'info',
                 title: pageTitle,
-                text: 'Silakan untuk ditambahkan terlebih dahulu.',
+                text: emptyMessage,
                 footer: '<div class="text-info fs-6"><a href="https://github.com/AbdoelMadjid" target="blank">Scripting & Design by. Abdul Madjid, S.Pd., M.Pd.</a></div>'
             });
         }

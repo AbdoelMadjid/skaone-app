@@ -36,6 +36,7 @@
     <script>
         const datatable = 'walikelas-table';
 
+        handleDataTableEvents(datatable, 'Silakan tambahkan dulu wali kelas di menu Rombongan Belajar');
         handleAction(datatable)
         handleDelete(datatable)
         ScrollDinamicDataTable(datatable, scrollOffsetOverride = 86);
