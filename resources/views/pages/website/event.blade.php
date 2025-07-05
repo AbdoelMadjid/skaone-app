@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    Agenda Kegiatan (Event)
+    @lang('translation.events')
 @endsection
 @section('css')
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -39,14 +39,11 @@
         @endslot
     @endcomponent
     <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
-        <!-- Rounded Ribbon -->
-        <div class="card ribbon-box border shadow-none mb-lg-0">
-            <div class="card-body">
-                <div class="ribbon ribbon-primary round-shape">Event Calendar</div>
-                <div class="ribbon-content mt-4">
-                    <div id="calendar"></div>
-                </div>
-            </div>
+        <div class="card-header d-flex align-items-center">
+            <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
+        </div>
+        <div class="card-body p-1">
+            <div id="calendar"></div>
         </div>
     </div>
     <div id="modal-action-calendar" class="modal" tabindex="-1"></div>

@@ -17,33 +17,24 @@
         @endslot
     @endcomponent
     <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-0">
-        <div class="card-header border-bottom-dashed">
-            <div class="row g-4 align-items-center">
-                <div class="col-sm">
-                    <div>
-                        <h5 class="card-title mb-0">@lang('translation.tables') @lang('translation.peserta-didik-rombel')</h5>
-                    </div>
-                </div>
-                <div class="col-sm-auto">
-                    <div class="d-flex flex-wrap align-items-start gap-2">
-                        <button type="button" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#generateAkun" id="generateAkunBtn" title="generateAkun">Generate
-                            Akun Siswa</button>
-                        <a href="{{ route('manajemensekolah.peserta-didik.index') }}"
-                            class="btn btn-soft-primary btn-sm">Peserta
-                            Didik</a>
-                        @can('create kurikulum/datakbm/peserta-didik-rombel')
-                            <a class="btn btn-soft-primary btn-sm add-btn action"
-                                href="{{ route('kurikulum.datakbm.peserta-didik-rombel.create') }}"><i
-                                    class="ri-add-line align-bottom me-1"></i> Peserta Didik Rombel</a>
-                        @endcan
-                        {{-- <a href="{{ route('ps_exportExcel') }}" class="btn btn-primary"><i
+        <div class="card-header d-flex align-items-center">
+            <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
+            <div>
+                <button type="button" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal" data-bs-target="#generateAkun"
+                    id="generateAkunBtn" title="generateAkun">Generate
+                    Akun Siswa</button>
+                <a href="{{ route('manajemensekolah.peserta-didik.index') }}" class="btn btn-soft-primary btn-sm">Peserta
+                    Didik</a>
+                @can('create kurikulum/datakbm/peserta-didik-rombel')
+                    <a class="btn btn-soft-primary btn-sm add-btn action"
+                        href="{{ route('kurikulum.datakbm.peserta-didik-rombel.create') }}"><i
+                            class="ri-add-line align-bottom me-1"></i> Peserta Didik Rombel</a>
+                @endcan
+                {{-- <a href="{{ route('ps_exportExcel') }}" class="btn btn-primary"><i
                                         class="ri-file-upload-line align-bottom me-1"></i> Unduh</a>
                                 <button type="button" class="btn btn-info" data-bs-toggle="modal"
                                     data-bs-target="#importModal"><i class="ri-file-download-line align-bottom me-1"></i>
                                     Unggah</button> --}}
-                    </div>
-                </div>
             </div>
         </div>
         <div class="card-body p-1">

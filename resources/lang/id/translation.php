@@ -1,9 +1,7 @@
 <?php
 return [
     "development" => "Development",
-    'about' => "About",
     "theme" => "Theme",
-    "homepage" => "Hompepage",
     "menu" => "Menu",
     "dashboards" => "Dashboard",
     "analytics" => "Analytics",
@@ -235,6 +233,27 @@ return [
     "hot" => "Hot",
     "funnel" => "Funnel",
 
+    //
+    "about" => "About",
+    "homepage" => "Hompepage",
+
+    "IDENTITAS PENGGUNA" => "Identitas Pengguna",
+    "identitas-pengguna" => "Identitas Pengguna",
+    "profil-pengguna" => "Profil Pengguna",
+    "PENGGUNA" => "Pengguna",
+    "profil" => "Profil Pengguna",
+    "password" => "Ganti Password",
+    "pesan" => "Kirim dan Baca Pesan",
+    'password' => 'Kata Sandi',
+    'current_password' => 'Kata Sandi Saat Ini',
+    'new_password' => 'Kata Sandi Baru',
+    'confirm_new_password' => 'Konfirmasi Kata Sandi Baru',
+    'save_changes' => 'Simpan Perubahan',
+    'profil-pengguna' => 'Profil Pengguna',
+    'profilpengguna' => 'Profil Pengguna',
+    'pesan-pengguna' => 'Kirim dan Baca Pesan',
+
+    //
     "KONFIGURASI" => "KONFIGURASI",
     'manajemen-pengguna' => "Manajemen Pengguna",
     "role" => "Role",
@@ -255,6 +274,20 @@ return [
     "data-login" => "Data Login",
     "referensi" => "Referensi",
 
+    //web site app
+    'web-site-app' => 'Web Site App',
+    "team-pengembang" => "Tim Pengembang",
+    'kumpulan-faqs' => 'Frequently Asked Questions',
+    "fitur-coding" => "Fitur Coding",
+    "photo-slide" => "Slide Foto",
+    "galery" => "Galery",
+    'photo-jurusan' => 'Photo Jurusan',
+    "daily-messages" => "Daily Messages",
+    'events' => 'Kalendar Pendidikan',
+    'polling' => 'Polling',
+    'question' => 'Pertanyaan polling',
+
+
     //manajemen sekolah --> rapor
     "APLIKASI RAPORT" => "APLIKASI RAPORT",
     "aplikasi-raport" => "APLIKASI RAPORT",
@@ -266,15 +299,13 @@ return [
     "program-keahlian" => "Program Keahlian",
     "kompetensi-keahlian" => "Kompetensi Keahlian",
     "personil-sekolah" => "Personil Sekolah",
+
     "tim-manajemen" => "Tim Manajemen",
     "kepala-sekolah" => "Kepala Sekolah",
     "wakil-kepala-sekolah" => "Wakil Kepala Sekolah",
-    "agenda-wakasek" => "Agenda Kegiatan",
-    "anggaran-wakasek" => "Anggaran Biaya",
     "ketua-program-studi" => "Ketua Program Studi",
-    "agenda-kaprodi" => "Agenda Kegiatan",
-    "anggaran-kaprodi" => "Anggaran Biaya",
     "jabatan-lain" => "Jabatan Lain",
+
     "rombongan-belajar" => "Rombongan Belajar",
     "wali-kelas" => "Wali Kelas",
     "peserta-didik" => "Peserta didik",
@@ -285,20 +316,20 @@ return [
     "versi-kurikulum" => "Versi Kurikulum",
     "pengumuman" => "Pengumuman",
 
+    //kurikulum - data kbm
+    "data-kbm" => "Data KBM",
     "hari-efektif" => "Hari Efektif",
     "peserta-didik-rombel" => "Peserta Didik Rombel",
-    'master-mata-pelajaran' => "Master Mata Pelajaran",
-    "data-kbm" => "Data KBM",
     "mata-pelajaran" => "Mata Pelajaran",
+    "mata-pelajaran-perjurusan" => "Mata Pelajaran Per Jurusan",
     "capaian-pembelajaran" => "Capaian Pembelajaran",
     "kbm-per-rombel" => "KBM Per Rombel",
     "kunci-data-kbm" => "Kunci Data KBM",
 
+    //kurikulum dokumen-guru
     "dokumen-guru" => "Dokumen Guru",
-    "absensi" => "Absensi",
-    "arsip" => "Arsip",
-    "arsip-wali-kelas" => "Arsip Wali Kelas",
     "arsip-guru-mata-pelajaran" => "Arsip Guru Mata Pelajaran",
+    "arsip-wali-kelas" => "Arsip Wali Kelas",
 
     "dokumen-siswa" => "Dokumen Siswa",
     "cetak-rapor" => "Cetak Rapor",
@@ -337,35 +368,14 @@ return [
     "catatan-wali-kelas" => "Catatan Wali Kelas",
     "cek-remedial" => "Cek Remedial",
 
-    "fitur-coding" => "Fitur Coding",
-    "team-pengembang" => "Tim Pengembang",
-    "daily-messages" => "Daily Messages",
-
-    "profil-pengguna" => "Profil Pengguna",
-    "PENGGUNA" => "Pengguna",
-
     "PESERTA DIDIK" => "Peserta Didik",
     "identitas" => "Identitas Peserta Didik",
     "raport" => "Raport",
     "remedial" => "Remedial",
 
-    "IDENTITAS PENGGUNA" => "Identitas Pengguna",
-    "identitas-pengguna" => "Identitas Pengguna",
-    "profil" => "Profil Pengguna",
-    "password" => "Ganti Password",
-    "pesan" => "Kirim dan Baca Pesan",
 
     "gurumapel" => "Guru Mata Pelajaran",
 
-    'password' => 'Kata Sandi',
-    'current_password' => 'Kata Sandi Saat Ini',
-    'new_password' => 'Kata Sandi Baru',
-    'confirm_new_password' => 'Konfirmasi Kata Sandi Baru',
-    'save_changes' => 'Simpan Perubahan',
-
-    'profil-pengguna' => 'Profil Pengguna',
-    'profilpengguna' => 'Profil Pengguna',
-    'pesan-pengguna' => 'Kirim dan Baca Pesan',
 
 
     "walikelas" => "Wali Kelas",
@@ -379,10 +389,6 @@ return [
 
     "dokumenguru" => "Dokumen Guru",
     "dokumensiswa" => "Dokumen Siswa",
-
-    "galery" => "Galery",
-    "photo-slide" => "Slide Foto",
-
 
     'APLIKASI PKL' => 'APLIKASI PKL',
     'administrator' => 'Administrator',
@@ -432,6 +438,11 @@ return [
     'WAKIL KEPALA SEKOLAH' => 'WAKIL KEPALA SEKOLAH',
     'agenda-kegiatan' => 'Agenda Kegiatan',
     'anggaran' => 'Anggaran',
+
+    "agenda-wakasek" => "Agenda Kegiatan",
+    "anggaran-wakasek" => "Anggaran Biaya",
+    "agenda-kaprodi" => "Agenda Kegiatan",
+    "anggaran-kaprodi" => "Anggaran Biaya",
 
     'KEPALA PROGRAM STUDI' => 'KEPALA PROGRAM STUDI',
     'kepala-program-studi' => 'Kepala Program Studi',
@@ -485,11 +496,7 @@ return [
     'arsip-kelulusan' => 'Arsip Kelulusan',
     'alumni' => 'Alumni',
 
-    'web-site-app' => 'Web Site App',
-    'kumpulan-faqs' => 'Frequently Asked Questions',
-    'photo-jurusan' => 'Photo Jurusan',
-    'events' => 'Kalendar Pendidikan',
-    'polling' => 'Polling',
-
+    "absensi" => "Absensi",
+    "arsip" => "Arsip",
 
 ];

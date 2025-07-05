@@ -37,23 +37,17 @@
         </script>
     @endif
     <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-0">
-        <div class="card-header border-bottom-dashed">
-            <div class="row g-4 align-items-center">
-                <div class="col-sm">
-                    <div>
-                        <h5 class="card-title mb-0">@lang('translation.tables') @lang('translation.kbm-per-rombel')</h5>
-                    </div>
-                </div>
-                <div class="col-sm-auto">
-                    <div class="d-flex flex-wrap align-items-start gap-2">
-                        {{-- @can('create kurikulum/datakbm/kbm-per-rombel')
+        <div class="card-header d-flex align-items-center">
+            <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
+            <div>
+                <div class="d-flex flex-wrap align-items-start gap-2">
+                    {{-- @can('create kurikulum/datakbm/kbm-per-rombel')
                                     <a class="btn btn-success add-btn action"
                                         href="{{ route('kurikulum.datakbm.kbm-per-rombel.create') }}"><i
                                             class="ri-add-line align-bottom me-1"></i> Add KBM Per Rombel</a>
                                 @endcan --}}
-                        <a href="{{ route('kurikulum.datakbm.mata-pelajaran-perjurusan.index') }}"
-                            class="btn btn-soft-primary btn-sm">Mata Pelajaran</a>
-                    </div>
+                    <a href="{{ route('kurikulum.datakbm.mata-pelajaran-perjurusan.index') }}"
+                        class="btn btn-soft-primary btn-sm">Mata Pelajaran</a>
                 </div>
             </div>
         </div>

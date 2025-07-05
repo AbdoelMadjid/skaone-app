@@ -16,7 +16,7 @@
     @endcomponent
     <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-0">
         <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
-            <h4 class="card-title mb-0">Daftar Judul Pengumuman</h4>
+            <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
             <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#createModal">+ Tambah</button>
         </div>
 
