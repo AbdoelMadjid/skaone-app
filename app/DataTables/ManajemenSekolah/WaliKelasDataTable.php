@@ -57,7 +57,7 @@ class WaliKelasDataTable extends DataTable
             // Pastikan tabel 'bidang_keahlians' terkait dengan model 'ProgramKeahlian'
         ])
             ->join('personil_sekolahs', 'wali_kelas.wali_kelas', '=', 'personil_sekolahs.id_personil')
-            ->where('wali_kelas.tahunajaran', $tahunAjaranAktif);
+            ->where('wali_kelas.tahunajaran', $tahunAjaranAktif->tahunajaran);
     }
 
     /**
