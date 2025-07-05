@@ -3,6 +3,8 @@
 namespace App\DataTables\ManajemenSekolah;
 
 use App\Models\ManajemenSekolah\RombonganBelajar;
+use App\Models\ManajemenSekolah\Semester;
+use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
@@ -45,14 +47,33 @@ class RombonganBelajarDataTable extends DataTable
     public function query(RombonganBelajar $model): QueryBuilder
     {
         $query = $model->newQuery();
+
+        // Ambil tahun ajaran dan semester aktif
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+        $semesterAktif = null;
+
+        if ($tahunAjaranAktif) {
+            $semesterAktif = Semester::where('status', 'Aktif')
+                ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+                ->first();
+        }
+
         // Ambil parameter filter dari request
         if (request()->has('search') && !empty(request('search'))) {
             $query->where('personil_sekolahs.namalengkap', 'like', '%' . request('search') . '%');
         }
 
+        // Filter tahun ajaran
         if (request()->has('thAjar') && request('thAjar') != 'all') {
             $query->where('tahunajaran', request('thAjar'));
+        } elseif ($tahunAjaranAktif) {
+            // Default: pakai tahun ajaran aktif
+            $query->where('tahunajaran', $tahunAjaranAktif->tahunajaran);
         }
+
+        /*         if (request()->has('thAjar') && request('thAjar') != 'all') {
+            $query->where('tahunajaran', request('thAjar'));
+        } */
 
         if (request()->has('kodeKK') && request('kodeKK') != 'all') {
             $query->where('rombongan_belajars.id_kk', request('kodeKK'));

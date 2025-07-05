@@ -2,6 +2,8 @@
 
 namespace App\DataTables\ManajemenSekolah;
 
+use App\Models\ManajemenSekolah\Semester;
+use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Models\ManajemenSekolah\WaliKelas;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
@@ -38,13 +40,24 @@ class WaliKelasDataTable extends DataTable
      */
     public function query(): QueryBuilder
     {
+        // Ambil tahun ajaran dan semester aktif
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+        $semesterAktif = null;
+
+        if ($tahunAjaranAktif) {
+            $semesterAktif = Semester::where('status', 'Aktif')
+                ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+                ->first();
+        }
+
         // Sesuaikan query untuk menggunakan kolom primary key yang benar
         return WaliKelas::query()->select([
             'wali_kelas.*',
             DB::raw('CONCAT(wali_kelas.wali_kelas, " - ", personil_sekolahs.namalengkap) as nama_walikelas'),
             // Pastikan tabel 'bidang_keahlians' terkait dengan model 'ProgramKeahlian'
         ])
-            ->join('personil_sekolahs', 'wali_kelas.wali_kelas', '=', 'personil_sekolahs.id_personil');
+            ->join('personil_sekolahs', 'wali_kelas.wali_kelas', '=', 'personil_sekolahs.id_personil')
+            ->where('wali_kelas.tahunajaran', $tahunAjaranAktif);
     }
 
     /**
