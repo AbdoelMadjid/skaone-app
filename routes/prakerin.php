@@ -48,7 +48,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/informasi-prakerin/absensi', [InformasiAdministratorController::class, 'index'])->name('informasi-prakerin.absensi');
         Route::resource('laporan-prakerin', PelaporanPrakerinController::class);
     });
-
+});
+Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'kaprodipkl', 'as' => 'kaprodipkl.'], function () {
         Route::resource('pembimbing-prakerin', PembimbingPrakerinController::class);
         Route::resource('peserta-prakerin', PesertaPrakerinController::class);
@@ -64,7 +65,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/download-absensi-pdf', [PelaporanPrakerinController::class, 'downloadAbsensiPdf'])->name('downloadabsensipdf');
         Route::post('/update-tanggal-kirim', [PelaporanPrakerinController::class, 'updateTanggalKirim'])->name('updatetanggalkirim');
     });
-
+});
+Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'pembimbingpkl', 'as' => 'pembimbingpkl.'], function () {
         Route::resource('informasi-prakerin', InformasiPembimbingController::class);
         Route::get('/chart-data', [InformasiPembimbingController::class, 'getChartData']);
@@ -101,7 +103,8 @@ Route::middleware('auth')->group(function () {
             return response()->json(['message' => 'Pesan tidak ditemukan.'], 404);
         });
     });
-
+});
+Route::middleware('auth', 'roleonly:pesertapkl')->group(function () {
     Route::group(['prefix' => 'pesertapkl', 'as' => 'pesertapkl.'], function () {
         Route::resource('siswa-informasi', SiswaInformasiController::class);
         Route::resource('jurnal-siswa', JurnalPklController::class);
