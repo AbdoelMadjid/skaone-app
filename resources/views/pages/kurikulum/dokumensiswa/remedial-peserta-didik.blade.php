@@ -22,8 +22,8 @@
                     <div class="row g-4 align-items-center">
                         <div class="col-sm">
                             <div>
-                                <h3 id="info-keterangan" class="card-title mb-0">Remedial Peserta Didik<span
-                                        class="badge bg-primary align-bottom ms-2"></span></h3>
+                                <h3 id="info-keterangan" class="card-title mb-0 flex-grow-1 text-danger-emphasis">
+                                    @yield('title') <span class="badge bg-primary align-bottom ms-2"></span></h3>
                             </div>
                         </div>
                         <div class="col-sm-auto">

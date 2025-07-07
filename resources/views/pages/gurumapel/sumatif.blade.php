@@ -18,7 +18,8 @@
         <div class="col-lg-12">
             <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-0">
                 <div class="card-header d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1">Nilai @yield('title') - {{ $fullName }}</h5>
+                    <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis"> Nilai @yield('title') -
+                        {{ $fullName }}</h5>
                     <div>
                     </div>
                 </div>

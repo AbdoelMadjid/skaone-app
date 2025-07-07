@@ -24,7 +24,7 @@
         <div class="col-lg-12">
             <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
                 <div class="card-header d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @yield('title') - {{ $fullName }}</h5>
+                    <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title') - {{ $fullName }}</h5>
                     <div>
                         <button type="button" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal"
                             data-bs-target="#buatMateriAjar" id="buatMateriAjarBtn" title="Buat Tujuan Pembelajaran">Tambah

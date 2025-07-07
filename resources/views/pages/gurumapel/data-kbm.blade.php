@@ -25,7 +25,8 @@
                 <!--end col-->
                 <div class="col-md-auto ms-auto">
                     <div class="d-flex hastck gap-2 flex-wrap">
-                        <a class="btn btn-soft-info" href="{{ route('gurumapel.datangajar.data-kbm-detail.index') }}">Tabel
+                        <a class="btn btn-soft-info btn-sm"
+                            href="{{ route('gurumapel.datangajar.data-kbm-detail.index') }}">Tabel
                             KBM</a>
                         {{-- <div class="dropdown">
                             <button class="btn btn-soft-info btn-icon fs-14" type="button" id="dropdownMenuButton1"
