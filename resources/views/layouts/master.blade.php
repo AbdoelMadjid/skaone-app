@@ -69,6 +69,25 @@
     </button>
     <!-- JAVASCRIPT -->
     @include('layouts.vendor-scripts')
+
+    @php
+        use Illuminate\Support\Str;
+
+        $swalMessages = collect(session()->all())->filter(
+            fn($v, $k) => Str::startsWith($k, ['error', 'success', 'warning', 'info']),
+        );
+    @endphp
+
+    @if ($swalMessages->isNotEmpty())
+        <div id="swal-session-container" style="display: none;">
+            @foreach ($swalMessages as $key => $message)
+                <div class="swal-session" data-status="{{ Str::before($key, Str::after($key, '_') ?: '') }}"
+                    data-message="{{ $message }}">
+                </div>
+            @endforeach
+        </div>
+    @endif
+
     </body>
 
 </html>

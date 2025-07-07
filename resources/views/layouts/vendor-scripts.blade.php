@@ -30,7 +30,7 @@
         });
     </script>
 @endif
-
+{{--
 @if (session('errorAmbilData'))
     <script>
         const message = `{!! session('errorAmbilData') !!}`;
@@ -52,3 +52,58 @@
         })
     </script>
 @endif
+@if (session('errorWaliKelas'))
+    <script>
+        const message = `{!! session('errorWaliKelas') !!}`;
+
+        Swal.fire({
+            html: `
+                <div class="mt-3">
+                    <lord-icon
+                        src="https://cdn.lordicon.com/tdrtiskw.json"
+                        trigger="loop"
+                        colors="primary:#f06548,secondary:#f7b84b"
+                        style="width:120px;height:120px">
+                    </lord-icon>
+                    <div class="mt-4 pt-2 fs-15">
+                        <h4>Akses Ditolak</h4>
+                        <p class="text-muted">${message}</p>
+                    </div>
+                </div>`,
+            showCancelButton: true,
+            showConfirmButton: false,
+            cancelButtonClass: 'btn btn-danger w-xs mb-1',
+            cancelButtonText: 'Tutup',
+            buttonsStyling: true,
+            showCloseButton: true
+        });
+    </script>
+@endif --}}
+{{--
+bentuk dokumen
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
+<lord-icon
+    src="https://cdn.lordicon.com/fjvfsqea.json"
+    trigger="hover"
+    style="width:250px;height:250px">
+</lord-icon>
+
+bentuk man
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
+<lord-icon
+    src="https://cdn.lordicon.com/mwhabkof.json"
+    trigger="hover"
+    style="width:250px;height:250px">
+</lord-icon>
+
+bentuk tepuk tangan
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
+<lord-icon
+    src="https://cdn.lordicon.com/rhmbrqqg.json"
+    trigger="hover"
+    style="width:250px;height:250px">
+</lord-icon>
+--}}
+<script>
+    window.addEventListener('DOMContentLoaded', showSessionSwal);
+</script>
