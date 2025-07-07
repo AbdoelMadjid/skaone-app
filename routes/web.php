@@ -89,7 +89,7 @@ Route::get('/real-time-stats', function () {
 
 Route::middleware(['auth', 'master'])->get('/clear-cache', function () {
     Artisan::call('optimize:clear');
-    return redirect()->back()->with('success-chache', 'Cache berhasil dibersihkan!');
+    return redirect()->back()->with('success-chache', 'Cache sukses dibersihkan!');
 })->name('clear.cache');
 
 Route::middleware(['auth', 'master'])->post('/switch-account', [UserController::class, 'switchAccount'])->name('switch.account');

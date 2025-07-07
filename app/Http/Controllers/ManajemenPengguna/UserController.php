@@ -155,7 +155,7 @@ class UserController extends Controller
 
             session()->forget('original_user');
 
-            return redirect()->route('dashboard')->with('success', 'Anda kembali ke akun asli.');
+            return redirect()->route('dashboard')->with('info-kembali', 'Anda kembali ke akun asli.');
         }
 
         return redirect()->route('dashboard')->with('error', 'Tidak ada akun asal ditemukan.');

@@ -456,27 +456,23 @@ function showSessionSwal() {
         const message = item.dataset.message || 'Tidak ada pesan';
 
         const config = {
-            error: {
-                title: 'Oops...!',
-                icon: 'https://cdn.lordicon.com/tdrtiskw.json',
-                buttonClass: 'btn btn-danger',
-                buttonText: 'Tutup'
-            },
             success: {
                 title: 'Berhasil!',
-                icon: 'https://cdn.lordicon.com/rhmbrqqg.json',
                 buttonClass: 'btn btn-success',
                 buttonText: 'Lanjut'
             },
+            error: {
+                title: 'Oops...!',
+                buttonClass: 'btn btn-danger',
+                buttonText: 'Tutup'
+            },
             warning: {
                 title: 'Peringatan!',
-                icon: 'https://cdn.lordicon.com/tdrtiskw.json',
                 buttonClass: 'btn btn-warning',
                 buttonText: 'Mengerti'
             },
             info: {
                 title: 'Informasi',
-                icon: 'https://cdn.lordicon.com/tdrtiskw.json',
                 buttonClass: 'btn btn-info',
                 buttonText: 'Oke'
             }
@@ -485,19 +481,9 @@ function showSessionSwal() {
         const alert = config[status] || config.info;
 
         Swal.fire({
-            html: `
-                <div class="mt-3">
-                    <lord-icon
-                        src="${alert.icon}"
-                        trigger="loop"
-                        colors="primary:#f06548,secondary:#f7b84b"
-                        style="width:120px;height:120px">
-                    </lord-icon>
-                    <div class="mt-4 pt-2 fs-15">
-                        <h4>${alert.title}</h4>
-                        <div class="text-muted">${item.dataset.message}</div>
-                    </div>
-                </div>`,
+            icon: status, // inilah kuncinya!
+            title: alert.title,
+            html: `<div class="text-muted">${message}</div>`,
             showCancelButton: true,
             showConfirmButton: false,
             cancelButtonClass: `${alert.buttonClass} w-xs mb-1`,
@@ -507,5 +493,6 @@ function showSessionSwal() {
         });
     });
 }
+
 
 

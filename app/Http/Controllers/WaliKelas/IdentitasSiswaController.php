@@ -45,7 +45,7 @@ class IdentitasSiswaController extends Controller
 
         // Cek wali kelas
         if (!$waliKelas) {
-            return redirect()->route('dashboard')->with('successWaliKelas', 'Maaf, Anda belum ditetapkan sebagai <b>Wali Kelas</b> pada <b>tahun ajaran aktif</b>. Silakan hubungi operator atau admin sekolah.');
+            return redirect()->route('dashboard')->with('errorWaliKelas', 'Maaf, Anda belum ditetapkan sebagai <b>Wali Kelas</b> pada <b>tahun ajaran aktif</b>. Silakan hubungi operator atau admin sekolah.');
         }
         // Jika wali kelas ditemukan, ambil data personil dan hitung semester angka
         $personil = null;

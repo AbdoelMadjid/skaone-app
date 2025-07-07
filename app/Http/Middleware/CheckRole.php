@@ -32,7 +32,7 @@ class CheckRole
         // Cek apakah user punya salah satu role yang diijinkan
         if (!$user->hasAnyRole($roles)) {
             // Jika tidak punya role, kirim response dengan session flash untuk notif Swal
-            return redirect()->route('dashboard')->with('errorRole', 'Anda tidak memiliki akses ke halaman ini.');
+            return redirect()->route('dashboard')->with('warningRole', 'Anda tidak memiliki akses ke halaman ini.');
         }
 
         return $next($request);

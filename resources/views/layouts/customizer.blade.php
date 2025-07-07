@@ -818,7 +818,7 @@
         Swal.fire({
             title: 'Yakin ingin bersihkan cache?',
             text: "Tindakan ini akan menghapus cache aplikasi.",
-            icon: 'warning',
+            icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',

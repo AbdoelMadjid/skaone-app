@@ -81,8 +81,16 @@
     @if ($swalMessages->isNotEmpty())
         <div id="swal-session-container" style="display: none;">
             @foreach ($swalMessages as $key => $message)
-                <div class="swal-session" data-status="{{ Str::before($key, Str::after($key, '_') ?: '') }}"
-                    data-message="{{ $message }}">
+                @php
+                    $type = Str::contains($key, 'error')
+                        ? 'error'
+                        : (Str::contains($key, 'success')
+                            ? 'success'
+                            : (Str::contains($key, 'warning')
+                                ? 'warning'
+                                : 'info'));
+                @endphp
+                <div class="swal-session" data-status="{{ $type }}" data-message="{{ $message }}">
                 </div>
             @endforeach
         </div>
