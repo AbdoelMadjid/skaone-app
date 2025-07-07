@@ -2,7 +2,7 @@
 <div class="modal fade" id="pilihCapaianPembelajaran" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <form action="{{ route('gurumapel.datangajar.savecpterpilih') }}" method="post">
+            <form action="{{ route('gurumapel.adminguru.savecpterpilih') }}" method="post">
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title" id="importModalLabel">Pilih Capaian Pembelajaran</h5>

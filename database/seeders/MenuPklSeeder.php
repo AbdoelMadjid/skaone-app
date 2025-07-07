@@ -95,7 +95,7 @@ class MenuPklSeeder extends Seeder
         $sm = $mm->subMenus()->create(['name' => 'Pesan', 'url' => $mm->url . '/pesan-prakerin', 'category' => $mm->category]);
         $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['pembpkl']);
 
-        $mm = Menu::firstOrCreate(['url' => 'pesertadidikpkl'], ['name' => 'Peserta', 'category' => 'APLIKASI PKL', 'icon' => 'account-pin-box']);
+        $mm = Menu::firstOrCreate(['url' => 'pesertapkl'], ['name' => 'Peserta', 'category' => 'APLIKASI PKL', 'icon' => 'account-pin-box']);
         $this->attachMenupermission($mm, ['read'], ['pesertapkl']);
 
         $sm = $mm->subMenus()->create(['name' => 'Informasi', 'url' => $mm->url . '/siswa-informasi', 'category' => $mm->category]);

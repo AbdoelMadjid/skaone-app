@@ -11,13 +11,18 @@
             @lang('translation.prakerin')
         @endslot
         @slot('li_2')
-            @lang('translation.pesertadidikpkl')
+            @lang('translation.pesertapkl')
         @endslot
     @endcomponent
     <div class="row">
         <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body">
+            <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
+                <div class="card-header d-flex align-items-center">
+                    <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
+                    <div>
+                    </div>
+                </div>
+                <div class="card-body p-1">
                     <table class="table table-bordered">
                         <thead>
                             <tr>

@@ -43,7 +43,7 @@
         });
 
         function fetchCapaianPembelajaranData(inisialMp, tingkat) {
-            fetch(`/gurumapel/datangajar/fetch-capaian-pembelajaran?inisial_mp=${inisialMp}&tingkat=${tingkat}`)
+            fetch(`/gurumapel/adminguru/fetch-capaian-pembelajaran?inisial_mp=${inisialMp}&tingkat=${tingkat}`)
                 .then(response => response.json())
                 .then(data => {
                     modalTableBody.innerHTML = ''; // Clear previous data

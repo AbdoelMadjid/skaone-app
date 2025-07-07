@@ -9,6 +9,7 @@ use App\Http\Controllers\GuruMapel\DataKbmController;
 use App\Http\Controllers\GuruMapel\DeskripsiNilaiController;
 use App\Http\Controllers\GuruMapel\DetailDataKbmController;
 use App\Http\Controllers\GuruMapel\FormatifController;
+use App\Http\Controllers\GuruMapel\PerangkatAjarController;
 use App\Http\Controllers\GuruMapel\SumatifController;
 use App\Http\Controllers\GuruMapel\TujuanPembelajaranController;
 use App\Http\Controllers\GuruMapel\UjianSumatifController;
@@ -27,9 +28,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'gurumapel', 'as' => 'gurumapel.'], function () {
-        Route::resource('administrasi-guru', AdministrasiGuruController::class);
 
-        Route::group(['prefix' => 'datangajar', 'as' => 'datangajar.'], function () {
+        Route::group(['prefix' => 'adminguru', 'as' => 'adminguru.'], function () {
             Route::resource('data-kbm', DataKbmController::class);
             Route::get('/fetch-capaian-pembelajaran', [DataKbmController::class, 'fetchData']);
 
@@ -52,6 +52,11 @@ Route::middleware('auth')->group(function () {
             Route::get('/checktujuanpembelajaran', [TujuanPembelajaranController::class, 'checkTujuanPembelajaran'])->name('checktujuanpembelajaran');
             Route::post('/hapustujuanpembelajaran', [TujuanPembelajaranController::class, 'hapusTujuanPembelajaran'])->name('hapustujuanpembelajaran');
             Route::post('/updatetujuanpembelajaran/{id}', [TujuanPembelajaranController::class, 'updateTujuanPembelajaran'])->name('updatetujuanpembelajaran');
+
+            Route::resource('perangkat-ajar', PerangkatAjarController::class);
+            Route::resource('ujian-sumatif', UjianSumatifController::class);
+            Route::resource('ajuan-remedial', AjuanRemedialController::class);
+            Route::resource('arsip-kbm', ArsipKbmGmapelController::class);
         });
 
         Route::group(['prefix' => 'penilaian', 'as' => 'penilaian.'], function () {
@@ -72,9 +77,5 @@ Route::middleware('auth')->group(function () {
             Route::resource('deskripsi-nilai', DeskripsiNilaiController::class);
             Route::get('/getnilaiformatif', [DeskripsiNilaiController::class, 'getNilaiFormatif'])->name('getnilaiformatif');
         });
-
-        Route::resource('ujian-sumatif', UjianSumatifController::class);
-        Route::resource('ajuan-remedial', AjuanRemedialController::class);
-        Route::resource('arsip-kbm', ArsipKbmGmapelController::class);
     });
 });

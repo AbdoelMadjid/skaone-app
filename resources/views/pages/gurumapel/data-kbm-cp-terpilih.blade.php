@@ -39,7 +39,7 @@
             @lang('translation.gurumapel')
         @endslot
         @slot('li_2')
-            @lang('translation.data-ngajar')
+            @lang('translation.administrasi-guru')
         @endslot
     @endcomponent
     <div class="row">
@@ -177,7 +177,7 @@
 
         function updateJmlMateri(id, jmlmateriValue) {
             $.ajax({
-                url: '/gurumapel/datangajar/updatejmlmateri', // Rute untuk update KKM
+                url: '/gurumapel/adminguru/updatejmlmateri', // Rute untuk update KKM
                 type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}', // Sertakan CSRF token
@@ -245,7 +245,7 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $.ajax({
-                                url: "{{ route('gurumapel.datangajar.hapuscppilihan') }}", // Sesuaikan route
+                                url: "{{ route('gurumapel.adminguru.hapuscppilihan') }}", // Sesuaikan route
                                 type: 'POST',
                                 data: {
                                     _token: '{{ csrf_token() }}',
@@ -318,7 +318,7 @@
 
                 if (selectedOption) {
                     $.ajax({
-                        url: '/gurumapel/datangajar/checkcpterpilih',
+                        url: '/gurumapel/adminguru/checkcpterpilih',
                         method: 'GET',
                         data: {
                             id_personil: personalId,
@@ -341,7 +341,7 @@
                                 if (kelMapel && tingkat) {
                                     // AJAX untuk checkbox rombel
                                     $.ajax({
-                                        url: "{{ route('gurumapel.datangajar.getrombeloptions') }}",
+                                        url: "{{ route('gurumapel.adminguru.getrombeloptions') }}",
                                         type: "GET",
                                         data: {
                                             kel_mapel: kelMapel,
@@ -364,7 +364,7 @@
 
                                     // AJAX untuk capaian pembelajaran
                                     $.ajax({
-                                        url: "{{ route('gurumapel.datangajar.getCapaianPembelajaran') }}",
+                                        url: "{{ route('gurumapel.adminguru.getCapaianPembelajaran') }}",
                                         type: "GET",
                                         data: {
                                             kel_mapel: kelMapel,

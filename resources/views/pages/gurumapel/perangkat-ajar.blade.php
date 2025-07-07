@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    @lang('translation.administrasi-guru')
+    @lang('translation.perangkat-ajar')
 @endsection
 @section('css')
     {{--  --}}
@@ -9,6 +9,9 @@
     @component('layouts.breadcrumb')
         @slot('li_1')
             @lang('translation.gurumapel')
+        @endslot
+        @slot('li_2')
+            @lang('translation.administrasi-guru')
         @endslot
     @endcomponent
     <div class="row">

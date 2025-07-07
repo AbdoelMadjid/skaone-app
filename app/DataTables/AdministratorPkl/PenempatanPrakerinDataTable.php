@@ -102,7 +102,7 @@ class PenempatanPrakerinDataTable extends DataTable
                 'lengthChange' => false,
                 'searching' => false, // Mengaktifkan pencarian
                 'searchDelay' => 500, // Delay pencarian untuk mengurangi beban server
-                'pageLength' => 100,
+                'pageLength' => 15,
                 // ⬇️ Tambahan fitur scroll dan fixedHeader
                 'scrollY' => '378px',
                 'scrollCollapse' => true,

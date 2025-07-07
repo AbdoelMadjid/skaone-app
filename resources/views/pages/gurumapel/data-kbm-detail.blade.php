@@ -23,7 +23,7 @@
                     <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title') - {{ $fullName }}</h5>
                     <div>
                         <a class="btn btn-soft-info btn-sm"
-                            href="{{ route('gurumapel.datangajar.data-kbm.index') }}">Kembali</a>
+                            href="{{ route('gurumapel.adminguru.data-kbm.index') }}">Kembali</a>
                     </div>
                 </div>
                 <div class="card-body p-1">
@@ -51,7 +51,7 @@
 
         function updateKkm(id, kkmValue) {
             $.ajax({
-                url: '/gurumapel/datangajar/data-kbm-detail/update-kkm', // Rute untuk update KKM
+                url: '/gurumapel/adminguru/data-kbm-detail/update-kkm', // Rute untuk update KKM
                 type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}', // Sertakan CSRF token

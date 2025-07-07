@@ -2,7 +2,7 @@
 <div class="modal fade" id="buatMateriAjar" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <form id="form-tp-ajar" action="{{ route('gurumapel.datangajar.savetujuanpembelajaran') }}" method="post">
+            <form id="form-tp-ajar" action="{{ route('gurumapel.adminguru.savetujuanpembelajaran') }}" method="post">
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title" id="importModalLabel">Tambah Tujuan Pembelajaran</h5>

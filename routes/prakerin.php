@@ -102,7 +102,7 @@ Route::middleware('auth')->group(function () {
         });
     });
 
-    Route::group(['prefix' => 'pesertadidikpkl', 'as' => 'pesertadidikpkl.'], function () {
+    Route::group(['prefix' => 'pesertapkl', 'as' => 'pesertapkl.'], function () {
         Route::resource('siswa-informasi', SiswaInformasiController::class);
         Route::resource('jurnal-siswa', JurnalPklController::class);
         Route::get('/get-tp/{kode_cp}/{kode_kk}', [JurnalPklController::class, 'getTp'])->name('get.tp');

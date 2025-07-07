@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth')->group(function () {
-    Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () {
+    Route::group(['prefix' => 'kepalaprogramstudi', 'as' => 'kepalaprogramstudi.'], function () {
         Route::resource('agenda-kegiatan-kaprodi', AgendaKegiatanController::class);
         Route::resource('anggaran-kaprodi', AnggaranController::class);
         Route::resource('uji-kompetensi-keahlian', UjiKompetensiController::class);

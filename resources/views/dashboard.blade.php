@@ -158,7 +158,7 @@
             const nis = '{{ auth()->user()->nis }}'; // Pastikan ini adalah NIS dari pengguna yang login
 
             // Memeriksa status absensi hari ini
-            fetch('{{ route('pesertadidikpkl.absensi-siswa.check-absensi-status') }}', {
+            fetch('{{ route('pesertapkl.absensi-siswa.check-absensi-status') }}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -256,21 +256,21 @@
         // Panggil fungsi untuk setiap tombol absensi dan tentukan tombol lain yang harus dinonaktifkan
         handleAbsensiButtonClick(
             'btn-hadir',
-            '{{ route('pesertadidikpkl.absensi-siswa.simpanhadir') }}',
+            '{{ route('pesertapkl.absensi-siswa.simpanhadir') }}',
             'hadir',
             'total-hadir',
             ['btn-sakit', 'btn-izin']
         );
         handleAbsensiButtonClick(
             'btn-sakit',
-            '{{ route('pesertadidikpkl.absensi-siswa.simpansakit') }}',
+            '{{ route('pesertapkl.absensi-siswa.simpansakit') }}',
             'sakit',
             'total-sakit',
             ['btn-hadir', 'btn-izin']
         );
         handleAbsensiButtonClick(
             'btn-izin',
-            '{{ route('pesertadidikpkl.absensi-siswa.simpanizin') }}',
+            '{{ route('pesertapkl.absensi-siswa.simpanizin') }}',
             'izin',
             'total-izin',
             ['btn-hadir', 'btn-sakit']

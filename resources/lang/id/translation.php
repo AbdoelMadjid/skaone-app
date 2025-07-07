@@ -362,6 +362,7 @@ return [
     "gurumapel" => "Guru Mata Pelajaran",
     "guru-mata-pelajaran" => "Guru Mata Pelajaran",
     "administrasi-guru" => "Administrasi Guru",
+    "perangkat-ajar" => "Perangkat Ajar",
     "data-ngajar" => "Data Ngajar",
     "tujuan-pembelajaran" => "Tujuan Pembelajaran",
     "penilaian" => "Penilaian",
@@ -461,7 +462,7 @@ return [
     'penempatan-prakerin' => 'Pemempatan Prakerin',
 
     'informasi-siswa' => 'Informasi Prakerin',
-    'pesertadidikpkl' => 'Peserta Prakerin',
+    'pesertapkl' => 'Peserta Prakerin',
     'jurnal-siswa' => 'Jurnal Siswa',
     'monitoring-siswa' => 'Monitoring Siswa',
     'pesan-siswa' => 'Pesan Siswa',

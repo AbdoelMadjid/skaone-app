@@ -16,45 +16,48 @@
     @endcomponent
     <div class="row">
         <div class="col-lg-12">
-            <div class="card">
+            <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-0">
                 <div class="card-header d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @yield('title')</h5>
+                    <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
                     <div>
                         {{--  @can('create pesertadidikpkl/jurnal-siswa')
                             <a class="btn btn-primary action" href="{{ route('pesertadidikpkl.jurnal-siswa.create') }}">Buat
                                 Jurnal Siswa</a>
                         @endcan --}}
+                        <form>
+                            <div class="row g-3">
+                                <div class="col-lg-auto ms-auto">
+                                    <div>
+                                        <select class="form-control form-control-sm" id="idPenempatan">
+                                            <option value="all" selected>Pilih Peserta Terbimbing</option>
+                                            @foreach ($optionsArray as $id => $nama)
+                                                <option value="{{ $id }}">{{ $nama }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <div class="col-lg-auto">
+                                    <div>
+                                        <select class="form-control form-control-sm" id="idvalidasi">
+                                            <option value="all" selected>Status Validasi</option>
+                                            <option value="Sudah">Sudah</option>
+                                            <option value="Belum">Belum</option>
+                                            <option value="Tolak">Tolak</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div class="card-body border-bottom-dashed border-bottom">
-                    <form>
-                        <div class="row g-3">
-                            <div class="col-lg-auto ms-auto">
-                                <div>
-                                    <select class="form-control" id="idPenempatan">
-                                        <option value="all" selected>Pilih Peserta Terbimbing</option>
-                                        @foreach ($optionsArray as $id => $nama)
-                                            <option value="{{ $id }}">{{ $nama }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <!--end col-->
-                            <div class="col-lg-auto">
-                                <div>
-                                    <select class="form-control" id="idvalidasi">
-                                        <option value="all" selected>Status Validasi</option>
-                                        <option value="Sudah">Sudah</option>
-                                        <option value="Belum">Belum</option>
-                                        <option value="Tolak">Tolak</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="card-body">
-                    {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+                <div class="card-body p-1">
+                    <div id="datatable-wrapper" style="height: calc(100vh - 268px);">
+                        {!! $dataTable->table([
+                            'class' => 'table table-striped hover',
+                            'style' => 'width:100%',
+                        ]) !!}
+                    </div>
                 </div>
             </div>
         </div>
@@ -206,6 +209,7 @@
             handleDataTableEvents(datatable);
             handleAction(datatable);
             handleDelete(datatable);
+            ScrollDinamicDataTable(datatable, scrollOffsetOverride = 86);
         });
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>

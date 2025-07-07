@@ -11,7 +11,7 @@
             @lang('translation.prakerin')
         @endslot
         @slot('li_2')
-            @lang('translation.pesertadidikpkl')
+            @lang('translation.pesertapkl')
         @endslot
     @endcomponent
     <div class="row dash-nft">

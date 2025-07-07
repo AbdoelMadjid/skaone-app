@@ -32,7 +32,7 @@ class MenuAppSupportSeeder extends Seeder
         $this->attachMenupermission($sm, ['create', 'read', 'update'], ['admin']);
 
         $sm = $mm->subMenus()->create(['name' => 'App Fitur', 'url' => $mm->url . '/app-fiturs', 'category' => $mm->category]);
-        $this->attachMenupermission($sm, ['read', 'update'], ['admin']);
+        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['admin']);
 
         $sm = $mm->subMenus()->create(['name' => 'Impor Data Master', 'url' => $mm->url . '/impor-data-master', 'category' => $mm->category]);
         $this->attachMenupermission($sm, ['read'], ['admin']);

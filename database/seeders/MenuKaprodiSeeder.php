@@ -21,7 +21,7 @@ class MenuKaprodiSeeder extends Seeder
          * @var Menu $mm
          */
 
-        $mm = Menu::firstOrCreate(['url' => 'kaprodi'], ['name' => 'Kepala Program Studi', 'category' => 'MANAJEMEN SEKOLAH', 'icon' => 'file-user']);
+        $mm = Menu::firstOrCreate(['url' => 'kepalaprogramstudi'], ['name' => 'Kepala Program Studi', 'category' => 'MANAJEMEN SEKOLAH', 'icon' => 'file-user']);
         $this->attachMenupermission($mm, ['read'], ['kaprog']);
 
         $sm = $mm->subMenus()->create(['name' => 'Uji Kompetensi Keahlian', 'url' => $mm->url . '/uji-kompetensi-keahlian', 'category' => $mm->category]);

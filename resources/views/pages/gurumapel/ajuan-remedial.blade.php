@@ -10,6 +10,9 @@
         @slot('li_1')
             @lang('translation.gurumapel')
         @endslot
+        @slot('li_2')
+            @lang('translation.administrasi-guru')
+        @endslot
     @endcomponent
     <div class="row">
         <div class="col-lg-12">

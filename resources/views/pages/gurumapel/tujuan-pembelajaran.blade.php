@@ -17,7 +17,7 @@
             @lang('translation.gurumapel')
         @endslot
         @slot('li_2')
-            @lang('translation.data-ngajar')
+            @lang('translation.administrasi-guru')
         @endslot
     @endcomponent
     <div class="row">
@@ -180,7 +180,7 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $.ajax({
-                                url: "{{ route('gurumapel.datangajar.hapustujuanpembelajaran') }}", // Sesuaikan route
+                                url: "{{ route('gurumapel.adminguru.hapustujuanpembelajaran') }}", // Sesuaikan route
                                 type: 'POST',
                                 data: {
                                     _token: '{{ csrf_token() }}',
@@ -223,7 +223,7 @@
 
                 if (selectedOption) {
                     $.ajax({
-                        url: '/gurumapel/datangajar/checktujuanpembelajaran',
+                        url: '/gurumapel/adminguru/checktujuanpembelajaran',
                         method: 'GET',
                         data: {
                             id_personil: personalId,
@@ -307,7 +307,7 @@
                                 // Fetch isi_cp dan kode_rombel
                                 if (kodeCp) {
                                     var requestIsiCp = $.ajax({
-                                        url: '/gurumapel/datangajar/getisicp',
+                                        url: '/gurumapel/adminguru/getisicp',
                                         method: 'GET',
                                         data: {
                                             kode_cp: kodeCp
@@ -315,7 +315,7 @@
                                     });
 
                                     var requestKodeRombel = $.ajax({
-                                        url: '/gurumapel/datangajar/getkoderombel',
+                                        url: '/gurumapel/adminguru/getkoderombel',
                                         method: 'GET',
                                         data: {
                                             id_personil: personalId,
@@ -324,7 +324,7 @@
                                     });
 
                                     var requestKodeMapel = $.ajax({
-                                        url: '/gurumapel/datangajar/getkodemapel',
+                                        url: '/gurumapel/adminguru/getkodemapel',
                                         method: 'GET',
                                         data: {
                                             id_personil: personalId,
@@ -439,7 +439,7 @@
 
                 var form = $(this);
                 var id = form.data('id'); // Ambil ID dari atribut data-id
-                var url = `/gurumapel/datangajar/updatetujuanpembelajaran/${id}`; // URL sesuai route
+                var url = `/gurumapel/adminguru/updatetujuanpembelajaran/${id}`; // URL sesuai route
                 var data = form.serialize(); // Serialisasi data form
 
                 $.ajax({

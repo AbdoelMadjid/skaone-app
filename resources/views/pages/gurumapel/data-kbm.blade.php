@@ -11,7 +11,7 @@
             @lang('translation.gurumapel')
         @endslot
         @slot('li_2')
-            @lang('translation.data-ngajar')
+            @lang('translation.administrasi-guru')
         @endslot
     @endcomponent
     <div class="card">
@@ -26,7 +26,7 @@
                 <div class="col-md-auto ms-auto">
                     <div class="d-flex hastck gap-2 flex-wrap">
                         <a class="btn btn-soft-info btn-sm"
-                            href="{{ route('gurumapel.datangajar.data-kbm-detail.index') }}">Tabel
+                            href="{{ route('gurumapel.adminguru.data-kbm-detail.index') }}">Tabel
                             KBM</a>
                         {{-- <div class="dropdown">
                             <button class="btn btn-soft-info btn-icon fs-14" type="button" id="dropdownMenuButton1"
@@ -35,7 +35,7 @@
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li><a class="dropdown-item"
-                                        href="{{ route('gurumapel.datangajar.data-kbm-detail.index') }}">Tabel
+                                        href="{{ route('gurumapel.adminguru.data-kbm-detail.index') }}">Tabel
                                         KBM</a>
                                 </li>
                                 <li><a class="dropdown-item" href="#">Add to exceptions</a></li>

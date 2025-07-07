@@ -15,17 +15,23 @@
     @endcomponent
     <div class="row">
         <div class="col-lg-12">
-            <div class="card">
+            <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-0">
                 <div class="card-header d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1">@lang('translation.tables') @yield('title')</h5>
+                    <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
                     <div>
                         @can('create kaprodipkl/modul-ajar')
-                            <a class="btn btn-soft-primary action" href="{{ route('kaprodipkl.modul-ajar.create') }}">Tambah</a>
+                            <a class="btn btn-soft-primary btn-sm action"
+                                href="{{ route('kaprodipkl.modul-ajar.create') }}">Tambah</a>
                         @endcan
                     </div>
                 </div>
-                <div class="card-body">
-                    {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+                <div class="card-body p-1">
+                    <div id="datatable-wrapper" style="height: calc(100vh - 268px);">
+                        {!! $dataTable->table([
+                            'class' => 'table table-striped hover',
+                            'style' => 'width:100%',
+                        ]) !!}
+                    </div>
                 </div>
             </div>
         </div>
@@ -79,6 +85,7 @@
         })
 
         handleDelete(datatable)
+        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 108);
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection
