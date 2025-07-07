@@ -328,69 +328,108 @@ return [
 
     //kurikulum dokumen-guru
     "dokumen-guru" => "Dokumen Guru",
+    "dokumenguru" => "Dokumen Guru",
     "arsip-guru-mata-pelajaran" => "Arsip Guru Mata Pelajaran",
     "arsip-wali-kelas" => "Arsip Wali Kelas",
 
+    //kurikulum dokumen-siswa
     "dokumen-siswa" => "Dokumen Siswa",
+    "dokumensiswa" => "Dokumen Siswa",
     "cetak-rapor" => "Cetak Rapor",
     "leger-nilai" => "Leger Nilai",
+    'rapor-p5' => 'Rapor P5',
+    'rapor-pkl' => 'Rapor PKL',
+    "transkrip-nilai" => "Transkrip Nilai",
+    'ijazah' => 'Ijazah',
     'remedial-peserta-didik' => "Remedial Peserta Didik",
 
-    "transkrip-nilai" => "Transkrip Nilai",
+    //kurikulum - perangkat ujian
     "perangkat-ujian" => "Perangkat Ujian",
     "identitas-ujian" => "Identitas Ujian",
     "administrasi-ujian" => "Administrasi Ujian",
     "pelaksanaan-ujian" => "Pelaksanaan Ujian",
+
     "ruang-ujian" => "Ruang Ujian",
     "peserta-ujian" => "Peserta Ujian",
     "jadwal-ujian" => "Jadwal Ujian",
     "pengawas-ujian" => "Pengawas Ujian",
+
     "panitia-ujian" => "Panitia Ujian",
     "token-soal-ujian" => "Token Soal Ujian",
     "denah-ruangan-ujian" => "Denah Ruangan Ujian",
 
+    //guru mata pelajaran
+    "gurumapel" => "Guru Mata Pelajaran",
     "guru-mata-pelajaran" => "Guru Mata Pelajaran",
     "administrasi-guru" => "Administrasi Guru",
+    "data-ngajar" => "Data Ngajar",
+    "tujuan-pembelajaran" => "Tujuan Pembelajaran",
     "penilaian" => "Penilaian",
-    "absensi-siswa" => "Absensi Siswa",
+    'formatif' => 'Formatif',
+    'sumatif' => 'Sumatif',
+    'deskripsi-nilai' => 'Deskripsi Nilai',
+    'ujian-sumatif' => 'Ujian Sumatif',
     "ajuan-remedial" => "Ajuan Remedial",
     "arsip-kbm" => "Arsip KBM",
-    "materi-ajar" => "Materi Ajar",
-    "tujuan-pembelajaran" => "Tujuan Pembelajaran",
-    "data-ngajar" => "Data Ngajar",
 
+    //wali kelas
+    "walikelas" => "Wali Kelas",
     "wali-kelas" => "Wali Kelas",
     "data-kelas" => "Data Kelas",
     "identitas-siswa" => "Identitas Siswa",
-    "prestasi-siswa" => "Prestasi Siswa",
+    "absensi-siswa" => "Absensi Siswa",
     "ekstrakulikuler" => "Ekstrakurikuler",
-    "praktek-kerja" => "Praktek Kerja",
+    "prestasi-siswa" => "Prestasi Siswa",
     "catatan-wali-kelas" => "Catatan Wali Kelas",
+    "raport-peserta-didik" => "Raport Peserta Didik",
     "cek-remedial" => "Cek Remedial",
-
-    "PESERTA DIDIK" => "Peserta Didik",
-    "identitas" => "Identitas Peserta Didik",
-    "raport" => "Raport",
-    "remedial" => "Remedial",
-
-
-    "gurumapel" => "Guru Mata Pelajaran",
-
-
-
-    "walikelas" => "Wali Kelas",
     "arsip-walas" => "Arsip Wali Kelas",
 
+
+    // manajemen sekolah
+    'MANAJEMEN SEKOLAH' => 'MANAJEMEN SEKOLAH',
+    "agenda-wakasek" => "Agenda Kegiatan",
+    "anggaran-wakasek" => "Anggaran Biaya",
+
+    'kepala-program-studi' => 'Kepala Program Studi',
+    'uji-kompetensi-keahlian' => 'Uji Kompetensi Keahlian',
+    "agenda-kaprodi" => "Agenda Kegiatan",
+    'pembagian-jam-ngajar' => 'Pembagian Jam Ngajar',
+    'laboratorium' => 'Laboratorium',
+    "anggaran-kaprodi" => "Anggaran Biaya",
+
+    'tata-usaha' => 'Ketatausahaan',
+    'persuratan' => 'Persuratan',
+    'sarana-prasarana' => 'Sarana Prasarana',
+    'manajemen-barang' => 'Manajemen Barang',
+    'agenda-ketatausahaan' => 'Agenda Kegiatan',
+    'anggaran-ketatausahaan' => 'Anggaran Biaya',
+
+    'bimbingan-konseling' => 'Bimbingan & Konseling',
+    'konseling' => 'Bimbingan Konseling',
+    'data-kip' => 'Data KIP',
+    'home-visit' => 'Home Visit',
+    'melanjutkan-kuliah' => 'Melanjutkan Kuliah',
+    'penelusuran-lulusan' => 'Penelusuran Lulusan',
+    'anggaran-bp-bk' => 'Anggaran Biaya',
+
+    "PESERTA DIDIK" => "Peserta Didik",
     "pesertadidik" => "Peserta Didik",
+    "raport" => "Rapor",
     "identitas-peserta-didik" => "Identitas Peserta Didik",
-    "raport-peserta-didik" => "Raport Peserta Didik",
     "remedial-peserta-didik" => "Remedial Peserta Didik",
     "kelulusan-peserta-didik" => "Kelulusan Peserta Didik",
+    'kbm-peserta-didik' => 'KBM Peserta Didik',
+    'transkrip-peserta-didik' => 'Transkrip Peserta Didik',
 
-    "dokumenguru" => "Dokumen Guru",
-    "dokumensiswa" => "Dokumen Siswa",
+    'alumni' => 'Alumni',
+    'riwayat-kerja' => 'Riwayat Kerja',
+    'informasi-alumni' => 'Informasi Alumni',
+    'arsip-transkrip' => 'Arsip Transkrip',
+    'arsip-kelulusan' => 'Arsip Kelulusan',
 
     'APLIKASI PKL' => 'APLIKASI PKL',
+    "praktek-kerja" => "Praktek Kerja",
     'administrator' => 'Administrator',
     'kaprodipkl' => 'Kepala Program Studi',
     'pembimbing-prakerin' => 'Pembimbing Prakerin',
@@ -433,70 +472,19 @@ return [
     'pesan-prakerin' => 'Kirim dan Baca Pesan',
     'informasi-bimbingan' => 'Informasi Bimbingan PKL',
 
-    'MANAJEMEN SEKOLAH' => 'MANAJEMEN SEKOLAH',
 
-    'WAKIL KEPALA SEKOLAH' => 'WAKIL KEPALA SEKOLAH',
-    'agenda-kegiatan' => 'Agenda Kegiatan',
-    'anggaran' => 'Anggaran',
-
-    "agenda-wakasek" => "Agenda Kegiatan",
-    "anggaran-wakasek" => "Anggaran Biaya",
-    "agenda-kaprodi" => "Agenda Kegiatan",
-    "anggaran-kaprodi" => "Anggaran Biaya",
-
-    'KEPALA PROGRAM STUDI' => 'KEPALA PROGRAM STUDI',
-    'kepala-program-studi' => 'Kepala Program Studi',
-    'uji-kompetensi-keahlian' => 'Uji Kompetensi Keahlian',
-    'pembagian-jam-ngajar' => 'Pembagian Jam Ngajar',
-    'laboratorium' => 'Laboratorium',
-
-    'BIMBINGAN KONSELING' => 'BIMBINGAN KONSELING',
-    'konseling' => 'Bimbingan Konseling',
-    'data-kip' => 'Data KIP',
-    'home-visit' => 'Home Visit',
-    'melanjutkan-kuliah' => 'Melanjutkan Kuliah',
-    'penelusuran-lulusan' => 'Penelusuran Lulusan',
-    'anggaran-bp-bk' => 'Anggaran Biaya',
-    'bimbingan-konseling' => 'Bimbingan & Konseling',
-
-    'KETATAUSAHAAN' => 'KETATAUSAHAAN',
-    'persuratan' => 'Persuratan',
-    'sarana-prasarana' => 'Sarana Prasarana',
-    'manajemen-barang' => 'Manajemen Barang',
-    'agenda-ketatausahaan' => 'Agenda Kegiatan',
-    'tata-usaha' => 'Ketatausahaan',
-    'anggaran-ketatausahaan' => 'Anggaran Biaya',
-
-    'KBM PESERTA DIDIK' => 'KBM PESERTA DIDIK',
-    'ujian-semester' => 'Ujian Semester',
-    'formatif' => 'Formatif',
-    'sumatif' => 'Sumatif',
-    'deskripsi-nilai' => 'Deskripsi Nilai',
     'test-formatif' => 'Test Formatif',
     'test-sumatif' => 'Test Sumatif',
 
-    'kbm-peserta-didik' => 'KBM Peserta Didik',
-    'transkrip-peserta-didik' => 'Transkrip Peserta Didik',
-
-    'per-guru' => 'Ngajar Per Guru',
-    'per-rombel' => 'Ngajar Per Rombel',
-    'ijazah' => 'Ijazah',
-    'rapor-p5' => 'Rapor P5',
-    'rapor-pkl' => 'Rapor PKL',
     'rapor-peserta-didik' => 'Rapor Peserta Didik',
-    'ujian-sumatif' => 'Ujian Sumatif',
+
 
     'daftar' => 'Daftar',
     'berita' => 'Berita',
     'kelulusan' => 'Kelulusan',
-
-    'riwayat-kerja' => 'Riwayat Kerja',
-    'informasi-alumni' => 'Informasi Alumni',
-    'arsip-transkrip' => 'Arsip Transkrip',
-    'arsip-kelulusan' => 'Arsip Kelulusan',
-    'alumni' => 'Alumni',
-
+    "remedial" => "Remedial",
     "absensi" => "Absensi",
     "arsip" => "Arsip",
+    "materi-ajar" => "Materi Ajar",
 
 ];
