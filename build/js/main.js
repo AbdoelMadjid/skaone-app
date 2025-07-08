@@ -458,22 +458,22 @@ function showSessionSwal() {
         const config = {
             success: {
                 title: 'Berhasil!',
-                buttonClass: 'btn btn-success',
+                buttonClass: 'btn btn-soft-success',
                 buttonText: 'Lanjut'
             },
             error: {
                 title: 'Oops...!',
-                buttonClass: 'btn btn-danger',
+                buttonClass: 'btn btn-soft-danger',
                 buttonText: 'Tutup'
             },
             warning: {
                 title: 'Peringatan!',
-                buttonClass: 'btn btn-warning',
+                buttonClass: 'btn btn-soft-warning',
                 buttonText: 'Mengerti'
             },
             info: {
                 title: 'Informasi',
-                buttonClass: 'btn btn-info',
+                buttonClass: 'btn btn-soft-info',
                 buttonText: 'Oke'
             }
         };
@@ -486,10 +486,11 @@ function showSessionSwal() {
             html: `<div class="text-muted">${message}</div>`,
             showCancelButton: true,
             showConfirmButton: false,
-            cancelButtonClass: `${alert.buttonClass} w-xs mb-1`,
+            cancelButtonClass: `${alert.buttonClass} w-sm mb-1`,
             cancelButtonText: alert.buttonText,
             buttonsStyling: true,
-            showCloseButton: true
+            showCloseButton: true,
+            footer: '<div class="text-muted fs-6"><a href="https://github.com/AbdoelMadjid" target="blank">Scripting & Design by. Abdul Madjid, S.Pd., M.Pd.</a></div>'
         });
     });
 }
