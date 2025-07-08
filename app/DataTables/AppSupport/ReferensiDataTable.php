@@ -36,7 +36,13 @@ class ReferensiDataTable extends DataTable
      */
     public function query(Referensi $model): QueryBuilder
     {
-        return $model->newQuery()->orderBy('id', 'desc');
+        $query = $model->newQuery()->orderBy('id', 'desc');
+
+        if (request()->has('jenis') && request()->jenis !== '') {
+            $query->where('jenis', request()->jenis);
+        }
+
+        return $query;
     }
 
     /**

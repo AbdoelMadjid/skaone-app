@@ -14,10 +14,29 @@
         <div class="card-header d-flex align-items-center">
             <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
             <div>
-                @can('create appsupport/referensi')
-                    <a class="btn btn-soft-primary btn-sm action" href="{{ route('appsupport.referensi.create') }}">Tambah
-                        Refernsi</a>
-                @endcan
+                <div class="row g-3">
+                    <div class="col-lg">
+
+                    </div>
+                    <div class="col-lg-auto">
+                        <select id="filter-jenis" class="form-select form-select-sm" style="width: 200px;">
+                            <option value="">Semua Jenis</option>
+                            @foreach (\App\Models\AppSupport\Referensi::select('jenis')->distinct()->pluck('jenis') as $jenis)
+                                <option value="{{ $jenis }}">{{ $jenis }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-lg-auto">
+                        <button id="reset-filter" class="btn btn-soft-secondary btn-sm">Reset</button>
+                    </div>
+                    <div class="col-lg-auto">
+                        @can('create appsupport/referensi')
+                            <a class="btn btn-soft-primary btn-sm action" href="{{ route('appsupport.referensi.create') }}">
+                                Tambah Referensi
+                            </a>
+                        @endcan
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card-body p-1">
@@ -41,6 +60,19 @@
     <script>
         const datatable = 'referensi-table';
 
+        $(document).ready(function() {
+            const table = window.LaravelDataTables["referensi-table"];
+
+            $('#filter-jenis').on('change', function() {
+                let jenis = $(this).val();
+                table.ajax.url("{{ route('appsupport.referensi.index') }}?jenis=" + jenis).load();
+            });
+
+            $('#reset-filter').on('click', function() {
+                $('#filter-jenis').val('');
+                table.ajax.url("{{ route('appsupport.referensi.index') }}").load();
+            });
+        });
         handleDataTableEvents(datatable);
 
         function toggleJenisInput() {
