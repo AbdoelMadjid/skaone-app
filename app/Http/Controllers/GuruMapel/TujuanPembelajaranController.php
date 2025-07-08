@@ -50,6 +50,18 @@ class TujuanPembelajaranController extends Controller
             ? trim(($personil->gelardepan ? $personil->gelardepan . ' ' : '') . $personil->namalengkap . ($personil->gelarbelakang ? ', ' . $personil->gelarbelakang : ''))
             : 'Unknown';
 
+        $KbmPersonil = KbmPerRombel::where('id_personil', $personal_id)
+            ->where('tahunajaran', $tahunAjaran->tahunajaran)
+            ->where('ganjilgenap', $semester->semester)
+            ->orderBy('kel_mapel')
+            ->orderBy('kode_rombel')
+            ->get();
+
+        // Jika belum memiliki jam mengajar
+        if ($KbmPersonil->isEmpty()) {
+            return redirect()->route('dashboard')->with('errorSwal', 'Maaf, Anda belum memiliki <b>Jam Mengajar</b> pada <b>tahun ajaran</b> dan <b>semester</b> saat ini. Silakan hubungi bagian Kurikulum.');
+        }
+
         $cpOptions = CpTerpilih::where('cp_terpilihs.id_personil', $personal_id)
             ->where('tahunajaran', $tahunAjaran->tahunajaran)
             ->where('ganjilgenap', $semester->semester)
@@ -80,12 +92,9 @@ class TujuanPembelajaranController extends Controller
                 ];
             });
 
-        $KbmPersonil = KbmPerRombel::where('id_personil', $personal_id)
-            ->where('tahunajaran', $tahunAjaran->tahunajaran)
-            ->where('ganjilgenap', $semester->semester)
-            ->orderBy('kel_mapel')
-            ->orderBy('kode_rombel')
-            ->get();
+        if ($cpOptions->isEmpty()) {
+            return redirect()->route('gurumapel.adminguru.capaian-pembelajaran')->with('warningSwal', 'Anda belum memilih <b>Capaian Pembelajaran</b>. Silakan pilih terlebih dahulu sebelum mengakses menu Tujuan Pembelajaran.');
+        }
 
         return $tujuanPembelajaranDataTable->render(
             'pages.gurumapel.tujuan-pembelajaran',

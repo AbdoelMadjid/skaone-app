@@ -55,6 +55,11 @@ class DataKbmController extends Controller
             ->where('ganjilgenap', $semester->semester)
             ->get();
 
+        // Cek kbm per rombel
+        if ($kbmPerRombels->isEmpty()) {
+            return redirect()->route('dashboard')->with('warningGuruMapel', 'Maaf, Anda belum memiliki <b>JAM MENGAJAR</b> <br>pada <b>tahun ajaran</b> dan <b>semester</b> sekarang. <br>Silakan hubungi bagian Kurikulum.');
+        }
+
         // Loop untuk menambahkan jumlah siswa ke setiap rombel
         foreach ($kbmPerRombels as $kbm) {
             $kbm->jumlahSiswa = DB::table('peserta_didik_rombels')

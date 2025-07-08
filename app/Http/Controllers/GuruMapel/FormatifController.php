@@ -59,7 +59,7 @@ class FormatifController extends Controller
             ->first();
 
         if (!$kbmPerRombel) {
-            return redirect()->back()->with('error', 'Tidak ada data KBM ditemukan.');
+            return redirect()->route('dashboard')->with('errorSwal', 'Maaf, Anda belum memiliki <b>Jam Mengajar</b> <br>pada <b>tahun ajaran</b> dan <b>semester</b> saat ini.<br> Silakan hubungi bagian Kurikulum.');
         }
 
         return $formatifDataTable->render(

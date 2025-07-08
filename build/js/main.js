@@ -490,6 +490,20 @@ function showSessionSwal() {
             cancelButtonText: alert.buttonText,
             buttonsStyling: true,
             showCloseButton: true,
+            showClass: {
+                popup: `
+                animate__animated
+                animate__fadeInUp
+                animate__faster
+                `
+            },
+            hideClass: {
+                popup: `
+                animate__animated
+                animate__fadeOutDown
+                animate__faster
+                `
+            },
             footer: '<div class="text-muted fs-6"><a href="https://github.com/AbdoelMadjid" target="blank">Scripting & Design by. Abdul Madjid, S.Pd., M.Pd.</a></div>'
         });
     });

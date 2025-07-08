@@ -66,6 +66,10 @@ class DataCpTerpilihController extends Controller
             ->orderBy('kode_rombel')
             ->get();
 
+        // Cek kbm per rombel
+        if ($kbmPerRombels->isEmpty()) {
+            return redirect()->route('dashboard')->with('warningGuruMapel', 'Maaf, Anda belum memiliki <b>JAM MENGAJAR</b> <br>pada <b>tahun ajaran</b> dan <b>semester</b> sekarang. <br>Silakan hubungi bagian Kurikulum.');
+        }
 
         $mapelOptions = KbmPerRombel::where('id_personil', $personal_id)
             ->where('tahunajaran', $tahunAjaran->tahunajaran)
