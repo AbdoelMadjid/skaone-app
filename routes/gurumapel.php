@@ -54,6 +54,19 @@ Route::middleware('auth')->group(function () {
             Route::post('/updatetujuanpembelajaran/{id}', [TujuanPembelajaranController::class, 'updateTujuanPembelajaran'])->name('updatetujuanpembelajaran');
 
             Route::resource('perangkat-ajar', PerangkatAjarController::class);
+            Route::post('perangkat-ajar/upload', [PerangkatAjarController::class, 'upload'])
+                ->name('perangkat-ajar.upload');
+
+            Route::get('/perangkat-ajar/preview/{type}/{filename}', function ($type, $filename) {
+                $path = base_path("perangkat-ajar/{$type}/{$filename}");
+
+                if (!file_exists($path)) {
+                    abort(404);
+                }
+
+                return response()->file($path);
+            })->name('perangkat-ajar.preview');
+
             Route::resource('ujian-sumatif', UjianSumatifController::class);
             Route::resource('ajuan-remedial', AjuanRemedialController::class);
             Route::resource('arsip-kbm', ArsipKbmGmapelController::class);

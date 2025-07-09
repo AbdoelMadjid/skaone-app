@@ -1,6 +1,7 @@
 /.phpunit.cache
 /node_modules
 /images
+/perangkat-ajar
 /storage/*.key
 /storage/backups
 /vendor
