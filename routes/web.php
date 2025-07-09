@@ -96,9 +96,7 @@ Route::middleware(['auth', 'master'])->post('/switch-account', [UserController::
 // Rute untuk kembali ke akun asal
 Route::middleware(['auth'])->get('/return-account', [UserController::class, 'returnToOriginalAccount'])->name('return.account');
 
-Route::group(['prefix' => 'about', 'as' => 'about.'], function () {
-    Route::resource('about', AboutController::class);
-});
+Route::resource('about', AboutController::class);
 
 Route::middleware(['auth'])->post('/websiteapp/pollingsubmit', [PollingController::class, 'submitPolling'])->name('websiteapp.pollingsubmit');
 

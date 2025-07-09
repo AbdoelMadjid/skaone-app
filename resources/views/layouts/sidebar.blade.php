@@ -137,7 +137,7 @@
                 @endforeach
                 <li class="menu-title"><span>@lang('translation.about')</span></li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link {{ Request::is('about*') ? 'active' : '' }}" href="/about/about">
+                    <a class="nav-link menu-link {{ Request::is('about*') ? 'active' : '' }}" href="/about">
                         <i class="ri-question-line"></i> <span>@lang('translation.about')</span>
                     </a>
                 </li>
