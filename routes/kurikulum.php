@@ -8,6 +8,7 @@ use App\Http\Controllers\Kurikulum\DataKBM\MataPelajaranController;
 use App\Http\Controllers\Kurikulum\DataKBM\MataPelajaranPerJurusanController;
 use App\Http\Controllers\Kurikulum\DataKBM\PesertaDidikRombelController;
 use App\Http\Controllers\Kurikulum\DokumenGuru\ArsipGuruMapelController;
+use App\Http\Controllers\Kurikulum\DokumenGuru\ArsipPerangkatAjarController;
 use App\Http\Controllers\Kurikulum\DokumenGuru\ArsipWaliKelasController;
 use App\Http\Controllers\Kurikulum\DokumenGuru\ArsipWaliKelasV2Controller;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\CetakRaporController;
@@ -86,6 +87,7 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::group(['prefix' => 'dokumenguru', 'as' => 'dokumenguru.'], function () {
+            Route::resource('arsip-perangkat-ajar', ArsipPerangkatAjarController::class);
             Route::resource('arsip-gurumapel', ArsipGuruMapelController::class);
             Route::post('/simpanpilihan', [ArsipGuruMapelController::class, 'simpanPilihan'])->name('simpanpilihan');
             Route::post('/get-guru-by-tahunsemester', [ArsipGuruMapelController::class, 'getGuruByTahunSemester'])->name('getguru');
