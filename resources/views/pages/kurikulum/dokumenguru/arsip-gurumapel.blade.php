@@ -106,10 +106,6 @@
     <script>
         const datatable = 'arsipngajar-table';
 
-        @if (session('toast_success'))
-            showToast('success', '{{ session('toast_success') }}');
-        @endif
-
         $(document).ready(function() {
 
             const table = $("#arsipngajar-table").DataTable();
@@ -136,9 +132,14 @@
                         _token: '{{ csrf_token() }}',
                         tahunajaran: tahunajaran,
                     },
-                    success: function() {
-                        updateGuruDropdown(); // ✅ Panggil fungsi update guru di sini
+                    success: function(response) {
+                        updateGuruDropdown(); // muat ulang dropdown guru
                         $('#arsipngajar-table').DataTable().ajax.reload();
+
+                        // ✅ tampilkan notifikasi dari response
+                        if (response.message) {
+                            showToast('success', response.message);
+                        }
                     }
                 });
             });
@@ -154,15 +155,22 @@
                         _token: '{{ csrf_token() }}',
                         ganjilgenap: ganjilgenap,
                     },
-                    success: function() {
-                        updateGuruDropdown(); // ✅ Panggil fungsi update guru di sini
+                    success: function(response) {
+                        updateGuruDropdown(); // muat ulang dropdown guru
                         $('#arsipngajar-table').DataTable().ajax.reload();
+
+                        // ✅ tampilkan notifikasi dari response
+                        if (response.message) {
+                            showToast('success', response.message);
+                        }
                     }
                 });
             });
 
             // Saat guru berubah
             $('#id_guru').on('change', function() {
+                if (autoChanging) return; // 🔒 cegah AJAX saat bukan interaksi user
+
                 const id_guru = $(this).val();
 
                 $.ajax({
@@ -172,11 +180,16 @@
                         _token: '{{ csrf_token() }}',
                         id_guru: id_guru
                     },
-                    success: function() {
+                    success: function(response) {
                         $('#arsipngajar-table').DataTable().ajax.reload();
+
+                        if (response.message) {
+                            showToast('success', response.message);
+                        }
                     }
                 });
             });
+
 
             function updateGuruDropdown() {
                 const tahunajaran = $('#tahunajaran').val();
@@ -193,6 +206,8 @@
                         },
                         success: function(response) {
                             const guruSelect = $('#id_guru');
+                            autoChanging = true; // ⛳ Mulai perubahan otomatis
+
                             guruSelect.empty().append('<option value="">Pilih Guru</option>');
 
                             response.options.forEach(function(option) {
@@ -200,7 +215,8 @@
                                     .selected, option.selected));
                             });
 
-                            guruSelect.trigger('change'); // supaya select2 tampil dengan benar
+                            guruSelect.trigger('change'); // update tampilan select2
+                            autoChanging = false; // ✅ Selesai, nonaktifkan flag
                         }
                     });
                 }

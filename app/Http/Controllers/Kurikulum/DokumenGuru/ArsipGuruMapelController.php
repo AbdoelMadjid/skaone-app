@@ -147,7 +147,19 @@ class ArsipGuruMapelController extends Controller
             $data
         );
 
-        return response()->json(['success' => true]);
+        $message = 'Pilihan berhasil diperbarui.';
+        if ($request->has('tahunajaran')) {
+            $message = 'Tahun ajaran berhasil dipilih.';
+        } elseif ($request->has('ganjilgenap')) {
+            $message = 'Semester berhasil dipilih.';
+        } elseif ($request->has('id_guru')) {
+            $message = 'Guru pengampu berhasil dipilih.';
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => $message
+        ]);
     }
 
     public function simpanPilihanGuru(Request $request)
