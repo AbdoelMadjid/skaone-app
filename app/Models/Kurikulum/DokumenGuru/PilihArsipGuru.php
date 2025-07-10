@@ -10,11 +10,9 @@ class PilihArsipGuru extends Model
     use HasFactory;
     protected $table = 'pilih_arsip_gurus';
     protected $fillable = [
-        'id_user',
+        'id_personil',
         'tahunajaran',
-        'semester',
-        'pilih_filter',
+        'ganjilgenap',
         'id_guru',
-        'id_rombel',
     ];
 }

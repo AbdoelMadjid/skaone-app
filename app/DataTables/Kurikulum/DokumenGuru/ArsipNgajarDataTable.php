@@ -3,8 +3,10 @@
 namespace App\DataTables\Kurikulum\DokumenGuru;
 
 use App\Models\Kurikulum\DataKBM\KbmPerRombel;
+use App\Models\Kurikulum\DokumenGuru\PilihArsipGuru;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -239,38 +241,18 @@ class ArsipNgajarDataTable extends DataTable
      */
     public function query(KbmPerRombel $model): QueryBuilder
     {
-        $tahunajaran = request('tahunajaran');
-        $semester = request('semester');
-        $gurumapel = request('gurumapel');
-        $rombel = request('rombel');
+        $user = Auth::user();
+        $personal_id = $user->personal_id;
+
+        $dataPilGuru = PilihArsipGuru::where('id_personil', $personal_id)->first();
 
         $query = $model->newQuery();
 
-        // Jika tahunajaran atau semester belum dipilih, return kosong
-        if (!$tahunajaran || !$semester) {
-            return $query->whereRaw('1 = 0');
-        }
-
-        // Jika belum pilih salah satu dari guru mapel atau rombel (atau dua-duanya 'All')
-        $guruMapelDipilih = $gurumapel && $gurumapel !== 'All';
-        $rombelDipilih = $rombel && $rombel !== 'All';
-
-        if (!$guruMapelDipilih && !$rombelDipilih) {
-            return $query->whereRaw('1 = 0');
-        }
-
         // Filter jika valid
-        $query->where('tahunajaran', $tahunajaran)
-            ->where('ganjilgenap', $semester);
-
-        if ($guruMapelDipilih) {
-            $query->where('id_personil', $gurumapel);
-        }
-
-        if ($rombelDipilih) {
-            $query->where('kode_rombel', $rombel);
-        }
-
+        $query->where('tahunajaran', $dataPilGuru->tahunajaran)
+            ->where('ganjilgenap', $dataPilGuru->ganjilgenap)
+            ->where('id_personil', $dataPilGuru->id_guru)
+        ;
 
         return $query;
     }
@@ -283,12 +265,7 @@ class ArsipNgajarDataTable extends DataTable
         return $this->builder()
             ->setTableId('arsipngajar-table')
             ->columns($this->getColumns())
-            ->minifiedAjax('', null, [
-                'tahunajaran' => 'function() { return $("#tahunajaran").val(); }',
-                'semester'    => 'function() { return $("#semester").val(); }',
-                'gurumapel'   => 'function() { return $("#gurumapel").val(); }',
-                'rombel'      => 'function() { return $("#rombel").val(); }',
-            ])
+            ->minifiedAjax()
             //->dom('Bfrtip')
             ->orderBy(1)
             ->parameters([
@@ -311,6 +288,8 @@ class ArsipNgajarDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
+            Column::make('tahunajaran')->title('Tahun Ajaran'),
+            Column::make('ganjilgenap')->title('Semester'),
             Column::make('rombel')->title('Rombel')->addClass('text-center')->width(75),
             Column::make('mata_pelajaran')->title('Nama Mapel'),
             Column::make('namaguru')->title('Guru Mapel'),

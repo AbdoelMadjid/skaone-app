@@ -14,6 +14,7 @@ use App\Models\Kurikulum\DokumenGuru\PilihArsipGuru;
 use App\Models\ManajemenSekolah\PersonilSekolah;
 use App\Models\ManajemenSekolah\Semester;
 use App\Models\ManajemenSekolah\TahunAjaran;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -28,10 +29,48 @@ class ArsipGuruMapelController extends Controller
      */
     public function index(ArsipNgajarDataTable $arsipNgajarDataTable)
     {
+        $user = Auth::user();
+        $personal_id = $user->personal_id;
+
+        $dataPilGuru = PilihArsipGuru::where('id_personil', $personal_id)->first();
+
+        // CEK apakah dataPilWalas ADA
+        if (!$dataPilGuru) {
+            return redirect()->route('dashboard')->with('errorAmbilData', '<p class="text-danger mx-4 mb-0">Anda belum memiliki akses ke menu ini.</p> <p class="fs-6">Silakan hubungi Developer Aplikasi ini. </p> <p class="fs-1"><i class="lab las la-grin"></i> <i class="lab las la-grin"></i> <i class="lab las la-grin"></i></p>');
+        }
+
         $tahunAjaran = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
+
+        // Ambil semua id_personil guru yang mengajar di kbm_per_rombels
+        $daftarGuruIDs = KbmPerRombel::where('tahunajaran', $dataPilGuru->tahunajaran ?? '')
+            ->where('ganjilgenap', $dataPilGuru->ganjilgenap ?? '')
+            ->pluck('id_personil')
+            ->unique()
+            ->toArray();
+
+        // Ambil data nama lengkap guru dari personil_sekolahs berdasarkan ID di atas
+        $daftarGuru = PersonilSekolah::whereIn('id_personil', $daftarGuruIDs)->get();
+
+        // Ambil semua user yang punya role 'master'
+        $usersWithMasterRole = User::role('master')->get();
+
+        // Ambil semua id_personil dari user tersebut
+        $idPersonilList = $usersWithMasterRole->pluck('personal_id')->filter()->unique();
+
+        // Ambil data PersonilSekolah berdasarkan id_personil
+        $personilSekolah = PersonilSekolah::whereIn('id_personil', $idPersonilList)
+            ->pluck('namalengkap', 'id_personil')
+            ->toArray();
 
         return $arsipNgajarDataTable->render('pages.kurikulum.dokumenguru.arsip-gurumapel', [
             'tahunAjaran' => $tahunAjaran,
+            'personal_id' => $personal_id,
+            'selectedTahunajaran' => $dataPilGuru->tahunajaran ?? '',
+            'selectedSemester' => $dataPilGuru->ganjilgenap ?? '',
+            'selectedGuru' => $dataPilGuru->id_guru ?? '',
+            'daftarGuru' => $daftarGuru,
+            'dataPilGuru' => $dataPilGuru,
+            'personilSekolah' => $personilSekolah,
         ]);
     }
 
@@ -83,56 +122,90 @@ class ArsipGuruMapelController extends Controller
         //
     }
 
-
-    public function getGuru()
-    {
-        $guru = PersonilSekolah::where('jenispersonil', 'guru')
-            ->where('aktif', 'Aktif')
-            ->get(['id_personil', 'gelardepan', 'namalengkap', 'gelarbelakang']);
-
-        return response()->json($guru);
-    }
-
-    public function getRombel()
-    {
-        $rombels = DB::table('rombongan_belajars')
-            ->join('kompetensi_keahlians', 'rombongan_belajars.id_kk', '=', 'kompetensi_keahlians.idkk')
-            ->select('rombongan_belajars.kode_rombel', 'rombongan_belajars.rombel', 'rombongan_belajars.id_kk', 'kompetensi_keahlians.nama_kk')
-            ->orderBy('kompetensi_keahlians.nama_kk') // Urutkan berdasarkan nama kompetensi keahlian
-            ->orderBy('rombongan_belajars.rombel')   // Urutkan berdasarkan rombel di dalam kelompok
-            ->get()
-            ->groupBy('id_kk');
-
-        return response()->json($rombels);
-    }
-
     public function simpanPilihan(Request $request)
     {
-        $userId = Auth::id();
+        $user = Auth::user();
+        $personal_id = $user->personal_id;
 
-        $data = [
-            'tahunajaran' => $request->tahunajaran,
-            'semester' => $request->semester,
-            'pilih_filter' => $request->pilih_filter,
-            'id_guru' => $request->pilih_filter === 'gurumapel' ? $request->id_guru : null,
-            'id_rombel' => $request->pilih_filter === 'rombel' ? $request->id_rombel : null,
-        ];
+        $data = [];
 
+        if ($request->filled('tahunajaran')) {
+            $data['tahunajaran'] = $request->tahunajaran;
+        }
+
+        if ($request->filled('ganjilgenap')) {
+            $data['ganjilgenap'] = $request->ganjilgenap;
+        }
+
+        if ($request->filled('id_guru')) {
+            $data['id_guru'] = $request->id_guru;
+        }
+
+        // Update or create berdasarkan id_personil
         PilihArsipGuru::updateOrCreate(
-            ['id_user' => $userId],
+            ['id_personil' => $personal_id],
             $data
         );
 
         return response()->json(['success' => true]);
     }
 
-    public function getPilihanUser()
+    public function simpanPilihanGuru(Request $request)
     {
-        $userId = Auth::id();
+        $validatedData = $request->validate([
+            'id_personil' => 'required|string',
+            'tahunajaran' => 'required|string',
+            'ganjilgenap' => 'required|string',
+            'id_guru' => 'required|string',
+        ]);
 
-        $data = PilihArsipGuru::where('id_user', $userId)->first();
+        PilihArsipGuru::updateOrCreate(
+            ['id_personil' => $validatedData['id_personil']],
+            $validatedData
+        );
 
-        return response()->json($data);
+        return redirect()->back()->with('success', 'Data berhasil disimpan.');
+    }
+
+    public function getGuruByTahunSemester(Request $request)
+    {
+        $user = Auth::user();
+        $personal_id = $user->personal_id;
+
+        $tahunajaran = $request->tahunajaran;
+        $ganjilgenap = $request->ganjilgenap;
+
+        if (!$tahunajaran || !$ganjilgenap) {
+            return response()->json(['options' => []]);
+        }
+
+        // Ambil id_guru yang tersimpan sebelumnya
+        $selected = PilihArsipGuru::where('id_personil', $personal_id)
+            ->where('tahunajaran', $tahunajaran)
+            ->where('ganjilgenap', $ganjilgenap)
+            ->value('id_guru');
+
+        // Ambil semua id_personil guru dari kbm_per_rombels sesuai tahun + ganjilgenap
+        $guruIDs = KbmPerRombel::where('tahunajaran', $tahunajaran)
+            ->where('ganjilgenap', $ganjilgenap)
+            ->pluck('id_personil')
+            ->unique()
+            ->filter(); // buang null jika ada
+
+        // Ambil data personilnya
+        $guruList = PersonilSekolah::whereIn('id_personil', $guruIDs)->get();
+
+        // Format data untuk select2
+        $options = $guruList->map(function ($guru) use ($selected) {
+            $nama = trim("{$guru->gelardepan} {$guru->namalengkap} {$guru->gelarbelakang}");
+            return [
+                'id' => $guru->id_personil,
+                'text' => $nama,
+                'selected' => $guru->id_personil == $selected,
+            ];
+        });
+
+        return response()->json(['options' => $options]);
     }
 
     public function createNilaiFormatif($kode_rombel, $kel_mapel, $id_personil)

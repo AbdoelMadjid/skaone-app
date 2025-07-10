@@ -87,11 +87,11 @@ Route::middleware('auth')->group(function () {
 
         Route::group(['prefix' => 'dokumenguru', 'as' => 'dokumenguru.'], function () {
             Route::resource('arsip-gurumapel', ArsipGuruMapelController::class);
-            Route::get('/get-guru', [ArsipGuruMapelController::class, 'getGuru']);
-            Route::get('/get-rombel', [ArsipGuruMapelController::class, 'getRombel']);
-
-            Route::post('/simpanpilihan', [ArsipGuruMapelController::class, 'simpanPilihan']);
-            Route::get('/get-pilihan-user', [ArsipGuruMapelController::class, 'getPilihanUser']);
+            Route::post('/simpanpilihan', [ArsipGuruMapelController::class, 'simpanPilihan'])->name('simpanpilihan');
+            Route::post('/get-guru-by-tahunsemester', [ArsipGuruMapelController::class, 'getGuruByTahunSemester'])->name('getguru');
+            Route::post('/simpanpilihguru', [ArsipGuruMapelController::class, 'simpanPilihanGuru'])
+                ->name('simpanpilihguru');
+            //Route::post('/simpanpilihan', [ArsipGuruMapelController::class, 'simpanPilihan']);
 
             Route::get('arsip-gurumapel/formatif/createNilai/{kode_rombel}/{kel_mapel}/{id_personil}/{tahunajaran}/{ganjilgenap}', [ArsipGuruMapelController::class, 'createNilaiFormatif'])->name('arsip-gurumapel.formatif.createNilai');
             Route::get('arsip-gurumapel/formatif/editNilai/{kode_rombel}/{kel_mapel}/{id_personil}/{tahunajaran}/{ganjilgenap}', [ArsipGuruMapelController::class, 'editNilaiFormatif'])->name('arsip-gurumapel.formatif.editNilai');

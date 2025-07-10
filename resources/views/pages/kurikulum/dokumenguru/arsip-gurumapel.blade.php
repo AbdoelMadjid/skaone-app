@@ -5,21 +5,9 @@
 @section('css')
     <link href="{{ URL::asset('build/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
     <style>
-        .list-rombel-wrapper {
-            display: none;
-            /* Sembunyikan dropdown sementara */
-        }
-
-        .list-gurumapel-wrapper {
-            display: none;
-            /* Sembunyikan dropdown sementara */
-        }
-
-        .loading-message {
-            display: block;
-            text-align: center;
-            font-size: 14px;
-            color: #666;
+        /* Untuk hasil pilihan di Select2 agar rata kiri */
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            text-align: left !important;
         }
     </style>
 @endsection
@@ -32,60 +20,75 @@
             @lang('translation.dokumen-guru')
         @endslot
     @endcomponent
-    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-0">
-        <div class="card-header d-flex align-items-center">
-            <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
-            <div>
-                <form class="row">
-                    <div class="col-lg">
+    <div class="row">
+        <div class="col-xxl-9">
+            <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-0">
+                <div class="card-header d-flex align-items-center">
+                    <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
+                    <div>
 
                     </div>
-                    <div class="col-lg-auto">
-                        <select class="form-control" name="tahunajaran" id="tahunajaran" required>
-                            <option value="" selected>Pilih TA</option>
+                </div>
+                <div class="card-body p-1">
+                    <div id="datatable-wrapper" style="height: calc(100vh - 264px);">
+                        {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xxl-3">
+            <div class="card d-lg-flex gap-1 mx-n1 mt-n3 p-1 mb-0">
+                <div class="card-header d-flex align-items-center">
+                    <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">Pilih Data</h5>
+                    <div>
+                        @if ($personal_id == 'Pgw_0016')
+                            <button type="button" class="btn btn-soft-primary btn-sm w-100" data-bs-toggle="modal"
+                                data-bs-target="#tambahPilihArsipGuru"><i
+                                    class="ri-file-download-line align-bottom me-1"></i>
+                                Tambah</button>
+                        @endif
+                    </div>
+                </div>
+                <div class="card-body text-center">
+                    <form>
+                        <input type="hidden" name="id_personil" id="id_personil" value="{{ $personal_id }}">
+                        <select class="form-control mb-3 w-100" name="tahunajaran" id="tahunajaran" required>
+                            <option value="">Pilih TA</option>
                             @foreach ($tahunAjaran as $tahunajaran => $thajar)
-                                <option value="{{ $tahunajaran }}">{{ $thajar }}</option>
+                                <option value="{{ $tahunajaran }}"
+                                    {{ $tahunajaran == $selectedTahunajaran ? 'selected' : '' }}>
+                                    {{ $thajar }}
+                                </option>
                             @endforeach
                         </select>
-                    </div>
-                    <div class="col-lg-auto">
-                        <select class="form-control" name="semester" id="semester" required>
-                            <option value="" selected>Pilih Semester</option>
-                            <option value="Ganjil">Ganjil</option>
-                            <option value="Genap">Genap</option>
+
+                        <select class="form-control mb-3" name="ganjilgenap" id="ganjilgenap" required>
+                            <option value="">Pilih Semester</option>
+                            <option value="Ganjil" {{ $selectedSemester == 'Ganjil' ? 'selected' : '' }}>Ganjil</option>
+                            <option value="Genap" {{ $selectedSemester == 'Genap' ? 'selected' : '' }}>Genap</option>
                         </select>
-                    </div>
-                    <div class="col-lg-auto">
-                        <select class="form-select filter-selector" aria-label="Default select example" name="filter"
-                            id="filter" required>
-                            <option value="">Pilih Filter</option>
-                            <option value="gurumapel">Guru Mata Pelajaran</option>
-                            <option value="rombel">Rombongan Belajar</option>
+
+                        <select class="form-control select2 mb-3" name="id_guru" id="id_guru" required>
+                            <option value="">Pilih Guru</option>
+                            @foreach ($daftarGuru as $guru)
+                                @php
+                                    $namaLengkap = trim(
+                                        "{$guru->gelardepan} {$guru->namalengkap} {$guru->gelarbelakang}",
+                                    );
+                                @endphp
+                                <option value="{{ $guru->id_personil }}"
+                                    {{ $guru->id_personil == $selectedGuru ? 'selected' : '' }}>
+                                    {{ $namaLengkap }}
+                                </option>
+                            @endforeach
                         </select>
-                    </div>
-                    <div class="col-lg-auto">
-                        <div class="loading-message">Memuat data...</div>
-                        <div class="list-gurumapel-wrapper">
-                            <select class="form-control list-gurumapel" name="gurumapel" id="gurumapel" style="width: 100%;"
-                                disabled></select>
-                        </div>
-                    </div>
-                    <div class="col-lg-auto">
-                        <div class="loading-message">Memuat data...</div>
-                        <div class="list-rombel-wrapper">
-                            <select class="form-control list-rombel" name="rombel" id="rombel" style="width: 100%;"
-                                disabled></select>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
-        <div class="card-body p-1">
-            <div id="datatable-wrapper" style="height: calc(100vh - 276px);">
-                {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
-            </div>
+            <!--end card-->
         </div>
     </div>
+    @include('pages.kurikulum.dokumenguru.arsip-gurumapel-tambah-form')
     @include('pages.kurikulum.dokumenguru.formatif-upload-nilai')
     @include('pages.kurikulum.dokumenguru.sumatif-upload-nilai')
 @endsection
@@ -111,134 +114,98 @@
 
             const table = $("#arsipngajar-table").DataTable();
 
+            $('#id_guru').select2({
+                placeholder: "Pilih Guru",
+                allowClear: true,
+                width: '100%'
+            });
+
             // Reload tabel setiap dropdown filter berubah
-            $("#tahunajaran, #semester, #gurumapel, #rombel").on("change", function() {
+            /* $("#tahunajaran, #ganjilgenap, #id_guru").on("change", function() {
                 table.ajax.reload();
+            }); */
+
+            // Saat tahunajaran berubah
+            $('#tahunajaran').on('change', function() {
+                const tahunajaran = $(this).val();
+
+                $.ajax({
+                    url: '{{ route('kurikulum.dokumenguru.simpanpilihan') }}', // pastikan route ini sesuai
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        tahunajaran: tahunajaran,
+                    },
+                    success: function() {
+                        updateGuruDropdown(); // ✅ Panggil fungsi update guru di sini
+                        $('#arsipngajar-table').DataTable().ajax.reload();
+                    }
+                });
             });
 
-            // Event handler untuk perubahan dropdown filter
-            $(".filter-selector").on("change", function() {
-                var selectedValue = $(this).val();
+            // Saat semester berubah
+            $('#ganjilgenap').on('change', function() {
+                const ganjilgenap = $(this).val();
 
-                // Reset semua dropdown ke disabled
-                $(".list-gurumapel").prop("disabled", true);
-                $(".list-rombel").prop("disabled", true);
-
-                // Kembali ke opsi default ("All") untuk dropdown yang dinonaktifkan
-                $(".list-gurumapel").val("All").trigger("change");
-                $(".list-rombel").val("All").trigger("change");
-
-                // Aktifkan dropdown sesuai pilihan
-                if (selectedValue === "gurumapel") {
-                    $(".list-gurumapel").prop("disabled", false);
-                } else if (selectedValue === "rombel") {
-                    $(".list-rombel").prop("disabled", false);
-                }
+                $.ajax({
+                    url: '{{ route('kurikulum.dokumenguru.simpanpilihan') }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        ganjilgenap: ganjilgenap,
+                    },
+                    success: function() {
+                        updateGuruDropdown(); // ✅ Panggil fungsi update guru di sini
+                        $('#arsipngajar-table').DataTable().ajax.reload();
+                    }
+                });
             });
 
-            // Inisialisasi Select2 untuk Guru Mapel
-            $(".list-gurumapel").select2({
-                placeholder: "Pilih Guru Mapel",
+            // Saat guru berubah
+            $('#id_guru').on('change', function() {
+                const id_guru = $(this).val();
+
+                $.ajax({
+                    url: '{{ route('kurikulum.dokumenguru.simpanpilihan') }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id_guru: id_guru
+                    },
+                    success: function() {
+                        $('#arsipngajar-table').DataTable().ajax.reload();
+                    }
+                });
             });
 
-            // Simulasi Memuat Data untuk Guru Mapel
-            // Fetch data
-            $.ajax({
-                url: '/kurikulum/dokumenguru/get-guru', // Endpoint backend
-                method: 'GET',
-                success: function(data) {
-                    // Tambahkan opsi "Pilih Guru Mapel"
-                    var options = [{
-                            id: 'All',
-                            text: 'Pilih Guru Mapel'
-                        }, // Opsi pertama dengan value All
-                    ];
+            function updateGuruDropdown() {
+                const tahunajaran = $('#tahunajaran').val();
+                const ganjilgenap = $('#ganjilgenap').val();
 
-                    // Tambahkan data guru ke dalam opsi
-                    data.forEach(function(guru) {
-                        options.push({
-                            id: guru.id_personil,
-                            text: `${guru.gelardepan ? guru.gelardepan + ' ' : ''}${guru.namalengkap}${guru.gelarbelakang ? ', ' + guru.gelarbelakang : ''}`
-                        });
+                if (tahunajaran && ganjilgenap) {
+                    $.ajax({
+                        url: '{{ route('kurikulum.dokumenguru.getguru') }}',
+                        method: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            tahunajaran: tahunajaran,
+                            ganjilgenap: ganjilgenap
+                        },
+                        success: function(response) {
+                            const guruSelect = $('#id_guru');
+                            guruSelect.empty().append('<option value="">Pilih Guru</option>');
+
+                            response.options.forEach(function(option) {
+                                guruSelect.append(new Option(option.text, option.id, option
+                                    .selected, option.selected));
+                            });
+
+                            guruSelect.trigger('change'); // supaya select2 tampil dengan benar
+                        }
                     });
-
-                    // Masukkan data ke dalam dropdown
-                    $(".list-gurumapel").select2({
-                        data: options,
-                        placeholder: "Pilih Guru",
-                    });
-
-                    // Tampilkan dropdown setelah data selesai dimuat
-                    $(".loading-message").hide();
-                    $(".list-gurumapel-wrapper").fadeIn();
-                },
-                error: function(error) {
-                    console.error('Error fetching data:', error);
-
-                    // Tampilkan pesan error dan sembunyikan dropdown
-                    $(".loading-message").text("Gagal memuat data.");
-                    $(".list-gurumapel-wrapper").hide();
                 }
-            });
+            }
 
-            // Inisialisasi Select2 untuk Rombel
-            $(".list-rombel").select2({
-                placeholder: "Pilih Rombongan Belajar",
-            });
-
-            // Simulasi Memuat Data untuk Rombel
-            $.ajax({
-                url: '/kurikulum/dokumenguru/get-rombel',
-                method: 'GET',
-                beforeSend: function() {
-                    // Pastikan dropdown tersembunyi saat data belum siap
-                    $(".list-rombel-wrapper").hide();
-                    $(".loading-message").show();
-                },
-                success: function(data) {
-                    // Clear existing options
-                    $(".list-rombel").empty();
-
-                    // Add default option
-                    $(".list-rombel").append(
-                        $("<option>", {
-                            value: "All",
-                            text: "Pilih Rombel"
-                        })
-                    );
-
-                    // Loop through grouped data
-                    $.each(data, function(id_kk, rombels) {
-                        const groupLabel = rombels[0]?.nama_kk || 'Unknown';
-
-                        // Create optgroup
-                        const optgroup = $("<optgroup>", {
-                            label: groupLabel
-                        });
-
-                        // Add options to the optgroup
-                        rombels.forEach(function(rombel) {
-                            optgroup.append(
-                                $("<option>", {
-                                    value: rombel.kode_rombel,
-                                    text: rombel.rombel
-                                })
-                            );
-                        });
-
-                        // Append optgroup to the select
-                        $(".list-rombel").append(optgroup);
-                    });
-
-                    // Tampilkan dropdown setelah data selesai dimuat
-                    $(".loading-message").hide();
-                    $(".list-rombel-wrapper").fadeIn();
-                },
-                error: function(error) {
-                    console.error('Error fetching data:', error);
-                    $(".loading-message").text('Gagal memuat data.');
-                }
-            });
         });
 
         /*  handleDataTableEvents(datatable);
