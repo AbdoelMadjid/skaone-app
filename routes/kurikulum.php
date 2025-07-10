@@ -88,6 +88,10 @@ Route::middleware('auth')->group(function () {
 
         Route::group(['prefix' => 'dokumenguru', 'as' => 'dokumenguru.'], function () {
             Route::resource('arsip-perangkat-ajar', ArsipPerangkatAjarController::class);
+            Route::post('/deleteArsipPerangkatAjar', [ArsipPerangkatAjarController::class, 'destroyArsipPerangkatAjar'])
+                ->name('deleteArsipPerangkatAjar');
+
+
             Route::resource('arsip-gurumapel', ArsipGuruMapelController::class);
             Route::post('/simpanpilihan', [ArsipGuruMapelController::class, 'simpanPilihan'])->name('simpanpilihan');
             Route::post('/get-guru-by-tahunsemester', [ArsipGuruMapelController::class, 'getGuruByTahunSemester'])->name('getguru');

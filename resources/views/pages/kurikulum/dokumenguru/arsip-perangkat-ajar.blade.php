@@ -81,6 +81,47 @@
             const actionUrl = "{{ route('gurumapel.adminguru.perangkat-ajar.upload') }}";
             document.getElementById('uploadForm').action = actionUrl;
         });
+
+        $(document).on('click', '.delete-perangkat', function() {
+            const id_personil = $(this).data('id_personil');
+            const tingkat = $(this).data('tingkat');
+            const mapel = $(this).data('mapel');
+            const tahunajaran = $(this).data('tahunajaran');
+            const semester = $(this).data('semester');
+
+            Swal.fire({
+                title: 'Hapus Arsip?',
+                text: 'Seluruh dokumen perangkat ajar ini akan dihapus.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, hapus'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{{ route('kurikulum.dokumenguru.deleteArsipPerangkatAjar') }}',
+                        method: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            id_personil: id_personil,
+                            tingkat: tingkat,
+                            mata_pelajaran: mapel,
+                            tahunajaran: tahunajaran,
+                            semester: semester
+                        },
+                        success: function(response) {
+                            showToast('success', response.message);
+                            $('#arsipperangkatajar-table').DataTable().ajax
+                                .reload(); // Ganti sesuai ID tabel
+                        },
+                        error: function() {
+                            showToast('error', 'Data tidak ditemukan atau gagal dihapus.');
+                        }
+                    });
+                }
+            });
+        });
     </script>
     <script>
         const datatable = 'arsipperangkatajar-table';

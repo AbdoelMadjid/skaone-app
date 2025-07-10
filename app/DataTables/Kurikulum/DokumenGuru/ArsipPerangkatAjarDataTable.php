@@ -42,20 +42,18 @@ class ArsipPerangkatAjarDataTable extends DataTable
             ->addColumn('doc_cp', fn($row) => $this->getUploadedDoc($row, 'doc_cp', 'CP'))
             ->addColumn('doc_tp', fn($row) => $this->getUploadedDoc($row, 'doc_tp', 'ATP'))
             ->addColumn('doc_rpp', fn($row) => $this->getUploadedDoc($row, 'doc_rpp', 'Modul Ajar'))
-            ->addColumn('upload', function ($row) {
-                $tingkat = $row->tingkat;
-                $mapel = $row->mata_pelajaran;
-                $button = '<button type="button" class="btn btn-sm btn-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#uploadModal"
-                    data-tingkat="' . $tingkat . '"
-                    data-mapel="' . htmlspecialchars($mapel, ENT_QUOTES) . '">
-                    Upload
+            ->addColumn('hapus', function ($row) {
+                return '<button class="btn btn-sm btn-danger delete-perangkat"
+                    data-id_personil="' . $row->id_personil . '"
+                    data-tingkat="' . $row->tingkat . '"
+                    data-mapel="' . htmlspecialchars($row->mata_pelajaran, ENT_QUOTES) . '"
+                    data-tahunajaran="' . $row->tahunajaran . '"
+                    data-semester="' . $row->ganjilgenap . '">
+                    Hapus
                 </button>';
-                return $button;
             })
             ->addIndexColumn()
-            ->rawColumns(['doc_analis_waktu', 'doc_cp', 'doc_tp', 'doc_rpp', 'upload']);
+            ->rawColumns(['doc_analis_waktu', 'doc_cp', 'doc_tp', 'doc_rpp', 'hapus']);
     }
 
     protected function renderPdfButton($fileName, $label)
@@ -180,7 +178,7 @@ class ArsipPerangkatAjarDataTable extends DataTable
             Column::make('doc_cp')->title('CP')->addClass('text-center'),
             Column::make('doc_tp')->title('TP')->addClass('text-center'),
             Column::make('doc_rpp')->title('Modul Ajar')->addClass('text-center'),
-            //Column::make('upload')->title('Upload')->addClass('text-center'),
+            Column::make('hapus')->title('Hapus')->addClass('text-center'),
             /* Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
