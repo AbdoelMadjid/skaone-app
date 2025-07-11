@@ -20,9 +20,6 @@
         <div class="card-header d-flex align-items-center">
             <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
             <div>
-                <button type="button" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal" data-bs-target="#generateAkun"
-                    id="generateAkunBtn" title="generateAkun">Generate
-                    Akun Siswa</button>
                 <a href="{{ route('manajemensekolah.peserta-didik.index') }}" class="btn btn-soft-primary btn-sm">Peserta
                     Didik</a>
                 @can('create kurikulum/datakbm/peserta-didik-rombel')
@@ -30,6 +27,12 @@
                         href="{{ route('kurikulum.datakbm.peserta-didik-rombel.create') }}"><i
                             class="ri-add-line align-bottom me-1"></i> Peserta Didik Rombel</a>
                 @endcan
+                <button type="button" class="btn btn-soft-info btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#generateAkun" id="generateAkunBtn" title="generateAkun">Generate
+                    Akun Siswa</button>
+                <button type="button" class="btn btn-soft-danger btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#generateNaikKelas" id="generateNaikKelasBtn" title="generateNaikKelas">Naik
+                    Kelas</button>
                 {{-- <a href="{{ route('ps_exportExcel') }}" class="btn btn-primary"><i
                                         class="ri-file-upload-line align-bottom me-1"></i> Unduh</a>
                                 <button type="button" class="btn btn-info" data-bs-toggle="modal"
@@ -102,6 +105,7 @@
         </div>
     </div>
     @include('pages.kurikulum.datakbm.peserta-didik-rombel-generateakun')
+    @include('pages.kurikulum.datakbm.peserta-didik-rombel-naik-kelas')
 @endsection
 @section('script')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
@@ -321,7 +325,7 @@
                         $.each(data, function(index, item) {
                             $('#selected_datasiswa_tbody').append(`
                     <tr data-rombel="${item.kode_rombel}">
-                         <td>${index + 1}</td>
+                        <td>${index + 1}</td>
                         <td>${item.rombel}</td>
                         <td>${item.nis}</td>
                         <td>${item.nama_siswa}</td>
@@ -334,6 +338,219 @@
                 });
             }
 
+            /// PROSES NAIK KELAS
+            function loadRombelNaikKelas() {
+                const tahunajaran = $('#tahunajaranNK1').val();
+                const kode_kk = $('#kode_kk_NK1').val();
+                const tingkat = $('#tingkatNK1').val();
+
+                if (tahunajaran && kode_kk && tingkat) {
+                    $.ajax({
+                        url: "{{ route('kurikulum.datakbm.getrombelnaikkelas') }}",
+                        method: "GET",
+                        data: {
+                            tahunajaran: tahunajaran,
+                            kode_kk: kode_kk,
+                            tingkat: tingkat
+                        },
+                        success: function(data) {
+                            let options = '<option value="">Pilih Rombel</option>';
+                            data.forEach(function(item) {
+                                options +=
+                                    `<option value="${item.kode_rombel}">${item.rombel}</option>`;
+                            });
+                            $('#rombelNK1').html(options);
+                        },
+                        error: function() {
+                            alert('Gagal mengambil data rombel.');
+                        }
+                    });
+                } else {
+                    $('#rombelNK1').html('<option value="">Pilih Rombel</option>');
+                }
+            }
+
+            $('#tahunajaranNK1, #kode_kk_NK1, #tingkatNK1').on('change', loadRombelNaikKelas);
+
+            // Untuk Rombel Tahun Ajaran Baru (NK2)
+            function loadRombelNaikKelasBaru() {
+                const tahunajaran = $('#tahunajaranNK2').val();
+                const kode_kk = $('#kode_kk_NK2').val();
+                const tingkat = $('#tingkatNK2').val();
+
+                if (tahunajaran && kode_kk && tingkat) {
+                    $.ajax({
+                        url: "{{ route('kurikulum.datakbm.getrombelnaikkelas') }}",
+                        method: "GET",
+                        data: {
+                            tahunajaran: tahunajaran,
+                            kode_kk: kode_kk,
+                            tingkat: tingkat
+                        },
+                        success: function(data) {
+                            let options = '<option value="">Pilih Rombel</option>';
+                            data.forEach(function(item) {
+                                options +=
+                                    `<option value="${item.kode_rombel}">${item.rombel}</option>`;
+                            });
+                            $('#rombelNK2').html(options);
+                        },
+                        error: function() {
+                            alert('Gagal mengambil data rombel untuk tahun ajaran baru.');
+                        }
+                    });
+                } else {
+                    $('#rombelNK2').html('<option value="">Pilih Rombel</option>');
+                }
+            }
+
+            // Trigger saat salah satu field berubah
+            $('#tahunajaranNK2, #kode_kk_NK2, #tingkatNK2').on('change', loadRombelNaikKelasBaru);
+
+            //tampilkan data siswa
+            $('#rombelNK1').on('change', function() {
+                const tahunajaran = $('#tahunajaranNK1').val();
+                const kode_kk = $('#kode_kk_NK1').val();
+                const tingkat = $('#tingkatNK1').val();
+                const kode_rombel = $(this).val();
+                const tahunajaranBaru = $('#tahunajaranNK2').val(); // ambil tahun ajaran baru
+
+                if (tahunajaran && kode_kk && tingkat && kode_rombel) {
+                    $.ajax({
+                        url: '{{ route('kurikulum.datakbm.getsiswanaikkelas') }}',
+                        method: 'GET',
+                        data: {
+                            tahunajaran: tahunajaran,
+                            kode_kk: kode_kk,
+                            tingkat: tingkat,
+                            kode_rombel: kode_rombel,
+                            tahunajaran_baru: tahunajaranBaru
+                        },
+                        success: function(data) {
+                            let rows = '';
+                            data.forEach(function(siswa, index) {
+                                rows += `
+                        <tr>
+                            <td>${siswa.no}</td>
+                            <td>${siswa.nis}</td>
+                            <td>${siswa.nama}</td>
+                            <td>${siswa.jk}</td>
+                            <td>${siswa.status}</td>
+                            <td class="text-center">
+                                <input type="checkbox" name="selected_siswa[]" class="check-siswa" value="${siswa.nis}">
+                            </td>
+                        </tr>
+                    `;
+                            });
+
+                            $('#selected_datasiswa_tbody_nk').html(rows);
+                        },
+                        error: function() {
+                            alert('Gagal memuat data siswa.');
+                        }
+                    });
+                }
+            });
+
+            $('#tahunajaranNK2').on('change', function() {
+                $('#rombelNK1').trigger('change');
+            });
+
+            $('#kode_kk_NK1, #tingkatNK1').on('change', function() {
+                $('#selected_datasiswa_tbody_nk').html('');
+            });
+
+            //notifikasi kk tidak sama
+            $('#kode_kk_NK2').on('change', function() {
+                const kk1 = $('#kode_kk_NK1').val();
+                const kk2 = $('#kode_kk_NK2').val();
+
+                if (kk1 && kk2 && kk1 !== kk2) {
+                    $('#notifikasi_kk_tidak_sama').removeClass('d-none');
+                } else {
+                    $('#notifikasi_kk_tidak_sama').addClass('d-none');
+                }
+            });
+
+            $('#kode_kk_NK1').on('change', function() {
+                $('#kode_kk_NK2').trigger('change'); // Paksa recheck tingkatNK2
+            });
+
+            // notifikasi tingkat tidak sesuai
+            $('#tingkatNK2').on('change', function() {
+                const tingkatNK1 = parseInt($('#tingkatNK1').val());
+                const tingkatNK2 = parseInt($('#tingkatNK2').val());
+
+                if (tingkatNK1 && tingkatNK2) {
+                    if (tingkatNK2 !== tingkatNK1 + 1) {
+                        $('#notifikasi_tingkat_tidak_valid')
+                            .removeClass('d-none')
+                            .text(`Tingkat harus ${tingkatNK1 + 1} jika saat ini tingkat ${tingkatNK1}.`);
+                    } else {
+                        $('#notifikasi_tingkat_tidak_valid').addClass('d-none').text('');
+                    }
+                } else {
+                    $('#notifikasi_tingkat_tidak_valid').addClass('d-none').text('');
+                }
+            });
+
+            $('#tingkatNK1').on('change', function() {
+                $('#tingkatNK2').trigger('change'); // Paksa recheck tingkatNK2
+            });
+
+
+            // Validasi apakah rombel baru sesuai aturan format nama
+            function validateNamaRombelBaru() {
+                const rombelNamaNK1 = $('#rombelNK1 option:selected').text().trim();
+                const rombelNamaNK2 = $('#rombel_namaNK2').val().trim();
+
+                const tingkatNK1 = parseInt($('#tingkatNK1').val());
+                const tingkatNK2 = parseInt($('#tingkatNK2').val());
+
+                if (!rombelNamaNK1 || !rombelNamaNK2 || isNaN(tingkatNK1) || isNaN(tingkatNK2)) {
+                    $('#notif_koderombel').text(''); // jangan tampilkan pesan apapun
+                    return;
+                }
+
+                // Misal: rombelNamaNK1 = "10 TKJ 1" → replace 10 jadi 11
+                const expectedRombelBaru = rombelNamaNK1.replace(/^\d+/, tingkatNK2);
+
+                if (rombelNamaNK2 !== expectedRombelBaru) {
+                    $('#notif_koderombel').text('Rombel Baru yang dipilih SALAH');
+                } else {
+                    $('#notif_koderombel').text('');
+                }
+            }
+
+            $('#rombelNK1').on('change', function() {
+                $('#rombelNK2').trigger('change'); // Paksa recheck tingkatNK2
+            });
+
+            // Fungsi untuk isi input rombel_nama
+            function updateRombelNama() {
+                const rombelText = $('#rombelNK2 option:selected').text();
+                $('#rombel_namaNK2').val(rombelText.trim());
+            }
+
+            // Pastikan fungsi dijalankan saat select berubah
+            //$(document).on('change', '#rombelNK2', updateRombelNama);
+            $(document).on('change', '#rombelNK2', function() {
+                updateRombelNama();
+                validateNamaRombelBaru();
+            });
+
+            // Jalankan juga saat form dikirim, sebagai jaga-jaga terakhir
+            $('#formNaikKelas').on('submit', function() {
+                updateRombelNama();
+            });
+
+            $(document).on('change', '#selected_datasiswa_list_nk thead input[type="checkbox"]', function() {
+                const checked = $(this).is(':checked');
+                $('#selected_datasiswa_list_nk tbody .check-siswa').prop('checked', checked);
+            });
+
+
+            //=========================
 
             $('#' + datatable).DataTable();
 
@@ -344,6 +561,5 @@
             ScrollDinamicDataTable(datatable, scrollOffsetOverride = 106);
         });
     </script>
-
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

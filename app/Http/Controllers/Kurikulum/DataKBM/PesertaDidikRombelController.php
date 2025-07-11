@@ -11,6 +11,7 @@ use App\Models\ManajemenSekolah\PesertaDidik;
 use App\Models\ManajemenSekolah\RombonganBelajar;
 use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Models\User;
+use App\Models\WaliKelas\PesertaDidikNaik;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -335,12 +336,154 @@ class PesertaDidikRombelController extends Controller
     }
 
 
+    public function getRombelNaikKelas(Request $request)
+    {
+        $tahunajaran = $request->tahunajaran;
+        $id_kk = $request->kode_kk;
+        $tingkat = $request->tingkat;
+
+        $rombels = RombonganBelajar::where('tahunajaran', $tahunajaran)
+            ->where('id_kk', $id_kk)
+            ->where('tingkat', $tingkat)
+            ->orderBy('rombel')
+            ->get(['kode_rombel', 'rombel']);
+
+        return response()->json($rombels);
+    }
+
+
+    /* public function getSiswaNaikKelas(Request $request)
+    {
+        $tahunajaran = $request->tahunajaran;
+        $kode_kk = $request->kode_kk;
+        $tingkat = $request->tingkat;
+        $kode_rombel = $request->kode_rombel;
+
+        $pesertaRombel = PesertaDidikRombel::where('tahun_ajaran', $tahunajaran)
+            ->where('kode_kk', $kode_kk)
+            ->where('rombel_tingkat', $tingkat)
+            ->where('rombel_kode', $kode_rombel)
+            ->get();
+
+        $result = $pesertaRombel->map(function ($item, $index) use ($kode_rombel, $tahunajaran) {
+            $siswa = PesertaDidik::where('nis', $item->nis)->first();
+            $statusNaik = PesertaDidikNaik::where('kode_rombel', $kode_rombel)
+                ->where('tahunajaran', $tahunajaran)
+                ->where('nis', $item->nis)
+                ->value('status');
+
+            return [
+                'no' => $index + 1,
+                'nis' => $item->nis,
+                'nama' => $siswa->nama_lengkap ?? '-',
+                'jk' => $siswa->jenis_kelamin ?? '-',
+                'status' => $statusNaik ?? '-', // tampilkan status jika ada
+            ];
+        });
+
+        return response()->json($result);
+    } */
+
+    public function getSiswaNaikKelas(Request $request)
+    {
+        $tahunajaran = $request->tahunajaran; // dari rombelNK1
+        $kode_kk = $request->kode_kk;
+        $tingkat = $request->tingkat;
+        $kode_rombel = $request->kode_rombel;
+        $tahunajaranBaru = $request->tahunajaran_baru; // dari rombelNK2 (opsional)
+
+        // Ambil seluruh siswa dari rombel tahun ajaran sebelumnya (NK1)
+        $pesertaRombel = PesertaDidikRombel::where('tahun_ajaran', $tahunajaran)
+            ->where('kode_kk', $kode_kk)
+            ->where('rombel_tingkat', $tingkat)
+            ->where('rombel_kode', $kode_rombel)
+            ->get();
+
+        // Ambil daftar NIS yang sudah masuk ke tahunajaran baru (NK2)
+        $nisSudahNaik = [];
+        if ($tahunajaranBaru) {
+            $nisSudahNaik = PesertaDidikRombel::where('tahun_ajaran', $tahunajaranBaru)
+                ->pluck('nis')
+                ->toArray();
+        }
+
+        // Filter siswa yang belum naik dan tampilkan status dari PesertaDidikNaik (sebagai informasi)
+        $result = $pesertaRombel->filter(function ($item) use ($nisSudahNaik) {
+            return !in_array($item->nis, $nisSudahNaik); // hanya yang belum naik
+        })->values()->map(function ($item, $index) use ($kode_rombel, $tahunajaran) {
+            $siswa = PesertaDidik::where('nis', $item->nis)->first();
+
+            // Ambil status naik dari model PesertaDidikNaik (untuk ditampilkan)
+            $statusNaik = PesertaDidikNaik::where('kode_rombel', $kode_rombel)
+                ->where('tahunajaran', $tahunajaran)
+                ->where('nis', $item->nis)
+                ->value('status');
+
+            return [
+                'no' => $index + 1,
+                'nis' => $item->nis,
+                'nama' => $siswa->nama_lengkap ?? '-',
+                'jk' => $siswa->jenis_kelamin ?? '-',
+                'status' => $statusNaik ?? '-', // tampilkan tetap walau tidak digunakan untuk filter
+            ];
+        });
+
+        return response()->json($result);
+    }
 
 
 
+    public function formGenerateNaikKelas(Request $request)
+    {
+        $request->validate([
+            'tahunajaran' => 'required',
+            'kode_kk' => 'required',
+            'tingkat' => 'required',
+            'rombel' => 'required',
+            'rombel_nama' => 'required',
+            'selected_siswa' => 'required|array|min:1',
+        ]);
+
+        $tahunajaran = $request->input('tahunajaran');
+        $kode_kk = $request->input('kode_kk');
+        $tingkat = $request->input('tingkat');
+        $rombelKode = $request->input('rombel');
+        $rombelNama = $request->input('rombel_nama');
+        $nisList = $request->input('selected_siswa');
+
+        DB::beginTransaction();
+        try {
+            foreach ($nisList as $nis) {
+                // Hindari duplikasi
+                $exists = PesertaDidikRombel::where('tahun_ajaran', $tahunajaran)
+                    ->where('kode_kk', $kode_kk)
+                    ->where('rombel_tingkat', $tingkat)
+                    ->where('rombel_kode', $rombelKode)
+                    ->where('nis', $nis)
+                    ->exists();
+
+                if (!$exists) {
+                    PesertaDidikRombel::create([
+                        'tahun_ajaran' => $tahunajaran,
+                        'kode_kk' => $kode_kk,
+                        'rombel_tingkat' => $tingkat,
+                        'rombel_kode' => $rombelKode,
+                        'rombel_nama' => $rombelNama,
+                        'nis' => $nis,
+                    ]);
+                }
+            }
+
+            DB::commit();
+            return back()->with('success', 'Data kenaikan kelas berhasil disimpan.');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
+        }
+    }
 
 
-
+    //// gak tahu ini buat apa, mungkin di hapus
     // In your Controller
     public function getPesertaDidik($kode_kk, Request $request)
     {
