@@ -131,14 +131,15 @@ class UserDataTable extends DataTable
         // Jika user memiliki role 'master', tambahkan kolom role_add
         if ($user && $user->hasRole('master')) {
             $columns[] = Column::make('role_add')->title('Roles Add');
+            // Tambahkan kolom `action` di akhir
+            $columns[] = Column::computed('action')
+                ->exportable(false)
+                ->printable(false)
+                ->width(60)
+                ->addClass('text-center');
         }
 
-        // Tambahkan kolom `action` di akhir
-        $columns[] = Column::computed('action')
-            ->exportable(false)
-            ->printable(false)
-            ->width(60)
-            ->addClass('text-center');
+
 
         return $columns;
     }
