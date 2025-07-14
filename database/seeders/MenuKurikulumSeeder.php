@@ -34,6 +34,9 @@ class MenuKurikulumSeeder extends Seeder
 
         $csm = $sm->subMenus()->create(['name' => 'Pengumuman', 'url' => $sm->url . '/pengumuman', 'category' => $sm->category]);
         $this->attachMenupermission($csm, ['create', 'read', 'update', 'delete'], ['admin']);
+
+        $csm = $sm->subMenus()->create(['name' => 'Berkas Cetak', 'url' => $sm->url . '/berkas-cetak', 'category' => $sm->category]);
+        $this->attachMenupermission($csm, ['read'], ['admin']);
         // start childmenu perangkat kurikulum
 
         // start childmenu data kbm

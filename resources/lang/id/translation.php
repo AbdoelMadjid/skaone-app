@@ -315,6 +315,7 @@ return [
     "perangkat-kurikulum" => "Perangkat Kurikulum",
     "versi-kurikulum" => "Versi Kurikulum",
     "pengumuman" => "Pengumuman",
+    "berkas-cetak" => "Berkas Cetak",
 
     //kurikulum - data kbm
     "data-kbm" => "Data KBM",

@@ -18,6 +18,7 @@ use App\Http\Controllers\Kurikulum\DokumenSiswa\RaporPklController;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\RaporPLimaController;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\RemedialPesertaDidikNilaiController;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\TranskripNilaiController;
+use App\Http\Controllers\Kurikulum\PerangkatKurikulum\BerkasCetakController;
 use App\Http\Controllers\Kurikulum\PerangkatKurikulum\PengumumanController;
 use App\Http\Controllers\Kurikulum\PerangkatKurikulum\VersiKurikulumController;
 use App\Http\Controllers\Kurikulum\PerangkatUjian\AdministrasiUjianController;
@@ -86,6 +87,10 @@ Route::middleware('auth')->group(function () {
         Route::group(['prefix' => 'perangkatkurikulum', 'as' => 'perangkatkurikulum.'], function () {
             Route::resource('versi-kurikulum', VersiKurikulumController::class);
             Route::resource('pengumuman', PengumumanController::class);
+            Route::resource('berkas-cetak', BerkasCetakController::class);
+            Route::get('get-rombel-by-filter', [BerkasCetakController::class, 'getRombelByFilter'])->name('getrombelbyfilter');
+
+
             Route::get('/pengumuman/{id}', [PengumumanController::class, 'show'])->name('pengumuman.show');
         });
 
