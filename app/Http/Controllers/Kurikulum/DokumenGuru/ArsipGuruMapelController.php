@@ -52,7 +52,7 @@ class ArsipGuruMapelController extends Controller
         $daftarGuru = PersonilSekolah::whereIn('id_personil', $daftarGuruIDs)->get();
 
         // Ambil semua user yang punya role 'master'
-        $usersWithMasterRole = User::role('master')->get();
+        $usersWithMasterRole = User::role('admin')->get();
 
         // Ambil semua id_personil dari user tersebut
         $idPersonilList = $usersWithMasterRole->pluck('personal_id')->filter()->unique();
