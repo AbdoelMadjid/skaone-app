@@ -15,7 +15,7 @@
             'Orang Tua Kandung' => 'Orang Tua Kandung',
             'Orang Tua Angkat' => 'Orang Tua Angkat',
             'Orang Tua Tiri' => 'Orang Tua Tiri',
-        ]" value="{{ old('status', $ortu->status ?? '') }}"
+        ]" value="{{ old('status', $ortu->status_ortu ?? '') }}"
             label="Status dalam Keluarga" />
 
     </div>

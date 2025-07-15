@@ -101,6 +101,8 @@ class IdentitasSiswaController extends Controller
             $ortuData = collect();    // Jika wali kelas tidak ditemukan, kirim koleksi kosong
         }
 
+        $statusOrtuOptions = Referensi::where('jenis', 'StatusOrtu')->pluck('data', 'data')->toArray();
+
         return $waliKelasDtSiswaDataTable->render(
             'pages.walikelas.identitas-siswa',
             compact(
@@ -109,7 +111,9 @@ class IdentitasSiswaController extends Controller
                 'personil',
                 'semesterAngka',
                 'kbmData',
-                'siswaData'
+                'siswaData',
+                'ortuData',
+                'statusOrtuOptions'
             )
         );
     }
@@ -151,6 +155,7 @@ class IdentitasSiswaController extends Controller
         $ortu = PesertaDidikOrtu::firstOrNew(['nis' => $identitasSiswa->nis]);
 
         $pekerjaanOrtu = Referensi::where('jenis', 'Pekerjaan')->pluck('data', 'data')->toArray();
+        $statusOrtuOptions = Referensi::where('jenis', 'StatusOrtu')->pluck('data', 'data')->toArray();
 
         return view('pages.walikelas.identitas-siswa-form', [
             'data' => $identitasSiswa,
@@ -159,6 +164,7 @@ class IdentitasSiswaController extends Controller
             'agamaOptions' => $agamaOptions,
             'ortu' => $ortu,
             'pekerjaanOrtu' => $pekerjaanOrtu,
+            'statusOrtuOptions' => $statusOrtuOptions,
             'action' => route('walikelas.identitas-siswa.update', $identitasSiswa->id)
         ]);
     }
@@ -204,6 +210,7 @@ class IdentitasSiswaController extends Controller
         PesertaDidikOrtu::updateOrCreate(
             ['nis' => $identitasSiswa->nis],
             $request->only([
+                'status_ortu',
                 'nm_ayah',
                 'nm_ibu',
                 'pekerjaan_ayah',

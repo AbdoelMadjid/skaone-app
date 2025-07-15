@@ -119,7 +119,7 @@
         <div class="col-md-6">
             <h5 class='text-danger'>Status Siswa </h5>
             <hr>
-            <x-form.select name="status" :options="['Aktif' => 'Aktif', 'Pindah' => 'Pindah', 'Keluar' => 'Keluar']" value="{{ old('status', $data->status) }}"
+            <x-form.select name="status" :options="['Aktif' => 'Aktif', 'Lulus' => 'Lulus', 'Pindah' => 'Pindah', 'Keluar' => 'Keluar']" value="{{ old('status', $data->status) }}"
                 label="Status" />
             <x-form.input name="alasan_status" value="{{ $data->alasan_status }}" label="Alasan Status" />
         </div>
@@ -137,6 +137,13 @@
     </div>
     <br>
     <h5 class="text-danger">Data Orang Tua</h5>
+    <hr>
+    <div class="row">
+        <div class="col-md-6">
+            <x-form.select name="status_ortu" :options="$statusOrtuOptions" value="{{ old('status_ortu', $ortu->status_ortu) }}"
+                label="Status Orang Tua Dalam Keluarga" />
+        </div>
+    </div>
     <hr>
     <div class="row">
         <div class="col-md-6">
