@@ -414,6 +414,7 @@
                 const tingkat = $('#tingkatNK1').val();
                 const kode_rombel = $(this).val();
                 const tahunajaranBaru = $('#tahunajaranNK2').val(); // ambil tahun ajaran baru
+                const isKelulusan = $('#tingkatNK1').val() === '12'; // otomatis deteksi
 
                 if (tahunajaran && kode_kk && tingkat && kode_rombel) {
                     $.ajax({
@@ -424,7 +425,8 @@
                             kode_kk: kode_kk,
                             tingkat: tingkat,
                             kode_rombel: kode_rombel,
-                            tahunajaran_baru: tahunajaranBaru
+                            tahunajaran_baru: tahunajaranBaru,
+                            mode: isKelulusan ? 'kelulusan' : 'naik_kelas'
                         },
                         success: function(data) {
                             let rows = '';
@@ -551,6 +553,44 @@
 
 
             //=========================
+            // proses kelulusan
+
+            $('#tingkatNK1').on('change', function() {
+                const tingkatNK1 = $(this).val();
+                const form = $('#formNaikKelas');
+                const submitBtn = $('#submitNaikKelasBtn');
+
+                if (tingkatNK1 === '12') {
+                    // Mode Kelulusan
+                    form.attr('action', '{{ route('kurikulum.datakbm.formkelulusan') }}');
+                    submitBtn.text('Kelulusan');
+                    submitBtn.removeClass('btn-primary').addClass('btn-success');
+                    $('#notif_kelulusan').removeClass('d-none');
+
+                    // Nonaktifkan required untuk input NK2
+                    $('#tahunajaranNK2').removeAttr('required');
+                    $('#kode_kk_NK2').removeAttr('required');
+                    $('#tingkatNK2').removeAttr('required');
+                    $('#rombelNK2').removeAttr('required');
+                } else {
+                    // Mode Naik Kelas
+                    form.attr('action', '{{ route('kurikulum.datakbm.formgeneratenaikkelas') }}');
+                    submitBtn.text('Generate Naik Kelas');
+                    submitBtn.removeClass('btn-success').addClass('btn-primary');
+                    $('#notif_kelulusan').addClass('d-none');
+
+                    // Aktifkan kembali required untuk input NK2
+                    $('#tahunajaranNK2').attr('required', true);
+                    $('#kode_kk_NK2').attr('required', true);
+                    $('#tingkatNK2').attr('required', true);
+                    $('#rombelNK2').attr('required', true);
+                }
+            });
+
+
+
+
+            ///=====================
 
             $('#' + datatable).DataTable();
 

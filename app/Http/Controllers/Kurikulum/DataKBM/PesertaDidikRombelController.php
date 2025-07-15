@@ -351,40 +351,7 @@ class PesertaDidikRombelController extends Controller
         return response()->json($rombels);
     }
 
-
     /* public function getSiswaNaikKelas(Request $request)
-    {
-        $tahunajaran = $request->tahunajaran;
-        $kode_kk = $request->kode_kk;
-        $tingkat = $request->tingkat;
-        $kode_rombel = $request->kode_rombel;
-
-        $pesertaRombel = PesertaDidikRombel::where('tahun_ajaran', $tahunajaran)
-            ->where('kode_kk', $kode_kk)
-            ->where('rombel_tingkat', $tingkat)
-            ->where('rombel_kode', $kode_rombel)
-            ->get();
-
-        $result = $pesertaRombel->map(function ($item, $index) use ($kode_rombel, $tahunajaran) {
-            $siswa = PesertaDidik::where('nis', $item->nis)->first();
-            $statusNaik = PesertaDidikNaik::where('kode_rombel', $kode_rombel)
-                ->where('tahunajaran', $tahunajaran)
-                ->where('nis', $item->nis)
-                ->value('status');
-
-            return [
-                'no' => $index + 1,
-                'nis' => $item->nis,
-                'nama' => $siswa->nama_lengkap ?? '-',
-                'jk' => $siswa->jenis_kelamin ?? '-',
-                'status' => $statusNaik ?? '-', // tampilkan status jika ada
-            ];
-        });
-
-        return response()->json($result);
-    } */
-
-    public function getSiswaNaikKelas(Request $request)
     {
         $tahunajaran = $request->tahunajaran; // dari rombelNK1
         $kode_kk = $request->kode_kk;
@@ -429,8 +396,56 @@ class PesertaDidikRombelController extends Controller
         });
 
         return response()->json($result);
-    }
+    } */
 
+    public function getSiswaNaikKelas(Request $request)
+    {
+        $tahunajaran = $request->tahunajaran;
+        $kode_kk = $request->kode_kk;
+        $tingkat = $request->tingkat;
+        $kode_rombel = $request->kode_rombel;
+        $tahunajaranBaru = $request->tahunajaran_baru;
+        $mode = $request->mode; // 'naik_kelas' atau 'kelulusan'
+
+        $pesertaRombel = PesertaDidikRombel::where('tahun_ajaran', $tahunajaran)
+            ->where('kode_kk', $kode_kk)
+            ->where('rombel_tingkat', $tingkat)
+            ->where('rombel_kode', $kode_rombel)
+            ->get();
+
+        $nisSudahNaik = [];
+        if ($tahunajaranBaru && $mode !== 'kelulusan') {
+            $nisSudahNaik = PesertaDidikRombel::where('tahun_ajaran', $tahunajaranBaru)
+                ->pluck('nis')
+                ->toArray();
+        }
+
+        $result = $pesertaRombel->filter(function ($item) use ($nisSudahNaik, $mode) {
+            // Saring: kalau mode kelulusan → cek status != 'Lulus'
+            if ($mode === 'kelulusan') {
+                $peserta = PesertaDidik::where('nis', $item->nis)->first();
+                return $peserta && $peserta->status !== 'Lulus';
+            } else {
+                return !in_array($item->nis, $nisSudahNaik);
+            }
+        })->values()->map(function ($item, $index) use ($kode_rombel, $tahunajaran) {
+            $siswa = PesertaDidik::where('nis', $item->nis)->first();
+            $statusNaik = PesertaDidikNaik::where('kode_rombel', $kode_rombel)
+                ->where('tahunajaran', $tahunajaran)
+                ->where('nis', $item->nis)
+                ->value('status');
+
+            return [
+                'no' => $index + 1,
+                'nis' => $item->nis,
+                'nama' => $siswa->nama_lengkap ?? '-',
+                'jk' => $siswa->jenis_kelamin ?? '-',
+                'status' => $statusNaik ?? '-',
+            ];
+        });
+
+        return response()->json($result);
+    }
 
 
     public function formGenerateNaikKelas(Request $request)
@@ -508,5 +523,54 @@ class PesertaDidikRombelController extends Controller
             ->get();
 
         return response()->json($siswaBelumTerdaftar);
+    }
+
+    // kelulusan
+    public function formGenerateKelulusan(Request $request)
+    {
+        $request->validate([
+            'selected_siswa' => 'required|array|min:1',
+        ]);
+
+        $nisList = $request->input('selected_siswa');
+
+        DB::beginTransaction();
+        $successCount = 0;
+
+        try {
+            foreach ($nisList as $nis) {
+                // Update status peserta didik ke Lulus jika statusnya Aktif
+                $peserta = PesertaDidik::where('nis', $nis)->first();
+                if ($peserta && $peserta->status === 'Aktif') {
+                    $peserta->status = 'Lulus';
+                    $peserta->save();
+                }
+
+                // Update user role: hapus siswa, tambahkan alumni
+                $user = User::where('nis', $nis)->first();
+                if ($user) {
+                    if ($user->hasRole('siswa')) {
+                        $user->removeRole('siswa');
+                    }
+
+                    if ($user->hasRole('pesertapkl')) {
+                        $user->removeRole('pesertapkl');
+                    }
+
+                    if (!$user->hasRole('alumni')) {
+                        $user->assignRole('alumni');
+                    }
+                }
+
+                $successCount++;
+            }
+
+            DB::commit();
+
+            return back()->with('success', "Kelulusan berhasil diproses untuk {$successCount} siswa.");
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal memproses kelulusan: ' . $e->getMessage());
+        }
     }
 }

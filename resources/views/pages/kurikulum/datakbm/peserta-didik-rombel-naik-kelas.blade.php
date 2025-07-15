@@ -108,7 +108,9 @@
                         </div>
                     </div>
                 </div>
-
+                <div id="notif_kelulusan" class="alert alert-warning d-none mt-2">
+                    Proses ini akan meluluskan siswa, bukan naik kelas.
+                </div>
                 <div id="selected_datasiswa_list_nk">
                     <!-- Tabel ini akan diisi dengan data peserta didik yang dipilih -->
                     <table class="table table-bordered">
@@ -132,7 +134,8 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Generate Naik Kelas</button>
+                    <button type="submit" class="btn btn-primary" id="submitNaikKelasBtn">Generate Naik
+                        Kelas</button>
                 </div>
             </form>
         </div>

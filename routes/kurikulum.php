@@ -69,6 +69,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/get-rombel-naikkelas', [PesertaDidikRombelController::class, 'getRombelNaikKelas'])->name('getrombelnaikkelas');
             Route::get('/get-siswa-naik-kelas', [PesertaDidikRombelController::class, 'getSiswaNaikKelas'])->name('getsiswanaikkelas');
             Route::post('/formgeneratenaikkelas', [PesertaDidikRombelController::class, 'formGenerateNaikKelas'])->name('formgeneratenaikkelas');
+            Route::post('/formkelulusan', [PesertaDidikRombelController::class, 'formGenerateKelulusan'])->name('formkelulusan');
 
             Route::resource('mata-pelajaran', MataPelajaranController::class);
             Route::resource('mata-pelajaran-perjurusan', MataPelajaranPerJurusanController::class);

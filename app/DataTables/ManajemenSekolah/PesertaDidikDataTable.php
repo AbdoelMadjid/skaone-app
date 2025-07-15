@@ -3,6 +3,7 @@
 namespace App\DataTables\ManajemenSekolah;
 
 use App\Helpers\ImageHelper;
+use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
 use App\Models\ManajemenSekolah\PesertaDidik;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
@@ -55,11 +56,54 @@ class PesertaDidikDataTable extends DataTable
             ->addColumn('tempat_tanggal_lahir', function ($row) {
                 return $row->tempat_lahir . ', ' . \Carbon\Carbon::parse($row->tanggal_lahir)->format('d-m-Y');
             })
+            ->addColumn('status', function ($row) {
+                if ($row->status == "Aktif") {
+                    $statusbadge = "<span class='badge bg-info'>" . $row->status . "</span>";
+                } elseif ($row->status == "Keluar") {
+                    $statusbadge = "<span class='badge bg-danger'>" . $row->status . "</span>";
+                } elseif ($row->status == "Lulus") {
+                    $statusbadge = "<span class='badge bg-warning'>" . $row->status . "</span>";
+                }
+                return $statusbadge;
+            })
             ->addColumn('nis_nisn', function ($row) {
                 return $row->nis . '/' . $row->nisn;
             })
+            ->addColumn('tingkat_10', function ($row) {
+                $data = PesertaDidikRombel::where('nis', $row->nis)
+                    ->where('rombel_tingkat', 10)
+                    ->first();
+
+                if ($data) {
+                    return $data->tahun_ajaran . "<br><span class='badge bg-info'>" . $data->rombel_nama . "</span>";
+                }
+
+                return '-';
+            })
+            ->addColumn('tingkat_11', function ($row) {
+                $data = PesertaDidikRombel::where('nis', $row->nis)
+                    ->where('rombel_tingkat', 11)
+                    ->first();
+
+                if ($data) {
+                    return $data->tahun_ajaran . "<br><span class='badge bg-warning'>" . $data->rombel_nama . "</span>";
+                }
+
+                return '-';
+            })
+            ->addColumn('tingkat_12', function ($row) {
+                $data = PesertaDidikRombel::where('nis', $row->nis)
+                    ->where('rombel_tingkat', 12)
+                    ->first();
+
+                if ($data) {
+                    return $data->tahun_ajaran . "<br><span class='badge bg-danger'>" . $data->rombel_nama . "</span>";
+                }
+
+                return '-';
+            })
             ->addIndexColumn()
-            ->rawColumns(['checkbox', 'foto', 'tempat_tanggal_lahir', 'nis_nisn', 'action']);
+            ->rawColumns(['checkbox', 'foto', 'tempat_tanggal_lahir', 'nis_nisn', 'status', 'tingkat_10', 'tingkat_11', 'tingkat_12', 'action']);
     }
 
     /**
@@ -79,6 +123,10 @@ class PesertaDidikDataTable extends DataTable
 
         if (request()->has('jenkelSiswa') && request('jenkelSiswa') != 'all') {
             $query->where('jenis_kelamin', request('jenkelSiswa'));
+        }
+
+        if (request()->has('statusSiswa') && request('statusSiswa') != 'all') {
+            $query->where('status', request('statusSiswa'));
         }
 
         $query->select('peserta_didiks.*')->orderBy('nis', 'asc');
@@ -107,6 +155,7 @@ class PesertaDidikDataTable extends DataTable
                     d.search = $(".search").val();
                     d.kodeKK = $("#idKK").val();
                     d.jenkelSiswa = $("#idJenkel").val();
+                    d.statusSiswa = $("#idStatus").val();
                 }'
             ])
             //->dom('Bfrtip')
@@ -141,6 +190,10 @@ class PesertaDidikDataTable extends DataTable
             Column::make('nama_lengkap'),
             Column::computed('tempat_tanggal_lahir')->title('Tempat/ <br> Tanggal Lahir'),
             Column::make('jenis_kelamin'),
+            Column::make('tingkat_10'),
+            Column::make('tingkat_11'),
+            Column::make('tingkat_12'),
+            Column::make('status')->addClass('text-center'),
             Column::make('foto')->addClass('text-center'),
             Column::computed('action')
                 ->exportable(false)

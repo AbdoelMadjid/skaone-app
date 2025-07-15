@@ -30,6 +30,7 @@ if (!function_exists('getRoleName')) {
             'kaprodirpl' => 'Kaprodi RPL',
             'kaproditkj' => 'Kaprodi TKJ',
             'bpbk' => 'Bimbingan Konseling',
+            'alumni' => 'Alumni',
         ];
 
         if ($user && $user->roles->isNotEmpty()) {

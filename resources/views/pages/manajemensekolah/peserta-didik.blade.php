@@ -60,6 +60,18 @@
                         </div>
                     </div>
                     <!--end col-->
+                    <div class="col-lg-auto">
+                        <div>
+                            <select class="form-control form-control-sm" data-plugin="choices" data-choices
+                                data-choices-search-false name="choices-single-default" id="idStatus">
+                                <option value="all" selected>Pilih Status</option>
+                                <option value="Aktif">Aktif</option>
+                                <option value="Lulus">Lulus</option>
+                                <option value="Keluar">Keluar</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!--end col-->
 
                     <div class="col-lg-auto">
                         <div>
@@ -182,14 +194,15 @@
             });
 
             // Tambahkan event listener untuk dropdown agar bisa langsung merefresh tabel
-            $('#idKK, #idJenkel').on('change', function() {
+            $('#idKK, #idJenkel, #idStatus').on('change', function() {
                 table.ajax.reload(null, false); // Reload tabel saat dropdown berubah
             });
 
             // Override data yang dikirim ke server
             table.on('preXhr.dt', function(e, settings, data) {
-                data.jenisPersonil = $('#idKK').val(); // Ambil nilai dari dropdown idKK
-                data.statusPersonil = $('#idJenkel').val(); // Ambil nilai dari dropdown idJenkel
+                data.kkSiswa = $('#idKK').val(); // Ambil nilai dari dropdown idKK
+                data.JenkelSiswa = $('#idJenkel').val(); // Ambil nilai dari dropdown idJenkel
+                data.statusSiswa = $('#idStatus').val(); // Ambil nilai dari dropdown idJenkel
             });
         }
 
