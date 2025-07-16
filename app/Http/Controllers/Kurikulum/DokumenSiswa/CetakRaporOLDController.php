@@ -136,7 +136,7 @@ class CetakRaporController extends Controller
 
         // Ambil checklist yang SUDAH tersimpan
         $ceklistTersimpan = CeklistCetakRapor::where('tahunajaran', $dataPilCR->tahunajaran)
-            ->where('ganjilgenap', $dataPilCR->semester)
+            ->where('ganjilgenap', $semester->semester)
             ->where('status', 'Sudah')
             ->pluck('kode_rombel')
             ->toArray();
@@ -648,7 +648,7 @@ class CetakRaporController extends Controller
             $validatedData
         );
 
-        return redirect()->back()->with('success', 'Data berhasil disimpan.');
+        return redirect()->back()->with('toast_success', 'Data berhasil disimpan.');
     }
 
     public function infoWaliSiswa()
@@ -656,11 +656,25 @@ class CetakRaporController extends Controller
         $user = Auth::user();
         $personal_id = $user->personal_id;
 
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+
+        if (!$tahunAjaranAktif) {
+            return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
+        }
+
+        $semester = Semester::where('status', 'Aktif')
+            ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+            ->first();
+
+        if (!$semester) {
+            return redirect()->back()->with('error', 'Tidak ada semester aktif.');
+        }
+
         $dataPilCR = PilihCetakRapor::where('id_personil', $personal_id)->first();
 
         $siswaData = DB::table('peserta_didik_rombels')
             ->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
-            ->where('peserta_didik_rombels.tahun_ajaran', $dataPilCR->tahunajaran)
+            ->where('peserta_didik_rombels.tahun_ajaran', $tahunAjaranAktif->tahunajaran)
             ->where('peserta_didik_rombels.rombel_kode', $dataPilCR->kode_rombel)
             ->where('peserta_didik_rombels.rombel_tingkat', $dataPilCR->tingkat)
             ->where('peserta_didik_rombels.nis', $dataPilCR->nis)
@@ -738,48 +752,5 @@ class CetakRaporController extends Controller
             ->pluck('kode_rombel');
 
         return response()->json($ceklistTersimpan);
-    }
-
-    public function tampilDataCeklist()
-    {
-        $user = Auth::user();
-        $personal_id = $user->personal_id;
-
-        $dataPilCR = PilihCetakRapor::where('id_personil', $personal_id)->first();
-
-        $optionCeklistRombel = DB::table('rombongan_belajars')
-            ->select(
-                'rombongan_belajars.rombel',
-                'rombongan_belajars.kode_rombel',
-                'rombongan_belajars.tingkat',
-                'personil_sekolahs.gelardepan',
-                'personil_sekolahs.namalengkap',
-                'personil_sekolahs.gelarbelakang'
-            )
-            ->leftJoin('wali_kelas', function ($join) use ($dataPilCR) {
-                $join->on('rombongan_belajars.kode_rombel', '=', 'wali_kelas.kode_rombel')
-                    ->where('wali_kelas.tahunajaran', '=', $dataPilCR->tahunajaran);
-            })
-            ->leftJoin('personil_sekolahs', 'wali_kelas.wali_kelas', '=', 'personil_sekolahs.id_personil')
-            ->where('rombongan_belajars.tahunajaran', $dataPilCR->tahunajaran)
-            ->orderBy('rombongan_belajars.tingkat')
-            ->orderBy('rombongan_belajars.rombel')
-            ->get();
-
-        $dataKelasCeklist = $optionCeklistRombel->mapWithKeys(function ($item) {
-            return [$item->kode_rombel => $item->rombel . ' - ' . $item->kode_rombel];
-        })->toArray();
-
-        $dataKelasCeklistGrouped = $optionCeklistRombel->groupBy('tingkat');
-
-        // Ambil checklist yang SUDAH tersimpan
-        $ceklistTersimpan = CeklistCetakRapor::where('tahunajaran', $dataPilCR->tahunajaran)
-            ->where('ganjilgenap', $dataPilCR->semester)
-            ->where('status', 'Sudah')
-            ->pluck('kode_rombel')
-            ->toArray();
-
-
-        return view('pages.kurikulum.dokumensiswa.cetak-rapor-ceklist', compact('dataKelasCeklist', 'ceklistTersimpan', 'dataKelasCeklistGrouped'));
     }
 }

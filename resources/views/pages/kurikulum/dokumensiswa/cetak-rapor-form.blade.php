@@ -32,11 +32,7 @@
         </div>
     </div>
 
-    <button type="button" id="btn-data-rapor" class="btn btn-soft-primary btn-sm w-100">Confirm</button>
-    @if ($personal_id == 'Pgw_0016')
-        <button type="button" class="btn btn-soft-primary btn-sm w-100 mt-2 mb-2" data-bs-toggle="modal"
-            data-bs-target="#tambahPilihCetakRapor">Tambah Pengguna</button>
-    @endif
+    <button type="button" id="btn-data-rapor" class="btn btn-soft-primary btn-sm w-100 mb-4">Confirm</button>
 </form>
 <script>
     // JavaScript untuk menangani perubahan dan permintaan AJAX
@@ -164,6 +160,44 @@
             });
     }
 
+    function tampilkanDataCeklist() {
+        fetch(`/kurikulum/dokumentsiswa/tampilkan-data-ceklist`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Gagal memuat info wali dan siswa.');
+                }
+                return response.text();
+            })
+            .then(html => {
+                document.getElementById('tampil-data-ceklist').innerHTML = html;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+
+    function tampilkanRapor(nis) {
+        const detailDiv = document.getElementById('siswa-detail');
+        detailDiv.innerHTML =
+            '<div class="position-absolute top-50 start-50 translate-middle"><div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading... </span></div></div>';
+
+        fetch(`/kurikulum/dokumentsiswa/tampil-rapor/${nis}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Gagal mengambil data siswa.');
+                }
+                return response.text();
+            })
+            .then(html => {
+                detailDiv.innerHTML = html;
+            })
+            .catch(error => {
+                console.error(error);
+                detailDiv.innerHTML =
+                    '<div class="alert alert-danger">Gagal memuat data siswa.</div>';
+            });
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         const btn = document.getElementById('btn-data-rapor');
         const form = document.getElementById('form-rapor');
@@ -197,6 +231,7 @@
                     // 3. Tampilkan data siswa
                     tampilkanRapor(nis);
                     tampilkanInfoWaliDanSiswa();
+                    tampilkanDataCeklist();
                 })
                 .catch(error => {
                     console.error(error);
@@ -204,27 +239,5 @@
                         '<div class="alert alert-danger">Gagal menyimpan atau menampilkan rapor.</div>';
                 });
         });
-
-        function tampilkanRapor(nis) {
-            const detailDiv = document.getElementById('siswa-detail');
-            detailDiv.innerHTML =
-                '<div class="position-absolute top-50 start-50 translate-middle"><div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading... </span></div></div>';
-
-            fetch(`/kurikulum/dokumentsiswa/tampil-rapor/${nis}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Gagal mengambil data siswa.');
-                    }
-                    return response.text();
-                })
-                .then(html => {
-                    detailDiv.innerHTML = html;
-                })
-                .catch(error => {
-                    console.error(error);
-                    detailDiv.innerHTML =
-                        '<div class="alert alert-danger">Gagal memuat data siswa.</div>';
-                });
-        }
     });
 </script>
