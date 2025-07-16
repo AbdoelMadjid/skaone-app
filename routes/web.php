@@ -92,7 +92,9 @@ Route::middleware(['auth', 'master'])->get('/clear-cache', function () {
     return redirect()->back()->with('success-chache', 'Cache sukses dibersihkan!');
 })->name('clear.cache');
 
-Route::middleware(['auth', 'master'])->post('/switch-account', [UserController::class, 'switchAccount'])->name('switch.account');
+//Route::middleware(['auth', 'master'])->post('/switch-account', [UserController::class, 'switchAccount'])->name('switch.account');
+Route::middleware(['auth', 'adminOrMaster'])->post('/switch-account', [UserController::class, 'switchAccount'])->name('switch.account');
+
 // Rute untuk kembali ke akun asal
 Route::middleware(['auth'])->get('/return-account', [UserController::class, 'returnToOriginalAccount'])->name('return.account');
 

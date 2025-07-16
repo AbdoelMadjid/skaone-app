@@ -72,6 +72,6 @@ class Kernel extends HttpKernel
         'master' => \App\Http\Middleware\CheckMasterRole::class,
         'refresh.session' => \App\Http\Middleware\RefreshSession::class,
         'roleonly' => \App\Http\Middleware\CheckRole::class,
-
+        'adminOrMaster' => \App\Http\Middleware\AdminOrMaster::class,
     ];
 }
