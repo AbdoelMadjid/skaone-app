@@ -141,7 +141,7 @@
     <div class="row">
         <div class="col-md-6">
             <x-form.select name="status_ortu" :options="$statusOrtuOptions" value="{{ old('status_ortu', $ortu->status_ortu) }}"
-                label="Status Orang Tua Dalam Keluarga" />
+                label="Status Orang Tua" />
         </div>
     </div>
     <hr>

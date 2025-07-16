@@ -189,6 +189,7 @@ return [
         // 'Example' => App\Facades\Example::class,
         //'Image' => Intervention\Image\Facades\Image::class,
         'PDF' => Barryvdh\DomPDF\Facade\Pdf::class,
+        'Image' => Intervention\Image\Facades\Image::class,
     ])->toArray(),
 
 ];

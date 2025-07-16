@@ -14,7 +14,7 @@ class PesertaDidikOrtu extends Model
     // Kolom yang bisa diisi
     protected $fillable = [
         'nis',
-        'status',
+        'status_ortu',
         'nm_ayah',
         'nm_ibu',
         'pekerjaan_ayah',

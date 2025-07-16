@@ -179,14 +179,16 @@ class IdentitasSiswaController extends Controller
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:256000',
         ]);
 
-        //$imageName = $identitasSiswa->foto; // Nama foto default (sebelum diubah)
-        $isPhotoUpdated = false; // Untuk melacak apakah foto diperbarui
+        // Ambil nama foto lama sebagai default
+        $imageName = $identitasSiswa->foto;
+        $isPhotoUpdated = false;
 
+        // Cek jika ada foto baru yang diunggah
         if ($request->hasFile('foto')) {
             $imageFile = $request->file('foto');
 
             $imageName = ImageHelper::uploadCompressedImage(
-                file: $request->file('foto'),
+                file: $imageFile,
                 directory: 'images/peserta_didik',
                 oldFileName: $identitasSiswa->foto ?? null,
                 maxWidth: 600,
@@ -194,7 +196,6 @@ class IdentitasSiswaController extends Controller
                 prefix: 'pd_'
             );
 
-            $identitasSiswa->foto = $imageName;
             $isPhotoUpdated = true;
         }
 
@@ -202,11 +203,12 @@ class IdentitasSiswaController extends Controller
         $isNameChanged = $identitasSiswa->nama_lengkap !== $request->input('nama_lengkap');
         $isEmailChanged = $identitasSiswa->kontak_email !== $request->input('kontak_email');
 
-        // Perbarui data di `peserta_didik`
+        // Perbarui data peserta_didik
         $identitasSiswa->fill($request->except('foto'));
-        $identitasSiswa->foto = $imageName; // Perbarui nama foto jika ada
+        $identitasSiswa->foto = $imageName;
         $identitasSiswa->save();
 
+        // Perbarui data ortu
         PesertaDidikOrtu::updateOrCreate(
             ['nis' => $identitasSiswa->nis],
             $request->only([
@@ -228,33 +230,28 @@ class IdentitasSiswaController extends Controller
             ])
         );
 
-        // Perbarui data di tabel `users` sesuai kondisi
+        // Perbarui data di tabel users
         $user = User::where('nis', $identitasSiswa->nis)->first();
         if ($user) {
-            // Periksa apakah avatar berbeda dengan foto
             $isAvatarDifferent = $user->avatar !== $imageName;
 
-            // Opsi 1: Jika foto diperbarui, avatar selalu diupdate
-            // Opsi 2: Jika foto dan avatar berbeda, sinkronkan avatar dengan foto
             if ($isPhotoUpdated || $isAvatarDifferent) {
                 $user->update([
                     'name' => $request->input('nama_lengkap'),
                     'email' => $request->input('kontak_email'),
-                    'avatar' => $imageName, // Sinkronkan avatar dengan foto
+                    'avatar' => $imageName,
                 ]);
-            } else {
-                // Jika hanya nama atau email yang berubah
-                if ($isNameChanged || $isEmailChanged) {
-                    $user->update([
-                        'name' => $request->input('nama_lengkap'),
-                        'email' => $request->input('kontak_email'),
-                    ]);
-                }
+            } elseif ($isNameChanged || $isEmailChanged) {
+                $user->update([
+                    'name' => $request->input('nama_lengkap'),
+                    'email' => $request->input('kontak_email'),
+                ]);
             }
         }
 
         return responseSuccess(true);
     }
+
 
     /**
      * Remove the specified resource from storage.

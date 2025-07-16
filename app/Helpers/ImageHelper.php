@@ -3,19 +3,21 @@
 namespace App\Helpers;
 
 use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver as GdDriver;
+use Intervention\Image\Facades\Image;
+//use Intervention\Image\Drivers\Gd\Driver as GdDriver;
 use Illuminate\Support\Str;
 
 class ImageHelper
 {
     /**
-     * Upload dan kompres gambar
+     * Upload dan kompres gambar (kompatibel Intervention Image v2)
      *
      * @param \Illuminate\Http\UploadedFile $file
-     * @param string $directory — direktori relatif dari public/
+     * @param string $directory — direktori relatif dari base_path
      * @param string|null $oldFileName — nama file lama yang akan dihapus
      * @param int $maxWidth — batas maksimum lebar gambar
      * @param int $quality — kualitas kompresi JPG
+     * @param string $prefix — prefix nama file
      * @return string nama file baru yang disimpan
      */
     public static function uploadCompressedImage($file, $directory, $oldFileName = null, $maxWidth = 600, $quality = 75, $prefix = '')
@@ -36,22 +38,28 @@ class ImageHelper
         }
 
         // Generate nama file baru
-        $imageName = $prefix . Str::uuid() . '.' . $file->extension();
+        $imageName = $prefix . Str::uuid() . '.' . $file->getClientOriginalExtension();
 
         // Resize dan kompres
-        $manager = new ImageManager(new GdDriver());
-        $img = $manager->read($file->getPathname());
+        $img = Image::make($file->getPathname());
 
         if ($img->width() > $maxWidth) {
             $targetHeight = intval($maxWidth * ($img->height() / $img->width()));
-            $img->resize($maxWidth, $targetHeight, ['preventUpsize' => true]);
+            $img->resize($maxWidth, $targetHeight, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
         }
 
-        $img->toJpeg($quality)->save($publicPath . '/' . $imageName);
+        // Simpan dalam format JPG terkompresi
+        $img->save($publicPath . '/' . $imageName, $quality, 'jpg');
 
         return $imageName;
     }
 
+    /**
+     * Generate <img> tag dengan fallback default berdasarkan gender
+     */
     public static function getAvatarImageTag(
         ?string $filename,
         string $gender,
@@ -61,23 +69,16 @@ class ImageHelper
         int $width = 50,
         string $class = 'rounded avatar-sm'
     ): string {
-        // Tentukan path absolut ke gambar
         $imagePath = base_path("images/{$folder}/{$filename}");
-        $photoprofilPath = '';
 
-        // Tentukan default berdasarkan jenis kelamin
         $defaultPhotoPath = $gender === 'Laki-laki'
             ? asset("images/{$defaultMaleImage}")
             : asset("images/{$defaultFemaleImage}");
 
-        // Jika file ada, gunakan file dari folder
-        if ($filename && file_exists($imagePath)) {
-            $photoprofilPath = asset("images/{$folder}/{$filename}");
-        } else {
-            $photoprofilPath = $defaultPhotoPath;
-        }
+        $photoUrl = ($filename && file_exists($imagePath))
+            ? asset("images/{$folder}/{$filename}")
+            : $defaultPhotoPath;
 
-        // Kembalikan tag img HTML
-        return '<img src="' . $photoprofilPath . '" alt="Foto" width="' . $width . '" class="' . $class . '" />';
+        return '<img src="' . $photoUrl . '" alt="Foto" width="' . $width . '" class="' . $class . '" />';
     }
 }

@@ -44,6 +44,7 @@ class ProfilPenggunaController extends Controller
         $pekerjaanOptions = Referensi::where('jenis', 'Pekerjaan')->pluck('data', 'data')->toArray();
         $tahunAjaran = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
         $kompetensiKeahlian = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
+        $statusOrtuOptions = Referensi::where('jenis', 'StatusOrtu')->pluck('data', 'data')->toArray();
         // Inisialisasi variabel $personil dan $pesertaDidik
         $personil = null;
         $pesertaDidik = null;
@@ -60,7 +61,7 @@ class ProfilPenggunaController extends Controller
             $ortu = PesertaDidikOrtu::where('nis', $user->nis)->first();
 
             // Arahkan ke view untuk peserta didik
-            return view('pages.pengguna.pages-profile-settings-siswa', compact('user', 'pesertaDidik', 'agamaOptions', 'tahunAjaran', 'kompetensiKeahlian', 'ortu', 'pekerjaanOptions'));
+            return view('pages.pengguna.pages-profile-settings-siswa', compact('user', 'pesertaDidik', 'agamaOptions', 'tahunAjaran', 'kompetensiKeahlian', 'ortu', 'pekerjaanOptions', '$statusOrtuOptions'));
         }
 
         // Jika user tidak memiliki personal_id atau nis, arahkan ke halaman error atau dashboard
@@ -151,7 +152,7 @@ class ProfilPenggunaController extends Controller
 
             $dataOrtu = $request->only([
                 'nis',
-                'status',
+                'status_ortu',
                 'nm_ayah',
                 'nm_ibu',
                 'pekerjaan_ayah',

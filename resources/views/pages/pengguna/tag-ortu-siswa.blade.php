@@ -11,13 +11,8 @@
         <x-form.input name="nis" value="{{ old('nis', $ortu->nis ?? auth()->user()->nis) }}" label="NIS" readonly />
     </div>
     <div class="col-md-6">
-        <x-form.select name="status" :options="[
-            'Orang Tua Kandung' => 'Orang Tua Kandung',
-            'Orang Tua Angkat' => 'Orang Tua Angkat',
-            'Orang Tua Tiri' => 'Orang Tua Tiri',
-        ]" value="{{ old('status', $ortu->status_ortu ?? '') }}"
-            label="Status dalam Keluarga" />
-
+        <x-form.select name="status_ortu" :options="$statusOrtuOptions" value="{{ old('status_ortu', $ortu->status_ortu) }}"
+            label="Status Dalam Keluarga" />
     </div>
 </div>
 <div class="row">

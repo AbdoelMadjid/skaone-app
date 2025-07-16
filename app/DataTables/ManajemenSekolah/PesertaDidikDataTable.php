@@ -129,14 +129,15 @@ class PesertaDidikDataTable extends DataTable
             $query->where('status', request('statusSiswa'));
         }
 
-        $query->select('peserta_didiks.*')->orderBy('nis', 'asc');
-
         $query->select(['id', 'kode_kk'])->select([
             'peserta_didiks.*',
             DB::raw('CONCAT(peserta_didiks.kode_kk, " - ", kompetensi_keahlians.singkatan) as kode_kk_singkatan_kk'),
             // Pastikan tabel 'kompetensi_keahlians' terkait dengan model 'ProgramKeahlian'
         ])
             ->join('kompetensi_keahlians', 'peserta_didiks.kode_kk', '=', 'kompetensi_keahlians.idkk');
+
+        $query->orderBy('peserta_didiks.kode_kk', 'asc')
+            ->orderBy('peserta_didiks.nis', 'asc');
 
         return $query;
     }
@@ -159,7 +160,7 @@ class PesertaDidikDataTable extends DataTable
                 }'
             ])
             //->dom('Bfrtip')
-            ->orderBy(1)
+            /* ->orderBy(1) */
             ->parameters([
                 'lengthChange' => false,
                 'searching' => false, // Mengaktifkan pencarian

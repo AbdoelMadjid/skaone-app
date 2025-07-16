@@ -79,7 +79,18 @@ class PersonilSekolahDataTable extends DataTable
         $query = $model->newQuery()
             ->select('personil_sekolahs.*', 'users.login_count')
             ->leftJoin('users', 'personil_sekolahs.id_personil', '=', 'users.personal_id')
-            ->orderBy('personil_sekolahs.id', 'asc');
+
+            // 1. Yang ada NIP dulu
+            ->orderByRaw("CASE WHEN personil_sekolahs.nip IS NULL OR personil_sekolahs.nip = '' THEN 1 ELSE 0 END ASC")
+
+            // 2. Kepala Sekolah dulu
+            ->orderByRaw("FIELD(personil_sekolahs.jenispersonil, 'Kepala Sekolah') DESC")
+
+            // 3. Lalu berdasarkan jenis personil (abjad)
+            ->orderBy('personil_sekolahs.jenispersonil', 'asc')
+
+            // 4. Terakhir berdasarkan NIP
+            ->orderBy('personil_sekolahs.nip', 'asc');
 
         // Filter pencarian nama lengkap
         if (request()->has('search') && request('search')) {
@@ -115,7 +126,7 @@ class PersonilSekolahDataTable extends DataTable
                 }',
             ])
             //->dom('Bfrtip')
-            ->orderBy(1)
+            /* ->orderBy(1) */
             ->parameters([
                 'lengthChange' => false,
                 'searching' => false, // Mengaktifkan pencarian
