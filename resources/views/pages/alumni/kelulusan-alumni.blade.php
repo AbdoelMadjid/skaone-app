@@ -102,7 +102,7 @@
                                     <button class="btn btn-soft-info btn-sm" onclick="printContent('cetak-skl')"><i
                                             class="ri-printer-line"></i> Print</button>
                                     <button class="btn btn-soft-success btn-sm"
-                                        onclick="window.location.href='{{ route('pesertadidik.download.skl') }}'">
+                                        onclick="window.location.href='{{ route('alumni.download.skl') }}'">
                                         <i class="ri-download-line"></i> Download PDF
                                     </button>
                                     @include('pages.alumni.transkrip-skl')
