@@ -69,6 +69,12 @@ Route::middleware('auth')->group(function () {
             })->name('perangkat-ajar.preview');
 
             Route::resource('modul-ajar-gurumapel', ModulAjarGuruMapelController::class);
+            Route::get('/get-program-keahlian/{idbk}', [ModulAjarGuruMapelController::class, 'getProgram']);
+            Route::get('/get-konsentrasi-keahlian/{idpk}', [ModulAjarGuruMapelController::class, 'getKonsentrasi']);
+            Route::get('/get-mata-pelajaran/{kodeKk}/{tingkat}', [ModulAjarGuruMapelController::class, 'getMataPelajaran']);
+
+
+
             Route::resource('ujian-sumatif', UjianSumatifController::class);
             Route::resource('ajuan-remedial', AjuanRemedialController::class);
             Route::resource('arsip-kbm', ArsipKbmGmapelController::class);
