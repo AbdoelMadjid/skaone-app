@@ -35,7 +35,7 @@
                         <tr>
                             <td width='200'>Nama Sekolah</td>
                             <td width='25'>:</td>
-                            <td>{{ $school->nama_sekolah }}</td>
+                            <td>{{ $school->nama_sekolah ?? '-' }}</td>
                         </tr>
                         <tr>
                             <td colspan='3'>&nbsp;</td>
@@ -43,7 +43,7 @@
                         <tr>
                             <td>NPSN</td>
                             <td>:</td>
-                            <td>{{ $school->npsn }}</td>
+                            <td>{{ $school->npsn ?? '-' }}</td>
                         </tr>
                         <tr>
                             <td colspan='3'>&nbsp;</td>
@@ -51,11 +51,11 @@
                         <tr>
                             <td valign='top'>Alamat Sekolah</td>
                             <td valign='top'>:</td>
-                            <td valign='top'>{{ $school->alamat_jalan }}
+                            <td valign='top'>{{ $school->alamat_jalan ?? '-' }}
                                 @if ($school->alamat_no)
-                                    No. {{ $school->alamat_no }}
+                                    No. {{ $school->alamat_no ?? '-' }}
                                 @endif
-                                Blok {{ $school->alamat_blok }}
+                                Blok {{ $school->alamat_blok ?? '-' }}
                             </td>
                         </tr>
                         <tr>
@@ -64,7 +64,7 @@
                         <tr>
                             <td valign='top'></td>
                             <td valign='top'></td>
-                            <td valign='top'>Kode Pos : {{ $school->alamat_kodepos }}</td>
+                            <td valign='top'>Kode Pos : {{ $school->alamat_kodepos ?? '-' }}</td>
                         </tr>
                         <tr>
                             <td colspan='3'>&nbsp;</td>
@@ -72,7 +72,7 @@
                         <tr>
                             <td>Kelurahan</td>
                             <td>:</td>
-                            <td>{{ $school->alamat_desa }}</td>
+                            <td>{{ $school->alamat_desa ?? '-' }}</td>
                         </tr>
                         <tr>
                             <td colspan='3'>&nbsp;</td>
@@ -80,7 +80,7 @@
                         <tr>
                             <td>Kecamatan</td>
                             <td>:</td>
-                            <td>{{ $school->alamat_kec }}</td>
+                            <td>{{ $school->alamat_kec ?? '-' }}</td>
                         </tr>
                         <tr>
                             <td colspan='3'>&nbsp;</td>
@@ -88,7 +88,7 @@
                         <tr>
                             <td>Kota/Kabupaten</td>
                             <td>:</td>
-                            <td>{{ $school->alamat_kab }}</td>
+                            <td>{{ $school->alamat_kab ?? '-' }}</td>
                         </tr>
                         <tr>
                             <td colspan='3'>&nbsp;</td>
@@ -96,7 +96,7 @@
                         <tr>
                             <td>Provinsi</td>
                             <td>:</td>
-                            <td>{{ $school->alamat_provinsi }}</td>
+                            <td>{{ $school->alamat_provinsi ?? '-' }}</td>
                         </tr>
                         <tr>
                             <td colspan='3'>&nbsp;</td>
@@ -104,7 +104,7 @@
                         <tr>
                             <td>Web Site</td>
                             <td>:</td>
-                            <td>{{ $school->alamat_website }}</td>
+                            <td>{{ $school->alamat_website ?? '-' }}</td>
                         </tr>
                         <tr>
                             <td colspan='3'>&nbsp;</td>
@@ -112,7 +112,7 @@
                         <tr>
                             <td>Email</td>
                             <td>:</td>
-                            <td>{{ $school->alamat_email }}</td>
+                            <td>{{ $school->alamat_email ?? '-' }}</td>
                         </tr>
                         <tr>
                             <td colspan='3'>&nbsp;</td>
@@ -150,46 +150,46 @@
                             <td width='35' style='padding:4px 8px;'>1.</td>
                             <td width='200' style='padding:4px 8px;'>Nama Siswa Lengkap</td>
                             <td width='25' style='padding:4px 8px;'>:</td>
-                            <td style='padding:4px 8px;'>{!! $dataSiswa->nama_lengkap !!}</td>
+                            <td style='padding:4px 8px;'>{!! $dataSiswa->nama_lengkap ?? '-' !!}</td>
                         </tr>
                         <tr>
                             <td style='padding:4px 8px;'>2.</td>
                             <td style='padding:4px 8px;'>Nomor Induk/NISN</td>
                             <td style='padding:4px 8px;'>:</td>
                             <td style='padding:4px 8px;'>
-                                {!! $dataSiswa->nis !!}/{!! $dataSiswa->nisn !!}
+                                {!! $dataSiswa->nis !!}/{!! $dataSiswa->nisn ?? '-' !!}
                             </td>
                         </tr>
                         <tr>
                             <td style='padding:4px 8px;'>3.</td>
                             <td style='padding:4px 8px;'>Tempat, Tanggal Lahir</td>
                             <td style='padding:4px 8px;'>:</td>
-                            <td style='padding:4px 8px;'>{!! ucwords(strtolower($dataSiswa->tempat_lahir)) !!},
-                                {!! formatTanggalIndonesia($dataSiswa->tanggal_lahir) !!}</td>
+                            <td style='padding:4px 8px;'>{!! ucwords(strtolower($dataSiswa->tempat_lahir)) ?? '-' !!},
+                                {!! formatTanggalIndonesia($dataSiswa->tanggal_lahir) ?? '-' !!}</td>
                         </tr>
                         <tr>
                             <td style='padding:4px 8px;'>4.</td>
                             <td style='padding:4px 8px;'>Jenis Kelamin</td>
                             <td style='padding:4px 8px;'>:</td>
-                            <td style='padding:4px 8px;'>{!! $dataSiswa->jenis_kelamin !!}</td>
+                            <td style='padding:4px 8px;'>{!! $dataSiswa->jenis_kelamin ?? '-' !!}</td>
                         </tr>
                         <tr>
                             <td style='padding:4px 8px;'>5.</td>
                             <td style='padding:4px 8px;'>Agama</td>
                             <td style='padding:4px 8px;'>:</td>
-                            <td style='padding:4px 8px;'>{!! $dataSiswa->agama !!}</td>
+                            <td style='padding:4px 8px;'>{!! $dataSiswa->agama ?? '-' !!}</td>
                         </tr>
                         <tr>
                             <td style='padding:4px 8px;'>6.</td>
                             <td style='padding:4px 8px;'>Status dalam Keluarga</td>
                             <td style='padding:4px 8px;'>:</td>
-                            <td style='padding:4px 8px;'>{!! $dataSiswa->status_dalam_kel !!}</td>
+                            <td style='padding:4px 8px;'>{!! $dataSiswa->status_dalam_kel ?? '-' !!}</td>
                         </tr>
                         <tr>
                             <td style='padding:4px 8px;'>7.</td>
                             <td style='padding:4px 8px;'>Anak ke</td>
                             <td style='padding:4px 8px;'>:</td>
-                            <td style='padding:4px 8px;'>{!! $dataSiswa->anak_ke !!}</td>
+                            <td style='padding:4px 8px;'>{!! $dataSiswa->anak_ke ?? '-' !!}</td>
                         </tr>
                         <tr>
                             <td valign='top' style='padding:4px 8px;'>8.</td>
@@ -203,13 +203,13 @@
                             <td style='padding:4px 8px;'>9.</td>
                             <td style='padding:4px 8px;'>Nomor Telepon Rumah</td>
                             <td style='padding:4px 8px;'>:</td>
-                            <td style='padding:4px 8px;'>{!! $dataSiswa->kontak_telepon !!}</td>
+                            <td style='padding:4px 8px;'>{!! $dataSiswa->kontak_telepon ?? '-' !!}</td>
                         </tr>
                         <tr>
                             <td style='padding:4px 8px;'>10.</td>
                             <td style='padding:4px 8px;'>Sekolah Asal</td>
                             <td style='padding:4px 8px;'>:</td>
-                            <td style='padding:4px 8px;'>{!! $dataSiswa->sekolah_asal !!}</td>
+                            <td style='padding:4px 8px;'>{!! $dataSiswa->sekolah_asal ?? '-' !!}</td>
                         </tr>
                         <tr>
                             <td style='padding:4px 8px;'>11.</td>
@@ -221,13 +221,13 @@
                             <td style='padding:4px 8px;'></td>
                             <td style='padding:4px 8px;'>Di kelas</td>
                             <td style='padding:4px 8px;'>:</td>
-                            <td style='padding:4px 8px;'>{!! $dataSiswa->diterima_kelas !!}</td>
+                            <td style='padding:4px 8px;'>{!! $dataSiswa->diterima_kelas ?? '-' !!}</td>
                         </tr>
                         <tr>
                             <td style='padding:4px 8px;'></td>
                             <td style='padding:4px 8px;'>Pada Tanggal</td>
                             <td style='padding:4px 8px;'>:</td>
-                            <td style='padding:4px 8px;'>{!! formatTanggalIndonesia($dataSiswa->diterima_tanggal) !!}</td>
+                            <td style='padding:4px 8px;'>{!! formatTanggalIndonesia($dataSiswa->diterima_tanggal) ?? '-' !!}</td>
                         </tr>
                         <tr>
                             <td style='padding:4px 8px;'>12.</td>

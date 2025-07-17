@@ -161,15 +161,13 @@
     }
 
     function tampilkanDataCeklist() {
-        fetch(`/kurikulum/dokumentsiswa/tampilkan-data-ceklist`)
+        fetch(`/kurikulum/dokumentsiswa/data-ceklist`)
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Gagal memuat info wali dan siswa.');
-                }
+                if (!response.ok) throw new Error('Gagal memuat data ceklist.');
                 return response.text();
             })
             .then(html => {
-                document.getElementById('tampil-data-ceklist').innerHTML = html;
+                document.getElementById('data-ceklist').innerHTML = html;
             })
             .catch(error => {
                 console.error(error);

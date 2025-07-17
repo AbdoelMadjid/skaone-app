@@ -40,22 +40,22 @@
                         <tr>
                             <td>Bidang Keahlian</td>
                             <td width='5%' align='center'>:</td>
-                            <td>{{ $dataSiswa->nama_bk }}</td>
+                            <td>{{ $dataSiswa->nama_bk ?? '-' }}</td>
                         </tr>
                         <tr>
                             <td>Program Keahlian</td>
                             <td width='5%' align='center'>:</td>
-                            <td>{{ $dataSiswa->nama_pk }}</td>
+                            <td>{{ $dataSiswa->nama_pk ?? '-' }}</td>
                         </tr>
                         <tr>
                             <td>Kompetensi Keahlian</td>
                             <td width='5%' align='center'>:</td>
-                            <td>{{ $dataSiswa->nama_kk }}</td>
+                            <td>{{ $dataSiswa->nama_kk ?? '-' }}</td>
                         </tr>
                         <tr>
                             <td>Nama Sekolah</td>
                             <td width='5%' align='center'>:</td>
-                            <td>{{ $school->nama_sekolah }}</td>
+                            <td>{{ $school->nama_sekolah ?? '-' }}</td>
                         </tr>
                         <tr>
                             <td valign='top'>Alamat Sekolah</td>
@@ -63,12 +63,12 @@
                             <td>
                                 {{ $school->alamat_jalan }}
                                 @if ($school->alamat_no)
-                                    No. {{ $school->alamat_no }}
+                                    No. {{ $school->alamat_no ?? '-' }}
                                 @endif
-                                Blok {{ $school->alamat_blok }},
-                                Desa/Kelurahan {{ $school->alamat_desa }}<br>
-                                Kode Pos : {{ $school->alamat_kodepos }}
-                                Telp. {{ $school->alamat_telepon }}
+                                Blok {{ $school->alamat_blok ?? '-' }},
+                                Desa/Kelurahan {{ $school->alamat_desa ?? '-' }}<br>
+                                Kode Pos : {{ $school->alamat_kodepos ?? '-' }}
+                                Telp. {{ $school->alamat_telepon ?? '-' }}
                             </td>
                         </tr>
                     </table>

@@ -1,8 +1,11 @@
 <div class="card ribbon-box border shadow-none mb-lg-0 mt-4 mt-lg-0">
     <div class="card-body">
         <div class="ribbon ribbon-primary round-shape">Ceklist Kelas Sudah Cetak</div>
-        <h5 class="fs-14 text-end">{{ $dataPilCR->tahunajaran }} /
-            {{ $dataPilCR->semester }}</h5>
+        @if ($dataPilCR)
+            <h5 class="fs-14 text-end">{{ $dataPilCR->tahunajaran }} / {{ $dataPilCR->semester }}</h5>
+        @else
+            <div class="text-danger">Data belum dipilih.</div>
+        @endif
         <div class="ribbon-content mt-4 text-muted">
             <form id="cetak-rapor-checklist-form">
                 <div class="mb-3">

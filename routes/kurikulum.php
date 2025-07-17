@@ -147,7 +147,8 @@ Route::middleware('auth')->group(function () {
             Route::post('/ceklistcetakrapor', [CetakRaporController::class, 'ceklisCetakRapor'])->name('ceklistcetakrapor');
             // routes/web.php
             Route::get('/ceklist-terupdate', [CetakRaporController::class, 'getCeklistTerupdate'])->name('ceklistcetakraporterupdate');
-            Route::get('/tampilkan-data-ceklist', [CetakRaporController::class, 'tampilDataCeklist']);
+            Route::get('/data-ceklist', [CetakRaporController::class, 'dataCeklist']);
+
 
             Route::resource('leger-nilai', LegerNilaiController::class);
             Route::get('/get-kode-rombel-leger', [LegerNilaiController::class, 'getKodeRombelLeger']);

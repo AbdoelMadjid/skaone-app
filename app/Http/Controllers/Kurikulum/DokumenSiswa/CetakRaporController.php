@@ -20,6 +20,7 @@ use App\Models\WaliKelas\PrestasiSiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Milon\Barcode\DNS1D;
 use Milon\Barcode\DNS2D;
 
@@ -201,22 +202,9 @@ class CetakRaporController extends Controller
      */
     public function tampilRapor($nis)
     {
+
         $user = Auth::user();
         $personal_id = $user->personal_id;
-
-        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
-
-        if (!$tahunAjaranAktif) {
-            return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
-        }
-
-        $semester = Semester::where('status', 'Aktif')
-            ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
-            ->first();
-
-        if (!$semester) {
-            return redirect()->back()->with('error', 'Tidak ada semester aktif.');
-        }
 
         $dataPilCR = PilihCetakRapor::where('id_personil', $personal_id)->first();
 
@@ -230,7 +218,7 @@ class CetakRaporController extends Controller
                 'peserta_didik_rombels.rombel_tingkat',
                 'peserta_didik_rombels.rombel_kode',
                 'peserta_didik_rombels.rombel_nama',
-                'peserta_didik_ortus.status',
+                'peserta_didik_ortus.status_ortu',
                 'peserta_didik_ortus.nm_ayah',
                 'peserta_didik_ortus.nm_ibu',
                 'peserta_didik_ortus.pekerjaan_ayah',
@@ -253,6 +241,8 @@ class CetakRaporController extends Controller
             ->leftJoin('peserta_didik_ortus', 'peserta_didiks.nis', '=', 'peserta_didik_ortus.nis')
             ->where('peserta_didiks.nis', $nis)
             ->where('peserta_didik_rombels.tahun_ajaran', $dataPilCR->tahunajaran)
+            ->where('peserta_didik_rombels.rombel_tingkat', $dataPilCR->tingkat)
+            ->where('peserta_didik_rombels.rombel_kode', $dataPilCR->kode_rombel)
             ->first();
 
         $school = IdentitasSekolah::first();
@@ -401,63 +391,63 @@ class CetakRaporController extends Controller
         }
 
         $dataNilai = DB::select("
-    SELECT
-        kbm.id_personil,
-        ps.gelardepan,
-        ps.namalengkap,
-        ps.gelarbelakang,
-        kbm.kode_rombel,
-        kbm.rombel,
-        kbm.tingkat,
-        kbm.kel_mapel,
-        kbm.semester,
-        kbm.ganjilgenap,
-        mp.mata_pelajaran,
-        mp.kelompok,
-        mp.kode,
-        pdr.nis,
-        pd.nama_lengkap,
-        nf.tp_isi_1, nf.tp_isi_2, nf.tp_isi_3, nf.tp_isi_4, nf.tp_isi_5,
-        nf.tp_isi_6, nf.tp_isi_7, nf.tp_isi_8, nf.tp_isi_9,
-        nf.tp_nilai_1, nf.tp_nilai_2, nf.tp_nilai_3, nf.tp_nilai_4, nf.tp_nilai_5,
-        nf.tp_nilai_6, nf.tp_nilai_7, nf.tp_nilai_8, nf.tp_nilai_9,
-        nf.rerata_formatif,
-        ns.sts,
-        ns.sas,
-        ns.kel_mapel AS kel_mapel_sumatif,
-        ns.rerata_sumatif,
-        ((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2) AS nilai_na
-    FROM kbm_per_rombels kbm
-    INNER JOIN peserta_didik_rombels pdr
-        ON kbm.kode_rombel = pdr.rombel_kode
-    INNER JOIN peserta_didiks pd
-        ON pdr.nis = pd.nis
-    INNER JOIN personil_sekolahs ps
-        ON kbm.id_personil = ps.id_personil
-    INNER JOIN mata_pelajarans mp
-        ON kbm.kel_mapel = mp.kel_mapel
-    LEFT JOIN nilai_formatif nf
-        ON pdr.nis = nf.nis
-        AND kbm.kel_mapel = nf.kel_mapel
-        AND nf.kode_rombel = ?
-        AND nf.tingkat = ?
-        AND nf.tahunajaran = ?
-        AND nf.ganjilgenap = ?
-    LEFT JOIN nilai_sumatif ns
-        ON pdr.nis = ns.nis
-        AND kbm.kel_mapel = ns.kel_mapel
-        AND ns.kode_rombel = ?
-        AND ns.tingkat = ?
-        AND ns.tahunajaran = ?
-        AND ns.ganjilgenap = ?
-    WHERE
-        pdr.nis = ?
-        AND kbm.kode_rombel = ?
-        AND kbm.tingkat = ?
-        AND kbm.tahunajaran = ?
-        AND kbm.ganjilgenap = ?
-    ORDER BY kbm.kel_mapel
-", [
+            SELECT
+                kbm.id_personil,
+                ps.gelardepan,
+                ps.namalengkap,
+                ps.gelarbelakang,
+                kbm.kode_rombel,
+                kbm.rombel,
+                kbm.tingkat,
+                kbm.kel_mapel,
+                kbm.semester,
+                kbm.ganjilgenap,
+                mp.mata_pelajaran,
+                mp.kelompok,
+                mp.kode,
+                pdr.nis,
+                pd.nama_lengkap,
+                nf.tp_isi_1, nf.tp_isi_2, nf.tp_isi_3, nf.tp_isi_4, nf.tp_isi_5,
+                nf.tp_isi_6, nf.tp_isi_7, nf.tp_isi_8, nf.tp_isi_9,
+                nf.tp_nilai_1, nf.tp_nilai_2, nf.tp_nilai_3, nf.tp_nilai_4, nf.tp_nilai_5,
+                nf.tp_nilai_6, nf.tp_nilai_7, nf.tp_nilai_8, nf.tp_nilai_9,
+                nf.rerata_formatif,
+                ns.sts,
+                ns.sas,
+                ns.kel_mapel AS kel_mapel_sumatif,
+                ns.rerata_sumatif,
+                ((COALESCE(nf.rerata_formatif, 0) + COALESCE(ns.rerata_sumatif, 0)) / 2) AS nilai_na
+            FROM kbm_per_rombels kbm
+            INNER JOIN peserta_didik_rombels pdr
+                ON kbm.kode_rombel = pdr.rombel_kode
+            INNER JOIN peserta_didiks pd
+                ON pdr.nis = pd.nis
+            INNER JOIN personil_sekolahs ps
+                ON kbm.id_personil = ps.id_personil
+            INNER JOIN mata_pelajarans mp
+                ON kbm.kel_mapel = mp.kel_mapel
+            LEFT JOIN nilai_formatif nf
+                ON pdr.nis = nf.nis
+                AND kbm.kel_mapel = nf.kel_mapel
+                AND nf.kode_rombel = ?
+                AND nf.tingkat = ?
+                AND nf.tahunajaran = ?
+                AND nf.ganjilgenap = ?
+            LEFT JOIN nilai_sumatif ns
+                ON pdr.nis = ns.nis
+                AND kbm.kel_mapel = ns.kel_mapel
+                AND ns.kode_rombel = ?
+                AND ns.tingkat = ?
+                AND ns.tahunajaran = ?
+                AND ns.ganjilgenap = ?
+            WHERE
+                pdr.nis = ?
+                AND kbm.kode_rombel = ?
+                AND kbm.tingkat = ?
+                AND kbm.tahunajaran = ?
+                AND kbm.ganjilgenap = ?
+            ORDER BY kbm.kel_mapel
+        ", [
             $dataPilCR->kode_rombel,
             $dataPilCR->tingkat,
             $dataPilCR->tahunajaran,
@@ -547,8 +537,6 @@ class CetakRaporController extends Controller
             return view('pages.kurikulum.dokumensiswa.cetak-rapor-data',  [
                 'dataPilCR' => $dataPilCR,
                 'personal_id' => $personal_id,
-                'tahunAjaranAktif' => $tahunAjaranAktif,
-                'semester' => $semester,
                 'dataSiswa' => $dataSiswa,
                 'school' => $school,
                 'barcodeImage' => $barcodeImage,
@@ -740,12 +728,15 @@ class CetakRaporController extends Controller
         return response()->json($ceklistTersimpan);
     }
 
-    public function tampilDataCeklist()
+    public function dataCeklist()
     {
-        $user = Auth::user();
-        $personal_id = $user->personal_id;
-
+        $personal_id = Auth::user()->personal_id;
         $dataPilCR = PilihCetakRapor::where('id_personil', $personal_id)->first();
+
+        // Pastikan dataPilCR valid
+        if (!$dataPilCR) {
+            return response('<div class="alert alert-warning">Data belum dipilih.</div>');
+        }
 
         $optionCeklistRombel = DB::table('rombongan_belajars')
             ->select(
@@ -780,6 +771,6 @@ class CetakRaporController extends Controller
             ->toArray();
 
 
-        return view('pages.kurikulum.dokumensiswa.cetak-rapor-ceklist', compact('dataKelasCeklist', 'ceklistTersimpan', 'dataKelasCeklistGrouped'));
+        return view('pages.kurikulum.dokumensiswa.cetak-rapor-ceklist', compact('dataPilCR', 'dataKelasCeklist', 'ceklistTersimpan', 'dataKelasCeklistGrouped'));
     }
 }

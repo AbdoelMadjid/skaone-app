@@ -154,7 +154,7 @@
                             @include('pages.kurikulum.dokumensiswa.cetak-rapor-form')
 
                             <!-- Rounded Ribbon -->
-                            <div id="tampil-data-ceklist">
+                            <div id="data-ceklist">
                                 @include('pages.kurikulum.dokumensiswa.cetak-rapor-ceklist')
                             </div>
                         </div>
