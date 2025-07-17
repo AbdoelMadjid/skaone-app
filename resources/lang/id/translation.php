@@ -373,6 +373,7 @@ return [
     'ujian-sumatif' => 'Ujian Sumatif',
     "ajuan-remedial" => "Ajuan Remedial",
     "arsip-kbm" => "Arsip KBM",
+    "modul-ajar-pdf" => "Modul Ajar",
 
     //wali kelas
     "walikelas" => "Wali Kelas",

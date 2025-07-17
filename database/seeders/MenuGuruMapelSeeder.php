@@ -37,6 +37,9 @@ class MenuGuruMapelSeeder extends Seeder
         $csm = $sm->subMenus()->create(['name' => 'Tujuan Pembelajaran', 'url' => $sm->url . '/tujuan-pembelajaran', 'category' => $sm->category]);
         $this->attachMenupermission($csm, ['create', 'read', 'update', 'delete'], ['gmapel']);
 
+        $csm = $sm->subMenus()->create(['name' => 'Modul Ajar PDF', 'url' => $sm->url . '/modul-ajar-gurumapel', 'category' => $sm->category]);
+        $this->attachMenupermission($csm, ['create', 'read', 'update', 'delete'], ['gmapel']);
+
         $csm = $sm->subMenus()->create(['name' => 'Ujian Sumatif', 'url' => $sm->url . '/ujian-sumatif', 'category' => $sm->category]);
         $this->attachMenupermission($csm, ['create', 'read', 'update', 'delete'], ['gmapel']);
 

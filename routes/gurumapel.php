@@ -9,6 +9,7 @@ use App\Http\Controllers\GuruMapel\DataKbmController;
 use App\Http\Controllers\GuruMapel\DeskripsiNilaiController;
 use App\Http\Controllers\GuruMapel\DetailDataKbmController;
 use App\Http\Controllers\GuruMapel\FormatifController;
+use App\Http\Controllers\GuruMapel\ModulAjarGuruMapelController;
 use App\Http\Controllers\GuruMapel\PerangkatAjarController;
 use App\Http\Controllers\GuruMapel\SumatifController;
 use App\Http\Controllers\GuruMapel\TujuanPembelajaranController;
@@ -67,6 +68,7 @@ Route::middleware('auth')->group(function () {
                 return response()->file($path);
             })->name('perangkat-ajar.preview');
 
+            Route::resource('modul-ajar-gurumapel', ModulAjarGuruMapelController::class);
             Route::resource('ujian-sumatif', UjianSumatifController::class);
             Route::resource('ajuan-remedial', AjuanRemedialController::class);
             Route::resource('arsip-kbm', ArsipKbmGmapelController::class);

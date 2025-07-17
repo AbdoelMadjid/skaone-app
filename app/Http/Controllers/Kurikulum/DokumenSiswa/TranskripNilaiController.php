@@ -212,7 +212,7 @@ class TranskripNilaiController extends Controller
                 'peserta_didik_rombels.rombel_tingkat',
                 'peserta_didik_rombels.rombel_kode',
                 'peserta_didik_rombels.rombel_nama',
-                'peserta_didik_ortus.status',
+                'peserta_didik_ortus.status_ortu',
                 'peserta_didik_ortus.nm_ayah',
                 'peserta_didik_ortus.nm_ibu',
                 'peserta_didik_ortus.pekerjaan_ayah',

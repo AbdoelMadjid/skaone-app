@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    @lang('translation.kelulusan-alumni')
+    @lang('translation.transkrip-peserta-didik')
 @endsection
 @section('css')
     <style>
@@ -69,7 +69,7 @@
 @section('content')
     @component('layouts.breadcrumb')
         @slot('li_1')
-            @lang('translation.alumni')
+            @lang('translation.pesertadidik')
         @endslot
     @endcomponent
     <div class="row">
@@ -105,19 +105,19 @@
                                         onclick="window.location.href='{{ route('pesertadidik.download.skl') }}'">
                                         <i class="ri-download-line"></i> Download PDF
                                     </button>
-                                    @include('pages.alumni.transkrip-skl')
+                                    @include('pages.pesertadidik.transkrip-skl')
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
                                     aria-labelledby="v-pills-profile-tab">
                                     <button class="btn btn-soft-info btn-sm" onclick="printContent('cetak-nilai-ijazah')"><i
                                             class="ri-printer-line"></i> Print</button>
-                                    @include('pages.alumni.transkrip-ijazah')
+                                    @include('pages.pesertadidik.transkrip-ijazah')
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
                                     aria-labelledby="v-pills-messages-tab">
                                     <button class="btn btn-soft-info btn-sm" onclick="printContent('cetak-nilai-rapor')"><i
                                             class="ri-printer-line"></i> Print</button>
-                                    @include('pages.alumni.transkrip-rapor')
+                                    @include('pages.pesertadidik.transkrip-rapor')
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-settings" role="tabpanel"
                                     aria-labelledby="v-pills-settings-tab">
@@ -127,7 +127,7 @@
                                         onclick="window.location.href='{{ route('pesertadidik.download.skkb') }}'">
                                         <i class="ri-download-line"></i> Download PDF
                                     </button>
-                                    @include('pages.alumni.transkrip-skkb')
+                                    @include('pages.pesertadidik.transkrip-skkb')
                                 </div>
                             </div>
                         </div><!--  end col -->
