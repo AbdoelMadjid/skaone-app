@@ -430,6 +430,8 @@ return [
     'informasi-alumni' => 'Informasi Alumni',
     'arsip-transkrip' => 'Arsip Transkrip',
     'arsip-kelulusan' => 'Arsip Kelulusan',
+    'transkrip-alumni' => 'Arsip Transkrip',
+    'kelulusan-alumni' => 'Arsip Kelulusan',
 
     'APLIKASI PKL' => 'APLIKASI PKL',
     "praktek-kerja" => "Praktek Kerja",
