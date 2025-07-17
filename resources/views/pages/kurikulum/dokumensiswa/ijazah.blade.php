@@ -110,6 +110,52 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="SuratKetLulus" tabindex="-1" aria-labelledby="SuratKetLulusLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Transkip Nilai Ijazah</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body" id="SuratKetLulusBody">
+                    <div>
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        {{-- menampilkan blade di pages.kurikulum.dokumensiswa.rapor-pkl-tampil --}}
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-soft-secondary" id="btn-cetak-skkl">Cetak</button>
+                    <button type="button" class="btn btn-sm btn-soft-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="SuratKetBaik" tabindex="-1" aria-labelledby="SuratKetBaikLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Transkip Nilai Ijazah</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body" id="SuratKetBaikBody">
+                    <div>
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        {{-- menampilkan blade di pages.kurikulum.dokumensiswa.rapor-pkl-tampil --}}
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-soft-secondary" id="btn-cetak-skkb">Cetak</button>
+                    <button type="button" class="btn btn-sm btn-soft-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('script')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
@@ -329,6 +375,260 @@
             printWindow.document.close();
         });
 
+        document.getElementById("btn-cetak-skkl").addEventListener("click", function() {
+            // Ambil konten yang akan dicetak
+            var printContents = document.getElementById("cetak-skl").innerHTML;
+
+            // Tutup modal Bootstrap
+            var modalElement = document.getElementById('modal-detail');
+            var modalInstance = bootstrap.Modal.getInstance(modalElement);
+            if (modalInstance) {
+                modalInstance.hide();
+            }
+
+            // Cetak di jendela baru
+            var printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+            <html>
+            <head>
+                <title>Cetak Nilai PKL</title>
+                <style>
+                    .cetak-rapor {
+                        border-collapse: collapse;
+                        width: 100%;
+                        text-decoration-color: black;
+                    }
+                    .cetak-rapor td {
+                        border: 1px solid black;
+                        padding: 1px;
+                        text-align: left;
+                    }
+                    .cetak-rapor th {
+                        border: 1px solid black;
+                        background-color: #f2f2f2;
+                        font-weight: bold;
+                        text-align: center;
+                    }
+                    @media print {
+                        .cetak-rapor tr {
+                            page-break-inside: avoid;
+                        }
+                        .page-break {
+                            page-break-before: always;
+                        }
+                    }
+                    .no-border {
+                        border: 0 !important;
+                        border-collapse: collapse !important;
+                    }
+                    .cetak-rapor .no-border,
+                    .cetak-rapor .no-border th,
+                    .cetak-rapor .no-border td {
+                        border: none !important;
+                    }
+                    .text-center {
+                        text-align: center;
+                    }
+                    .note {
+                        font-size: 11px;
+                        margin-top: 10px;
+                    }
+
+                    .ttd-container {
+                        margin-left: 10%;
+                        width: 90%;
+                        /* Supaya tidak melewati batas kanan */
+                    }
+
+                    .ttd-wrapper {
+                        width: 100%;
+                        margin: 20px auto;
+                        font-family: "Times New Roman", Times, serif;
+                        font-size: 12px;
+                        border-collapse: collapse;
+                    }
+
+                    .ttd-section {
+                        width: 50%;
+                        vertical-align: top;
+                        text-align: left;
+                        /* Rata kiri */
+                    }
+
+                    .ttd-section td {
+                        padding: 3px;
+                    }
+
+                    .ttd-title {
+                        font-weight: bold;
+                    }
+
+                    .ttd-spacing {
+                        height: 45px;
+                    }
+
+                    .relative-wrapper {
+                        position: relative;
+                    }
+
+                    .ttd-img-kepsek {
+                        position: absolute;
+                        top: 35px;
+                        left: -90px;
+                        height: 90px;
+                        z-index: 1;
+                    }
+
+                    .ttd-img-stempel {
+                        position: absolute;
+                        top: 5px;
+                        left: -75px;
+                        height: 150px;
+                        z-index: 0;
+                    }
+
+                    @media print {
+                        .ttd-wrapper {
+                            page-break-inside: avoid;
+                        }
+                    }
+                </style>
+            </head>
+            <body onload="window.print(); window.close();">
+                ${printContents}
+            </body>
+            </html>
+        `);
+            printWindow.document.close();
+        });
+
+        document.getElementById("btn-cetak-skkb").addEventListener("click", function() {
+            // Ambil konten yang akan dicetak
+            var printContents = document.getElementById("cetak-skkb").innerHTML;
+
+            // Tutup modal Bootstrap
+            var modalElement = document.getElementById('modal-detail');
+            var modalInstance = bootstrap.Modal.getInstance(modalElement);
+            if (modalInstance) {
+                modalInstance.hide();
+            }
+
+            // Cetak di jendela baru
+            var printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+            <html>
+            <head>
+                <title>Cetak Nilai PKL</title>
+                <style>
+                    .cetak-rapor {
+                        border-collapse: collapse;
+                        width: 100%;
+                        text-decoration-color: black;
+                    }
+                    .cetak-rapor td {
+                        border: 1px solid black;
+                        padding: 1px;
+                        text-align: left;
+                    }
+                    .cetak-rapor th {
+                        border: 1px solid black;
+                        background-color: #f2f2f2;
+                        font-weight: bold;
+                        text-align: center;
+                    }
+                    @media print {
+                        .cetak-rapor tr {
+                            page-break-inside: avoid;
+                        }
+                        .page-break {
+                            page-break-before: always;
+                        }
+                    }
+                    .no-border {
+                        border: 0 !important;
+                        border-collapse: collapse !important;
+                    }
+                    .cetak-rapor .no-border,
+                    .cetak-rapor .no-border th,
+                    .cetak-rapor .no-border td {
+                        border: none !important;
+                    }
+                    .text-center {
+                        text-align: center;
+                    }
+                    .note {
+                        font-size: 11px;
+                        margin-top: 10px;
+                    }
+
+                    .ttd-container {
+                        margin-left: 10%;
+                        width: 90%;
+                        /* Supaya tidak melewati batas kanan */
+                    }
+
+                    .ttd-wrapper {
+                        width: 100%;
+                        margin: 20px auto;
+                        font-family: "Times New Roman", Times, serif;
+                        font-size: 12px;
+                        border-collapse: collapse;
+                    }
+
+                    .ttd-section {
+                        width: 50%;
+                        vertical-align: top;
+                        text-align: left;
+                        /* Rata kiri */
+                    }
+
+                    .ttd-section td {
+                        padding: 3px;
+                    }
+
+                    .ttd-title {
+                        font-weight: bold;
+                    }
+
+                    .ttd-spacing {
+                        height: 45px;
+                    }
+
+                    .relative-wrapper {
+                        position: relative;
+                    }
+
+                    .ttd-img-kepsek {
+                        position: absolute;
+                        top: 35px;
+                        left: -90px;
+                        height: 90px;
+                        z-index: 1;
+                    }
+
+                    .ttd-img-stempel {
+                        position: absolute;
+                        top: 5px;
+                        left: -75px;
+                        height: 150px;
+                        z-index: 0;
+                    }
+
+                    @media print {
+                        .ttd-wrapper {
+                            page-break-inside: avoid;
+                        }
+                    }
+                </style>
+            </head>
+            <body onload="window.print(); window.close();">
+                ${printContents}
+            </body>
+            </html>
+        `);
+            printWindow.document.close();
+        });
+
         $(document).on('click', '.showTransIjazah', function() {
             var nis = $(this).data('nis');
 
@@ -350,6 +650,58 @@
                 },
                 error: function() {
                     $('#TranskripIjazahBody').html(
+                        '<div class="text-danger text-center my-5">Gagal memuat data.</div>');
+                }
+            });
+        });
+
+        $(document).on('click', '.showSKKL', function() {
+            var nis = $(this).data('nis');
+
+            // Tampilkan spinner loading
+            $('#SuratKetLulusBody').html(`
+                <div class="text-center my-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            `);
+
+            // AJAX panggil route untuk ambil data rapor PKL
+            $.ajax({
+                url: '/kurikulum/dokumentsiswa/suratketlulus/' + nis,
+                type: 'GET',
+                success: function(response) {
+                    $('#SuratKetLulusBody').html(response);
+                },
+                error: function() {
+                    $('#SuratKetLulusBody').html(
+                        '<div class="text-danger text-center my-5">Gagal memuat data.</div>');
+                }
+            });
+        });
+
+        $(document).on('click', '.showSKKB', function() {
+            var nis = $(this).data('nis');
+
+            // Tampilkan spinner loading
+            $('#SuratKetBaikBody').html(`
+                <div class="text-center my-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            `);
+
+            // AJAX panggil route untuk ambil data rapor PKL
+            $.ajax({
+                url: '/kurikulum/dokumentsiswa/suratketbaik/' + nis,
+                type: 'GET',
+                success: function(response) {
+                    $('#SuratKetBaikBody').html(response);
+                },
+                error: function() {
+                    $('#SuratKetBaikBody').html(
                         '<div class="text-danger text-center my-5">Gagal memuat data.</div>');
                 }
             });

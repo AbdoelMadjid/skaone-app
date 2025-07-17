@@ -91,6 +91,8 @@ class IjazahDataTable extends DataTable
                         class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
                         <li><a href="#" class="dropdown-item showTransIjazah" data-nis="' . $id . '" data-bs-toggle="modal" data-bs-target="#TranskripIjazah"> Transkrip Nilai Ijazah </a></li>
+                        <li><a href="#" class="dropdown-item showSKKL" data-nis="' . $id . '" data-bs-toggle="modal" data-bs-target="#SuratKetLulus"> Surat Keterangan Lulus </a></li>
+                        <li><a href="#" class="dropdown-item showSKKB" data-nis="' . $id . '" data-bs-toggle="modal" data-bs-target="#SuratKetBaik"> Surat Keterangan Kelakuan Baik </a></li>
                     </ul>
                 </div>';
                 return $tombol;

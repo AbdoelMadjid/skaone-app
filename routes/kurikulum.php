@@ -157,6 +157,8 @@ Route::middleware('auth')->group(function () {
             Route::resource('ijazah', IjazahController::class);
             Route::post('ijazah/update-kelulusan', [IjazahController::class, 'updateKelulusan'])->name('ijazah.update-kelulusan');
             Route::get('transkripijazah/{nis}', [IjazahController::class, 'showTranskipIjasah']);
+            Route::get('suratketlulus/{nis}', [IjazahController::class, 'showSuratKetLulus']);
+            Route::get('suratketbaik/{nis}', [IjazahController::class, 'showSuratKetBaik']);
 
             Route::resource('rapor-pkl', RaporPklController::class);
             Route::get('raporpkl/{nis}', [RaporPklController::class, 'showRaporPKL']);
