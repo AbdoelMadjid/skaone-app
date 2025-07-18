@@ -15,35 +15,34 @@
         @endslot
     @endcomponent
     <div class="row">
-        <div class="col-xl-7">
+        <div class="col-xl-6">
             <div class="card">
                 <div class="card-body checkout-tab">
 
                     <form action="#">
                         <div class="step-arrow-nav mt-n3 mx-n3 mb-3">
-
                             <ul class="nav nav-tabs nav-justified nav-border-top nav-border-top-success mb-3" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" data-bs-toggle="tab" href="#info" role="tab"
-                                        aria-selected="false">
+                                    <a class="nav-link active" data-bs-toggle="tab" id="info-tab" href="#info"
+                                        role="tab" aria-selected="false">
                                         <i class="ri-briefcase-line align-middle me-1"></i> Info
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-bs-toggle="tab" href="#kerangka-tujuan" role="tab"
-                                        aria-selected="false">
+                                    <a class="nav-link" data-bs-toggle="tab" id="kerangka-tujuan-tab"
+                                        href="#kerangka-tujuan" role="tab" aria-selected="false">
                                         <i class="ri-stack-line me-1 align-middle"></i> Kerangka dan Tujuan
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-bs-toggle="tab" href="#komponen" role="tab"
-                                        aria-selected="false">
+                                    <a class="nav-link" data-bs-toggle="tab" id="komponen-tab" href="#komponen"
+                                        role="tab" aria-selected="false">
                                         <i class="ri-git-repository-line align-middle me-1"></i>Komponen
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-bs-toggle="tab" href="#lampiran" role="tab"
-                                        aria-selected="false">
+                                    <a class="nav-link" data-bs-toggle="tab" id="lampiran-tab" href="#lampiran"
+                                        role="tab" aria-selected="false">
                                         <i class="ri-file-copy-line align-middle me-1"></i>Lampiran
                                     </a>
                                 </li>
@@ -54,136 +53,56 @@
                             <div class="tab-pane fade show active" id="info" role="tabpanel"
                                 aria-labelledby="info-tab">
                                 @include('pages.gurumapel.modul-ajar-form-a')
+
+                                <div class="d-flex align-items-start gap-3 mt-4 mb-2 border border-dashed">
+                                    {{-- <button type="button" class="btn btn-light btn-label previestab"
+                                        data-previous="pills-bill-address-tab"><i
+                                            class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Info</button> --}}
+                                    <button type="button" class="btn btn-light btn-label right ms-auto nexttab"
+                                        data-nexttab="kerangka-tujuan"><i
+                                            class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Kerangka &
+                                        Tujuan</button>
+                                </div>
                             </div>
                             <!-- end tab pane -->
 
                             <div class="tab-pane fade" id="kerangka-tujuan" role="tabpanel"
                                 aria-labelledby="kerangka-tujuan-tab">
                                 @include('pages.gurumapel.modul-ajar-form-b')
+                                <div class="d-flex align-items-start gap-3 mt-4 mb-2 border border-dashed">
+                                    <button type="button" class="btn btn-light btn-label previestab"
+                                        data-previous="info"><i
+                                            class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Info</button>
+                                    <button type="button" class="btn btn-light btn-label right ms-auto nexttab"
+                                        data-nexttab="komponen"><i
+                                            class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Komponen</button>
+                                </div>
                             </div>
                             <!-- end tab pane -->
 
                             <div class="tab-pane fade" id="komponen" role="tabpanel" aria-labelledby="komponen-tab">
-                                <div>
-                                    <h5 class="mb-1">Payment Selection</h5>
-                                    <p class="text-muted mb-4">Please select and enter your billing
-                                        information</p>
-                                </div>
-
-                                <div class="row g-4">
-                                    <div class="col-lg-4 col-sm-6">
-                                        <div data-bs-toggle="collapse" data-bs-target="#paymentmethodCollapse.show"
-                                            aria-expanded="false" aria-controls="paymentmethodCollapse">
-                                            <div class="form-check card-radio">
-                                                <input id="paymentMethod01" name="paymentMethod" type="radio"
-                                                    class="form-check-input">
-                                                <label class="form-check-label" for="paymentMethod01">
-                                                    <span class="fs-16 text-muted me-2"><i
-                                                            class="ri-paypal-fill align-bottom"></i></span>
-                                                    <span class="fs-14 text-wrap">Paypal</span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-sm-6">
-                                        <div data-bs-toggle="collapse" data-bs-target="#paymentmethodCollapse"
-                                            aria-expanded="true" aria-controls="paymentmethodCollapse">
-                                            <div class="form-check card-radio">
-                                                <input id="paymentMethod02" name="paymentMethod" type="radio"
-                                                    class="form-check-input" checked>
-                                                <label class="form-check-label" for="paymentMethod02">
-                                                    <span class="fs-16 text-muted me-2"><i
-                                                            class="ri-bank-card-fill align-bottom"></i></span>
-                                                    <span class="fs-14 text-wrap">Credit / Debit
-                                                        Card</span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-4 col-sm-6">
-                                        <div data-bs-toggle="collapse" data-bs-target="#paymentmethodCollapse.show"
-                                            aria-expanded="false" aria-controls="paymentmethodCollapse">
-                                            <div class="form-check card-radio">
-                                                <input id="paymentMethod03" name="paymentMethod" type="radio"
-                                                    class="form-check-input">
-                                                <label class="form-check-label" for="paymentMethod03">
-                                                    <span class="fs-16 text-muted me-2"><i
-                                                            class="ri-money-dollar-box-fill align-bottom"></i></span>
-                                                    <span class="fs-14 text-wrap">Cash on
-                                                        Delivery</span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="collapse show" id="paymentmethodCollapse">
-                                    <div class="card p-4 border shadow-none mb-0 mt-4">
-                                        <div class="row gy-3">
-                                            <div class="col-md-12">
-                                                <label for="cc-name" class="form-label">Name on
-                                                    card</label>
-                                                <input type="text" class="form-control" id="cc-name"
-                                                    placeholder="Enter name">
-                                                <small class="text-muted">Full name as displayed on
-                                                    card</small>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <label for="cc-number" class="form-label">Credit card
-                                                    number</label>
-                                                <input type="text" class="form-control" id="cc-number"
-                                                    placeholder="xxxx xxxx xxxx xxxx">
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <label for="cc-expiration" class="form-label">Expiration</label>
-                                                <input type="text" class="form-control" id="cc-expiration"
-                                                    placeholder="MM/YY">
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <label for="cc-cvv" class="form-label">CVV</label>
-                                                <input type="text" class="form-control" id="cc-cvv"
-                                                    placeholder="xxx">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="text-muted mt-2 fst-italic">
-                                        <i data-feather="lock" class="text-muted icon-xs"></i> Your
-                                        transaction is secured with SSL encryption
-                                    </div>
-                                </div>
-
-                                <div class="d-flex align-items-start gap-3 mt-4">
+                                @include('pages.gurumapel.modul-ajar-form-c')
+                                <div class="d-flex align-items-start gap-3 mt-4 mb-2 border border-dashed">
                                     <button type="button" class="btn btn-light btn-label previestab"
-                                        data-previous="pills-bill-address-tab"><i
-                                            class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Back
-                                        to Shipping</button>
-                                    <button type="button" class="btn btn-primary btn-label right ms-auto nexttab"
-                                        data-nexttab="pills-finish-tab"><i
-                                            class="ri-shopping-basket-line label-icon align-middle fs-16 ms-2"></i>Complete
-                                        Order</button>
+                                        data-previous="kerangka-tujuan"><i
+                                            class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Kerangka dan
+                                        Tujuan</button>
+                                    <button type="button" class="btn btn-light btn-label right ms-auto nexttab"
+                                        data-nexttab="lampiran"><i
+                                            class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Lampiran</button>
                                 </div>
                             </div>
                             <!-- end tab pane -->
 
                             <div class="tab-pane fade" id="lampiran" role="tabpanel" aria-labelledby="lampiran-tab">
-                                <div class="text-center py-5">
-
-                                    <div class="mb-4">
-                                        <lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop"
-                                            colors="primary:#0ab39c,secondary:#405189"
-                                            style="width:120px;height:120px"></lord-icon>
-                                    </div>
-                                    <h5>Thank you ! Your Order is Completed !</h5>
-                                    <p class="text-muted">You will receive an order confirmation email
-                                        with
-                                        details of your order.</p>
-
-                                    <h3 class="fw-semibold">Order ID: <a href="/apps_ecommerce_order_details"
-                                            class="text-decoration-underline">VZ2451</a></h3>
+                                @include('pages.gurumapel.modul-ajar-form-d')
+                                <div class="d-flex align-items-start gap-3 mt-4 mb-2 border border-dashed">
+                                    <button type="button" class="btn btn-light btn-label previestab"
+                                        data-previous="komponen"><i
+                                            class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Komponen</button>
+                                    {{-- <button type="button" class="btn btn-light btn-label right ms-auto nexttab"
+                                        data-nexttab="lampiran"><i
+                                            class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Lampiran</button> --}}
                                 </div>
                             </div>
                             <!-- end tab pane -->
@@ -197,7 +116,7 @@
         </div>
         <!-- end col -->
 
-        <div class="col-xl-5">
+        <div class="col-xl-6">
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex">
@@ -220,173 +139,34 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection
 @section('script-bottom')
+    {{-- TOMBOL DI BAWAH UNTUK NEXT AND PREVIOUS --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const faseSelect = document.getElementById('fase');
-            const kelasSelect = document.getElementById('kelas');
-
-            const kelasOptions = {
-                'E': ['10'],
-                'F': ['11', '12']
-            };
-
-            function updateKelasOptions(fase) {
-                // Kosongkan dan reset opsi
-                kelasSelect.innerHTML = '<option value="">Pilih Kelas...</option>';
-
-                if (!fase) {
-                    kelasSelect.disabled = true;
-                    if (kelasSelect.choices) {
-                        kelasSelect.choices.setChoices(
-                            [{
-                                value: '',
-                                label: 'Pilih Kelas...',
-                                selected: true
-                            }],
-                            'value',
-                            'label',
-                            true
-                        );
+            // Tombol NEXT
+            document.querySelectorAll('.nexttab').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    const nextTabId = this.getAttribute('data-nexttab');
+                    const nextTab = document.querySelector(`a[href="#${nextTabId}"]`);
+                    if (nextTab) {
+                        new bootstrap.Tab(nextTab).show();
                     }
-                    return;
-                }
-
-                // Enable kelas jika fase sudah dipilih
-                kelasSelect.disabled = false;
-
-                const options = kelasOptions[fase] || [];
-                options.forEach(kelas => {
-                    const option = document.createElement('option');
-                    option.value = kelas;
-                    option.textContent = kelas;
-                    kelasSelect.appendChild(option);
                 });
-
-                // Update jika pakai Choices.js
-                if (kelasSelect.choices) {
-                    const newChoices = [{
-                        value: '',
-                        label: 'Pilih Kelas...',
-                        selected: true
-                    }];
-                    options.forEach(k => {
-                        newChoices.push({
-                            value: k,
-                            label: 'Kelas ' + k
-                        });
-                    });
-                    kelasSelect.choices.setChoices(newChoices, 'value', 'label', true);
-                }
-            }
-
-            // Saat halaman dimuat, buat kelas nonaktif dulu
-            updateKelasOptions('');
-
-            // Saat fase berubah
-            faseSelect.addEventListener('change', function() {
-                updateKelasOptions(this.value);
             });
 
-            // ✅ Tambahan untuk enable bidang keahlian saat kelas dipilih
-            kelasSelect.addEventListener('change', function() {
-                const bidangKeahlian = document.getElementById('bidang_keahlian');
-                if (this.value !== '') {
-                    bidangKeahlian.disabled = false;
-                } else {
-                    bidangKeahlian.disabled = true;
-                }
+            // Tombol PREVIOUS
+            document.querySelectorAll('.previestab').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    const prevTabId = this.getAttribute('data-previous');
+                    const prevTab = document.querySelector(`a[href="#${prevTabId}"]`);
+                    if (prevTab) {
+                        new bootstrap.Tab(prevTab).show();
+                    }
+                });
             });
         });
     </script>
-    <script>
-        $(function() {
-            $('#bidang_keahlian').prop('disabled', false).on('change', function() {
-                const idbk = $(this).val();
-                $('#program_keahlian').html('<option value="">Memuat data...</option>').prop('disabled',
-                    true);
-                $('#konsentrasi_keahlian').html('<option value="">Pilih Konsentrasi Keahlian...</option>')
-                    .prop('disabled', true);
 
-                if (idbk) {
-                    $.ajax({
-                        url: '/gurumapel/adminguru/get-program-keahlian/' + idbk,
-                        type: 'GET',
-                        success: function(data) {
-                            let opsi = '<option value="">Pilih Program Keahlian...</option>';
-                            data.forEach(d => {
-                                opsi +=
-                                    `<option value="${d.idpk}">${d.nama_pk}</option>`;
-                            });
-                            $('#program_keahlian').html(opsi).prop('disabled', false);
-                        }
-                    });
-                }
-            });
-
-            $('#program_keahlian').on('change', function() {
-                const idpk = $(this).val();
-                $('#konsentrasi_keahlian').html('<option value="">Memuat data...</option>').prop('disabled',
-                    true);
-
-                if (idpk) {
-                    $.ajax({
-                        url: '/gurumapel/adminguru/get-konsentrasi-keahlian/' + idpk,
-                        type: 'GET',
-                        success: function(data) {
-                            let opsi =
-                                '<option value="">Pilih Konsentrasi Keahlian...</option>';
-                            data.forEach(d => {
-                                opsi +=
-                                    `<option value="${d.idkk}">${d.nama_kk}</option>`;
-                            });
-                            $('#konsentrasi_keahlian').html(opsi).prop('disabled', false);
-                        }
-                    });
-                }
-            });
-        });
-    </script>
-    <script>
-        const kodeKkSelect = document.getElementById('konsentrasi_keahlian');
-        const tingkatSelect = document.getElementById('kelas');
-        const mapelSelect = document.getElementById('mata_pelajaran');
-
-        function updateMataPelajaran() {
-            const kodeKk = kodeKkSelect.value;
-            const tingkat = tingkatSelect.value;
-
-            if (kodeKk !== '' && tingkat !== '') {
-                fetch(`/gurumapel/adminguru/get-mata-pelajaran/${kodeKk}/${tingkat}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        mapelSelect.innerHTML = '';
-
-                        if (data.length > 0) {
-                            mapelSelect.disabled = false;
-                            mapelSelect.innerHTML = '<option value="">Pilih Mata Pelajaran...</option>';
-                            data.forEach(item => {
-                                const opt = document.createElement('option');
-                                opt.value = item.kode_mapel;
-                                opt.text = item.mata_pelajaran;
-                                mapelSelect.appendChild(opt);
-                            });
-                        } else {
-                            mapelSelect.disabled = true;
-                            mapelSelect.innerHTML =
-                                '<option value="">Anda tidak mengajar di tingkat dan konsentrasi keahlian ini.</option>';
-                        }
-                    });
-            } else {
-                mapelSelect.disabled = true;
-                mapelSelect.innerHTML = '<option value="">Pilih Mata Pelajaran...</option>';
-            }
-        }
-
-        kodeKkSelect.addEventListener('change', updateMataPelajaran);
-        tingkatSelect.addEventListener('change', updateMataPelajaran);
-    </script>
-
-
+    {{-- REALTIME FORMULIT BAGIAN TAG A --}}
     <script>
         $(document).ready(function() {
             const faseSelect = $('#fase');

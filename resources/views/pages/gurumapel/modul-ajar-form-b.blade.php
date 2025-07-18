@@ -1,8 +1,7 @@
 <div>
     <h5 class="mb-1">B. Kerangka dan Tujuan</h5>
-    <p class="text-muted mb-4">Menentukan Kerangka dan Tujuan Modul Ajar</p>
 </div>
-<div class="container mt-2">
+<div class="container mt-2 border border-dashed p-2 rounded">
     <label class="form-label"><strong>Elemen</strong></label>
     <div id="elemen-container">
         <!-- Elemen pertama -->
@@ -11,13 +10,14 @@
                 <textarea class="form-control" name="elemen[]" rows="2">Menyimak</textarea>
             </div>
             <div class="col-1 d-flex align-items-start">
-                <button type="button" class="btn btn-sm btn-danger btn-remove-elemen">X</button>
+                <button type="button" class="btn rounded-pill btn-danger btn-sm btn-remove-elemen">X</button>
             </div>
         </div>
     </div>
-    <button type="button" class="btn btn-outline-primary btn-sm" id="btn-tambah-elemen">+ Tambah Elemen</button>
+    <button type="button" class="btn btn-soft-info btn-sm" id="btn-tambah-elemen">➕ Tambah Elemen</button>
 </div>
-<div class="container mt-4">
+{{-- Capai Pembelajaran --}}
+<div class="container mt-4 border border-dashed p-2 rounded">
     <label class="form-label"><strong>Capaian Pembelajaran Elemen</strong></label>
     <div id="capaian-container">
         <!-- Capaian pertama -->
@@ -28,22 +28,28 @@ Peserta didik dapat menemukan informasi umum dan terperinci dari teks lisan sede
                 </textarea>
             </div>
             <div class="col-1 d-flex align-items-start">
-                <button type="button" class="btn btn-sm btn-danger btn-remove-capaian">X</button>
+                <button type="button" class="btn rounded-pill btn-danger btn-sm btn-remove-capaian">X</button>
             </div>
         </div>
     </div>
-    <button type="button" class="btn btn-outline-primary btn-sm" id="btn-tambah-capaian">+ Tambah Capaian
+    <button type="button" class="btn btn-soft-info btn-sm" id="btn-tambah-capaian">➕ Tambah Capaian
         Pembelajaran</button>
 </div>
 
-<div class="container mt-4">
+<div class="container mt-4 border border-dashed p-2 rounded">
     <label class="form-label"><strong>Tujuan Pembelajaran & KKTP</strong></label>
     <div id="tujuan-wrapper">
         <!-- Tujuan Pembelajaran pertama -->
         <div class="card p-3 mb-3 tujuan-item border border-secondary-subtle">
-            <textarea class="form-control mb-2" name="tujuan[]" placeholder="Tuliskan Tujuan Pembelajaran..."></textarea>
-
-            <div class="mb-2">
+            <div class="row">
+                <div class="col-11">
+                    <textarea class="form-control mb-2" name="tujuan[]" placeholder="Tuliskan Tujuan Pembelajaran..."></textarea>
+                </div>
+                <div class="col-1 d-flex align-items-start">
+                    <button type="button" class="btn rounded-pill btn-danger btn-sm btn-remove-tujuan">✖</button>
+                </div>
+            </div>
+            <div class="container mb-2">
                 <label class="form-label">Kriteria Ketercapaian (KKTP)</label>
                 <div class="kkpt-container">
                     <div class="input-group mb-2 kkpt-item">
@@ -51,16 +57,87 @@ Peserta didik dapat menemukan informasi umum dan terperinci dari teks lisan sede
                         <button type="button" class="btn btn-outline-danger btn-remove-kkpt">✖</button>
                     </div>
                 </div>
-                <button type="button" class="btn btn-sm btn-link text-primary btn-tambah-kkpt">➕ Tambah KKTP</button>
+                <button type="button" class="btn btn-sm btn-soft-info btn-tambah-kkpt">➕ Tambah
+                    KKTP</button>
             </div>
-
-            <button type="button" class="btn btn-outline-danger btn-sm btn-remove-tujuan">✖</button>
         </div>
     </div>
 
-    <button type="button" class="btn btn-outline-secondary w-100 mt-2" id="btn-tambah-tujuan">➕ Tambah Tujuan
+    <button type="button" class="btn btn-soft-info w-100 mt-2" id="btn-tambah-tujuan">➕ Tambah Tujuan
         Pembelajaran</button>
 </div>
+
+<div class="container mt-4 border border-dashed p-2 rounded">
+    <label for="kompetensi-awal" class="form-label"><strong>Kompetensi Awal</strong></label>
+    <input type="text" class="form-control" id="kompetensi-awal" placeholder="Isi Kompetensi Awal"
+        value="Peserta didik telah memahami .................................................">
+</div>
+
+<div class="container mt-4 border border-dashed p-2 rounded">
+    <label for="target-peserta-didik" class="form-label">Target Peserta Didik</label>
+    <input type="text" class="form-control" id="target-peserta-didik" placeholder="Isi Target Peserta Didik"
+        value="Peserta didik reguler dengan tingkat pemahaman yang beragam (akan didiferensiasi).">
+</div>
+
+<div class="container mt-4 border border-dashed p-2 rounded">
+    @php
+        $profilList = [
+            'Keimanan dan Ketakwaan',
+            'Kewargaan',
+            'Penalaran Kritis',
+            'Kreativitas',
+            'Kolaborasi',
+            'Kemandirian',
+            'Kesehatan',
+            'Komunikasi',
+        ];
+    @endphp
+    <label for="profil-kelulusan" class="form-label mb-2"><strong>Profil Kelulusan</strong></label>
+    <div id="profil-container">
+        @foreach ($profilList as $profil)
+            <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="profil-{{ $loop->index }}" name="profil[]"
+                    value="{{ $profil }}">
+                <label class="form-check-label" for="profil-{{ $loop->index }}">{{ $profil }}</label>
+
+                <textarea id="profil-desc-{{ $loop->index }}" name="deskripsi[{{ $profil }}]" class="form-control mt-2"
+                    style="display: none;" placeholder="Deskripsi untuk {{ $profil }}..."></textarea>
+            </div>
+        @endforeach
+    </div>
+</div>
+
+<div class="container mt-4 border border-dashed p-2 rounded">
+    @php
+        $items = [
+            'Praktik Pedagogis' => 'praktik_pedagogis',
+            'Lingkungan Pembelajaran' => 'lingkungan_pembelajaran',
+            'Pemanfaatan Digital' => 'pemanfaatan_digital',
+            'Kemitraan Pembelajaran' => 'kemitraan_pembelajaran',
+        ];
+    @endphp
+    <label for="kerangka-pembelajaran" class="form-label mb-2"><strong>Kerangka Pembelajaran</strong></label>
+    <div id="kerangka-container">
+        @foreach ($items as $label => $key)
+            <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="kerangka-{{ $loop->index }}" name="kerangka[]"
+                    value="{{ $key }}">
+                <label class="form-check-label" for="kerangka-{{ $loop->index }}">{{ $label }}</label>
+
+                <textarea id="kerangka-desc-{{ $loop->index }}" name="deskripsi[{{ $key }}]" class="form-control mt-2"
+                    style="display: none;" placeholder="Deskripsi {{ $label }}..."></textarea>
+            </div>
+        @endforeach
+    </div>
+</div>
+
+<div class="container mt-4 border border-dashed p-2 rounded">
+    <label for="alokasi-waktu" class="form-label"><strong>Alokasi Waktu</strong></label>
+    <input type="text" class="form-control" id="alokasi-waktu" placeholder="Isi Alokasi Waktu"
+        value="4 JP x @45 menit (180 menit)">
+</div>
+
+{{-- //============================= --}}
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -76,7 +153,7 @@ Peserta didik dapat menemukan informasi umum dan terperinci dari teks lisan sede
                     <textarea class="form-control" name="elemen[]" rows="2"></textarea>
                 </div>
                 <div class="col-1 d-flex align-items-start">
-                    <button type="button" class="btn btn-sm btn-danger btn-remove-elemen">X</button>
+                    <button type="button" class="btn rounded-pill btn-danger btn-sm btn-remove-elemen">X</button>
                 </div>
             `;
             container.appendChild(item);
@@ -101,7 +178,7 @@ Peserta didik dapat menemukan informasi umum dan terperinci dari teks lisan sede
                     <textarea class="form-control" name="capaian[]" rows="3"></textarea>
                 </div>
                 <div class="col-1 d-flex align-items-start">
-                    <button type="button" class="btn btn-sm btn-danger btn-remove-capaian">X</button>
+                    <button type="button" class="btn rounded-pill btn-danger btn-sm btn-remove-capaian">X</button>
                 </div>
             `;
             capaianContainer.appendChild(item);
@@ -124,9 +201,15 @@ Peserta didik dapat menemukan informasi umum dan terperinci dari teks lisan sede
             const card = document.createElement("div");
             card.className = "card p-3 mb-3 tujuan-item border border-secondary-subtle";
             card.innerHTML = `
-                <textarea class="form-control mb-2" name="tujuan[]" placeholder="Tuliskan Tujuan Pembelajaran..."></textarea>
-
-                <div class="mb-2">
+                <div class="row">
+                    <div class="col-11">
+                        <textarea class="form-control mb-2" name="tujuan[]" placeholder="Tuliskan Tujuan Pembelajaran..."></textarea>
+                    </div>
+                    <div class="col-1 d-flex align-items-start">
+                        <button type="button" class="btn rounded-pill btn-danger btn-sm btn-remove-tujuan">✖</button>
+                    </div>
+                </div>
+                <div class="container mb-2">
                     <label class="form-label">Kriteria Ketercapaian (KKTP)</label>
                     <div class="kkpt-container">
                         <div class="input-group mb-2 kkpt-item">
@@ -134,10 +217,8 @@ Peserta didik dapat menemukan informasi umum dan terperinci dari teks lisan sede
                             <button type="button" class="btn btn-outline-danger btn-remove-kkpt">✖</button>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-sm btn-link text-primary btn-tambah-kkpt">➕ Tambah KKTP</button>
+                    <button type="button" class="btn btn-sm btn-soft-info btn-tambah-kkpt">➕ Tambah KKTP</button>
                 </div>
-
-                <button type="button" class="btn btn-outline-danger btn-sm btn-remove-tujuan">✖</button>
             `;
             wrapper.appendChild(card);
             tujuanIndex++;
@@ -166,5 +247,27 @@ Peserta didik dapat menemukan informasi umum dan terperinci dari teks lisan sede
                 container.appendChild(kkptItem);
             }
         });
+
+        // Untuk Profil
+        document.querySelectorAll('input[type="checkbox"][name="profil[]"]').forEach(function(checkbox, index) {
+            checkbox.addEventListener('change', function() {
+                const desc = document.getElementById(`profil-desc-${index}`);
+                if (desc) {
+                    desc.style.display = this.checked ? 'block' : 'none';
+                }
+            });
+        });
+
+        // Untuk Kerangka Pembelajaran
+        document.querySelectorAll('input[type="checkbox"][name="kerangka[]"]').forEach(function(checkbox,
+            index) {
+            checkbox.addEventListener('change', function() {
+                const desc = document.getElementById(`kerangka-desc-${index}`);
+                if (desc) {
+                    desc.style.display = this.checked ? 'block' : 'none';
+                }
+            });
+        });
     });
 </script>
+

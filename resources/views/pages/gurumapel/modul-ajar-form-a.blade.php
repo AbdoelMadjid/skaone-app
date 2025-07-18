@@ -1,9 +1,8 @@
 <div>
-    <h5 class="mb-1">A. INFORMASI UMUM</h5>
-    <p class="text-muted mb-4">Identitas Modul</p>
+    <h5 class="mb-1">A. Informasi Umum</h5>
 </div>
 
-<div>
+<div class="container mb-4 border border-dashed p-2 rounded">
     <div class="row">
         <div class="col-md-4">
             <div class="mb-3">
@@ -78,3 +77,169 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const faseSelect = document.getElementById('fase');
+        const kelasSelect = document.getElementById('kelas');
+
+        const kelasOptions = {
+            'E': ['10'],
+            'F': ['11', '12']
+        };
+
+        function updateKelasOptions(fase) {
+            // Kosongkan dan reset opsi
+            kelasSelect.innerHTML = '<option value="">Pilih Kelas...</option>';
+
+            if (!fase) {
+                kelasSelect.disabled = true;
+                if (kelasSelect.choices) {
+                    kelasSelect.choices.setChoices(
+                        [{
+                            value: '',
+                            label: 'Pilih Kelas...',
+                            selected: true
+                        }],
+                        'value',
+                        'label',
+                        true
+                    );
+                }
+                return;
+            }
+
+            // Enable kelas jika fase sudah dipilih
+            kelasSelect.disabled = false;
+
+            const options = kelasOptions[fase] || [];
+            options.forEach(kelas => {
+                const option = document.createElement('option');
+                option.value = kelas;
+                option.textContent = kelas;
+                kelasSelect.appendChild(option);
+            });
+
+            // Update jika pakai Choices.js
+            if (kelasSelect.choices) {
+                const newChoices = [{
+                    value: '',
+                    label: 'Pilih Kelas...',
+                    selected: true
+                }];
+                options.forEach(k => {
+                    newChoices.push({
+                        value: k,
+                        label: 'Kelas ' + k
+                    });
+                });
+                kelasSelect.choices.setChoices(newChoices, 'value', 'label', true);
+            }
+        }
+
+        // Saat halaman dimuat, buat kelas nonaktif dulu
+        updateKelasOptions('');
+
+        // Saat fase berubah
+        faseSelect.addEventListener('change', function() {
+            updateKelasOptions(this.value);
+        });
+
+        // ✅ Tambahan untuk enable bidang keahlian saat kelas dipilih
+        kelasSelect.addEventListener('change', function() {
+            const bidangKeahlian = document.getElementById('bidang_keahlian');
+            if (this.value !== '') {
+                bidangKeahlian.disabled = false;
+            } else {
+                bidangKeahlian.disabled = true;
+            }
+        });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        $('#bidang_keahlian').prop('disabled', false).on('change', function() {
+            const idbk = $(this).val();
+            $('#program_keahlian').html('<option value="">Memuat data...</option>').prop('disabled',
+                true);
+            $('#konsentrasi_keahlian').html('<option value="">Pilih Konsentrasi Keahlian...</option>')
+                .prop('disabled', true);
+
+            if (idbk) {
+                $.ajax({
+                    url: '/gurumapel/adminguru/get-program-keahlian/' + idbk,
+                    type: 'GET',
+                    success: function(data) {
+                        let opsi = '<option value="">Pilih Program Keahlian...</option>';
+                        data.forEach(d => {
+                            opsi +=
+                                `<option value="${d.idpk}">${d.nama_pk}</option>`;
+                        });
+                        $('#program_keahlian').html(opsi).prop('disabled', false);
+                    }
+                });
+            }
+        });
+
+        $('#program_keahlian').on('change', function() {
+            const idpk = $(this).val();
+            $('#konsentrasi_keahlian').html('<option value="">Memuat data...</option>').prop('disabled',
+                true);
+
+            if (idpk) {
+                $.ajax({
+                    url: '/gurumapel/adminguru/get-konsentrasi-keahlian/' + idpk,
+                    type: 'GET',
+                    success: function(data) {
+                        let opsi =
+                            '<option value="">Pilih Konsentrasi Keahlian...</option>';
+                        data.forEach(d => {
+                            opsi +=
+                                `<option value="${d.idkk}">${d.nama_kk}</option>`;
+                        });
+                        $('#konsentrasi_keahlian').html(opsi).prop('disabled', false);
+                    }
+                });
+            }
+        });
+    });
+</script>
+<script>
+    const kodeKkSelect = document.getElementById('konsentrasi_keahlian');
+    const tingkatSelect = document.getElementById('kelas');
+    const mapelSelect = document.getElementById('mata_pelajaran');
+
+    function updateMataPelajaran() {
+        const kodeKk = kodeKkSelect.value;
+        const tingkat = tingkatSelect.value;
+
+        if (kodeKk !== '' && tingkat !== '') {
+            fetch(`/gurumapel/adminguru/get-mata-pelajaran/${kodeKk}/${tingkat}`)
+                .then(res => res.json())
+                .then(data => {
+                    mapelSelect.innerHTML = '';
+
+                    if (data.length > 0) {
+                        mapelSelect.disabled = false;
+                        mapelSelect.innerHTML = '<option value="">Pilih Mata Pelajaran...</option>';
+                        data.forEach(item => {
+                            const opt = document.createElement('option');
+                            opt.value = item.kode_mapel;
+                            opt.text = item.mata_pelajaran;
+                            mapelSelect.appendChild(opt);
+                        });
+                    } else {
+                        mapelSelect.disabled = true;
+                        mapelSelect.innerHTML =
+                            '<option value="">Anda tidak mengajar di tingkat dan konsentrasi keahlian ini.</option>';
+                    }
+                });
+        } else {
+            mapelSelect.disabled = true;
+            mapelSelect.innerHTML = '<option value="">Pilih Mata Pelajaran...</option>';
+        }
+    }
+
+    kodeKkSelect.addEventListener('change', updateMataPelajaran);
+    tingkatSelect.addEventListener('change', updateMataPelajaran);
+</script>
