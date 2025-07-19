@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Kurikulum\DataKBM\KbmPerRombel;
 use App\Models\ManajemenSekolah\BidangKeahlian;
 use App\Models\ManajemenSekolah\IdentitasSekolah;
+use App\Models\ManajemenSekolah\KepalaSekolah;
 use App\Models\ManajemenSekolah\KompetensiKeahlian;
 use App\Models\ManajemenSekolah\PersonilSekolah;
 use App\Models\ManajemenSekolah\ProgramKeahlian;
@@ -52,8 +53,11 @@ class ModulAjarGuruMapelController extends Controller
         $bidangKeahlianList = BidangKeahlian::whereIn('idbk', [10, 11])->get();
         $identitasSekolah = IdentitasSekolah::where('id', 1)->select('nama_sekolah')->first();
 
+        $kepsek = KepalaSekolah::where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('semester', $semesterAktif->semester)
+            ->first();
 
-        return view('pages.gurumapel.modul-ajar', compact('bidangKeahlianList', 'personil', 'fullName', 'tahunAjaranAktif', 'semesterAktif', 'identitasSekolah'));
+        return view('pages.gurumapel.bikinmodul.modul-ajar', compact('bidangKeahlianList', 'personil', 'fullName', 'tahunAjaranAktif', 'semesterAktif', 'identitasSekolah', 'kepsek'));
     }
 
     public function getProgram($idbk)
