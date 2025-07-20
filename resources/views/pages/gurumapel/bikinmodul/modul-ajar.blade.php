@@ -781,9 +781,41 @@
             updatePreviewRefleksi();
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            function updateKepsek() {
+                const val = $('#kepsek').val().trim();
+                $('#namaKepsek').text(val ? `${val}` : '');
+            }
 
+            function updateNipKepsek() {
+                const val = $('#nip-kepsek').val().trim();
+                $('#nipKepsek').text(val ? `NIP. ${val}` : '');
+            }
 
+            function updateGuruMapel() {
+                const val = $('#guru-mapel').val().trim();
+                $('#namaGuruMapel').text(val ? `${val}` : '');
+            }
 
+            function updatenipGuruMapel() {
+                const val = $('#nip-gurumapel').val().trim();
+                $('#nipGuruMapel').text(val ? `NIP. ${val}` : '');
+            }
+
+            // Jalankan saat pertama kali halaman dimuat
+            updateKepsek();
+            updateNipKepsek();
+            updateGuruMapel();
+            updatenipGuruMapel();
+
+            // Jalankan saat user mengetik
+            $('#kepsek').on('keyup', updateKepsek);
+            $('#nip-kepsek').on('keyup', updateNipKepsek);
+            $('#guru-mapel').on('keyup', updateGuruMapel);
+            $('#nip-gurumapel').on('keyup', updatenipGuruMapel);
+        });
+    </script>
 
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

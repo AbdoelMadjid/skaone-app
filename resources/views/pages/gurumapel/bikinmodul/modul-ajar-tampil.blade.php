@@ -34,7 +34,7 @@
         <td>{{ $fullName }}</td>
     </tr>
 </table>
-<p class="font-bold mt-8">B. KERANGKA DAN TUJUAN PEMBELAJARAN</p>
+<H5 class="font-bold mt-4">B. KERANGKA DAN TUJUAN PEMBELAJARAN</H5>
 <table class="w-full border-collapse border border-black text-xs mt-1">
     <tbody>
         <tr>
@@ -110,7 +110,7 @@
     </tbody>
 </table>
 
-<p class="font-bold mt-4">C. KOMPONEN INTI</p>
+<H5 class="font-bold mt-4">C. KOMPONEN INTI</H5>
 <table class="w-full border-collapse border border-black text-xs mb-2">
     <tbody>
         <tr>
@@ -150,24 +150,43 @@
     </tbody>
 </table>
 
-<div class="mt-24 flex justify-between">
-    <div class="w-2/5">
-        <p>Mengetahui</p>
-        <p>Kepala Sekolah</p>
-        <div class="h-16"></div>
-        <p class="font-bold"><span class="text-red-500 font-bold"> *</span></p>
-        <p>NIP. <span class="text-red-500 font-bold"> *</span></p>
-    </div>
-    <div class="w-2/5 text-left">
-        <p>Bandung, 18 Juli 2025</p>
-        <p>Nama Guru,</p>
-        <div class="h-16"></div>
-        <p class="font-bold"><span class="text-red-500 font-bold"> *</span></p>
-        <p>NIP. <span class="text-red-500 font-bold"> *</span></p>
-    </div>
-</div>
-
-<p class="font-bold mt-8">D. LAMPIRAN</p>
+<table class="mt-4">
+    <tr>
+        <td style="width:50px""></td>
+        <td>
+            Mengetahui<br>
+            Kepala Sekolah
+            <br>
+            <br>
+            <br>
+            <br>
+        <td>
+        <td style="width:250px""></td>
+        <td>
+            Majalengka, <br>
+            Guru Mata Pelajaran
+            <br>
+            <br>
+            <br>
+            <br>
+        <td>
+    </tr>
+    <tr>
+        <td style="width:50px""></td>
+        <td>
+            <div id="namaKepsek"></div>
+            <div id="nipKepsek"></div>
+        <td>
+        <td style="width:250px""></td>
+        <td>
+            <div id="namaGuruMapel"></div>
+            <div id="nipGuruMapel"></div>
+        <td>
+    </tr>
+</table>
+<br>
+<br>
+<h5 class="mt-4 font-bold">D. LAMPIRAN</h5>
 <div class="mt-2">
     <p class="font-bold">Lampiran</p>
     <div class="pl-4">

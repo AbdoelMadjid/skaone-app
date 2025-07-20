@@ -244,3 +244,40 @@
     kodeKkSelect.addEventListener('change', updateMataPelajaran);
     tingkatSelect.addEventListener('change', updateMataPelajaran);
 </script>
+
+<div class="container mt-4 mb-4 border border-dashed p-2 rounded">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label for="kepsek" class="form-label">Kepala Sekolah</label>
+                <input type="text" class="form-control" id="kepsek" placeholder="nama kepala sekolah"
+                    value="{{ $kepsek->nama }}">
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label for="guru-mapel" class="form-label">Guru Mata Pelajaran</label>
+                <input type="text" class="form-control" id="guru-mapel" placeholder="nama guru mapel"
+                    value="{{ $fullName }}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label for="nip-kepsek" class="form-label">NIP Kepala Sekolah</label>
+                <input type="text" class="form-control" id="nip-kepsek" placeholder="nip kepala sekolah"
+                    value="{{ $kepsek->nip }}">
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label for="nip-gurumapel" class="form-label">NIP Guru Mata Pelajaran</label>
+                <input type="text" class="form-control" id="nip-gurumapel" placeholder="nip guru mata pelajaran"
+                    value="{{ $personil->nip }}">
+            </div>
+        </div>
+    </div>
+</div>
