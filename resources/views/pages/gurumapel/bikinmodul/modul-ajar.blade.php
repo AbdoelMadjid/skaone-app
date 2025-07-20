@@ -125,7 +125,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-4">
+                    <button id="btn-cetak-modul-ajar" class="btn btn-primary">Cetak </button>
                     @include('pages.gurumapel.bikinmodul.modul-ajar-tampil')
                 </div>
                 <!-- end card body -->
@@ -137,8 +138,25 @@
 @endsection
 @section('script')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script src="{{ URL::asset('build/js/ngeprint.js') }}"></script>
 @endsection
 @section('script-bottom')
+    <script>
+        setupPrintHandler({
+            printButtonId: 'btn-cetak-modul-ajar',
+            tableContentId: 'cetak-modul-ajar',
+            title: 'Cetak Modul Ajar',
+            customStyle: `
+                body { font-family: 'Times New Roman', serif; font-size: 12px; }
+                table { width: 100%; border-collapse: collapse; }
+                table, th, td { border: 1px solid black; }
+                th, td { padding: 5px;}
+                table ol, ul { padding-left: 20px; margin: 0;}
+            `
+        });
+    </script>
     {{-- TOMBOL DI BAWAH UNTUK NEXT AND PREVIOUS --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -166,7 +184,7 @@
         });
     </script>
 
-    {{-- REALTIME FORMULIT BAGIAN TAG A --}}
+    {{-- REALTIME FORMULIR BAGIAN TAG A --}}
     <script>
         $(document).ready(function() {
             const faseSelect = $('#fase');
@@ -255,7 +273,11 @@
             });
 
         });
+    </script>
 
+    <!--  TAMPILKAN BAGIAN B  -->
+    <!--  TAMPILKAN ELEMEN  -->
+    <script>
         $(document).ready(function() {
 
             // Fungsi untuk menampilkan ulang seluruh isi elemen[] ke dalam UL
@@ -291,6 +313,8 @@
 
         });
     </script>
+
+    <!--  TAMPILKAN CAPAIAN PEMBELAJARAN  -->
     <script>
         $(document).ready(function() {
 
@@ -326,6 +350,7 @@
         });
     </script>
 
+    <!--  TAMPILKAN TUJUAN PEMBELAJARAN  -->
     <script>
         $(document).ready(function() {
             function updatePreviewTujuanPembelajaran() {
@@ -380,6 +405,8 @@
             });
         });
     </script>
+
+    <!--  TAMPILKAN KOMPETENSI AWAL  -->
     <script>
         $(document).ready(function() {
             function updateKompetensiAwalPreview() {
@@ -394,6 +421,8 @@
             $('#kompetensi-awal').on('keyup', updateKompetensiAwalPreview);
         });
     </script>
+
+    <!--  TAMPILKAN TARGET PESERTA DIDIK  -->
     <script>
         $(document).ready(function() {
             function updateTargetPesertaDidikPreview() {
@@ -408,6 +437,8 @@
             $('#target-peserta-didik').on('keyup', updateTargetPesertaDidikPreview);
         });
     </script>
+
+    <!--  TAMPILKAN PROFIL KELULUSAN -->
     <script>
         $(document).ready(function() {
             function updatePreviewProfil() {
@@ -447,6 +478,8 @@
             updatePreviewProfil();
         });
     </script>
+
+    <!--  TAMPILKAN KERANGKA PEMBELAJARAN -->
     <script>
         $(document).ready(function() {
             function updatePreviewKerangka() {
@@ -487,6 +520,8 @@
             updatePreviewKerangka();
         });
     </script>
+
+    <!--  TAMPILKAN ALOKASI WAKTU  -->
     <script>
         $(document).ready(function() {
             function updateAlokasiWaktu() {
@@ -501,6 +536,9 @@
             $('#alokasi-waktu').on('keyup', updateAlokasiWaktu);
         });
     </script>
+
+    <!--  TAMPILKAN BAGIAN C  -->
+    <!--  TAMPILKAN PEMAHAMAN BERMAKNA  -->
     <script>
         $(document).ready(function() {
             function updatePreviewPemahaman() {
@@ -518,7 +556,7 @@
         });
     </script>
 
-    {{-- BAGIAN C KOMPONEN --}}
+    <!--  TAMPILKAN PERTANYAAN PEMANTIK  -->
     <script>
         $(document).ready(function() {
             function updatePreviewPertanyaan() {
@@ -548,6 +586,7 @@
         });
     </script>
 
+    <!--  TAMPILKAN KEGIATAN PEMBELAJARAN  -->
     <script>
         $(document).ready(function() {
             function updatePreviewKegiatan() {
@@ -658,6 +697,7 @@
         });
     </script>
 
+    <!--  TAMPILKAN ASESMEN FORMATIF DAN SUMATIF  -->
     <script>
         $(document).ready(function() {
             function updatePreviewAsesmen() {
@@ -674,7 +714,7 @@
 
                     if (formatifList) {
                         preview.append(
-                            `<strong>Asesmen Formatif :</strong><br><ol style="margin-left:-20px;">${formatifList}</ol>`
+                            `<strong>Asesmen Formatif :</strong><br><ol style="margin-left:-5px;">${formatifList}</ol>`
                         );
                     }
                 }
@@ -689,7 +729,7 @@
 
                     if (sumatifList) {
                         preview.append(
-                            `<strong>Asesmen Sumatif :</strong><br><ol style="margin-left:-20px;">${sumatifList}</ol>`
+                            `<strong>Asesmen Sumatif :</strong><br><ol style="margin-left:-5px;">${sumatifList}</ol>`
                         );
                     }
                 }
@@ -718,7 +758,7 @@
         });
     </script>
 
-
+    <!--  TAMPILKAN REFLEKSI PENDIDIK DAN PESERTA DIDIK -->
     <script>
         $(document).ready(function() {
             function updatePreviewRefleksi() {
@@ -735,7 +775,7 @@
 
                     if (pendidikList) {
                         preview.append(
-                            `<strong>Refleksi Pendidik :</strong><br><ol style="margin-left:-20px;">${pendidikList}</ol>`
+                            `<strong>Refleksi Pendidik :</strong><br><ol style="margin-left:-5px;">${pendidikList}</ol>`
                         );
                     }
                 }
@@ -750,7 +790,7 @@
 
                     if (pesertaList) {
                         preview.append(
-                            `<strong>Refleksi Peserta Didik :</strong><br><ol style="margin-left:-20px;">${pesertaList}</ol>`
+                            `<strong>Refleksi Peserta Didik :</strong><br><ol style="margin-left:-5px;">${pesertaList}</ol>`
                         );
                     }
                 }
@@ -781,6 +821,8 @@
             updatePreviewRefleksi();
         });
     </script>
+
+    <!--  TAMPILKAN KEPALA SEKOLAH DAN GURU MAPEL  -->
     <script>
         $(document).ready(function() {
             function updateKepsek() {
@@ -817,5 +859,66 @@
         });
     </script>
 
+
+    <!--  TAMPILKAN LAMPIRAN  -->
+    <script>
+        $(document).ready(function() {
+            function updatePreviewLampiran() {
+                const preview = $('#preview-lampiran');
+                preview.empty();
+
+                $('#lampiran-container input[name="lampiran[]"]').each(function() {
+                    const val = $(this).val().trim();
+                    if (val !== '') {
+                        preview.append(`<li>${val}</li>`);
+                    }
+                });
+            }
+
+            // Perubahan isi input langsung update preview
+            $(document).on('input', 'input[name="lampiran[]"]', updatePreviewLampiran);
+
+            // Tambah/hapus pertanyaan juga panggil updatePreviewPertanyaan
+            const observer = new MutationObserver(updatePreviewLampiran);
+            observer.observe(document.getElementById('lampiran-container'), {
+                childList: true,
+                subtree: true
+            });
+
+            // Inisialisasi pertama kali
+            updatePreviewLampiran();
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
+            function updateGlosarium() {
+                const val = $('#glosarium').val().trim();
+                $('#preview-glosarium').text(val ? `${val}` : '');
+            }
+
+            // Jalankan saat pertama kali halaman dimuat
+            updateGlosarium();
+
+            // Jalankan saat user mengetik
+            $('#glosarium').on('keyup', updateGlosarium);
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            function updateDaftarPustaka() {
+                const val = $('#daftar-pustaka').val().trim();
+                $('#preview-daftarpustaka').text(val ? `${val}` : '');
+            }
+
+            // Jalankan saat pertama kali halaman dimuat
+            updateDaftarPustaka();
+
+            // Jalankan saat user mengetik
+            $('#daftar-pustaka').on('keyup', updateDaftarPustaka);
+        });
+    </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection
