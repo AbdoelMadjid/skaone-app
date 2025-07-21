@@ -1,83 +1,3 @@
-{{-- <style>
-    #cetak-modul-ajar table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 12px;
-    }
-
-    #cetak-modul-ajar th,
-    #cetak-modul-ajar td {
-        border: 1px solid #333;
-        /* sedikit lebih soft */
-        padding: 6px 10px;
-        /* seimbang dan tidak terlalu besar */
-        vertical-align: top;
-        line-height: 1.4;
-    }
-
-    #cetak-modul-ajar table ol {
-        padding-left: 20px;
-        margin: 0;
-    }
-
-    #cetak-modul-ajar h5,
-    #cetak-modul-ajar h6 {
-        margin-top: 20px;
-        font-weight: bold;
-        font-family: 'Times New Roman', Times, serif;
-    }
-
-    /* Untuk menyelaraskan margin dalam <td> yang berisi <div> */
-    #cetak-modul-ajar td>div {
-        margin: 0;
-        padding: 0;
-    }
-
-    /* Tambahan untuk tata letak penandatangan */
-    #cetak-modul-ajar table td {
-        font-family: 'Times New Roman', Times, serif;
-    }
-
-
-    @media print {
-        #cetak-modul-ajar tr {
-            page-break-inside: avoid;
-            /* Hindari potongan di tengah baris */
-        }
-
-        .page-break {
-            page-break-before: always;
-            /* Paksa halaman baru */
-        }
-
-        body,
-        html {
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-
-        #cetak-modul-ajar {
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-
-        @page {
-            margin: 0;
-            /* Hapus margin default saat print */
-        }
-    }
-
-    /* Menonaktifkan border khusus untuk tabel tanda tangan */
-    .tabel-tanpa-border td,
-    .tabel-tanpa-border th {
-        border: none !important;
-        padding: 6px 8px;
-    }
-
-    .tabel-tanpa-border {
-        border-collapse: collapse;
-    }
-</style> --}}
 <div id="cetak-modul-ajar" style='@page {size: A4;}'>
     <table class="cetak-modulajar no-border">
         <tr>
@@ -95,7 +15,7 @@
             </td>
         </tr>
         <tr>
-            <td style='font-size:12px;text-align:center;'>
+            <td style='font-size:16px;text-align:center;'>
                 <strong>
                     <div class="text-center mt-3" id="modulTopik"></div>
                 </strong>
@@ -260,7 +180,7 @@
     <br><br>
     <table class="cetak-modulajar no-border">
         <tr>
-            <td></td>
+            <td>&nbsp;</td>
             <td style="width:40%">
                 Mengetahui<br>
                 Kepala Sekolah
@@ -270,7 +190,7 @@
                 <br>
             <td>
             <td style="width:60%">
-                Majalengka, <br>
+                <div id="tanggalHariIni"></div>
                 Guru Mata Pelajaran
                 <br>
                 <br>
@@ -279,32 +199,48 @@
             <td>
         </tr>
         <tr>
-            <td></td>
+            <td>&nbsp;</td>
             <td>
-                <div id="namaKepsek"></div>
+                <div id="namaKepsek" style="font-weight: bold;"></div>
                 <div id="nipKepsek"></div>
             <td>
             <td>
-                <div id="namaGuruMapel"></div>
+                <div id="namaGuruMapel" style="font-weight: bold;"></div>
                 <div id="nipGuruMapel"></div>
             <td>
         </tr>
     </table>
     <br>
     <br>
-    <h5 class="mt-4">D. LAMPIRAN</h5>
-    <table <div class="mt-0">
-        <h6>Lampiran</h6>
-        <ul id="preview-lampiran" style="margin-left:-15px;">
-            <!-- akan diisi <li> secara dinamis -->
-        </ul>
-</div>
-<div class="mt-4">
-    <h6>Glosarium</h6>
-    <div id="preview-glosarium"></div>
-</div>
-<div class="mt-4">
-    <h6>Daftar Pustaka</h6>
-    <div id="preview-daftarpustaka">- </div>
-</div>
+    <table class="cetak-modulajar no-border">
+        <tr>
+            <td style="font-weight: bold;">D. LAMPIRAN</td>
+        </tr>
+        <tr>
+            <td>
+                <span style="font-weight: bold; padding-top:10px;">Lampiran</span>
+                <ul id="preview-lampiran" style="margin-left:-15px;">
+                    <!-- akan diisi <li> secara dinamis -->
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold;">
+                <span style="font-weight: bold; padding-top:10px;">Glosarium</span>
+                <ul id="preview-glosarium" style="margin-left:-15px;">
+                    Judul <br>
+                    Deskripsi
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span style="font-weight: bold; padding-top:10px;">Daftar Pustaka</span>
+                {{-- <div id="preview-daftarpustaka"></div> --}}
+                <ul id="preview-daftarpustaka" style="margin-left:-15px;">
+                    <!-- akan diisi <li> secara dinamis -->
+                </ul>
+            </td>
+        </tr>
+    </table>
 </div>

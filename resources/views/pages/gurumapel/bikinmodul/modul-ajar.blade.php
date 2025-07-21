@@ -101,9 +101,9 @@
                                         data-previous="komponen"><i
                                             class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Komponen</button>
                                     {{-- <button id="btn-cetak-modul-ajar" class="btn btn-primary">Cetak </button> --}}
-                                    <button type="button" class="btn btn-soft-info btn-label right ms-auto"
+                                    {{-- <button type="button" class="btn btn-soft-info btn-label right ms-auto"
                                         id="btn-cetak-modul-ajar"><i
-                                            class="ri-printer-line label-icon align-middle fs-16 ms-2"></i>Cetak</button>
+                                            class="ri-printer-line label-icon align-middle fs-16 ms-2"></i>Cetak</button> --}}
                                 </div>
                             </div>
                             <!-- end tab pane -->
@@ -123,6 +123,11 @@
                     <div class="d-flex">
                         <div class="flex-grow-1">
                             <h5 class="card-title mb-0">Tampil Modul Ajar</h5>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-sm btn-soft-info btn-label right ms-auto"
+                                id="btn-cetak-modul-ajar"><i
+                                    class="ri-printer-line label-icon align-middle fs-16 ms-2"></i>Cetak</button>
                         </div>
                     </div>
                 </div>
@@ -174,8 +179,24 @@
                     page-break-inside: avoid;
                     break-inside: avoid;
                 }
+
+                #namaKepsek.hurufbold {font-weight: bold;}
             `
         });
+    </script>
+    <script>
+        const bulanIndo = [
+            "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+            "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+        ];
+
+        const today = new Date();
+        const tanggal = today.getDate();
+        const bulan = bulanIndo[today.getMonth()];
+        const tahun = today.getFullYear();
+
+        const hasilTanggal = `Majalengka, ${tanggal} ${bulan} ${tahun}`;
+        document.getElementById("tanggalHariIni").innerText = hasilTanggal;
     </script>
     {{-- TOMBOL DI BAWAH UNTUK NEXT AND PREVIOUS --}}
     <script>
@@ -911,7 +932,7 @@
     </script>
 
 
-    <script>
+    {{--  <script>
         $(document).ready(function() {
             function updateGlosarium() {
                 const val = $('#glosarium').val().trim();
@@ -924,9 +945,47 @@
             // Jalankan saat user mengetik
             $('#glosarium').on('keyup', updateGlosarium);
         });
-    </script>
-
+    </script> --}}
     <script>
+        function updatePreviewGlosarium() {
+            const previewList = $('#preview-glosarium');
+            previewList.empty();
+
+            $('.glosarium-row').each(function() {
+                const judul = $(this).find('input[name="glosarium-judul[]"]').val();
+                const desk = $(this).find('input[name="glosarium-desk[]"]').val();
+
+                if (judul || desk) {
+                    const listItem =
+                        `<li><strong>${judul}</strong><br><span style="font-weight: normal;">${desk}</span></li>`;
+                    previewList.append(listItem);
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            const container = $('#glosarium-container');
+
+            // Trigger saat mengetik
+            container.on('input', 'input[name="glosarium-judul[]"], input[name="glosarium-desk[]"]', function() {
+                updatePreviewGlosarium();
+            });
+
+            // Trigger juga saat tambah baris
+            $('#tambah-glosarium').on('click', function() {
+                setTimeout(updatePreviewGlosarium, 100); // delay kecil agar baris baru sempat masuk DOM
+            });
+
+            // Trigger juga saat hapus baris
+            container.on('click', '.btn-remove-glosarium', function() {
+                setTimeout(updatePreviewGlosarium, 100); // delay kecil agar DOM sudah diperbarui
+            });
+
+            // Inisialisasi awal
+            updatePreviewGlosarium();
+        });
+    </script>
+    {{-- <script>
         $(document).ready(function() {
             function updateDaftarPustaka() {
                 const val = $('#daftar-pustaka').val().trim();
@@ -939,6 +998,36 @@
             // Jalankan saat user mengetik
             $('#daftar-pustaka').on('keyup', updateDaftarPustaka);
         });
+    </script> --}}
+
+    <script>
+        $(document).ready(function() {
+            function updatePreviewDaftarPustaka() {
+                const preview = $('#preview-daftarpustaka');
+                preview.empty();
+
+                $('#daftarpustaka-container input[name="daftarpustaka[]"]').each(function() {
+                    const val = $(this).val().trim();
+                    if (val !== '') {
+                        preview.append(`<li>${val}</li>`);
+                    }
+                });
+            }
+
+            // Perubahan isi input langsung update preview
+            $(document).on('input', 'input[name="daftarpustaka[]"]', updatePreviewDaftarPustaka);
+
+            // Tambah/hapus pertanyaan juga panggil updatePreviewPertanyaan
+            const observer = new MutationObserver(updatePreviewDaftarPustaka);
+            observer.observe(document.getElementById('daftarpustaka-container'), {
+                childList: true,
+                subtree: true
+            });
+
+            // Inisialisasi pertama kali
+            updatePreviewDaftarPustaka();
+        });
     </script>
+
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection
