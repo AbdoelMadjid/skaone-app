@@ -79,11 +79,30 @@
     }
 </style> --}}
 <div id="cetak-modul-ajar" style='@page {size: A4;}'>
-    <img src="{{ URL::asset('images/kossurat.jpg') }}" alt="" class="img-fluid w-100" style="height: auto;">
-    <h4 style="text-align: center;margin-top:20px"> MODUL AJAR </h4>
-    <h5 class="text-center" id="modulFase">FASE</h5>
-    <h5 class="text-center mt-3" id="modulTopik"></h5>
-    <hr>
+    <table class="cetak-modulajar no-border">
+        <tr>
+            <td align='center'><img src="{{ URL::asset('images/kossurat.jpg') }}" alt="" class="img-fluid w-100"
+                    style="height: auto;"></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td style='font-size:18px;text-align:center;'>
+                <strong>MODUL AJAR</strong><BR>
+                <div class="text-center" id="modulFase">FASE</div>
+
+            </td>
+        </tr>
+        <tr>
+            <td style='font-size:12px;text-align:center;'>
+                <strong>
+                    <div class="text-center mt-3" id="modulTopik"></div>
+                </strong>
+            </td>
+        </tr>
+    </table>
+    <br>
 
     <table class="table" id="modulInformasiUmum">
         <tr>
@@ -118,7 +137,7 @@
             <td>{{ $fullName }}</td>
         </tr>
     </table>
-
+    <br>
     <table class="table" class="mt-4">
         <tr>
             <td colspan="2">
@@ -128,7 +147,7 @@
         <tr>
             <td style="width:200px;">Elemen</td>
             <td>
-                <ol id="preview-elemen" style="margin-left:-5px;">
+                <ol id="preview-elemen" style="margin-left:-20px;">
                     <!-- akan diisi <li> secara dinamis -->
                 </ol>
             </td>
@@ -136,7 +155,7 @@
         <tr>
             <td>Capaian Pembelajaran Elemen</td>
             <td>
-                <ol id="preview-capaianpembelajaran" style="margin-left:-5px;">
+                <ol id="preview-capaianpembelajaran" style="margin-left:-20px;">
                     <!-- akan diisi <li> secara dinamis -->
                 </ol>
             </td>
@@ -144,7 +163,7 @@
         <tr>
             <td>Tujuan Pembelajaran (TP)</td>
             <td>
-                <ol id="preview-tujuanpembelajaran" style="margin-left:-5px;">
+                <ol id="preview-tujuanpembelajaran" style="margin-left:-20px;">
                     <!-- akan diisi <li> secara dinamis -->
                 </ol>
             </td>
@@ -196,7 +215,7 @@
             </td>
         </tr>
     </table>
-
+    <br>
     <table class="table">
         <tr>
             <td colspan="2">
@@ -214,7 +233,7 @@
         <tr>
             <td>Pertanyaan Pemantik</td>
             <td>
-                <ol id="preview-pertanyaanpemantik" style="margin-left:-5px;">
+                <ol id="preview-pertanyaanpemantik" style="margin-left:-20px;">
                     <!-- akan diisi <li> secara dinamis -->
                 </ol>
             </td>
@@ -238,11 +257,11 @@
             </td>
         </tr>
     </table>
-
-    <table class="mt-4 tabel-tanpa-border">
+    <br><br>
+    <table class="cetak-modulajar no-border">
         <tr>
-            <td style="width:50px""></td>
-            <td>
+            <td></td>
+            <td style="width:40%">
                 Mengetahui<br>
                 Kepala Sekolah
                 <br>
@@ -250,8 +269,7 @@
                 <br>
                 <br>
             <td>
-            <td style="width:250px""></td>
-            <td>
+            <td style="width:60%">
                 Majalengka, <br>
                 Guru Mata Pelajaran
                 <br>
@@ -261,12 +279,11 @@
             <td>
         </tr>
         <tr>
-            <td style="width:50px""></td>
+            <td></td>
             <td>
                 <div id="namaKepsek"></div>
                 <div id="nipKepsek"></div>
             <td>
-            <td style="width:250px""></td>
             <td>
                 <div id="namaGuruMapel"></div>
                 <div id="nipGuruMapel"></div>
@@ -276,18 +293,18 @@
     <br>
     <br>
     <h5 class="mt-4">D. LAMPIRAN</h5>
-    <div class="mt-0">
+    <table <div class="mt-0">
         <h6>Lampiran</h6>
         <ul id="preview-lampiran" style="margin-left:-15px;">
             <!-- akan diisi <li> secara dinamis -->
         </ul>
-    </div>
-    <div class="mt-4">
-        <h6>Glosarium</h6>
-        <div id="preview-glosarium"></div>
-    </div>
-    <div class="mt-4">
-        <h6>Daftar Pustaka</h6>
-        <div id="preview-daftarpustaka">- </div>
-    </div>
+</div>
+<div class="mt-4">
+    <h6>Glosarium</h6>
+    <div id="preview-glosarium"></div>
+</div>
+<div class="mt-4">
+    <h6>Daftar Pustaka</h6>
+    <div id="preview-daftarpustaka">- </div>
+</div>
 </div>

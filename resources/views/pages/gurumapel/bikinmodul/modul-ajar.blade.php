@@ -100,9 +100,10 @@
                                     <button type="button" class="btn btn-light btn-label previestab"
                                         data-previous="komponen"><i
                                             class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Komponen</button>
-                                    {{-- <button type="button" class="btn btn-light btn-label right ms-auto nexttab"
-                                        data-nexttab="lampiran"><i
-                                            class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Lampiran</button> --}}
+                                    {{-- <button id="btn-cetak-modul-ajar" class="btn btn-primary">Cetak </button> --}}
+                                    <button type="button" class="btn btn-soft-info btn-label right ms-auto"
+                                        id="btn-cetak-modul-ajar"><i
+                                            class="ri-printer-line label-icon align-middle fs-16 ms-2"></i>Cetak</button>
                                 </div>
                             </div>
                             <!-- end tab pane -->
@@ -126,7 +127,7 @@
                     </div>
                 </div>
                 <div class="card-body p-4">
-                    <button id="btn-cetak-modul-ajar" class="btn btn-primary">Cetak </button>
+
                     @include('pages.gurumapel.bikinmodul.modul-ajar-tampil')
                 </div>
                 <!-- end card body -->
@@ -152,8 +153,27 @@
                 body { font-family: 'Times New Roman', serif; font-size: 12px; }
                 table { width: 100%; border-collapse: collapse; }
                 table, th, td { border: 1px solid black; }
-                th, td { padding: 5px;}
-                table ol, ul { padding-left: 20px; margin: 0;}
+                td { padding: 6px 10px; vertical-align: top;}
+                ol, ul { padding-left: -20px; margin: 0;}
+
+                /* Khusus untuk cetak-modulajar agar tidak ada border */
+                table.cetak-modulajar,
+                table.cetak-modulajar tr,
+                table.cetak-modulajar td {
+                    border: none !important;
+                }
+
+                /* Hindari pemisahan TR di tengah halaman saat print */
+                tr {
+                    page-break-inside: avoid;
+                    break-inside: avoid;
+                }
+
+                /* Khusus juga jika ada tabel dalam div */
+                .cetak-modulajar tr {
+                    page-break-inside: avoid;
+                    break-inside: avoid;
+                }
             `
         });
     </script>
@@ -714,7 +734,7 @@
 
                     if (formatifList) {
                         preview.append(
-                            `<strong>Asesmen Formatif :</strong><br><ol style="margin-left:-5px;">${formatifList}</ol>`
+                            `<strong>Asesmen Formatif :</strong><br><ol style="margin-left:-20px;">${formatifList}</ol>`
                         );
                     }
                 }
@@ -729,7 +749,7 @@
 
                     if (sumatifList) {
                         preview.append(
-                            `<strong>Asesmen Sumatif :</strong><br><ol style="margin-left:-5px;">${sumatifList}</ol>`
+                            `<strong>Asesmen Sumatif :</strong><br><ol style="margin-left:-20px;">${sumatifList}</ol>`
                         );
                     }
                 }
@@ -775,7 +795,7 @@
 
                     if (pendidikList) {
                         preview.append(
-                            `<strong>Refleksi Pendidik :</strong><br><ol style="margin-left:-5px;">${pendidikList}</ol>`
+                            `<strong>Refleksi Pendidik :</strong><br><ol style="margin-left:-20px;">${pendidikList}</ol>`
                         );
                     }
                 }
@@ -790,7 +810,7 @@
 
                     if (pesertaList) {
                         preview.append(
-                            `<strong>Refleksi Peserta Didik :</strong><br><ol style="margin-left:-5px;">${pesertaList}</ol>`
+                            `<strong>Refleksi Peserta Didik :</strong><br><ol style="margin-left:-20px;">${pesertaList}</ol>`
                         );
                     }
                 }
