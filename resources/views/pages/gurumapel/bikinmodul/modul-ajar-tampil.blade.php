@@ -29,6 +29,10 @@
             <td colspan="2">A. INFORMASI UMUM</td>
         </tr>
         <tr>
+            <td style="width:200px;">ID MODUL AJAR</td>
+            <td><span id="preview-IdModul"></span></td>
+        </tr>
+        <tr>
             <td style="width:200px;">Nama Sekolah</td>
             <td>{{ $identitasSekolah->nama_sekolah }}</td>
         </tr>

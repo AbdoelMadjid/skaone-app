@@ -19,36 +19,36 @@
             <div class="card">
                 <div class="card-body checkout-tab">
 
-                    <form action="#">
-                        <div class="step-arrow-nav mt-n3 mx-n3 mb-3">
-                            <ul class="nav nav-tabs nav-justified nav-border-top nav-border-top-primary mb-3" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" data-bs-toggle="tab" id="info-tab" href="#info"
-                                        role="tab" aria-selected="false">
-                                        <i class="ri-briefcase-line align-middle me-1"></i> Info
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-bs-toggle="tab" id="kerangka-tujuan-tab"
-                                        href="#kerangka-tujuan" role="tab" aria-selected="false">
-                                        <i class="ri-stack-line me-1 align-middle"></i> Kerangka dan Tujuan
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-bs-toggle="tab" id="komponen-tab" href="#komponen"
-                                        role="tab" aria-selected="false">
-                                        <i class="ri-git-repository-line align-middle me-1"></i>Komponen
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-bs-toggle="tab" id="lampiran-tab" href="#lampiran"
-                                        role="tab" aria-selected="false">
-                                        <i class="ri-file-copy-line align-middle me-1"></i>Lampiran
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
 
+                    <div class="step-arrow-nav mt-n3 mx-n3 mb-3">
+                        <ul class="nav nav-tabs nav-justified nav-border-top nav-border-top-primary mb-3" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="tab" id="info-tab" href="#info" role="tab"
+                                    aria-selected="false">
+                                    <i class="ri-briefcase-line align-middle me-1"></i> Info
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" id="kerangka-tujuan-tab" href="#kerangka-tujuan"
+                                    role="tab" aria-selected="false">
+                                    <i class="ri-stack-line me-1 align-middle"></i> Kerangka dan Tujuan
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" id="komponen-tab" href="#komponen" role="tab"
+                                    aria-selected="false">
+                                    <i class="ri-git-repository-line align-middle me-1"></i>Komponen
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" id="lampiran-tab" href="#lampiran" role="tab"
+                                    aria-selected="false">
+                                    <i class="ri-file-copy-line align-middle me-1"></i>Lampiran
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <form action="#">
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="info" role="tabpanel"
                                 aria-labelledby="info-tab">
@@ -101,14 +101,13 @@
                                         data-previous="komponen"><i
                                             class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Komponen</button>
                                     {{-- <button id="btn-cetak-modul-ajar" class="btn btn-primary">Cetak </button> --}}
-                                    {{-- <button type="button" class="btn btn-soft-info btn-label right ms-auto"
-                                        id="btn-cetak-modul-ajar"><i
-                                            class="ri-printer-line label-icon align-middle fs-16 ms-2"></i>Cetak</button> --}}
+                                    <button type="button" class="btn btn-light btn-label right ms-auto" id="btn-simpan"><i
+                                            class="ri-save-line label-icon align-middle fs-16 ms-2"></i>Simpan Modul
+                                        Ajar</button>
                                 </div>
                             </div>
                             <!-- end tab pane -->
                         </div>
-                        <!-- end tab content -->
                     </form>
                 </div>
                 <!-- end card body -->
@@ -132,7 +131,6 @@
                     </div>
                 </div>
                 <div class="card-body p-4">
-
                     @include('pages.gurumapel.bikinmodul.modul-ajar-tampil')
                 </div>
                 <!-- end card body -->
@@ -149,6 +147,43 @@
     <script src="{{ URL::asset('build/js/ngeprint.js') }}"></script>
 @endsection
 @section('script-bottom')
+    <script>
+        $(document).ready(function() {
+            var personalId = "{{ $personal_id }}";
+
+            // Fungsi update nilai input
+            function updateIdModulAjar() {
+                var tahunAjaran = $('#tahunajaran').val();
+                var semester = $('#semester').val();
+                var kodeMapel = $('#mata_pelajaran').val();
+
+                var result = personalId;
+
+                if (tahunAjaran !== "") {
+                    result += '-' + tahunAjaran;
+                }
+
+                if (semester !== "") {
+                    result += '-' + semester;
+                }
+
+                if (kodeMapel !== "") {
+                    result += '-' + kodeMapel;
+                }
+
+                $('#id-modulajar').val(result);
+            }
+
+            // Inisialisasi saat halaman dimuat
+            updateIdModulAjar();
+
+            // Trigger update saat terjadi perubahan
+            $('#tahunajaran, #semester, #mata_pelajaran').on('change', function() {
+                updateIdModulAjar();
+            });
+        });
+    </script>
+
     <script>
         setupPrintHandler({
             printButtonId: 'btn-cetak-modul-ajar',
@@ -313,6 +348,24 @@
                 $('#modulTopik').text(val ? `( ${val} )` : '');
             });
 
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            function updateIdModulAjar() {
+                const val = $('#id-modulajar').val().trim();
+                $('#preview-IdModul').text(val ? val : '');
+            }
+
+            // Jalankan saat halaman pertama kali dimuat
+            updateIdModulAjar();
+
+            // Jalankan saat isi input berubah (lebih cocok pakai 'input' daripada 'keyup')
+            $('#id-modulajar').on('input', updateIdModulAjar);
+
+            // Tambahkan juga ketika tahun ajaran atau semester berubah
+            $('#tahunajaran, #semester, #mata_pelajaran').on('change', updateIdModulAjar);
         });
     </script>
 

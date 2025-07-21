@@ -43,6 +43,8 @@ class ModulAjarGuruMapelController extends Controller
             return redirect()->back()->with('error', 'Tidak ada semester aktif.');
         }
 
+        $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
+
         // Get the namalengkap of the logged-in user from personil_sekolahs table
         $personil = PersonilSekolah::where('id_personil', $personal_id)->first();
         // Concatenate gelardepan, namalengkap, and gelarbelakang
@@ -57,7 +59,17 @@ class ModulAjarGuruMapelController extends Controller
             ->where('semester', $semesterAktif->semester)
             ->first();
 
-        return view('pages.gurumapel.bikinmodul.modul-ajar', compact('bidangKeahlianList', 'personil', 'fullName', 'tahunAjaranAktif', 'semesterAktif', 'identitasSekolah', 'kepsek'));
+        return view('pages.gurumapel.bikinmodul.modul-ajar', [
+            'personal_id' => $personal_id,
+            'bidangKeahlianList' => $bidangKeahlianList,
+            'personil' => $personil,
+            'fullName' => $fullName,
+            'tahunAjaranAktif' => $tahunAjaranAktif,
+            'semesterAktif' => $semesterAktif,
+            'identitasSekolah' => $identitasSekolah,
+            'kepsek' => $kepsek,
+            'tahunAjaranOptions' => $tahunAjaranOptions,
+        ]);
     }
 
     public function getProgram($idbk)

@@ -1,7 +1,43 @@
 <div>
     <h5 class="mt-4 text-info"><strong>A. Informasi Umum</strong></h5>
 </div>
+<div class="container mt-4 mb-4 border border-dashed p-2 rounded">
+    <input type="hidden" id="personal_id" value="{{ $personal_id ?? 'pgw_001' }}">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="mb-3">
+                <label for="tahunajaran" class="form-label">Tahun Ajaran</label>
+                <select class="form-select" id="tahunajaran" name="tahunajaran">
+                    <option value="">Pilih TA</option>
+                    @foreach ($tahunAjaranOptions as $thnajar)
+                        <option value="{{ $thnajar }}">{{ $thnajar }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
 
+        <div class="col-md-3">
+            <div class="mb-3">
+                <label for="semester" class="form-label">Semester</label>
+                <select class="form-select" id="semester" name="semester">
+                    <option value="">Pilih semester </option>
+                    <option value="Ganjil">Ganjil</option>
+                    <option value="Genap">Genap</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label for="id-modulajar" class="form-label">Id Modul Ajar</label>
+                <input type="text" class="form-control" id="id-modulajar" name="idmodulajar" value="" readonly>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<hr>
 <div class="container mt-4 mb-4 border border-dashed p-2 rounded">
     <div class="row">
         <div class="col-md-4">
@@ -191,7 +227,7 @@
     <div class="row mt-3">
         <div class="col-md-12">
             <label for="mata_pelajaran" class="form-label">Mata Pelajaran</label>
-            <select class="form-select" id="mata_pelajaran" disabled>
+            <select class="form-select" id="mata_pelajaran" name="ma_mata_pelajaran" disabled>
                 <option value="">Pilih Mata Pelajaran...</option>
             </select>
         </div>
