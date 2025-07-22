@@ -147,6 +147,8 @@ class User extends Authenticatable
             'kaprodirpl' => 'Kaprodi RPL',
             'kaproditkj' => 'Kaprodi TKJ',
             'bpbk' => 'Bimbingan Konseling',
+            'alumni' => 'Alumni',
+            'panitiapkl' => 'Panitia PKL',
         ];
 
         // Mendapatkan semua nama role pengguna

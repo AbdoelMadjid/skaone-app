@@ -42,6 +42,7 @@ class MainMenuSeeder extends Seeder
             MenuBpBkSeeder::class,
             MenuSiswaSeeder::class,
             MenuAlumniSeeder::class,
+            MenuPrakerinSeeder::class,
             MenuPklSeeder::class,
         ]);
     }

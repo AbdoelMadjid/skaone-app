@@ -433,6 +433,29 @@ return [
     'transkrip-alumni' => 'Arsip Transkrip',
     'kelulusan-alumni' => 'Arsip Kelulusan',
 
+
+    'APLIKASI PRAKERIN' => 'APLIKASI PRAKERIN',
+    'aplikasi-prakerin' => 'Aplikasi Prakerin',
+    'panitia' => 'Panitia',
+    'administrasi' => 'Administrasi',
+    'guru-pembimbing-pkl' => 'Guru Pembimbing PKL',
+    'siswa-peserta-pkl' => 'Peserta Prakerin',
+    'jurnal' => 'Jurnal',
+    'kaprodi' => 'Kepala Program Studi',
+    'penempatan' => 'Penempatan',
+    'informasi' => 'Informasi',
+    'modul-ajar' => 'Modul Ajar',
+    'prakerin' => 'Praktek Kerja Industri',
+    'peserta-prakerin' => 'Peserta Prakerin',
+    'penempatan-prakerin' => 'Pemempatan Prakerin',
+    'penilaian-prakerin' => 'Penilaian Prakerin',
+    'pelaporan-prakerin' => 'Pelaporan Prakerin',
+
+
+
+
+
+
     'APLIKASI PKL' => 'APLIKASI PKL',
     "praktek-kerja" => "Praktek Kerja",
     'administrator' => 'Administrator',
@@ -458,12 +481,7 @@ return [
     'jurnal-pkl' => 'Jurnal PKL',
     'terima-pesan' => 'Terima Pesan',
 
-    'penempatan' => 'Penempatan',
-    'informasi' => 'Informasi',
-    'modul-ajar' => 'Modul Ajar',
-    'prakerin' => 'Praktek Kerja Industri',
-    'peserta-prakerin' => 'Peserta Prakerin',
-    'penempatan-prakerin' => 'Pemempatan Prakerin',
+
 
     'informasi-siswa' => 'Informasi Prakerin',
     'pesertapkl' => 'Peserta Prakerin',
