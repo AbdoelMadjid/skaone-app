@@ -109,7 +109,7 @@
             const inputJudul = row.querySelector('input[name="glosarium-judul[]"]');
             const inputDesk = row.querySelector('input[name="glosarium-desk[]"]');
             if (inputJudul) {
-                inputJudul.placeholder = `Judul ${index + 1}`;
+                inputJudul.placeholder = `Glosarium Judul ${index + 1}`;
             }
             if (inputDesk) {
                 inputDesk.placeholder = `Glosarium Deskripsi ${index + 1}`;
@@ -123,6 +123,7 @@
 
         // Tambah baris glosarium baru
         tambahBtnglosarium.addEventListener('click', function() {
+            const jumlah = containerglosarium.querySelectorAll('.glosarium-row').length;
             const row = document.createElement('div');
             row.classList.add('glosarium-row', 'mb-2');
 
@@ -130,20 +131,18 @@
             <div class="row">
                 <div class="col-md-3">
                     <input type="text" name="glosarium-judul[]" class="form-control" value=""
-                        placeholder="Judul">
+                        placeholder="Glosarium Judul ${jumlah + 1}">
                 </div>
                 <div class="col-md-8">
                     <input type="text" name="glosarium-desk[]" class="form-control" value=""
-                        placeholder="Glosarium Deskripsi">
+                        placeholder="Glosarium Deskripsi ${jumlah + 1}">
                 </div>
                 <div class="col-md-1">
                     <button type="button" class="btn rounded-pill btn-danger btn-sm btn-remove-glosarium">X</button>
                 </div>
             </div>
             `;
-
             containerglosarium.appendChild(row);
-            reindexGlosarium(); // <-- penting, update placeholder setelah tambah
         });
 
         // Hapus baris glosarium
@@ -153,9 +152,6 @@
                 reindexGlosarium(); // <-- update placeholder setelah hapus
             }
         });
-
-        // Pertama kali halaman dimuat, juga reindex
-        reindexGlosarium();
     });
 </script>
 

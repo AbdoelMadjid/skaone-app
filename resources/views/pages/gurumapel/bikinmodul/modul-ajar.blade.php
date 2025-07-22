@@ -984,75 +984,44 @@
         });
     </script>
 
-
-    {{--  <script>
+    <!--  TAMPILKAN GLOSARIUM  -->
+    <script>
         $(document).ready(function() {
-            function updateGlosarium() {
-                const val = $('#glosarium').val().trim();
-                $('#preview-glosarium').text(val ? `${val}` : '');
+            function updatePreviewGlosarium() {
+                const previewList = $('#preview-glosarium');
+                previewList.empty();
+
+                $('.glosarium-row').each(function() {
+                    const judul = $(this).find('input[name="glosarium-judul[]"]').val();
+                    const desk = $(this).find('input[name="glosarium-desk[]"]').val();
+
+                    if (judul || desk) {
+                        const listItem = `
+                        <li><strong>${judul}</strong><br>
+                            <span style="font-weight: normal;">${desk}</span>
+                        </li>`;
+                        previewList.append(listItem);
+                    }
+                });
             }
 
-            // Jalankan saat pertama kali halaman dimuat
-            updateGlosarium();
+            // Event listener input realtime
+            $(document).on('input', 'input[name="glosarium-judul[]"]', updatePreviewGlosarium);
+            $(document).on('input', 'input[name="glosarium-desk[]"]', updatePreviewGlosarium);
 
-            // Jalankan saat user mengetik
-            $('#glosarium').on('keyup', updateGlosarium);
-        });
-    </script> --}}
-    <script>
-        function updatePreviewGlosarium() {
-            const previewList = $('#preview-glosarium');
-            previewList.empty();
-
-            $('.glosarium-row').each(function() {
-                const judul = $(this).find('input[name="glosarium-judul[]"]').val();
-                const desk = $(this).find('input[name="glosarium-desk[]"]').val();
-
-                if (judul || desk) {
-                    const listItem =
-                        `<li><strong>${judul}</strong><br><span style="font-weight: normal;">${desk}</span></li>`;
-                    previewList.append(listItem);
-                }
-            });
-        }
-
-        $(document).ready(function() {
-            const container = $('#glosarium-container');
-
-            // Trigger saat mengetik
-            container.on('input', 'input[name="glosarium-judul[]"], input[name="glosarium-desk[]"]', function() {
-                updatePreviewGlosarium();
+            // Observer ketika ada elemen glosarium ditambah atau dihapus
+            const observer = new MutationObserver(updatePreviewGlosarium);
+            observer.observe(document.getElementById('glosarium-container'), {
+                childList: true,
+                subtree: true
             });
 
-            // Trigger juga saat tambah baris
-            $('#tambah-glosarium').on('click', function() {
-                setTimeout(updatePreviewGlosarium, 100); // delay kecil agar baris baru sempat masuk DOM
-            });
-
-            // Trigger juga saat hapus baris
-            container.on('click', '.btn-remove-glosarium', function() {
-                setTimeout(updatePreviewGlosarium, 100); // delay kecil agar DOM sudah diperbarui
-            });
-
-            // Inisialisasi awal
+            // Jalankan saat awal halaman dimuat
             updatePreviewGlosarium();
         });
     </script>
-    {{-- <script>
-        $(document).ready(function() {
-            function updateDaftarPustaka() {
-                const val = $('#daftar-pustaka').val().trim();
-                $('#preview-daftarpustaka').text(val ? `${val}` : '');
-            }
 
-            // Jalankan saat pertama kali halaman dimuat
-            updateDaftarPustaka();
-
-            // Jalankan saat user mengetik
-            $('#daftar-pustaka').on('keyup', updateDaftarPustaka);
-        });
-    </script> --}}
-
+    <!--  TAMPILKAN DAFTAR PUSTAKA  -->
     <script>
         $(document).ready(function() {
             function updatePreviewDaftarPustaka() {
