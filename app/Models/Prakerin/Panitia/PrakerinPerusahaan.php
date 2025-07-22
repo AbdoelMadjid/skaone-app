@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Prakerin;
+namespace App\Models\Prakerin\Panitia;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

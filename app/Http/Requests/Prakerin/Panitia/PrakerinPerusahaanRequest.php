@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Prakerin;
+namespace App\Http\Requests\Prakerin\Panitia;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -11,7 +11,7 @@ class PrakerinPerusahaanRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class PrakerinPerusahaanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nama' => 'required|string',
+            'alamat' => 'required|string',
+            'status' => 'required|string',
         ];
     }
 }

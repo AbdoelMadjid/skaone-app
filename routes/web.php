@@ -175,7 +175,6 @@ require __DIR__ . '/ketatausahaan.php';
 require __DIR__ . '/skaonewelcome.php';
 require __DIR__ . '/alumni.php';
 require __DIR__ . '/websiteapp.php';
-require __DIR__ . '/prakerinnew.php';
 
 // Rute fallback untuk `auth`, menangani view dalam folder `auth`
 Route::get('auth/{page}', function ($page) {

@@ -7,7 +7,7 @@
 @section('content')
     @component('layouts.breadcrumb')
         @slot('li_1')
-            @lang('translation.aplikasi-prakerin')
+            @lang('translation.prakerin')
         @endslot
         @slot('li_2')
             @lang('translation.panitia')
@@ -39,7 +39,7 @@
         </div>
         <!--end col-->
     </div>
-    {{-- @include('pages.administratorpkl.perusahaan-import') --}}
+    @include('pages.administratorpkl.perusahaan-import')
 @endsection
 @section('script')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>

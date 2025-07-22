@@ -31,13 +31,16 @@ class MenuPrakerinSeeder extends Seeder
         $sm = $mm->subMenus()->create(['name' => 'Perusahaan', 'url' => $mm->url . '/perusahaan', 'category' => $mm->category]);
         $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['panitiapkl']);
 
+        $sm = $mm->subMenus()->create(['name' => 'Peserta', 'url' => $mm->url . '/peserta', 'category' => $mm->category]);
+        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['panitiapkl']);
+
         $sm = $mm->subMenus()->create(['name' => 'Administrasi', 'url' => $mm->url . '/administrasi', 'category' => $mm->category]);
         $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['panitiapkl']);
 
         $sm = $mm->subMenus()->create(['name' => 'Laporan', 'url' => $mm->url . '/laporan', 'category' => $mm->category]);
         $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['panitiapkl']);
 
-        $mm = Menu::firstOrCreate(['url' => 'kaprogprakerin'], ['name' => 'Ketua Program Studi', 'category' => 'APLIKASI PRAKERIN', 'icon' => 'briefcase']);
+        $mm = Menu::firstOrCreate(['url' => 'kaprogprakerin'], ['name' => 'Program Studi Prakerin', 'category' => 'APLIKASI PRAKERIN', 'icon' => 'briefcase']);
         $this->attachMenupermission($mm, ['read'], ['kaprakerinak', 'kaprakerinbd', 'kaprakerinmp', 'kaprakerinrpl', 'kaprakerintkj']);
 
         $sm = $mm->subMenus()->create(['name' => 'Informasi', 'url' => $mm->url . '/informasi', 'category' => $mm->category]);
@@ -46,13 +49,10 @@ class MenuPrakerinSeeder extends Seeder
         $sm = $mm->subMenus()->create(['name' => 'Modul Ajar', 'url' => $mm->url . '/modul-ajar', 'category' => $mm->category]);
         $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['kaprakerinak', 'kaprakerinbd', 'kaprakerinmp', 'kaprakerinrpl', 'kaprakerintkj']);
 
-        $sm = $mm->subMenus()->create(['name' => 'Peserta', 'url' => $mm->url . '/peserta', 'category' => $mm->category]);
+        $sm = $mm->subMenus()->create(['name' => 'Penempatan', 'url' => $mm->url . '/penempatan', 'category' => $mm->category]);
         $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['kaprakerinak', 'kaprakerinbd', 'kaprakerinmp', 'kaprakerinrpl', 'kaprakerintkj']);
 
         $sm = $mm->subMenus()->create(['name' => 'Pembimbing', 'url' => $mm->url . '/pembimbing', 'category' => $mm->category]);
-        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['kaprakerinak', 'kaprakerinbd', 'kaprakerinmp', 'kaprakerinrpl', 'kaprakerintkj']);
-
-        $sm = $mm->subMenus()->create(['name' => 'Penempatan', 'url' => $mm->url . '/penempatan', 'category' => $mm->category]);
         $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['kaprakerinak', 'kaprakerinbd', 'kaprakerinmp', 'kaprakerinrpl', 'kaprakerintkj']);
 
         $sm = $mm->subMenus()->create(['name' => 'Penilaian', 'url' => $mm->url . '/penilaian', 'category' => $mm->category]);

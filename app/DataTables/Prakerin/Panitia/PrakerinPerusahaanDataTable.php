@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DataTables\Prakerin;
+namespace App\DataTables\Prakerin\Panitia;
 
-use App\Models\Prakerin\PrakerinPerusahaan;
+use App\Models\Prakerin\Panitia\PrakerinPerusahaan;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
@@ -37,7 +37,7 @@ class PrakerinPerusahaanDataTable extends DataTable
      */
     public function query(PrakerinPerusahaan $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery('id', 'asc');
     }
 
     /**

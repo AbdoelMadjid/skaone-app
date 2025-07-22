@@ -6,6 +6,7 @@
         <div class="col-md-12">
             <x-form.input name="nama" value="{{ $data->nama }}" label="Nama Perusahaan" />
             <x-form.input name="alamat" value="{{ $data->alamat }}" label="Alamat Perusahaan" />
+            <x-form.select name="status" :options="['Aktif' => 'Aktif', 'Non Aktif' => 'Non Aktif']" value="{{ old('status', $data->status) }}" label="Status" />
         </div>
     </div>
 </x-form.modal>

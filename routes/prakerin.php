@@ -22,6 +22,8 @@ use App\Http\Controllers\PesertaDidikPkl\PesanPrakerinSiswaController;
 use App\Http\Controllers\PesertaDidikPkl\SiswaInformasiController;
 use App\Models\PembimbingPkl\PesanPrakerin;
 use App\Http\Controllers\PDFController;
+use App\Http\Controllers\Prakerin\Panitia\PrakerinPerusahaanController;
+use App\Http\Controllers\Prakerin\Panitia\PrakerinPesertaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -128,5 +130,13 @@ Route::middleware('auth', 'roleonly:pesertapkl')->group(function () {
 
             return response()->json(['message' => 'Pesan tidak ditemukan.'], 404);
         });
+    });
+});
+
+Route::middleware('auth')->group(function () {
+    Route::group(['prefix' => 'panitiaprakerin', 'as' => 'panitiaprakerin.'], function () {
+        Route::resource('perusahaan', PrakerinPerusahaanController::class);
+        Route::resource('peserta', PrakerinPesertaController::class);
+        Route::post('/simpanpesertaprakerin', [PrakerinPesertaController::class, 'simpanPesertaPrakerin'])->name('simpanPesertaPrakerin');
     });
 });

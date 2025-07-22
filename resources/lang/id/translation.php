@@ -450,6 +450,9 @@ return [
     'penempatan-prakerin' => 'Pemempatan Prakerin',
     'penilaian-prakerin' => 'Penilaian Prakerin',
     'pelaporan-prakerin' => 'Pelaporan Prakerin',
+    'program-studi-prakerin' => 'Program Studi Prakerin',
+    'absensi-peserta' => 'Absensi Peserta',
+    'penilaian-peserta' => 'Penilaian Peserta',
 
 
 
