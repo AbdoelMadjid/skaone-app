@@ -19,14 +19,32 @@
         <div class="card-header d-flex align-items-center">
             <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
             <div>
-                <div class="row justify-content-between gy-3">
-                    <div class="col-lg">
+                <div class="row justify-content-between gy-4">
+                    {{-- <div class="col-lg">
                         <div class="search-box">
                             <input type="text" class="form-control form-control-sm search"
                                 placeholder="Search for name user ...">
                             <i class="ri-search-line search-icon"></i>
                         </div>
-                    </div>
+                    </div> --}}
+                    @if (auth()->check() &&
+                            auth()->user()->hasAnyRole(['master']))
+                        <div class="col-lg">
+                            <div class="d-md-flex text-nowrap gap-2">
+                                <select id="role-select" class="form-select form-select-sm">
+                                    <option value="">-- Pilih Role --</option>
+                                    @foreach (\Spatie\Permission\Models\Role::pluck('name') as $role)
+                                        <option value="{{ $role }}">{{ $role }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-auto">
+                            <div class="d-md-flex text-nowrap gap-2">
+                                <button id="hapus-role-btn" class="btn btn-soft-danger btn-sm">Hapus Role</button>
+                            </div>
+                        </div>
+                    @endif
                     <div class="col-lg-auto">
                         <div class="d-md-flex text-nowrap gap-2">
                             @can('create manajemenpengguna/users')
@@ -34,14 +52,14 @@
                                     href="{{ route('manajemenpengguna.users.create') }}">
                                     <i class="ri-add-fill me-1 align-bottom"></i> Add User</a>
                             @endcan
-                            <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
+                            {{-- <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
                                 class="btn btn-soft-primary btn-sm"><i class="ri-more-2-fill"></i></button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
                                 <li><a class="dropdown-item" href="#">All</a></li>
                                 <li><a class="dropdown-item" href="#">Last Week</a></li>
                                 <li><a class="dropdown-item" href="#">Last Month</a></li>
                                 <li><a class="dropdown-item" href="#">Last Year</a></li>
-                            </ul>
+                            </ul> --}}
                         </div>
                     </div>
                 </div>
@@ -89,6 +107,7 @@
             });
         </script>
     @endif
+    <div id="role-alert"></div>
 @endsection
 @section('script')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
@@ -104,6 +123,7 @@
     {!! $dataTable->scripts() !!}
 @endsection
 @section('script-bottom')
+    <script></script>
     <script>
         const datatable = 'user-table';
 
@@ -216,6 +236,78 @@
                 }
             });
         });
+
+        $(document).ready(function() {
+            $('#hapus-role-btn').on('click', function() {
+                const selectedRole = $('#role-select').val();
+
+                if (!selectedRole) {
+                    showToast('error', `Role belum dipilih silakan pilih role dulu`);
+                } else {
+                    Swal.fire({
+                        title: 'Yakin ingin menghapus role ini?',
+                        text: `Semua user dengan role "${selectedRole}" akan kehilangan role tersebut.`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya, Hapus!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: '{{ route('manajemenpengguna.hapus.role.ajax') }}',
+                                method: 'DELETE',
+                                data: {
+                                    role: selectedRole,
+                                    _token: '{{ csrf_token() }}'
+                                },
+                                success: function(response) {
+                                    showToast('success', `${response.message}`);
+                                    $('#user-table').DataTable().ajax.reload(null,
+                                        false);
+                                },
+                                error: function(xhr) {
+                                    showToast('error',
+                                        `Terjadi kesalahan: ${xhr.responseJSON.message}`
+                                    );
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        });
+        /* $('#hapus-role-btn').on('click', function() {
+            const selectedRole = $('#role-select').val();
+
+            if (!selectedRole) {
+                alert('Silakan pilih role terlebih dahulu.');
+                return;
+            }
+
+            if (!confirm(`Yakin ingin menghapus role "${selectedRole}" dari semua user?`)) {
+                return;
+            }
+
+            $.ajax({
+                url: '{{ route('manajemenpengguna.hapus.role.ajax') }}',
+                method: 'DELETE',
+                data: {
+                    role: selectedRole,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    showToast('success', `${response.message}`);
+                    $('#user-table').DataTable().ajax.reload(null,
+                        false); // reload DataTable tanpa reset halaman
+                },
+                error: function(xhr) {
+                    showToast('error', `Terjadi kesalahan: ${xhr.responseJSON.message}`);
+                }
+            });
+        }); */
+
+
 
         handleAction(datatable, function(res) {
             select2Init()

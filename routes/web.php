@@ -138,6 +138,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('users', UserController::class);
         Route::post('/users/{user}/add-role', [UserController::class, 'addRole'])->name('users.addRole');
         Route::post('/users/reset-password/{id}', [UserController::class, 'directResetPassword'])->name('users.directResetPassword');
+        Route::delete('/hapus-role-massal', [UserController::class, 'hapusRoleMassalAjax'])->name('hapus.role.ajax');
     });
 
     Route::group(['prefix' => 'appsupport', 'as' => 'appsupport.'], function () {

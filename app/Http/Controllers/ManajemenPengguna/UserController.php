@@ -176,4 +176,24 @@ class UserController extends Controller
             'message' => "Password berhasil direset untuk pengguna {$user->name}."
         ]);
     }
+
+
+    public function hapusRoleMassalAjax(Request $request)
+    {
+        $request->validate([
+            'role' => 'required|string',
+        ]);
+
+        $role = $request->input('role');
+        $users = \App\Models\User::role($role)->get();
+
+        foreach ($users as $user) {
+            $user->removeRole($role);
+        }
+
+        return response()->json([
+            'message' => "Role '$role' berhasil dihapus dari semua user.",
+            'total_removed' => $users->count()
+        ]);
+    }
 }
