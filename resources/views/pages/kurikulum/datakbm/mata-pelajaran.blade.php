@@ -3,9 +3,8 @@
     @lang('translation.mata-pelajaran')
 @endsection
 @section('css')
-    {{--     <link href="{{ URL::asset('build/libs/select2/css/select2.min.css') }}" rel="stylesheet" />
-    <link href="{{ URL::asset('build/libs/select2-bootstrap-5-theme/select2-bootstrap-5-theme.min.css') }}"
-        rel="stylesheet" /> --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
 @endsection
 @section('content')
     @component('layouts.breadcrumb')
@@ -21,7 +20,8 @@
             <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
             <div>
                 <a href="{{ route('mapelexportExcel') }}" class="btn btn-soft-primary btn-sm">Download</a>
-                <button type="button" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal" data-bs-target="#importModal">
+                <button type="button" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#importModal">
                     Import
                 </button>
                 <a class="btn btn-soft-primary btn-sm"

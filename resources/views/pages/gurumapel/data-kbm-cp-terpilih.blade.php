@@ -3,9 +3,8 @@
     @lang('translation.capaian-pembelajaran')
 @endsection
 @section('css')
-    {{--     <link href="{{ URL::asset('build/libs/select2/css/select2.min.css') }}" rel="stylesheet" />
-    <link href="{{ URL::asset('build/libs/select2-bootstrap-5-theme/select2-bootstrap-5-theme.min.css') }}"
-        rel="stylesheet" /> --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
     <style>
         table {
             width: 100%;
@@ -50,7 +49,8 @@
                     </h5>
                     <div>
                         <button type="button" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#pilihCapaianPembelajaran" id="pilihCapaianPembelajaranBtn" title="Pilih CP">Pilih
+                            data-bs-target="#pilihCapaianPembelajaran" id="pilihCapaianPembelajaranBtn"
+                            title="Pilih CP">Pilih
                             Capaian Pembelajaran</button>
                         <button class="btn btn-soft-primary btn-sm" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseWithicon2" aria-expanded="false" aria-controls="collapseWithicon2"
