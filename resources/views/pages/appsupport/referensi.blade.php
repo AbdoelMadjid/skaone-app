@@ -40,10 +40,7 @@
             </div>
         </div>
         <div class="card-body p-1">
-            {{-- <div class="px-4 mx-n4 mt-n3 mb-0"> --}}
-            <div id="datatable-wrapper" style="height: calc(100vh - 268px);">
-                {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
-            </div>
+            {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
         </div>
     </div>
 @endsection
@@ -90,7 +87,6 @@
         });
 
         handleDelete(datatable);
-        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 86); // Initialize dynamic scrolling for DataTable
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

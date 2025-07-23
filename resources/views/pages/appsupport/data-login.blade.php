@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="px-4 mx-n4 mt-n3 mb-0" data-simplebar style="height: calc(100vh - 287px);">
+                    <div class="px-4 mx-n4 mt-n2 mb-2">
                         <table class="table">
                             <thead>
                                 <tr>

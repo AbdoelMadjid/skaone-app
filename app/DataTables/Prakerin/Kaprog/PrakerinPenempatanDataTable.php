@@ -104,8 +104,7 @@ class PrakerinPenempatanDataTable extends DataTable
             ->orderBy(1, 2)
             ->parameters([
                 'lengthChange' => false,
-                'searching' => false, // Mengaktifkan pencarian
-                'searchDelay' => 500, // Delay pencarian untuk mengurangi beban server
+                'searching' => false,
                 'pageLength' => 10,
             ]);
     }

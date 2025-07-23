@@ -65,12 +65,7 @@
         </div>
 
         <div class="card-body p-1">
-            <div id="datatable-wrapper" style="height: calc(100vh - 308px);">
-                {!! $dataTable->table([
-                    'class' => 'table table-striped hover',
-                    'style' => 'width:100%',
-                ]) !!}
-            </div>
+            {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
         </div>
     </div>
     @include('pages.manajemensekolah.personil-sekolah-import')
@@ -231,7 +226,6 @@
             handleDataTableEvents(datatable);
             handleAction(datatable);
             handleDelete(datatable);
-            ScrollDinamicDataTable(datatable, scrollOffsetOverride = 106);
         });
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>

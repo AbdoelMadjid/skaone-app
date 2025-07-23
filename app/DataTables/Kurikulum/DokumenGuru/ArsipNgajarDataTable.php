@@ -270,14 +270,8 @@ class ArsipNgajarDataTable extends DataTable
             ->orderBy(1)
             ->parameters([
                 'lengthChange' => false,
-                'searching' => false, // Mengaktifkan pencarian
-                'searchDelay' => 500, // Delay pencarian untuk mengurangi beban server
+                'searching' => false,
                 'pageLength' => 25,
-                // ⬇️ Tambahan fitur scroll dan fixedHeader
-                'scrollY' => '335px',
-                'scrollCollapse' => true,
-                'paging' => true,
-                'fixedHeader' => true,
             ]);
     }
 

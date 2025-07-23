@@ -56,14 +56,8 @@ class DailyMessagesDataTable extends DataTable
                 'serverSide' => true,
                 'processing' => true,
                 'lengthChange' => false,
-                'searching' => false, // Mengaktifkan pencarian
-                'searchDelay' => 500, // Delay pencarian untuk mengurangi beban server
+                'searching' => false,
                 'pageLength' => 25,
-                // ⬇️ Tambahan fitur scroll dan fixedHeader
-                'scrollY' => '365px',
-                'scrollCollapse' => true,
-                'paging' => true,
-                'fixedHeader' => true,
             ]);
     }
 

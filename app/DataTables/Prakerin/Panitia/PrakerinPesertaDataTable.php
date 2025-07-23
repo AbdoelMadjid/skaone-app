@@ -103,10 +103,10 @@ class PrakerinPesertaDataTable extends DataTable
             ->minifiedAjax()
             //->dom('Bfrtip')
             ->orderBy(1)
+            ->selectStyleSingle()
             ->parameters([
                 'lengthChange' => true,
-                'searching' => true, // Mengaktifkan pencarian
-                'searchDelay' => 500, // Delay pencarian untuk mengurangi beban server
+                'searching' => true,
                 'pageLength' => 25,
             ]);
     }

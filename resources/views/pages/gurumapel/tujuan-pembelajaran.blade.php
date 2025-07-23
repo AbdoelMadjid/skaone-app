@@ -106,9 +106,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="datatable-wrapper" style="height: calc(100vh - 268px);">
-                        {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
-                    </div>
+                    {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
                 </div>
             </div>
         </div>
@@ -467,7 +465,6 @@
             handleDataTableEvents(datatable);
             handleAction(datatable)
             handleDelete(datatable)
-            ScrollDinamicDataTable(datatable, scrollOffsetOverride = 86);
         });
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>

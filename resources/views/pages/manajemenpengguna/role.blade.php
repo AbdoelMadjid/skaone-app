@@ -10,7 +10,7 @@
             @lang('translation.manajemen-pengguna')
         @endslot
     @endcomponent
-    <div class="card d-lg-flex gap-2 mx-n3 mt-n3 p-1 mb-0">
+    <div class="card d-lg-flex gap-2 mx-n3 mt-n3 p-1 mb-2">
         <div class="card-header d-flex align-items-center">
             <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
             <div>
@@ -20,12 +20,7 @@
             </div>
         </div>
         <div class="card-body p-1">
-            <div {{-- class="px-4 mx-n4 mt-n3 mb-0" --}} id="datatable-wrapper" style="height: calc(100vh - 274px);">
-                {!! $dataTable->table([
-                    'class' => 'table table-striped hover',
-                    'style' => 'width:100%',
-                ]) !!}
-            </div>
+            {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
         </div>
     </div>
 @endsection
@@ -44,7 +39,6 @@
 
         handleAction(datatable)
         handleDelete(datatable)
-        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 84); // Initialize dynamic scrolling for DataTable
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

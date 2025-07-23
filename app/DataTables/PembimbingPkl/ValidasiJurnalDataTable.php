@@ -178,14 +178,8 @@ class ValidasiJurnalDataTable extends DataTable
             ->orderBy(1)
             ->parameters([
                 'lengthChange' => false,
-                'searching' => false, // Mengaktifkan pencarian
-                'searchDelay' => 500, // Delay pencarian untuk mengurangi beban server
-                'pageLength' => 100,
-                // ⬇️ Tambahan fitur scroll dan fixedHeader
-                'scrollY' => '378px',
-                'scrollCollapse' => true,
-                'paging' => true,
-                'fixedHeader' => true,
+                'searching' => false,
+                'pageLength' => 25,
             ]);
     }
 

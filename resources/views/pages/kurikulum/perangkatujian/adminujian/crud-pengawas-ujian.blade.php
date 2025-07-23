@@ -64,9 +64,7 @@
                     <div class="card-body p-1">
                         <div class="tab-content">
                             <div class="tab-pane active" id="JadwalMengawas" role="tabpanel">
-                                <div id="datatable-wrapper" style="height: calc(100vh - 336px);">
-                                    {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
-                                </div>
+                                {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
                             </div>
                             <div class="tab-pane" id="DaftarPengawas" role="tabpanel">
                                 <div class="row g-3">
@@ -227,7 +225,6 @@
         handleDataTableEvents(datatable);
         handleAction(datatable)
         handleDelete(datatable)
-        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 74);
         ScrollStaticTable('custom-table-wrapper', 'custom-scroll-container', 86);
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>

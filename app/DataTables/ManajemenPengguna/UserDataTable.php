@@ -99,15 +99,9 @@ class UserDataTable extends DataTable
             ])
             ->orderBy(1)
             ->parameters([
-                'lengthChange' => false,
-                'searching' => false,
-                'searchDelay' => 500, // Delay pencarian untuk mengurangi beban server
+                'lengthChange' => true,
+                'searching' => true,
                 'pageLength' => 50,
-                // ⬇️ Tambahan fitur scroll dan fixedHeader
-                'scrollY' => '370px',
-                'scrollCollapse' => true,
-                'paging' => true,
-                'fixedHeader' => true,
             ]);
     }
 
