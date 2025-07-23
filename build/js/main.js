@@ -287,21 +287,21 @@ function initializeDynamicPagination(tableId, rowsPerPage = 10, maxVisiblePages 
 
         // Tombol "Halaman Awal"
         pagination.append(`
-<li class="page-item${currentPage === 1 ? ' disabled' : ''}">
-    <a class="page-link" href="#" data-page="1" aria-label="First">
-        <i class="mdi mdi-chevron-double-left"></i>
-    </a>
-</li>
-`);
+            <li class="page-item${currentPage === 1 ? ' disabled' : ''}">
+                <a class="page-link" href="#" data-page="1" aria-label="First">
+                    <i class="mdi mdi-chevron-double-left"></i>
+                </a>
+            </li>
+            `);
 
-        // Tombol "Previous"
-        pagination.append(`
-<li class="page-item${currentPage === 1 ? ' disabled' : ''}">
-    <a class="page-link" href="#" aria-label="Previous">
-        <i class="mdi mdi-chevron-left"></i>
-    </a>
-</li>
-`);
+                    // Tombol "Previous"
+                    pagination.append(`
+            <li class="page-item${currentPage === 1 ? ' disabled' : ''}">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <i class="mdi mdi-chevron-left"></i>
+                </a>
+            </li>
+            `);
 
         // Tambahkan nomor halaman
         let startPage = Math.max(currentPage - Math.floor(maxVisiblePages / 2), 1);
@@ -322,10 +322,10 @@ function initializeDynamicPagination(tableId, rowsPerPage = 10, maxVisiblePages 
         // Tambahkan nomor halaman
         for (let i = startPage; i <= endPage; i++) {
             pagination.append(`
-    <li class="page-item${i === currentPage ? ' active' : ''}">
-        <a class="page-link" href="#" data-page="${i}">${i}</a>
-    </li>
-`);
+                <li class="page-item${i === currentPage ? ' active' : ''}">
+                    <a class="page-link" href="#" data-page="${i}">${i}</a>
+                </li>
+            `);
         }
 
         // Tambahkan "..." setelah halaman jika diperlukan
@@ -340,21 +340,21 @@ function initializeDynamicPagination(tableId, rowsPerPage = 10, maxVisiblePages 
 
         // Tombol "Next"
         pagination.append(`
-<li class="page-item${currentPage === totalPages ? ' disabled' : ''}">
-    <a class="page-link" href="#" aria-label="Next">
-        <i class="mdi mdi-chevron-right"></i>
-    </a>
-</li>
-`);
+            <li class="page-item${currentPage === totalPages ? ' disabled' : ''}">
+                <a class="page-link" href="#" aria-label="Next">
+                    <i class="mdi mdi-chevron-right"></i>
+                </a>
+            </li>
+            `);
 
         // Tombol "Halaman Akhir"
         pagination.append(`
-<li class="page-item${currentPage === totalPages ? ' disabled' : ''}">
-    <a class="page-link" href="#" data-page="${totalPages}" aria-label="Last">
-        <i class="mdi mdi-chevron-double-right"></i>
-    </a>
-</li>
-`);
+            <li class="page-item${currentPage === totalPages ? ' disabled' : ''}">
+                <a class="page-link" href="#" data-page="${totalPages}" aria-label="Last">
+                    <i class="mdi mdi-chevron-double-right"></i>
+                </a>
+            </li>
+            `);
     }
 
     // Event klik untuk navigasi halaman

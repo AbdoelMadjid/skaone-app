@@ -32,6 +32,14 @@ if (!function_exists('getRoleName')) {
             'bpbk' => 'Bimbingan Konseling',
             'alumni' => 'Alumni',
             'panitiapkl' => 'Panitia PKL',
+            'kaprakerinak' => 'Panitia Prakerin AK',
+            'kaprakerinbd' => 'Panitia Prakerin BD',
+            'kaprakerinmp' => 'Panitia Prakerin MP',
+            'kaprakerinrpl' => 'Panitia Prakerin RPL',
+            'kaprakerintkj' => 'Panitia Prakerin TKJ',
+            'guruprakerin' => 'Guru Pembimbing PKL',
+            'siswaprakerin' => 'Siswa Peserta PKL',
+
         ];
 
         if ($user && $user->roles->isNotEmpty()) {

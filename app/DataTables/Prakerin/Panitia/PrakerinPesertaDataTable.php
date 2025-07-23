@@ -51,6 +51,28 @@ class PrakerinPesertaDataTable extends DataTable
 
                 return $namaKelas->rombel_nama; // Mengambil nama siswa dari hasil join
             })
+            ->filterColumn('nama_siswa', function ($query, $keyword) {
+                $query->whereIn('nis', function ($subquery) use ($keyword) {
+                    $subquery->select('nis')
+                        ->from('peserta_didiks')
+                        ->where('nama_lengkap', 'like', "%{$keyword}%");
+                });
+            })
+            ->filterColumn('nama_kk', function ($query, $keyword) {
+                $query->whereIn('kode_kk', function ($subquery) use ($keyword) {
+                    $subquery->select('idkk')
+                        ->from('kompetensi_keahlians')
+                        ->where('nama_kk', 'like', "%{$keyword}%");
+                });
+            })
+
+            ->filterColumn('nama_kelas', function ($query, $keyword) {
+                $query->whereIn(DB::raw('(nis, tahunajaran, kode_kk)'), function ($subquery) use ($keyword) {
+                    $subquery->select(DB::raw('nis, tahun_ajaran, kode_kk'))
+                        ->from('peserta_didik_rombels')
+                        ->where('rombel_nama', 'like', "%{$keyword}%");
+                });
+            })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
@@ -82,15 +104,10 @@ class PrakerinPesertaDataTable extends DataTable
             //->dom('Bfrtip')
             ->orderBy(1)
             ->parameters([
-                'lengthChange' => false,
-                'searching' => false, // Mengaktifkan pencarian
+                'lengthChange' => true,
+                'searching' => true, // Mengaktifkan pencarian
                 'searchDelay' => 500, // Delay pencarian untuk mengurangi beban server
-                'pageLength' => 100,
-                // ⬇️ Tambahan fitur scroll dan fixedHeader
-                'scrollY' => '378px',
-                'scrollCollapse' => true,
-                'paging' => true,
-                'fixedHeader' => true,
+                'pageLength' => 25,
             ]);
     }
 
