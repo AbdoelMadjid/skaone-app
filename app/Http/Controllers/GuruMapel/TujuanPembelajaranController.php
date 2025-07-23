@@ -93,7 +93,7 @@ class TujuanPembelajaranController extends Controller
             });
 
         if ($cpOptions->isEmpty()) {
-            return redirect()->route('gurumapel.adminguru.capaian-pembelajaran')->with('warningSwal', 'Anda belum memilih <b>Capaian Pembelajaran</b>. Silakan pilih terlebih dahulu sebelum mengakses menu Tujuan Pembelajaran.');
+            return redirect()->route('gurumapel.adminguru.capaian-pembelajaran.index')->with('warningSwal', 'Anda belum memilih <b>Capaian Pembelajaran</b>. Silakan pilih terlebih dahulu sebelum mengakses menu Tujuan Pembelajaran.');
         }
 
         return $tujuanPembelajaranDataTable->render(
