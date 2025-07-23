@@ -2,7 +2,6 @@
 
 namespace App\DataTables\ManajemenSekolah;
 
-use App\Models\ManajemenSekolah\Semester;
 use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Models\ManajemenSekolah\WaliKelas;
 use App\Traits\DatatableHelper;
@@ -27,6 +26,12 @@ class WaliKelasDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->filterColumn('nama_walikelas', function ($query, $keyword) {
+                $query->where(function ($q) use ($keyword) {
+                    $q->where('personil_sekolahs.namalengkap', 'like', "%{$keyword}%")
+                        ->orWhere('wali_kelas.wali_kelas', 'like', "%{$keyword}%");
+                });
+            })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
@@ -42,13 +47,6 @@ class WaliKelasDataTable extends DataTable
     {
         // Ambil tahun ajaran dan semester aktif
         $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
-        $semesterAktif = null;
-
-        if ($tahunAjaranAktif) {
-            $semesterAktif = Semester::where('status', 'Aktif')
-                ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
-                ->first();
-        }
 
         // Sesuaikan query untuk menggunakan kolom primary key yang benar
         return WaliKelas::query()->select([
@@ -72,9 +70,11 @@ class WaliKelasDataTable extends DataTable
             //->dom('Bfrtip')
             ->orderBy(1)
             ->parameters([
+                'dom' => 'Bfrtip',
                 'lengthChange' => false,
-                'searching' => false,
-                'pageLength' => 25,
+                'searching' => true,
+                'pageLength' => 100,
+                'buttons' => ['copy', 'csv', 'excel', 'pdf', 'print'],
             ]);
     }
 

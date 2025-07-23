@@ -3,6 +3,8 @@
     @lang('translation.rombongan-belajar')
 @endsection
 @section('css')
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
 @endsection
 @section('content')
     @component('layouts.breadcrumb')
@@ -23,7 +25,7 @@
         <div class="card-body p-1">
             <form>
                 <div class="row g-3">
-                    <div class="col-xl-5">
+                    <div class="col-lg">
                         <div class="search-box">
                             <input type="text" class="form-control form-control-sm search"
                                 placeholder="Search Nama Lengkap Personil ....">
@@ -31,43 +33,39 @@
                         </div>
                     </div>
                     <!--end col-->
-                    <div class="col-xl-7">
-                        <div class="row g-3">
-                            <div class="col-sm-4">
-                                <div>
-                                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                                        data-choices-search-false name="choices-single-default" id="idThnAjaran">
-                                        <option value="all" selected>Pilih Tahun Ajaran</option>
-                                        @foreach ($tahunAjaranOptions as $thnajar)
-                                            <option value="{{ $thnajar }}">{{ $thnajar }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <!--end col-->
-                            <div class="col-sm-5">
-                                <div>
-                                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                                        data-choices-search-false name="choices-single-default" id="idKodeKK">
-                                        <option value="all" selected>Pilih Kompetensi Keahlian</option>
-                                        @foreach ($kompetensiKeahlianOptions as $id => $kode_kk)
-                                            <option value="{{ $id }}">{{ $kode_kk }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <!--end col-->
-                            <div class="col-sm-3">
-                                <div>
-                                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                                        data-choices-search-false name="choices-single-default" id="idLevel">
-                                        <option value="all" selected>Pilih Tingkat</option>
-                                        <option value="10">10</option>
-                                        <option value="11">11</option>
-                                        <option value="12">12</option>
-                                    </select>
-                                </div>
-                            </div>
+                    <div class="col-lg-auto">
+                        <div>
+                            <select class="form-control form-control-sm" data-plugin="choices" data-choices
+                                data-choices-search-false name="choices-single-default" id="idThnAjaran">
+                                <option value="all" selected>Pilih Tahun Ajaran</option>
+                                @foreach ($tahunAjaranOptions as $thnajar)
+                                    <option value="{{ $thnajar }}">{{ $thnajar }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <!--end col-->
+                    <div class="col-lg-auto">
+                        <div>
+                            <select class="form-control form-control-sm" data-plugin="choices" data-choices
+                                data-choices-search-false name="choices-single-default" id="idKodeKK">
+                                <option value="all" selected>Pilih Kompetensi Keahlian</option>
+                                @foreach ($kompetensiKeahlianOptions as $id => $kode_kk)
+                                    <option value="{{ $id }}">{{ $kode_kk }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <!--end col-->
+                    <div class="col-lg-auto">
+                        <div>
+                            <select class="form-control form-control-sm" data-plugin="choices" data-choices
+                                data-choices-search-false name="choices-single-default" id="idLevel">
+                                <option value="all" selected>Pilih Tingkat</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -75,17 +73,24 @@
             </form>
         </div>
 
-        <div class="card-body p-1">
+        <div class="card-body p-0">
             {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
         </div>
     </div>
 @endsection
 @section('script')
-    <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+    {{-- DataTables JS --}}
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    {{-- DataTables Buttons --}}
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
     {!! $dataTable->scripts() !!}
 @endsection
