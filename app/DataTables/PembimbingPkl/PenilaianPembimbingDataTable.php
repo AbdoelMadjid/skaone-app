@@ -404,10 +404,15 @@ class PenilaianPembimbingDataTable extends DataTable
             ->minifiedAjax()
             //->dom('Bfrtip')
             ->orderBy(1)
+            ->selectStyleSingle()
             ->parameters([
+                //'order' => [[6, 'asc'], [4, 'asc'], [2, 'asc']],
                 'lengthChange' => false,
-                'searching' => false,
+                'searching' => true,
                 'pageLength' => 25,
+                'paging' => true,
+                'scrollCollapse' => false,
+                'scrollY' => "calc(100vh - 422px)",
             ]);
     }
 

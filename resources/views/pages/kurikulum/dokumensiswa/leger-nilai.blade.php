@@ -333,7 +333,6 @@
     </div>
 @endsection
 @section('script')
-    <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
     <script>
         // JavaScript untuk menangani perubahan dan permintaan AJAX
         document.addEventListener('DOMContentLoaded', function() {

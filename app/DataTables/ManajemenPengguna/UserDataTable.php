@@ -98,10 +98,15 @@ class UserDataTable extends DataTable
                 'searchName' => 'function() { return $(".search-box .search").val(); }',
             ])
             ->orderBy(1)
+            ->selectStyleSingle()
             ->parameters([
-                'lengthChange' => true,
+                //'order' => [[6, 'asc'], [4, 'asc'], [2, 'asc']],
+                'lengthChange' => false,
                 'searching' => true,
-                'pageLength' => 50,
+                'pageLength' => 25,
+                'paging' => true,
+                'scrollCollapse' => false,
+                'scrollY' => "calc(100vh - 422px)",
             ]);
     }
 

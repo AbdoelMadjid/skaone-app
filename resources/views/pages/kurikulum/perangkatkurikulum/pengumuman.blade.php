@@ -3,8 +3,7 @@
     @lang('translation.pengumuman')
 @endsection
 @section('css')
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+    {{--  --}}
 @endsection
 @section('content')
     @component('layouts.breadcrumb')
@@ -76,7 +75,7 @@
     @include('pages.kurikulum.perangkatkurikulum._edit_modal') {{-- Modal form create --}}
 @endsection
 @section('script')
-    <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
+    {{--  --}}
 @endsection
 @section('script-bottom')
     <script>

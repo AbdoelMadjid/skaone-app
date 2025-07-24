@@ -102,12 +102,16 @@ class PrakerinPesertaDataTable extends DataTable
             ->columns($this->getColumns())
             ->minifiedAjax()
             //->dom('Bfrtip')
-            ->orderBy(1)
+            ->orderBy(6, 4, 2)
             ->selectStyleSingle()
             ->parameters([
-                'lengthChange' => true,
+                //'order' => [[6, 'asc'], [4, 'asc'], [2, 'asc']],
+                'lengthChange' => false,
                 'searching' => true,
                 'pageLength' => 25,
+                'paging' => true,
+                'scrollCollapse' => false,
+                'scrollY' => "calc(100vh - 422px)",
             ]);
     }
 
@@ -118,12 +122,12 @@ class PrakerinPesertaDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center align-middle')->width(50),
-            Column::make('tahunajaran'),
+            Column::make('tahunajaran')->addClass('text-center'),
             Column::make('nis')->addClass('text-center')->title('NIS'),
             Column::make('nama_siswa'),
-            Column::make('kode_kk')->title('Kode KK'),
+            Column::make('kode_kk')->title('Kode KK')->addClass('text-center'),
             Column::make('nama_kk')->title('Kompetensi Keahlian'),
-            Column::make('nama_kelas')->title('Kelas'),
+            Column::make('nama_kelas')->title('Kelas')->addClass('text-center'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

@@ -101,11 +101,15 @@ class PrakerinPenempatanDataTable extends DataTable
             ->columns($this->getColumns())
             ->minifiedAjax()
             //->dom('Bfrtip')
-            ->orderBy(1, 2)
+            ->selectStyleSingle()
             ->parameters([
-                'lengthChange' => false,
-                'searching' => false,
-                'pageLength' => 10,
+                'order' => [[1, 'asc']],
+                'lengthChange' => true,
+                'searching' => true,
+                'pageLength' => 25,
+                'paging' => true,
+                'scrollCollapse' => false,
+                'scrollY' => "calc(100vh - 428px)",
             ]);
     }
 

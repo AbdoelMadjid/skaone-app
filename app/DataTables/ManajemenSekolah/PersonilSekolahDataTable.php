@@ -127,10 +127,15 @@ class PersonilSekolahDataTable extends DataTable
             ])
             //->dom('Bfrtip')
             /* ->orderBy(1) */
+            ->selectStyleSingle()
             ->parameters([
+                //'order' => [[6, 'asc'], [4, 'asc'], [2, 'asc']],
                 'lengthChange' => false,
                 'searching' => false,
                 'pageLength' => 25,
+                'paging' => true,
+                'scrollCollapse' => false,
+                'scrollY' => "calc(100vh - 444px)",
             ]);
     }
 

@@ -50,11 +50,15 @@ class PrakerinPerusahaanDataTable extends DataTable
             ->columns($this->getColumns())
             ->minifiedAjax()
             //->dom('Bfrtip')
-            ->orderBy(1, 2)
+            ->selectStyleSingle()
             ->parameters([
+                'order' => [[1, 'asc']],
                 'lengthChange' => true,
                 'searching' => true,
                 'pageLength' => 25,
+                'paging' => true,
+                'scrollCollapse' => false,
+                'scrollY' => "calc(100vh - 428px)",
             ]);
     }
 

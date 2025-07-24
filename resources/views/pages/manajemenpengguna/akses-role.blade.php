@@ -3,6 +3,7 @@
     @lang('translation.akses-role')
 @endsection
 @section('css')
+    {{--  --}}
 @endsection
 @section('content')
     @component('layouts.breadcrumb')
@@ -20,12 +21,6 @@
     </div>
 @endsection
 @section('script')
-    <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
-
     {!! $dataTable->scripts() !!}
 @endsection
 @section('script-bottom')

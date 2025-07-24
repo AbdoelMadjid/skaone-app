@@ -11,7 +11,7 @@
 </div> --}}
 <div class="btn-group dropstart">
     <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
-        class="btn btn-soft-primary btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
+        class="btn btn-soft-info btn-sm btn-icon fs-12"><i class="ri-more-2-fill"></i></button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
         @foreach ($actions as $key => $item)
             <li><a class="dropdown-item {{ $key == 'Delete' ? 'delete' : 'action' }}"

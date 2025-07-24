@@ -17,7 +17,8 @@
 
 <link href="{{ URL::asset('build/css/loading.css') }}" rel="stylesheet" type="text/css" />
 
-<link href="{{ URL::asset('build/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css">
+{{-- <link href="{{ URL::asset('build/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet" />
 <link href="{{ URL::asset('build/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}"
-    rel="stylesheet" />
+    rel="stylesheet" /> --}}
 <link href="{{ URL::asset('build/css/garis_datatable.css') }}" rel="stylesheet" />

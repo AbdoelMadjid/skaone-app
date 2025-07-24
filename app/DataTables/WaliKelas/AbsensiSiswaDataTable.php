@@ -120,10 +120,15 @@ class AbsensiSiswaDataTable extends DataTable
             ->minifiedAjax()
             //->dom('Bfrtip')
             ->orderBy(1)
+            ->selectStyleSingle()
             ->parameters([
+                //'order' => [[6, 'asc'], [4, 'asc'], [2, 'asc']],
                 'lengthChange' => false,
                 'searching' => false,
                 'pageLength' => 25,
+                'paging' => true,
+                'scrollCollapse' => false,
+                'scrollY' => "calc(100vh - 384px)",
             ]);
     }
 
@@ -139,7 +144,7 @@ class AbsensiSiswaDataTable extends DataTable
             Column::make('sakit')->title('Sakit')->width(50),
             Column::make('izin')->title('Izin')->width(50),
             Column::make('alfa')->title('Alfa')->width(50),
-            Column::make('jmlhabsen')->title('Jumlah Absen')->addClass('text-center align-middle')->width(50),
+            Column::make('jmlhabsen')->title('Jumlah Absen')->addClass('text-center align-middle')->width(150),
             /*  Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

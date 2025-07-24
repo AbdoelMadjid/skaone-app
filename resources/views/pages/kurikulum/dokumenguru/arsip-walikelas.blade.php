@@ -179,7 +179,7 @@
     </div>
 @endsection
 @section('script')
-    <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
+    {{--  --}}
 @endsection
 @section('script-bottom')
     <script>
