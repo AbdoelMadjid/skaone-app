@@ -103,8 +103,8 @@ class PrakerinPenempatanDataTable extends DataTable
             //->dom('Bfrtip')
             ->selectStyleSingle()
             ->parameters([
-                'order' => [[1, 'asc']],
-                'lengthChange' => true,
+                /* 'order' => [[1, 'asc']], */
+                'lengthChange' => false,
                 'searching' => true,
                 'pageLength' => 25,
                 'paging' => true,

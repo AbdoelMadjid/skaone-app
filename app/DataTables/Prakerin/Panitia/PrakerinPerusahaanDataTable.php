@@ -52,10 +52,10 @@ class PrakerinPerusahaanDataTable extends DataTable
             //->dom('Bfrtip')
             ->selectStyleSingle()
             ->parameters([
-                'order' => [[1, 'asc']],
-                'lengthChange' => true,
+                //'order' => [[1, 'asc']],
+                'lengthChange' => false,
                 'searching' => true,
-                'pageLength' => 25,
+                'pageLength' => 50,
                 'paging' => true,
                 'scrollCollapse' => false,
                 'scrollY' => "calc(100vh - 428px)",
