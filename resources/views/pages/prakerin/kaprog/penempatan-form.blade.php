@@ -12,12 +12,12 @@
                 id="kode_kk" />
         </div>
         <div class="col-md-12">
-            <x-form.select class="select2 form-select form-select-sm" id="nis" name="nis"
-                label="Peserta Didik" :options="$pesertaDidikOptions" value="{{ $data->nis }}" />
+            <x-form.select class="select2 form-select" id="nis" name="nis" label="Peserta Didik"
+                :options="$pesertaDidikOptions" value="{{ $data->nis }}" />
         </div>
         <div class="col-md-12">
-            <x-form.select class="select2 form-select form-select-sm" name="id_dudi" label="Perusahaan"
-                :options="$perusahaanOptions" value="{{ $data->id_dudi }}" id="dudi" />
+            <x-form.select class="select2 form-select" name="id_dudi" label="Perusahaan" :options="$perusahaanOptions"
+                value="{{ $data->id_dudi }}" id="dudi" />
         </div>
     </div>
 </x-form.modal>

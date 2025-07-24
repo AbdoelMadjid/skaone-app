@@ -4,7 +4,6 @@
 @endsection
 @section('css')
     {{--  --}}
-    <link href="{{ URL::asset('build/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
     @component('layouts.breadcrumb')
@@ -121,13 +120,11 @@
             </form>
         </div>
         <div class="card-body p-1">
-            {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+            {!! $dataTable->table(['class' => 'table table-striped', 'style' => 'width:100%']) !!}
         </div>
     </div>
 @endsection
 @section('script')
-    <script src="{{ URL::asset('build/libs/select2/js/select2.min.js') }}"></script>
-
     {!! $dataTable->scripts() !!}
 @endsection
 @section('script-bottom')

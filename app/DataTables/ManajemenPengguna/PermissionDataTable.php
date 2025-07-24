@@ -58,7 +58,7 @@ class PermissionDataTable extends DataTable
                 'pageLength' => 100,
                 'paging' => true,
                 'scrollCollapse' => false,
-                'scrollY' => "calc(100vh - 416px)",
+                'scrollY' => "calc(100vh - 387px)",
             ]);
     }
 

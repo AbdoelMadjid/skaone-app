@@ -12,88 +12,73 @@
         @endslot
     @endcomponent
     <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
-        <div class="card-header d-flex align-items-center">
-            <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
-            <div>
-                <a class="btn btn-soft-primary btn-sm add-btn"
-                    href="{{ route('kurikulum.datakbm.peserta-didik-rombel.index') }}"><i
-                        class="ri-user-line align-bottom me-1"></i> Per Rombel</a>
-                <button type="button" class="btn btn-soft-danger btn-sm" data-bs-toggle="modal"
-                    data-bs-target="#distribusiSiswa" id="distribusiSiswaBtn" title="Distribusikan siswa yang dipilih"
-                    disabled>Distribusi Rombel</button>
-                @can('create manajemensekolah/peserta-didik')
-                    <a class="btn btn-soft-primary btn-sm add-btn action"
-                        href="{{ route('manajemensekolah.peserta-didik.create') }}">Tambah</a>
-                @endcan
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
+                <div class="flex-shrink-0 me-2">
+                    <div class="search-box">
+                        <input type="text" class="form-control form-control-sm search"
+                            placeholder="Search Nama Peserta Didik ....">
+                        <i class="ri-search-line search-icon"></i>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 me-2">
+                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
+                        data-choices-search-false name="choices-single-default" id="idKK">
+                        <option value="all" selected>Pilih Kompetensi Keahlian</option>
+                        @foreach ($kompetensiKeahlian as $id => $kk)
+                            <option value="{{ $id }}">{{ $kk }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="flex-shrink-0 me-2">
+                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
+                        data-choices-search-false name="choices-single-default" id="idJenkel">
+                        <option value="all" selected>Pilih Jenis Kelamin</option>
+                        @foreach ($jenkelOptions as $jenkel)
+                            <option value="{{ $jenkel }}">{{ $jenkel }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="flex-shrink-0 me-2">
+                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
+                        data-choices-search-false name="choices-single-default" id="idStatus">
+                        <option value="all" selected>Pilih Status</option>
+                        <option value="Aktif">Aktif</option>
+                        <option value="Lulus">Lulus</option>
+                        <option value="Keluar">Keluar</option>
+                    </select>
+                </div>
+                <div class="vr me-2"></div>
+                <div class="flex-shrink-0">
+                    <!-- Forms Content -->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            Action
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-sm p-1">
+                            <div class="d-grid gap-2">
+                                <a class="btn btn-soft-primary btn-sm add-btn"
+                                    href="{{ route('kurikulum.datakbm.peserta-didik-rombel.index') }}"><i
+                                        class="ri-user-line align-bottom me-1"></i> Per Rombel</a>
+                                <button type="button" class="btn btn-soft-danger btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#distribusiSiswa" id="distribusiSiswaBtn"
+                                    title="Distribusikan siswa yang dipilih" disabled>Distribusi Rombel</button>
+                                <a href="{{ route('pdexportExcel') }}" class="btn btn-soft-primary btn-sm w-100">Unduh</a>
+                                <button type="button" class="btn btn-soft-primary btn-sm w-100" data-bs-toggle="modal"
+                                    data-bs-target="#importModal">Unggah</button>
+                                @can('create manajemensekolah/peserta-didik')
+                                    <a class="btn btn-soft-primary btn-sm add-btn action"
+                                        href="{{ route('manajemensekolah.peserta-didik.create') }}">Tambah</a>
+                                @endcan
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="card-body p-1">
-            <form>
-                <div class="row g-3">
-                    <div class="col-lg">
-                        <div class="search-box">
-                            <input type="text" class="form-control form-control-sm search"
-                                placeholder="Search Nama Peserta Didik ....">
-                            <i class="ri-search-line search-icon"></i>
-                        </div>
-                    </div>
-                    <div class="col-lg-auto">
-                        <div>
-                            <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                                data-choices-search-false name="choices-single-default" id="idKK">
-                                <option value="all" selected>Pilih Kompetensi Keahlian</option>
-                                @foreach ($kompetensiKeahlian as $id => $kk)
-                                    <option value="{{ $id }}">{{ $kk }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <!--end col-->
-                    <div class="col-lg-auto">
-                        <div>
-                            <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                                data-choices-search-false name="choices-single-default" id="idJenkel">
-                                <option value="all" selected>Pilih Jenis Kelamin</option>
-                                @foreach ($jenkelOptions as $jenkel)
-                                    <option value="{{ $jenkel }}">{{ $jenkel }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <!--end col-->
-                    <div class="col-lg-auto">
-                        <div>
-                            <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                                data-choices-search-false name="choices-single-default" id="idStatus">
-                                <option value="all" selected>Pilih Status</option>
-                                <option value="Aktif">Aktif</option>
-                                <option value="Lulus">Lulus</option>
-                                <option value="Keluar">Keluar</option>
-                            </select>
-                        </div>
-                    </div>
-                    <!--end col-->
 
-                    <div class="col-lg-auto">
-                        <div>
-                            <a href="{{ route('pdexportExcel') }}" class="btn btn-soft-primary btn-sm w-100">Unduh</a>
-                            {{-- <button type="button" class="btn btn-primary w-100"
-                                                title="Import">Unduh</button> --}}
-                            {{-- <button type="button" class="btn btn-primary w-100" id="filterButton"> <i
-                                                    class="ri-equalizer-fill me-2 align-bottom"></i>Filters</button> --}}
-                        </div>
-                    </div>
-                    <div class="col-lg-auto">
-                        <div>
-                            <button type="button" class="btn btn-soft-primary btn-sm w-100" data-bs-toggle="modal"
-                                data-bs-target="#importModal">Unggah</button>
-                        </div>
-                    </div>
-                    <!--end col-->
-                </div>
-                <!--end row-->
-            </form>
-        </div>
         <div class="card-body p-1">
             {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
         </div>

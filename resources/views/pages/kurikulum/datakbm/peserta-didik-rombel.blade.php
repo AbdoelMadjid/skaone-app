@@ -16,86 +16,78 @@
         @endslot
     @endcomponent
     <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
-        <div class="card-header d-flex align-items-center">
-            <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
-            <div>
-                <a href="{{ route('manajemensekolah.peserta-didik.index') }}" class="btn btn-soft-primary btn-sm">Peserta
-                    Didik</a>
-                @can('create kurikulum/datakbm/peserta-didik-rombel')
-                    <a class="btn btn-soft-primary btn-sm add-btn action"
-                        href="{{ route('kurikulum.datakbm.peserta-didik-rombel.create') }}"><i
-                            class="ri-add-line align-bottom me-1"></i> Peserta Didik Rombel</a>
-                @endcan
-                <button type="button" class="btn btn-soft-info btn-sm" data-bs-toggle="modal"
-                    data-bs-target="#generateAkun" id="generateAkunBtn" title="generateAkun">Generate
-                    Akun Siswa</button>
-                <button type="button" class="btn btn-soft-danger btn-sm" data-bs-toggle="modal"
-                    data-bs-target="#generateNaikKelas" id="generateNaikKelasBtn" title="generateNaikKelas">Naik
-                    Kelas</button>
-                {{-- <a href="{{ route('ps_exportExcel') }}" class="btn btn-primary"><i
-                                        class="ri-file-upload-line align-bottom me-1"></i> Unduh</a>
-                                <button type="button" class="btn btn-info" data-bs-toggle="modal"
-                                    data-bs-target="#importModal"><i class="ri-file-download-line align-bottom me-1"></i>
-                                    Unggah</button> --}}
-            </div>
-        </div>
-        <div class="card-body p-1">
-            <form>
-                <div class="row g-3">
-                    <div class="col-lg">
-                        <div class="search-box">
-                            <input type="text" class="form-control form-control-sm search"
-                                placeholder="Search Nama Lengkap Siswa ....">
-                            <i class="ri-search-line search-icon"></i>
-                        </div>
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
+                <div class="flex-shrink-0 me-2">
+                    <div class="search-box">
+                        <input type="text" class="form-control form-control-sm search"
+                            placeholder="Search Nama Lengkap Siswa ....">
+                        <i class="ri-search-line search-icon"></i>
                     </div>
-                    <!--end col-->
-
-                    <div class="col-lg-auto">
-                        <div>
-                            <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                                data-choices-search-false name="choices-single-default" id="idThnAjaran">
-                                <option value="all" selected>Pilih Tahun Ajaran</option>
-                                @foreach ($tahunAjaranOptions as $thnajar)
-                                    <option value="{{ $thnajar }}">{{ $thnajar }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <!--end col-->
-                    <div class="col-lg-auto">
-                        <div>
-                            <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                                data-choices-search-false name="choices-single-default" id="idKodeKK">
-                                <option value="all" selected>Pilih Kompetensi Keahlian</option>
-                                @foreach ($kompetensiKeahlianOptions as $id => $kode_kk)
-                                    <option value="{{ $id }}">{{ $kode_kk }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-auto">
-                        <div>
-                            <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                                data-choices-search-false name="choices-single-default" id="idTingkat">
-                                <option value="all" selected>Pilih Tingkat</option>
-                                <option value="10">10</option>
-                                <option value="11">11</option>
-                                <option value="12">12</option>
-                            </select>
-                        </div>
-                    </div>
-                    <!--end col-->
-                    <div class="col-lg-auto">
-                        <div>
-                            <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                                data-choices-search-false name="choices-single-default" id="idRombel" disabled>
-                                <option value="all" selected>Pilih Rombel</option>
-                            </select>
+                </div>
+                <div class="flex-shrink-0 me-2">
+                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
+                        data-choices-search-false name="choices-single-default" id="idThnAjaran">
+                        <option value="all" selected>Pilih Tahun Ajaran</option>
+                        @foreach ($tahunAjaranOptions as $thnajar)
+                            <option value="{{ $thnajar }}">{{ $thnajar }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="flex-shrink-0 me-2">
+                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
+                        data-choices-search-false name="choices-single-default" id="idKodeKK">
+                        <option value="all" selected>Pilih Kompetensi Keahlian</option>
+                        @foreach ($kompetensiKeahlianOptions as $id => $kode_kk)
+                            <option value="{{ $id }}">{{ $kode_kk }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="flex-shrink-0 me-2">
+                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
+                        data-choices-search-false name="choices-single-default" id="idTingkat">
+                        <option value="all" selected>Pilih Tingkat</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                </div>
+                <div class="flex-shrink-0 me-2">
+                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
+                        data-choices-search-false name="choices-single-default" id="idRombel" disabled>
+                        <option value="all" selected>Pilih Rombel</option>
+                    </select>
+                </div>
+                <div class="vr me-2"></div>
+                <div class="flex-shrink-0">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            Action
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-sm p-1">
+                            <div class="d-grid gap-2">
+                                <a href="{{ route('manajemensekolah.peserta-didik.index') }}"
+                                    class="btn btn-soft-primary btn-sm">Peserta
+                                    Didik</a>
+                                @can('create kurikulum/datakbm/peserta-didik-rombel')
+                                    <a class="btn btn-soft-primary btn-sm add-btn action"
+                                        href="{{ route('kurikulum.datakbm.peserta-didik-rombel.create') }}"><i
+                                            class="ri-add-line align-bottom me-1"></i> Peserta Didik Rombel</a>
+                                @endcan
+                                <button type="button" class="btn btn-soft-info btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#generateAkun" id="generateAkunBtn" title="generateAkun">Generate
+                                    Akun Siswa</button>
+                                <button type="button" class="btn btn-soft-danger btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#generateNaikKelas" id="generateNaikKelasBtn"
+                                    title="generateNaikKelas">Naik
+                                    Kelas</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
         <div class="card-body p-1">
             {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}

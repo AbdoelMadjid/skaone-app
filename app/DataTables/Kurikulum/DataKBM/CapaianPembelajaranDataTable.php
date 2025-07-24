@@ -72,7 +72,7 @@ class CapaianPembelajaranDataTable extends DataTable
                 'pageLength' => 25,
                 'paging' => true,
                 'scrollCollapse' => false,
-                'scrollY' => "calc(100vh - 404px)",
+                'scrollY' => "calc(100vh - 386px)",
             ]);
     }
 
@@ -83,10 +83,10 @@ class CapaianPembelajaranDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
-            Column::make('kode_cp')->title('Kode CP')->width(150)->searchable(false)->addClass('text-center')->width(100),
+            Column::make('kode_cp')->title('Kode CP')->width(150)->searchable(false)->addClass('text-center')->width(200),
             Column::make('nama_matapelajaran')->title('Nama Mata Pelajaran')->searchable(true)->width(200),
-            Column::make('element')->title('Elemen')->searchable(true),
-            Column::make('inisial_mp')->title('Inisial MP')->searchable(true)->width(75)->addClass('text-center'),
+            Column::make('element')->title('Elemen')->searchable(true)->width(250),
+            Column::make('inisial_mp')->title('Inisial MP')->searchable(true)->width(150)->addClass('text-center'),
             Column::make('nomor_urut_isi_cp')->title('Capaian Pembelajaran')->searchable(true),
             Column::computed('action')
                 ->exportable(false)
