@@ -12,59 +12,78 @@
         @endslot
     @endcomponent
     <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
-        <div class="card-header d-flex align-items-center">
-            <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
-            <div>
-                <button type="button" class="btn btn-soft-danger btn-sm" data-bs-toggle="modal"
-                    data-bs-target="#simpanakunPersonil" id="simpanakunPersonilBtn" title="Buat Akun Terpilih" disabled>Buat
-                    Akun Personil</button>
-                <a href="{{ route('ps_exportExcel') }}" class="btn btn-soft-primary btn-sm"><i
-                        class="ri-file-upload-line align-bottom me-1"></i> Unduh</a>
-                <button type="button" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal"
-                    data-bs-target="#importModal"><i class="ri-file-download-line align-bottom me-1"></i>
-                    Unggah</button>
-                @can('create manajemensekolah/personil-sekolah')
-                    <a class="btn btn-soft-primary btn-sm add-btn action"
-                        href="{{ route('manajemensekolah.personil-sekolah.create') }}">Tambah</a>
-                @endcan
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
+                <div class="flex-shrink-0 me-1">
+                    <div class="search-box">
+                        <input type="text" class="form-control form-control-sm search"
+                            placeholder="Search Nama Lengkap Personil ....">
+                        <i class="ri-search-line search-icon"></i>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 me-1">
+                    <select class="form-control form-control-sm" id="idJenis">
+                        <option value="all" selected>Pilih Jenis Personil</option>
+                        @foreach ($jenisPersonilOptions as $jenis)
+                            <option value="{{ $jenis }}">{{ $jenis }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="flex-shrink-0 me-2">
+                    <select class="form-control form-control-sm" id="idStatus">
+                        <option value="all" selected>Pilih Status</option>
+                        @foreach ($statusOptions as $status)
+                            <option value="{{ $status }}">{{ $status }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="flex-shrink-0 me-2">
+                    <div class="dropdown">
+                        <button class="btn btn-link text-muted p-1 mt-n2 py-0 text-decoration-none fs-15"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <i data-feather="more-horizontal" class="icon-sm"></i>
+                        </button>
+
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                data-bs-target="#simpanakunPersonil" id="simpanakunPersonilBtn" title="Buat Akun Terpilih"
+                                disabled><i class="ri-eye-fill align-bottom me-2 text-muted"></i>
+                                View</a>
+                            <a class="dropdown-item" href="/apps_projects_create"><i
+                                    class="ri-pencil-fill align-bottom me-2 text-muted"></i>
+                                Edit</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                data-bs-target="#removeProjectModal"><i
+                                    class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
+                                Remove</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 me-1">
+                    <button type="button" class="btn btn-soft-danger btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#simpanakunPersonil" id="simpanakunPersonilBtn" title="Buat Akun Terpilih"
+                        disabled>Buat
+                        Akun Personil</button>
+                </div>
+                <div class="flex-shrink-0 me-1">
+                    <a href="{{ route('ps_exportExcel') }}" class="btn btn-soft-primary btn-sm"><i
+                            class="ri-file-upload-line align-bottom me-1"></i> Unduh</a>
+                </div>
+                <div class="flex-shrink-0 me-1">
+                    <button type="button" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#importModal"><i class="ri-file-download-line align-bottom me-1"></i>
+                        Unggah</button>
+                </div>
+                <div class="flex-shrink-0 me-1">
+                    @can('create manajemensekolah/personil-sekolah')
+                        <a class="btn btn-soft-primary btn-sm add-btn action"
+                            href="{{ route('manajemensekolah.personil-sekolah.create') }}">Tambah</a>
+                    @endcan
+                </div>
             </div>
         </div>
-        <div class="card-body p-1">
-            <form>
-                <div class="row g-3">
-                    <div class="col-lg">
-                        <div class="search-box">
-                            <input type="text" class="form-control form-control-sm search"
-                                placeholder="Search Nama Lengkap Personil ....">
-                            <i class="ri-search-line search-icon"></i>
-                        </div>
-                    </div>
-                    <div class="col-lg-auto">
-                        <div>
-                            <select class="form-control form-control-sm" id="idJenis">
-                                <option value="all" selected>Pilih Jenis Personil</option>
-                                @foreach ($jenisPersonilOptions as $jenis)
-                                    <option value="{{ $jenis }}">{{ $jenis }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-auto">
-                        <div>
-                            <select class="form-control form-control-sm" id="idStatus">
-                                <option value="all" selected>Pilih Status</option>
-                                @foreach ($statusOptions as $status)
-                                    <option value="{{ $status }}">{{ $status }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <!--end col-->
-                </div>
-                <!--end row-->
-            </form>
-        </div>
-
         <div class="card-body p-1">
             {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
         </div>
