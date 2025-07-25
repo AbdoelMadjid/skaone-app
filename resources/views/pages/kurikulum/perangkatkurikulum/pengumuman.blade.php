@@ -15,11 +15,16 @@
         @endslot
     @endcomponent
     <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-0">
-        <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
-            <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#createModal">+ Tambah</button>
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <x-heading-title>@yield('title')</x-heading-title>
+                <div class="flex-shrink-0">
+                    <button class="btn btn-light btn-label waves-effect waves-light btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#createModal"><i class="ri-add-fill label-icon align-middle fs-16 me-2"></i>
+                        Tambah</button>
+                </div>
+            </div>
         </div>
-
         <div class="card-body p-1">
             @if ($data->count())
                 <table class="table table-bordered table-hover align-middle">
