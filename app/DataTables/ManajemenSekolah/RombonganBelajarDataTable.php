@@ -128,7 +128,7 @@ class RombonganBelajarDataTable extends DataTable
                 'pageLength' => 25,
                 'paging' => true,
                 'scrollCollapse' => false,
-                'scrollY' => "calc(100vh - 378px)",
+                'scrollY' => "calc(100vh - 395px)",
             ]);
     }
 
