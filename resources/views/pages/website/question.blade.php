@@ -12,14 +12,18 @@
         @endslot
     @endcomponent
     <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
-        <div class="card-header d-flex align-items-center">
-            <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
-            <div>
-                @can('create websiteapp/question')
-                    <a class="btn btn-soft-primary btn-sm action" href="{{ route('websiteapp.question.create') }}">Tambah
-                        Pertanyaan</a>
-                @endcan
-                <a class="btn btn-soft-primary btn-sm" href="{{ route('websiteapp.polling.index') }}">Polling</a>
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <x-heading-title>@yield('title')</x-heading-title>
+                <div class="flex-shrink-0 me-2">
+                    <x-btn-tambah can="create websiteapp/question" route="websiteapp.question.create" label="Tambah Pertanyaan"
+                        icon="ri-add-line" />
+                </div>
+                <div class="flex-shrink-0 me-2">
+                    <a class="btn btn-light btn-label waves-effect waves-light btn-sm"
+                        href="{{ route('websiteapp.polling.index') }}"> <i
+                            class="ri-speed-mini-fill label-icon align-middle fs-16 me-2"></i> Polling</a>
+                </div>
             </div>
         </div>
         <div class="card-body p-1">

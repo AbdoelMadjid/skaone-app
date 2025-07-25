@@ -12,30 +12,31 @@
         @endslot
     @endcomponent
     <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
-        <div class="card-header d-flex align-items-center">
-            <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
-            <div>
-                <div class="row g-3">
-                    <div class="col-lg">
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <x-heading-title>@yield('title')</x-heading-title>
+                <div class="flex-shrink-0">
+                    <x-btn-tambah can="create appsupport/referensi" route="appsupport.referensi.create"
+                        label="Tambah Referensi" icon="ri-add-line" />
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-2">
+            <div class="row g-3">
+                <div class="col-lg">
 
-                    </div>
+                </div>
+                <div class="col-lg-auto">
                     <div class="col-lg-auto">
-                        <select id="filter-jenis" class="form-select form-select-sm" style="width: 200px;">
-                            <option value="">Semua Jenis</option>
-                            @foreach (\App\Models\AppSupport\Referensi::select('jenis')->distinct()->pluck('jenis') as $jenis)
-                                <option value="{{ $jenis }}">{{ $jenis }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-lg-auto">
-                        <button id="reset-filter" class="btn btn-soft-secondary btn-sm">Reset</button>
-                    </div>
-                    <div class="col-lg-auto">
-                        @can('create appsupport/referensi')
-                            <a class="btn btn-soft-primary btn-sm action" href="{{ route('appsupport.referensi.create') }}">
-                                Tambah Referensi
-                            </a>
-                        @endcan
+                        <div class="d-flex align-items-center gap-2"> <!-- Tambahan baris ini -->
+                            <select id="filter-jenis" class="form-select form-select-sm" style="width: 200px;">
+                                <option value="">Semua Jenis</option>
+                                @foreach (\App\Models\AppSupport\Referensi::select('jenis')->distinct()->pluck('jenis') as $jenis)
+                                    <option value="{{ $jenis }}">{{ $jenis }}</option>
+                                @endforeach
+                            </select>
+                            <button id="reset-filter" class="btn btn-light btn-sm me-3">Reset</button>
+                        </div> <!-- Penutup div flex -->
                     </div>
                 </div>
             </div>

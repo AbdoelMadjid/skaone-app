@@ -14,7 +14,7 @@
     <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
         <div class="card-header">
             <div class="d-flex align-items-center">
-                <h5 class="card-title mb-0 flex-grow-1 text-primary-emphasis">@yield('title')</h5>
+                <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0">
                     <div class="btn-group">
                         <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-bs-toggle="dropdown"
@@ -37,7 +37,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-body p-2">
+        <div class="card-body p-1">
             <div class="row g-3">
                 <div class="col-lg">
                 </div>

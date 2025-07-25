@@ -14,15 +14,59 @@
     <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
         <div class="card-header">
             <div class="d-flex align-items-center">
-                <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
+                <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0 me-2">
+                    <x-btn-tambah can="create manajemensekolah/peserta-didik" route="manajemensekolah.peserta-didik.create"
+                        label="Tambah" icon="ri-add-line" />
+                </div>
+                <div class="flex-shrink-0">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">Action
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-sm p-3">
+                            <div class="d-grid gap-2">
+                                <x-btn-action label="Distribusi Rombel" icon="ri-user-shared-line" data-bs-toggle="modal"
+                                    data-bs-target="#distribusiSiswa" id="distribusiSiswaBtn"
+                                    title="Distribusikan siswa yang dipilih" :disabled="true" />
+                                <x-btn-action href="{{ route('kurikulum.datakbm.peserta-didik-rombel.index') }}"
+                                    label="Per Rombel" icon="ri-group-line" />
+                                <x-btn-action href="{{ route('pdexportExcel') }}" label="Unduh" icon="ri-download-line" />
+
+                                <x-btn-action label="Unggah" icon="ri-upload-line" data-bs-toggle="modal"
+                                    data-bs-target="#importModal" />
+
+                                {{--  <a class="btn btn-soft-primary btn-sm add-btn"
+                                    href="{{ route('kurikulum.datakbm.peserta-didik-rombel.index') }}"><i
+                                        class="ri-user-line align-bottom me-1"></i> Per Rombel</a>
+
+                                <button type="button" class="btn btn-soft-danger btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#distribusiSiswa" id="distribusiSiswaBtn"
+                                    title="Distribusikan siswa yang dipilih" disabled>Distribusi Rombel</button>
+
+                                <a href="{{ route('pdexportExcel') }}" class="btn btn-soft-primary btn-sm w-100">Unduh</a>
+
+                                <button type="button" class="btn btn-soft-primary btn-sm w-100" data-bs-toggle="modal"
+                                    data-bs-target="#importModal">Unggah</button> --}}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-1">
+            <div class="row g-3">
+                <div class="col-lg">
+                </div>
+                <div class="col-lg-auto">
                     <div class="search-box">
                         <input type="text" class="form-control form-control-sm search"
                             placeholder="Search Nama Peserta Didik ....">
                         <i class="ri-search-line search-icon"></i>
                     </div>
                 </div>
-                <div class="flex-shrink-0 me-2">
+                <div class="col-lg-auto">
                     <select class="form-control form-control-sm" data-plugin="choices" data-choices
                         data-choices-search-false name="choices-single-default" id="idKK">
                         <option value="all" selected>Pilih Kompetensi Keahlian</option>
@@ -31,7 +75,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="flex-shrink-0 me-2">
+                <div class="col-lg-auto">
                     <select class="form-control form-control-sm" data-plugin="choices" data-choices
                         data-choices-search-false name="choices-single-default" id="idJenkel">
                         <option value="all" selected>Pilih Jenis Kelamin</option>
@@ -40,7 +84,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="flex-shrink-0 me-2">
+                <div class="col-lg-auto me-3">
                     <select class="form-control form-control-sm" data-plugin="choices" data-choices
                         data-choices-search-false name="choices-single-default" id="idStatus">
                         <option value="all" selected>Pilih Status</option>
@@ -49,36 +93,8 @@
                         <option value="Keluar">Keluar</option>
                     </select>
                 </div>
-                <div class="vr me-2"></div>
-                <div class="flex-shrink-0">
-                    <!-- Forms Content -->
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            Action
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-sm p-1">
-                            <div class="d-grid gap-2">
-                                <a class="btn btn-soft-primary btn-sm add-btn"
-                                    href="{{ route('kurikulum.datakbm.peserta-didik-rombel.index') }}"><i
-                                        class="ri-user-line align-bottom me-1"></i> Per Rombel</a>
-                                <button type="button" class="btn btn-soft-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#distribusiSiswa" id="distribusiSiswaBtn"
-                                    title="Distribusikan siswa yang dipilih" disabled>Distribusi Rombel</button>
-                                <a href="{{ route('pdexportExcel') }}" class="btn btn-soft-primary btn-sm w-100">Unduh</a>
-                                <button type="button" class="btn btn-soft-primary btn-sm w-100" data-bs-toggle="modal"
-                                    data-bs-target="#importModal">Unggah</button>
-                                @can('create manajemensekolah/peserta-didik')
-                                    <a class="btn btn-soft-primary btn-sm add-btn action"
-                                        href="{{ route('manajemensekolah.peserta-didik.create') }}">Tambah</a>
-                                @endcan
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
-
         <div class="card-body p-1">
             {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
         </div>

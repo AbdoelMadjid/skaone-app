@@ -58,7 +58,7 @@ class KumpulanFaqDataTable extends DataTable
                 'pageLength' => 25,
                 'paging' => true,
                 'scrollCollapse' => false,
-                'scrollY' => "calc(100vh - 328px)",
+                'scrollY' => "calc(100vh - 351px)",
             ]);
     }
 

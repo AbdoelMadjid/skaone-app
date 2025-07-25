@@ -12,14 +12,13 @@
         @endslot
     @endcomponent
     <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
-        <div class="card-header d-flex align-items-center">
-            <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
-            <div>
-                @can('create websiteapp/team-pengembang')
-                    <a class="btn btn-soft-primary btn-sm action" href="{{ route('websiteapp.team-pengembang.create') }}">
-                        <i class="ri-add-circle-line"></i> Tambah
-                    </a>
-                @endcan
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <x-heading-title>@yield('title')</x-heading-title>
+                <div class="flex-shrink-0">
+                    <x-btn-tambah can="create websiteapp/team-pengembang" route="websiteapp.team-pengembang.create"
+                        label="Tambah" icon="ri-add-line" />
+                </div>
             </div>
         </div>
         <div class="card-body p-1">

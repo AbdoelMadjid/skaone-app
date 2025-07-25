@@ -15,54 +15,44 @@
             @lang('translation.manajemen-pengguna')
         @endslot
     @endcomponent
-    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-0">
-        <div class="card-header d-flex align-items-center">
-            <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
-            <div>
-                <div class="row justify-content-between gy-4">
-                    <div class="col-lg">
-                        <div class="search-box">
-                            <input type="text" class="form-control form-control-sm search"
-                                placeholder="Search for name user ...">
-                            <i class="ri-search-line search-icon"></i>
-                        </div>
-                    </div>
-                    @if (auth()->check() &&
-                            auth()->user()->hasAnyRole(['master']))
-                        <div class="col-lg">
-                            <div class="d-md-flex text-nowrap gap-2">
-                                <select id="role-select" class="form-select form-select-sm">
-                                    <option value="">-- Pilih Role --</option>
-                                    @foreach (\Spatie\Permission\Models\Role::pluck('name') as $role)
-                                        <option value="{{ $role }}">{{ $role }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-auto">
-                            <div class="d-md-flex text-nowrap gap-2">
-                                <button id="hapus-role-btn" class="btn btn-soft-danger btn-sm">Hapus Role</button>
-                            </div>
-                        </div>
-                    @endif
-                    <div class="col-lg-auto">
-                        <div class="d-md-flex text-nowrap gap-2">
-                            @can('create manajemenpengguna/users')
-                                <a class="btn btn-soft-primary btn-sm action"
-                                    href="{{ route('manajemenpengguna.users.create') }}">
-                                    <i class="ri-add-fill me-1 align-bottom"></i> Add User</a>
-                            @endcan
-                            {{-- <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"
-                                class="btn btn-soft-primary btn-sm"><i class="ri-more-2-fill"></i></button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
-                                <li><a class="dropdown-item" href="#">All</a></li>
-                                <li><a class="dropdown-item" href="#">Last Week</a></li>
-                                <li><a class="dropdown-item" href="#">Last Month</a></li>
-                                <li><a class="dropdown-item" href="#">Last Year</a></li>
-                            </ul> --}}
-                        </div>
+    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <x-heading-title>@yield('title')</x-heading-title>
+                <div class="flex-shrink-0">
+                    <x-btn-tambah can="create manajemenpengguna/users" route="manajemenpengguna.users.create"
+                        label="Tambah User" icon="ri-add-line" />
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-2">
+            <div class="row g-3">
+                <div class="col-lg">
+                </div>
+                <div class="col-lg-auto">
+                    <div class="search-box">
+                        <input type="text" class="form-control form-control-sm search"
+                            placeholder="Search for name user ...">
+                        <i class="ri-search-line search-icon"></i>
                     </div>
                 </div>
+                @if (auth()->check() &&
+                        auth()->user()->hasAnyRole(['master']))
+                    <div class="col-lg-auto">
+                        <div class="d-flex align-items-center gap-2"> <!-- Tambahan baris ini -->
+                            <select id="role-select" class="form-select form-select-sm">
+                                <option value="">-- Pilih Role --</option>
+                                @foreach (\Spatie\Permission\Models\Role::pluck('name') as $role)
+                                    <option value="{{ $role }}">{{ $role }}</option>
+                                @endforeach
+                            </select>
+                            <button id="hapus-role-btn"
+                                class="btn btn-danger rounded-pill btn-sm btn-icon waves-effect waves-light w-25"
+                                data-bs-toggle="tooltip" data-bs-placement="left" title="Hapus Role"><i
+                                    class="ri-delete-bin-5-line fs-12"></i></button>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
         <div class="card-body p-1">
