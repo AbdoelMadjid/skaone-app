@@ -167,7 +167,7 @@ class KbmPerRombelDataTable extends DataTable
                 'pageLength' => 25,
                 'paging' => true,
                 'scrollCollapse' => true,
-                'scrollY' => "calc(100vh - 444px)",
+                'scrollY' => "calc(100vh - 408px)",
             ]);
     }
 

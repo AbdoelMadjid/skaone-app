@@ -15,7 +15,11 @@
         <div class="card-header">
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
-                <div class="flex-shrink-0">
+                <div class="flex-shrink-0 me-2">
+                    <x-btn-tambah can="create manajemensekolah/personil-sekolah"
+                        route="manajemensekolah.personil-sekolah.create" label="Tambah" icon="ri-add-line" />
+                </div>
+                <div class="flex-shrink-0 me-2">
                     <div class="btn-group">
                         <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">Action
@@ -25,12 +29,11 @@
                                 <x-btn-action label="Buat Akun Personil" icon="ri-admin-line" data-bs-toggle="modal"
                                     data-bs-target="#simpanakunPersonil" id="simpanakunPersonilBtn"
                                     title="Buat Akun Terpilih" :disabled="true" />
-                                <x-btn-action href="{{ route('ps_exportExcel') }}" label="Unduh" icon="ri-upload-line" />
-                                <x-btn-action label="Unggah" icon="ri-download-line" data-bs-toggle="modal"
+                                <x-btn-action href="{{ route('ps_exportExcel') }}" label="Download"
+                                    icon="ri-download-line" />
+                                <x-btn-action label="Upload" icon="ri-upload-line" data-bs-toggle="modal"
                                     data-bs-target="#importModal" />
-                                <x-btn-tambah can="create manajemensekolah/personil-sekolah"
-                                    route="manajemensekolah.personil-sekolah.create" label="Tambah"
-                                    icon="ri-add-circle-line" />
+
                             </div>
                         </div>
                     </div>

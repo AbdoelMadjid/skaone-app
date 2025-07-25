@@ -27,17 +27,15 @@
 
                 </div>
                 <div class="col-lg-auto">
-                    <div class="col-lg-auto">
-                        <div class="d-flex align-items-center gap-2"> <!-- Tambahan baris ini -->
-                            <select id="filter-jenis" class="form-select form-select-sm" style="width: 200px;">
-                                <option value="">Semua Jenis</option>
-                                @foreach (\App\Models\AppSupport\Referensi::select('jenis')->distinct()->pluck('jenis') as $jenis)
-                                    <option value="{{ $jenis }}">{{ $jenis }}</option>
-                                @endforeach
-                            </select>
-                            <button id="reset-filter" class="btn btn-light btn-sm me-3">Reset</button>
-                        </div> <!-- Penutup div flex -->
-                    </div>
+                    <div class="d-flex align-items-center gap-2"> <!-- Tambahan baris ini -->
+                        <select id="filter-jenis" class="form-select form-select-sm" style="width: 200px;">
+                            <option value="">Semua Jenis</option>
+                            @foreach (\App\Models\AppSupport\Referensi::select('jenis')->distinct()->pluck('jenis') as $jenis)
+                                <option value="{{ $jenis }}">{{ $jenis }}</option>
+                            @endforeach
+                        </select>
+                        <button id="reset-filter" class="btn btn-light btn-sm me-3">Reset</button>
+                    </div> <!-- Penutup div flex -->
                 </div>
             </div>
         </div>

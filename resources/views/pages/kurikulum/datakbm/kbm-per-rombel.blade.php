@@ -37,87 +37,69 @@
         </script>
     @endif
     <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
-        <div class="card-header d-flex align-items-center">
-            <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
-            <div>
-                <div class="d-flex flex-wrap align-items-start gap-2">
-                    {{-- @can('create kurikulum/datakbm/kbm-per-rombel')
-                                    <a class="btn btn-success add-btn action"
-                                        href="{{ route('kurikulum.datakbm.kbm-per-rombel.create') }}"><i
-                                            class="ri-add-line align-bottom me-1"></i> Add KBM Per Rombel</a>
-                                @endcan --}}
-                    <a href="{{ route('kurikulum.datakbm.mata-pelajaran-perjurusan.index') }}"
-                        class="btn btn-soft-primary btn-sm">Mata Pelajaran</a>
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <x-heading-title>@yield('title')</x-heading-title>
+                <div class="flex-shrink-0 me-2">
+                    <x-btn-action href="{{ route('kurikulum.datakbm.mata-pelajaran-perjurusan.index') }}"
+                        label="Mapel Per Jurusan" icon="ri-book-line" />
                 </div>
             </div>
         </div>
         <div class="card-body p-1">
-            <form>
-                <div class="row g-3">
-                    <div class="col-lg">
-                        <div class="search-box">
-                            <input type="text" class="form-control form-control-sm search"
-                                placeholder="Search Nama Mata Pelajaran ....">
-                            <i class="ri-search-line search-icon"></i>
-                        </div>
-                    </div>
-                    <div class="col-lg-auto">
-                        <div>
-                            <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                                data-choices-search-false name="choices-single-default" id="idThnAjaran">
-                                <option value="all" selected>Pilih Tahun Ajaran</option>
-                                @foreach ($tahunAjaranOptions as $thnajar)
-                                    <option value="{{ $thnajar }}">{{ $thnajar }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-auto">
-                        <div>
-                            <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                                data-choices-search-false name="choices-single-default" id="idSemester">
-                                <option value="all" selected>Pilih Semester</option>
-                                <option value="Ganjil">Ganjil</option>
-                                <option value="Genap">Genap</option>
-                            </select>
-                        </div>
-                    </div>
-                    <!--end col-->
-                    <div class="col-lg-auto">
-                        <div>
-                            <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                                data-choices-search-false name="choices-single-default" id="idKodeKK">
-                                <option value="all" selected>Pilih Kompetensi Keahlian</option>
-                                @foreach ($kompetensiKeahlianOptions as $id => $kode_kk)
-                                    <option value="{{ $id }}">{{ $kode_kk }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <!--end col-->
-                    <div class="col-lg-auto">
-                        <div>
-                            <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                                data-choices-search-false name="choices-single-default" id="idTingkat">
-                                <option value="all" selected>Pilih Tingkat</option>
-                                <option value="10">10</option>
-                                <option value="11">11</option>
-                                <option value="12">12</option>
-                            </select>
-
-                        </div>
-                    </div>
-                    <!--end col-->
-                    <div class="col-lg-auto">
-                        <div>
-                            <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                                data-choices-search-false name="choices-single-default" id="idRombel" disabled>
-                                <option value="all" selected>Pilih Rombel</option>
-                            </select>
-                        </div>
+            <div class="row g-3">
+                <div class="col-lg">
+                </div>
+                <div class="col-lg-auto me-1">
+                    <div class="search-box">
+                        <input type="text" class="form-control form-control-sm search"
+                            placeholder="Nama Mata Pelajaran ....">
+                        <i class="ri-search-line search-icon"></i>
                     </div>
                 </div>
-            </form>
+                <div class="col-lg-auto me-1">
+                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
+                        data-choices-search-false name="choices-single-default" id="idThnAjaran">
+                        <option value="all" selected>Pilih Tahun Ajaran</option>
+                        @foreach ($tahunAjaranOptions as $thnajar)
+                            <option value="{{ $thnajar }}">{{ $thnajar }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-lg-auto me-1">
+                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
+                        data-choices-search-false name="choices-single-default" id="idSemester">
+                        <option value="all" selected>Pilih Semester</option>
+                        <option value="Ganjil">Ganjil</option>
+                        <option value="Genap">Genap</option>
+                    </select>
+                </div>
+                <div class="col-lg-auto me-1">
+                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
+                        data-choices-search-false name="choices-single-default" id="idKodeKK">
+                        <option value="all" selected>Pilih Kompetensi Keahlian</option>
+                        @foreach ($kompetensiKeahlianOptions as $id => $kode_kk)
+                            <option value="{{ $id }}">{{ $kode_kk }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-lg-auto me-1">
+                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
+                        data-choices-search-false name="choices-single-default" id="idTingkat">
+                        <option value="all" selected>Pilih Tingkat</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                </div>
+                <div class="col-lg-auto me-2">
+                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
+                        data-choices-search-false name="choices-single-default" id="idRombel" disabled>
+                        <option value="all" selected>Pilih Rombel</option>
+                    </select>
+                </div>
+                {{-- <div class="vr me-2"></div> --}}
+            </div>
         </div>
         <div class="card-body p-1">
             {!! $dataTable->table(['class' => 'table table-striped', 'style' => 'width:100%']) !!}

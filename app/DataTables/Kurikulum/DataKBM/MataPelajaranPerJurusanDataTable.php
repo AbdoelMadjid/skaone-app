@@ -114,11 +114,11 @@ class MataPelajaranPerJurusanDataTable extends DataTable
             ->parameters([
                 //'order' => [[6, 'asc'], [4, 'asc'], [2, 'asc']],
                 'lengthChange' => false,
-                'searching' => true,
+                'searching' => false,
                 'pageLength' => 25,
                 'paging' => true,
                 'scrollCollapse' => false,
-                'scrollY' => "calc(100vh - 422px)",
+                'scrollY' => "calc(100vh - 408px)",
             ]);
     }
 

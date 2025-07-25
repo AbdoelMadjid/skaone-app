@@ -15,22 +15,31 @@
         @endslot
     @endcomponent
     <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
-        <div class="card-header d-flex align-items-center">
-            <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
-            <div>
-                <a href="{{ route('mapelexportExcel') }}" class="btn btn-soft-primary btn-sm">Download</a>
-                <button type="button" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal"
-                    data-bs-target="#importModal">
-                    Import
-                </button>
-                <a class="btn btn-soft-primary btn-sm"
-                    href="{{ route('kurikulum.datakbm.mata-pelajaran-perjurusan.index') }}">Mapel
-                    Per Jurusan</a>
-                @can('create kurikulum/datakbm/mata-pelajaran')
-                    <a class="btn btn-soft-primary btn-sm action"
-                        href="{{ route('kurikulum.datakbm.mata-pelajaran.create') }}">Tambah</a>
-                @endcan
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <x-heading-title>@yield('title')</x-heading-title>
+                <div class="flex-shrink-0 me-2">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">Action
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-sm p-3">
+                            <div class="d-grid gap-2">
+                                <x-btn-tambah can="create kurikulum/datakbm/mata-pelajaran"
+                                    route="kurikulum.datakbm.mata-pelajaran.create" label="Tambah" icon="ri-add-line" />
 
+                                <x-btn-action href="{{ route('kurikulum.datakbm.mata-pelajaran-perjurusan.index') }}"
+                                    label="Mapel Per Jurusan" icon="ri-book-line" />
+
+                                <x-btn-action href="{{ route('mapelexportExcel') }}" label="Download"
+                                    icon="ri-download-line" />
+
+                                <x-btn-action label="Upload" icon="ri-upload-line" data-bs-toggle="modal"
+                                    data-bs-target="#importModal" title="generateAkun" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card-body p-1">

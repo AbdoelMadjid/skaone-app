@@ -31,24 +31,10 @@
                                     title="Distribusikan siswa yang dipilih" :disabled="true" />
                                 <x-btn-action href="{{ route('kurikulum.datakbm.peserta-didik-rombel.index') }}"
                                     label="Per Rombel" icon="ri-group-line" />
-                                <x-btn-action href="{{ route('pdexportExcel') }}" label="Unduh" icon="ri-download-line" />
-
-                                <x-btn-action label="Unggah" icon="ri-upload-line" data-bs-toggle="modal"
+                                <x-btn-action href="{{ route('pdexportExcel') }}" label="Download"
+                                    icon="ri-download-line" />
+                                <x-btn-action label="Upload" icon="ri-upload-line" data-bs-toggle="modal"
                                     data-bs-target="#importModal" />
-
-                                {{--  <a class="btn btn-soft-primary btn-sm add-btn"
-                                    href="{{ route('kurikulum.datakbm.peserta-didik-rombel.index') }}"><i
-                                        class="ri-user-line align-bottom me-1"></i> Per Rombel</a>
-
-                                <button type="button" class="btn btn-soft-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#distribusiSiswa" id="distribusiSiswaBtn"
-                                    title="Distribusikan siswa yang dipilih" disabled>Distribusi Rombel</button>
-
-                                <a href="{{ route('pdexportExcel') }}" class="btn btn-soft-primary btn-sm w-100">Unduh</a>
-
-                                <button type="button" class="btn btn-soft-primary btn-sm w-100" data-bs-toggle="modal"
-                                    data-bs-target="#importModal">Unggah</button> --}}
-
                             </div>
                         </div>
                     </div>

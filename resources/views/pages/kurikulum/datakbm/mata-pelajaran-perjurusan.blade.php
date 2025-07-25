@@ -15,61 +15,64 @@
         @endslot
     @endcomponent
     <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
-        <div class="card-header d-flex align-items-center">
-            <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
-            <div>
-                <button type="button" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal"
-                    data-bs-target="#distribusiMapel" id="distribusiMapelBtn" title="Distribusikan Mapel yang dipilih"
-                    disabled>Distribusi
-                    Mapel</button>
-                <a class="btn btn-soft-primary btn-sm"
-                    href="{{ route('kurikulum.datakbm.mata-pelajaran.index') }}">Kembali</a>
-            </div>
-        </div>
-        <div class="card-body p-1">
-            <form>
-                <div class="row g-3">
-                    <div class="col-xl-8">
-                        <div class="search-box">
-                            <input type="text" class="form-control form-control-sm search"
-                                placeholder="Search Nama Mata Pelajaran ....">
-                            <i class="ri-search-line search-icon"></i>
-                        </div>
-                    </div>
-                    <!--end col-->
-                    <div class="col-xl-4">
-                        <div class="row g-3">
-                            <div class="col-sm-8">
-                                <div>
-                                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                                        data-choices-search-false name="choices-single-default" id="idKK">
-                                        <option value="all" selected>Pilih Kompetensi Keahlian</option>
-                                        @foreach ($kompetensiKeahlian as $id => $kk)
-                                            <option value="{{ $id }}">{{ $kk }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <x-heading-title>@yield('title')</x-heading-title>
+                <div class="flex-shrink-0 me-2">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">Action
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-sm p-3">
+                            <div class="d-grid gap-2">
+                                <x-btn-action label="Distribusi Mapel" icon="ri-stack-line" data-bs-toggle="modal"
+                                    data-bs-target="#distribusiMapel" id="distribusiMapelBtn"
+                                    title="Distribusikan Mapel yang dipilih" :disabled="true" />
+
+                                <x-btn-action href="{{ route('kurikulum.datakbm.mata-pelajaran.index') }}"
+                                    label="Mata Pelajaran" icon="ri-book-line" />
+
+                                <x-btn-action href="{{ route('kurikulum.datakbm.kbm-per-rombel.index') }}"
+                                    label="KBM Per Rombel" icon="ri-book-line" />
                             </div>
-                            <div class="col-sm-4">
-                                <div>
-                                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                                        data-choices-search-false name="semesterSelect" id="semesterSelect">
-                                        <option value="all" selected>All Semesters</option>
-                                        <option value="1">Semester 1</option>
-                                        <option value="2">Semester 2</option>
-                                        <option value="3">Semester 3</option>
-                                        <option value="4">Semester 4</option>
-                                        <option value="5">Semester 5</option>
-                                        <option value="6">Semester 6</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!--end col-->
                         </div>
                     </div>
                 </div>
-                <!--end row-->
-            </form>
+            </div>
+        </div>
+        <div class="card-body p-1">
+            <div class="row g-3">
+                <div class="col-lg">
+                </div>
+                <div class="col-lg-auto me-2">
+                    <div class="search-box">
+                        <input type="text" class="form-control form-control-sm search"
+                            placeholder="Nama Mata Pelajaran ....">
+                        <i class="ri-search-line search-icon"></i>
+                    </div>
+                </div>
+                <div class="col-lg-auto me-2">
+                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
+                        data-choices-search-false name="choices-single-default" id="idKK">
+                        <option value="all" selected>Pilih Kompetensi Keahlian</option>
+                        @foreach ($kompetensiKeahlian as $id => $kk)
+                            <option value="{{ $id }}">{{ $kk }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-lg-auto me-3">
+                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
+                        data-choices-search-false name="semesterSelect" id="semesterSelect">
+                        <option value="all" selected>All Semesters</option>
+                        <option value="1">Semester 1</option>
+                        <option value="2">Semester 2</option>
+                        <option value="3">Semester 3</option>
+                        <option value="4">Semester 4</option>
+                        <option value="5">Semester 5</option>
+                        <option value="6">Semester 6</option>
+                    </select>
+                </div>
+            </div>
         </div>
         <div class="card-body p-1">
             {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}

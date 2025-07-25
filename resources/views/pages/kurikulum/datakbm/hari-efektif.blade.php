@@ -15,36 +15,44 @@
         @endslot
     @endcomponent
     <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-0">
-        <div class="card-header d-flex align-items-center">
-            <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
-            <div>
-                <form id="filter-form" class="row">
-                    <div class="col-sm"></div>
-                    <div class="col-md-auto">
-                        {{-- <label for="tahun_ajaran">Tahun Ajaran</label> --}}
-                        <select class="form-control form-control-sm" id="tahun_ajaran" name="tahun_ajaran_id">
-                            @foreach ($tahunList as $tahun)
-                                <option value="{{ $tahun->id }}" {{ $tahun->id == $tahunAktif->id ? 'selected' : '' }}>
-                                    {{ $tahun->tahunajaran }}
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <x-heading-title>@yield('title')</x-heading-title>
+                <div class="flex-shrink-0">
+                    {{--  --}}
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-2">
+            <div class="row g-3">
+                <div class="col-lg">
+
+                </div>
+                <div class="col-lg-auto">
+                    <form id="filter-form">
+                        <div class="d-flex align-items-center gap-2"> <!-- Tambahan baris ini -->
+                            <select class="form-select form-select-sm" id="tahun_ajaran" name="tahun_ajaran_id">
+                                <option value="">Pilih Tahun Ajaran</option>
+                                @foreach ($tahunList as $tahun)
+                                    <option value="{{ $tahun->id }}"
+                                        {{ $tahun->id == $tahunAktif->id ? 'selected' : '' }}>
+                                        {{ $tahun->tahunajaran }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <select class="form-select form-select-sm" id="semester" name="semester">
+                                <option value="">Pilih Semester</option>
+                                <option value="Ganjil" {{ $semesterAktif->semester == 'Ganjil' ? 'selected' : '' }}>
+                                    Ganjil
                                 </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-auto">
-                        {{-- <label for="semester">Semester</label> --}}
-                        <select class="form-control form-control-sm" id="semester" name="semester">
-                            <option value="Ganjil" {{ $semesterAktif->semester == 'Ganjil' ? 'selected' : '' }}>
-                                Ganjil
-                            </option>
-                            <option value="Genap" {{ $semesterAktif->semester == 'Genap' ? 'selected' : '' }}>
-                                Genap
-                            </option>
-                        </select>
-                    </div>
-                    <div class="col-md-auto d-flex align-items-end">
-                        <button type="submit" class="btn btn-soft-primary btn-sm">Tampilkan Kalender</button>
-                    </div>
-                </form>
+                                <option value="Genap" {{ $semesterAktif->semester == 'Genap' ? 'selected' : '' }}>
+                                    Genap
+                                </option>
+                            </select>
+                            <button type="submit" class="btn btn-soft-primary btn-sm">Tampilkan</button>
+                        </div> <!-- Penutup div flex -->
+                    </form>
+                </div>
             </div>
         </div>
         <div class="card-body">
