@@ -349,7 +349,7 @@ class DataCpTerpilihController extends Controller
         }
 
         // Redirect dengan pesan sukses
-        return redirect()->route('gurumapel.datangajar.capaian-pembelajaran.index')
+        return redirect()->route('gurumapel.adminguru.capaian-pembelajaran.index')
             ->with('toast_success', 'CP berhasil dipilih dan disimpan.');
     }
 

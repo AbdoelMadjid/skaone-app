@@ -220,7 +220,7 @@
     <!-- End Promo Event -->
 
     <!-- Call to Action -->
-    <div class="g-bg-img-hero" style="background-image: url({{ URL::asset('build/assets/include/svg/svg-bg1.svg') }});">
+    {{-- <div class="g-bg-img-hero" style="background-image: url({{ URL::asset('build/assets/include/svg/svg-bg1.svg') }});">
         <div class="container g-pt-60 g-pb-30">
             <!-- Heading -->
             <div class="g-max-width-645 text-center mx-auto g-mb-60">
@@ -268,8 +268,7 @@
             </div>
             <hr class="g-brd-gray-light-v4 g-my-60">
         </div>
-    </div>
-    </div>
+    </div> --}}
     <!-- End Call to Action -->
     <!-- Team -->
     <div class="container g-py-100">
