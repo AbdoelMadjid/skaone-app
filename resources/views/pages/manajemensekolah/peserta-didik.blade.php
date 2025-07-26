@@ -16,24 +16,26 @@
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0 me-2">
-                    <x-btn-tambah can="create manajemensekolah/peserta-didik" route="manajemensekolah.peserta-didik.create"
-                        label="Tambah" icon="ri-add-line" />
+
                 </div>
                 <div class="flex-shrink-0">
-                    <div class="btn-group">
+                    <div class="btn-group dropstart">
                         <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">Action
                         </button>
-                        <div class="dropdown-menu dropdown-menu-sm p-3">
+                        <div class="dropdown-menu dropdown-menu-md p-3">
                             <div class="d-grid gap-2">
-                                <x-btn-action label="Distribusi Rombel" icon="ri-user-shared-line" data-bs-toggle="modal"
-                                    data-bs-target="#distribusiSiswa" id="distribusiSiswaBtn"
+                                <x-btn-action label="Distribusi Rombel" icon="ri-account-pin-box-fill"
+                                    data-bs-toggle="modal" data-bs-target="#distribusiSiswa" id="distribusiSiswaBtn"
                                     title="Distribusikan siswa yang dipilih" :disabled="true" />
                                 <x-btn-action href="{{ route('kurikulum.datakbm.peserta-didik-rombel.index') }}"
-                                    label="Per Rombel" icon="ri-group-line" />
+                                    label="Siswa Per Rombel" icon="ri-parent-fill" />
+                                <div class="dropdown-divider"></div>
+                                <x-btn-tambah can="create manajemensekolah/peserta-didik"
+                                    route="manajemensekolah.peserta-didik.create" label="Tambah" icon="ri-add-line" />
                                 <x-btn-action href="{{ route('pdexportExcel') }}" label="Download"
-                                    icon="ri-download-line" />
-                                <x-btn-action label="Upload" icon="ri-upload-line" data-bs-toggle="modal"
+                                    icon="ri-download-2-fill" />
+                                <x-btn-action label="Upload" icon="ri-upload-2-fill" data-bs-toggle="modal"
                                     data-bs-target="#importModal" />
                             </div>
                         </div>

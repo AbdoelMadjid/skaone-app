@@ -18,11 +18,10 @@
         <div class="col-lg-12">
             <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
                 <div class="card-header border-bottom-dashed">
-
                     <div class="row g-4 align-items-center">
                         <div class="col-sm">
                             <div>
-                                <h3 id="info-keterangan" class="card-title mb-0 flex-grow-1 text-danger-emphasis">
+                                <h3 id="info-keterangan" class="card-title mb-0 flex-grow-1 text-primary-emphasis">
                                     @yield('title') <span class="badge bg-primary align-bottom ms-2"></span></h3>
                             </div>
                         </div>

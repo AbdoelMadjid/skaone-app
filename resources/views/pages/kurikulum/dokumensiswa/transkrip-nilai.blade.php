@@ -14,73 +14,73 @@
             @lang('translation.dokumensiswa')
         @endslot
     @endcomponent
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
-                <div class="card-body p-1">
-                    <form>
-                        <div class="row g-3">
-                            <div class="col-lg">
-                                <div class="search-box">
-                                    <input type="text" class="form-control form-control-sm search"
-                                        placeholder="Search Nama Lengkap Siswa ....">
-                                    <i class="ri-search-line search-icon"></i>
-                                </div>
-                            </div>
-                            <!--end col-->
-
-                            <div class="col-lg-auto">
-                                <div>
-                                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                                        data-choices-search-false name="choices-single-default" id="idThnAjaran">
-                                        <option value="all" selected>Pilih Tahun Ajaran</option>
-                                        @foreach ($tahunAjaranOptions as $thnajar)
-                                            <option value="{{ $thnajar }}">{{ $thnajar }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <!--end col-->
-                            <div class="col-lg-auto">
-                                <div>
-                                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                                        data-choices-search-false name="choices-single-default" id="idKodeKK">
-                                        <option value="all" selected>Pilih Kompetensi Keahlian</option>
-                                        @foreach ($kompetensiKeahlianOptions as $id => $kode_kk)
-                                            <option value="{{ $id }}">{{ $kode_kk }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-auto">
-                                <div>
-                                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                                        data-choices-search-false name="choices-single-default" id="idTingkat">
-                                        <option value="all" selected>Pilih Tingkat</option>
-                                        <option value="10">10</option>
-                                        <option value="11">11</option>
-                                        <option value="12">12</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!--end col-->
-                            <div class="col-lg-auto">
-                                <div>
-                                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                                        data-choices-search-false name="choices-single-default" id="idRombel" disabled>
-                                        <option value="all" selected>Pilih Rombel</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="card-body p-1">
-                    {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <x-heading-title>@yield('title')</x-heading-title>
+                <div class="flex-shrink-0">
+                    {{--  --}}
                 </div>
             </div>
         </div>
-        <!--end col-->
+        <div class="card-body p-1">
+            <form>
+                <div class="row g-3">
+                    <div class="col-lg">
+                    </div>
+                    <div class="col-lg-auto">
+                        <div class="search-box">
+                            <input type="text" class="form-control form-control-sm search" placeholder="Nama Siswa ....">
+                            <i class="ri-search-line search-icon"></i>
+                        </div>
+                    </div>
+                    <div class="col-lg-auto">
+                        <div>
+                            <select class="form-select form-select-sm" data-plugin="choices" data-choices
+                                data-choices-search-false name="choices-single-default" id="idThnAjaran">
+                                <option value="all" selected>Pilih Tahun Ajaran</option>
+                                @foreach ($tahunAjaranOptions as $thnajar)
+                                    <option value="{{ $thnajar }}">{{ $thnajar }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-auto">
+                        <div>
+                            <select class="form-select form-select-sm" data-plugin="choices" data-choices
+                                data-choices-search-false name="choices-single-default" id="idKodeKK">
+                                <option value="all" selected>Pilih Kompetensi Keahlian</option>
+                                @foreach ($kompetensiKeahlianOptions as $id => $kode_kk)
+                                    <option value="{{ $id }}">{{ $kode_kk }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-auto">
+                        <div>
+                            <select class="form-select form-select-sm" data-plugin="choices" data-choices
+                                data-choices-search-false name="choices-single-default" id="idTingkat">
+                                <option value="all" selected>Pilih Tingkat</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-auto me-3">
+                        <div>
+                            <select class="form-select form-select-sm" data-plugin="choices" data-choices
+                                data-choices-search-false name="choices-single-default" id="idRombel" disabled>
+                                <option value="all" selected>Pilih Rombel</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-body p-1">
+            {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+        </div>
     </div>
     <div class="modal fade" id="nilaiModal" tabindex="-1" aria-labelledby="nilaiModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">

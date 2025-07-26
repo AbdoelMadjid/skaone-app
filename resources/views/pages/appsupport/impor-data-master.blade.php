@@ -11,41 +11,9 @@
             @lang('translation.app-support')
         @endslot
     @endcomponent
-    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
-        <div class="card-header">
-            <div class="d-flex align-items-center">
-                <x-heading-title>@yield('title')</x-heading-title>
-                <div class="flex-shrink-0">
-                    {{--  --}}
-                </div>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="px-4 mx-n4 mt-n2 mb-0" data-simplebar style="height: calc(100vh - 280px);">
-                <div class="alert alert-warning alert-dismissible alert-additional fade show mb-2" role="alert">
-                    <div class="alert-body">
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        <div class="d-flex">
-                            <div class="flex-shrink-0 me-3">
-                                <lord-icon src="https://cdn.lordicon.com/tdrtiskw.json" trigger="loop"
-                                    colors="primary:#f06548,secondary:#f7b84b" style="width:80px;height:80px"></lord-icon>
-                            </div>
-                            <div class="flex-grow-1">
-                                <h5 class="alert-heading">Mohon Maaf !!. <br>
-                                    <span class="text-danger-emphasis fs-24">Halaman
-                                        @yield('title')</span>
-                                </h5>
-                                <p class="mb-0">Masih proses scripting. </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="alert-content">
-                        <p class="mb-0">Scripting & Design by. Abdul Madjid, S.Pd., M.Pd.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    {{--  --}}
+    @include('error.belum-kelar-ngoding')
+    {{--  --}}
 @endsection
 @section('script')
     {{--  --}}

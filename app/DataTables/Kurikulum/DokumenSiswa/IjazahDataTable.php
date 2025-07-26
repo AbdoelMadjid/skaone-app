@@ -177,7 +177,7 @@ class IjazahDataTable extends DataTable
                 'pageLength' => 25,
                 'paging' => true,
                 'scrollCollapse' => false,
-                'scrollY' => "calc(100vh - 364px)",
+                'scrollY' => "calc(100vh - 378px)",
             ]);
     }
 

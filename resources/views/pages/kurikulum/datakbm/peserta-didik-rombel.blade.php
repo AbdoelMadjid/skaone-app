@@ -19,44 +19,24 @@
         <div class="card-header">
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
-                <div class="flex-shrink-0 me-2">
-                    <x-btn-tambah can="create kurikulum/datakbm/peserta-didik-rombel"
-                        route="kurikulum.datakbm.peserta-didik-rombel.create" label="Peserta Didik Rombel"
-                        icon="ri-add-line" />
-                </div>
-                <div class="flex-shrink-0 me-2">
-                    <div class="btn-group">
+                <div class="flex-shrink-0">
+                    <div class="btn-group dropstart">
                         <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">Action
                         </button>
-                        <div class="dropdown-menu dropdown-menu-sm p-3">
+                        <div class="dropdown-menu dropdown-menu-md p-3">
                             <div class="d-grid gap-2">
+                                <x-btn-tambah can="create kurikulum/datakbm/peserta-didik-rombel"
+                                    route="kurikulum.datakbm.peserta-didik-rombel.create" label="Peserta Didik Rombel"
+                                    icon="ri-add-line" />
+                                <div class="dropdown-divider"></div>
                                 <x-btn-action href="{{ route('manajemensekolah.peserta-didik.index') }}"
-                                    label="Peserta Didik" icon="ri-user-line" />
-
-                                <x-btn-action label="Generate Akun Siswa" icon="ri-admin-line" data-bs-toggle="modal"
+                                    label="Peserta Didik" icon="ri-user-fill" />
+                                <x-btn-action label="Generate Akun Siswa" icon="ri-admin-fill" data-bs-toggle="modal"
                                     data-bs-target="#generateAkun" id="generateAkunBtn" title="generateAkun" />
-
-                                <x-btn-action label="Naik Kelas / Kelulusan" icon="ri-logout-circle-line"
+                                <x-btn-action label="Naik Kelas / Kelulusan" icon="ri-anticlockwise-2-fill"
                                     data-bs-toggle="modal" data-bs-target="#generateNaikKelas" id="generateNaikKelasBtn"
                                     title="generateAkun" />
-
-
-                                {{-- <a href="{{ route('manajemensekolah.peserta-didik.index') }}"
-                                    class="btn btn-soft-primary btn-sm">Peserta
-                                    Didik</a>
-                                @can('create kurikulum/datakbm/peserta-didik-rombel')
-                                    <a class="btn btn-soft-primary btn-sm add-btn action"
-                                        href="{{ route('kurikulum.datakbm.peserta-didik-rombel.create') }}"><i
-                                            class="ri-add-line align-bottom me-1"></i> Peserta Didik Rombel</a>
-                                @endcan
-                                <button type="button" class="btn btn-soft-info btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#generateAkun" id="generateAkunBtn" title="generateAkun">Generate
-                                    Akun Siswa</button>
-                                <button type="button" class="btn btn-soft-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#generateNaikKelas" id="generateNaikKelasBtn"
-                                    title="generateNaikKelas">Naik
-                                    Kelas</button> --}}
                             </div>
                         </div>
                     </div>

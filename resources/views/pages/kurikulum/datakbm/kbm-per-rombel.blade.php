@@ -42,7 +42,7 @@
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0 me-2">
                     <x-btn-action href="{{ route('kurikulum.datakbm.mata-pelajaran-perjurusan.index') }}"
-                        label="Mapel Per Jurusan" icon="ri-book-line" />
+                        label="Mapel Per Jurusan" icon="ri-file-copy-fill" />
                 </div>
             </div>
         </div>

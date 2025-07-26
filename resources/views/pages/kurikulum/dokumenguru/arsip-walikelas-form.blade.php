@@ -1,36 +1,42 @@
 <form id="form-walikelas" action="{{ route('kurikulum.dokumenguru.simpanpilihwalas') }}" method="post">
     @csrf
-    <div class="row">
-        <input type="hidden" name="id_personil" id="id_personil" value="{{ $personal_id }}">
-        <div class="col-md-6">
-            <x-form.select size="sm" name="tahunajaran" label="Tahun Ajaran" :options="$tahunAjaranOption"
-                value="{{ old('tahunajaran', isset($dataPilWalas) ? $dataPilWalas->tahunajaran : '') }}"
-                id="tahun_ajaran" />
-        </div>
-        <div class="col-md-6">
-            <x-form.select size="sm" name="ganjilgenap" :options="['Ganjil' => 'Ganjil', 'Genap' => 'Genap']"
-                value="{{ old('ganjilgenap', isset($dataPilWalas) ? $dataPilWalas->ganjilgenap : '') }}"
-                label="Semester" id="ganjilgenap" />
-        </div>
-        <div class="col-md-12">
-            <x-form.select size="sm" name="kode_kk" label="Kompetensi Keahlian" :options="$kompetensiKeahlianOptions"
-                value="{{ old('kode_kk', isset($dataPilWalas) ? $dataPilWalas->kode_kk : '') }}" id="kode_kk" />
-        </div>
-        <div class="col-md-6">
-            <x-form.select size="sm" name="tingkat" :options="['10' => '10', '11' => '11', '12' => '12']"
-                value="{{ old('tingkat', isset($dataPilWalas) ? $dataPilWalas->tingkat : '') }}" label="Tingkat"
-                id="tingkat" />
-        </div>
-        <div class="col-md-6">
-            <x-form.select size="sm" name="kode_rombel" :options="$rombonganBelajar"
-                value="{{ old('kode_rombel', isset($dataPilWalas) ? $dataPilWalas->kode_rombel : '') }}"
-                label="Kode Rombel" id="kode_rombel" />
+    <div class="card-body p-0">
+        <div class="row g-3">
+            <div class="col-lg">
+            </div>
+            <input type="hidden" name="id_personil" id="id_personil" value="{{ $personal_id }}">
+            <div class="col-lg-auto">
+                <x-form.select size="sm" name="tahunajaran" label="Tahun Ajaran" :options="$tahunAjaranOption"
+                    value="{{ old('tahunajaran', isset($dataPilWalas) ? $dataPilWalas->tahunajaran : '') }}"
+                    id="tahun_ajaran" />
+            </div>
+            <div class="col-lg-auto">
+                <x-form.select size="sm" name="ganjilgenap" :options="['Ganjil' => 'Ganjil', 'Genap' => 'Genap']"
+                    value="{{ old('ganjilgenap', isset($dataPilWalas) ? $dataPilWalas->ganjilgenap : '') }}"
+                    label="Semester" id="ganjilgenap" />
+            </div>
+            <div class="col-lg-auto">
+                <x-form.select size="sm" name="kode_kk" label="Kompetensi Keahlian" :options="$kompetensiKeahlianOptions"
+                    value="{{ old('kode_kk', isset($dataPilWalas) ? $dataPilWalas->kode_kk : '') }}" id="kode_kk" />
+            </div>
+            <div class="col-lg-auto">
+                <x-form.select size="sm" name="tingkat" :options="['10' => '10', '11' => '11', '12' => '12']"
+                    value="{{ old('tingkat', isset($dataPilWalas) ? $dataPilWalas->tingkat : '') }}" label="Tingkat"
+                    id="tingkat" />
+            </div>
+            <div class="col-lg-auto">
+                <x-form.select size="sm" name="kode_rombel" :options="$rombonganBelajar"
+                    value="{{ old('kode_rombel', isset($dataPilWalas) ? $dataPilWalas->kode_rombel : '') }}"
+                    label="Kode Rombel" id="kode_rombel" />
+            </div>
+            <div class="col-lg-auto">
+                <label>Tombol Action</label>
+                <button type="button" id="btn-data-walikelas"
+                    class="btn btn-soft-primary btn-sm w-100">Confirm</button>
+            </div>
         </div>
     </div>
-    <button type="button" id="btn-data-walikelas" class="btn btn-soft-primary btn-sm w-100 mt-3">Confirm</button>
 </form>
-
-
 
 <script>
     // JavaScript untuk menangani perubahan dan permintaan AJAX

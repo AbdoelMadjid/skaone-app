@@ -34,125 +34,125 @@
             @lang('translation.dokumensiswa')
         @endslot
     @endcomponent
-    <div class="row">
-        <div class="col-xl-12 col-lg-12">
-            <div>
-                <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
-                    <div class="card-header border-0">
-                        <div class="row g-4">
-                            <div class="col-sm-auto">
-                                <div>
 
-                                </div>
-                            </div>
-                            <div class="col-sm">
-                                <div class="d-flex justify-content-sm-end">
-                                    <form id="formAutoSave" action="{{ route('kurikulum.dokumentsiswa.leger-nilai.store') }}"
-                                        method="POST">
-                                        @csrf
-                                        <div class="row g-3">
-                                            <input type="hidden" name="id_personil" value="{{ $personal_id }}">
-                                            <div class="col-md">
-                                                <select name="tahunajaran" id="tahun_ajaran"
-                                                    class="form-control form-control-sm">
-                                                    <option value="">Pilih Tahun Ajar</option>
-                                                    @foreach ($tahunAjaranOptions as $key => $value)
-                                                        <option value="{{ $key }}"
-                                                            {{ old('tahunajaran', isset($pilihData) && $pilihData->tahunajaran == $key ? 'selected' : '') }}>
-                                                            {{ $value }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col-md-auto">
-                                                <select name="semester" id="semester" class="form-control form-control-sm">
-                                                    <option value="">Pilih Semester</option>
-                                                    <option value="Ganjil"
-                                                        {{ old('semester', isset($pilihData) && $pilihData->semester == 'Ganjil' ? 'selected' : '') }}>
-                                                        Ganjil</option>
-                                                    <option value="Genap"
-                                                        {{ old('semester', isset($pilihData) && $pilihData->semester == 'Genap' ? 'selected' : '') }}>
-                                                        Genap</option>
-                                                </select>
-                                            </div>
-                                            @if ($pilihData)
-                                                <div class="col-md-auto">
-                                                    <select name="kode_kk" id="kode_kk"
-                                                        class="form-control form-control-sm">
-                                                        <option value="">Pilih Kompetensi Keahlian</option>
-                                                        @foreach ($kompetensiKeahlianOptions as $key => $value)
-                                                            <option value="{{ $key }}"
-                                                                {{ old('kode_kk', isset($pilihData) && $pilihData->kode_kk == $key ? 'selected' : '') }}>
-                                                                {{ $value }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
+    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <x-heading-title>@yield('title')</x-heading-title>
+                <div class="flex-shrink-0">
+                    {{--  --}}
+                </div>
+            </div>
+        </div>
+        <div class="card-header border-0">
+            <div class="row g-4">
+                <div class="col-sm-auto">
+                    <div>
 
-                                                <div class="col-md-auto">
-                                                    <select name="tingkat" id="tingkat"
-                                                        class="form-control form-control-sm">
-                                                        <option value="">Pilih Tingkat</option>
-                                                        <option value="10"
-                                                            {{ old('tingkat', isset($pilihData) && $pilihData->tingkat == '10' ? 'selected' : '') }}>
-                                                            10</option>
-                                                        <option value="11"
-                                                            {{ old('tingkat', isset($pilihData) && $pilihData->tingkat == '11' ? 'selected' : '') }}>
-                                                            11</option>
-                                                        <option value="12"
-                                                            {{ old('tingkat', isset($pilihData) && $pilihData->tingkat == '12' ? 'selected' : '') }}>
-                                                            12</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-auto">
-                                                    <select name="kode_rombel" id="kode_rombel"
-                                                        class="form-control form-control-sm">
-                                                        <option value="">Pilih Rombel</option>
-                                                        @foreach ($rombonganBelajar as $key => $value)
-                                                            <option value="{{ $key }}"
-                                                                {{ old('kode_rombel', isset($pilihData) && $pilihData->kode_rombel == $key ? 'selected' : '') }}>
-                                                                {{ $value }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            @endif
-
-                                            <div class="col-md-auto">
-                                                <button type="submit" class="btn btn-soft-primary btn-sm">
-                                                    @if (!$pilihData)
-                                                        Add
-                                                    @else
-                                                        Update
-                                                    @endif
-                                                </button>
-                                            </div>
-
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
                     </div>
+                </div>
+                <div class="col-sm">
+                    <div class="d-flex justify-content-sm-end">
+                        <form id="formAutoSave" action="{{ route('kurikulum.dokumentsiswa.leger-nilai.store') }}"
+                            method="POST">
+                            @csrf
+                            <div class="row g-3">
+                                <input type="hidden" name="id_personil" value="{{ $personal_id }}">
+                                <div class="col-md">
+                                    <select name="tahunajaran" id="tahun_ajaran" class="form-select form-select-sm">
+                                        <option value="">Pilih Tahun Ajar</option>
+                                        @foreach ($tahunAjaranOptions as $key => $value)
+                                            <option value="{{ $key }}"
+                                                {{ old('tahunajaran', isset($pilihData) && $pilihData->tahunajaran == $key ? 'selected' : '') }}>
+                                                {{ $value }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-auto">
+                                    <select name="semester" id="semester" class="form-select form-select-sm">
+                                        <option value="">Pilih Semester</option>
+                                        <option value="Ganjil"
+                                            {{ old('semester', isset($pilihData) && $pilihData->semester == 'Ganjil' ? 'selected' : '') }}>
+                                            Ganjil</option>
+                                        <option value="Genap"
+                                            {{ old('semester', isset($pilihData) && $pilihData->semester == 'Genap' ? 'selected' : '') }}>
+                                            Genap</option>
+                                    </select>
+                                </div>
+                                @if ($pilihData)
+                                    <div class="col-md-auto">
+                                        <select name="kode_kk" id="kode_kk" class="form-select form-select-sm">
+                                            <option value="">Pilih Kompetensi Keahlian</option>
+                                            @foreach ($kompetensiKeahlianOptions as $key => $value)
+                                                <option value="{{ $key }}"
+                                                    {{ old('kode_kk', isset($pilihData) && $pilihData->kode_kk == $key ? 'selected' : '') }}>
+                                                    {{ $value }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
 
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <ul class="nav nav-tabs-custom card-header-tabs border-bottom-0" role="tablist">
-                                    <li class="nav-item">
-                                        <a class="nav-link active fw-semibold" data-bs-toggle="tab" href="#legerNilai"
-                                            role="tab">
-                                            Leger
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#mataPelajaran"
-                                            role="tab">
-                                            Mata Pelajaran
-                                        </a>
-                                    </li>
-                                    {{-- <li class="nav-item">
+                                    <div class="col-md-auto">
+                                        <select name="tingkat" id="tingkat" class="form-select form-select-sm">
+                                            <option value="">Pilih Tingkat</option>
+                                            <option value="10"
+                                                {{ old('tingkat', isset($pilihData) && $pilihData->tingkat == '10' ? 'selected' : '') }}>
+                                                10</option>
+                                            <option value="11"
+                                                {{ old('tingkat', isset($pilihData) && $pilihData->tingkat == '11' ? 'selected' : '') }}>
+                                                11</option>
+                                            <option value="12"
+                                                {{ old('tingkat', isset($pilihData) && $pilihData->tingkat == '12' ? 'selected' : '') }}>
+                                                12</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-auto">
+                                        <select name="kode_rombel" id="kode_rombel" class="form-select form-select-sm">
+                                            <option value="">Pilih Rombel</option>
+                                            @foreach ($rombonganBelajar as $key => $value)
+                                                <option value="{{ $key }}"
+                                                    {{ old('kode_rombel', isset($pilihData) && $pilihData->kode_rombel == $key ? 'selected' : '') }}>
+                                                    {{ $value }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endif
+
+                                <div class="col-md-auto">
+                                    <button type="submit" class="btn btn-soft-primary btn-sm">
+                                        @if (!$pilihData)
+                                            Add
+                                        @else
+                                            Update
+                                        @endif
+                                    </button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <ul class="nav nav-tabs-custom card-header-tabs border-bottom-0" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active fw-semibold" data-bs-toggle="tab" href="#legerNilai" role="tab">
+                                Leger
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#mataPelajaran" role="tab">
+                                Mata Pelajaran
+                            </a>
+                        </li>
+                        {{-- <li class="nav-item">
                                         <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#rankingPerTingkat"
                                             role="tab">
                                             Ranking Per Tingkat
@@ -164,94 +164,94 @@
                                             Ranking Per Tingkat Per KK
                                         </a>
                                     </li> --}}
-                                </ul>
-                            </div>
-                            <div class="col-auto">
-                                @if ($pilihData)
-                                    <a class="btn btn-soft-primary btn-sm"
-                                        href="/kurikulum/dokumentsiswa/export-pivot-data?kode_rombel={{ $pilihData->kode_rombel }}">Download
-                                        Leger Excel</a>
-                                @endif
-                                <div id="selection-element">
-                                    <div class="my-n1 d-flex align-items-center text-muted">
-                                        Select <div id="select-content" class="text-body fw-semibold px-1"></div> Result
-                                        <button type="button" class="btn btn-link link-danger p-0 ms-3"
-                                            data-bs-toggle="modal" data-bs-target="#removeItemModal">Remove</button>
-                                    </div>
-                                </div>
-                            </div>
+                    </ul>
+                </div>
+                <div class="col-auto">
+                    @if ($pilihData)
+                        <a class="btn btn-soft-primary btn-sm"
+                            href="/kurikulum/dokumentsiswa/export-pivot-data?kode_rombel={{ $pilihData->kode_rombel }}">Download
+                            Leger Excel</a>
+                    @endif
+                    <div id="selection-element">
+                        <div class="my-n1 d-flex align-items-center text-muted">
+                            Select <div id="select-content" class="text-body fw-semibold px-1"></div> Result
+                            <button type="button" class="btn btn-link link-danger p-0 ms-3" data-bs-toggle="modal"
+                                data-bs-target="#removeItemModal">Remove</button>
                         </div>
                     </div>
-                    <!-- end card header -->
-                    <div class="card-body">
+                </div>
+            </div>
+        </div>
+        <!-- end card header -->
+        <div class="card-body">
 
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="legerNilai" role="tabpanel">
-                                <div id="table-product-list-all" class="table-card gridjs-border-none">
-                                    @if ($pilihData)
-                                        <table class="table table-bordered table-striped mt-3">
-                                            <thead class="table-dark">
-                                                <tr>
-                                                    <th class="vertical-center">No.</th>
-                                                    <th class="vertical-center">NIS</th>
-                                                    <th class="vertical-center">Nama Lengkap</th>
-                                                    @foreach ($kelMapelList as $kelMapel)
-                                                        <th class="vertical-text">{{ $kelMapel->kel_mapel }}</th>
-                                                    @endforeach
-                                                    <th class="vertical-text">Nilai Rata-Rata</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @forelse ($pivotData as $nis => $data)
-                                                    <tr>
-                                                        <td class="text-center">{{ $loop->iteration }}</td>
-                                                        <td class="text-center">{{ $nis }}</td>
-                                                        <td>{{ $data['nama_lengkap'] }}</td>
-                                                        @foreach ($kelMapelList as $kelMapel)
-                                                            <td class="text-center">
-                                                                {{ $data[$kelMapel->kel_mapel] ?? '-' }}</td>
-                                                        @endforeach
-                                                        <td class="text-center">{{ $data['nil_rata_siswa'] }}</td>
-                                                    </tr>
-                                                @empty
-                                                    <tr>
-                                                        <td colspan="{{ 3 + $kelMapelList->count() }}" class="text-center">
-                                                            Tidak
-                                                            ada data</td>
-                                                    </tr>
-                                                @endforelse
-                                            </tbody>
-                                        </table>
-                                    @endif
-                                </div>
-                            </div>
-                            <!-- end tab pane -->
+            <div class="tab-content">
+                <div class="tab-pane active" id="legerNilai" role="tabpanel">
+                    <div id="table-product-list-all" class="table-card gridjs-border-none">
+                        @if ($pilihData)
+                            <table class="table table-bordered table-striped mt-3">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th class="vertical-center">No.</th>
+                                        <th class="vertical-center">NIS</th>
+                                        <th class="vertical-center">Nama Lengkap</th>
+                                        @foreach ($kelMapelList as $kelMapel)
+                                            <th class="vertical-text">{{ $kelMapel->kel_mapel }}</th>
+                                        @endforeach
+                                        <th class="vertical-text">Nilai Rata-Rata</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($pivotData as $nis => $data)
+                                        <tr>
+                                            <td class="text-center">{{ $loop->iteration }}</td>
+                                            <td class="text-center">{{ $nis }}</td>
+                                            <td>{{ $data['nama_lengkap'] }}</td>
+                                            @foreach ($kelMapelList as $kelMapel)
+                                                <td class="text-center">
+                                                    {{ $data[$kelMapel->kel_mapel] ?? '-' }}</td>
+                                            @endforeach
+                                            <td class="text-center">{{ $data['nil_rata_siswa'] }}</td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="{{ 3 + $kelMapelList->count() }}" class="text-center">
+                                                Tidak
+                                                ada data</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        @endif
+                    </div>
+                </div>
+                <!-- end tab pane -->
 
-                            <div class="tab-pane" id="mataPelajaran" role="tabpanel">
-                                <div id="table-product-list-published" class="table-card gridjs-border-none">
-                                    @if ($pilihData)
-                                        <table class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th>No.</th>
-                                                    <th>NIS</th>
-                                                    <th>Mata Pelajaran</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($listMapel as $index => $kelMapel)
-                                                    <tr>
-                                                        <td>{{ $index + 1 }}</td>
-                                                        <td>{{ $kelMapel->kel_mapel }}</td>
-                                                        <td>{{ $kelMapel->mata_pelajaran }}</td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    @endif
-                                </div>
-                            </div>
-                            {{-- <div class="tab-pane" id="rankingPerTingkat" role="tabpanel">
+                <div class="tab-pane" id="mataPelajaran" role="tabpanel">
+                    <div id="table-product-list-published" class="table-card gridjs-border-none">
+                        @if ($pilihData)
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>NIS</th>
+                                        <th>Mata Pelajaran</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($listMapel as $index => $kelMapel)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $kelMapel->kel_mapel }}</td>
+                                            <td>{{ $kelMapel->mata_pelajaran }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @endif
+                    </div>
+                </div>
+                {{-- <div class="tab-pane" id="rankingPerTingkat" role="tabpanel">
                                 <div class="p-3">
                                     @if ($pilihData)
                                         @foreach ($groupedRanking as $tingkat => $rankingList)
@@ -319,18 +319,15 @@
                                     @endif
                                 </div>
                             </div> --}}
-                            <!-- end tab pane -->
-                            <!-- end tab pane -->
-                        </div>
-                        <!-- end tab content -->
-
-                    </div>
-                    <!-- end card body -->
-                </div>
-                <!-- end card -->
+                <!-- end tab pane -->
+                <!-- end tab pane -->
             </div>
+            <!-- end tab content -->
+
         </div>
+        <!-- end card body -->
     </div>
+    <!-- end card -->
 @endsection
 @section('script')
     <script>

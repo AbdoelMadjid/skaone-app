@@ -19,21 +19,20 @@
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0 me-2">
-                    <div class="btn-group">
+                    <div class="btn-group dropstart">
                         <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">Action
                         </button>
-                        <div class="dropdown-menu dropdown-menu-sm p-3">
+                        <div class="dropdown-menu dropdown-menu-md p-3">
                             <div class="d-grid gap-2">
-                                <x-btn-action label="Distribusi Mapel" icon="ri-stack-line" data-bs-toggle="modal"
+                                <x-btn-action label="Distribusi Mapel" icon="ri-stack-fill" data-bs-toggle="modal"
                                     data-bs-target="#distribusiMapel" id="distribusiMapelBtn"
                                     title="Distribusikan Mapel yang dipilih" :disabled="true" />
-
+                                <div class="dropdown-divider"></div>
                                 <x-btn-action href="{{ route('kurikulum.datakbm.mata-pelajaran.index') }}"
-                                    label="Mata Pelajaran" icon="ri-book-line" />
-
+                                    label="Mata Pelajaran" icon="ri-file-copy-fill" />
                                 <x-btn-action href="{{ route('kurikulum.datakbm.kbm-per-rombel.index') }}"
-                                    label="KBM Per Rombel" icon="ri-book-line" />
+                                    label="KBM Per Rombel" icon="ri-contacts-fill" />
                             </div>
                         </div>
                     </div>

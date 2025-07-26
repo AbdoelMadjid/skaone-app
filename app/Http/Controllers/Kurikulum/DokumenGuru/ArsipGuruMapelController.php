@@ -124,41 +124,26 @@ class ArsipGuruMapelController extends Controller
 
     public function simpanPilihan(Request $request)
     {
-        $user = Auth::user();
-        $personal_id = $user->personal_id;
+        $request->validate([
+            'tahunajaran' => 'required|string',
+            'ganjilgenap' => 'required|string',
+            'id_guru' => 'required|string',
+        ]);
 
-        $data = [];
+        $personal_id = Auth::user()->personal_id;
 
-        if ($request->filled('tahunajaran')) {
-            $data['tahunajaran'] = $request->tahunajaran;
-        }
-
-        if ($request->filled('ganjilgenap')) {
-            $data['ganjilgenap'] = $request->ganjilgenap;
-        }
-
-        if ($request->filled('id_guru')) {
-            $data['id_guru'] = $request->id_guru;
-        }
-
-        // Update or create berdasarkan id_personil
         PilihArsipGuru::updateOrCreate(
             ['id_personil' => $personal_id],
-            $data
+            [
+                'tahunajaran' => $request->tahunajaran,
+                'ganjilgenap' => $request->ganjilgenap,
+                'id_guru' => $request->id_guru
+            ]
         );
-
-        $message = 'Pilihan berhasil diperbarui.';
-        if ($request->has('tahunajaran')) {
-            $message = 'Tahun ajaran berhasil dipilih.';
-        } elseif ($request->has('ganjilgenap')) {
-            $message = 'Semester berhasil dipilih.';
-        } elseif ($request->has('id_guru')) {
-            $message = 'Guru pengampu berhasil dipilih.';
-        }
 
         return response()->json([
             'success' => true,
-            'message' => $message
+            'message' => "Pilihan berhasil di simpan"
         ]);
     }
 
