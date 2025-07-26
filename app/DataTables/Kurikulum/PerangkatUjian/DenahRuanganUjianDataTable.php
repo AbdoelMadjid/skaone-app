@@ -60,7 +60,7 @@ class DenahRuanganUjianDataTable extends DataTable
                 'pageLength' => 25,
                 'paging' => true,
                 'scrollCollapse' => false,
-                'scrollY' => "calc(100vh - 384px)",
+                'scrollY' => "calc(100vh - 352px)",
             ]);
     }
 

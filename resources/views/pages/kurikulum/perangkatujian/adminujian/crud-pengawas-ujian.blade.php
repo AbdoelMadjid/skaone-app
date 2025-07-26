@@ -17,117 +17,112 @@
             @lang('translation.administrasi-ujian')
         @endslot
     @endcomponent
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
-                <div class="card-header d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
-                    <div>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-soft-primary btn-sm dropdown-toggle"
-                                data-bs-toggle="dropdown">
-                                Tambah Jadwal
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    @can('create kurikulum/perangkatujian/administrasi-ujian/pengawas-ujian')
-                                        <a class="dropdown-item action"
-                                            href="{{ route('kurikulum.perangkatujian.administrasi-ujian.pengawas-ujian.create') }}">Tambah</a>
-                                    @endcan
-                                </li>
-                                {{-- <li><a href="#" class="dropdown-item" id="btnTambahSatuan">Tambah Satuan</a></li> --}}
-                                <li><a href="#" class="dropdown-item" id="btnTambahMassal">Input Massal</a></li>
-                            </ul>
+    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <x-heading-title>@yield('title')</x-heading-title>
+                <div class="flex-shrink-0 me-2">
+                    <div class="btn-group dropstart">
+                        <button type="button" class="btn btn-soft-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">Action
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-md p-3">
+                            <div class="d-grid gap-2">
+                                <x-btn-action label="Tambah Massal" icon="ri-checkbox-multiple-fill" id="btnTambahMassal" />
+                                <x-btn-tambah can="create kurikulum/perangkatujian/administrasi-ujian/pengawas-ujian"
+                                    route="kurikulum.perangkatujian.administrasi-ujian.pengawas-ujian.create" label="Tambah"
+                                    icon="ri-add-line" />
+                            </div>
                         </div>
-
-                        <a class="btn btn-soft-danger btn-sm"
-                            href="{{ route('kurikulum.perangkatujian.administrasi-ujian.index') }}">Kembali</a>
                     </div>
                 </div>
-                <div class="card-body">
-                    <div>
-                        <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-bs-toggle="tab" href="#JadwalMengawas" role="tab"
-                                    aria-selected="true">
-                                    <i class="ri-home-4-line text-muted align-bottom me-1"></i> Jadwal Mengawas
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" href="#DaftarPengawas" role="tab"
-                                    aria-selected="false">
-                                    <i class="mdi mdi-account-circle text-muted align-bottom me-1"></i> Daftar Pengawas
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="card-body p-1">
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="JadwalMengawas" role="tabpanel">
-                                {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
-                            </div>
-                            <div class="tab-pane" id="DaftarPengawas" role="tabpanel">
-                                <div class="row g-3">
-                                    <div class="col-lg">
-
-                                    </div>
-                                    <!--end col-->
-
-                                    <div class="col-lg-auto">
-                                        Kode Ujian :
-                                        <div class="mb-3 d-flex align-items-center gap-2">
-                                            <span class="fw-semibold text-primary"
-                                                id="kode_ujian">{{ $identitasUjian?->kode_ujian }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-auto">
-                                        <div class="mb-3 d-flex align-items-center gap-2">
-                                            <button type="button" class="btn btn-soft-primary" id="btn-tambah-pengawas">
-                                                Tambah Pengawas Ujian
-                                                <i class="ri-add-line align-bottom"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <h5 class="mt-4">Daftar Pengawas Ujian</h5>
-                                <div id="custom-table-wrapper" class="px-4 mx-n4 mt-n2 mb-0"
-                                    style="height: calc(100vh - 435px); overflow: hidden;">
-                                    <div id="custom-scroll-container" style="overflow-y: auto; height: 100%;">
-                                        <table class="table table-bordered mb-0">
-                                            <thead class="table-light position-sticky top-0" style="z-index: 1;">
-                                                <tr>
-                                                    <th>Kode Pengawas</th>
-                                                    <th>NIP</th>
-                                                    <th>Nama Lengkap</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @forelse ($daftarPengawas as $pengawas)
-                                                    <tr>
-                                                        <td class="text-center">{{ $pengawas->kode_pengawas }}</td>
-                                                        <td>{{ $pengawas->nip }}</td>
-                                                        <td>{{ $pengawas->nama_lengkap }}</td>
-                                                    </tr>
-                                                @empty
-                                                    <tr>
-                                                        <td colspan="3" class="text-center">Belum ada pengawas
-                                                            ditambahkan.</td>
-                                                    </tr>
-                                                @endforelse
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!--end tab-content-->
-                    </div><!--end card-body-->
-
+                <div class="flex-shrink-0">
+                    <a class="btn btn-soft-primary btn-sm btn-icon"
+                        href="{{ route('kurikulum.perangkatujian.administrasi-ujian.index') }}" data-bs-toggle="tooltip"
+                        data-bs-placement="left" title="Kembali"><i class="ri-share-forward-fill fs-16"></i></a>
                 </div>
             </div>
         </div>
-        <!--end col-->
-    </div>
+        <div class="card-body">
+            <div>
+                <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#JadwalMengawas" role="tab"
+                            aria-selected="true">
+                            <i class="ri-home-4-line text-muted align-bottom me-1"></i> Jadwal Mengawas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#DaftarPengawas" role="tab"
+                            aria-selected="false">
+                            <i class="mdi mdi-account-circle text-muted align-bottom me-1"></i> Daftar Pengawas
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body p-1">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="JadwalMengawas" role="tabpanel">
+                        {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+                    </div>
+                    <div class="tab-pane" id="DaftarPengawas" role="tabpanel">
+                        <div class="row g-3">
+                            <div class="col-lg">
 
+                            </div>
+                            <!--end col-->
+
+                            <div class="col-lg-auto">
+                                Kode Ujian :
+                                <div class="mb-3 d-flex align-items-center gap-2">
+                                    <span class="fw-semibold text-primary"
+                                        id="kode_ujian">{{ $identitasUjian?->kode_ujian }}</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-auto">
+                                <div class="mb-3 d-flex align-items-center gap-2">
+                                    <button type="button" class="btn btn-soft-primary" id="btn-tambah-pengawas">
+                                        Tambah Pengawas Ujian
+                                        <i class="ri-add-line align-bottom"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <h5 class="mt-4">Daftar Pengawas Ujian</h5>
+                        <div id="custom-table-wrapper" class="px-4 mx-n4 mt-n2 mb-0"
+                            style="height: calc(100vh - 435px); overflow: hidden;">
+                            <div id="custom-scroll-container" style="overflow-y: auto; height: 100%;">
+                                <table class="table table-bordered mb-0">
+                                    <thead class="table-light position-sticky top-0" style="z-index: 1;">
+                                        <tr>
+                                            <th>Kode Pengawas</th>
+                                            <th>NIP</th>
+                                            <th>Nama Lengkap</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse ($daftarPengawas as $pengawas)
+                                            <tr>
+                                                <td class="text-center">{{ $pengawas->kode_pengawas }}</td>
+                                                <td>{{ $pengawas->nip }}</td>
+                                                <td>{{ $pengawas->nama_lengkap }}</td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="3" class="text-center">Belum ada pengawas
+                                                    ditambahkan.</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--end tab-content-->
+            </div><!--end card-body-->
+
+        </div>
+    </div>
     <div class="modal fade" id="modal-pengawas" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <form action="{{ route('kurikulum.perangkatujian.simpan-daftar-pengawas-massal') }}" method="POST">

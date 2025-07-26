@@ -17,39 +17,35 @@
             @lang('translation.administrasi-ujian')
         @endslot
     @endcomponent
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
-                <div class="card-header d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
-                    <div>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-soft-primary btn-sm dropdown-toggle"
-                                data-bs-toggle="dropdown">
-                                Tambah Jadwal
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    @can('create kurikulum/perangkatujian/administrasi-ujian/jadwal-ujian')
-                                        <a class="dropdown-item action"
-                                            href="{{ route('kurikulum.perangkatujian.administrasi-ujian.jadwal-ujian.create') }}">Tambah
-                                            Satuan</a>
-                                    @endcan
-                                </li>
-                                {{-- <li><a href="#" class="dropdown-item" id="btnTambahSatuan">Tambah Satuan</a></li> --}}
-                                <li><a href="#" class="dropdown-item" id="btnTambahMassal">Input Massal</a></li>
-                            </ul>
+    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <x-heading-title>@yield('title')</x-heading-title>
+                <div class="flex-shrink-0 me-2">
+                    <div class="btn-group dropstart">
+                        <button type="button" class="btn btn-soft-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">Action
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-md p-3">
+                            <div class="d-grid gap-2">
+                                <x-btn-action label="Tambah Massal" icon="ri-checkbox-multiple-fill" id="btnTambahMassal" />
+                                <x-btn-tambah can="create kurikulum/perangkatujian/administrasi-ujian/jadwal-ujian"
+                                    route="kurikulum.perangkatujian.administrasi-ujian.jadwal-ujian.create" label="Tambah"
+                                    icon="ri-add-line" />
+                            </div>
                         </div>
-                        <a class="btn btn-soft-danger btn-sm"
-                            href="{{ route('kurikulum.perangkatujian.administrasi-ujian.index') }}">Kembali</a>
                     </div>
                 </div>
-                <div class="card-body p-1">
-                    {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+                <div class="flex-shrink-0">
+                    <a class="btn btn-soft-primary btn-sm btn-icon"
+                        href="{{ route('kurikulum.perangkatujian.administrasi-ujian.index') }}" data-bs-toggle="tooltip"
+                        data-bs-placement="left" title="Kembali"><i class="ri-share-forward-fill fs-16"></i></a>
                 </div>
             </div>
         </div>
-        <!--end col-->
+        <div class="card-body p-1">
+            {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+        </div>
     </div>
     @include('pages.kurikulum.perangkatujian.adminujian.crud-jadwal-ujian-form-massal')
 @endsection

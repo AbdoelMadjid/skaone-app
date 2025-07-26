@@ -77,7 +77,7 @@ class PesertaUjianDataTable extends DataTable
                 'pageLength' => 25,
                 'paging' => true,
                 'scrollCollapse' => false,
-                'scrollY' => "calc(100vh - 386px)",
+                'scrollY' => "calc(100vh - 352px)",
             ]);
     }
 
