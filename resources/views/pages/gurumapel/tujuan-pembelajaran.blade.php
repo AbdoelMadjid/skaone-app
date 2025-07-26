@@ -21,97 +21,101 @@
             @lang('translation.administrasi-guru')
         @endslot
     @endcomponent
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
-                <div class="card-header d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title') - {{ $fullName }}</h5>
-                    <div>
-                        <button type="button" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#buatMateriAjar" id="buatMateriAjarBtn" title="Buat Tujuan Pembelajaran">Tambah
-                            Tujuan Pembelajaran</button>
-                        <button class="btn btn-soft-primary btn-sm" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseWithicon2" aria-expanded="false" aria-controls="collapseWithicon2"
-                            title="Cek Tujuan Pembelajaran">
-                            <i class="ri-filter-2-line"></i>
-                        </button>
-                        <button id="deleteSelected" class="btn btn-soft-danger btn-sm" style="display: none;"><i
-                                class="ri-delete-bin-2-line"></i></button>
-                    </div>
+    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <x-heading-title>@yield('title')
+                    <span class="d-none d-lg-inline"> - </span>
+                    <br class="d-inline d-lg-none">
+                    {{ $fullName }}
+                </x-heading-title>
+                <div class="flex-shrink-0 me-2">
+                    <button type="button" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#buatMateriAjar" id="buatMateriAjarBtn" title="Buat Tujuan Pembelajaran"><i
+                            class="ri-add-fill fs-16"></i></button>
                 </div>
-                <div class="card-body p-1">
-                    <div class="collapse" id="collapseWithicon2">
-                        <div class="card ribbon-box border shadow-none mb-lg-2">
-                            <div class="card-body">
-                                <div class="ribbon ribbon-primary round-shape">Cek Tujuan Pembelajaran</div>
-                                <div class="ribbon-content mt-5 text-muted">
-                                    <table class="table " style="no border">
-                                        <thead>
-                                            <tr>
-                                                <th>No.</th>
-                                                <th>Kel Mapel</th>
-                                                <th>Mata Pelajaran</th>
-                                                <th>Kode Rombel</th>
-                                                <th>Rombel</th>
-                                                <th>Jumlah TP</th>
-                                                <th>Cek TP</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($KbmPersonil as $index => $kbm)
-                                                <tr>
-                                                    <td class='text-center'>{{ $index + 1 }}.</td>
-                                                    <td>{{ $kbm->kel_mapel }}</td>
-                                                    <td>{{ $kbm->mata_pelajaran }}</td>
-                                                    <td>{{ $kbm->kode_rombel }}</td>
-                                                    <td>{{ $kbm->rombel }}</td>
-                                                    <td class='text-center'>
-                                                        @php
-                                                            // Ambil cp_terpilih
-                                                            $jmlTP = DB::table('tujuan_pembelajarans')
-                                                                ->where('id_personil', $kbm->id_personil)
-                                                                ->where('kode_rombel', $kbm->kode_rombel)
-                                                                ->where('kel_mapel', $kbm->kel_mapel)
-                                                                ->where('tahunajaran', $kbm->tahunajaran)
-                                                                ->where('ganjilgenap', $kbm->ganjilgenap)
-                                                                ->count();
-                                                        @endphp
-                                                        @if ($jmlTP)
-                                                            {{ $jmlTP }}
-                                                        @else
-                                                            0
-                                                        @endif
-                                                    </td>
-                                                    <td class='text-center'>
-                                                        @php
-                                                            // Ambil cp_terpilih
-                                                            $cpTerpilih = DB::table('tujuan_pembelajarans')
-                                                                ->where('id_personil', $kbm->id_personil)
-                                                                ->where('kode_rombel', $kbm->kode_rombel)
-                                                                ->where('kel_mapel', $kbm->kel_mapel)
-                                                                ->where('tahunajaran', $kbm->tahunajaran)
-                                                                ->where('ganjilgenap', $kbm->ganjilgenap)
-                                                                ->first();
-                                                        @endphp
-                                                        @if ($cpTerpilih)
-                                                            <i class="bx bx-message-square-check fs-3 text-info"></i>
-                                                        @else
-                                                            <i class="bx bx-message-square-x fs-3 text-danger"></i>
-                                                        @endif
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+                <div class="flex-shrink-0 me-2">
+                    <button class="btn btn-soft-primary btn-sm" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseWithicon2" aria-expanded="false" aria-controls="collapseWithicon2"
+                        title="Cek Tujuan Pembelajaran">
+                        <i class="ri-filter-2-fill fs-16"></i>
+                </div>
+                <div class="flex-shrink-0">
+                    <button id="deleteSelected" class="btn btn-soft-danger btn-sm" style="display: none;"><i
+                            class="ri-delete-bin-2-fill fs-16"></i></button>
                 </div>
             </div>
         </div>
-        <!--end col-->
+        <div class="card-body p-1">
+            <div class="collapse" id="collapseWithicon2">
+                <div class="card ribbon-box border shadow-none mb-lg-2">
+                    <div class="card-body">
+                        <div class="ribbon ribbon-primary round-shape">Cek Tujuan Pembelajaran</div>
+                        <div class="ribbon-content mt-5 text-muted">
+                            <table class="table " style="no border">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Kel Mapel</th>
+                                        <th>Mata Pelajaran</th>
+                                        <th>Kode Rombel</th>
+                                        <th>Rombel</th>
+                                        <th>Jumlah TP</th>
+                                        <th>Cek TP</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($KbmPersonil as $index => $kbm)
+                                        <tr>
+                                            <td class='text-center'>{{ $index + 1 }}.</td>
+                                            <td>{{ $kbm->kel_mapel }}</td>
+                                            <td>{{ $kbm->mata_pelajaran }}</td>
+                                            <td>{{ $kbm->kode_rombel }}</td>
+                                            <td>{{ $kbm->rombel }}</td>
+                                            <td class='text-center'>
+                                                @php
+                                                    // Ambil cp_terpilih
+                                                    $jmlTP = DB::table('tujuan_pembelajarans')
+                                                        ->where('id_personil', $kbm->id_personil)
+                                                        ->where('kode_rombel', $kbm->kode_rombel)
+                                                        ->where('kel_mapel', $kbm->kel_mapel)
+                                                        ->where('tahunajaran', $kbm->tahunajaran)
+                                                        ->where('ganjilgenap', $kbm->ganjilgenap)
+                                                        ->count();
+                                                @endphp
+                                                @if ($jmlTP)
+                                                    {{ $jmlTP }}
+                                                @else
+                                                    0
+                                                @endif
+                                            </td>
+                                            <td class='text-center'>
+                                                @php
+                                                    // Ambil cp_terpilih
+                                                    $cpTerpilih = DB::table('tujuan_pembelajarans')
+                                                        ->where('id_personil', $kbm->id_personil)
+                                                        ->where('kode_rombel', $kbm->kode_rombel)
+                                                        ->where('kel_mapel', $kbm->kel_mapel)
+                                                        ->where('tahunajaran', $kbm->tahunajaran)
+                                                        ->where('ganjilgenap', $kbm->ganjilgenap)
+                                                        ->first();
+                                                @endphp
+                                                @if ($cpTerpilih)
+                                                    <i class="bx bx-message-square-check fs-3 text-info"></i>
+                                                @else
+                                                    <i class="bx bx-message-square-x fs-3 text-danger"></i>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+        </div>
     </div>
     @include('pages.gurumapel.tujuan-pembelajaran-form')
 @endsection

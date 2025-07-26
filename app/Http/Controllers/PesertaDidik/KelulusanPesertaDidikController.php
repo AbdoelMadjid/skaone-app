@@ -44,6 +44,10 @@ class KelulusanPesertaDidikController extends Controller
         $dataRombel = PesertaDidikRombel::where('nis', $nis)->first();
 
         $kelulusan = KelulusanPesertaDidik::where('nis', $nis)->first();
+        // Cek wali kelas
+        if (!$kelulusan) {
+            return redirect()->route('dashboard')->with('error', 'Maaf, Anda belum menyelesaikan proses pembelajaran selama 3 tahun. Tunggu waktunya ya.');
+        }
 
         return view('pages.pesertadidik.kelulusan-peserta-didik', [
             'diff' => $diff,

@@ -16,7 +16,7 @@
                             colors="primary:#f06548,secondary:#f7b84b" style="width:180px;height:180px"></lord-icon>
                     </div>
                     <div class="mt-n4">
-                        <h1 class="display-4 fw-medium">@yield('title')</h1>
+                        <h1 class="display-4 fw-medium">page : @yield('title')</h1>
                         <h3 class="text-uppercase text-danger">Sorry, Page not Found. <br>Still in the scripting
                             process.</h3>
                         <p class="mb-0 fs-10 text-info">Scripting & Design by. Abdul Madjid, S.Pd., M.Pd.</p>

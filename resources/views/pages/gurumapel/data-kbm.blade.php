@@ -14,7 +14,7 @@
             @lang('translation.administrasi-guru')
         @endslot
     @endcomponent
-    <div class="card">
+    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
         <div class="card-body">
             <div class="row g-3">
                 <div class="col-md-3">
@@ -53,7 +53,6 @@
         </div>
     </div>
     <!--end card-->
-
     <div class="row row-cols-xxl-3 row-cols-lg-3 row-cols-md-2 row-cols-1">
 
         <!-- TINGKA 10 ------------------------------------->
@@ -63,7 +62,8 @@
                 <a class="card-body bg-danger-subtle" data-bs-toggle="collapse" href="#leadrombel10" role="button"
                     aria-expanded="false" aria-controls="leadrombel10">
                     <h5 class="card-title text-uppercase fw-semibold mb-1 fs-15">TINGKAT 10</h5>
-                    <p class="text-muted mb-0">Jumlah Kelas <span class="fw-medium">{{ $jmlRombel10 }} Rombel</span></p>
+                    <p class="text-muted mb-0">Jumlah Kelas <span class="fw-medium">{{ $jmlRombel10 }} Rombel</span>
+                    </p>
                 </a>
             </div>
             <!--end card-->
@@ -170,7 +170,8 @@
                 <a class="card-body bg-success-subtle" data-bs-toggle="collapse" href="#leadrombel11" role="button"
                     aria-expanded="false" aria-controls="leadrombel11">
                     <h5 class="card-title text-uppercase fw-semibold mb-1 fs-15">TINGKAT 11</h5>
-                    <p class="text-muted mb-0">Jumlah Kelas <span class="fw-medium">{{ $jmlRombel11 }} Rombel</span></p>
+                    <p class="text-muted mb-0">Jumlah Kelas <span class="fw-medium">{{ $jmlRombel11 }} Rombel</span>
+                    </p>
                 </a>
             </div>
             <!--end card-->
@@ -196,7 +197,8 @@
                                     </div>
                                     <div class="flex-grow-1 ms-3">
                                         <h6 class="fs-14 mb-1">{{ $data->mata_pelajaran }}</h6>
-                                        <p class="badge bg-success-subtle text-success mb-0 fs-6">{{ $data->rombel }}</p>
+                                        <p class="badge bg-success-subtle text-success mb-0 fs-6">{{ $data->rombel }}
+                                        </p>
                                     </div>
                                 </a>
                             </div>
@@ -279,7 +281,8 @@
                 <a class="card-body bg-info-subtle" data-bs-toggle="collapse" href="#leadrombel12" role="button"
                     aria-expanded="false" aria-controls="needsIdentified">
                     <h5 class="card-title text-uppercase fw-semibold mb-1 fs-15">TINGKAT 12</h5>
-                    <p class="text-muted mb-0">Jumlah Kelas <span class="fw-medium">{{ $jmlRombel12 }} Rombel</span></p>
+                    <p class="text-muted mb-0">Jumlah Kelas <span class="fw-medium">{{ $jmlRombel12 }} Rombel</span>
+                    </p>
                 </a>
             </div>
             <!--end card-->
@@ -382,7 +385,6 @@
         </div>
         <!--end col-->
     </div>
-    <!--end row-->
     @include('pages.gurumapel.data-kbm-cp')
 @endsection
 @section('script')

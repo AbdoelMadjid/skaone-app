@@ -23,6 +23,10 @@ class TranskripPesertaDidikController extends Controller
 
         $kelulusan = KelulusanPesertaDidik::where('nis', $nis)->first();
 
+        if (!$kelulusan) {
+            return redirect()->route('dashboard')->with('error', 'Maaf, Anda belum menyelesaikan proses pembelajaran selama 3 tahun. Tunggu waktunya ya.');
+        }
+
         $datasiswalulus = TranskripDataSiswa::where('nis', $nis)->first();
 
         $dataSiswa = DB::table('peserta_didiks')

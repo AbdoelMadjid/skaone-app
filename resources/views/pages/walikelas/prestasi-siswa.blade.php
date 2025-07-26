@@ -14,14 +14,19 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
-                <div class="card-header d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title') - {{ $waliKelas->rombel }}
-                    </h5>
-                    <div>
-                        @can('create walikelas/prestasi-siswa')
-                            <a class="btn btn-soft-primary btn-sm action"
-                                href="{{ route('walikelas.prestasi-siswa.create') }}">Tambah</a>
-                        @endcan
+                <div class="card-header">
+                    <div class="d-flex align-items-center">
+                        <x-heading-title>Nilai @yield('title')
+                            <span class="d-none d-lg-inline"> - </span>
+                            <br class="d-inline d-lg-none">
+                            {{ $waliKelas->rombel }}
+                        </x-heading-title>
+                        <div class="flex-shrink-0 me-2">
+                            @can('create walikelas/prestasi-siswa')
+                                <a class="btn btn-soft-primary btn-sm action"
+                                    href="{{ route('walikelas.prestasi-siswa.create') }}">Tambah</a>
+                            @endcan
+                        </div>
                     </div>
                 </div>
                 <div class="card-body p-1">

@@ -20,7 +20,7 @@
             @lang('translation.penilaian')
         @endslot
     @endcomponent
-    <div class="card ribbon-box border shadow-none mb-lg-4">
+    <div class="card ribbon-box border shadow-none d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
         <div class="card-body">
             <div class="ribbon ribbon-primary round-shape">Data KBM</div>
             <h5 class="fs-14 text-end">
@@ -99,12 +99,12 @@
             </div>
         </div>
     </div>
-
-    <div class="table-responsive">
-        <table class="display table table-bordered dt-responsive" style="width:100%" id="data-nilai-siswa">
-            <!-- Header dan Body akan diisi oleh AJAX -->
-        </table>
-    </div>
+    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
+        <div class="table-responsive">
+            <table class="display table table-bordered dt-responsive" style="width:100%" id="data-nilai-siswa">
+                <!-- Header dan Body akan diisi oleh AJAX -->
+            </table>
+        </div>
     </div>
 @endsection
 @section('script')

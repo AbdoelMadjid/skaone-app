@@ -2,6 +2,7 @@
 
 namespace App\DataTables\WaliKelas;
 
+use App\Helpers\ImageHelper;
 use App\Models\ManajemenSekolah\PesertaDidik;
 use App\Traits\DatatableHelper;
 use Carbon\Carbon;
@@ -27,25 +28,15 @@ class WaliKelasDtSiswaDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('foto', function ($row) {
-                // Tentukan path default berdasarkan jenis kelamin
-                $defaultPhotoPath = $row->jenis_kelamin === 'Laki-laki'
-                    ? asset('images/siswacowok.png')
-                    : asset('images/siswacewek.png');
-
-                // Tentukan path foto dari database
-                $imagePath = base_path('images/peserta_didik/' . $row->foto);
-                $logoPath = '';
-
-                // Cek apakah file foto ada di folder 'images/personil'
-                if ($row->foto && file_exists($imagePath)) {
-                    $logoPath = asset('images/peserta_didik/' . $row->foto);
-                } else {
-                    // Jika file tidak ditemukan, gunakan foto default berdasarkan jenis kelamin
-                    $logoPath = $defaultPhotoPath;
-                }
-
-                // Mengembalikan tag img dengan path gambar
-                return '<img src="' . $logoPath . '" alt="Foto" width="50" class="rounded-circle avatar-lg img-thumbnail user-profile-image" />';
+                return ImageHelper::getAvatarImageTag(
+                    filename: $row->foto,
+                    gender: $row->jenis_kelamin,
+                    folder: 'peserta_didik',
+                    defaultMaleImage: 'siswacowok.png',
+                    defaultFemaleImage: 'siswacewek.png',
+                    width: 50,
+                    class: 'rounded avatar-sm'
+                );
             })
             ->addColumn('tempat_tanggal_lahir', function ($row) {
                 return $row->tempat_lahir . ', ' . Carbon::parse($row->tanggal_lahir)
@@ -125,10 +116,10 @@ class WaliKelasDtSiswaDataTable extends DataTable
                 //'order' => [[6, 'asc'], [4, 'asc'], [2, 'asc']],
                 'lengthChange' => false,
                 'searching' => false,
-                'pageLength' => 25,
+                'pageLength' => 50,
                 'paging' => true,
                 'scrollCollapse' => false,
-                'scrollY' => "calc(100vh - 384px)",
+                'scrollY' => "calc(100vh - 341px)",
             ]);
     }
 

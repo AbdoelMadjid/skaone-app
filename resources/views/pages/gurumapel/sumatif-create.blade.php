@@ -14,14 +14,12 @@
             @lang('translation.penilaian')
         @endslot
     @endcomponent
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1">Tambah Nilai @yield('title') - {{ $fullName }}</h5>
-                    <div>
-                        <a class="btn btn-soft-primary" href="{{ route('gurumapel.penilaian.sumatif.index') }}">Kembali</a>
-                        {{--
+    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
+        <div class="card-header d-flex align-items-center">
+            <h5 class="card-title mb-0 flex-grow-1">Tambah Nilai @yield('title') - {{ $fullName }}</h5>
+            <div>
+                <a class="btn btn-soft-primary" href="{{ route('gurumapel.penilaian.sumatif.index') }}">Kembali</a>
+                {{--
                         @if (auth()->check() &&
     auth()->user()->hasAnyRole(['master']))
                             <button class="btn btn-soft-primary" onclick="window.history.back();">
@@ -29,92 +27,89 @@
                             </button>
                         @endif
                         --}}
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @include('pages.gurumapel.ident-kbm')
+                <div class="col-xl-6 col-md-6">
+                    <!-- Rounded Ribbon -->
+                    <div class="card ribbon-box border shadow-none mb-lg-3">
+                        <div class="card-body">
+                            <div class="ribbon ribbon-primary round-shape">Tujuan Pembelajaran</div>
+                            <h5 class="fs-14 text-end"></h5>
+                            <div class="ribbon-content mt-5 text-muted">
+                                <table>
+                                    @foreach ($tujuanPembelajaran as $index => $tp)
+                                        <tr>
+                                            <td valign="top" width='25px'>{{ $index + 1 }}.</td>
+                                            <td>{{ $tp->tp_isi }}</td>
+                                        </tr>
+                                    @endforeach
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <div class="row">
-                        @include('pages.gurumapel.ident-kbm')
-                        <div class="col-xl-6 col-md-6">
-                            <!-- Rounded Ribbon -->
-                            <div class="card ribbon-box border shadow-none mb-lg-3">
-                                <div class="card-body">
-                                    <div class="ribbon ribbon-primary round-shape">Tujuan Pembelajaran</div>
-                                    <h5 class="fs-14 text-end"></h5>
-                                    <div class="ribbon-content mt-5 text-muted">
-                                        <table>
-                                            @foreach ($tujuanPembelajaran as $index => $tp)
-                                                <tr>
-                                                    <td valign="top" width='25px'>{{ $index + 1 }}.</td>
-                                                    <td>{{ $tp->tp_isi }}</td>
-                                                </tr>
-                                            @endforeach
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!--end row-->
-                    <form action="{{ route('gurumapel.penilaian.sumatif.store') }}" method="post">
-                        @csrf
-                        <input type="hidden" name="kode_mapel_rombel" value="{{ $data->kode_mapel_rombel }}">
-                        <input type="hidden" name="tahunajaran" value="{{ $data->tahunajaran }}">
-                        <input type="hidden" name="kode_kk" value="{{ $data->kode_kk }}">
-                        <input type="hidden" name="tingkat" value="{{ $data->tingkat }}">
-                        <input type="hidden" name="ganjilgenap" value="{{ $data->ganjilgenap }}">
-                        <input type="hidden" name="semester" value="{{ $data->semester }}">
-                        <input type="hidden" name="kode_rombel" value="{{ $data->kode_rombel }}">
-                        <input type="hidden" name="rombel" value="{{ $data->rombel }}">
-                        <input type="hidden" name="kel_mapel" value="{{ $data->kel_mapel }}">
-                        <input type="hidden" name="kode_mapel" value="{{ $data->kode_mapel }}">
-                        <input type="hidden" name="mata_pelajaran" value="{{ $data->mata_pelajaran }}">
-                        <input type="hidden" name="kkm" id="kkm" value="{{ $data->kkm }}">
-                        <input type="hidden" name="id_personil" value="{{ $data->id_personil }}">
-                        <input type="hidden" name="jml_tp" id="jml_tp" value="{{ $jumlahTP }}">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>No.</th>
-                                    <th>NIS</th>
-                                    <th>Nama Siswa</th>
-                                    <th>STS</th>
-                                    <th>SAS</th>
-                                    <th>Rata-rata</th>
-                                </tr>
-                            </thead>
-                            <tbody id="selected_siswa_tbody">
-                                @foreach ($pesertaDidik as $index => $siswa)
-                                    <tr>
-                                        <td class="bg-primary-subtle text-center">{{ $index + 1 }}</td>
-                                        <td>{{ $siswa->nis }}</td>
-                                        <td>{{ $siswa->nama_lengkap }}</td>
-                                        <td class="text-center">
-                                            <input type="text" class="sts-input" name="sts[{{ $siswa->nis }}]"
-                                                id="sts[{{ $siswa->nis }}]" value=""
-                                                style="width: 65px; text-align: center;" />
-                                        </td>
-                                        <td class="text-center">
-                                            <input type="text" class="sas-input" name="sas[{{ $siswa->nis }}]"
-                                                id="sas[{{ $siswa->nis }}]" value=""
-                                                style="width: 65px; text-align: center;" />
-                                        </td>
-                                        <td class="bg-primary-subtle text-center">
-                                            <input type="text" class="rerata_sumatif"
-                                                name="rerata_sumatif_{{ $siswa->nis }}"
-                                                id="rerata_sumatif_{{ $siswa->nis }}" readonly
-                                                style="width: 75px; text-align: center;" />
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        <div class="col-lg-12">
-                            <div class="gap-2 hstack justify-content-end">
-                                <button type="submit" class="btn btn-primary">Create</button>
-                            </div>
-                        </div>
-                    </form>
+            </div><!--end row-->
+            <form action="{{ route('gurumapel.penilaian.sumatif.store') }}" method="post">
+                @csrf
+                <input type="hidden" name="kode_mapel_rombel" value="{{ $data->kode_mapel_rombel }}">
+                <input type="hidden" name="tahunajaran" value="{{ $data->tahunajaran }}">
+                <input type="hidden" name="kode_kk" value="{{ $data->kode_kk }}">
+                <input type="hidden" name="tingkat" value="{{ $data->tingkat }}">
+                <input type="hidden" name="ganjilgenap" value="{{ $data->ganjilgenap }}">
+                <input type="hidden" name="semester" value="{{ $data->semester }}">
+                <input type="hidden" name="kode_rombel" value="{{ $data->kode_rombel }}">
+                <input type="hidden" name="rombel" value="{{ $data->rombel }}">
+                <input type="hidden" name="kel_mapel" value="{{ $data->kel_mapel }}">
+                <input type="hidden" name="kode_mapel" value="{{ $data->kode_mapel }}">
+                <input type="hidden" name="mata_pelajaran" value="{{ $data->mata_pelajaran }}">
+                <input type="hidden" name="kkm" id="kkm" value="{{ $data->kkm }}">
+                <input type="hidden" name="id_personil" value="{{ $data->id_personil }}">
+                <input type="hidden" name="jml_tp" id="jml_tp" value="{{ $jumlahTP }}">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>NIS</th>
+                            <th>Nama Siswa</th>
+                            <th>STS</th>
+                            <th>SAS</th>
+                            <th>Rata-rata</th>
+                        </tr>
+                    </thead>
+                    <tbody id="selected_siswa_tbody">
+                        @foreach ($pesertaDidik as $index => $siswa)
+                            <tr>
+                                <td class="bg-primary-subtle text-center">{{ $index + 1 }}</td>
+                                <td>{{ $siswa->nis }}</td>
+                                <td>{{ $siswa->nama_lengkap }}</td>
+                                <td class="text-center">
+                                    <input type="text" class="sts-input" name="sts[{{ $siswa->nis }}]"
+                                        id="sts[{{ $siswa->nis }}]" value=""
+                                        style="width: 65px; text-align: center;" />
+                                </td>
+                                <td class="text-center">
+                                    <input type="text" class="sas-input" name="sas[{{ $siswa->nis }}]"
+                                        id="sas[{{ $siswa->nis }}]" value=""
+                                        style="width: 65px; text-align: center;" />
+                                </td>
+                                <td class="bg-primary-subtle text-center">
+                                    <input type="text" class="rerata_sumatif" name="rerata_sumatif_{{ $siswa->nis }}"
+                                        id="rerata_sumatif_{{ $siswa->nis }}" readonly
+                                        style="width: 75px; text-align: center;" />
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <div class="col-lg-12">
+                    <div class="gap-2 hstack justify-content-end">
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 @endsection
