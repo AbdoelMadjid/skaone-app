@@ -16,7 +16,7 @@
             <x-heading-title>@yield('title')</x-heading-title>
             <div class="flex-shrink-0">
                 <x-btn-tambah can="create manajemenpengguna/permissions" route="manajemenpengguna.permissions.create"
-                    label="Tambah Persmission" icon="ri-add-line" />
+                    label="Tambah" icon="ri-add-line" />
             </div>
         </div>
         <div class="card-body p-1">

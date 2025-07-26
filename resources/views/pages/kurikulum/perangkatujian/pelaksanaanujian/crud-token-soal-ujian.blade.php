@@ -17,38 +17,21 @@
             @lang('translation.pelaksanaan-ujian')
         @endslot
     @endcomponent
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
-                <div class="card-header d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
-                    <div>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-soft-primary btn-sm dropdown-toggle"
-                                data-bs-toggle="dropdown">
-                                Tambah Token
-                            </button>
-                            <ul class="dropdown-menu">
-                                {{-- <li>
-                                    @can('create kurikulum/perangkatujian/pelaksanaan-ujian/token-soal-ujian')
-                                        <a class="dropdown-item action"
-                                            href="{{ route('kurikulum.perangkatujian.pelaksanaan-ujian.token-soal-ujian.create') }}">Tambah</a>
-                                    @endcan
-                                </li> --}}
-                                <li><a href="#" class="dropdown-item" id="btnTambahTokenMassal">Input Massal</a></li>
-                            </ul>
-                        </div>
-
-                        <a class="btn btn-soft-danger btn-sm"
-                            href="{{ route('kurikulum.perangkatujian.pelaksanaan-ujian.index') }}">Kembali</a>
-                    </div>
+    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <x-heading-title>@yield('title')</x-heading-title>
+                <div class="flex-shrink-0 me-2">
+                    <x-btn-action label="Input Massal" icon="ri-checkbox-multiple-fill" id="btnTambahTokenMassal" />
                 </div>
-                <div class="card-body p-1">
-                    {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+                <div class="flex-shrink-0">
+                    <x-btn-kembali href="{{ route('kurikulum.perangkatujian.pelaksanaan-ujian.index') }}" />
                 </div>
             </div>
         </div>
-        <!--end col-->
+        <div class="card-body p-1">
+            {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+        </div>
     </div>
     @include('pages.kurikulum.perangkatujian.pelaksanaanujian.crud-token-ujian-tambah-massal')
 @endsection

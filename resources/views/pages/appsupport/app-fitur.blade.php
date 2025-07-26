@@ -16,7 +16,7 @@
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0">
-                    <x-btn-tambah can="create appsupport/app-fiturs" route="appsupport.app-fiturs.create" label="Tambah Fitur"
+                    <x-btn-tambah can="create appsupport/app-fiturs" route="appsupport.app-fiturs.create" label="Tambah"
                         icon="ri-add-line" />
                 </div>
             </div>

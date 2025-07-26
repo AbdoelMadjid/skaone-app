@@ -26,9 +26,7 @@
                         route="kurikulum.perangkatujian.administrasi-ujian.ruang-ujian.create" icon="ri-add-line" />
                 </div>
                 <div class="flex-shrink-0">
-                    <a class="btn btn-soft-primary btn-sm btn-icon"
-                        href="{{ route('kurikulum.perangkatujian.administrasi-ujian.index') }}" data-bs-toggle="tooltip"
-                        data-bs-placement="left" title="Kembali"><i class="ri-share-forward-fill fs-16"></i></a>
+                    <x-btn-kembali href="{{ route('kurikulum.perangkatujian.administrasi-ujian.index') }}" />
                 </div>
             </div>
         </div>

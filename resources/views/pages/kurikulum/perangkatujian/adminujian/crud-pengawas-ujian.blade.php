@@ -22,24 +22,15 @@
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0 me-2">
-                    <div class="btn-group dropstart">
-                        <button type="button" class="btn btn-soft-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">Action
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-md p-3">
-                            <div class="d-grid gap-2">
-                                <x-btn-action label="Tambah Massal" icon="ri-checkbox-multiple-fill" id="btnTambahMassal" />
-                                <x-btn-tambah can="create kurikulum/perangkatujian/administrasi-ujian/pengawas-ujian"
-                                    route="kurikulum.perangkatujian.administrasi-ujian.pengawas-ujian.create" label="Tambah"
-                                    icon="ri-add-line" />
-                            </div>
-                        </div>
-                    </div>
+                    <x-btn-group-dropdown>
+                        <x-btn-action label="Tambah Jadwal Massal" icon="ri-checkbox-multiple-fill" id="btnTambahMassal" />
+                        <x-btn-tambah can="create kurikulum/perangkatujian/administrasi-ujian/pengawas-ujian"
+                            route="kurikulum.perangkatujian.administrasi-ujian.pengawas-ujian.create"
+                            label="Tambah Jadwal Ngawas" icon="ri-add-line" />
+                    </x-btn-group-dropdown>
                 </div>
                 <div class="flex-shrink-0">
-                    <a class="btn btn-soft-primary btn-sm btn-icon"
-                        href="{{ route('kurikulum.perangkatujian.administrasi-ujian.index') }}" data-bs-toggle="tooltip"
-                        data-bs-placement="left" title="Kembali"><i class="ri-share-forward-fill fs-16"></i></a>
+                    <x-btn-kembali href="{{ route('kurikulum.perangkatujian.administrasi-ujian.index') }}" />
                 </div>
             </div>
         </div>
@@ -81,10 +72,7 @@
                             </div>
                             <div class="col-lg-auto">
                                 <div class="mb-3 d-flex align-items-center gap-2">
-                                    <button type="button" class="btn btn-soft-primary" id="btn-tambah-pengawas">
-                                        Tambah Pengawas Ujian
-                                        <i class="ri-add-line align-bottom"></i>
-                                    </button>
+                                    <x-btn-action label="Tambah Pengawas" icon="ri-add-fill" id="btn-tambah-pengawas" />
                                 </div>
                             </div>
                         </div>

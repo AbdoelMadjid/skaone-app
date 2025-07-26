@@ -9,7 +9,7 @@
 ])
 
 @php
-    $classes = "btn btn-light btn-label waves-effect waves-light {$size}";
+    $classes = "btn btn-soft-primary btn-label waves-effect waves-light {$size}";
 @endphp
 
 @if ($href)

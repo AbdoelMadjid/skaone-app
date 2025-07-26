@@ -15,7 +15,7 @@
         <div class="card-header d-flex align-items-center">
             <x-heading-title>@yield('title')</x-heading-title>
             <div class="flex-shrink-0">
-                <x-btn-tambah can="create manajemenpengguna/roles" route="manajemenpengguna.roles.create" label="Tambah Role"
+                <x-btn-tambah can="create manajemenpengguna/roles" route="manajemenpengguna.roles.create" label="Tambah"
                     icon="ri-add-line" />
             </div>
         </div>

@@ -15,31 +15,20 @@
         <div class="card-header">
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
-                <div class="flex-shrink-0 me-2">
-
-                </div>
                 <div class="flex-shrink-0">
-                    <div class="btn-group dropstart">
-                        <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">Action
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-md p-3">
-                            <div class="d-grid gap-2">
-                                <x-btn-action label="Distribusi Rombel" icon="ri-account-pin-box-fill"
-                                    data-bs-toggle="modal" data-bs-target="#distribusiSiswa" id="distribusiSiswaBtn"
-                                    title="Distribusikan siswa yang dipilih" :disabled="true" />
-                                <x-btn-action href="{{ route('kurikulum.datakbm.peserta-didik-rombel.index') }}"
-                                    label="Siswa Per Rombel" icon="ri-parent-fill" />
-                                <div class="dropdown-divider"></div>
-                                <x-btn-tambah can="create manajemensekolah/peserta-didik"
-                                    route="manajemensekolah.peserta-didik.create" label="Tambah" icon="ri-add-line" />
-                                <x-btn-action href="{{ route('pdexportExcel') }}" label="Download"
-                                    icon="ri-download-2-fill" />
-                                <x-btn-action label="Upload" icon="ri-upload-2-fill" data-bs-toggle="modal"
-                                    data-bs-target="#importModal" />
-                            </div>
-                        </div>
-                    </div>
+                    <x-btn-group-dropdown>
+                        <x-btn-action label="Distribusi Rombel" icon="ri-account-pin-box-fill" data-bs-toggle="modal"
+                            data-bs-target="#distribusiSiswa" id="distribusiSiswaBtn" title="Distribusikan siswa yang dipilih"
+                            :disabled="true" />
+                        <x-btn-action href="{{ route('kurikulum.datakbm.peserta-didik-rombel.index') }}"
+                            label="Siswa Per Rombel" icon="ri-parent-fill" />
+                        <div class="dropdown-divider"></div>
+                        <x-btn-tambah can="create manajemensekolah/peserta-didik"
+                            route="manajemensekolah.peserta-didik.create" label="Tambah" icon="ri-add-line" />
+                        <x-btn-action href="{{ route('pdexportExcel') }}" label="Download" icon="ri-download-2-fill" />
+                        <x-btn-action label="Upload" icon="ri-upload-2-fill" data-bs-toggle="modal"
+                            data-bs-target="#importModal" />
+                    </x-btn-group-dropdown>
                 </div>
             </div>
         </div>
@@ -49,8 +38,7 @@
                 </div>
                 <div class="col-lg-auto">
                     <div class="search-box">
-                        <input type="text" class="form-control form-control-sm search"
-                            placeholder="Search Nama Peserta Didik ....">
+                        <input type="text" class="form-control form-control-sm search" placeholder="Nama Lengkap ....">
                         <i class="ri-search-line search-icon"></i>
                     </div>
                 </div>

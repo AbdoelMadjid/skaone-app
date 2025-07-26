@@ -24,8 +24,8 @@
                     <x-btn-tambah can="create websiteapp/polling" route="websiteapp.polling.create" label="Tambah"
                         icon="ri-add-line" />
                 </div>
-                <div class="flex-shrink-0 me-2">
-                    <a class="btn btn-light btn-label waves-effect waves-light btn-sm"
+                <div class="flex-shrink-0">
+                    <a class="btn btn-soft-primary btn-label waves-effect waves-light btn-sm"
                         href="{{ route('websiteapp.question.index') }}"> <i
                             class="ri-speed-mini-fill label-icon align-middle fs-16 me-2"></i> Pertanyaan</a>
                 </div>

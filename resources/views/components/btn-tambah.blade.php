@@ -9,7 +9,7 @@
 
 @can($can)
     <a href="{{ route($route) }}"
-        {{ $attributes->merge(['class' => "btn btn-light btn-label waves-effect waves-light $size add-btn action $class"]) }}>
+        {{ $attributes->merge(['class' => "btn btn-soft-primary btn-label waves-effect waves-light $size add-btn action $class"]) }}>
         <i class="{{ $icon }} label-icon align-middle fs-16 me-2"></i> {{ $label }}
     </a>
 @endcan

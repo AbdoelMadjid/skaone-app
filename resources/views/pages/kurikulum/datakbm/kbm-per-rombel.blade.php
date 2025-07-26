@@ -40,7 +40,7 @@
         <div class="card-header">
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
-                <div class="flex-shrink-0 me-2">
+                <div class="flex-shrink-0">
                     <x-btn-action href="{{ route('kurikulum.datakbm.mata-pelajaran-perjurusan.index') }}"
                         label="Mapel Per Jurusan" icon="ri-file-copy-fill" />
                 </div>
@@ -92,13 +92,12 @@
                         <option value="12">12</option>
                     </select>
                 </div>
-                <div class="col-lg-auto me-2">
+                <div class="col-lg-auto me-3">
                     <select class="form-control form-control-sm" data-plugin="choices" data-choices
                         data-choices-search-false name="choices-single-default" id="idRombel" disabled>
                         <option value="all" selected>Pilih Rombel</option>
                     </select>
                 </div>
-                {{-- <div class="vr me-2"></div> --}}
             </div>
         </div>
         <div class="card-body p-1">

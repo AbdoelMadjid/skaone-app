@@ -15,27 +15,18 @@
         <div class="card-header">
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
-                <div class="flex-shrink-0 me-2">
-                    <div class="btn-group dropstart">
-                        <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">Action
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-md p-3">
-                            <div class="d-grid gap-2">
-                                <x-btn-action label="Buat Akun Personil" icon="ri-admin-fill" data-bs-toggle="modal"
-                                    data-bs-target="#simpanakunPersonil" id="simpanakunPersonilBtn"
-                                    title="Buat Akun Terpilih" :disabled="true" />
-                                <div class="dropdown-divider"></div>
-                                <x-btn-tambah can="create manajemensekolah/personil-sekolah"
-                                    route="manajemensekolah.personil-sekolah.create" label="Tambah" icon="ri-add-line" />
-                                <x-btn-action href="{{ route('ps_exportExcel') }}" label="Download"
-                                    icon="ri-download-2-fill" />
-                                <x-btn-action label="Upload" icon="ri-upload-2-fill" data-bs-toggle="modal"
-                                    data-bs-target="#importModal" />
-
-                            </div>
-                        </div>
-                    </div>
+                <div class="flex-shrink-0">
+                    <x-btn-group-dropdown>
+                        <x-btn-action label="Buat Akun Personil" icon="ri-admin-fill" data-bs-toggle="modal"
+                            data-bs-target="#simpanakunPersonil" id="simpanakunPersonilBtn" title="Buat Akun Terpilih"
+                            :disabled="true" />
+                        <div class="dropdown-divider"></div>
+                        <x-btn-tambah can="create manajemensekolah/personil-sekolah"
+                            route="manajemensekolah.personil-sekolah.create" label="Tambah" icon="ri-add-line" />
+                        <x-btn-action href="{{ route('ps_exportExcel') }}" label="Download" icon="ri-download-2-fill" />
+                        <x-btn-action label="Upload" icon="ri-upload-2-fill" data-bs-toggle="modal"
+                            data-bs-target="#importModal" />
+                    </x-btn-group-dropdown>
                 </div>
             </div>
         </div>
@@ -65,7 +56,6 @@
                         @endforeach
                     </select>
                 </div>
-                {{-- <div class="vr me-2"></div> --}}
             </div>
         </div>
         <div class="card-body p-1">

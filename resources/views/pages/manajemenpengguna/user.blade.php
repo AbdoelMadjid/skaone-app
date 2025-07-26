@@ -20,8 +20,8 @@
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0">
-                    <x-btn-tambah can="create manajemenpengguna/users" route="manajemenpengguna.users.create"
-                        label="Tambah User" icon="ri-add-line" />
+                    <x-btn-tambah can="create manajemenpengguna/users" route="manajemenpengguna.users.create" label="Tambah"
+                        icon="ri-add-line" />
                 </div>
             </div>
         </div>

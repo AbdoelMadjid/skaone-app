@@ -21,7 +21,7 @@
         <div class="card-header">
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
-                <div class="flex-shrink-0 me-2">
+                <div class="flex-shrink-0">
                     <x-btn-tambah can="create kurikulum/datakbm/capaian-pembelajaran"
                         route="kurikulum.datakbm.capaian-pembelajaran.create" label="Tambah" icon="ri-add-line" />
                 </div>

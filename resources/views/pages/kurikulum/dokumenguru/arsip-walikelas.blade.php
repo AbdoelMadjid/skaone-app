@@ -25,35 +25,27 @@
                     </div>
                 </div>
                 <div class="col-sm-auto">
-                    <div class="btn-group dropstart">
-                        <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">Action
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-md p-3">
-                            <div class="d-grid gap-2">
-                                <x-btn-action label="Ranking pertingkat" icon="ri-bar-chart-2-fill"
-                                    id="btn-ranking-pertk" />
-                                <x-btn-action label="Ranking pertingkat per kk" icon="ri-bar-chart-grouped-fill"
-                                    id="btn-ranking-pertkkk" />
-                                @if ($personal_id == 'Pgw_0016')
-                                    <form method="GET" action="{{ route('kurikulum.dokumenguru.generaterankingsiswa') }}">
-                                        <x-btn-action label="Generate Ranking Manual" icon="ri-medal-2-fill" />
-                                    </form>
-                                @endif
-                                <div class="dropdown-divider"></div>
-                                <x-btn-action label="Cetak Ranking" icon="ri-printer-fill" onclick="printRanking()" />
-                                <div class="dropdown-divider"></div>
-                                @if ($personal_id == 'Pgw_0016')
-                                    <x-btn-action label="Tambah Akse Pengguna" icon="ri-user-fill" data-bs-toggle="modal"
-                                        data-bs-target="#tambahPilihArsipWaliKelas" />
-                                    {{--                                     <button type="button" class="btn btn-soft-primary btn-sm w-100 mt-3"
+                    <x-btn-group-dropdown>
+                        <x-btn-action label="Ranking pertingkat" icon="ri-bar-chart-2-fill" id="btn-ranking-pertk" />
+                        <x-btn-action label="Ranking pertingkat per kk" icon="ri-bar-chart-grouped-fill"
+                            id="btn-ranking-pertkkk" />
+                        @if ($personal_id == 'Pgw_0016')
+                            <form method="GET" action="{{ route('kurikulum.dokumenguru.generaterankingsiswa') }}">
+                                <x-btn-action label="Generate Ranking Manual" icon="ri-medal-2-fill" />
+                            </form>
+                        @endif
+                        <div class="dropdown-divider"></div>
+                        <x-btn-action label="Cetak Ranking" icon="ri-printer-fill" onclick="printRanking()" />
+                        <div class="dropdown-divider"></div>
+                        @if ($personal_id == 'Pgw_0016')
+                            <x-btn-action label="Tambah Akse Pengguna" icon="ri-user-fill" data-bs-toggle="modal"
+                                data-bs-target="#tambahPilihArsipWaliKelas" />
+                            {{--                                     <button type="button" class="btn btn-soft-primary btn-sm w-100 mt-3"
                                         data-bs-toggle="modal" data-bs-target="#tambahPilihArsipWaliKelas"><i
                                             class="ri-file-download-line align-bottom me-1"></i>
                                         Tambah</button> --}}
-                                @endif
-                            </div>
-                        </div>
-                    </div>
+                        @endif
+                    </x-btn-group-dropdown>
                 </div>
             </div>
         </div>
