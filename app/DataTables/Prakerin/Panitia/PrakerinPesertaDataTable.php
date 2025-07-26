@@ -108,10 +108,10 @@ class PrakerinPesertaDataTable extends DataTable
                 //'order' => [[6, 'asc'], [4, 'asc'], [2, 'asc']],
                 'lengthChange' => false,
                 'searching' => true,
-                'pageLength' => 25,
+                'pageLength' => 100,
                 'paging' => true,
                 'scrollCollapse' => false,
-                'scrollY' => "calc(100vh - 422px)",
+                'scrollY' => "calc(100vh - 391px)",
             ]);
     }
 

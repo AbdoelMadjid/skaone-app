@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    @lang('translation.administrasi')
+    @lang('translation.laporan')
 @endsection
 @section('css')
     {{--  --}}

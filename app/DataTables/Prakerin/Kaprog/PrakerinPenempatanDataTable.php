@@ -109,7 +109,7 @@ class PrakerinPenempatanDataTable extends DataTable
                 'pageLength' => 25,
                 'paging' => true,
                 'scrollCollapse' => false,
-                'scrollY' => "calc(100vh - 428px)",
+                'scrollY' => "calc(100vh - 398px)",
             ]);
     }
 

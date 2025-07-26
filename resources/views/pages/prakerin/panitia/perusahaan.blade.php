@@ -14,28 +14,28 @@
             @lang('translation.panitia')
         @endslot
     @endcomponent
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
-                <div class="card-header d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1 text-danger-emphasis">@yield('title')</h5>
-                    <div>
-                        <button type="button" class="btn btn-soft-primary btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#importModal">Unggah</button>
-                        @can('create panitiaprakerin/perusahaan')
-                            <a class="btn btn-soft-primary btn-sm action"
-                                href="{{ route('panitiaprakerin.perusahaan.create') }}">Tambah</a>
-                        @endcan
-                    </div>
-                </div>
-                <div class="card-body p-2">
-                    {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+    <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <x-heading-title>@yield('title')</x-heading-title>
+                <div class="flex-shrink-0">
+                    <x-btn-group-dropdown>
+                        @if (auth()->check() &&
+                                auth()->user()->hasAnyRole(['master', 'panitiapkl']))
+                            <x-btn-action label="Upload" icon="ri-upload-fill" data-bs-toggle="modal"
+                                data-bs-target="#importModal" />
+                        @endif
+                        <x-btn-tambah can="create panitiaprakerin/perusahaan" route="panitiaprakerin.perusahaan.create"
+                            label="Tambah" icon="ri-add-line" />
+                    </x-btn-group-dropdown>
                 </div>
             </div>
         </div>
-        <!--end col-->
+        <div class="card-body p-2">
+            {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+        </div>
     </div>
-    @include('pages.administratorpkl.perusahaan-import')
+    @include('pages.prakerin.panitia.perusahaan-import')
 @endsection
 @section('script')
     {!! $dataTable->scripts() !!}

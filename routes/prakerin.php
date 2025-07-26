@@ -24,6 +24,8 @@ use App\Models\PembimbingPkl\PesanPrakerin;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\Prakerin\Kaprog\PrakerinPenempatanController;
 use App\Http\Controllers\Prakerin\Panitia\PrakerinAdministrasiController;
+use App\Http\Controllers\Prakerin\Panitia\PrakerinInformasiPanitiaController;
+use App\Http\Controllers\Prakerin\Panitia\PrakerinLaporanPanitiaController;
 use App\Http\Controllers\Prakerin\Panitia\PrakerinPerusahaanController;
 use App\Http\Controllers\Prakerin\Panitia\PrakerinPesertaController;
 use Illuminate\Http\Request;
@@ -46,6 +48,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('peserta', PrakerinPesertaController::class);
         Route::post('/simpanpesertaprakerin', [PrakerinPesertaController::class, 'simpanPesertaPrakerin'])->name('simpanPesertaPrakerin');
         Route::resource('administrasi', PrakerinAdministrasiController::class);
+        Route::resource('informasi', PrakerinInformasiPanitiaController::class);
+        Route::resource('laporan', PrakerinLaporanPanitiaController::class);
     });
 });
 

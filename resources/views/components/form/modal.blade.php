@@ -1,5 +1,5 @@
 @props(['size' => 'lg', 'title', 'action' => null, 'enctype' => null])
-<div class="modal-dialog modal-{{ $size }} modal-dialog-centered">
+<div class="modal-dialog modal-{{ $size }}">
     <div class="modal-content">
         <form id="form_action" action="{{ $action }}" method="post" {{ $enctype ? 'enctype=' . $enctype : '' }}>
             @csrf
