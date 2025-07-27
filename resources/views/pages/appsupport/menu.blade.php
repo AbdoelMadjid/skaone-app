@@ -17,14 +17,14 @@
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0 me-2">
                     @can('create appsupport/menu')
-                        <a class="btn btn-soft-info btn-icon btn-sm action" href="{{ route('appsupport.menu.create') }}"
+                        <a class="btn btn-soft-primary btn-icon btn-sm action" href="{{ route('appsupport.menu.create') }}"
                             data-bs-toggle="tooltip" data-bs-placement="left" title="Tambah Menu"><i
                                 class="ri-add-line fs-16"></i></a>
                     @endcan
                 </div>
                 <div class="flex-shrink-0 me-2">
                     @can('sort appsupport/menu')
-                        <a class="btn btn-soft-success btn-sm btn-icon sort" href="{{ route('appsupport.menu.sort') }}"
+                        <a class="btn btn-soft-secondary btn-sm btn-icon sort" href="{{ route('appsupport.menu.sort') }}"
                             data-bs-toggle="tooltip" data-bs-placement="left" title="Sort Menu"><i
                                 class="ri-sort-asc fs-16"></i></a>
                     @endcan

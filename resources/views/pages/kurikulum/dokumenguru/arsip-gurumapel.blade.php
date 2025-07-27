@@ -52,8 +52,8 @@
                         </select>
                     </div>
                     <div class="col-lg-auto">
-                        <select style="min-width: 250px;" class="form-select form-select-sm select2" name="id_guru"
-                            id="id_guru" required>
+                        <select style="min-width: 250px;" class="form-select form-select-sm" name="id_guru" id="id_guru"
+                            required>
                             <option value="">Pilih Guru Mata Pelajaran</option>
                             @foreach ($daftarGuru as $guru)
                                 @php
@@ -69,7 +69,8 @@
                         </select>
                     </div>
                     <div class="col-lg-auto me-3">
-                        <button type="submit" class="btn btn-light btn-sm">Tapilkan</button>
+                        <button type="submit" class="btn btn-sm btn-soft-primary btn-label waves-effect waves-light"> <i
+                                class="ri-computer-fill label-icon align-middle fs-16 me-2"></i>Tapilkan</button>
                     </div>
                 </div>
             </form>
@@ -97,7 +98,8 @@
 
             $('#id_guru').select2({
                 allowClear: true,
-                width: '100%'
+                width: "resolve",
+                //theme: "classic",
             });
 
             // 🔁 Update dropdown guru setiap tahunajaran/semester berubah

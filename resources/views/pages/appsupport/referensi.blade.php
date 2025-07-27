@@ -34,7 +34,8 @@
                                 <option value="{{ $jenis }}">{{ $jenis }}</option>
                             @endforeach
                         </select>
-                        <button id="reset-filter" class="btn btn-light btn-sm me-3">Reset</button>
+                        <button id="reset-filter" class="btn btn-sm btn-soft-primary btn-label waves-effect waves-light"> <i
+                                class="ri-reply-fill label-icon align-middle fs-16 me-3"></i>Reset</button>
                     </div> <!-- Penutup div flex -->
                 </div>
             </div>

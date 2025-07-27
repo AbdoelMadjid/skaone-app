@@ -11,9 +11,9 @@
                 {{ $slot }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-soft-secondary" data-bs-dismiss="modal">Tutup</button>
                 @if ($action)
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-soft-primary">Simpan</button>
                 @endif
             </div>
         </form>
