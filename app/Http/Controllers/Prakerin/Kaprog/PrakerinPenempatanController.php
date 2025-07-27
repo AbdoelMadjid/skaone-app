@@ -80,10 +80,13 @@ class PrakerinPenempatanController extends Controller
         }
 
         $pesertaDidikOptions = $query->get()
-            ->mapWithKeys(function ($item) {
-                return [
-                    $item->nis => $item->nis . ' - ' . $item->nama_lengkap . ' (' . $item->rombel_nama . ')'
-                ];
+            ->groupBy('rombel_nama')
+            ->map(function ($group) {
+                return $group->mapWithKeys(function ($item) {
+                    return [
+                        $item->nis => $item->nis . ' - ' . $item->nama_lengkap
+                    ];
+                })->toArray();
             })
             ->toArray();
 

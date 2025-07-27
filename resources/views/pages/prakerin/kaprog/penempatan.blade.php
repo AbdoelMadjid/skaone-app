@@ -49,6 +49,18 @@
 @endsection
 @section('script-bottom')
     <script>
+        $('#modal_action').on('shown.bs.modal', function() {
+            $('#noinduksiswa').select2({
+                dropdownParent: $('#modal_action'),
+                width: '100%' // atau 'resolve'
+            });
+            $('#datadudi').select2({
+                dropdownParent: $('#modal_action'),
+                width: '100%' // atau 'resolve'
+            });
+        });
+    </script>
+    <script>
         const datatable = 'prakerinpenempatan-table';
 
         $(document).on('change', '.save-siswa', function() {
@@ -117,9 +129,7 @@
         }
 
         handleDataTableEvents(datatable);
-        handleAction(datatable, function(res) {
-            select2Init();
-        })
+        handleAction(datatable)
         handleDelete(datatable)
         //ScrollDinamicDataTable(datatable, scrollOffsetOverride = 86);
     </script>
