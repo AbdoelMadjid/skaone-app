@@ -11,6 +11,7 @@ use App\Models\ManajemenSekolah\KompetensiKeahlian;
 use App\Models\ManajemenSekolah\PesertaDidikOrtu;
 use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Models\User;
+use App\Models\WaliKelas\TitiMangsa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -83,6 +84,16 @@ class IdentitasSiswaController extends Controller
             $kbmData = DB::table('kbm_per_rombels')
                 ->where('kode_rombel', $waliKelas->kode_rombel)
                 ->get();
+
+            $titiMangsaExists = TitiMangsa::where('kode_rombel', $waliKelas->kode_rombel)
+                ->exists();
+
+            // Jika data catwalikelas belum tersedia, redirect atau tampilkan halaman khusus
+            if (! $titiMangsaExists) {
+                return redirect()
+                    ->route('walikelas.data-kelas.index')
+                    ->with('warning', 'Titimangsa harus diisi terlebih dahulu agar bisa membuka menu Identitas Siswa');
+            }
 
             // Ambil data siswa berdasarkan tahun ajaran, kode rombel, dan tingkat
             $siswaData = DB::table('peserta_didik_rombels')

@@ -124,6 +124,12 @@ class RaporPesertaDidikController extends Controller
             ->where('ganjilgenap', $semesterAktif)
             ->first();
 
+        if (! $titimangsa) {
+            return redirect()
+                ->route('walikelas.data-kelas.index')
+                ->with('warning', 'Titimangsa harus diisi terlebih dahulu agar bisa membuka menu Rapor Peserta Didik');
+        }
+
         $nilaiRataSiswa = DB::select("
             SELECT
                 pd.nis,
