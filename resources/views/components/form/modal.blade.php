@@ -11,10 +11,12 @@
                 {{ $slot }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-soft-secondary" data-bs-dismiss="modal">Tutup</button>
                 @if ($action)
-                    <button type="submit" class="btn btn-soft-primary">Simpan</button>
+                    <button type="submit" class="btn btn-soft-primary btn-label"><i
+                            class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>Simpan</button>
                 @endif
+                <button type="button" class="btn btn-soft-secondary btn-label" data-bs-dismiss="modal"><i
+                        class="ri-shut-down-line label-icon align-middle fs-16 me-2"></i>Tutup</button>
             </div>
         </form>
     </div>

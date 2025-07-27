@@ -420,7 +420,7 @@
         });
 
 
-        handleDataTableEvents(datatable);
+        handleDataTableEvents(datatable, "Silakan klik Generate Ekstrakurikuler terlebih dahulu");
         handleAction(datatable)
         handleDelete(datatable)
     </script>

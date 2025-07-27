@@ -177,7 +177,8 @@
                             </div>
                             <div class="card-footer">
                                 <div class="gap-2 hstack justify-content-end">
-                                    <button type="submit" class="btn btn-soft-primary">
+                                    <button type="submit" class="btn btn-soft-primary btn-label"><i
+                                            class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>
                                         @if ($titimangsa)
                                             Update
                                         @else
@@ -198,9 +199,8 @@
                 <div class="card-body">
                     <div class="ribbon ribbon-primary round-shape mt-2">Data Siswa {{ $waliKelas->rombel }}</div>
                     <h5 class="text-end">
-                        <a href="{{ route('walikelas.downloadpdfdatasiswa') }}"
-                            class="btn btn-soft-primary btn-sm">Download
-                            PDF</a>
+                        <x-btn-action href="{{ route('walikelas.downloadpdfdatasiswa') }}" label="Download PDF"
+                            icon="ri-download-2-fill" />
                     </h5>
                     <div class="ribbon-content mt-3">
                         <div class="text-center"><!-- Vertical alignment (align-items-center) -->

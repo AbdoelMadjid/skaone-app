@@ -448,7 +448,7 @@ window.ScrollStaticTable = function(wrapperId = 'custom-table-wrapper', scrollId
     document.addEventListener('DOMContentLoaded', adjustTableScrollHeight);
 };
 
-function showSessionSwal() {
+/* function showSessionSwal() {
     const items = document.querySelectorAll('.swal-session');
 
     items.forEach(item => {
@@ -507,7 +507,168 @@ function showSessionSwal() {
             footer: '<div class="text-muted fs-6"><a href="https://github.com/AbdoelMadjid" target="blank">Scripting & Design by. Abdul Madjid, S.Pd., M.Pd.</a></div>'
         });
     });
+} */
+
+
+function showSessionSwal(callback = null) {
+    const items = document.querySelectorAll('.swal-session');
+
+    if (items.length === 0) {
+        if (typeof callback === 'function') callback();
+        return;
+    }
+
+    items.forEach(item => {
+        const status = item.dataset.status || 'info';
+        const message = item.dataset.message || 'Tidak ada pesan';
+
+        const config = {
+            success: {
+                title: 'Berhasil!',
+                buttonClass: 'btn btn-soft-success',
+                buttonText: 'Lanjut'
+            },
+            error: {
+                title: 'Oops...!',
+                buttonClass: 'btn btn-soft-danger',
+                buttonText: 'Tutup'
+            },
+            warning: {
+                title: 'Peringatan!',
+                buttonClass: 'btn btn-soft-warning',
+                buttonText: 'Mengerti'
+            },
+            info: {
+                title: 'Informasi',
+                buttonClass: 'btn btn-soft-info',
+                buttonText: 'Oke'
+            }
+        };
+
+        const alert = config[status] || config.info;
+
+        Swal.fire({
+            icon: status,
+            title: alert.title,
+            html: `<div class="text-muted">${message}</div>`,
+            showCancelButton: true,
+            showConfirmButton: false,
+            cancelButtonClass: `${alert.buttonClass} w-sm mb-1`,
+            cancelButtonText: alert.buttonText,
+            buttonsStyling: true,
+            showCloseButton: true,
+            showClass: {
+                popup: "animate__animated animate__fadeInUp animate__faster"
+            },
+            hideClass: {
+                popup: "animate__animated animate__fadeOutDown animate__faster"
+            },
+            footer: '<div class="text-muted fs-6"><a href="https://github.com/AbdoelMadjid" target="blank">Scripting & Design by. Abdul Madjid, S.Pd., M.Pd.</a></div>'
+        }).then(() => {
+            if (typeof callback === 'function') callback();
+        });
+    });
 }
 
+function initNotifikasiSwal(options = {}) {
+    const {
+        tableId = null,
+        emptyMessage = 'Data belum tersedia.',
+        afterSwal = null // optional callback
+    } = options;
 
+    const sessionItem = document.querySelector('.swal-session');
 
+    const showSwalFromSession = () => {
+        if (!sessionItem) return Promise.resolve(); // langsung lanjut jika tidak ada swal-session
+
+        const status = sessionItem.dataset.status || 'info';
+        const message = sessionItem.dataset.message || 'Tidak ada pesan';
+
+        const config = {
+            success: {
+                title: 'Berhasil!',
+                buttonClass: 'btn btn-soft-success',
+                buttonText: 'Lanjut'
+            },
+            error: {
+                title: 'Oops...!',
+                buttonClass: 'btn btn-soft-danger',
+                buttonText: 'Tutup'
+            },
+            warning: {
+                title: 'Peringatan!',
+                buttonClass: 'btn btn-soft-warning',
+                buttonText: 'Mengerti'
+            },
+            info: {
+                title: 'Informasi',
+                buttonClass: 'btn btn-soft-info',
+                buttonText: 'Oke'
+            }
+        };
+
+        const alert = config[status] || config.info;
+
+        return Swal.fire({
+            icon: status,
+            title: alert.title,
+            html: `<div class="text-muted">${message}</div>`,
+            showCancelButton: true,
+            showConfirmButton: false,
+            cancelButtonClass: `${alert.buttonClass} w-sm mb-1`,
+            cancelButtonText: alert.buttonText,
+            buttonsStyling: true,
+            showCloseButton: true,
+            showClass: {
+                popup: "animate__animated animate__fadeInUp animate__faster"
+            },
+            hideClass: {
+                popup: "animate__animated animate__fadeOutDown animate__faster"
+            },
+            footer: '<div class="text-muted fs-6"><a href="https://github.com/AbdoelMadjid" target="blank">Scripting & Design by. Abdul Madjid, S.Pd., M.Pd.</a></div>'
+        });
+    };
+
+    const initDataTableEvents = () => {
+        if (!tableId) return;
+
+        const $table = $('#' + tableId);
+
+        if ($table.length === 0) {
+            console.warn(`[initNotifikasiSwal] Tabel dengan ID "${tableId}" tidak ditemukan.`);
+            return;
+        }
+
+        $.fn.dataTable.ext.errMode = 'none';
+
+        $table.on('error.dt', function(e, settings, techNote, message) {
+            console.error('DataTable Error:', message);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Terjadi kesalahan dalam memuat data.',
+                footer: '<div class="text-info fs-6"><a href="https://github.com/AbdoelMadjid" target="blank">Scripting & Design by. Abdul Madjid, S.Pd., M.Pd.</a></div>'
+            });
+        });
+
+        $table.on('draw.dt', function() {
+            const table = $table.DataTable();
+            if (table.data().count() === 0) {
+                const pageTitle = 'Data ' + document.title + ' <br><h2 class="mt-4 text-danger">Masih Kosong</h2>';
+                Swal.fire({
+                    icon: 'info',
+                    title: pageTitle,
+                    html: '<span class="text-info">' + emptyMessage + '</span>',
+                    footer: '<div class="text-info fs-6"><a href="https://github.com/AbdoelMadjid" target="blank">Scripting & Design by. Abdul Madjid, S.Pd., M.Pd.</a></div>'
+                });
+            }
+        });
+    };
+
+    // Jalankan proses
+    showSwalFromSession().then(() => {
+        initDataTableEvents();
+        if (typeof afterSwal === 'function') afterSwal();
+    });
+}

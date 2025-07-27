@@ -128,7 +128,8 @@ Memberikan apresiasi dan tanggapan kepada lawan bicara dengan kosakata, tata bah
                         <button type="button" class="btn btn-outline-danger btn-remove-kkpt">✖</button>
                     </div>
                 </div>
-                <button type="button" class="btn btn-sm btn-soft-info btn-tambah-kkpt">X Tambah
+                <button type="button" class="btn btn-sm btn-outline-info btn-label btn-tambah-kkpt"><i
+                        class="ri-add-line label-icon align-middle fs-18 ms-2"></i> Tambah
                     KKTP</button>
             </div>
         </div>

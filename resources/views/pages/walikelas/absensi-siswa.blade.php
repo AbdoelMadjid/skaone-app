@@ -23,7 +23,8 @@
                     @if (!$absensiExists)
                         <form action="{{ route('walikelas.absensi-siswa.generateabsensi') }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-sm btn-soft-primary">Generate</button>
+                            <button type="submit" class="btn btn-soft-primary btn-label"><i
+                                    class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>Generate Absensi</button>
                         </form>
                     @else
                         <div></div>
@@ -96,7 +97,7 @@
         });
 
 
-        handleDataTableEvents(datatable);
+        handleDataTableEvents(datatable, "Silakan klik Generate Absensi terlebih dahulu");
         handleAction(datatable)
         handleDelete(datatable)
     </script>

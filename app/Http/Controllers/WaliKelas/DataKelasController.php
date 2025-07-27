@@ -5,6 +5,9 @@ namespace App\Http\Controllers\WaliKelas;
 use App\Http\Controllers\Controller;
 use App\Models\Kurikulum\DataKBM\HariEfektif;
 use App\Models\ManajemenSekolah\TahunAjaran;
+use App\Models\WaliKelas\AbsensiSiswa;
+use App\Models\WaliKelas\CatatanWaliKelas;
+use App\Models\WaliKelas\Ekstrakurikuler;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Dompdf\Dompdf;
 use Illuminate\Http\Request;
@@ -79,6 +82,34 @@ class DataKelasController extends Controller
             $kbmData = DB::table('kbm_per_rombels')
                 ->where('kode_rombel', $waliKelas->kode_rombel)
                 ->get();
+
+            // Cek apakah ada data absensi untuk rombel tersebut
+            $absensiExists = AbsensiSiswa::where('kode_rombel', $waliKelas->kode_rombel)
+                ->exists();
+
+            // Jika data absensi belum tersedia, redirect atau tampilkan halaman khusus
+            if (! $absensiExists) {
+                return redirect()
+                    ->route('walikelas.absensi-siswa.index');
+            }
+
+            $eskulExists = Ekstrakurikuler::where('kode_rombel', $waliKelas->kode_rombel)
+                ->exists();
+
+            // Jika data eskul belum tersedia, redirect atau tampilkan halaman khusus
+            if (! $eskulExists) {
+                return redirect()
+                    ->route('walikelas.ekstrakulikuler.index');
+            }
+
+            $catwalikelasExists = CatatanWaliKelas::where('kode_rombel', $waliKelas->kode_rombel)
+                ->exists();
+
+            // Jika data catwalikelas belum tersedia, redirect atau tampilkan halaman khusus
+            if (! $catwalikelasExists) {
+                return redirect()
+                    ->route('walikelas.catatan-wali-kelas.index');
+            }
 
             // Ambil data siswa berdasarkan tahun ajaran, kode rombel, dan tingkat
             $siswaData = DB::table('peserta_didik_rombels')

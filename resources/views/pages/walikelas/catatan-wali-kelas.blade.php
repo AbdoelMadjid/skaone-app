@@ -104,7 +104,7 @@
             });
         });
 
-        handleDataTableEvents(datatable);
+        handleDataTableEvents(datatable, "Silakan klik Generate Catatan Wali Kelas terlebih dahulu");
         handleAction(datatable)
         handleDelete(datatable)
     </script>

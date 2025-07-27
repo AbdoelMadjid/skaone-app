@@ -172,6 +172,7 @@ return [
         App\Providers\AppProfileProvider::class,
         //Intervention\Image\ImageServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Yajra\DataTables\EditorServiceProvider::class,
     ])->toArray(),
 
     /*
