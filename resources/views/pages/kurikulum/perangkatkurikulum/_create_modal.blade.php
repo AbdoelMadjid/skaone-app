@@ -32,13 +32,12 @@
                     <hr>
                     <h5 class="text-info">Grup Pengumuman</h5>
                     <div id="grup-container"></div>
-                    <button type="button" id="addGrup" class="btn btn-outline-success mt-3">+ Tambah
-                        Grup</button>
+                    <button type="button" id="addGrup" class="btn btn-outline-primary mt-3">Tambah Grup</button>
                 </div>
 
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Simpan</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-soft-primary">Simpan</button>
+                    <button type="button" class="btn btn-soft-secondary" data-bs-dismiss="modal">Tutup</button>
                 </div>
             </div>
         </form>
@@ -52,14 +51,14 @@
         return `
         <div class="input-group mb-2 poin-item">
             <input type="text" name="pengumuman[${grupIdx}][poin][]" class="form-control" placeholder="Isi Poin" required>
-            <button type="button" class="btn btn-danger btn-sm remove-poin">×</button>
+            <button type="button" class="btn btn-soft-danger btn-sm remove-poin"><i class="ri-delete-bin-2-fill fs-16"></i></button>
         </div>
     `;
     }
 
     function grupTemplate(index) {
         return `
-        <div class="border rounded p-3 mb-4 bg-secondary-subtle" data-grup-index="${index}">
+        <div class="border rounded p-3 mb-4 bg-secondary-subtle pengumuman-item" data-grup-index="${index}">
             <h6>Grup #${index + 1}</h6>
             <div class="mb-2">
                 <label>Judul Grup Pengumuman</label>
@@ -74,7 +73,10 @@
                 <div class="poin-container">
                     ${poinInput(index)}
                 </div>
-                <button type="button" class="btn btn-soft-primary btn-sm add-poin">+ Tambah Poin</button>
+                <button type="button" class="btn btn-soft-primary btn-sm add-poin">Tambah Poin</button>
+            </div>
+            <div class="text-end">
+                <button type="button" class="btn btn-soft-danger btn-sm" onclick="removeGroup(this)">Hapus Grup</button>
             </div>
         </div>
     `;
@@ -97,4 +99,8 @@
             e.target.closest('.poin-item').remove();
         }
     });
+
+    function removeGroup(button) {
+        button.closest('[data-grup-index], .pengumuman-item')?.remove();
+    }
 </script>

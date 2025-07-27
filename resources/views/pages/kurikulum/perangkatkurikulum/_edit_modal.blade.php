@@ -56,8 +56,9 @@
                                                     <input type="text"
                                                         name="pengumuman[{{ $i }}][poin][]"
                                                         class="form-control" value="{{ $p->isi }}" required>
-                                                    <button type="button" class="btn btn-danger btn-sm"
-                                                        onclick="removeElement(this)">🗑</button>
+                                                    <button type="button" class="btn btn-soft-danger btn-sm"
+                                                        onclick="removeElement(this)"><i
+                                                            class="ri-delete-bin-2-fill fs-16"></i></button>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -66,19 +67,19 @@
                                     </div>
 
                                     <div class="text-end">
-                                        <button type="button" class="btn btn-danger btn-sm"
-                                            onclick="removeGroup(this)">🗑 Hapus Grup</button>
+                                        <button type="button" class="btn btn-soft-danger btn-sm"
+                                            onclick="removeGroup(this)">Hapus Grup</button>
                                     </div>
                                 </div>
                             @endforeach
                         </div>
 
-                        <button type="button" class="btn btn-outline-success mt-2"
-                            onclick="addPengumumanGroup({{ $judul->id }})">+ Tambah Grup Pengumuman</button>
+                        <button type="button" class="btn btn-outline-primary mt-2"
+                            onclick="addPengumumanGroup({{ $judul->id }})">Tambah Grup Pengumuman</button>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Simpan Perubahan</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-soft-primary">Simpan Perubahan</button>
+                        <button type="button" class="btn btn-soft-secondary" data-bs-dismiss="modal">Batal</button>
                     </div>
                 </div>
             </form>
@@ -107,10 +108,11 @@
             <div class="mb-2">
                 <label>Poin</label>
                 <div class="poin-wrapper"></div>
-                <button type="button" class="btn btn-sm btn-soft-primary" onclick="addPoin(this, ${index})">+ Tambah Poin</button>
+                <button type="button" class="btn btn-sm btn-soft-primary" onclick="addPoin(this, ${index})"><i
+                            class="ri-add-fill"></i> Tambah Poin</button>
             </div>
             <div class="text-end">
-                <button type="button" class="btn btn-danger btn-sm" onclick="removeGroup(this)">🗑 Hapus Grup</button>
+                <button type="button" class="btn btn-soft-danger btn-sm" onclick="removeGroup(this)">Hapus Grup</button>
             </div>
         </div>`;
 
@@ -122,7 +124,8 @@
         container.insertAdjacentHTML('beforeend', `
             <div class="input-group mb-2">
                 <input type="text" name="pengumuman[${index}][poin][]" class="form-control" required>
-                <button type="button" class="btn btn-danger btn-sm" onclick="removeElement(this)">🗑</button>
+                <button type="button" class="btn btn-soft-danger btn-sm" onclick="removeElement(this)"><i
+                            class="ri-delete-bin-2-fill fs-16"></i></button>
             </div>
         `);
     }
