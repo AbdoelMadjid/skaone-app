@@ -118,7 +118,7 @@ class RaporPklDataTable extends DataTable
                 //'order' => [[6, 'asc'], [4, 'asc'], [2, 'asc']],
                 'lengthChange' => false,
                 'searching' => false,
-                'pageLength' => 50,
+                'pageLength' => 100,
                 'paging' => true,
                 'scrollCollapse' => false,
                 'scrollY' => "calc(100vh - 378px)",

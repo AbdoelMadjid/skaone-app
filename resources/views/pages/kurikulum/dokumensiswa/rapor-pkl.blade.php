@@ -39,7 +39,8 @@
                                 data-choices-search-false name="choices-single-default" id="idThnAjaran">
                                 <option value="all" selected>Pilih Tahun Ajaran</option>
                                 @foreach ($tahunAjaranOptions as $thnajar)
-                                    <option value="{{ $thnajar }}">{{ $thnajar }}</option>
+                                    <option value="{{ $thnajar }}"
+                                        {{ $thnajar == $tahunAjaranAktif ? 'selected' : '' }}>{{ $thnajar }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -63,7 +64,7 @@
                                 <option value="all" selected>Pilih Tingkat</option>
                                 <option value="10">10</option>
                                 <option value="11">11</option>
-                                <option value="12">12</option>
+                                <option value="12" selected>12</option>
                             </select>
                         </div>
                     </div>
