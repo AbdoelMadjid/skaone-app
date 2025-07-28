@@ -60,7 +60,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/get-personil-jadwal', [JadwalMingguanController::class, 'getPersonil']);
             Route::get('/get-mapel-by-personil', [JadwalMingguanController::class, 'getMapelByPersonil']);
 
-
+            Route::get('/jadwal-mingguan-tampil', function () {
+                return view('pages.kurikulum.datakbm.jadwal-mingguan-tampil');
+            })->name('tampiljadwalmingguan');
 
 
             Route::resource('peserta-didik-rombel', PesertaDidikRombelController::class);
