@@ -14,7 +14,7 @@
         </div>
         <div class="col-md-6">
             <x-form.select name="kode_kk" label="Kompetensi Keahlian" :options="$kompetensiKeahlianOptions" value="{{ $data->kode_kk }}"
-                id="kode_kk" id="kode_kk" />
+                id="kode_kk" />
         </div>
     </div>
     <div class="row">
@@ -61,8 +61,7 @@
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="jam_ke[]"
                                             id="jam_ke_{{ $i }}" value="{{ $i }}"
-                                            {{ in_array($i, old('jam_ke', $data->jam_ke ?? [])) ? 'checked' : '' }}
-                                            id="jamke">
+                                            {{ in_array($i, old('jam_ke', $data->jam_ke ?? [])) ? 'checked' : '' }}>
                                         <label class="form-check-label" for="jam_ke_{{ $i }}">Jam
                                             {{ $i }}</label>
                                     </div>
@@ -74,8 +73,8 @@
             </div>
         </div>
     </div>
-
 </x-form.modal>
+
 <script>
     function loadRombels() {
         const tahunajaran = $('#tahunajaran').val();
@@ -97,6 +96,9 @@
                     $.each(data, function(kode, nama) {
                         rombelSelect.append(`<option value="${kode}">${nama}</option>`);
                     });
+
+                    // Aktifkan select setelah data dimuat
+                    rombelSelect.prop('disabled', false);
                 },
                 error: function() {
                     alert('Gagal mengambil data rombel.');
@@ -203,5 +205,29 @@
             loadMataPelajaran();
         });
 
+        @if ($data->id)
+            // Set nilai filter yang sudah tersimpan
+            $('#tahunajaran').val('{{ $data->tahunajaran }}');
+            $('#kode_kk').val('{{ $data->kode_kk }}');
+            $('#tingkat').val('{{ $data->tingkat }}');
+
+            // Panggil loadRombels agar dropdown rombel terisi sesuai filter
+            loadRombels();
+
+            // Tunggu isi rombel selesai, lalu set value rombel-nya
+            setTimeout(function() {
+                $('#rombel').val('{{ $data->kode_rombel }}');
+                loadPersonil();
+
+                setTimeout(function() {
+                    $('#id_personil').val('{{ $data->id_personil }}');
+                    loadMataPelajaran();
+
+                    setTimeout(function() {
+                        $('#mata_pelajaran').val('{{ $data->mata_pelajaran }}');
+                    }, 400);
+                }, 400);
+            }, 400);
+        @endif
     });
 </script>

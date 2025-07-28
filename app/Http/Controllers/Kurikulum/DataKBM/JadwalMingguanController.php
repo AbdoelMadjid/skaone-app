@@ -44,17 +44,78 @@ class JadwalMingguanController extends Controller
         ]);
     }
 
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(JadwalMingguanRequest $request)
     {
-        $kbmPerRombel = new JadwalMingguan($request->validated());
-        $kbmPerRombel->save();
+        $jadwalMingguan = new JadwalMingguan($request->validated());
+        $jadwalMingguan->save();
 
         return responseSuccess();
     }
+
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(JadwalMingguan $jadwalMingguan)
+    {
+        $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
+        $kompetensiKeahlianOptions = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
+        $rombonganBelajar = RombonganBelajar::pluck('rombel', 'kode_rombel')->toArray();
+        $personilSekolah = PersonilSekolah::pluck('namalengkap', 'id_personil')->toArray();
+
+        return view('pages.kurikulum.datakbm.jadwal-mingguan-form', [
+            'data' => $jadwalMingguan,
+            'tahunAjaranOptions' => $tahunAjaranOptions,
+            'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
+            'rombonganBelajar' => $rombonganBelajar,
+            'personilSekolah' => $personilSekolah,
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(JadwalMingguan $jadwalMingguan)
+    {
+        $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
+        $kompetensiKeahlianOptions = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
+        $rombonganBelajar = RombonganBelajar::pluck('rombel', 'kode_rombel')->toArray();
+        $personilSekolah = PersonilSekolah::pluck('namalengkap', 'id_personil')->toArray();
+
+        return view('pages.kurikulum.datakbm.jadwal-mingguan-form', [
+            'data' => $jadwalMingguan,
+            'tahunAjaranOptions' => $tahunAjaranOptions,
+            'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
+            'rombonganBelajar' => $rombonganBelajar,
+            'personilSekolah' => $personilSekolah,
+            'action' => route('kurikulum.datakbm.jadwal-mingguan.update', $jadwalMingguan->id)
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(JadwalMingguanRequest $request, JadwalMingguan $jadwalMingguan)
+    {
+        $jadwalMingguan->fill($request->validated());
+        $jadwalMingguan->save();
+
+        return responseSuccess(true);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(JadwalMingguan $jadwalMingguan)
+    {
+        $jadwalMingguan->delete();
+
+        return responseSuccessDelete();
+    }
+
 
     public function getRombels(Request $request)
     {

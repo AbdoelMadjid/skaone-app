@@ -24,9 +24,4 @@ class JadwalMingguan extends Model
     protected $casts = [
         'jam_ke' => 'array',
     ];
-
-    public function guru()
-    {
-        return $this->belongsTo(PersonilSekolah::class, 'id_personil');
-    }
 }

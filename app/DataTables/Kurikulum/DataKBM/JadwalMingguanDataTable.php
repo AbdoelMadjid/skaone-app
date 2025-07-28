@@ -7,6 +7,7 @@ use App\Models\ManajemenSekolah\Semester;
 use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -26,12 +27,37 @@ class JadwalMingguanDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addColumn('namaguru', function ($row) {
+                $personilSekolah = DB::table('personil_sekolahs')
+                    ->where('id_personil', $row->id_personil)
+                    ->select('gelardepan', 'namalengkap', 'gelarbelakang') // Ambil semua field yang diperlukan
+                    ->first();
+
+                if ($personilSekolah) {
+                    return $personilSekolah->gelardepan . ' ' . $personilSekolah->namalengkap . ', ' . $personilSekolah->gelarbelakang;
+                }
+
+                return $row->id_personil . '<em>Data tidak ditemukan</em>';
+            })
+            ->addColumn('nama_kelas', function ($row) {
+                $rombonganBelajar = DB::table('rombongan_belajars')
+                    ->where('kode_rombel', $row->kode_rombel)
+                    ->select('rombel') // Ambil semua field yang diperlukan
+                    ->first();
+
+                if ($rombonganBelajar) {
+                    return $rombonganBelajar->rombel;
+                }
+
+                return $row->kode_rombel . '<em>Data tidak ditemukan</em>';
+            })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
                 return view('action', compact('actions'));
             })
-            ->addIndexColumn();
+            ->addIndexColumn()
+            ->rawColumns(['namaguru', 'nama_kelas', 'action']);
     }
 
     /**
@@ -75,11 +101,11 @@ class JadwalMingguanDataTable extends DataTable
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('tahunajaran')->title('Tahun Ajaran')->addClass('text-center'),
-            Column::make('Semester')->addClass('text-center'),
+            Column::make('semester')->addClass('text-center'),
             Column::make('kode_kk')->addClass('text-center'),
             Column::make('tingkat')->addClass('text-center'),
-            Column::make('kode_rombel')->title('Kode Rombel')->addClass('text-center'),
-            Column::make('id_personil')->title('id_personil')->addClass('text-center'),
+            Column::make('nama_kelas')->title('Rombel')->addClass('text-center'),
+            Column::make('namaguru')->title('Nama Guru Mapel'),
             Column::make('mata_pelajaran')->title('Mata Pelajaran'),
             Column::make('hari')->title('hari')->addClass('text-center'),
             Column::make('jam_ke')->title('jam_ke')->addClass('text-center'),
