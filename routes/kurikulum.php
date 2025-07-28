@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Kurikulum\DataKBM\CapaianPembelajaranController;
 use App\Http\Controllers\Kurikulum\DataKBM\HariEfektifController;
+use App\Http\Controllers\Kurikulum\DataKBM\JadwalMingguanController;
 use App\Http\Controllers\Kurikulum\DataKBM\KbmPerRombelController;
 use App\Http\Controllers\Kurikulum\DataKBM\KunciDataKbmController;
 use App\Http\Controllers\Kurikulum\DataKBM\MataPelajaranController;
@@ -54,6 +55,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/hari-efektif-toggle-libur', [HariEfektifController::class, 'toggleLibur'])->name('hari-efektif-toggle-libur');
             Route::post('/hari-efektif-hitung', [HariEfektifController::class, 'hitungHariEfektif'])->name('hari-efektif-hitung');
 
+            Route::resource('jadwal-mingguan', JadwalMingguanController::class);
 
             Route::resource('peserta-didik-rombel', PesertaDidikRombelController::class);
             Route::get('/get-rombongan-belajar', [PesertaDidikRombelController::class, 'getRombonganBelajar'])->name('get-rombonganbelajar');

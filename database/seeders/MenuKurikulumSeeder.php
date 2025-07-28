@@ -46,6 +46,9 @@ class MenuKurikulumSeeder extends Seeder
         $csm = $sm->subMenus()->create(['name' => 'Hari Efektif', 'url' => $sm->url . '/hari-efektif', 'category' => $sm->category]);
         $this->attachMenupermission($csm, ['create', 'read', 'update', 'delete'], ['admin']);
 
+        $csm = $sm->subMenus()->create(['name' => 'Jadwal Mingguan', 'url' => $sm->url . '/jadwal-mingguan', 'category' => $sm->category]);
+        $this->attachMenupermission($csm, ['create', 'read', 'update', 'delete'], ['admin']);
+
         $csm = $sm->subMenus()->create(['name' => 'Peserta Didik Rombel', 'url' => $sm->url . '/peserta-didik-rombel', 'category' => $sm->category]);
         $this->attachMenupermission($csm, ['create', 'read', 'update', 'delete'], ['admin']);
 

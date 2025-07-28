@@ -320,6 +320,7 @@ return [
     //kurikulum - data kbm
     "data-kbm" => "Data KBM",
     "hari-efektif" => "Hari Efektif",
+    "jadwal-mingguan" => "Jadwal Ngajar",
     "peserta-didik-rombel" => "Peserta Didik Rombel",
     "mata-pelajaran" => "Mata Pelajaran",
     "mata-pelajaran-perjurusan" => "Mata Pelajaran Per Jurusan",
