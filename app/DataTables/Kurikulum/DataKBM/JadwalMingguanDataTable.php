@@ -40,49 +40,7 @@ class JadwalMingguanDataTable extends DataTable
     public function query(JadwalMingguan $model): QueryBuilder
     {
         $query = $model->newQuery();
-
-        // Ambil tahun ajaran dan semester aktif
-        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
-        $semesterAktif = null;
-
-        if ($tahunAjaranAktif) {
-            $semesterAktif = Semester::where('status', 'Aktif')
-                ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
-                ->first();
-        }
-
-        // Ambil parameter filter dari request
-        if (request()->has('search') && !empty(request('search'))) {
-            $query->where('mata_pelajaran', 'like', '%' . request('search') . '%');
-        }
-
-        // Filter tahun ajaran
-        if (request()->has('thAjar') && request('thAjar') != 'all') {
-            $query->where('tahunajaran', request('thAjar'));
-        } elseif ($tahunAjaranAktif) {
-            // Default: pakai tahun ajaran aktif
-            $query->where('tahunajaran', $tahunAjaranAktif->tahunajaran);
-        }
-
-        // Filter semester
-        if (request()->has('seMester') && request('seMester') != 'all') {
-            $query->where('ganjilgenap', request('seMester'));
-        } elseif ($semesterAktif) {
-            // Default: pakai semester aktif
-            $query->where('ganjilgenap', $semesterAktif->semester);
-        }
-
-        if (request()->has('romBel') && request('romBel') != 'all') {
-            $query->where('kode_rombel', request('romBel'));
-        }
-
-        // Default query with ordering
         $query->orderBy('kode_rombel', 'asc');
-
-        /* $query->join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
-            ->join('kompetensi_keahlians', 'peserta_didik_rombels.kode_kk', '=', 'kompetensi_keahlians.idkk')
-            ->select('peserta_didik_rombels.*', 'peserta_didiks.nama_lengkap', 'kompetensi_keahlians.nama_kk'); // Tambahkan nama_kk */
-
         return $query;
     }
 
@@ -94,15 +52,7 @@ class JadwalMingguanDataTable extends DataTable
         return $this->builder()
             ->setTableId('jadwalmingguan-table')
             ->columns($this->getColumns())
-            ->ajax([
-                'data' =>
-                'function(d) {
-                    d.search = $(".search").val();
-                    d.thAjar = $("#idThnAjaran").val();
-                    d.seMester = $("#idSemester").val();
-                    d.romBel = $("#idRombel").val();
-                }'
-            ])
+            ->minifiedAjax()
             //->dom('Bfrtip')
             ->orderBy(1)
             ->selectStyleSingle()
@@ -124,15 +74,15 @@ class JadwalMingguanDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
-            Column::make('kode_rombel')->title('Kode Rombel')->addClass('text-center'),
             Column::make('tahunajaran')->title('Tahun Ajaran')->addClass('text-center'),
             Column::make('Semester')->addClass('text-center'),
+            Column::make('kode_kk')->addClass('text-center'),
+            Column::make('tingkat')->addClass('text-center'),
+            Column::make('kode_rombel')->title('Kode Rombel')->addClass('text-center'),
             Column::make('id_personil')->title('id_personil')->addClass('text-center'),
             Column::make('mata_pelajaran')->title('Mata Pelajaran'),
             Column::make('hari')->title('hari')->addClass('text-center'),
             Column::make('jam_ke')->title('jam_ke')->addClass('text-center'),
-            Column::make('waktu_mulai')->title('waktu_mulai')->addClass('text-center'),
-            Column::make('waktu_selesai')->title('waktu_selesai')->addClass('text-center'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

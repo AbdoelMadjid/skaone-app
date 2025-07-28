@@ -13,18 +13,17 @@ return new class extends Migration
     {
         Schema::create('jadwal_mingguans', function (Blueprint $table) {
             $table->id();
+            $table->string('tahunajaran');
+            $table->string('semester');
+            $table->string('kode_kk');
+            $table->string('tingkat');
             $table->string('kode_rombel');
-            $table->string('tahunajaran'); // contoh: 2024/2025
-            $table->string('semester');    // Ganjil / Genap
 
             $table->string('id_personil');
             $table->string('mata_pelajaran');
 
             $table->enum('hari', ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat']);
             $table->json('jam_ke'); // [1,2,3] atau [4] dsb
-
-            $table->time('waktu_mulai')->nullable();    // Opsional jika ingin display waktu
-            $table->time('waktu_selesai')->nullable();
 
             $table->timestamps();
 

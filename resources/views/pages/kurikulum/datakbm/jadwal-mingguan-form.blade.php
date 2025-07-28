@@ -4,53 +4,204 @@
     @endif
 
     <div class="row">
-        <x-form.select name="tahunajaran" label="Tahun Ajaran" :options="$tahunAjaranOptions" value="{{ $data->tahunajaran }}"
-            id="tahunajaran" />
-
-        <x-form.select name="semester" label="Semester" :options="['Ganjil' => 'Ganjil', 'Genap' => 'Genap']"
-            value="{{ old('semester', $data->semester) }}" />
-
-        <x-form.select name="id_personil" label="Personil Sekolah" :options="$personilSekolah"
-            value="{{ old('id_personil', $data->id_personil) }}" />
+        <div class="col-md-3">
+            <x-form.select name="tahunajaran" label="Tahun Ajaran" :options="$tahunAjaranOptions" value="{{ $data->tahunajaran }}"
+                id="tahunajaran" />
+        </div>
+        <div class="col-md-3">
+            <x-form.select name="semester" label="Semester" :options="['Ganjil' => 'Ganjil', 'Genap' => 'Genap']"
+                value="{{ old('semester', $data->semester) }}" id="semester" />
+        </div>
+        <div class="col-md-6">
+            <x-form.select name="kode_kk" label="Kompetensi Keahlian" :options="$kompetensiKeahlianOptions" value="{{ $data->kode_kk }}"
+                id="kode_kk" id="kode_kk" />
+        </div>
     </div>
-
     <div class="row">
-        <x-form.select name="kode_rombel" label="Rombongan Belajar" :options="$rombonganBelajar"
-            value="{{ old('kode_rombel', $data->kode_rombel) }}" />
-
-        <x-form.select name="hari" label="Hari" :options="[
-            'Senin' => 'Senin',
-            'Selasa' => 'Selasa',
-            'Rabu' => 'Rabu',
-            'Kamis' => 'Kamis',
-            'Jumat' => 'Jumat',
-        ]" value="$data->hari" />
+        <div class="col-md-3">
+            <x-form.select name="tingkat" :options="['10' => '10', '11' => '11', '12' => '12']" value="{{ old('tingkat', $data->tingkat) }}" label="Tingkat"
+                id="tingkat" />
+        </div>
+        <div class="col-md-3">
+            <x-form.select name="kode_rombel" label="Rombongan Belajar" :options="$rombonganBelajar"
+                value="{{ old('kode_rombel', $data->kode_rombel) }}" id="rombel" disabled />
+        </div>
+        <div class="col-md-6">
+            <x-form.select name="id_personil" label="Personil Sekolah" :options="[]" id="id_personil" disabled />
+        </div>
     </div>
-
     <div class="row">
-        <div class="mb-3">
+        <div class="col-md-6">
+            <x-form.select name="mata_pelajaran" label="Mata Pelajaran" :options="[]" id="mata_pelajaran"
+                disabled />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <x-form.select name="hari" label="Hari" :options="[
+                'Senin' => 'Senin',
+                'Selasa' => 'Selasa',
+                'Rabu' => 'Rabu',
+                'Kamis' => 'Kamis',
+                'Jumat' => 'Jumat',
+            ]" value="{{ $data->hari }}" id="hari" />
+        </div>
+        <div class="col-md-8">
             <label class="form-label">Jam Ke</label>
             <div class="row">
-                @for ($i = 1; $i <= 12; $i++)
-                    <div class="col-3">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="jam_ke[]"
-                                id="jam_ke_{{ $i }}" value="{{ $i }}"
-                                {{ in_array($i, old('jam_ke', $data->jam_ke ?? [])) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="jam_ke_{{ $i }}">Jam
-                                {{ $i }}</label>
-                        </div>
+                @for ($row = 0; $row < 3; $row++) {{-- 3 baris --}}
+                    <div class="row mb-1">
+                        @for ($col = 0; $col < 3; $col++)
+                            {{-- 4 kolom --}}
+                            @php
+                                $i = $row + $col * 4 + 1;
+                            @endphp
+                            <div class="col-4">
+                                @if ($i <= 12)
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="jam_ke[]"
+                                            id="jam_ke_{{ $i }}" value="{{ $i }}"
+                                            {{ in_array($i, old('jam_ke', $data->jam_ke ?? [])) ? 'checked' : '' }}
+                                            id="jamke">
+                                        <label class="form-check-label" for="jam_ke_{{ $i }}">Jam
+                                            {{ $i }}</label>
+                                    </div>
+                                @endif
+                            </div>
+                        @endfor
                     </div>
                 @endfor
             </div>
         </div>
-
-        <x-form.input name="waktu_mulai" type="time" label="Waktu Mulai" value="{{ $data->waktu_mulai }}" />
-
-        <x-form.input name="waktu_selesai" type="time" label="Waktu Selesai" value="{{ $data->waktu_selesai }}" />
     </div>
 
-    <div class="row">
-        <x-form.input name="mata_pelajaran" label="Mata Pelajaran" value="{{ $data->mata_pelajaran }}" />
-    </div>
 </x-form.modal>
+<script>
+    function loadRombels() {
+        const tahunajaran = $('#tahunajaran').val();
+        const kodeKK = $('#kode_kk').val();
+        const tingkat = $('#tingkat').val();
+
+        if (tahunajaran && kodeKK && tingkat) {
+            $.ajax({
+                url: "{{ route('kurikulum.datakbm.getrombeljadwals') }}",
+                type: 'GET',
+                data: {
+                    tahunajaran: tahunajaran,
+                    kode_kk: kodeKK,
+                    tingkat: tingkat
+                },
+                success: function(data) {
+                    let rombelSelect = $('#rombel');
+                    rombelSelect.empty().append('<option value="">Pilih Rombel</option>');
+                    $.each(data, function(kode, nama) {
+                        rombelSelect.append(`<option value="${kode}">${nama}</option>`);
+                    });
+                },
+                error: function() {
+                    alert('Gagal mengambil data rombel.');
+                }
+            });
+        }
+    }
+
+    function loadPersonil() {
+        const tahunajaran = $('#tahunajaran').val();
+        const kode_kk = $('#kode_kk').val();
+        const tingkat = $('#tingkat').val();
+        const semester = $('#semester').val();
+        const kode_rombel = $('#rombel').val();
+
+        if (tahunajaran && kode_kk && tingkat && semester && kode_rombel) {
+            $.ajax({
+                url: '/kurikulum/datakbm/get-personil-jadwal',
+                method: 'GET',
+                data: {
+                    tahunajaran,
+                    kode_kk,
+                    tingkat,
+                    semester,
+                    kode_rombel
+                },
+                success: function(data) {
+                    let $personil = $('#id_personil');
+                    $personil.prop('disabled', false).empty().append(
+                        '<option value="">Pilih Personil</option>');
+                    $.each(data, function(id, nama) {
+                        $personil.append(`<option value="${id}">${nama}</option>`);
+                    });
+                }
+            });
+        } else {
+            $('#id_personil').prop('disabled', true).empty().append('<option value="">Pilih Personil</option>');
+        }
+    }
+
+    function loadMataPelajaran() {
+        const tahunajaran = $('#tahunajaran').val();
+        const kode_kk = $('#kode_kk').val();
+        const tingkat = $('#tingkat').val();
+        const semester = $('#semester').val();
+        const kode_rombel = $('#rombel').val();
+        const id_personil = $('#id_personil').val();
+
+        if (tahunajaran && kode_kk && tingkat && semester && kode_rombel && id_personil) {
+            $.ajax({
+                url: '/kurikulum/datakbm/get-mapel-by-personil',
+                method: 'GET',
+                data: {
+                    tahunajaran,
+                    kode_kk,
+                    tingkat,
+                    semester,
+                    kode_rombel,
+                    id_personil
+                },
+                success: function(data) {
+                    let $mapel = $('#mata_pelajaran');
+                    $mapel.prop('disabled', false).empty().append(
+                        '<option value="">Pilih Mata Pelajaran</option>');
+                    $.each(data, function(index, item) {
+                        $mapel.append(
+                            `<option value="${item.kode_mapel_rombel}">${item.mata_pelajaran}</option>`
+                        );
+                    });
+                }
+            });
+        } else {
+            $('#mata_pelajaran').prop('disabled', true).empty().append(
+                '<option value="">Pilih Mata Pelajaran</option>');
+        }
+    }
+
+    $(document).ready(function() {
+
+        $('#tingkat').on('change', function() {
+            const tingkat = $(this).val();
+
+            if (tingkat) {
+                $('#rombel').prop('disabled', false);
+            } else {
+                $('#rombel').prop('disabled', true).empty().append(
+                    '<option value="">Pilih Rombel</option>');
+            }
+
+            loadRombels(); // jika mau langsung load rombel juga
+        });
+
+        $('#tahunajaran, #kode_kk, #tingkat, #semester, #rombel').on('change', function() {
+            loadPersonil();
+        });
+
+        // Trigger saat salah satu filter berubah
+        $('#tahunajaran, #kode_kk, #tingkat').on('change', function() {
+            loadRombels();
+        });
+
+        // Trigger ketika personil dipilih
+        $('#id_personil').on('change', function() {
+            loadMataPelajaran();
+        });
+
+    });
+</script>

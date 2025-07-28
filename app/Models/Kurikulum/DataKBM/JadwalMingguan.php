@@ -10,15 +10,15 @@ class JadwalMingguan extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'kode_rombel',
         'tahunajaran',
         'semester',
+        'kode_kk',
+        'tingkat',
+        'kode_rombel',
         'id_personil',
         'mata_pelajaran',
         'hari',
         'jam_ke',
-        'waktu_mulai',
-        'waktu_selesai'
     ];
 
     protected $casts = [

@@ -56,6 +56,12 @@ Route::middleware('auth')->group(function () {
             Route::post('/hari-efektif-hitung', [HariEfektifController::class, 'hitungHariEfektif'])->name('hari-efektif-hitung');
 
             Route::resource('jadwal-mingguan', JadwalMingguanController::class);
+            Route::get('/getrombeljadwals', [JadwalMingguanController::class, 'getRombels'])->name('getrombeljadwals');
+            Route::get('/get-personil-jadwal', [JadwalMingguanController::class, 'getPersonil']);
+            Route::get('/get-mapel-by-personil', [JadwalMingguanController::class, 'getMapelByPersonil']);
+
+
+
 
             Route::resource('peserta-didik-rombel', PesertaDidikRombelController::class);
             Route::get('/get-rombongan-belajar', [PesertaDidikRombelController::class, 'getRombonganBelajar'])->name('get-rombonganbelajar');
