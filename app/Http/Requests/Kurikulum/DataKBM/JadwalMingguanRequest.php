@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Kurikulum\DataKBM;
 
+use App\Models\Kurikulum\DataKBM\JadwalMingguan;
 use Illuminate\Foundation\Http\FormRequest;
 
 class JadwalMingguanRequest extends FormRequest
@@ -55,5 +56,38 @@ class JadwalMingguanRequest extends FormRequest
             'jam_ke.*.min'            => 'Nilai jam ke minimal 1.',
             'jam_ke.*.max'            => 'Nilai jam ke maksimal 12.',
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $id_personil = $this->id_personil;
+            $hari = $this->hari;
+            $jam_ke = is_array($this->jam_ke) ? $this->jam_ke : json_decode($this->jam_ke, true);
+            $kode_rombel = $this->kode_rombel;
+            $tahunajaran = $this->tahunajaran;
+            $semester = $this->semester;
+
+            // Ambil semua jadwal pada hari itu dan jam ke yang sama, untuk tahunajaran dan semester yang sama
+            $existing = JadwalMingguan::where('tahunajaran', $tahunajaran)
+                ->where('semester', $semester)
+                ->where('hari', $hari)
+                ->whereIn('jam_ke', $jam_ke)
+                ->get();
+
+            foreach ($jam_ke as $jam) {
+                foreach ($existing as $jadwal) {
+                    // Bentrok karena guru yang sama sudah ada jadwal di jam itu
+                    if ($jadwal->id_personil == $id_personil) {
+                        $validator->errors()->add('jam_ke', "Guru sudah ada jadwal di hari $hari jam ke-$jam");
+                    }
+
+                    // Bentrok karena rombel sudah ada jadwal di jam itu
+                    if ($jadwal->kode_rombel == $kode_rombel) {
+                        $validator->errors()->add('jam_ke', "Rombel sudah ada jadwal di hari $hari jam ke-$jam");
+                    }
+                }
+            }
+        });
     }
 }

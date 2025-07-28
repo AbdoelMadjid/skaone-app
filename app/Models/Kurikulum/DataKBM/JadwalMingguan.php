@@ -20,8 +20,4 @@ class JadwalMingguan extends Model
         'hari',
         'jam_ke',
     ];
-
-    protected $casts = [
-        'jam_ke' => 'array',
-    ];
 }

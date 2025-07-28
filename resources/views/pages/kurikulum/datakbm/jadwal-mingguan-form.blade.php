@@ -37,7 +37,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <x-form.select name="hari" label="Hari" :options="[
                 'Senin' => 'Senin',
                 'Selasa' => 'Selasa',
@@ -46,24 +46,24 @@
                 'Jumat' => 'Jumat',
             ]" value="{{ $data->hari }}" id="hari" />
         </div>
-        <div class="col-md-8">
+        <div class="col-md-9">
             <label class="form-label">Jam Ke</label>
             <div class="row">
                 @for ($row = 0; $row < 3; $row++) {{-- 3 baris --}}
-                    <div class="row mb-1">
-                        @for ($col = 0; $col < 3; $col++)
-                            {{-- 4 kolom --}}
+                    <div class="row mb-4">
+                        @for ($col = 0; $col < 5; $col++)
+                            {{-- 5 kolom --}}
                             @php
-                                $i = $row + $col * 4 + 1;
+                                $i = $row * 5 + $col + 1;
                             @endphp
-                            <div class="col-4">
-                                @if ($i <= 12)
+                            <div class="col-2"> {{-- 12 / 5 kolom = 2.4 → pakai col-2 agar pas --}}
+                                @if ($i <= 15)
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="jam_ke[]"
                                             id="jam_ke_{{ $i }}" value="{{ $i }}"
-                                            {{ in_array($i, old('jam_ke', $data->jam_ke ?? [])) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="jam_ke_{{ $i }}">Jam
-                                            {{ $i }}</label>
+                                            {{ in_array($i, old('jam_ke', [$data->jam_ke])) ? 'checked' : '' }}>
+                                        <label class="form-check-label"
+                                            for="jam_ke_{{ $i }}">{{ $i }}</label>
                                     </div>
                                 @endif
                             </div>

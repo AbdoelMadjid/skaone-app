@@ -49,8 +49,16 @@ class JadwalMingguanController extends Controller
      */
     public function store(JadwalMingguanRequest $request)
     {
-        $jadwalMingguan = new JadwalMingguan($request->validated());
-        $jadwalMingguan->save();
+        // Ambil data tervalidasi, tapi pisahkan jam_ke karena akan dipecah
+        $validated = $request->validated();
+        $data = collect($validated)->except('jam_ke')->toArray();
+
+        foreach ($validated['jam_ke'] as $jam) {
+            JadwalMingguan::create([
+                ...$data,
+                'jam_ke' => $jam,
+            ]);
+        }
 
         return responseSuccess();
     }
@@ -85,12 +93,20 @@ class JadwalMingguanController extends Controller
         $rombonganBelajar = RombonganBelajar::pluck('rombel', 'kode_rombel')->toArray();
         $personilSekolah = PersonilSekolah::pluck('namalengkap', 'id_personil')->toArray();
 
+        $jamKeChecked = JadwalMingguan::where('kode_rombel', $jadwalMingguan->kode_rombel)
+            ->where('hari', $jadwalMingguan->hari)
+            ->where('mata_pelajaran', $jadwalMingguan->mata_pelajaran)
+            ->where('id_personil', $jadwalMingguan->id_personil)
+            ->pluck('jam_ke') // ambil semua jam_ke yang relevan
+            ->toArray();
+
         return view('pages.kurikulum.datakbm.jadwal-mingguan-form', [
             'data' => $jadwalMingguan,
             'tahunAjaranOptions' => $tahunAjaranOptions,
             'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
             'rombonganBelajar' => $rombonganBelajar,
             'personilSekolah' => $personilSekolah,
+            'dataJamKe' => $jamKeChecked,
             'action' => route('kurikulum.datakbm.jadwal-mingguan.update', $jadwalMingguan->id)
         ]);
     }

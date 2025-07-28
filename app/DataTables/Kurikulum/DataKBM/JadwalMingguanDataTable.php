@@ -51,13 +51,38 @@ class JadwalMingguanDataTable extends DataTable
 
                 return $row->kode_rombel . '<em>Data tidak ditemukan</em>';
             })
+            ->addColumn('matapelajaran', function ($row) {
+                $mataPelajaran = DB::table('kbm_per_rombels')
+                    ->where('kode_mapel_rombel', $row->mata_pelajaran)
+                    ->select('mata_pelajaran') // Ambil semua field yang diperlukan
+                    ->first();
+
+                if ($mataPelajaran) {
+                    return $mataPelajaran->mata_pelajaran;
+                }
+
+                return $row->mata_pelajaran . '<em>Data tidak ditemukan</em>';
+            })
+            ->addColumn('nama_kk', function ($row) {
+                $konsentrasiKeahlian = DB::table('kompetensi_keahlians')
+                    ->where('idkk', $row->kode_kk)
+                    ->select('singkatan') // Ambil semua field yang diperlukan
+                    ->first();
+
+                if ($konsentrasiKeahlian) {
+                    return '(' . $row->kode_kk . ') ' . $konsentrasiKeahlian->singkatan;
+                }
+
+                return $row->kode_kk . '<em>Data tidak ditemukan</em>';
+            })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
+                unset($actions['Edit']);
                 return view('action', compact('actions'));
             })
             ->addIndexColumn()
-            ->rawColumns(['namaguru', 'nama_kelas', 'action']);
+            ->rawColumns(['namaguru', 'nama_kelas', 'matapelajaran', 'nama_kk', 'action']);
     }
 
     /**
@@ -102,11 +127,11 @@ class JadwalMingguanDataTable extends DataTable
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('tahunajaran')->title('Tahun Ajaran')->addClass('text-center'),
             Column::make('semester')->addClass('text-center'),
-            Column::make('kode_kk')->addClass('text-center'),
+            Column::make('nama_kk')->addClass('text-center'),
             Column::make('tingkat')->addClass('text-center'),
             Column::make('nama_kelas')->title('Rombel')->addClass('text-center'),
             Column::make('namaguru')->title('Nama Guru Mapel'),
-            Column::make('mata_pelajaran')->title('Mata Pelajaran'),
+            Column::make('matapelajaran')->title('Mata Pelajaran'),
             Column::make('hari')->title('hari')->addClass('text-center'),
             Column::make('jam_ke')->title('jam_ke')->addClass('text-center'),
             Column::computed('action')
