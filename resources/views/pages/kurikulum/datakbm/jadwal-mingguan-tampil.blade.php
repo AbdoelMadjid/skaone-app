@@ -88,140 +88,16 @@
             </form>
         </div>
         <div class="card-body p-1">
-            @if (!function_exists('warnaDariId'))
-                @php
-                    function warnaDariId($id)
-                    {
-                        $hash = crc32($id);
-                        $hex = substr(dechex($hash), 0, 6);
-                        return '#' . str_pad($hex, 6, '0', STR_PAD_RIGHT);
-                    }
-
-                    function kontrasTeks($bg)
-                    {
-                        $r = hexdec(substr($bg, 1, 2));
-                        $g = hexdec(substr($bg, 3, 2));
-                        $b = hexdec(substr($bg, 5, 2));
-                        $luminance = (0.299 * $r + 0.587 * $g + 0.114 * $b) / 255;
-                        return $luminance > 0.5 ? '#000' : '#fff';
-                    }
-                @endphp
-            @endif
-            @php
-                use App\Models\Kurikulum\DataKBM\JadwalMingguan;
-                use App\Models\Kurikulum\DataKBM\KbmPerRombel;
-                use App\Models\ManajemenSekolah\RombonganBelajar;
-                use App\Models\ManajemenSekolah\PersonilSekolah;
-
-                // Ambil parameter dari URL
-                $tahunAjaran = request()->get('tahunajaran');
-                $seMester = request()->get('semester');
-                $kodeKK = request()->get('kompetensikeahlian');
-                $tingKat = request()->get('tingkat');
-                $kodeRombel = request()->get('kode_rombel');
-
-                // Ambil data jadwal mingguan
-                $jadwal = JadwalMingguan::where('tahunajaran', $tahunAjaran)
-                    ->where('semester', $seMester)
-                    ->where('kode_rombel', $kodeRombel)
-                    ->get();
-
-                // Ambil nama rombel
-                $namaRombel = KbmPerRombel::where('kode_rombel', $kodeRombel)->value('rombel') ?? '-';
-
-                // Ambil nama wali kelas
-                $rombel = RombonganBelajar::with('waliKelas')->where('kode_rombel', $kodeRombel)->first();
-
-                $namaWaliKelas =
-                    $rombel && $rombel->waliKelas
-                        ? trim(
-                            "{$rombel->waliKelas->gelardepan} {$rombel->waliKelas->namalengkap}" .
-                                ($rombel->waliKelas->gelarbelakang ? ", {$rombel->waliKelas->gelarbelakang}" : ''),
-                        )
-                        : '-';
-
-                // Buat struktur grid jadwal [jam_ke][hari] => [mapel, guru, id]
-                $grid = [];
-
-                foreach ($jadwal as $item) {
-                    $guru = PersonilSekolah::where('id_personil', $item->id_personil)->value('namalengkap') ?? '-';
-
-                    $namaMapel =
-                        KbmPerRombel::where('kode_mapel_rombel', $item->mata_pelajaran)->value('mata_pelajaran') ?? '-';
-
-                    $grid[$item->jam_ke][$item->hari] = [
-                        'mapel' => $namaMapel,
-                        'guru' => $guru,
-                        'id' => $item->id_personil,
-                    ];
-                }
-
-                // List hari dan jam pelajaran
-                $hariList = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
-
-                $jamList = [
-                    1 => '6:30 - 7:10',
-                    2 => '7:10 - 7:50',
-                    3 => '7:50 - 8:30',
-                    4 => '8:30 - 9:10',
-                    5 => '9:10 - 9:50',
-                    6 => '9:50 - 10:00', // Istirahat
-                    7 => '10:00 - 10:40',
-                    8 => '10:40 - 11:20',
-                    9 => '11:20 - 12:00',
-                    10 => '12:00 - 13:00', // Istirahat
-                    11 => '13:00 - 13:40',
-                    12 => '13:40 - 14:20',
-                    13 => '14:20 - 15:00',
-                ];
-
-                $jamKeList = array_keys($jamList);
-
-                // Ambil semua data KBM untuk rombel tersebut
-                $dataKBMPerRombel = KbmPerRombel::where('tahunajaran', $tahunAjaran)
-                    ->where('ganjilgenap', $seMester)
-                    ->where('kode_rombel', $kodeRombel)
-                    ->get();
-
-                // Ambil ID guru dari data KBM
-                $idGuruDalamKBM = $dataKBMPerRombel->pluck('id_personil')->unique();
-
-                // Ambil data guru berdasarkan ID yang ditemukan
-                $guruList = PersonilSekolah::whereIn('id_personil', $idGuruDalamKBM)->orderBy('namalengkap')->get();
-
-                // Siapkan data mapel per guru dalam bentuk array
-                $mapelPerGuru = [];
-
-                foreach ($dataKBMPerRombel as $kbm) {
-                    $idGuru = $kbm->id_personil;
-                    if (!isset($mapelPerGuru[$idGuru])) {
-                        $mapelPerGuru[$idGuru] = [];
-                    }
-                    $mapelPerGuru[$idGuru][] = [
-                        'kode_mapel_rombel' => $kbm->kode_mapel_rombel,
-                        'mata_pelajaran' => $kbm->mata_pelajaran,
-                    ];
-                }
-            @endphp
-
-
-
-            <div class="row justify-content-center">
-                <div class="col-lg-8 col-sm-10">
-                    <div class="text-center mt-lg-2 pt-3">
-                        <h1 class="display-6 fw-semibold mb-1 lh-base">
-                            JADWAL PEMBELAJARAN
-                            <span class="text-success">
-                                {{ $namaRombel }}
-                            </span>
-                        </h1>
-                        <p class="lead text-muted lh-base">TAHUN AJARAN {{ $tahunAjaran ?? '-' }} SEMESTER
-                            {{ strtoupper($seMester ?? '-') }}
-                        </p>
-                    </div>
-                </div>
+            <div class="text-center mt-lg-2 pt-3">
+                <h1 class="display-6 fw-semibold mb-1 lh-base">
+                    JADWAL PEMBELAJARAN <span class="text-success">{{ $namaRombel }}</span>
+                </h1>
+                <p class="lead text-muted lh-base">TAHUN AJARAN {{ $tahunAjaran ?? '-' }} SEMESTER
+                    {{ strtoupper($semester ?? '-') }}</p>
             </div>
+
             <h5>Wali Kelas: {{ $namaWaliKelas }}</h5>
+
             <table class="table table-bordered table-sm text-center align-middle">
                 <thead class="table-light">
                     <tr>
@@ -232,56 +108,51 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($jamKeList as $jam)
+                    @foreach ($jamList as $jam => $waktu)
                         @if ($jam == 6)
                             <tr class="table-info">
-                                <td>
-                                    <strong class='fs-24'>{{ $jam }}</strong><br>
-                                    <small>{{ $jamList[$jam] }}</small>
+                                <td><strong
+                                        class='fs-24'>{{ $jam }}</strong><br><small>{{ $waktu }}</small>
                                 </td>
-                                <td colspan="{{ count($hariList) }}">
-                                    <strong>Istirahat Pertama</strong>
-                                </td>
+                                <td colspan="{{ count($hariList) }}"><strong class="fs-24">Istirahat Pertama</strong></td>
                             </tr>
                         @elseif ($jam == 10)
                             <tr class="table-info">
-                                <td>
-                                    <strong class='fs-24'>{{ $jam }}</strong><br>
-                                    <small>{{ $jamList[$jam] }}</small>
+                                <td><strong
+                                        class='fs-24'>{{ $jam }}</strong><br><small>{{ $waktu }}</small>
                                 </td>
-                                <td colspan="{{ count($hariList) }}">
-                                    <strong>Istirahat, Sholat, Makan</strong>
-                                </td>
+                                <td colspan="{{ count($hariList) }}"><strong class="fs-24">Istirahat, Sholat,
+                                        Makan</strong></td>
                             </tr>
                         @else
                             <tr>
                                 <td style="width:100px;">
-                                    <strong class='fs-24'>{{ $jam }}</strong><br>
-                                    <small>{{ $jamList[$jam] }}</small>
+                                    <strong
+                                        class='fs-24'>{{ $jam }}</strong><br><small>{{ $waktu }}</small>
                                 </td>
                                 @foreach ($hariList as $hari)
                                     @php
-                                        $bgColor = '';
-                                        if (isset($grid[$jam][$hari])) {
-                                            $id = $grid[$jam][$hari]['id'];
-                                            $bgColor = warnaDariId($id);
-                                        }
+                                        $cell = $grid[$jam][$hari] ?? null;
+                                        $bgColor = $cell ? warnaDariId($cell['id']) : '';
+                                        $textColor = $cell ? kontrasTeks($bgColor) : '#000';
                                         $isUpacara = $jam == 1 && $hari == 'Senin';
                                         $isKegiatanInsidentil = $jam == 1 && $hari == 'Jumat';
                                     @endphp
-                                    <td class="cell-jadwal" data-jam="{{ $jam }}" data-hari="{{ $hari }}"
-                                        data-mapel="{{ $grid[$jam][$hari]['mapel'] ?? '' }}"
-                                        data-guru="{{ $grid[$jam][$hari]['guru'] ?? '' }}"
-                                        data-id="{{ $grid[$jam][$hari]['id'] ?? '' }}"
-                                        style="width:250px; background-color: {{ $bgColor }}; color: {{ kontrasTeks($bgColor) }}; {{ $isUpacara || $isKegiatanInsidentil ? 'background-color: rgb(95, 42, 42);' : '' }}; cursor:pointer;">
 
+                                    <td class="cell-jadwal" data-jam="{{ $jam }}" data-hari="{{ $hari }}"
+                                        data-mapel="{{ $cell['mapel'] ?? '' }}" data-guru="{{ $cell['guru'] ?? '' }}"
+                                        data-id="{{ $cell['id'] ?? '' }}"
+                                        style="width:250px;
+                                   background-color: {{ $isUpacara || $isKegiatanInsidentil ? 'rgb(95,42,42)' : $bgColor }};
+                                   color: {{ $isUpacara || $isKegiatanInsidentil ? 'white' : $textColor }};
+                                   cursor:pointer;">
                                         @if ($isUpacara)
                                             <strong>UPACARA BENDERA</strong>
                                         @elseif ($isKegiatanInsidentil)
                                             <strong>KEGIATAN INSIDENTIL</strong>
-                                        @elseif (isset($grid[$jam][$hari]))
-                                            <div class="fw-semibold">{{ $grid[$jam][$hari]['mapel'] }}</div>
-                                            <div class="fs-14">{{ $grid[$jam][$hari]['guru'] }}</div>
+                                        @elseif ($cell)
+                                            <div class="fw-semibold">{{ $cell['mapel'] }}</div>
+                                            <div class="fs-14">{{ $cell['guru'] }}</div>
                                         @else
                                             <span class="text-muted">-</span>
                                         @endif
@@ -301,9 +172,9 @@
             <form id="formInputJadwal" method="POST" action="{{ route('kurikulum.datakbm.simpanJadwal') }}">
                 @csrf
                 <input type="hidden" name="tahunajaran" value="{{ $tahunAjaran }}">
-                <input type="hidden" name="semester" value="{{ $seMester }}">
+                <input type="hidden" name="semester" value="{{ $semester }}">
                 <input type="hidden" name="kode_kk" value="{{ $kodeKK }}">
-                <input type="hidden" name="tingkat" value="{{ $tingKat }}">
+                <input type="hidden" name="tingkat" value="{{ $tingkat }}">
                 <input type="hidden" name="kode_rombel" value="{{ $kodeRombel }}">
                 <input type="hidden" name="jam_ke" id="modalJamKe">
                 <input type="hidden" name="hari" id="modalHari">
@@ -414,7 +285,6 @@
         // Inisialisasi DataTable
         $(document).ready(function() {
 
-
             // Event listener ketika dropdown Tahun Ajaran atau Kompetensi Keahlian berubah
             $('#idThnAjaran, #idSemester, #idKodeKK, #idTingkat').on('change', function() {
                 checkDisableRombel(); // Panggil fungsi untuk mengecek apakah Rombel harus di-disable
@@ -449,10 +319,29 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const modal = new bootstrap.Modal(document.getElementById('modalInputJadwal'));
-            const form = document.getElementById('formInputJadwal');
 
             document.querySelectorAll('.cell-jadwal').forEach(cell => {
                 cell.addEventListener('click', function() {
+                    // Ambil nilai dari filter form
+                    const tahunajaran = document.getElementById('idThnAjaran').value;
+                    const semester = document.getElementById('idSemester').value;
+                    const kompetensikeahlian = document.getElementById('idKodeKK').value;
+                    const tingkat = document.getElementById('idTingkat').value;
+                    const rombel = document.getElementById('idRombel').value;
+
+                    // Cek apakah semua filter telah dipilih
+                    if (!tahunajaran || !semester || !kompetensikeahlian || !tingkat || !rombel) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Lengkapi Filter!',
+                            text: 'Silakan pilih Tahun Ajaran, Semester, Kompetensi Keahlian, Tingkat, dan Rombel terlebih dahulu.',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'OK'
+                        });
+                        return; // Hentikan eksekusi, jangan tampilkan modal
+                    }
+
+                    // Buka modal jika filter lengkap
                     const jam = this.dataset.jam;
                     const hari = this.dataset.hari;
                     const guru = this.dataset.id || '';

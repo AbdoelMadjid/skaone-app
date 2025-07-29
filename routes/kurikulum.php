@@ -60,12 +60,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/getrombeljadwals', [JadwalMingguanController::class, 'getRombels'])->name('getrombeljadwals');
             Route::get('/get-personil-jadwal', [JadwalMingguanController::class, 'getPersonil']);
             Route::get('/get-mapel-by-personil', [JadwalMingguanController::class, 'getMapelByPersonil']);
-
             Route::get('/cek-jam-ke', [JadwalMingguanController::class, 'cekJamKe']);
-
             Route::get('/jadwal-mingguan-tampil', [JamMingguanTampilController::class, 'index'])->name('tampiljadwalmingguan');
-            Route::get('/load-jadwal', [JamMingguanTampilController::class, 'loadJadwal'])->name('loadJadwal');
-
             Route::post('/simpan-jadwal', [JamMingguanTampilController::class, 'simpanJadwal'])->name('simpanJadwal');
 
             Route::resource('peserta-didik-rombel', PesertaDidikRombelController::class);

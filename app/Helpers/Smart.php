@@ -215,3 +215,23 @@ function generateRandomText($length = 10)
 
     return $randomText;
 }
+
+if (!function_exists('warnaDariId')) {
+    function warnaDariId($id)
+    {
+        $hash = crc32($id);
+        $hex = substr(dechex($hash), 0, 6);
+        return '#' . str_pad($hex, 6, '0', STR_PAD_RIGHT);
+    }
+}
+
+if (!function_exists('kontrasTeks')) {
+    function kontrasTeks($bg)
+    {
+        $r = hexdec(substr($bg, 1, 2));
+        $g = hexdec(substr($bg, 3, 2));
+        $b = hexdec(substr($bg, 5, 2));
+        $luminance = (0.299 * $r + 0.587 * $g + 0.114 * $b) / 255;
+        return $luminance > 0.5 ? '#000' : '#fff';
+    }
+}

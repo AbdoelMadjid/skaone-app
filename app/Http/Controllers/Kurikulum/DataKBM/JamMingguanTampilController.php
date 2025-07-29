@@ -16,7 +16,7 @@ class JamMingguanTampilController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         // Ambil tahun ajaran yang aktif
         $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')
@@ -30,6 +30,79 @@ class JamMingguanTampilController extends Controller
             return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
         }
 
+        $tahunAjaran = $request->get('tahunajaran');
+        $semester = $request->get('semester');
+        $kodeKK = $request->get('kompetensikeahlian');
+        $tingkat = $request->get('tingkat');
+        $kodeRombel = $request->get('kode_rombel');
+
+        $jadwal = collect();
+        $namaRombel = '-';
+        $namaWaliKelas = '-';
+        $grid = [];
+        $guruList = collect();
+        $mapelPerGuru = [];
+
+        if ($tahunAjaran && $semester && $kodeRombel) {
+            $jadwal = JadwalMingguan::where('tahunajaran', $tahunAjaran)
+                ->where('semester', $semester)
+                ->where('kode_rombel', $kodeRombel)
+                ->get();
+
+            $namaRombel = KbmPerRombel::where('kode_rombel', $kodeRombel)->value('rombel') ?? '-';
+
+            $rombel = RombonganBelajar::with('waliKelas')->where('kode_rombel', $kodeRombel)->first();
+            if ($rombel && $rombel->waliKelas) {
+                $wali = $rombel->waliKelas;
+                $namaWaliKelas = trim("{$wali->gelardepan} {$wali->namalengkap}" . ($wali->gelarbelakang ? ", {$wali->gelarbelakang}" : ''));
+            }
+
+            foreach ($jadwal as $item) {
+                $guru = PersonilSekolah::where('id_personil', $item->id_personil)->value('namalengkap') ?? '-';
+                $mapel = KbmPerRombel::where('kode_mapel_rombel', $item->mata_pelajaran)->value('mata_pelajaran') ?? '-';
+                $grid[$item->jam_ke][$item->hari] = [
+                    'mapel' => $mapel,
+                    'guru' => $guru,
+                    'id' => $item->id_personil,
+                ];
+            }
+
+            $dataKBMPerRombel = KbmPerRombel::where('tahunajaran', $tahunAjaran)
+                ->where('ganjilgenap', $semester)
+                ->where('kode_rombel', $kodeRombel)
+                ->get();
+
+            $idGuruDalamKBM = $dataKBMPerRombel->pluck('id_personil')->unique();
+
+            $guruList = PersonilSekolah::whereIn('id_personil', $idGuruDalamKBM)->orderBy('namalengkap')->get();
+
+            foreach ($dataKBMPerRombel as $kbm) {
+                $idGuru = $kbm->id_personil;
+                $mapelPerGuru[$idGuru][] = [
+                    'kode_mapel_rombel' => $kbm->kode_mapel_rombel,
+                    'mata_pelajaran' => $kbm->mata_pelajaran,
+                ];
+            }
+        }
+
+        $hariList = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
+
+        $jamList = [
+            1 => '6:30 - 7:10',
+            2 => '7:10 - 7:50',
+            3 => '7:50 - 8:30',
+            4 => '8:30 - 9:10',
+            5 => '9:10 - 9:50',
+            6 => '9:50 - 10:00',
+            7 => '10:00 - 10:40',
+            8 => '10:40 - 11:20',
+            9 => '11:20 - 12:00',
+            10 => '12:00 - 13:00',
+            11 => '13:00 - 13:40',
+            12 => '13:40 - 14:20',
+            13 => '14:20 - 15:00',
+        ];
+
         $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
         $kompetensiKeahlianOptions = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
         $rombonganBelajar = RombonganBelajar::pluck('rombel', 'kode_rombel')->toArray();
@@ -39,6 +112,19 @@ class JamMingguanTampilController extends Controller
             'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
             'rombonganBelajar' => $rombonganBelajar,
             'tahunAjaranAktif' => $tahunAjaranAktif->tahunajaran,
+            'tahunAjaran' => $tahunAjaran,
+            'semester' => $semester,
+            'kodeKK' => $kodeKK,
+            'tingkat' => $tingkat,
+            'kodeRombel' => $kodeRombel,
+            'jadwal' => $jadwal,
+            'namaRombel' => $namaRombel,
+            'namaWaliKelas' => $namaWaliKelas,
+            'grid' => $grid,
+            'guruList' => $guruList,
+            'mapelPerGuru' => $mapelPerGuru,
+            'hariList' => $hariList,
+            'jamList' => $jamList
         ]);
     }
 
@@ -80,30 +166,5 @@ class JamMingguanTampilController extends Controller
         }
 
         return redirect()->back()->with('success', 'Jadwal berhasil disimpan.');
-    }
-
-
-    public function hapusManual(Request $request)
-    {
-        $kode = $request->kode_rombel;
-        $hari = $request->hari;
-        $jam = $request->jam_ke;
-
-        // Hapus jadwal
-        JadwalMingguan::where('kode_rombel', $kode)
-            ->where('hari', $hari)
-            ->where('jam_ke', $jam)
-            ->delete();
-
-        // Redirect ke URL tampil (bisa juga simpan session flash jika perlu)
-        return redirect()->to(
-            url('kurikulum/datakbm/jadwal-mingguan-tampil') . '?' . http_build_query([
-                'tahunajaran' => $request->tahunajaran,
-                'semester' => $request->semester,
-                'kompetensikeahlian' => $request->kompetensikeahlian,
-                'tingkat' => $request->tingkat,
-                'kode_rombel' => $kode,
-            ])
-        )->with('success', 'Jadwal berhasil dihapus.');
     }
 }
