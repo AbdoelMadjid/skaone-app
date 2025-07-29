@@ -56,20 +56,24 @@ class JamMingguanTampilController extends Controller
     public function simpanJadwal(Request $request)
     {
         $request->validate([
-            'kode_rombel' => 'required',
             'tahunajaran' => 'required',
             'semester' => 'required',
-            'jam_ke' => 'required|integer',
-            'hari' => 'required|string',
+            'kode_kk' => 'required',
+            'tingkat' => 'required',
+            'kode_rombel' => 'required',
             'id_personil' => 'required|exists:personil_sekolahs,id_personil',
             'kode_mapel_rombel' => 'required|string|max:100',
+            'hari' => 'required|string',
+            'jam_ke' => 'required|integer',
         ]);
 
         $jadwal = JadwalMingguan::updateOrCreate(
             [
-                'kode_rombel' => $request->kode_rombel,
                 'tahunajaran' => $request->tahunajaran,
                 'semester' => $request->semester,
+                'kode_kk' => $request->kode_kk,
+                'tingkat' => $request->tingkat,
+                'kode_rombel' => $request->kode_rombel,
                 'jam_ke' => $request->jam_ke,
                 'hari' => $request->hari,
             ],

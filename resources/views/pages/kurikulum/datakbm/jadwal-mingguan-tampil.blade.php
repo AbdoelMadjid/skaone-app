@@ -114,9 +114,11 @@
                 use App\Models\ManajemenSekolah\PersonilSekolah;
 
                 // Ambil parameter dari URL
-                $kodeRombel = request()->get('kode_rombel');
                 $tahunAjaran = request()->get('tahunajaran');
                 $seMester = request()->get('semester');
+                $kodeKK = request()->get('kompetensikeahlian');
+                $tingKat = request()->get('tingkat');
+                $kodeRombel = request()->get('kode_rombel');
 
                 // Ambil data jadwal mingguan
                 $jadwal = JadwalMingguan::where('tahunajaran', $tahunAjaran)
@@ -298,9 +300,11 @@
         <div class="modal-dialog modal-dialog-centered">
             <form id="formInputJadwal" method="POST" action="{{ route('kurikulum.datakbm.simpanJadwal') }}">
                 @csrf
-                <input type="hidden" name="kode_rombel" value="{{ $kodeRombel }}">
                 <input type="hidden" name="tahunajaran" value="{{ $tahunAjaran }}">
                 <input type="hidden" name="semester" value="{{ $seMester }}">
+                <input type="hidden" name="kode_kk" value="{{ $kodeKK }}">
+                <input type="hidden" name="tingkat" value="{{ $tingKat }}">
+                <input type="hidden" name="kode_rombel" value="{{ $kodeRombel }}">
                 <input type="hidden" name="jam_ke" id="modalJamKe">
                 <input type="hidden" name="hari" id="modalHari">
                 <div class="modal-content">
