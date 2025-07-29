@@ -184,4 +184,18 @@ class JadwalMingguanController extends Controller
 
         return response()->json($mapel);
     }
+
+    public function cekJamKe(Request $request)
+    {
+        $jadwal = JadwalMingguan::where([
+            'tahunajaran' => $request->tahunajaran,
+            'semester' => $request->semester,
+            'kode_kk' => $request->kode_kk,
+            'tingkat' => $request->tingkat,
+            'kode_rombel' => $request->kode_rombel,
+            'hari' => $request->hari
+        ])->pluck('jam_ke');
+
+        return response()->json($jadwal);
+    }
 }

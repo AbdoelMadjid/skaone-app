@@ -49,21 +49,25 @@
         <div class="col-md-9">
             <label class="form-label">Jam Ke</label>
             <div class="row">
-                @for ($row = 0; $row < 3; $row++) {{-- 3 baris --}}
+                @for ($row = 0; $row < 3; $row++)
                     <div class="row mb-4">
                         @for ($col = 0; $col < 5; $col++)
-                            {{-- 5 kolom --}}
                             @php
                                 $i = $row * 5 + $col + 1;
+                                $staticDisabled = in_array($i, [6, 10]); // permanent disable
                             @endphp
-                            <div class="col-2"> {{-- 12 / 5 kolom = 2.4 → pakai col-2 agar pas --}}
-                                @if ($i <= 15)
+                            <div class="col-2">
+                                @if ($i <= 13)
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="jam_ke[]"
+                                        <input class="form-check-input jam-ke-checkbox" type="checkbox" name="jam_ke[]"
                                             id="jam_ke_{{ $i }}" value="{{ $i }}"
-                                            {{ in_array($i, old('jam_ke', [$data->jam_ke])) ? 'checked' : '' }}>
-                                        <label class="form-check-label"
-                                            for="jam_ke_{{ $i }}">{{ $i }}</label>
+                                            {{ in_array($i, old('jam_ke', [$data->jam_ke])) ? 'checked' : '' }}
+                                            {{ $staticDisabled ? 'disabled' : '' }}>
+                                        <label
+                                            class="form-check-label {{ $staticDisabled ? 'text-decoration-line-through' : '' }}"
+                                            for="jam_ke_{{ $i }}" id="label_jam_ke_{{ $i }}">
+                                            {{ $i }}
+                                        </label>
                                     </div>
                                 @endif
                             </div>
@@ -176,7 +180,78 @@
         }
     }
 
+    function updateDisabledJamKe1() {
+        const selectedHari = $('#hari').val();
+        const jamKe1Checkbox = $('#jam_ke_1');
+
+        if (selectedHari === 'Senin' || selectedHari === 'Jumat') {
+            jamKe1Checkbox.prop('checked', false);
+            jamKe1Checkbox.prop('disabled', true);
+            $('label[for="jam_ke_1"]').addClass('text-decoration-line-through text-muted');
+        } else {
+            jamKe1Checkbox.prop('disabled', false);
+            $('label[for="jam_ke_1"]').removeClass('text-decoration-line-through text-muted');
+        }
+    }
+
+    function cekJadwalTerisi() {
+        const tahunajaran = $('#tahunajaran').val();
+        const semester = $('#semester').val();
+        const kode_kk = $('#kode_kk').val();
+        const tingkat = $('#tingkat').val();
+        const kode_rombel = $('#rombel').val();
+        const hari = $('#hari').val();
+
+        if (tahunajaran && semester && kode_kk && tingkat && kode_rombel && hari) {
+            $.ajax({
+                url: '/kurikulum/datakbm/cek-jam-ke',
+                method: 'GET',
+                data: {
+                    tahunajaran,
+                    semester,
+                    kode_kk,
+                    tingkat,
+                    kode_rombel,
+                    hari
+                },
+                success: function(jamKeTerisi) {
+                    $('.jam-ke-checkbox').each(function() {
+                        const jam = parseInt($(this).val());
+                        const label = $('#label_jam_ke_' + jam);
+
+                        const isStaticDisabled = [6, 10].includes(
+                            jam); // jam ke 6 dan 10 tidak pernah aktif
+                        const isTerisi = jamKeTerisi.includes(jam);
+                        const hari = $('#hari').val();
+
+                        // Cek hari khusus
+                        const isHariKhusus = (hari === 'Senin' || hari === 'Jumat') && jam === 1;
+
+                        if (isStaticDisabled || isTerisi || isHariKhusus) {
+                            $(this).prop('checked', false).prop('disabled', true);
+                            label.addClass('text-muted text-decoration-line-through');
+                        } else {
+                            $(this).prop('disabled', false);
+                            label.removeClass('text-muted text-decoration-line-through');
+                        }
+                    });
+
+                    //updateDisabledJamKe1(); // tetap panggil untuk cek Senin/Jumat
+                }
+            });
+        }
+    }
+
+
     $(document).ready(function() {
+
+        // Jalankan saat pertama kali halaman dimuat
+        updateDisabledJamKe1();
+
+        // Jalankan ulang setiap kali select hari berubah
+        $('#hari').on('change', function() {
+            updateDisabledJamKe1();
+        });
 
         $('#tingkat').on('change', function() {
             const tingkat = $(this).val();
@@ -204,6 +279,14 @@
         $('#id_personil').on('change', function() {
             loadMataPelajaran();
         });
+
+        $('#tahunajaran, #semester, #kode_kk, #tingkat, #rombel, #hari').on('change', function() {
+            cekJadwalTerisi();
+        });
+
+        // Panggil awal jika data sudah ada (edit)
+        cekJadwalTerisi();
+
 
         @if ($data->id)
             // Set nilai filter yang sudah tersimpan

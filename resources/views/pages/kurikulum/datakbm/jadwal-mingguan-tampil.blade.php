@@ -24,9 +24,115 @@
             </div>
         </div>
         <div class="card-body p-1">
+            <form method="GET" id="formRombel">
+                <div class="row g-3">
+                    <div class="col-lg">
+                    </div>
+
+                    <div class="col-lg-auto">
+                        <div>
+                            <select class="form-select form-select-sm" name="tahunajaran" id="idThnAjaran">
+                                <option value="" selected>Pilih Tahun Ajaran</option>
+                                @foreach ($tahunAjaranOptions as $thnajar)
+                                    <option value="{{ $thnajar }}"
+                                        {{ request('tahunajaran') == $thnajar ? 'selected' : '' }}>{{ $thnajar }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-auto">
+                        <div>
+                            <select class="form-select form-select-sm" name="semester" id="idSemester">
+                                <option value="" selected>Pilih Semester</option>
+                                <option value="Ganjil" {{ request('semester') == 'Ganjil' ? 'selected' : '' }}>Ganjil
+                                </option>
+                                <option value="Genap" {{ request('semester') == 'Genap' ? 'selected' : '' }}>Genap</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-auto">
+                        <div>
+                            <select class="form-select form-select-sm" name="kompetensikeahlian" id="idKodeKK">
+                                <option value="" selected>Pilih Kompetensi Keahlian</option>
+                                @foreach ($kompetensiKeahlianOptions as $id => $kode_kk)
+                                    <option value="{{ $id }}"
+                                        {{ request('kompetensikeahlian') == $id ? 'selected' : '' }}>
+                                        {{ $kode_kk }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-auto">
+                        <div>
+                            <select class="form-select form-select-sm" name="tingkat" id="idTingkat">
+                                <option value="" selected>Pilih Tingkat</option>
+                                <option value="10" {{ request('tingkat') == '10' ? 'selected' : '' }}>10</option>
+                                <option value="11" {{ request('tingkat') == '11' ? 'selected' : '' }}>11</option>
+                                <option value="12" {{ request('tingkat') == '12' ? 'selected' : '' }}>12</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-auto me-2">
+                        <div>
+                            <select class="form-select form-select-sm" name="kode_rombel" id="idRombel" disabled>
+                                <option value="" selected>Pilih Rombel</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-auto me-2">
+                        <button type="button" id="btn-tampil-jadwal"
+                            class="btn btn-soft-primary btn-sm w-100 mb-4">Tampilkan</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-body p-1">
             @php
-                $kodeRombel = '202541110-10RPL1'; // Ganti sesuai kebutuhan atau buat dinamis
-                $jadwal = App\Models\Kurikulum\DataKBM\JadwalMingguan::where('kode_rombel', $kodeRombel)->get();
+                function warnaDariId($id)
+                {
+                    // Hash sederhana dari id
+                    $hash = crc32($id);
+                    // Ambil 6 digit hex dari hasil hash
+                    $hex = substr(dechex($hash), 0, 6);
+                    // Jika terlalu pendek, tambahkan 0
+                    return '#' . str_pad($hex, 6, '0', STR_PAD_RIGHT);
+                }
+                function kontrasTeks($bg)
+                {
+                    // Hitung luminance (rata-rata kasar)
+                    $r = hexdec(substr($bg, 1, 2));
+                    $g = hexdec(substr($bg, 3, 2));
+                    $b = hexdec(substr($bg, 5, 2));
+                    $luminance = (0.299 * $r + 0.587 * $g + 0.114 * $b) / 255;
+                    return $luminance > 0.5 ? '#000' : '#fff'; // Hitam jika terang, putih jika gelap
+                }
+            @endphp
+            @php
+                //$kodeRombel = request()->get('kode_rombel', '202541110-10RPL1'); // Ganti sesuai kebutuhan atau buat dinamis
+                $kodeRombel = request()->get('kode_rombel', null);
+                $tahunAjaran = request()->get('tahunajaran', null);
+                $seMester = request()->get('semester', null);
+
+                $jadwal = App\Models\Kurikulum\DataKBM\JadwalMingguan::where('tahunajaran', $tahunAjaran)
+                    ->where('semester', $seMester)
+                    ->where('kode_rombel', $kodeRombel)
+                    ->get();
+
+                $namaRombel =
+                    App\Models\Kurikulum\DataKBM\KbmPerRombel::where('kode_rombel', $kodeRombel)->value('rombel') ??
+                    '-';
+
+                $rombel = App\Models\ManajemenSekolah\RombonganBelajar::with('waliKelas')
+                    ->where('kode_rombel', $kodeRombel)
+                    ->first();
+
+                $namaWaliKelas =
+                    $rombel && $rombel->waliKelas
+                        ? trim(
+                            "{$rombel->waliKelas->gelardepan} {$rombel->waliKelas->namalengkap}, {$rombel->waliKelas->gelarbelakang}",
+                        )
+                        : '-';
 
                 $grid = [];
                 foreach ($jadwal as $item) {
@@ -44,13 +150,48 @@
                     $grid[$item->jam_ke][$item->hari] = [
                         'mapel' => $namaMapel,
                         'guru' => $guru,
+                        'id' => $item->id_personil,
                     ];
                 }
 
                 $hariList = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
-                $jamKeList = range(1, 13); // Atur sesuai jumlah jam maksimal
+
+                $jamList = [
+                    1 => '6:30 - 7:10',
+                    2 => '7:10 - 7:50',
+                    3 => '7:50 - 8:30',
+                    4 => '8:30 - 9:10',
+                    5 => '9:10 - 9:50',
+                    6 => '9:50 - 10:00',
+                    7 => '10:00 - 10:40',
+                    8 => '10:40 - 11:20',
+                    9 => '11:20 - 12:00',
+                    10 => '12:00 - 13:00',
+                    11 => '13:00 - 13:40',
+                    12 => '13:40 - 14:20',
+                    13 => '14:20 - 15:00',
+                ];
+
+                $jamKeList = array_keys($jamList);
             @endphp
 
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-sm-10">
+                    <div class="text-center mt-lg-2 pt-3">
+                        <h1 class="display-6 fw-semibold mb-1 lh-base">
+                            JADWAL PEMBELAJARAN
+                            <span class="text-success">
+                                {{ $namaRombel }}
+                            </span>
+                        </h1>
+                        <p class="lead text-muted lh-base">TAHUN AJARAN {{ $tahunAjaran ?? '-' }} SEMESTER
+                            {{ strtoupper($seMester ?? '-') }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <h5>Wali Kelas: {{ $namaWaliKelas }}</h5>
             <table class="table table-bordered table-sm text-center align-middle">
                 <thead class="table-light">
                     <tr>
@@ -62,19 +203,58 @@
                 </thead>
                 <tbody>
                     @foreach ($jamKeList as $jam)
-                        <tr>
-                            <td><strong>{{ $jam }}</strong></td>
-                            @foreach ($hariList as $hari)
+                        @if ($jam == 6)
+                            <tr class="table-info">
                                 <td>
-                                    @if (isset($grid[$jam][$hari]))
-                                        <div class="fw-semibold">{{ $grid[$jam][$hari]['mapel'] }}</div>
-                                        <div class="text-muted fs-14">{{ $grid[$jam][$hari]['guru'] }}</div>
-                                    @else
-                                        <span class="text-muted">-</span>
-                                    @endif
+                                    <strong class='fs-24'>{{ $jam }}</strong><br>
+                                    <small>{{ $jamList[$jam] }}</small>
                                 </td>
-                            @endforeach
-                        </tr>
+                                <td colspan="{{ count($hariList) }}">
+                                    <strong>Istirahat Pertama</strong>
+                                </td>
+                            </tr>
+                        @elseif ($jam == 10)
+                            <tr class="table-info">
+                                <td>
+                                    <strong class='fs-24'>{{ $jam }}</strong><br>
+                                    <small>{{ $jamList[$jam] }}</small>
+                                </td>
+                                <td colspan="{{ count($hariList) }}">
+                                    <strong>Istirahat, Sholat, Makan</strong>
+                                </td>
+                            </tr>
+                        @else
+                            <tr>
+                                <td style="width:100px;">
+                                    <strong class='fs-24'>{{ $jam }}</strong><br>
+                                    <small>{{ $jamList[$jam] }}</small>
+                                </td>
+                                @foreach ($hariList as $hari)
+                                    @php
+                                        $bgColor = '';
+                                        if (isset($grid[$jam][$hari])) {
+                                            $id = $grid[$jam][$hari]['id'];
+                                            $bgColor = warnaDariId($id);
+                                        }
+                                        $isUpacara = $jam == 1 && $hari == 'Senin';
+                                        $isKegiatanInsidentil = $jam == 1 && $hari == 'Jumat';
+                                    @endphp
+                                    <td
+                                        style="width:250px; background-color: {{ $bgColor }}; color: {{ kontrasTeks($bgColor) }}; {{ $isUpacara || $isKegiatanInsidentil ? 'background-color: rgb(95, 42, 42);' : '' }}">
+                                        @if ($isUpacara)
+                                            <strong>UPACARA BENDERA</strong>
+                                        @elseif ($isKegiatanInsidentil)
+                                            <strong>KEGIATAN INSIDENTIL</strong>
+                                        @elseif (isset($grid[$jam][$hari]))
+                                            <div class="fw-semibold">{{ $grid[$jam][$hari]['mapel'] }}</div>
+                                            <div class="fs-14">{{ $grid[$jam][$hari]['guru'] }}</div>
+                                        @else
+                                            <span class="text-muted">-</span>
+                                        @endif
+                                    </td>
+                                @endforeach
+                            </tr>
+                        @endif
                     @endforeach
                 </tbody>
             </table>
@@ -85,5 +265,98 @@
     {{--  --}}
 @endsection
 @section('script-bottom')
+    <script>
+        // Function untuk mengecek apakah dropdown rombel harus di-disable atau tidak
+        function checkDisableRombel() {
+            var tahunAjaran = $('#idThnAjaran').val();
+            var kodeKK = $('#idKodeKK').val();
+            var tingKat = $('#idTingkat').val();
+            var semester = $('#idSemester').val();
+
+            // Jika salah satu dari Tahun Ajaran atau Kompetensi Keahlian belum dipilih
+            if (tahunAjaran === '' || semester === '' || kodeKK === '' || tingKat === '') {
+                // Disable dropdown Rombel
+                $('#idRombel').attr('disabled', true);
+                $('#idRombel').empty().append('<option value="all" selected>Rombel</option>'); // Kosongkan pilihan Rombel
+            } else {
+                // Jika sudah dipilih keduanya, enable dropdown Rombel dan muat datanya
+                $('#idRombel').attr('disabled', false);
+                loadRombelData(tahunAjaran, kodeKK, tingKat); // Panggil AJAX untuk load data
+            }
+        }
+
+        // Function untuk load data rombel sesuai pilihan Tahun Ajaran dan Kompetensi Keahlian
+        function loadRombelData(tahunAjaran, kodeKK, tingKat) {
+            $.ajax({
+                url: "{{ route('kurikulum.datakbm.getRombel') }}",
+                type: "GET",
+                data: {
+                    tahun_ajaran: tahunAjaran,
+                    kode_kk: kodeKK,
+                    tingkat: tingKat
+                },
+                success: function(data) {
+                    var rombelSelect = $('#idRombel');
+                    var selectedKodeRombel =
+                        "{{ request()->get('kode_rombel') ?? '' }}"; // Ambil dari request (blade)
+
+                    rombelSelect.empty();
+                    rombelSelect.append('<option value="all">Pilih Rombel</option>');
+
+                    if (Object.keys(data).length > 0) {
+                        $.each(data, function(key, value) {
+                            const isSelected = key === selectedKodeRombel ? 'selected' : '';
+                            rombelSelect.append('<option value="' + key + '" ' + isSelected + '>' +
+                                value + '</option>');
+                        });
+                    } else {
+                        rombelSelect.append('<option value="none">Tidak ada rombel tersedia</option>');
+                    }
+
+                    // Re-enable select
+                    rombelSelect.prop('disabled', false);
+                },
+                error: function(xhr) {
+                    console.error('Error pada AJAX:', xhr.responseText);
+                }
+            });
+        }
+
+
+        // Inisialisasi DataTable
+        $(document).ready(function() {
+
+
+            // Event listener ketika dropdown Tahun Ajaran atau Kompetensi Keahlian berubah
+            $('#idThnAjaran, #idSemester, #idKodeKK, #idTingkat').on('change', function() {
+                checkDisableRombel(); // Panggil fungsi untuk mengecek apakah Rombel harus di-disable
+            });
+
+            // Cek status Rombel saat halaman pertama kali dimuat
+            checkDisableRombel();
+
+            $('#btn-tampil-jadwal').on('click', function() {
+                // Cek apakah semua select sudah dipilih
+                if ($('#idThnAjaran').val() &&
+                    $('#idSemester').val() &&
+                    $('#idKodeKK').val() &&
+                    $('#idTingkat').val() &&
+                    $('#idRombel').val() &&
+                    $('#idRombel').val() !== 'all' &&
+                    $('#idRombel').val() !== 'none') {
+
+                    // Submit form
+                    $('#formRombel').submit();
+                } else {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Lengkapi Filter',
+                        text: 'Silakan lengkapi semua pilihan filter terlebih dahulu!',
+                    });
+                }
+            });
+
+        });
+    </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

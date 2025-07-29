@@ -3,6 +3,7 @@
 use App\Http\Controllers\Kurikulum\DataKBM\CapaianPembelajaranController;
 use App\Http\Controllers\Kurikulum\DataKBM\HariEfektifController;
 use App\Http\Controllers\Kurikulum\DataKBM\JadwalMingguanController;
+use App\Http\Controllers\Kurikulum\DataKBM\JamMingguanTampilController;
 use App\Http\Controllers\Kurikulum\DataKBM\KbmPerRombelController;
 use App\Http\Controllers\Kurikulum\DataKBM\KunciDataKbmController;
 use App\Http\Controllers\Kurikulum\DataKBM\MataPelajaranController;
@@ -60,9 +61,14 @@ Route::middleware('auth')->group(function () {
             Route::get('/get-personil-jadwal', [JadwalMingguanController::class, 'getPersonil']);
             Route::get('/get-mapel-by-personil', [JadwalMingguanController::class, 'getMapelByPersonil']);
 
-            Route::get('/jadwal-mingguan-tampil', function () {
+            Route::get('/cek-jam-ke', [JadwalMingguanController::class, 'cekJamKe']);
+
+            Route::get('/jadwal-mingguan-tampil', [JamMingguanTampilController::class, 'index'])->name('tampiljadwalmingguan');
+            Route::get('/load-jadwal', [JamMingguanTampilController::class, 'loadJadwal'])->name('loadJadwal');
+
+            /* Route::get('/jadwal-mingguan-tampil', function () {
                 return view('pages.kurikulum.datakbm.jadwal-mingguan-tampil');
-            })->name('tampiljadwalmingguan');
+            })->name('tampiljadwalmingguan'); */
 
 
             Route::resource('peserta-didik-rombel', PesertaDidikRombelController::class);

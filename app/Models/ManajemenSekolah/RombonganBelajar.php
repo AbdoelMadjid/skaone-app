@@ -26,6 +26,11 @@ class RombonganBelajar extends Model
         return $this->hasMany(WaliKelas::class, 'kode_rombel', 'kode_rombel');
     }
 
+    public function waliKelas()
+    {
+        return $this->belongsTo(PersonilSekolah::class, 'wali_kelas', 'id_personil');
+    }
+
     // Event untuk menyimpan data di tabel wali_kelas
     protected static function boot()
     {
