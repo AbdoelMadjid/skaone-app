@@ -63,6 +63,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/cek-jam-ke', [JadwalMingguanController::class, 'cekJamKe']);
             Route::get('/jadwal-mingguan-tampil', [JamMingguanTampilController::class, 'index'])->name('tampiljadwalmingguan');
             Route::post('/simpan-jadwal', [JamMingguanTampilController::class, 'simpanJadwal'])->name('simpanJadwal');
+            Route::post('/hapusjamterpilih', [JadwalMingguanController::class, 'hapusJamTerpilih'])->name('hapusjamterpilih');
 
             Route::resource('peserta-didik-rombel', PesertaDidikRombelController::class);
             Route::get('/get-rombongan-belajar', [PesertaDidikRombelController::class, 'getRombonganBelajar'])->name('get-rombonganbelajar');

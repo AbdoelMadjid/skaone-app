@@ -27,6 +27,9 @@ class JadwalMingguanDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addColumn('checkbox', function ($row) {
+                return '<input class="form-check-input chk-child" type="checkbox" name="chk_child" value="' . $row->id . '">';
+            })
             ->addColumn('namaguru', function ($row) {
                 $personilSekolah = DB::table('personil_sekolahs')
                     ->where('id_personil', $row->id_personil)
@@ -82,7 +85,7 @@ class JadwalMingguanDataTable extends DataTable
                 return view('action', compact('actions'));
             })
             ->addIndexColumn()
-            ->rawColumns(['namaguru', 'nama_kelas', 'matapelajaran', 'nama_kk', 'action']);
+            ->rawColumns(['checkbox', 'namaguru', 'nama_kelas', 'matapelajaran', 'nama_kk', 'action']);
     }
 
     /**
@@ -92,6 +95,8 @@ class JadwalMingguanDataTable extends DataTable
     {
         $query = $model->newQuery();
         $query->orderBy('kode_rombel', 'asc');
+        $query->orderBy('hari', 'asc');
+        $query->orderBy('jam_ke', 'asc');
         return $query;
     }
 
@@ -134,11 +139,17 @@ class JadwalMingguanDataTable extends DataTable
             Column::make('matapelajaran')->title('Mata Pelajaran'),
             Column::make('hari')->title('hari')->addClass('text-center'),
             Column::make('jam_ke')->title('jam_ke')->addClass('text-center'),
-            Column::computed('action')
+            Column::computed('checkbox')
+                ->title('<input class="form-check-input" type="checkbox" id="checkAll" value="option">') // Untuk "Select All"
+                ->orderable(false)
+                ->searchable(false)
+                ->width(10)
+                ->addClass('text-center align-middle'),
+            /* Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
                 ->width(60)
-                ->addClass('text-center'),
+                ->addClass('text-center'), */
         ];
     }
 

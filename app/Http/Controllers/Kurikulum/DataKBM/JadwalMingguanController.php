@@ -198,4 +198,15 @@ class JadwalMingguanController extends Controller
 
         return response()->json($jadwal);
     }
+
+    public function hapusJamTerpilih(Request $request)
+    {
+        $ids = $request->ids;
+        if (is_array($ids) && !empty($ids)) {
+            JadwalMingguan::whereIn('id', $ids)->delete();
+            return response()->json(['success' => 'Data berhasil dihapus!']);
+        }
+
+        return response()->json(['error' => 'Tidak ada data yang dihapus!'], 400);
+    }
 }
