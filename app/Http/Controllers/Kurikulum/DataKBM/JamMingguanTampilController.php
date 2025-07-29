@@ -53,10 +53,35 @@ class JamMingguanTampilController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function simpanJadwal(Request $request)
     {
-        //
+        $request->validate([
+            'kode_rombel' => 'required',
+            'tahunajaran' => 'required',
+            'semester' => 'required',
+            'jam_ke' => 'required|integer',
+            'hari' => 'required|string',
+            'id_personil' => 'required|exists:personil_sekolahs,id_personil',
+            'kode_mapel_rombel' => 'required|string|max:100',
+        ]);
+
+        $jadwal = JadwalMingguan::updateOrCreate(
+            [
+                'kode_rombel' => $request->kode_rombel,
+                'tahunajaran' => $request->tahunajaran,
+                'semester' => $request->semester,
+                'jam_ke' => $request->jam_ke,
+                'hari' => $request->hari,
+            ],
+            [
+                'id_personil' => $request->id_personil,
+                'mata_pelajaran' => $request->kode_mapel_rombel,
+            ]
+        );
+
+        return redirect()->back()->with('success', 'Jadwal berhasil disimpan.');
     }
+
 
     /**
      * Display the specified resource.

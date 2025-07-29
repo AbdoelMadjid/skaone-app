@@ -66,6 +66,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/jadwal-mingguan-tampil', [JamMingguanTampilController::class, 'index'])->name('tampiljadwalmingguan');
             Route::get('/load-jadwal', [JamMingguanTampilController::class, 'loadJadwal'])->name('loadJadwal');
 
+            Route::post('/simpan-jadwal', [JamMingguanTampilController::class, 'simpanJadwal'])->name('simpanJadwal');
+
             /* Route::get('/jadwal-mingguan-tampil', function () {
                 return view('pages.kurikulum.datakbm.jadwal-mingguan-tampil');
             })->name('tampiljadwalmingguan'); */
