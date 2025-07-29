@@ -31,7 +31,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <x-form.select name="mata_pelajaran" label="Mata Pelajaran" :options="[]" id="mata_pelajaran"
                 disabled />
         </div>
