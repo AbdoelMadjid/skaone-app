@@ -78,6 +78,20 @@ class JadwalMingguanDataTable extends DataTable
 
                 return $row->kode_kk . '<em>Data tidak ditemukan</em>';
             })
+            ->addColumn('hari', function ($row) {
+                if ($row->hari == "Senin") {
+                    $haribadge = "<span class='badge bg-primary'>" . $row->hari . "</span>";
+                } elseif ($row->hari == "Selasa") {
+                    $haribadge = "<span class='badge bg-secondary'>" . $row->hari . "</span>";
+                } elseif ($row->hari == "Rabu") {
+                    $haribadge = "<span class='badge bg-success'>" . $row->hari . "</span>";
+                } elseif ($row->hari == "Kamis") {
+                    $haribadge = "<span class='badge bg-info'>" . $row->hari . "</span>";
+                } elseif ($row->hari == "Jumat") {
+                    $haribadge = "<span class='badge bg-warning'>" . $row->hari . "</span>";
+                }
+                return $haribadge;
+            })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
@@ -85,7 +99,7 @@ class JadwalMingguanDataTable extends DataTable
                 return view('action', compact('actions'));
             })
             ->addIndexColumn()
-            ->rawColumns(['checkbox', 'namaguru', 'nama_kelas', 'matapelajaran', 'nama_kk', 'action']);
+            ->rawColumns(['checkbox', 'hari', 'namaguru', 'nama_kelas', 'matapelajaran', 'nama_kk', 'action']);
     }
 
     /**
@@ -94,6 +108,31 @@ class JadwalMingguanDataTable extends DataTable
     public function query(JadwalMingguan $model): QueryBuilder
     {
         $query = $model->newQuery();
+        if (request()->has('thAjar') && request('thAjar') != 'all') {
+            $query->where('tahunajaran', request('thAjar'));
+        }
+        if (request()->has('seMester') && request('seMester') != 'all') {
+            $query->where('semester', request('seMester'));
+        }
+
+        if (request()->has('tingKat') && request('tingKat') != 'all') {
+            $query->where('tingkat', request('tingKat'));
+        }
+
+        if (request()->has('kodeKK') && request('kodeKK') != 'all') {
+            $query->where('kode_kk', request('kodeKK'));
+        }
+
+        if (request()->has('romBel') && request('romBel') != 'all') {
+            $query->where('kode_rombel', request('romBel'));
+        }
+
+        if (request()->has('hariNgajar') && request('hariNgajar') != 'all') {
+            $query->where('hari', request('hariNgajar'));
+        }
+        if (request()->has('perSonil') && request('perSonil') != 'all') {
+            $query->where('id_personil', request('perSonil'));
+        }
         $query->orderBy('kode_rombel', 'asc');
         $query->orderBy('hari', 'asc');
         $query->orderBy('jam_ke', 'asc');
@@ -108,7 +147,18 @@ class JadwalMingguanDataTable extends DataTable
         return $this->builder()
             ->setTableId('jadwalmingguan-table')
             ->columns($this->getColumns())
-            ->minifiedAjax()
+            ->ajax([
+                'data' =>
+                'function(d) {
+                    d.thAjar = $("#idThnAjaran").val();
+                    d.seMester = $("#idSemester").val();
+                    d.kodeKK = $("#idKodeKK").val();
+                    d.tingKat = $("#idTingkat").val();
+                    d.romBel = $("#idRombel").val();
+                    d.hariNgajar = $("#idHari").val();
+                    d.perSonil = $("#idPersonil").val();
+                }'
+            ])
             //->dom('Bfrtip')
             ->orderBy(1)
             ->selectStyleSingle()
@@ -116,10 +166,10 @@ class JadwalMingguanDataTable extends DataTable
                 //'order' => [[6, 'asc'], [4, 'asc'], [2, 'asc']],
                 'lengthChange' => false,
                 'searching' => false,
-                'pageLength' => 50,
+                'pageLength' => 100,
                 'paging' => true,
                 'scrollCollapse' => false,
-                'scrollY' => "calc(100vh - 351px)",
+                'scrollY' => "calc(100vh - 386px)",
             ]);
     }
 
@@ -132,13 +182,13 @@ class JadwalMingguanDataTable extends DataTable
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('tahunajaran')->title('Tahun Ajaran')->addClass('text-center'),
             Column::make('semester')->addClass('text-center'),
-            Column::make('nama_kk')->addClass('text-center'),
+            Column::make('nama_kk')->title('Kompetensi Keahlian')->addClass('text-center'),
             Column::make('tingkat')->addClass('text-center'),
             Column::make('nama_kelas')->title('Rombel')->addClass('text-center'),
             Column::make('namaguru')->title('Nama Guru Mapel'),
             Column::make('matapelajaran')->title('Mata Pelajaran'),
-            Column::make('hari')->title('hari')->addClass('text-center'),
-            Column::make('jam_ke')->title('jam_ke')->addClass('text-center'),
+            Column::make('hari')->title('Hari')->addClass('text-center'),
+            Column::make('jam_ke')->title('Jam Ke')->addClass('text-center'),
             Column::computed('checkbox')
                 ->title('<input class="form-check-input" type="checkbox" id="checkAll" value="option">') // Untuk "Select All"
                 ->orderable(false)
