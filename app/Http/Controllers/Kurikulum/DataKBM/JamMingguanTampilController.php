@@ -42,17 +42,7 @@ class JamMingguanTampilController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function simpanJadwal(Request $request)
     {
         $request->validate([
@@ -65,57 +55,55 @@ class JamMingguanTampilController extends Controller
             'kode_mapel_rombel' => 'required|string|max:100',
             'hari' => 'required|string',
             'jam_ke' => 'required|integer',
+            'jumlah_jam' => 'required|integer|min:1|max:10',
         ]);
 
-        $jadwal = JadwalMingguan::updateOrCreate(
-            [
-                'tahunajaran' => $request->tahunajaran,
-                'semester' => $request->semester,
-                'kode_kk' => $request->kode_kk,
-                'tingkat' => $request->tingkat,
-                'kode_rombel' => $request->kode_rombel,
-                'jam_ke' => $request->jam_ke,
-                'hari' => $request->hari,
-            ],
-            [
-                'id_personil' => $request->id_personil,
-                'mata_pelajaran' => $request->kode_mapel_rombel,
-            ]
-        );
+        $startJam = (int) $request->jam_ke;
+        $jumlahJam = (int) $request->jumlah_jam;
+
+        for ($i = 0; $i < $jumlahJam; $i++) {
+            JadwalMingguan::updateOrCreate(
+                [
+                    'tahunajaran' => $request->tahunajaran,
+                    'semester' => $request->semester,
+                    'kode_kk' => $request->kode_kk,
+                    'tingkat' => $request->tingkat,
+                    'kode_rombel' => $request->kode_rombel,
+                    'jam_ke' => $startJam + $i,
+                    'hari' => $request->hari,
+                ],
+                [
+                    'id_personil' => $request->id_personil,
+                    'mata_pelajaran' => $request->kode_mapel_rombel,
+                ]
+            );
+        }
 
         return redirect()->back()->with('success', 'Jadwal berhasil disimpan.');
     }
 
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function hapusManual(Request $request)
     {
-        //
-    }
+        $kode = $request->kode_rombel;
+        $hari = $request->hari;
+        $jam = $request->jam_ke;
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        // Hapus jadwal
+        JadwalMingguan::where('kode_rombel', $kode)
+            ->where('hari', $hari)
+            ->where('jam_ke', $jam)
+            ->delete();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        // Redirect ke URL tampil (bisa juga simpan session flash jika perlu)
+        return redirect()->to(
+            url('kurikulum/datakbm/jadwal-mingguan-tampil') . '?' . http_build_query([
+                'tahunajaran' => $request->tahunajaran,
+                'semester' => $request->semester,
+                'kompetensikeahlian' => $request->kompetensikeahlian,
+                'tingkat' => $request->tingkat,
+                'kode_rombel' => $kode,
+            ])
+        )->with('success', 'Jadwal berhasil dihapus.');
     }
 }

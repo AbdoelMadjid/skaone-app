@@ -316,7 +316,6 @@
                         <div class="alert alert-light border mb-3" id="modalKeteranganWaktu">
                             Hari: <strong id="labelHari">-</strong> | Jam ke-<strong id="labelJamKe">-</strong>
                         </div>
-                        {{-- Pilihan Guru --}}
                         <div class="mb-2">
                             <label for="id_personil" class="form-label">Guru</label>
                             <select name="id_personil" id="modalGuru" class="form-select">
@@ -326,12 +325,18 @@
                                 @endforeach
                             </select>
                         </div>
-
-                        {{-- Pilihan Mata Pelajaran --}}
                         <div class="mb-2">
                             <label for="kode_mapel_rombel" class="form-label">Mata Pelajaran</label>
                             <select name="kode_mapel_rombel" id="modalMapel" class="form-select" disabled>
                                 <option value="">-- Pilih Mata Pelajaran --</option>
+                            </select>
+                        </div>
+                        <div class="mb-2">
+                            <label for="jumlah_jam" class="form-label">Jumlah Jam</label>
+                            <select name="jumlah_jam" id="jumlahJamSelect" class="form-select">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <option value="{{ $i }}">{{ $i }} jam</option>
+                                @endfor
                             </select>
                         </div>
                     </div>

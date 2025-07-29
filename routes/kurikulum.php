@@ -68,11 +68,6 @@ Route::middleware('auth')->group(function () {
 
             Route::post('/simpan-jadwal', [JamMingguanTampilController::class, 'simpanJadwal'])->name('simpanJadwal');
 
-            /* Route::get('/jadwal-mingguan-tampil', function () {
-                return view('pages.kurikulum.datakbm.jadwal-mingguan-tampil');
-            })->name('tampiljadwalmingguan'); */
-
-
             Route::resource('peserta-didik-rombel', PesertaDidikRombelController::class);
             Route::get('/get-rombongan-belajar', [PesertaDidikRombelController::class, 'getRombonganBelajar'])->name('get-rombonganbelajar');
             Route::get('get-siswa', [PesertaDidikController::class, 'getSiswa'])->name('get-siswa');
