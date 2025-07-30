@@ -40,7 +40,7 @@
                     <div class="mb-2">
                         <label for="jumlah_jam" class="form-label">Jumlah Jam</label>
                         <select name="jumlah_jam" id="jumlahJamSelect" class="form-select">
-                            @for ($i = 1; $i <= 5; $i++)
+                            @for ($i = 1; $i <= 12; $i++)
                                 <option value="{{ $i }}">{{ $i }} jam</option>
                             @endfor
                         </select>

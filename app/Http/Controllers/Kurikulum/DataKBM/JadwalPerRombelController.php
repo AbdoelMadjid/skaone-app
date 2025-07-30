@@ -11,6 +11,7 @@ use App\Models\ManajemenSekolah\RombonganBelajar;
 use App\Models\ManajemenSekolah\Semester;
 use App\Models\ManajemenSekolah\TahunAjaran;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class JadwalPerRombelController extends Controller
 {
@@ -78,7 +79,8 @@ class JadwalPerRombelController extends Controller
                 ];
             }
 
-            $dataKBMPerRombel = KbmPerRombel::where('tahunajaran', $tahunAjaran)
+            $dataKBMPerRombel = KbmPerRombel::with('jamMengajar') // ← tambahkan ini
+                ->where('tahunajaran', $tahunAjaran)
                 ->where('ganjilgenap', $semester)
                 ->where('kode_rombel', $kodeRombel)
                 ->get();
@@ -92,6 +94,7 @@ class JadwalPerRombelController extends Controller
                 $mapelPerGuru[$idGuru][] = [
                     'kode_mapel_rombel' => $kbm->kode_mapel_rombel,
                     'mata_pelajaran' => $kbm->mata_pelajaran,
+                    'jumlah_jam' => $kbm->jamMengajar->jumlah_jam ?? null, // ← akses lewat relasi
                 ];
             }
         }
@@ -136,7 +139,7 @@ class JadwalPerRombelController extends Controller
             'guruList' => $guruList,
             'mapelPerGuru' => $mapelPerGuru,
             'hariList' => $hariList,
-            'jamList' => $jamList
+            'jamList' => $jamList,
         ]);
     }
 }

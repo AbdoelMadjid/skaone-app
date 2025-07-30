@@ -247,26 +247,40 @@
     <script>
         const mapelPerGuru = @json($mapelPerGuru);
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const guruSelect = document.getElementById('modalGuru');
-            const mapelSelect = document.getElementById('modalMapel');
+        $('#modalGuru').on('change', function() {
+            const guruId = $(this).val();
+            const mapelSelect = $('#modalMapel');
+            const jumlahJamSelect = $('#jumlahJamSelect');
 
-            guruSelect.addEventListener('change', function() {
-                const selectedGuruId = this.value;
-                mapelSelect.innerHTML = '<option value="">-- Pilih Mata Pelajaran --</option>';
+            // Reset dulu
+            mapelSelect.empty().append('<option value="">-- Pilih Mata Pelajaran --</option>');
+            mapelSelect.prop('disabled', true);
+            jumlahJamSelect.val('').prop('disabled', true);
 
-                if (mapelPerGuru[selectedGuruId]) {
-                    mapelPerGuru[selectedGuruId].forEach(item => {
-                        const opt = document.createElement('option');
-                        opt.value = item.kode_mapel_rombel;
-                        opt.textContent = item.mata_pelajaran;
-                        mapelSelect.appendChild(opt);
-                    });
-                    mapelSelect.disabled = false;
-                } else {
-                    mapelSelect.disabled = true;
-                }
-            });
+            // Cek dan isi mapel
+            if (guruId && mapelPerGuru[guruId]) {
+                const daftarMapel = mapelPerGuru[guruId];
+
+                daftarMapel.forEach(item => {
+                    mapelSelect.append(
+                        `<option value="${item.kode_mapel_rombel}" data-jumlah-jam="${item.jumlah_jam}">${item.mata_pelajaran}</option>`
+                    );
+                });
+
+                mapelSelect.prop('disabled', false);
+            }
+        });
+
+        // Isi otomatis jumlah jam saat mapel dipilih
+        $('#modalMapel').on('change', function() {
+            const selectedOption = $(this).find('option:selected');
+            const jumlahJam = selectedOption.data('jumlah-jam');
+
+            if (jumlahJam) {
+                $('#jumlahJamSelect').val(jumlahJam).prop('disabled', false);
+            } else {
+                $('#jumlahJamSelect').val('').prop('disabled', true);
+            }
         });
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
