@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    @lang('translation.jadwal-per-tingkat')
+    @lang('translation.jadwal-per-guru')
 @endsection
 @section('css')
     <style>
@@ -93,11 +93,11 @@
             </form>
         </div>
         <div class="card-body p-1">
-            @include('pages.kurikulum.datakbm.jadwal-mingguan-table')
+            @include('pages.kurikulum.datakbm.jadwal-mingguan-tabel-guru')
         </div>
     </div>
 
-    @include('pages.kurikulum.datakbm.jadwal-mingguan-modal')
+    @include('pages.kurikulum.datakbm.jadwal-mingguan-modal-guru')
 @endsection
 @section('script')
     {{--  --}}

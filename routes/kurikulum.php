@@ -3,9 +3,8 @@
 use App\Http\Controllers\Kurikulum\DataKBM\CapaianPembelajaranController;
 use App\Http\Controllers\Kurikulum\DataKBM\HariEfektifController;
 use App\Http\Controllers\Kurikulum\DataKBM\JadwalMingguanController;
+use App\Http\Controllers\Kurikulum\DataKBM\JadwalPerGuruController;
 use App\Http\Controllers\Kurikulum\DataKBM\JadwalPerRombelController;
-use App\Http\Controllers\Kurikulum\DataKBM\JadwalPerTingkatController;
-use App\Http\Controllers\Kurikulum\DataKBM\JamMingguanTampilController;
 use App\Http\Controllers\Kurikulum\DataKBM\KbmPerRombelController;
 use App\Http\Controllers\Kurikulum\DataKBM\KunciDataKbmController;
 use App\Http\Controllers\Kurikulum\DataKBM\MataPelajaranController;
@@ -14,7 +13,6 @@ use App\Http\Controllers\Kurikulum\DataKBM\PesertaDidikRombelController;
 use App\Http\Controllers\Kurikulum\DokumenGuru\ArsipGuruMapelController;
 use App\Http\Controllers\Kurikulum\DokumenGuru\ArsipPerangkatAjarController;
 use App\Http\Controllers\Kurikulum\DokumenGuru\ArsipWaliKelasController;
-use App\Http\Controllers\Kurikulum\DokumenGuru\ArsipWaliKelasV2Controller;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\CetakRaporController;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\IjazahController;
 use App\Http\Controllers\Kurikulum\DokumenSiswa\LegerNilaiController;
@@ -67,7 +65,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/simpan-jadwal', [JadwalMingguanController::class, 'simpanJadwal'])->name('simpanJadwal');
 
             Route::get('/jadwal-mingguan-per-rombel', [JadwalPerRombelController::class, 'index'])->name('tampiljadwalperrombel');
-            Route::get('/jadwal-mingguan-per-tingkat', [JadwalPerTingkatController::class, 'index'])->name('tampiljadwalpertingkat');
+            Route::get('/jadwal-mingguan-per-guru', [JadwalPerGuruController::class, 'index'])->name('tampiljadwalperguru');
 
             Route::resource('peserta-didik-rombel', PesertaDidikRombelController::class);
             Route::get('/get-rombongan-belajar', [PesertaDidikRombelController::class, 'getRombonganBelajar'])->name('get-rombonganbelajar');

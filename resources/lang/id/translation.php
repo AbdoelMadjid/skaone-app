@@ -322,7 +322,7 @@ return [
     "hari-efektif" => "Hari Efektif",
     "jadwal-mingguan" => "Jadwal Ngajar",
     "jadwal-per-rombel" => "Jadwal Ngajar Per Rombel",
-    "jadwal-per-tingkat" => "Jadwal Ngajar Per Tingkat",
+    "jadwal-per-guru" => "Jadwal Ngajar Per Guru",
     "peserta-didik-rombel" => "Peserta Didik Rombel",
     "mata-pelajaran" => "Mata Pelajaran",
     "mata-pelajaran-perjurusan" => "Mata Pelajaran Per Jurusan",

@@ -11,7 +11,7 @@ use App\Models\ManajemenSekolah\RombonganBelajar;
 use App\Models\ManajemenSekolah\TahunAjaran;
 use Illuminate\Http\Request;
 
-class JadwalPerTingkatController extends Controller
+class JadwalPerGuruController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -107,7 +107,7 @@ class JadwalPerTingkatController extends Controller
         $kompetensiKeahlianOptions = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
         $rombonganBelajar = RombonganBelajar::pluck('rombel', 'kode_rombel')->toArray();
 
-        return view('pages.kurikulum.datakbm.jadwal-mingguan-per-tingkat', [
+        return view('pages.kurikulum.datakbm.jadwal-mingguan-per-guru', [
             'tahunAjaranOptions' => $tahunAjaranOptions,
             'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
             'rombonganBelajar' => $rombonganBelajar,
