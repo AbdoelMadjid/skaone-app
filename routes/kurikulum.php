@@ -3,6 +3,8 @@
 use App\Http\Controllers\Kurikulum\DataKBM\CapaianPembelajaranController;
 use App\Http\Controllers\Kurikulum\DataKBM\HariEfektifController;
 use App\Http\Controllers\Kurikulum\DataKBM\JadwalMingguanController;
+use App\Http\Controllers\Kurikulum\DataKBM\JadwalPerRombelController;
+use App\Http\Controllers\Kurikulum\DataKBM\JadwalPerTingkatController;
 use App\Http\Controllers\Kurikulum\DataKBM\JamMingguanTampilController;
 use App\Http\Controllers\Kurikulum\DataKBM\KbmPerRombelController;
 use App\Http\Controllers\Kurikulum\DataKBM\KunciDataKbmController;
@@ -61,9 +63,11 @@ Route::middleware('auth')->group(function () {
             Route::get('/get-personil-jadwal', [JadwalMingguanController::class, 'getPersonil']);
             Route::get('/get-mapel-by-personil', [JadwalMingguanController::class, 'getMapelByPersonil']);
             Route::get('/cek-jam-ke', [JadwalMingguanController::class, 'cekJamKe']);
-            Route::get('/jadwal-mingguan-tampil', [JamMingguanTampilController::class, 'index'])->name('tampiljadwalmingguan');
-            Route::post('/simpan-jadwal', [JamMingguanTampilController::class, 'simpanJadwal'])->name('simpanJadwal');
             Route::post('/hapusjamterpilih', [JadwalMingguanController::class, 'hapusJamTerpilih'])->name('hapusjamterpilih');
+            Route::post('/simpan-jadwal', [JadwalMingguanController::class, 'simpanJadwal'])->name('simpanJadwal');
+
+            Route::get('/jadwal-mingguan-per-rombel', [JadwalPerRombelController::class, 'index'])->name('tampiljadwalperrombel');
+            Route::get('/jadwal-mingguan-per-tingkat', [JadwalPerTingkatController::class, 'index'])->name('tampiljadwalpertingkat');
 
             Route::resource('peserta-didik-rombel', PesertaDidikRombelController::class);
             Route::get('/get-rombongan-belajar', [PesertaDidikRombelController::class, 'getRombonganBelajar'])->name('get-rombonganbelajar');

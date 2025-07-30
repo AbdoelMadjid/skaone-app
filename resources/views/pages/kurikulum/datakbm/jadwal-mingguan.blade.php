@@ -19,8 +19,10 @@
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0">
-                    <x-btn-action href="{{ route('kurikulum.datakbm.tampiljadwalmingguan') }}" label="Tampil & Tambah Jadwal"
+                    <x-btn-action href="{{ route('kurikulum.datakbm.tampiljadwalperrombel') }}" label="Jadwal Per Rombel"
                         icon="ri-calendar-fill" />
+                    <x-btn-action href="{{ route('kurikulum.datakbm.tampiljadwalpertingkat') }}" label="Jadwal Per Tingkat"
+                        icon="ri-calendar-2-fill" />
                     {{-- <x-btn-tambah can="create kurikulum/datakbm/jadwal-mingguan"
                         route="kurikulum.datakbm.jadwal-mingguan.create" label="Tambah" icon="ri-add-line" /> --}}
                     <button id="deleteSelected" class="btn btn-soft-danger btn-sm" style="display: none;"><i

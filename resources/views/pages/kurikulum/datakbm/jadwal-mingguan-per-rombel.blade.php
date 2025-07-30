@@ -1,9 +1,14 @@
 @extends('layouts.master')
 @section('title')
-    @lang('translation.jadwal-mingguan')
+    @lang('translation.jadwal-per-rombel')
 @endsection
 @section('css')
-    {{--  --}}
+    <style>
+        .no-click {
+            pointer-events: none;
+            cursor: not-allowed;
+        }
+    </style>
 @endsection
 @section('content')
     @component('layouts.breadcrumb')
@@ -139,7 +144,8 @@
                                         $isKegiatanInsidentil = $jam == 1 && $hari == 'Jumat';
                                     @endphp
 
-                                    <td class="cell-jadwal" data-jam="{{ $jam }}" data-hari="{{ $hari }}"
+                                    <td class="cell-jadwal {{ $isUpacara || $isKegiatanInsidentil ? 'no-click' : '' }}"
+                                        data-jam="{{ $jam }}" data-hari="{{ $hari }}"
                                         data-mapel="{{ $cell['mapel'] ?? '' }}" data-guru="{{ $cell['guru'] ?? '' }}"
                                         data-id="{{ $cell['id'] ?? '' }}"
                                         style="width:250px;
