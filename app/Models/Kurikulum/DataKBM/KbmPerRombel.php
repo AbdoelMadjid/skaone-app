@@ -26,6 +26,11 @@ class KbmPerRombel extends Model
         'id_personil',
     ];
 
+    public function jamMengajar()
+    {
+        return $this->hasOne(JamMengajar::class, 'kbm_per_rombel_id');
+    }
+
     // Relasi ke CapaianPembelajaran
     public function capaianPembelajarans()
     {

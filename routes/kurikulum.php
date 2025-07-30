@@ -94,6 +94,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/get-mata-pelajaran', [KbmPerRombelController::class, 'filterMataPelajaran'])->name('get-matapelajaran');
             Route::get('/get-personil-sekolah', [KbmPerRombelController::class, 'getPersonilSekolah'])->name('get-personil-sekolah');
             Route::post('/update-personil', [KbmPerRombelController::class, 'updatePersonil']);
+            Route::post('/update-jumlah-jam', [KbmPerRombelController::class, 'updateJumlahJam']);
+
+
             Route::resource('kunci-data-kbm', KunciDataKbmController::class);
         });
 

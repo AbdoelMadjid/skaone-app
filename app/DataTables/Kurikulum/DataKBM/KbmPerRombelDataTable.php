@@ -68,13 +68,31 @@ class KbmPerRombelDataTable extends DataTable
             ->addColumn('identitas_rombel', function ($row) {
                 return $row->tahunajaran . '<br>' . $row->semester . ' (' . $row->ganjilgenap . ')<br>' . $row->rombel; // Menggabungkan nomor_urut dan isi_cp
             })
+            ->addColumn('jam_ngajar', function ($row) {
+                $currentJam = $row->jumlah_jam ?? null; // Dari hasil join
+
+                $jamNgajarOptions = "<option value='' disabled " . ($currentJam === null ? 'selected' : '') . ">Pilih jumlah jam</option>";
+
+                for ($i = 1; $i <= 15; $i++) {
+                    $selected = ($currentJam == $i) ? 'selected' : '';
+                    $jamNgajarOptions .= "<option value='{$i}' {$selected}>{$i}</option>";
+                }
+
+                $selectId = 'select-jam-' . $row->id;
+
+                $select = "<select class='form-control update-jam' id='{$selectId}' data-id='{$row->id}' onchange='updateJam({$row->id}, this.value)'>";
+                $select .= $jamNgajarOptions;
+                $select .= '</select>';
+
+                return $select;
+            })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
                 return view('action', compact('actions'));
             })
             ->addIndexColumn()
-            ->rawColumns(['semester', 'id_personil', 'action', 'identitas_rombel']);
+            ->rawColumns(['semester', 'jam_ngajar', 'id_personil', 'action', 'identitas_rombel']);
     }
 
     /**
@@ -126,6 +144,10 @@ class KbmPerRombelDataTable extends DataTable
         if (request()->has('romBel') && request('romBel') != 'all') {
             $query->where('kode_rombel', request('romBel'));
         }
+
+        // Tambahkan left join ke jam_mengajars
+        $query->leftJoin('jam_mengajars', 'jam_mengajars.kbm_per_rombel_id', '=', 'kbm_per_rombels.id')
+            ->addSelect('kbm_per_rombels.*', 'jam_mengajars.jumlah_jam');
 
         // Default query with ordering
         $query->orderBy('rombel', 'asc')
@@ -183,6 +205,7 @@ class KbmPerRombelDataTable extends DataTable
             Column::make('mata_pelajaran')->title('Nama Mapel')->width(180),
             Column::make('kkm')->title('KKM')->addClass('text-center')->width(25),
             Column::make('id_personil')->title('Guru Pengajar')->width(150),
+            Column::make('jam_ngajar')->title('Jml Jam')->width(50),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

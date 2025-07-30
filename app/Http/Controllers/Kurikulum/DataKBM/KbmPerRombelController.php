@@ -6,6 +6,7 @@ use App\DataTables\Kurikulum\DataKBM\KbmPerRombelDataTable;
 use App\Models\Kurikulum\DataKBM\KbmPerRombel;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Kurikulum\DataKBM\KbmPerRombelRequest;
+use App\Models\Kurikulum\DataKBM\JamMengajar;
 use App\Models\Kurikulum\DataKBM\MataPelajaranPerJurusan;
 use App\Models\ManajemenSekolah\KompetensiKeahlian;
 use App\Models\ManajemenSekolah\PersonilSekolah;
@@ -237,5 +238,24 @@ class KbmPerRombelController extends Controller
 
         //return response()->json(['message' => 'Data berhasil diperbarui']);
         return responseSuccess(true);
+    }
+
+    public function updateJumlahJam(Request $request)
+    {
+        $validated = $request->validate([
+            'kbm_per_rombel_id' => 'required|exists:kbm_per_rombels,id',
+            'jumlah_jam' => 'required|integer|min:1|max:40',
+        ]);
+
+        $jam = JamMengajar::updateOrCreate(
+            ['kbm_per_rombel_id' => $validated['kbm_per_rombel_id']],
+            ['jumlah_jam' => $validated['jumlah_jam']]
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Jam mengajar berhasil disimpan',
+            'data' => $jam
+        ]);
     }
 }

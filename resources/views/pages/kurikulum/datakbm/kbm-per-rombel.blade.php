@@ -209,6 +209,30 @@
                 }
             });
         }
+
+
+        function updateJam(id, jamValue) {
+            $.ajax({
+                url: '/kurikulum/datakbm/update-jumlah-jam',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    kbm_per_rombel_id: id,
+                    jumlah_jam: jamValue
+                },
+                success: function(response) {
+                    if (response.success) {
+                        showToast('success', 'Jam mengajar berhasil diperbarui!');
+                    } else {
+                        showToast('warning', response.message || 'Gagal memperbarui jam!');
+                    }
+                },
+                error: function(xhr) {
+                    showToast('error', 'Terjadi kesalahan: ' + xhr.responseText);
+                }
+            });
+        }
+
         // Inisialisasi DataTable
         $(document).ready(function() {
 
