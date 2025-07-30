@@ -146,8 +146,97 @@ class JamMingguanTampilController extends Controller
 
         $startJam = (int) $request->jam_ke;
         $jumlahJam = (int) $request->jumlah_jam;
+        $jamIstirahat = [6, 10];
+        $jamMax = 13; // Jumlah jam maksimal per hari
 
-        for ($i = 0; $i < $jumlahJam; $i++) {
+        $bentrokGuruLain = [];
+        $duplikatSendiri = [];
+        $bentrokRombel = [];
+
+        $jamTerisi = [];
+        $currentJam = $startJam;
+
+        // Kumpulkan jam yang valid untuk diisi (skip jam istirahat)
+        while (count($jamTerisi) < $jumlahJam && $currentJam <= $jamMax) {
+            if (in_array($currentJam, $jamIstirahat)) {
+                $currentJam++;
+                continue;
+            }
+
+            $jamTerisi[] = $currentJam;
+            $currentJam++;
+        }
+
+        // Cek bentrokan
+        foreach ($jamTerisi as $jamKe) {
+            // 1. Bentrok antar guru di rombel berbeda
+            $bentrokGuru = JadwalMingguan::where('tahunajaran', $request->tahunajaran)
+                ->where('semester', $request->semester)
+                ->where('hari', $request->hari)
+                ->where('jam_ke', $jamKe)
+                ->where('id_personil', $request->id_personil)
+                ->where('kode_rombel', '!=', $request->kode_rombel)
+                ->first();
+
+            if ($bentrokGuru) {
+                $bentrokGuruLain[] = $jamKe;
+            }
+
+            // 2. Tumpang tindih dengan jadwal guru sendiri
+            $duplikat = JadwalMingguan::where('tahunajaran', $request->tahunajaran)
+                ->where('semester', $request->semester)
+                ->where('hari', $request->hari)
+                ->where('jam_ke', $jamKe)
+                ->where('id_personil', $request->id_personil)
+                ->where('kode_rombel', $request->kode_rombel)
+                ->first();
+
+            if ($duplikat) {
+                $duplikatSendiri[] = $jamKe;
+            }
+
+            // 3. Rombel bentrok dengan guru lain
+            $rombelsama = JadwalMingguan::where('tahunajaran', $request->tahunajaran)
+                ->where('semester', $request->semester)
+                ->where('hari', $request->hari)
+                ->where('jam_ke', $jamKe)
+                ->where('kode_rombel', $request->kode_rombel)
+                ->where('id_personil', '!=', $request->id_personil)
+                ->first();
+
+            if ($rombelsama) {
+                $bentrokRombel[] = $jamKe;
+            }
+        }
+
+        // Jika jam yang tersedia tidak mencukupi jumlah_jam yang diminta
+        if (count($jamTerisi) < $jumlahJam) {
+            return redirect()->back()
+                ->with('warning', 'Jam tersisa dari jam ke-' . $startJam . ' hanya cukup untuk ' . count($jamTerisi) . ' jam pelajaran. Tidak bisa menambahkan ' . $jumlahJam . ' jam karena melebihi jam ke-' . $jamMax . '.')
+                ->withInput();
+        }
+
+        // Cek hasil bentrokan
+        if (count($bentrokGuruLain) > 0) {
+            return redirect()->back()
+                ->with('error', 'Guru sudah memiliki jadwal di rombel lain pada jam ke-' . implode(', ', $bentrokGuruLain) . ' di hari ' . $request->hari . '.')
+                ->withInput();
+        }
+
+        if (count($duplikatSendiri) > 0) {
+            return redirect()->back()
+                ->with('error', 'Jam ke-' . implode(', ', $duplikatSendiri) . ' di hari ' . $request->hari . ' sudah pernah diisi. Tidak boleh menimpa jadwal sebelumnya.')
+                ->withInput();
+        }
+
+        if (count($bentrokRombel) > 0) {
+            return redirect()->back()
+                ->with('error', 'Rombel ini sudah memiliki guru lain pada jam ke-' . implode(', ', $bentrokRombel) . ' di hari ' . $request->hari . '. Jadwal bentrok.')
+                ->withInput();
+        }
+
+        // Simpan semua jam yang valid
+        foreach ($jamTerisi as $jamKe) {
             JadwalMingguan::updateOrCreate(
                 [
                     'tahunajaran' => $request->tahunajaran,
@@ -155,7 +244,7 @@ class JamMingguanTampilController extends Controller
                     'kode_kk' => $request->kode_kk,
                     'tingkat' => $request->tingkat,
                     'kode_rombel' => $request->kode_rombel,
-                    'jam_ke' => $startJam + $i,
+                    'jam_ke' => $jamKe,
                     'hari' => $request->hari,
                 ],
                 [
