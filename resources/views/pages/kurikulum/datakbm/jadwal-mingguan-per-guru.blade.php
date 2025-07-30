@@ -24,6 +24,8 @@
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0">
+                    <x-btn-action href="{{ route('kurikulum.datakbm.tampiljadwalperrombel') }}" label="Jadwal Per Rombel"
+                        icon="ri-calendar-fill" />
                     <x-btn-kembali href="{{ route('kurikulum.datakbm.jadwal-mingguan.index') }}" />
                 </div>
             </div>

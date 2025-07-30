@@ -16,8 +16,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-light border mb-3" id="modalKeteranganWaktu">
-                        Hari: <strong id="labelHari">-</strong> | Jam ke-<strong id="labelJamKe">-</strong>
+                    <!-- Info Alert -->
+                    <div class="alert alert-info alert-dismissible bg-info text-white alert-label-icon fade show"
+                        role="alert" id="modalKeteranganWaktu">
+                        <i class="ri-airplay-line label-icon"></i> Hari: <strong id="labelHari">-</strong> | Jam
+                        ke-<strong id="labelJamKe">-</strong>
                     </div>
                     <div class="mb-2">
                         <label for="id_personil" class="form-label">Guru</label>

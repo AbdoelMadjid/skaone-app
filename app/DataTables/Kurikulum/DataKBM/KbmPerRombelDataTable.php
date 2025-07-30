@@ -66,12 +66,12 @@ class KbmPerRombelDataTable extends DataTable
                 return $select . $script; // Kembalikan dropdown dan script sebagai output
             })
             ->addColumn('identitas_rombel', function ($row) {
-                return $row->tahunajaran . '<br>' . $row->semester . ' (' . $row->ganjilgenap . ')<br>' . $row->rombel; // Menggabungkan nomor_urut dan isi_cp
+                return $row->tahunajaran . '<br>' . $row->semester . ' (' . $row->ganjilgenap . ')'; // Menggabungkan nomor_urut dan isi_cp
             })
             ->addColumn('jam_ngajar', function ($row) {
                 $currentJam = $row->jumlah_jam ?? null; // Dari hasil join
 
-                $jamNgajarOptions = "<option value='' disabled " . ($currentJam === null ? 'selected' : '') . ">Pilih jumlah jam</option>";
+                $jamNgajarOptions = "<option value='' disabled " . ($currentJam === null ? 'selected' : '') . ">Pilih</option>";
 
                 for ($i = 1; $i <= 15; $i++) {
                     $selected = ($currentJam == $i) ? 'selected' : '';
@@ -80,7 +80,7 @@ class KbmPerRombelDataTable extends DataTable
 
                 $selectId = 'select-jam-' . $row->id;
 
-                $select = "<select class='form-control update-jam' id='{$selectId}' data-id='{$row->id}' onchange='updateJam({$row->id}, this.value)'>";
+                $select = "<select class='form-select form-select-sm update-jam' id='{$selectId}' data-id='{$row->id}' onchange='updateJam({$row->id}, this.value)'>";
                 $select .= $jamNgajarOptions;
                 $select .= '</select>';
 
@@ -199,13 +199,14 @@ class KbmPerRombelDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
-            Column::make('kode_mapel_rombel')->title('Kode Mapel <br>Rombel')->width(100),
+            Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(25),
+            //Column::make('kode_mapel_rombel')->title('Kode Mapel <br>Rombel')->width(100),
             Column::make('identitas_rombel')->title('Thn Ajaran')->addClass('text-center')->width(50),
-            Column::make('mata_pelajaran')->title('Nama Mapel')->width(180),
+            Column::make('rombel')->title('Rombel')->addClass('text-center')->width(25),
+            Column::make('mata_pelajaran')->title('Nama <br>Mata Pelajaran')->width(180),
             Column::make('kkm')->title('KKM')->addClass('text-center')->width(25),
             Column::make('id_personil')->title('Guru Pengajar')->width(150),
-            Column::make('jam_ngajar')->title('Jml Jam')->width(50),
+            Column::make('jam_ngajar')->title('Jml Jam')->width(35),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

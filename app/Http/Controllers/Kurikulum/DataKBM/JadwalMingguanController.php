@@ -239,6 +239,10 @@ class JadwalMingguanController extends Controller
             'jumlah_jam' => 'required|integer|min:1|max:10',
         ]);
 
+        $namaRombel = KbmPerRombel::where('kode_rombel', $request->kode_rombel)->value('rombel') ?? '-';
+        $namaGuru = PersonilSekolah::where('id_personil', $request->id_personil)->value('namalengkap') ?? '-';
+        $mapel = KbmPerRombel::where('kode_mapel_rombel', $request->kode_mapel_rombel)->value('mata_pelajaran') ?? '-';
+
         $startJam = (int) $request->jam_ke;
         $jumlahJam = (int) $request->jumlah_jam;
         $jamIstirahat = [6, 10];
@@ -327,6 +331,29 @@ class JadwalMingguanController extends Controller
         if (count($bentrokRombel) > 0) {
             return redirect()->back()
                 ->with('error', 'Rombel ini sudah memiliki guru lain pada jam ke-' . implode(', ', $bentrokRombel) . ' di hari ' . $request->hari . '. Jadwal bentrok.')
+                ->withInput();
+        }
+
+        $kbm = KbmPerRombel::with('jamMengajar')
+            ->where('tahunajaran', $request->tahunajaran)
+            ->where('ganjilgenap', $request->semester)
+            ->where('kode_rombel', $request->kode_rombel)
+            ->where('id_personil', $request->id_personil)
+            ->where('kode_mapel_rombel', $request->kode_mapel_rombel)
+            ->first();
+
+        $jumlahJamNgajar = ($kbm && $kbm->jamMengajar) ? $kbm->jamMengajar->jumlah_jam : 0;
+
+        $jamTerpakai = JadwalMingguan::where('tahunajaran', $request->tahunajaran)
+            ->where('semester', $request->semester)
+            ->where('kode_rombel', $request->kode_rombel)
+            ->where('id_personil', $request->id_personil)
+            ->where('mata_pelajaran', $request->kode_mapel_rombel)
+            ->count(); // karena 1 row = 1 jam
+
+        if ($jamTerpakai >= $jumlahJamNgajar) {
+            return redirect()->back()
+                ->with('info', "Jumlah jam <strong>$mapel</strong> di <strong>$namaRombel</strong> yang di ampu oleh <strong>$namaGuru</strong><br> sebanyak $jumlahJamNgajar jam sudah terpenuhi.")
                 ->withInput();
         }
 
