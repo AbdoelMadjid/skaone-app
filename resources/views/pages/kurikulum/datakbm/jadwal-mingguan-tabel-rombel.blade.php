@@ -1,8 +1,9 @@
 <div class="text-center mt-lg-2 pt-3">
-    <h1 class="display-6 fw-semibold mb-1 lh-base">
-        JADWAL PEMBELAJARAN <span class="text-success">{{ $namaRombel }}</span>
+    <h1 class="fs-24 fw-semibold mb-1 lh-base">
+        JADWAL PEMBELAJARAN ROMBEL <br>
+        <span class="text-danger">{{ $namaRombel }}</span>
     </h1>
-    <p class="lead text-muted lh-base">TAHUN AJARAN {{ $tahunAjaran ?? '-' }} SEMESTER
+    <p class="lead lh-base">TAHUN AJARAN {{ $tahunAjaran ?? '-' }} SEMESTER
         {{ strtoupper($semester ?? '-') }}</p>
 </div>
 

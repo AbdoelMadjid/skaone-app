@@ -8,6 +8,7 @@ use App\Models\Kurikulum\DataKBM\KbmPerRombel;
 use App\Models\ManajemenSekolah\KompetensiKeahlian;
 use App\Models\ManajemenSekolah\PersonilSekolah;
 use App\Models\ManajemenSekolah\RombonganBelajar;
+use App\Models\ManajemenSekolah\Semester;
 use App\Models\ManajemenSekolah\TahunAjaran;
 use Illuminate\Http\Request;
 
@@ -28,6 +29,16 @@ class JadwalPerRombelController extends Controller
         // Pastikan tahun ajaran aktif ada sebelum melanjutkan
         if (!$tahunAjaranAktif) {
             return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
+        }
+
+        // Retrieve the active semester related to the active academic year
+        $semesterAktif = Semester::where('status', 'Aktif')
+            ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+            ->first();
+
+        // Check if an active semester is found
+        if (!$semesterAktif) {
+            return redirect()->back()->with('error', 'Tidak ada semester aktif.');
         }
 
         $tahunAjaran = $request->get('tahunajaran');
@@ -112,6 +123,7 @@ class JadwalPerRombelController extends Controller
             'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
             'rombonganBelajar' => $rombonganBelajar,
             'tahunAjaranAktif' => $tahunAjaranAktif->tahunajaran,
+            'semesterAktif' => $semesterAktif->semester,
             'tahunAjaran' => $tahunAjaran,
             'semester' => $semester,
             'kodeKK' => $kodeKK,

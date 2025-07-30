@@ -37,10 +37,12 @@
                     <div class="col-lg-auto">
                         <div>
                             <select class="form-select form-select-sm" name="tahunajaran" id="idThnAjaran">
-                                <option value="" selected>Pilih Tahun Ajaran</option>
+                                <option value="" disabled {{ request('tahunajaran') ? '' : 'selected' }}>Pilih Tahun
+                                    Ajaran</option>
                                 @foreach ($tahunAjaranOptions as $thnajar)
                                     <option value="{{ $thnajar }}"
-                                        {{ request('tahunajaran') == $thnajar ? 'selected' : '' }}>{{ $thnajar }}
+                                        {{ request('tahunajaran', $tahunAjaranAktif) == $thnajar ? 'selected' : '' }}>
+                                        {{ $thnajar }}
                                     </option>
                                 @endforeach
                             </select>
@@ -49,10 +51,12 @@
                     <div class="col-lg-auto">
                         <div>
                             <select class="form-select form-select-sm" name="semester" id="idSemester">
-                                <option value="" selected>Pilih Semester</option>
-                                <option value="Ganjil" {{ request('semester') == 'Ganjil' ? 'selected' : '' }}>Ganjil
+                                <option value="" disabled {{ request('semester') ? '' : 'selected' }}>Pilih Semester
                                 </option>
-                                <option value="Genap" {{ request('semester') == 'Genap' ? 'selected' : '' }}>Genap</option>
+                                <option value="Ganjil"
+                                    {{ request('semester', $semesterAktif) == 'Ganjil' ? 'selected' : '' }}>Ganjil</option>
+                                <option value="Genap"
+                                    {{ request('semester', $semesterAktif) == 'Genap' ? 'selected' : '' }}>Genap</option>
                             </select>
                         </div>
                     </div>
