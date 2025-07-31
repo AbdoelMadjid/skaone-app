@@ -23,7 +23,7 @@
         </div>
         <div class="col-sm-4">
             <x-form.select name="status" :options="['Aktif' => 'Aktif', 'Non Aktif' => 'Non Aktif']" value="{{ old('status', $data->status) }}"
-                label="Status Ujian" />
+                label="Status Kegiatan" />
         </div>
     </div>
 </x-form.modal>
