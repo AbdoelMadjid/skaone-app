@@ -1,4 +1,4 @@
-<div id='cetak-skkb' style='@page {size: A4;}'>
+<div id='cetak-surat-perintah' style='@page {size: A4;}'>
     <div class='table-responsive'>
         <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;'>
             <tr>
@@ -9,116 +9,114 @@
                 <td>&nbsp;</td>
             </tr>
             <tr>
-                <td style='font-size:18px;text-align:center;'><strong>SURAT PERINTAH</strong>
+                <td style='text-align:center;'><strong style='font-size:24px;'>SURAT
+                        PERINTAH</strong><br>
+                    <strong style='font-size:12px;'>Nomor : {{ $infoNegosiasi['nomor_surat'] ?? '-' }}</strong>
                 </td>
-            </tr>
-            <tr>
-                <td style='font-size:12px;text-align:center;'><strong>Nomor :
-                        570/TU.01.02/SMKN1KDP.CADISDIKWIL.IX</strong>
-                </td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
             </tr>
         </table>
-        <table style='margin: 0 auto;width:80%;border-collapse:collapse;font:12px Times New Roman;'>
+        <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;'>
             <tr>
-                <td width='50'>&nbsp;</td>
-                <td align='justify'>
-                    <p style='padding-bottom:-25px;'>
-                        Yang bertanda tangan di bawah ini:</p>
+                <td>
                     <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;'>
                         <tr>
-                            <td width='15'>&nbsp;</td>
-                            <td>
+                            <td style="width:80%">
                                 <table>
                                     <tr>
-                                        <td width='170'>Nama</td>
-                                        <td width='10'>:</td>
-                                        <td><strong>H. Damudin, S.Pd., M.Pd.</strong></td>
-                                    </tr>
-                                    <tr>
-                                        <td>NIP</td>
-                                        <td>:</td>
-                                        <td>19740302 199803 1 002</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Pangkat/Golongan</td>
-                                        <td>:</td>
-                                        <td>Pembina Utama Muda, IV/C</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Jabatan</td>
-                                        <td>:</td>
-                                        <td>Kepala Sekolah</td>
-                                    </tr>
-                                    <tr>
-                                        <td valign='top'>Alamat</td>
-                                        <td valign='top'>:</td>
-                                        <td>Jalan Siliwangi No. 30 Kadipaten Majalengka</td>
+                                        <td style="width:100px;">Dasar </td>
+                                        <td style="width:25px;">:</td>
+                                        <td>Perintah Kepala Sekolah</td>
                                     </tr>
                                 </table>
                             </td>
-                            <td width='40'>&nbsp;</td>
                         </tr>
                     </table>
-                    <p style='padding-bottom:-25px;padding-top:20px;'>
-                        Menerangkan:</p>
                     <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;'>
                         <tr>
-                            <td width='15'>&nbsp;</td>
-                            <td>
+                            <td style="width:80%">
                                 <table>
                                     <tr>
-                                        <td width='170'>Nama</td>
-                                        <td width='10'>:</td>
-                                        <td><strong></strong></td>
-                                    </tr>
-
-                                    <tr>
-                                        <td valign='top'>Alamat</td>
-                                        <td valign='top'>:</td>
+                                        <td style="width:100px;">Kepada </td>
+                                        <td style="width:25px;">:</td>
                                         <td>
+                                            <table>
+                                                <tr>
+                                                    <td width="170">Nama</td>
+                                                    <td width="10">:</td>
+                                                    <td>
+                                                        <strong>
+                                                            {{ $infoNegosiasi['nama_lengkap'] ?? '-' }}
+                                                        </strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>NIP</td>
+                                                    <td>:</td>
+                                                    <td>{{ $infoNegosiasi['nip'] ?? '-' }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Pangkat/Golongan</td>
+                                                    <td>:</td>
+                                                    <td>{{ $infoNegosiasi['gol_ruang'] ?? '-' }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Kode Negosiator</td>
+                                                    <td>:</td>
+                                                    <td>{{ $infoNegosiasi['id_nego'] ?? '-' }}</td>
+                                                </tr>
+                                            </table>
                                         </td>
                                     </tr>
                                 </table>
                             </td>
-                            <td width='40'>&nbsp;</td>
+                        </tr>
+                    </table>
+                    <br>
+                    <table>
+                        <tr>
+                            <td style="width:100px;">Untuk</td>
+                            <td style="width:25px;">:</td>
+                            <td style="text-align: justify">
+                                Untuk melaksanakan Negosiasi Tempat Praktek Kerja Lapangan (PKL) atau (DU/DI) Tahun
+                                Pelajaran 2024/2025, Hari
+                                {{ \Carbon\Carbon::parse($infoNegosiasi['tgl_nego'])->translatedFormat('l') ?? '-' }}
+                                Tanggal
+                                {{ \Carbon\Carbon::parse($infoNegosiasi['tgl_nego'])->translatedFormat('d F Y') ?? '-' }}.
+                                Pelaksanaan negosiasi disesuaikan dengan kebutuhan yaitu :<br>
+                                <ol style="margin:4px 0 4px -25px;">
+                                    <li>Dapat dilakukan hanya satu kali kunjungan atau lebih dari satu kali kunjungan
+                                    <li>Negosiasi dinyatakan selesai jika sudah terdapat kejelasan diterima atau tidak
+                                        diterimanya permohonan ajuan ijin tempat pelaksanaan PKL atas nama SMKN 1
+                                        Kadipaten
+                                    <li>Negosiasi diupayakan tidak dilaksanakan pada jam-jam tatap muka reguler (PBM) di
+                                        kelas
+                                    <li>Dimohon untuk mengisi format isian pelaksanaan negosiasi dan kelengkapan lainnya
+                                        serta melaporkannya kepada kelompok kerja (panitia) PKL.
+                                </ol>
+                                (Daftar nama Siswa Peserta PKL dan nama serta alamat DU/DI yang harus dikunjungi
+                                dilampirkan)
+                            </td>
                         </tr>
                     </table>
                 </td>
-                <td width='40'>&nbsp;</td>
+                <td width='20'>&nbsp;</td>
             </tr>
         </table>
-        <table style='margin: 0 auto;width:80%;border-collapse:collapse;font:12px Times New Roman;'>
-            <tr>
-                <td width='50'>&nbsp;</td>
-                <td align='justify'><br><br>
-                    Yang bersangkutan selama menjadi siswa di
-                    SMKN 1 Kadipaten menurut pengamatan kami, berkelakuan baik dan tidak
-                    terlibat dalam penyalahgunaan obat-obat terlarang<br><br>
-                    Demikian surat keterangan ini kami buat untuk dipergunakan
-                    sebagaimana mestinya.
-                </td>
-                <td width='40'>&nbsp;</td>
-            </tr>
-        </table>
-        <br><br>
-
         <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;'>
             <tr>
                 <td width='25'>&nbsp;</td>
                 <td>
                     <p style='margin-bottom:-2px;margin-top:-2px'>&nbsp;</p>
-                    <table width='70%'
-                        style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;'>
+                    <table width='70%' style='margin: 0 auto;width:100%;border-collapse:collapse;'>
                         <tr>
-                            <td width='400'></td>
+                            <td width='300'></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td style='padding:4px 8px;'>
-                                Majalengka, 05 Mei 2025<br>
+                                Kadipaten,
+                                {{ \Carbon\Carbon::parse($infoNegosiasi['titimangsa'])->translatedFormat('d F Y') ?? '-' }}
+                                <br>
                                 Kepala Sekolah,
                                 <div>
                                     <img src='{{ URL::asset('images/damudin.png') }}' border='0' height='110'
@@ -131,6 +129,7 @@
                                 <p>&nbsp;</p>
                                 <p>&nbsp;</p>
                                 <strong>H. DAMUDIN, S.Pd., M.Pd.</strong><br>
+                                Pembina Utama Muda<br>
                                 NIP. 19740302 199803 1 002
                             </td>
                         </tr>

@@ -24,6 +24,14 @@ class PrakerinPerusahaanRequest extends FormRequest
         return [
             'nama' => 'required|string',
             'alamat' => 'required|string',
+            'id_pimpinan' => 'nullable|string',
+            'jabatan_pimpinan' => 'nullable|string',
+            'nama_pimpinan' => 'nullable|string',
+            'no_ident_pimpinan' => 'nullable|string',
+            'id_pembimbing' => 'nullable|string',
+            'jabatan_pembimbing' => 'nullable|string',
+            'nama_pembimbing' => 'nullable|string',
+            'no_ident_pembimbing' => 'nullable|string',
             'status' => 'required|string',
         ];
     }

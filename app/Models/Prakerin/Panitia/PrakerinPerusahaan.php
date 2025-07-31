@@ -12,6 +12,14 @@ class PrakerinPerusahaan extends Model
     protected $fillable = [
         'nama',
         'alamat',
+        'id_pimpinan',
+        'jabatan_pimpinan',
+        'nama_pimpinan',
+        'no_ident_pimpinan',
+        'id_pembimbing',
+        'jabatan_pembimbing',
+        'nama_pembimbing',
+        'no_ident_pembimbing',
         'status',
     ];
 }

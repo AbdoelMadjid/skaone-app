@@ -24,12 +24,22 @@ class PrakerinPerusahaanDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addColumn('jabatan_pimpinan', function ($row) {
+                return $row->nama_pimpinan . '<br>' . $row->jabatan_pimpinan . '<br>' . $row->id_pimpinan . ' ' . $row->no_ident_pimpinan;
+            })
+            ->addColumn('jabatan_pembimbing', function ($row) {
+                return $row->nama_pembimbing . '<br>' . $row->jabatan_pembimbing . '<br>' . $row->id_pembimbing . ' ' . $row->no_ident_pembimbing;
+            })
+            ->addColumn('perusahaan', function ($row) {
+                return $row->nama . "<br><span class='text-info'>" . $row->alamat . '</span>';
+            })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
                 return view('action', compact('actions'));
             })
-            ->addIndexColumn();
+            ->addIndexColumn()
+            ->rawColumns(['action', 'jabatan_pimpinan', 'jabatan_pembimbing', 'perusahaan']);
     }
 
     /**
@@ -69,8 +79,9 @@ class PrakerinPerusahaanDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
-            Column::make('nama')->title('Nama Perusahaan'),
-            Column::make('alamat')->title('Alamat'),
+            Column::make('perusahaan')->title('Perusahaan')->width(350),
+            Column::make('jabatan_pimpinan')->title('Jabatan Pimpinan'),
+            Column::make('jabatan_pembimbing')->title('Jabatan Pembimbing'),
             Column::make('status')->title('Status'),
             // Kolom untuk aksi
             Column::computed('action')
