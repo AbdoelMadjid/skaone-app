@@ -14,6 +14,7 @@ class PrakerinAdminNego extends Model
         'id_perusahaan',
         'nomor_surat',
         'titimangsa',
+        'tgl_nego',
         'id_nego',
     ];
 }

@@ -24,12 +24,17 @@ class PrakerinIdentitasDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addColumn('tgl_pelaksanaan', function ($row) {
+                return 'Tanggal Mulai : <strong>' . \Carbon\Carbon::parse($row->tanggal_mulai)->translatedFormat('l, d F Y') .
+                    '</strong><br>Tanggal Selesai : <strong>' . \Carbon\Carbon::parse($row->tanggal_selesai)->translatedFormat('l, d F Y') . '</strong>';
+            })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
                 return view('action', compact('actions'));
             })
-            ->addIndexColumn();
+            ->addIndexColumn()
+            ->rawColumns(['action', 'tgl_pelaksanaan']);
     }
 
     /**
@@ -71,8 +76,7 @@ class PrakerinIdentitasDataTable extends DataTable
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('nama')->title('Nama Perusahaan'),
             Column::make('tahunajaran')->title('Tahun Ajaran'),
-            Column::make('tanggal_mulai')->title('Tanggal Mulai'),
-            Column::make('tanggal_selesai')->title('Tanggal Selesai'),
+            Column::make('tgl_pelaksanaan')->title('Tanggal Pelaksanaan'),
             Column::make('status')->title('Status'),
             // Kolom untuk aksi
             Column::computed('action')

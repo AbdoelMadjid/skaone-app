@@ -26,6 +26,7 @@ class PrakerinAdminNegoRequest extends FormRequest
             'id_perusahaan' => 'required|string|exists:prakerin_perusahaans,id', // asumsi relasi
             'nomor_surat'   => 'required|string|max:100',
             'titimangsa'    => 'required|date', // kalau format tanggal, ubah ke `date`
+            'tgl_nego'    => 'required|date', // kalau format tanggal, ubah ke `date`
             'id_nego'       => 'required|string|exists:prakerin_negosiators,id_nego', // asumsi relasi
         ];
     }
@@ -49,6 +50,9 @@ class PrakerinAdminNegoRequest extends FormRequest
 
             'titimangsa.required'    => 'Titimangsa wajib diisi.',
             'titimangsa.date'         => 'Format tanggal Titimangsa tidak valid.',
+
+            'tgl_nego.required'    => 'Tanggal Negosiasi wajib diisi.',
+            'tgl_nego.date'         => 'Format tanggal Negosiasi tidak valid.',
 
             'id_nego.required'       => 'Negosiator wajib dipilih.',
             'id_nego.exists'         => 'Negosiator yang dipilih tidak valid.',

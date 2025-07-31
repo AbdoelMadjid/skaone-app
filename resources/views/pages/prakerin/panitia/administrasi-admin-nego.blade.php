@@ -35,6 +35,14 @@
 @endsection
 @section('script-bottom')
     <script>
+        $('#modal_action').on('shown.bs.modal', function() {
+            $('#id_perusahaan').select2({
+                dropdownParent: $('#modal_action'),
+                width: '100%' // atau 'resolve'
+            });
+        });
+    </script>
+    <script>
         const datatable = 'prakerinadminnego-table';
 
         handleDataTableEvents(datatable);

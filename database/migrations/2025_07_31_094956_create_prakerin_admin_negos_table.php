@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('tahunajaran');
             $table->string('id_perusahaan');
             $table->string('nomor_surat');
-            $table->string('titimangsa');
+            $table->date('titimangsa');
+            $table->date('tgl_nego');
             $table->string('id_nego');
             $table->timestamps();
         });

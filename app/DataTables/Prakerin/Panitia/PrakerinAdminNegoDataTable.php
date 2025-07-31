@@ -2,9 +2,12 @@
 
 namespace App\DataTables\Prakerin\Panitia;
 
+use App\Models\ManajemenSekolah\PersonilSekolah;
 use App\Models\Prakerin\Panitia\PrakerinAdminNego;
+use App\Models\Prakerin\Panitia\PrakerinNegosiator;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -24,6 +27,47 @@ class PrakerinAdminNegoDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addColumn('perusahaan', function ($row) {
+                $namaPerusahaan = DB::table('prakerin_perusahaans')
+                    ->where('id', $row->id_perusahaan)
+                    ->select('nama') // Ambil semua field yang diperlukan
+                    ->first();
+
+                if ($namaPerusahaan) {
+                    return $namaPerusahaan->nama;
+                }
+
+                return $row->nama . '<em>Data tidak ditemukan</em>';
+            })
+            ->addColumn('titimangsa', function ($row) {
+                return \Carbon\Carbon::parse($row->titimangsa)->translatedFormat('d F Y');
+            })
+            ->addColumn('id_nego', function ($row) {
+                // Ambil semua personil sekali saja
+                static $personilList = null;
+                if (!$personilList) {
+                    $personilList = PersonilSekolah::all()
+                        ->mapWithKeys(function ($personil) {
+                            $namaLengkap = trim(
+                                ($personil->gelardepan ? $personil->gelardepan . ' ' : '') .
+                                    $personil->namalengkap .
+                                    ($personil->gelarbelakang ? ', ' . $personil->gelarbelakang : '')
+                            );
+                            return [$personil->id_personil => $namaLengkap];
+                        });
+                }
+
+                // Cari negosiator berdasarkan $row->id_nego
+                $negosiator = PrakerinNegosiator::where('id_nego', $row->id_nego)->first();
+
+                // Ambil nama personil-nya
+                return $negosiator
+                    ? ($personilList[$negosiator->id_personil] ?? '-')
+                    : '-';
+            })
+            ->addColumn('tgl_nego', function ($row) {
+                return \Carbon\Carbon::parse($row->tgl_nego)->translatedFormat('l, d F Y');
+            })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
@@ -71,10 +115,11 @@ class PrakerinAdminNegoDataTable extends DataTable
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('tahunajaran')->title('Tahun Ajaran'),
-            Column::make('id_perusahaan')->title('Nama Perusahaan'),
+            Column::make('perusahaan')->title('Nama Perusahaan'),
             Column::make('nomor_surat')->title('No. Surat'),
             Column::make('titimangsa')->title('Titimangsa'),
-            Column::make('id_nego')->title('ID Negosiasi'),
+            Column::make('tgl_nego')->title('Tanggal Nego'),
+            Column::make('id_nego')->title('Nama Negosiator'),
             // Kolom untuk aksi
             Column::computed('action')
                 ->exportable(false)

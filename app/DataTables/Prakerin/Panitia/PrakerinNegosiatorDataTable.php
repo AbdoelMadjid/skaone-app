@@ -5,6 +5,7 @@ namespace App\DataTables\Prakerin\Panitia;
 use App\Models\Prakerin\Panitia\PrakerinNegosiator;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -24,12 +25,25 @@ class PrakerinNegosiatorDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addColumn('namaguru', function ($row) {
+                $personilSekolah = DB::table('personil_sekolahs')
+                    ->where('id_personil', $row->id_personil)
+                    ->select('gelardepan', 'namalengkap', 'gelarbelakang') // Ambil semua field yang diperlukan
+                    ->first();
+
+                if ($personilSekolah) {
+                    return $personilSekolah->gelardepan . ' ' . $personilSekolah->namalengkap . ', ' . $personilSekolah->gelarbelakang;
+                }
+
+                return $row->id_personil . '<em>Data tidak ditemukan</em>';
+            })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
                 return view('action', compact('actions'));
             })
-            ->addIndexColumn();
+            ->addIndexColumn()
+            ->rawColumns(['action', 'namaguru']);
     }
 
     /**
@@ -70,7 +84,7 @@ class PrakerinNegosiatorDataTable extends DataTable
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('tahunajaran')->title('Tahun Ajaran'),
-            Column::make('id_personil')->title('Nama Negosiator'),
+            Column::make('namaguru')->title('Nama Negosiator'),
             Column::make('gol_ruang')->title('Golongan Ruang'),
             Column::make('id_nego')->title('Identitas Nego'),
             // Kolom untuk aksi
