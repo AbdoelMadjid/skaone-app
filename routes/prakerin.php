@@ -24,8 +24,11 @@ use App\Models\PembimbingPkl\PesanPrakerin;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\Prakerin\Kaprog\PrakerinPenempatanController;
 use App\Http\Controllers\Prakerin\Panitia\PrakerinAdministrasiController;
+use App\Http\Controllers\Prakerin\Panitia\PrakerinAdminNegoController;
+use App\Http\Controllers\Prakerin\Panitia\PrakerinIdentitasController;
 use App\Http\Controllers\Prakerin\Panitia\PrakerinInformasiPanitiaController;
 use App\Http\Controllers\Prakerin\Panitia\PrakerinLaporanPanitiaController;
+use App\Http\Controllers\Prakerin\Panitia\PrakerinNegosiatorController;
 use App\Http\Controllers\Prakerin\Panitia\PrakerinPerusahaanController;
 use App\Http\Controllers\Prakerin\Panitia\PrakerinPesertaController;
 use Illuminate\Http\Request;
@@ -47,7 +50,15 @@ Route::middleware('auth')->group(function () {
         Route::resource('perusahaan', PrakerinPerusahaanController::class);
         Route::resource('peserta', PrakerinPesertaController::class);
         Route::post('/simpanpesertaprakerin', [PrakerinPesertaController::class, 'simpanPesertaPrakerin'])->name('simpanPesertaPrakerin');
-        Route::resource('administrasi', PrakerinAdministrasiController::class);
+        //Route::resource('administrasi', PrakerinAdministrasiController::class);
+
+        Route::get('administrasi', [PrakerinAdministrasiController::class, 'index'])->name('administrasi.index');
+        Route::prefix('administrasi')->as('administrasi.')->group(function () {
+            Route::resource('identitas-prakerin', PrakerinIdentitasController::class);
+            Route::resource('negosiator', PrakerinNegosiatorController::class);
+            Route::resource('admin-nego', PrakerinAdminNegoController::class);
+        });
+
         Route::resource('informasi', PrakerinInformasiPanitiaController::class);
         Route::resource('laporan', PrakerinLaporanPanitiaController::class);
     });

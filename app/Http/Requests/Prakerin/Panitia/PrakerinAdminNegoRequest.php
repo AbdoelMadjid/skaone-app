@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Http\Requests\Prakerin\Panitia;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class PrakerinAdminNegoRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'tahunajaran'   => 'required|string|max:9', // Contoh: 2024/2025
+            'id_perusahaan' => 'required|string|exists:prakerin_perusahaans,id', // asumsi relasi
+            'nomor_surat'   => 'required|string|max:100',
+            'titimangsa'    => 'required|date', // kalau format tanggal, ubah ke `date`
+            'id_nego'       => 'required|string|exists:prakerin_negosiators,id_nego', // asumsi relasi
+        ];
+    }
+
+    /**
+     * Pesan validasi kustom.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'tahunajaran.required'   => 'Tahun ajaran wajib diisi.',
+            'tahunajaran.max'        => 'Tahun ajaran maksimal 9 karakter.',
+
+            'id_perusahaan.required' => 'Perusahaan wajib dipilih.',
+            'id_perusahaan.exists'   => 'Perusahaan yang dipilih tidak ditemukan di database.',
+
+            'nomor_surat.required'   => 'Nomor surat wajib diisi.',
+            'nomor_surat.max'        => 'Nomor surat maksimal 100 karakter.',
+
+            'titimangsa.required'    => 'Titimangsa wajib diisi.',
+            'titimangsa.date'         => 'Format tanggal Titimangsa tidak valid.',
+
+            'id_nego.required'       => 'Negosiator wajib dipilih.',
+            'id_nego.exists'         => 'Negosiator yang dipilih tidak valid.',
+        ];
+    }
+}

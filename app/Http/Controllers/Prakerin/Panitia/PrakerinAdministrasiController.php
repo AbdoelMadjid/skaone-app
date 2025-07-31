@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Prakerin\Panitia;
 
 use App\Http\Controllers\Controller;
+use App\Models\Prakerin\Panitia\PrakerinIdentitas;
 use Illuminate\Http\Request;
 
 class PrakerinAdministrasiController extends Controller
@@ -12,7 +13,11 @@ class PrakerinAdministrasiController extends Controller
      */
     public function index()
     {
-        return view('pages.prakerin.panitia.administrasi');
+        $identPrakerin = PrakerinIdentitas::where('status', 'Aktif')->first(); // Ambil 1 data aktif
+
+        return view('pages.prakerin.panitia.administrasi', [
+            'identPrakerin' => $identPrakerin,
+        ]);
     }
 
     /**
