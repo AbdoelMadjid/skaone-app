@@ -69,7 +69,7 @@ class PrakerinNegosiatorDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
-            Column::make('nama')->title('Nama Perusahaan'),
+            Column::make('tahunajaran')->title('Tahun Ajaran'),
             Column::make('id_personil')->title('Nama Negosiator'),
             Column::make('gol_ruang')->title('Golongan Ruang'),
             Column::make('id_nego')->title('Identitas Nego'),

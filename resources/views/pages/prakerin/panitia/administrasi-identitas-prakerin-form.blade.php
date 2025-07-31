@@ -4,10 +4,26 @@
         @method('put')
     @endif
     <div class="row">
-        <div class="col-md-12">
-            {{-- <x-form.input name="nama" value="{{ $data->nama }}" label="Nama Perusahaan" />
-            <x-form.input name="alamat" value="{{ $data->alamat }}" label="Alamat Perusahaan" />
-            <x-form.select name="status" :options="['Aktif' => 'Aktif', 'Non Aktif' => 'Non Aktif']" value="{{ old('status', $data->status) }}" label="Status" /> --}}
+        <div class="col-sm-3">
+            <x-form.select name="tahunajaran" label="Tahun Ajaran" :options="$tahunAjaranOptions" value="{{ $data->tahunajaran }}"
+                id="tahunajaran" />
+        </div>
+        <div class="col-sm-9">
+            <x-form.input name="nama" value="{{ $data->nama }}" label="Nama Identitas Prakerin" id="nama" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <x-form.input type="date" name="tanggal_mulai" value="{{ $data->tanggal_mulai }}"
+                label="Tanggal Mulai Prakerin" id="tanggal_mulai" />
+        </div>
+        <div class="col-sm-4">
+            <x-form.input type="date" name="tanggal_selesai" value="{{ $data->tanggal_selesai }}"
+                label="Tanggal Selesai Prakerin" id="tanggal_selesai" />
+        </div>
+        <div class="col-sm-4">
+            <x-form.select name="status" :options="['Aktif' => 'Aktif', 'Non Aktif' => 'Non Aktif']" value="{{ old('status', $data->status) }}"
+                label="Status Ujian" />
         </div>
     </div>
 </x-form.modal>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Prakerin\Panitia;
 use App\DataTables\Prakerin\Panitia\PrakerinNegosiatorDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Prakerin\Panitia\PrakerinNegosiatorRequest;
+use App\Models\ManajemenSekolah\PersonilSekolah;
+use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Models\Prakerin\Panitia\PrakerinNegosiator;
 use Illuminate\Http\Request;
 
@@ -23,8 +25,15 @@ class PrakerinNegosiatorController extends Controller
      */
     public function create()
     {
+        $tahunAjaranOptions  = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
+        $personilOptions = PersonilSekolah::where('aktif', 'Aktif')
+            ->pluck('namalengkap', 'id_personil')
+            ->toArray();
+
         return view('pages.prakerin.panitia.administrasi-negosiator-form', [
             'data' => new PrakerinNegosiator(),
+            'tahunAjaranOptions' => $tahunAjaranOptions,
+            'personilOptions' => $personilOptions,
             'action' => route('panitiaprakerin.administrasi.negosiator.store')
         ]);
     }
@@ -45,7 +54,14 @@ class PrakerinNegosiatorController extends Controller
      */
     public function show(PrakerinNegosiator $negosiator)
     {
+        $tahunAjaranOptions  = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
+        $personilOptions = PersonilSekolah::where('aktif', 'Aktif')
+            ->pluck('namalengkap', 'id_personil')
+            ->toArray();
+
         return view('pages.prakerin.panitia.administrasi-negosiator-form', [
+            'tahunAjaranOptions' => $tahunAjaranOptions,
+            'personilOptions' => $personilOptions,
             'data' => $negosiator,
         ]);
     }
@@ -55,8 +71,15 @@ class PrakerinNegosiatorController extends Controller
      */
     public function edit(PrakerinNegosiator $negosiator)
     {
+        $tahunAjaranOptions  = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
+        $personilOptions = PersonilSekolah::where('aktif', 'Aktif')
+            ->pluck('namalengkap', 'id_personil')
+            ->toArray();
+
         return view('pages.prakerin.panitia.administrasi-negosiator-form', [
             'data' => $negosiator,
+            'tahunAjaranOptions' => $tahunAjaranOptions,
+            'personilOptions' => $personilOptions,
             'action' => route('panitiaprakerin.administrasi.negosiator.update', $negosiator->id)
         ]);
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Prakerin\Panitia;
 use App\DataTables\Prakerin\Panitia\PrakerinIdentitasDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Prakerin\Panitia\PrakerinIdentitasRequest;
+use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Models\Prakerin\Panitia\PrakerinIdentitas;
 use Illuminate\Http\Request;
 
@@ -23,8 +24,11 @@ class PrakerinIdentitasController extends Controller
      */
     public function create()
     {
+        $tahunAjaranOptions  = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
+
         return view('pages.prakerin.panitia.administrasi-identitas-prakerin-form', [
             'data' => new PrakerinIdentitas(),
+            'tahunAjaranOptions' => $tahunAjaranOptions,
             'action' => route('panitiaprakerin.administrasi.identitas-prakerin.store')
         ]);
     }
@@ -45,8 +49,11 @@ class PrakerinIdentitasController extends Controller
      */
     public function show(PrakerinIdentitas $identitasPrakerin)
     {
+        $tahunAjaranOptions  = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
+
         return view('pages.prakerin.panitia.administrasi-identitas-prakerin-form', [
             'data' => $identitasPrakerin,
+            'tahunAjaranOptions' => $tahunAjaranOptions,
         ]);
     }
 
@@ -55,8 +62,11 @@ class PrakerinIdentitasController extends Controller
      */
     public function edit(PrakerinIdentitas $identitasPrakerin)
     {
+        $tahunAjaranOptions  = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
+
         return view('pages.prakerin.panitia.administrasi-identitas-prakerin-form', [
             'data' => $identitasPrakerin,
+            'tahunAjaranOptions' => $tahunAjaranOptions,
             'action' => route('panitiaprakerin.administrasi.identitas-prakerin.update', $identitasPrakerin->id)
         ]);
     }
