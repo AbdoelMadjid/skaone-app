@@ -9,8 +9,8 @@
 
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
-                    <select id="selectTanggal" class="form-control form-control-sm">
-                        <option value="">-- Pilih Tanggal --</option>
+                    <select id="selectTanggal" class="form-select form-select-sm">
+                        <option value="">Pilih Tanggal</option>
                         @foreach ($tanggalList as $tgl)
                             @php
                                 $tanggalFormat = \Carbon\Carbon::parse($tgl)->translatedFormat('l, d F Y');
@@ -22,8 +22,8 @@
             </div>
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
-                    <select id="selectJamKe" class="form-control form-control-sm">
-                        <option value="">-- Pilih Jam Ke --</option>
+                    <select id="selectJamKe" class="form-select form-select-sm">
+                        <option value="">Pilih Jam Ke</option>
                         @foreach ($jamKeList as $jk)
                             <option value="{{ $jk }}">{{ $jk }}</option>
                         @endforeach

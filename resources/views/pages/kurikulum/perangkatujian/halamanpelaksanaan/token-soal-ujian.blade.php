@@ -9,8 +9,8 @@
             <meta name="csrf-token" content="{{ csrf_token() }}">
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
-                    <select id="selectTanggalToken" class="form-control form-control-sm">
-                        <option value="">-- Pilih Tanggal --</option>
+                    <select id="selectTanggalToken" class="form-select form-select-sm">
+                        <option value="">Pilih Tanggal</option>
                         @foreach ($tanggalList as $tgl)
                             @php
                                 $tanggalFormat = \Carbon\Carbon::parse($tgl)->translatedFormat('l, d F Y');
@@ -22,8 +22,8 @@
             </div>
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
-                    <select id="selectJamKeToken" class="form-control form-control-sm">
-                        <option value="">-- Pilih Jam Ke --</option>
+                    <select id="selectJamKeToken" class="form-select form-select-sm">
+                        <option value="">Pilih Jam Ke</option>
                         @foreach ($jamKeList as $jk)
                             <option value="{{ $jk }}">{{ $jk }}</option>
                         @endforeach

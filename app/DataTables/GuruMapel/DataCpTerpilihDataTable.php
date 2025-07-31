@@ -72,7 +72,7 @@ class DataCpTerpilihDataTable extends DataTable
                 $selectId = 'select-jmlmateri-' . $row->id;
 
                 // Membuat select element
-                $select = "<select class='form-control update-jmlmateri' id='{$selectId}' data-id='{$row->id}' onchange='updateJmlMateri({$row->id}, this.value)'>";
+                $select = "<select class='form-select update-jmlmateri' id='{$selectId}' data-id='{$row->id}' onchange='updateJmlMateri({$row->id}, this.value)'>";
                 $select .= $jmlmateriOptions;
                 $select .= '</select>';
 

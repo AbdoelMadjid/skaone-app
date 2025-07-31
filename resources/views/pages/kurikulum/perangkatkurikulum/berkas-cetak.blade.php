@@ -28,7 +28,7 @@
                             </div>
                             <div class="col-lg-auto">
                                 <div class="mb-3 d-flex align-items-center gap-2">
-                                    <select name="tahun_ajaran" id="tahun_ajaran" class="form-control">
+                                    <select name="tahun_ajaran" id="tahun_ajaran" class="form-select form-select-sm">
                                         <option value="">Pilih Tahun Aajaran</option>
                                         @foreach ($tahunAjaranOptions as $key => $value)
                                             <option value="{{ $key }}"
@@ -41,7 +41,7 @@
 
                             <div class="col-lg-auto">
                                 <div class="d-flex align-items-center gap-2">
-                                    <select name="kode_kk" id="kode_kk" class="form-control">
+                                    <select name="kode_kk" id="kode_kk" class="form-select form-select-sm">
                                         <option value="">Pilih KK</option>
                                         @foreach ($kompetensiKeahlianOptions as $key => $value)
                                             <option value="{{ $key }}"
@@ -54,7 +54,7 @@
 
                             <div class="col-lg-auto">
                                 <div class="d-flex align-items-center gap-2">
-                                    <select name="tingkat" id="tingkat" class="form-control">
+                                    <select name="tingkat" id="tingkat" class="form-select form-select-sm">
                                         <option value="">Pilih Tingkat</option>
                                         @for ($i = 10; $i <= 13; $i++)
                                             <option value="{{ $i }}"
@@ -67,7 +67,7 @@
 
                             <div class="col-lg-auto">
                                 <div class="d-flex align-items-center gap-2">
-                                    <select name="rombel_kode" id="rombel_kode" class="form-control">
+                                    <select name="rombel_kode" id="rombel_kode" class="form-select form-select-sm">
                                         <option value="">Pilih Rombel</option>
                                         @foreach ($rombonganBelajarOptions as $key => $value)
                                             <option value="{{ $key }}"
@@ -79,7 +79,7 @@
                             </div>
                             <div class="col-lg-auto">
                                 <div class="d-flex align-items-center gap-2">
-                                    <button class="btn btn-primary" type="submit">Tampilkan</button>
+                                    <button class="btn btn-soft-primary btn-sm" type="submit">Tampilkan</button>
                                 </div>
                             </div>
                         </div>

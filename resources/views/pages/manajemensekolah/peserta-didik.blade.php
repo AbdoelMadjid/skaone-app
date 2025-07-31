@@ -43,8 +43,8 @@
                     </div>
                 </div>
                 <div class="col-lg-auto">
-                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                        data-choices-search-false name="choices-single-default" id="idKK">
+                    <select class="form-select form-select-sm" data-plugin="choices" data-choices data-choices-search-false
+                        name="choices-single-default" id="idKK">
                         <option value="all" selected>Pilih Kompetensi Keahlian</option>
                         @foreach ($kompetensiKeahlian as $id => $kk)
                             <option value="{{ $id }}">{{ $kk }}</option>
@@ -52,8 +52,8 @@
                     </select>
                 </div>
                 <div class="col-lg-auto">
-                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                        data-choices-search-false name="choices-single-default" id="idJenkel">
+                    <select class="form-select form-select-sm" data-plugin="choices" data-choices data-choices-search-false
+                        name="choices-single-default" id="idJenkel">
                         <option value="all" selected>Pilih Jenis Kelamin</option>
                         @foreach ($jenkelOptions as $jenkel)
                             <option value="{{ $jenkel }}">{{ $jenkel }}</option>
@@ -61,8 +61,8 @@
                     </select>
                 </div>
                 <div class="col-lg-auto me-3">
-                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                        data-choices-search-false name="choices-single-default" id="idStatus">
+                    <select class="form-select form-select-sm" data-plugin="choices" data-choices data-choices-search-false
+                        name="choices-single-default" id="idStatus">
                         <option value="all" selected>Pilih Status</option>
                         <option value="Aktif">Aktif</option>
                         <option value="Lulus">Lulus</option>

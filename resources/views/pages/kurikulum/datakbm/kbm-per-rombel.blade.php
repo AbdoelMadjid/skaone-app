@@ -58,8 +58,8 @@
                     </div>
                 </div>
                 <div class="col-lg-auto me-1">
-                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                        data-choices-search-false name="choices-single-default" id="idThnAjaran">
+                    <select class="form-select form-select-sm" data-plugin="choices" data-choices data-choices-search-false
+                        name="choices-single-default" id="idThnAjaran">
                         <option value="all" selected>Pilih Tahun Ajaran</option>
                         @foreach ($tahunAjaranOptions as $thnajar)
                             <option value="{{ $thnajar }}">{{ $thnajar }}</option>
@@ -67,16 +67,16 @@
                     </select>
                 </div>
                 <div class="col-lg-auto me-1">
-                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                        data-choices-search-false name="choices-single-default" id="idSemester">
+                    <select class="form-select form-select-sm" data-plugin="choices" data-choices data-choices-search-false
+                        name="choices-single-default" id="idSemester">
                         <option value="all" selected>Pilih Semester</option>
                         <option value="Ganjil">Ganjil</option>
                         <option value="Genap">Genap</option>
                     </select>
                 </div>
                 <div class="col-lg-auto me-1">
-                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                        data-choices-search-false name="choices-single-default" id="idKodeKK">
+                    <select class="form-select form-select-sm" data-plugin="choices" data-choices data-choices-search-false
+                        name="choices-single-default" id="idKodeKK">
                         <option value="all" selected>Pilih Kompetensi Keahlian</option>
                         @foreach ($kompetensiKeahlianOptions as $id => $kode_kk)
                             <option value="{{ $id }}">{{ $kode_kk }}</option>
@@ -84,8 +84,8 @@
                     </select>
                 </div>
                 <div class="col-lg-auto me-1">
-                    <select class="form-control form-control-sm" data-plugin="choices" data-choices
-                        data-choices-search-false name="choices-single-default" id="idTingkat">
+                    <select class="form-select form-select-sm" data-plugin="choices" data-choices data-choices-search-false
+                        name="choices-single-default" id="idTingkat">
                         <option value="all" selected>Pilih Tingkat</option>
                         <option value="10">10</option>
                         <option value="11">11</option>

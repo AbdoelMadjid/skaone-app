@@ -9,8 +9,8 @@
 
             <div class="col-lg-auto">
                 <div class="mb-3 d-flex align-items-center gap-2">
-                    <select id="selectTanggalPanitia" class="form-control form-control-sm">
-                        <option value="">-- Pilih Tanggal --</option>
+                    <select id="selectTanggalPanitia" class="form-select form-select-sm">
+                        <option value="">Pilih Tanggal</option>
                         @foreach ($tanggalList as $tgl)
                             @php
                                 $tanggalFormat = \Carbon\Carbon::parse($tgl)->translatedFormat('l, d F Y');

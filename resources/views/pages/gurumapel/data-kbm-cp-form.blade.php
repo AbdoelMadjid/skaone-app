@@ -15,7 +15,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <label for="kel_mapel">Mata Pelajaran</label>
-                            <select class="form-control mb-3" name="kel_mapel" id="kel_mapel" required>
+                            <select class="form-select mb-3" name="kel_mapel" id="kel_mapel" required>
                                 <option value="" selected>Pilih Mata Pelajaran</option>
                                 @foreach ($mapelOptions as $key => $item)
                                     <option value="{{ $item['kel_mapel'] }}" data-kel-mapel="{{ $item['kel_mapel'] }}"
@@ -81,9 +81,11 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="button-simpan"
-                        style="display: none;">Simpan</button>
+                    <button type="submit" class="btn btn-soft-primary btn-label" id="button-simpan"
+                        style="display: none;"><i
+                            class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>Simpan</button>
+                    <button type="button" class="btn btn-soft-secondary btn-label" data-bs-dismiss="modal"><i
+                            class="ri-shut-down-line label-icon align-middle fs-16 me-2"></i>Tutup</button>
                 </div>
             </form>
         </div>

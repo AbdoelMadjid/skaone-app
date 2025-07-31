@@ -41,7 +41,7 @@
                     </div>
                 </div>
                 <div class="col-lg-auto">
-                    <select class="form-control form-control-sm" id="idJenis">
+                    <select class="form-select form-select-sm" id="idJenis">
                         <option value="all" selected>Pilih Jenis Personil</option>
                         @foreach ($jenisPersonilOptions as $jenis)
                             <option value="{{ $jenis }}">{{ $jenis }}</option>
@@ -49,7 +49,7 @@
                     </select>
                 </div>
                 <div class="col-lg-auto me-3">
-                    <select class="form-control form-control-sm" id="idStatus">
+                    <select class="form-select form-select-sm" id="idStatus">
                         <option value="all" selected>Pilih Status</option>
                         @foreach ($statusOptions as $status)
                             <option value="{{ $status }}">{{ $status }}</option>

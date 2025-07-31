@@ -1,6 +1,6 @@
 <!-- Modal untuk Generate Akun Peserta Didik -->
 <div class="modal fade" id="buatMateriAjar" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form id="form-tp-ajar" action="{{ route('gurumapel.adminguru.savetujuanpembelajaran') }}" method="post">
                 @csrf
@@ -59,9 +59,11 @@
                     <div id="ngisi_tp"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="button-simpan"
-                        style="display: none;">Simpan</button>
+                    <button type="submit" class="btn btn-soft-primary btn-label" id="button-simpan"
+                        style="display: none;"><i
+                            class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>Simpan</button>
+                    <button type="button" class="btn btn-soft-secondary btn-label" data-bs-dismiss="modal"><i
+                            class="ri-shut-down-line label-icon align-middle fs-16 me-2"></i>Tutup</button>
                 </div>
             </form>
         </div>

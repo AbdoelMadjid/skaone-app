@@ -16,7 +16,7 @@
                 value="{{ $data->nis }}" /> --}}
             <label for="noinduksiswa" class="form-label">Peserta Didik</label>
             <select class="form-select form-select-md" id="noinduksiswa" name="nis">
-                <option value="">-- Pilih Peserta Didik --</option>
+                <option value="">Pilih Peserta Didik</option>
                 @foreach ($pesertaDidikOptions as $rombelNama => $siswaList)
                     <optgroup label="{{ $rombelNama }}">
                         @foreach ($siswaList as $nis => $label)

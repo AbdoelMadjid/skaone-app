@@ -31,8 +31,7 @@
                 </div>
                 <div class="col-lg-auto">
                     <div class="search-box">
-                        <input type="text" class="form-control form-control-sm search"
-                            placeholder="Search for name user ...">
+                        <input type="text" class="form-control form-control-sm search" placeholder="name user ...">
                         <i class="ri-search-line search-icon"></i>
                     </div>
                 </div>
@@ -41,7 +40,7 @@
                     <div class="col-lg-auto">
                         <div class="d-flex align-items-center gap-2"> <!-- Tambahan baris ini -->
                             <select id="role-select" class="form-select form-select-sm">
-                                <option value="">-- Pilih Role --</option>
+                                <option value="">Pilih Role</option>
                                 @foreach (\Spatie\Permission\Models\Role::pluck('name') as $role)
                                     <option value="{{ $role }}">{{ $role }}</option>
                                 @endforeach

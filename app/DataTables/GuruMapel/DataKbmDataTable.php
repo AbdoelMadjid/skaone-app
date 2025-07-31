@@ -58,7 +58,7 @@ class DataKbmDataTable extends DataTable
                 $selectId = 'select-kkm-' . $row->id;
 
                 // Membuat select element
-                $select = "<select class='form-control update-kkm' id='{$selectId}' data-id='{$row->id}' onchange='updateKkm({$row->id}, this.value)'>";
+                $select = "<select class='form-select form-select-sm update-kkm' id='{$selectId}' data-id='{$row->id}' onchange='updateKkm({$row->id}, this.value)'>";
                 $select .= $kkmOptions;
                 $select .= '</select>';
 
