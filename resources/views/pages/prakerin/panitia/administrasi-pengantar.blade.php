@@ -87,7 +87,7 @@
                             <td></td>
                             <td style='padding:4px 8px;'>
                                 Majalengka,
-                                {{ \Carbon\Carbon::parse($infoNegosiasi['titimangsa'])->translatedFormat('l') ?? '-' }}
+                                {{ \Carbon\Carbon::parse($infoNegosiasi['titimangsa'])->translatedFormat('d F Y') ?? '-' }}
                                 <br>
                                 Kepala Sekolah,
                                 <div>
