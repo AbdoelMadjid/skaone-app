@@ -30,13 +30,13 @@
                         <div class="card-header border-0">
                             <div class="row justify-content-center">
                                 <div class="col-lg-8 col-sm-10">
-                                    <div class="text-center mt-lg-2">
-                                        <h1 class="display-6 fw-semibold mb-3 lh-base">
-                                            <span class="text-success">
+                                    <div class="text-center">
+                                        <h1 class="display-8 fw-semibold lh-base">
+                                            <span class="text-info">
                                                 {{ $identPrakerin?->nama ?? '-' }}
                                             </span>
                                         </h1>
-                                        <p class="lead text-muted lh-base">
+                                        <p class="lead lh-base">
                                             Tanggal Pelaksanaan :
                                             {{ \Carbon\Carbon::parse($identPrakerin?->tanggal_mulai)->translatedFormat('l, d F Y') ?? '-' }}
                                             s.d.
