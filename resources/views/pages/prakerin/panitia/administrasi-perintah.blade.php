@@ -5,9 +5,9 @@
                 <td align='center'><img src="{{ URL::asset('images/kopsuratbaru.jpg') }}" alt="" height="154"
                         width="700" border="0"></td>
             </tr>
-            <tr>
-                <td>&nbsp;</td>
-            </tr>
+        </table>
+        <br>
+        <table style='margin: 0 auto;width:100%;border-collapse:collapse;'>
             <tr>
                 <td style='text-align:center;'><strong style='font-size:24px;'>SURAT
                         PERINTAH</strong><br>
@@ -15,6 +15,7 @@
                 </td>
             </tr>
         </table>
+        <br><br>
         <table style='margin: 0 auto;width:90%;border-collapse:collapse;'>
             <tr>
                 <td style="width:80px;">Dasar </td>

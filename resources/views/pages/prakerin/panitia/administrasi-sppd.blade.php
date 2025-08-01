@@ -11,7 +11,7 @@
                 <table style='margin: 0 auto;width:100%;border-collapse:collapse;'>
                     <tr>
                         <td style="text-align: center; vertical-align: top;"></td>
-                        <td style="width: 25%;">
+                        <td style="width: 35%;">
                             Lembar Ke: <br>
                             Kode No: <br>
                             Nomor:
