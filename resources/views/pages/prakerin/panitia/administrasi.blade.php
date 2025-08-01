@@ -71,35 +71,39 @@
                             </div>
                         </div>
                         <div>
-                            <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" data-bs-toggle="tab" href="#Sppd" role="tab"
-                                        aria-selected="true">SPPD Nego
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-bs-toggle="tab" href="#SuratPerintah" role="tab"
-                                        aria-selected="false">Surat Perintah
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-bs-toggle="tab" href="#SuratPengantar" role="tab"
-                                        aria-selected="false">Surat Pengantar
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-bs-toggle="tab" href="#Perjanjian" role="tab"
-                                        aria-selected="false">Perjanjian (MOU)
-                                    </a>
-                                </li>
-                                <li class="nav-item">
+                            <div class="hstack gap-3">
+                                <div class="p-1 px-2">
+                                    <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" data-bs-toggle="tab" href="#Sppd" role="tab"
+                                                aria-selected="true">SPPD Nego
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-bs-toggle="tab" href="#SuratPerintah" role="tab"
+                                                aria-selected="false">Surat Perintah
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-bs-toggle="tab" href="#SuratPengantar" role="tab"
+                                                aria-selected="false">Surat Pengantar
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-bs-toggle="tab" href="#Perjanjian" role="tab"
+                                                aria-selected="false">Perjanjian (MOU)
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="p-1 px-2 ms-auto">
                                     <!-- Forms Content -->
                                     <div class="btn-group">
                                         <a class="nav-link fw-medium text-reset mb-n1" href="#" role="button"
                                             id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="ri-printer-line align-middle me-1"></i> Cetak
                                         </a>
-                                        <div class="dropdown-menu dropdown-menu-md p-4" aria-labelledby="dropdownMenuLink1">
+                                        <div class="dropdown-menu dropdown-menu-md p-3" aria-labelledby="dropdownMenuLink1">
                                             <div class="d-grid gap-2">
                                                 <button type="button" class="btn btn-soft-primary btn-sm"
                                                     id="btn-cetak-sppd">
@@ -120,12 +124,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                <li>
-                                <li class="nav-item ms-auto">
+                                </div>
+                                <div class="p-1 px-2">
                                     <div class="dropdown">
                                         <a class="nav-link fw-medium text-reset mb-n1" href="#" role="button"
                                             id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="ri-settings-4-line align-middle me-1"></i> Settings
+                                            <i class="ri-pencil-fill align-middle me-1"></i> Input Data
                                         </a>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
                                             <li>
@@ -142,8 +146,8 @@
                                             </li>
                                         </ul>
                                     </div>
-                                </li>
-                            </ul>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body p-4">
                             <div class="tab-content">
@@ -177,7 +181,17 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="Perjanjian" role="tabpanel">
-                                    @include('pages.prakerin.panitia.administrasi-mou')
+                                    <div class="row">
+                                        <div class="col-sm-2 align-self-start">
+                                            {{--  --}}
+                                        </div>
+                                        <div class="col-sm-8 align-self-center">
+                                            @include('pages.prakerin.panitia.administrasi-mou')
+                                        </div>
+                                        <div class="col-sm-2 align-self-end">
+                                            {{--  --}}
+                                        </div>
+                                    </div>
                                 </div>
                             </div><!--end tab-content-->
                         </div><!--end card-body-->
