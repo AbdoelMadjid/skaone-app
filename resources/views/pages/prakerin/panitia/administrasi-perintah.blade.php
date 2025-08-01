@@ -103,5 +103,69 @@
                 </td>
             </tr>
         </table>
+        <div class="break-page"></div>
+        <br><br><br>
+        <table style='margin: 0 auto;width:100%;border-collapse:collapse;'>
+            <tr>
+                <td style='text-align:center;'>
+                    <strong style='font-size:24px;'>LAPORAN PERJALANAN DINAS</strong>
+                </td>
+            </tr>
+        </table>
+        <br><br>
+        <table style='margin: 0 auto;width:93%;border-collapse:collapse;'>
+            <tr>
+                <td style="width:170px">NAMA</td>
+                <td style="width:5px">:</td>
+                <td>{{ $infoNegosiasi['nama_lengkap'] ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td>NIP</td>
+                <td>:</td>
+                <td>{{ $infoNegosiasi['nip'] ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td>JABATAN</td>
+                <td>:</td>
+                <td>{{ $infoNegosiasi['jabatan'] ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td>KEGIATAN</td>
+                <td>:</td>
+                <td>Pengajuan Praktik Kerja Lapangan (PKL)</td>
+            </tr>
+            <tr>
+                <td>LAPORAN KEGIATAN</td>
+                <td>:</td>
+                <td>.........................................................................................................................
+                </td>
+            </tr>
+            @for ($i = 0; $i < 15; $i++)
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td style="padding-top: 20px;">
+                        .........................................................................................................................
+                    </td>
+                </tr>
+            @endfor
+        </table>
+        <br><br>
+        <table width='70%' style='margin: 0 auto;width:100%;border-collapse:collapse;'>
+            <tr>
+                <td width='300'></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style='padding:4px 8px;'>
+                    ......................., .......................................20......
+                    <br>
+                    Yang Melakukan Perjalanan Dinas,
+                    <p>&nbsp;</p>
+                    <strong>{{ $infoNegosiasi['nama_lengkap'] ?? '-' }}</strong><br>
+                    NIP. {{ $infoNegosiasi['nip'] ?? '-' }}
+                </td>
+            </tr>
+        </table>
     </div>
 </div>
