@@ -10,7 +10,7 @@
             <tr>
                 <td style="width:80px;">Nomor</td>
                 <td style="width:5px;">:</td>
-                <td>{{ $infoNegosiasi['nomor_surat'] ?? '-' }}</td>
+                <td>{{ $infoNegosiasi['nomor_surat'] ?? '-' }}/TU.01.02/SMKN1.KDP.CADISDIKWIL.IX</td>
             </tr>
             <tr>
                 <td>Lampiran</td>
@@ -123,7 +123,7 @@
                         <tr>
                             <td>Nomor</td>
                             <td>:</td>
-                            <td>{{ $infoNegosiasi['nomor_surat'] ?? '-' }}</td>
+                            <td>{{ $infoNegosiasi['nomor_surat'] ?? '-' }}/TU.01.02/SMKN1.KDP.CADISDIKWIL.IX</td>
                         </tr>
                         <tr>
                             <td>Tanggal</td>

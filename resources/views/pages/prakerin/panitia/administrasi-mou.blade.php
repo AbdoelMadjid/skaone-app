@@ -3,13 +3,12 @@
         <table style='margin: 0 auto;width:100%;border-collapse:collapse;'>
             <tr>
                 <td style='text-align:center;'>
-
                     <strong style='font-size:16px;'>
                         PERJANJIAN KERJASAMA<br>
                         PENYELENGGARAAN PRAKTIK KERJA LAPANGAN<br>
                         ANTARA<br>
                         SMK NEGERI 1 KADIPATEN<br>
-                        NO. {{ $infoNegosiasi['nomor_surat'] ?? '-' }}<br>
+                        NO. {{ $infoNegosiasi['nomor_surat'] ?? '-' }}/TU.01.02/SMKN1.KDP.CADISDIKWIL.IX<br>
                         DENGAN<br>
                         {{ $infoNegosiasi['nama_perusahaan'] ?? '-' }}
                     </strong><br><br>
@@ -57,7 +56,7 @@
                         <tr>
                             <td width='150'>Nama</td>
                             <td width='5'>:</td>
-                            <td>{{ $infoNegosiasi['nama_pimpinan'] ?? '-' }}</td>
+                            <td><strong>{{ $infoNegosiasi['nama_pimpinan'] ?? '-' }}</strong></td>
                         </tr>
                         <tr>
                             <td>Jabatan</td>
@@ -87,18 +86,20 @@
             <tr>
                 <td colspan="2" style='margin: 0 auto;width:100%;border-collapse:collapse;text-align:justify;'>
                     <ul style="margin-left:-25px;text-align:justify;">
-                        <li>PIHAK PERTAMA diperkenankan untuk mengirimkan peserta didiknya guna melaksanakan Praktik
-                            Kerja Lapangan pada PIHAK KEDUA sesuai kapasitas PIHAK KEDUA.</li>
-                        <li>PIHAK PERTAMA merencanakan pelaksanaan Praktik Kerja Lapangan bersama PIHAK KEDUA.
-                        <li>Pelaksanaan Praktik Kerja Lapangan pada PIHAK KEDUA adalah paling lama 1 semester atau 16
-                            (enam belas) minggu efektif.</li>
-                        <li>PIHAK KEDUA menyediakan praktik kerja dan lingkungan kerja yang aman dan kondusif bagi
-                            peserta didik yang ditempatkan oleh PIHAK PERTAMA sesuai perencanaan Praktik Kerja Lapangan.
+                        <li style='padding-top:10px;'>PIHAK PERTAMA diperkenankan untuk mengirimkan peserta didiknya
+                            guna melaksanakan Praktik Kerja Lapangan pada PIHAK KEDUA sesuai kapasitas PIHAK KEDUA.</li>
+                        <li style='padding-top:15px;'>PIHAK PERTAMA merencanakan pelaksanaan Praktik Kerja Lapangan
+                            bersama PIHAK KEDUA.</li>
+                        <li style='padding-top:15px;'>Pelaksanaan Praktik Kerja Lapangan pada PIHAK KEDUA adalah paling
+                            lama 1 semester atau 16 (enam belas) minggu efektif.</li>
+                        <li style='padding-top:15px;'>PIHAK KEDUA menyediakan praktik kerja dan lingkungan kerja yang
+                            aman dan kondusif bagi peserta didik yang ditempatkan oleh PIHAK PERTAMA sesuai perencanaan
+                            Praktik Kerja Lapangan.</li>
+                        <li style='padding-top:15px;'>PIHAK PERTAMA melakukan pemantauan secara berkala pada pelaksanaan
+                            Praktik Kerja Lapangan yang diselenggarakan oleh PIHAK KEDUA.</li>
+                        <li style='padding-top:15px;'>PIHAK KEDUA atau yang diberi kuasa menandatangani sertifikat
+                            keikutsertaan Praktik Kerja Lapangan bagi peserta didik yang diterbitkan oleh PIHAK PERTAMA.
                         </li>
-                        <li>PIHAK PERTAMA melakukan pemantauan secara berkala pada pelaksanaan Praktik Kerja Lapangan
-                            yang diselenggarakan oleh PIHAK KEDUA.</li>
-                        <li>PIHAK KEDUA atau yang diberi kuasa menandatangani sertifikat keikutsertaan Praktik Kerja
-                            Lapangan bagi peserta didik yang diterbitkan oleh PIHAK PERTAMA.</li>
                     </ul>
                 </td>
             </tr>

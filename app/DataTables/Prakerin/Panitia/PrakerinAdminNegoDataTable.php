@@ -103,7 +103,7 @@ class PrakerinAdminNegoDataTable extends DataTable
                 'pageLength' => 50,
                 'paging' => true,
                 'scrollCollapse' => false,
-                'scrollY' => "calc(100vh - 398px)",
+                'scrollY' => "calc(100vh - 414px)",
             ]);
     }
 

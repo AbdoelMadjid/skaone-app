@@ -11,10 +11,10 @@
                 <table style='margin: 0 auto;width:100%;border-collapse:collapse;'>
                     <tr>
                         <td style="text-align: center; vertical-align: top;"></td>
-                        <td style="width: 55%;">
+                        <td style="width: 60%;">
                             Lembar Ke: <br>
                             Kode No: <br>
-                            Nomor : {{ $infoNegosiasi['nomor_surat'] ?? '-' }}
+                            Nomor : {{ $infoNegosiasi['nomor_surat'] ?? '-' }}/TU.01.02/SMKN1.KDP.CADISDIKWIL.IX
                         </td>
                     </tr>
                 </table>

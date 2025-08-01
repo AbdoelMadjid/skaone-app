@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-4">
             <x-form.input name="nomor_surat" value="{{ $data->nomor_surat }}" label="Nomor Surat" id="nomor_surat" />
         </div>
         <div class="col-sm-4">

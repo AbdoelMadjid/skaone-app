@@ -11,7 +11,8 @@
             <tr>
                 <td style='text-align:center;'><strong style='font-size:24px;'>SURAT
                         PERINTAH</strong><br>
-                    <strong>Nomor : {{ $infoNegosiasi['nomor_surat'] ?? '-' }}</strong>
+                    <strong>Nomor :
+                        {{ $infoNegosiasi['nomor_surat'] ?? '-' }}/TU.01.02/SMKN1.KDP.CADISDIKWIL.IX</strong>
                 </td>
             </tr>
         </table>
@@ -140,7 +141,7 @@
                 <td>.........................................................................................................................
                 </td>
             </tr>
-            @for ($i = 0; $i < 15; $i++)
+            @for ($i = 0; $i < 12; $i++)
                 <tr>
                     <td></td>
                     <td></td>
