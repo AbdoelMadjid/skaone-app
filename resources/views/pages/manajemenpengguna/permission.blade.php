@@ -17,10 +17,45 @@
             <div class="flex-shrink-0">
                 <x-btn-tambah can="create manajemenpengguna/permissions" route="manajemenpengguna.permissions.create"
                     label="Tambah" icon="ri-add-line" />
+                <button class="btn btn-soft-primary btn-sm" data-bs-toggle="modal" data-bs-target="#permissionModal">
+                    Tambah Permission
+                </button>
             </div>
         </div>
         <div class="card-body p-1">
             {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="permissionModal" tabindex="-1" aria-labelledby="permissionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="permissionForm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="permissionModalLabel">Tambah Permission</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="role" class="form-label">Pilih Role</label>
+                            <select class="form-select" id="role" name="role">
+                                @foreach ($roles as $role)
+                                    <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="route" class="form-label">Route (tanpa method)</label>
+                            <input type="text" class="form-control" id="route" name="route"
+                                placeholder="contoh: panitiaprakerin/administrasi/negosiator" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Tambahkan</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 @endsection
@@ -28,6 +63,33 @@
     {!! $dataTable->scripts() !!}
 @endsection
 @section('script-bottom')
+    <script>
+        document.getElementById('permissionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+
+            fetch("{{ route('manajemenpengguna.generatepermission') }}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                })
+                .then(res => res.json())
+                .then(data => {
+                    showToast('success', data.message);
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('permissionModal'));
+                    modal.hide();
+                })
+                .catch(err => {
+                    showToast('error', 'Terjadi kesalahan saat menambahkan permission');
+                    console.error(err);
+                });
+        });
+    </script>
+
     <script>
         const datatable = 'permission-table';
 

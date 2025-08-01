@@ -6,6 +6,7 @@ use App\DataTables\ManajemenPengguna\PermissionDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ManajemenPengguna\PermissionRequest;
 use App\Models\Permission;
+use App\Models\Role;
 use Illuminate\Http\Request;
 
 class PermissionController extends Controller
@@ -15,7 +16,10 @@ class PermissionController extends Controller
      */
     public function index(PermissionDataTable $permissionDataTable)
     {
-        return $permissionDataTable->render('pages.manajemenpengguna.permission');
+        $roles = Role::all();
+        return $permissionDataTable->render('pages.manajemenpengguna.permission', [
+            'roles' => $roles,
+        ]);
     }
 
     /**
@@ -80,5 +84,29 @@ class PermissionController extends Controller
         $permission->delete();
 
         return responseSuccessDelete();
+    }
+
+    public function generatePermission(Request $request)
+    {
+        $request->validate([
+            'role' => 'required|string|exists:roles,name',
+            'route' => 'required|string',
+        ]);
+
+        $role = Role::where('name', $request->role)->first();
+        $route = $request->route;
+
+        $methods = ['create', 'read', 'update', 'delete'];
+
+        foreach ($methods as $method) {
+            $permName = "{$method} {$route}";
+
+            $permission = Permission::firstOrCreate(['name' => $permName]);
+            if (!$role->hasPermissionTo($permName)) {
+                $role->givePermissionTo($permName);
+            }
+        }
+
+        return response()->json(['message' => 'Permission berhasil ditambahkan!']);
     }
 }
