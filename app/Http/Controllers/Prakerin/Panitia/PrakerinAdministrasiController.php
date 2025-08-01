@@ -69,7 +69,9 @@ class PrakerinAdministrasiController extends Controller
         $infoNegosiasi = [
             'tgl_nego' => optional($adminNego)->tgl_nego,
             'titimangsa' => optional($adminNego)->titimangsa,
-            'nomor_surat' => optional($adminNego)->nomor_surat,
+            'nomor_surat_pengantar' => optional($adminNego)->nomor_surat_pengantar,
+            'nomor_surat_perintah' => optional($adminNego)->nomor_surat_perintah,
+            'nomor_surat_mou' => optional($adminNego)->nomor_surat_mou,
 
             'id_perusahaan' => optional($perusahaan)->id,
             'nama_perusahaan' => optional($perusahaan)->nama,

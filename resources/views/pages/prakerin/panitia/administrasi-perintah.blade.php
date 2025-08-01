@@ -12,7 +12,7 @@
                 <td style='text-align:center;'><strong style='font-size:24px;'>SURAT
                         PERINTAH</strong><br>
                     <strong>Nomor :
-                        {{ $infoNegosiasi['nomor_surat'] ?? '-' }}/TU.01.02/SMKN1.KDP.CADISDIKWIL.IX</strong>
+                        {{ $infoNegosiasi['nomor_surat_perintah'] ?? '-' }}</strong>
                 </td>
             </tr>
         </table>

@@ -8,7 +8,7 @@
                         PENYELENGGARAAN PRAKTIK KERJA LAPANGAN<br>
                         ANTARA<br>
                         SMK NEGERI 1 KADIPATEN<br>
-                        NO. {{ $infoNegosiasi['nomor_surat'] ?? '-' }}/TU.01.02/SMKN1.KDP.CADISDIKWIL.IX<br>
+                        NO. {{ $infoNegosiasi['nomor_surat_mou'] ?? '-' }}<br>
                         DENGAN<br>
                         {{ $infoNegosiasi['nama_perusahaan'] ?? '-' }}
                     </strong><br><br>

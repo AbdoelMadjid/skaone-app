@@ -14,7 +14,7 @@
                         <td style="width: 60%;">
                             Lembar Ke: <br>
                             Kode No: <br>
-                            Nomor : {{ $infoNegosiasi['nomor_surat'] ?? '-' }}/TU.01.02/SMKN1.KDP.CADISDIKWIL.IX
+                            Nomor : {{ $infoNegosiasi['nomor_surat_perintah'] ?? '-' }}
                         </td>
                     </tr>
                 </table>

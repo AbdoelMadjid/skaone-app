@@ -13,20 +13,29 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-4">
-            <x-form.input name="nomor_surat" value="{{ $data->nomor_surat }}" label="Nomor Surat" id="nomor_surat" />
+        <div class="col-sm-12">
+            <x-form.input name="nomor_surat_pengantar" value="{{ $data->nomor_surat_pengantar }}"
+                label="Nomor Surat Pengantar" id="nomor_surat_pengantar" />
         </div>
-        <div class="col-sm-4">
-            <x-form.input type="date" name="titimangsa" value="{{ $data->titimangsa }}" label="Titimangsa"
-                id="titimangsa" />
+        <div class="col-sm-12">
+            <x-form.input name="nomor_surat_perintah" value="{{ $data->nomor_surat_perintah }}"
+                label="Nomor Surat Perintah" id="nomor_surat_perintah" />
         </div>
-        <div class="col-sm-4">
-            <x-form.input type="date" name="tgl_nego" value="{{ $data->tgl_nego }}" label="Tanggal Negosiasi"
-                id="tgl_nego" />
+        <div class="col-sm-12">
+            <x-form.input name="nomor_surat_mou" value="{{ $data->nomor_surat_mou }}" label="Nomor Surat MOU"
+                id="nomor_surat_mou" />
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-3">
+            <x-form.input type="date" name="titimangsa" value="{{ $data->titimangsa }}" label="Titimangsa"
+                id="titimangsa" />
+        </div>
+        <div class="col-sm-3">
+            <x-form.input type="date" name="tgl_nego" value="{{ $data->tgl_nego }}" label="Tanggal Nego"
+                id="tgl_nego" />
+        </div>
+        <div class="col-sm-6">
             <x-form.select class="form-select-md" name="id_nego" label="Negosiator" :options="$negosiatorOptions"
                 value="{{ $data->id_nego }}" id="id_nego" />
         </div>

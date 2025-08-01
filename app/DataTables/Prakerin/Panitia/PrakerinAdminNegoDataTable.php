@@ -27,6 +27,13 @@ class PrakerinAdminNegoDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->filterColumn('perusahaan', function ($query, $keyword) {
+                $query->whereIn('id_perusahaan', function ($subquery) use ($keyword) {
+                    $subquery->select('id')
+                        ->from('perusahaans')
+                        ->where('nama', 'like', "%{$keyword}%");
+                });
+            })
             ->addColumn('perusahaan', function ($row) {
                 $namaPerusahaan = DB::table('prakerin_perusahaans')
                     ->where('id', $row->id_perusahaan)
@@ -39,8 +46,10 @@ class PrakerinAdminNegoDataTable extends DataTable
 
                 return $row->nama . '<em>Data tidak ditemukan</em>';
             })
-            ->addColumn('titimangsa', function ($row) {
-                return \Carbon\Carbon::parse($row->titimangsa)->translatedFormat('d F Y');
+            ->addColumn('nomor_surat', function ($row) {
+                return '<span class="text-info"><strong>Surat Pengantar:</strong></span> ' . $row->nomor_surat_pengantar .
+                    '<br><span class="text-info"><strong>Surat Perintah:</strong></span> ' . $row->nomor_surat_perintah .
+                    '<br><span class="text-info"><strong>Surat MOU:</strong></span> ' . $row->nomor_surat_mou;
             })
             ->addColumn('id_nego', function ($row) {
                 // Ambil semua personil sekali saja
@@ -65,15 +74,19 @@ class PrakerinAdminNegoDataTable extends DataTable
                     ? ($personilList[$negosiator->id_personil] ?? '-')
                     : '-';
             })
-            ->addColumn('tgl_nego', function ($row) {
-                return \Carbon\Carbon::parse($row->tgl_nego)->translatedFormat('l, d F Y');
+            ->addColumn('tanggal', function ($row) {
+                return '<span class="text-info"><strong>Titimangsa :</strong></span> <br>' .
+                    \Carbon\Carbon::parse($row->titimangsa)->translatedFormat('d F Y') .
+                    '<br><span class="text-info"><strong>Negosiasi :</strong></span> <br>' .
+                    \Carbon\Carbon::parse($row->tgl_nego)->translatedFormat('l, d F Y');
             })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
                 return view('action', compact('actions'));
             })
-            ->addIndexColumn();
+            ->addIndexColumn()
+            ->rawColumns(['action', 'perusahaan', 'tanggal', 'id_nego', 'nomor_surat']);
     }
 
     /**
@@ -114,11 +127,10 @@ class PrakerinAdminNegoDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
-            Column::make('tahunajaran')->title('Tahun Ajaran'),
-            Column::make('perusahaan')->title('Nama Perusahaan'),
-            Column::make('nomor_surat')->title('No. Surat'),
-            Column::make('titimangsa')->title('Titimangsa'),
-            Column::make('tgl_nego')->title('Tanggal Nego'),
+            Column::make('tahunajaran')->title('Tahun <br> Ajaran'),
+            Column::make('perusahaan')->title('Nama Perusahaan')->width('15%'),
+            Column::make('nomor_surat')->title('No. Surat')->width('20%'),
+            Column::make('tanggal')->title('Tanggal')->width('15%'),
             Column::make('id_nego')->title('Nama Negosiator'),
             // Kolom untuk aksi
             Column::computed('action')

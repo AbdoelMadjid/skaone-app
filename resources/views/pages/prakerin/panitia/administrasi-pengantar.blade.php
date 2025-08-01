@@ -10,7 +10,7 @@
             <tr>
                 <td style="width:80px;">Nomor</td>
                 <td style="width:5px;">:</td>
-                <td>{{ $infoNegosiasi['nomor_surat'] ?? '-' }}/TU.01.02/SMKN1.KDP.CADISDIKWIL.IX</td>
+                <td>{{ $infoNegosiasi['nomor_surat_pengantar'] ?? '-' }}</td>
             </tr>
             <tr>
                 <td>Lampiran</td>
@@ -29,7 +29,7 @@
                 <td style="width:80px;">Kepada Yth. </td>
                 <td style="width:5px;">:</td>
                 <td>
-                    Kepala / Pimpinan <br>
+                    {{ $infoNegosiasi['jabatan_pimpinan'] ?? '-' }} <br>
                     {{ $infoNegosiasi['nama_perusahaan'] ?? '-' }}
                 </td>
             </tr>
@@ -123,7 +123,7 @@
                         <tr>
                             <td>Nomor</td>
                             <td>:</td>
-                            <td>{{ $infoNegosiasi['nomor_surat'] ?? '-' }}/TU.01.02/SMKN1.KDP.CADISDIKWIL.IX</td>
+                            <td>{{ $infoNegosiasi['nomor_surat_pengantar'] ?? '-' }}</td>
                         </tr>
                         <tr>
                             <td>Tanggal</td>

@@ -12,7 +12,9 @@ class PrakerinAdminNego extends Model
     protected $fillable = [
         'tahunajaran',
         'id_perusahaan',
-        'nomor_surat',
+        'nomor_surat_pengantar',
+        'nomor_surat_perintah',
+        'nomor_surat_mou',
         'titimangsa',
         'tgl_nego',
         'id_nego',
