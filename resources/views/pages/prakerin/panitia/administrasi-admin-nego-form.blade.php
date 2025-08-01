@@ -20,13 +20,13 @@
             <x-form.input type="date" name="titimangsa" value="{{ $data->titimangsa }}" label="Titimangsa"
                 id="titimangsa" />
         </div>
-    </div>
-    <div class="row">
         <div class="col-sm-4">
             <x-form.input type="date" name="tgl_nego" value="{{ $data->tgl_nego }}" label="Tanggal Negosiasi"
                 id="tgl_nego" />
         </div>
-        <div class="col-sm-8">
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
             <x-form.select class="form-select-md" name="id_nego" label="Negosiator" :options="$negosiatorOptions"
                 value="{{ $data->id_nego }}" id="id_nego" />
         </div>
