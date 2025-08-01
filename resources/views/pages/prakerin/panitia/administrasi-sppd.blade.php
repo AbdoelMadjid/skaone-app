@@ -34,10 +34,10 @@
                         <td>Nama/NIP Pegawai yang melaksanakan perjalanan</td>
                         <td>
                             <strong>
-                                {{ $infoNegosiasi['nama_lengkap'] }}
+                                {{ $infoNegosiasi['nama_lengkap'] ?? '-' }}
                             </strong>
                             <br>
-                            NIP. {{ $infoNegosiasi['nip'] }}
+                            NIP. {{ $infoNegosiasi['nip'] ?? '-' }}
                         </td>
                     </tr>
                     <tr>
@@ -48,8 +48,8 @@
                             c. Tingkat Biaya Perjalanan Dinas
                         </td>
                         <td>
-                            a. {{ $infoNegosiasi['gol_ruang'] }}<br>
-                            b. {{ $infoNegosiasi['jabatan'] }}<br>
+                            a. {{ $infoNegosiasi['gol_ruang'] ?? '-' }}<br>
+                            b. {{ $infoNegosiasi['jabatan'] ?? '-' }}<br>
                             c. -
                         </td>
                     </tr>

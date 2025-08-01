@@ -11,7 +11,7 @@
                         SMK NEGERI 1 KADIPATEN<br>
                         NO. {{ $infoNegosiasi['nomor_surat'] ?? '-' }}<br>
                         DENGAN<br>
-                        {{ $infoNegosiasi['nama_perusahaan'] }}
+                        {{ $infoNegosiasi['nama_perusahaan'] ?? '-' }}
                     </strong><br><br>
                 </td>
             </tr>
@@ -57,25 +57,25 @@
                         <tr>
                             <td width='150'>Nama</td>
                             <td width='5'>:</td>
-                            <td>{{ $infoNegosiasi['nama_pimpinan'] }}</td>
+                            <td>{{ $infoNegosiasi['nama_pimpinan'] ?? '-' }}</td>
                         </tr>
                         <tr>
                             <td>Jabatan</td>
                             <td>:</td>
-                            <td>{{ $infoNegosiasi['jabatan_pimpinan'] }}</td>
+                            <td>{{ $infoNegosiasi['jabatan_pimpinan'] ?? '-' }}</td>
                         </tr>
                         <tr>
                             <td valign='top'>Alamat</td>
                             <td valign='top'>:</td>
-                            <td>{{ $infoNegosiasi['alamatperusahaan'] }}</td>
+                            <td>{{ $infoNegosiasi['alamatperusahaan'] ?? '-' }}</td>
                         </tr>
                     </table>
                 </td>
             </tr>
             <tr>
                 <td colspan="2" style='margin: 0 auto;width:100%;border-collapse:collapse;text-align:justify;'>
-                    Dalam hal ini bertindak atas nama {{ $infoNegosiasi['nama_perusahaan'] }} yang selanjutnya disebut
-                    sebagai PIHAK KEDUA.
+                    Dalam hal ini bertindak atas nama {{ $infoNegosiasi['nama_perusahaan'] ?? '-' }} yang selanjutnya
+                    disebut sebagai PIHAK KEDUA.
                 </td>
             </tr>
             <tr>
@@ -166,8 +166,8 @@
                     NIP. 19740302 199803 1 002
                 </td>
                 <td>
-                    <strong>{{ $infoNegosiasi['nama_pimpinan'] }}</strong><br>
-                    {{ $infoNegosiasi['nip_nidn'] }}
+                    <strong>{{ $infoNegosiasi['nama_pimpinan'] ?? '-' }}</strong><br>
+                    {{ $infoNegosiasi['id_pimpinan'] ?? '-' }} {{ $infoNegosiasi['nip_nidn'] ?? '-' }}
                 </td>
             </tr>
 
