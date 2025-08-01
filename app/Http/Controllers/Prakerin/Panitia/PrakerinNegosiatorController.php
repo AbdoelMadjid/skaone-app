@@ -27,6 +27,7 @@ class PrakerinNegosiatorController extends Controller
     public function create()
     {
         $jenisGolRuang = Referensi::where('jenis', 'GolonganRuang')->pluck('data', 'data')->toArray();
+        $jenisJabatan = Referensi::where('jenis', 'GolRuangJabatan')->pluck('data', 'data')->toArray();
         $tahunAjaranOptions  = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
         $personilOptions = PersonilSekolah::where('aktif', 'Aktif')
             ->pluck('namalengkap', 'id_personil')
@@ -37,6 +38,7 @@ class PrakerinNegosiatorController extends Controller
             'tahunAjaranOptions' => $tahunAjaranOptions,
             'personilOptions' => $personilOptions,
             'jenisGolRuang' => $jenisGolRuang,
+            'jenisJabatan' => $jenisJabatan,
             'action' => route('panitiaprakerin.administrasi.negosiator.store')
         ]);
     }
@@ -58,6 +60,7 @@ class PrakerinNegosiatorController extends Controller
     public function show(PrakerinNegosiator $negosiator)
     {
         $jenisGolRuang = Referensi::where('jenis', 'GolonganRuang')->pluck('data', 'data')->toArray();
+        $jenisJabatan = Referensi::where('jenis', 'GolRuangJabatan')->pluck('data', 'data')->toArray();
         $tahunAjaranOptions  = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
         $personilOptions = PersonilSekolah::where('aktif', 'Aktif')
             ->pluck('namalengkap', 'id_personil')
@@ -68,6 +71,7 @@ class PrakerinNegosiatorController extends Controller
             'tahunAjaranOptions' => $tahunAjaranOptions,
             'personilOptions' => $personilOptions,
             'jenisGolRuang' => $jenisGolRuang,
+            'jenisJabatan' => $jenisJabatan,
         ]);
     }
 
@@ -77,6 +81,7 @@ class PrakerinNegosiatorController extends Controller
     public function edit(PrakerinNegosiator $negosiator)
     {
         $jenisGolRuang = Referensi::where('jenis', 'GolonganRuang')->pluck('data', 'data')->toArray();
+        $jenisJabatan = Referensi::where('jenis', 'GolRuangJabatan')->pluck('data', 'data')->toArray();
         $tahunAjaranOptions  = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
         $personilOptions = PersonilSekolah::where('aktif', 'Aktif')
             ->pluck('namalengkap', 'id_personil')
@@ -87,6 +92,7 @@ class PrakerinNegosiatorController extends Controller
             'tahunAjaranOptions' => $tahunAjaranOptions,
             'personilOptions' => $personilOptions,
             'jenisGolRuang' => $jenisGolRuang,
+            'jenisJabatan' => $jenisJabatan,
             'action' => route('panitiaprakerin.administrasi.negosiator.update', $negosiator->id)
         ]);
     }

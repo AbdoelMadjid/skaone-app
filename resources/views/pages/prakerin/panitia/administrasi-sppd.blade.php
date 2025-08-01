@@ -11,10 +11,10 @@
                 <table style='margin: 0 auto;width:100%;border-collapse:collapse;'>
                     <tr>
                         <td style="text-align: center; vertical-align: top;"></td>
-                        <td style="width: 35%;">
+                        <td style="width: 55%;">
                             Lembar Ke: <br>
                             Kode No: <br>
-                            Nomor:
+                            Nomor : {{ $infoNegosiasi['nomor_surat'] ?? '-' }}
                         </td>
                     </tr>
                 </table>
@@ -49,7 +49,7 @@
                         </td>
                         <td>
                             a. {{ $infoNegosiasi['gol_ruang'] }}<br>
-                            b. -<br>
+                            b. {{ $infoNegosiasi['jabatan'] }}<br>
                             c. -
                         </td>
                     </tr>

@@ -57,17 +57,17 @@
                         <tr>
                             <td width='150'>Nama</td>
                             <td width='5'>:</td>
-                            <td>....................................................</td>
+                            <td>{{ $infoNegosiasi['nama_pimpinan'] }}</td>
                         </tr>
                         <tr>
                             <td>Jabatan</td>
                             <td>:</td>
-                            <td>....................................................</td>
+                            <td>{{ $infoNegosiasi['jabatan_pimpinan'] }}</td>
                         </tr>
                         <tr>
                             <td valign='top'>Alamat</td>
                             <td valign='top'>:</td>
-                            <td>....................................................</td>
+                            <td>{{ $infoNegosiasi['alamatperusahaan'] }}</td>
                         </tr>
                     </table>
                 </td>
@@ -144,11 +144,12 @@
         <table style='margin: 0 auto;width:93%;border-collapse:collapse;'>
             <!-- Baris tanggal dan pihak -->
             <tr>
-                <td colspan="2">Kadipaten, .......... </td>
+                <td colspan="2">Kadipaten,
+                    {{ \Carbon\Carbon::parse($infoNegosiasi['titimangsa'])->translatedFormat('d F Y') ?? '-' }} </td>
             </tr>
             <tr>
                 <td style="padding-top: 10px;"><strong>PIHAK PERTAMA</strong></td>
-                <td style="text-align: center; padding-top: 10px;"><strong>PIHAK KEDUA</strong></td>
+                <td style="padding-top: 10px;"><strong>PIHAK KEDUA</strong></td>
             </tr>
 
             <!-- Ruang tanda tangan -->
@@ -164,8 +165,9 @@
                     Pembina Utama Muda<br>
                     NIP. 19740302 199803 1 002
                 </td>
-                <td style="text-align: center;">
-                    ..................................
+                <td>
+                    <strong>{{ $infoNegosiasi['nama_pimpinan'] }}</strong><br>
+                    {{ $infoNegosiasi['nip_nidn'] }}
                 </td>
             </tr>
 

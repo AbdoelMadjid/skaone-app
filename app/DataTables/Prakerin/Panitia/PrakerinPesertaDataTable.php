@@ -76,8 +76,8 @@ class PrakerinPesertaDataTable extends DataTable
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
-                unset($actions['Delete']);
-                unset($actions['Edit']);
+                /* unset($actions['Delete']);
+                unset($actions['Edit']); */
                 return view('action', compact('actions'));
             })
             ->addIndexColumn()

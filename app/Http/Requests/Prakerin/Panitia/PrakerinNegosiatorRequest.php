@@ -24,7 +24,8 @@ class PrakerinNegosiatorRequest extends FormRequest
         return [
             'tahunajaran' => 'required|string|max:9', // contoh: 2024/2025
             'id_personil' => 'required|string|exists:personil_sekolahs,id_personil', // asumsi: ada tabel personils
-            'gol_ruang'   => 'required|string|max:20',
+            'gol_ruang'   => 'required|string|max:120',
+            'jabatan'   => 'required|string|max:120',
             'id_nego'     => 'required|string|max:100', // asumsi: relasi ke tabel negosiators
         ];
     }
@@ -44,7 +45,10 @@ class PrakerinNegosiatorRequest extends FormRequest
             'id_personil.exists'   => 'Personil yang dipilih tidak valid.',
 
             'gol_ruang.required'   => 'Golongan dan ruang wajib diisi.',
-            'gol_ruang.max'        => 'Golongan dan ruang maksimal 20 karakter.',
+            'gol_ruang.max'        => 'Golongan dan ruang maksimal 120 karakter.',
+
+            'jabatan.required'   => 'Jabatan wajib diisi.',
+            'jabatan.max'        => 'Jabatan maksimal 120 karakter.',
 
             'id_nego.required'     => 'Negosiator wajib dipilih.',
             'id_nego.exists'       => 'Negosiator yang dipilih tidak valid.',

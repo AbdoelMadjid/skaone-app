@@ -13,6 +13,7 @@ class PrakerinNegosiator extends Model
         'tahunajaran',
         'id_personil',
         'gol_ruang',
+        'jabatan',
         'id_nego',
     ];
 }

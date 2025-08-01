@@ -76,8 +76,10 @@ class PrakerinAdministrasiController extends Controller
             'alamatperusahaan' => optional($perusahaan)->alamat,
             'nama_pimpinan' => optional($perusahaan)->nama_pimpinan,
             'jabatan_pimpinan' => optional($perusahaan)->jabatan_pimpinan,
+            'nip_nidn' => optional($perusahaan)->no_ident_pimpinan,
 
             'gol_ruang' => optional($negosiator)->gol_ruang,
+            'jabatan' => optional($negosiator)->jabatan,
             'id_nego' => optional($negosiator)->id_nego,
 
             'nip' => optional($personil)->nip,

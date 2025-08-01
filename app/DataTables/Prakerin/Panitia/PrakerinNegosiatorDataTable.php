@@ -86,6 +86,7 @@ class PrakerinNegosiatorDataTable extends DataTable
             Column::make('tahunajaran')->title('Tahun Ajaran'),
             Column::make('namaguru')->title('Nama Negosiator'),
             Column::make('gol_ruang')->title('Golongan Ruang'),
+            Column::make('jabatan')->title('Jabatan'),
             Column::make('id_nego')->title('Identitas Nego'),
             // Kolom untuk aksi
             Column::computed('action')
