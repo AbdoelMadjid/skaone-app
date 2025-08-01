@@ -210,6 +210,7 @@
                 body { font-family: 'Times New Roman', serif; font-size: 12px; }
                 table { width: 100%; border-collapse: collapse; }
                 table, th, td { padding: 5px; vertical-align: top; }
+                .break-page { page-break-before: always; }
             `
         });
     </script>

@@ -114,7 +114,7 @@
                             <td></td>
                             <td style='padding:4px 8px;'>
                                 Majalengka,
-                                {{ \Carbon\Carbon::parse($infoNegosiasi['tgl_nego'])->translatedFormat('l') ?? '-' }}
+                                {{ \Carbon\Carbon::parse($infoNegosiasi['titimangsa'])->translatedFormat('l') ?? '-' }}
                                 <br>
                                 Kepala Sekolah,
                                 <div>
@@ -137,5 +137,79 @@
                 <td width='25'>&nbsp;</td>
             </tr>
         </table>
+        <div class="break-page"></div>
+        <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;'>
+            <tr>
+                <td align='center'>
+                    <table>
+                        <tr>
+                            <td>Lampiran I</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Nomor</td>
+                            <td>:</td>
+                            <td>{{ $infoNegosiasi['nomor_surat'] ?? '-' }}</td>
+                        </tr>
+                        <tr>
+                            <td>Tanggal</td>
+                            <td>:</td>
+                            <td>{{ \Carbon\Carbon::parse($infoNegosiasi['titimangsa'])->translatedFormat('d F Y') ?? '-' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tentang</td>
+                            <td>:</td>
+                            <td>Permohonan Izin Tempat Praktik Kerja Lapangan (PKL)</td>
+                        </tr>
+                    </table>
+                    <table>
+                        <tr>
+                            <td>DAFTAR NAMA PESERTA PKL SMK NEGERI 1 KADIPATEN</td>
+                        </tr>
+                    </table>
+                    <table>
+                        <tr>
+                            <td>{{ $infoNegosiasi['nama_perusahaan'] ?? '-' }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ $infoNegosiasi['alamatperusahaan'] ?? '-' }}</td>
+                        </tr>
+                        <tr>
+                            <td>No urut DUDI : {{ $infoNegosiasi['id_perusahaan'] ?? '-' }}</td>
+                        </tr>
+                    </table>
+                    <br><br>
+                    <table border="1" style="width:100%; border-collapse: collapse; font:12px Times New Roman;">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>NIS</th>
+                                <th>Nama Lengkap</th>
+                                <th>Jenis Kelamin</th>
+                                <th>Rombel</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($penempatans as $index => $siswa)
+                                <tr>
+                                    <td style="text-align: center;">{{ $index + 1 }}</td>
+                                    <td style="text-align: center;">{{ $siswa->nis }}</td>
+                                    <td>{{ $siswa->nama_lengkap }}</td>
+                                    <td style="text-align: center;">{{ $siswa->jenis_kelamin }}</td>
+                                    <td style="text-align: center;">{{ $siswa->rombel_nama }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" style="text-align: center;">Data tidak ditemukan.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
     </div>
 </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Prakerin\Panitia;
 use App\Http\Controllers\Controller;
 use App\Models\ManajemenSekolah\PersonilSekolah;
 use App\Models\ManajemenSekolah\TahunAjaran;
+use App\Models\Prakerin\Kaprog\PrakerinPenempatan;
 use App\Models\Prakerin\Panitia\PrakerinAdminNego;
 use App\Models\Prakerin\Panitia\PrakerinIdentitas;
 use App\Models\Prakerin\Panitia\PrakerinNegosiator;
@@ -69,12 +70,16 @@ class PrakerinAdministrasiController extends Controller
             'tgl_nego' => optional($adminNego)->tgl_nego,
             'titimangsa' => optional($adminNego)->titimangsa,
             'nomor_surat' => optional($adminNego)->nomor_surat,
+
+            'id_perusahaan' => optional($perusahaan)->id,
             'nama_perusahaan' => optional($perusahaan)->nama,
             'alamatperusahaan' => optional($perusahaan)->alamat,
             'nama_pimpinan' => optional($perusahaan)->nama_pimpinan,
             'jabatan_pimpinan' => optional($perusahaan)->jabatan_pimpinan,
+
             'gol_ruang' => optional($negosiator)->gol_ruang,
             'id_nego' => optional($negosiator)->id_nego,
+
             'nip' => optional($personil)->nip,
             'nama_lengkap' => $personil
                 ? trim(($personil->gelardepan ? $personil->gelardepan . ' ' : '') .
@@ -83,6 +88,21 @@ class PrakerinAdministrasiController extends Controller
                 : '-',
         ];
 
+        $penempatans = DB::table('penempatan_prakerins as pp')
+            ->join('peserta_didiks as pd', 'pp.nis', '=', 'pd.nis')
+            ->join('peserta_didik_rombels as pdr', function ($join) {
+                $join->on('pp.nis', '=', 'pdr.nis')
+                    ->on('pp.tahunajaran', '=', 'pdr.tahun_ajaran');
+            })
+            ->where('pp.id_dudi', $idPerusahaan)
+            ->select(
+                'pp.id_dudi',
+                'pp.nis',
+                'pd.nama_lengkap',
+                'pd.jenis_kelamin',
+                'pdr.rombel_nama'
+            )
+            ->get();
 
         return view('pages.prakerin.panitia.administrasi', [
             'identPrakerin' => $identPrakerin,
@@ -92,6 +112,7 @@ class PrakerinAdministrasiController extends Controller
             'negosiator' => $negosiator,
             'personil' => $personil,
             'perusahaan' => $perusahaan,
+            'penempatans' => $penempatans,
             'infoNegosiasi' => $infoNegosiasi ?? null,
         ]);
     }

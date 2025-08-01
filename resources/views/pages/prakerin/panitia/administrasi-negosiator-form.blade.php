@@ -14,7 +14,8 @@
     </div>
     <div class="row">
         <div class="col-sm-8">
-            <x-form.input name="gol_ruang" value="{{ $data->gol_ruang }}" label="Golongan Ruang" id="gol_ruang" />
+            <x-form.select name="gol_ruang" :options="$jenisGolRuang" value="{{ old('gol_ruang', $data->gol_ruang) }}"
+                label="Golongan Ruang" />
         </div>
         <div class="col-sm-4">
             <x-form.input name="id_nego" value="{{ $data->id_nego }}" label="Identitas Negosiasi" id="id_nego" />
