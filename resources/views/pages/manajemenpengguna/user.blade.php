@@ -44,7 +44,7 @@
                     </select>
                 </div>
                 <div class="col-lg-auto">
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalTambahRole">
+                    <button class="btn btn-soft-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalTambahRole">
                         Tambah Role
                     </button>
                 </div>
@@ -83,7 +83,7 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="users">Pilih User</label>
-                            <select id="users" name="users[]" class="form-select select2" multiple required>
+                            <select id="users" name="users[]" class="form-select" multiple required>
                                 @foreach ($users as $user)
                                     <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
                                 @endforeach
@@ -106,53 +106,34 @@
             </form>
         </div>
     </div>
-    <script></script>
-    @if (session('success'))
-        <script>
-            $(document).ready(function() {
-                showToast('success', '{{ session('success') }}');
-            });
-        </script>
-    @endif
-
-    @if (session('error'))
-        <script>
-            $(document).ready(function() {
-                showToast('error', '{{ session('error') }}');
-            });
-        </script>
-    @endif
-
-    @if (session('swal_success'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                Swal.fire({
-                    html: '<div class="mt-3">' +
-                        '<lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop" colors="primary:#0ab39c,secondary:#405189" style="width:120px;height:120px"></lord-icon>' +
-                        '<div class="mt-4 pt-2 fs-15">' +
-                        '<h4>Well done!</h4>' +
-                        '<p class="text-muted mx-4 mb-0">{{ session('swal_success') }}</p>' +
-                        '</div>' +
-                        '</div>',
-                    showCancelButton: true,
-                    showConfirmButton: false,
-                    cancelButtonClass: 'btn btn-primary w-xs mb-1',
-                    cancelButtonText: 'Back',
-                    buttonsStyling: true,
-                    showCloseButton: true
-                });
-            });
-        </script>
-    @endif
-    <div id="role-alert"></div>
+    {{--  --}}
 @endsection
 @section('script')
-    <script src="{{ URL::asset('build/libs/select2/js/select2.min.js') }}"></script>
-
     {!! $dataTable->scripts() !!}
 @endsection
 @section('script-bottom')
-    <script></script>
+    <script>
+        $('#modal_action').on('shown.bs.modal', function() {
+            $('#roles').select2({
+                /* theme: 'bootstrap-5', */
+                dropdownParent: $('#modal_action'),
+                width: '100%', // atau 'resolve'
+                tags: true, // ← aktifkan mode tagging
+                allowClear: true,
+                /* placeholder: "Pilih Role", */
+            });
+        });
+        $('#modalTambahRole').on('shown.bs.modal', function() {
+            $('#users').select2({
+                /* theme: 'bootstrap-5', */
+                dropdownParent: $('#modalTambahRole'),
+                width: '100%', // atau 'resolve'
+                tags: true, // ← aktifkan mode tagging
+                allowClear: true,
+                /* placeholder: "Pilih User", */
+            });
+        });
+    </script>
     <script>
         const datatable = 'user-table';
 
@@ -241,7 +222,6 @@
             });
         });
 
-
         $(document).on('click', '.btn-reset-password', function() {
             let userId = $(this).data('id');
 
@@ -316,41 +296,6 @@
                     });
                 }
             });
-        });
-        /* $('#hapus-role-btn').on('click', function() {
-            const selectedRole = $('#role-select').val();
-
-            if (!selectedRole) {
-                alert('Silakan pilih role terlebih dahulu.');
-                return;
-            }
-
-            if (!confirm(`Yakin ingin menghapus role "${selectedRole}" dari semua user?`)) {
-                return;
-            }
-
-            $.ajax({
-                url: '{{ route('manajemenpengguna.hapus.role.ajax') }}',
-                method: 'DELETE',
-                data: {
-                    role: selectedRole,
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    showToast('success', `${response.message}`);
-                    $('#user-table').DataTable().ajax.reload(null,
-                        false); // reload DataTable tanpa reset halaman
-                },
-                error: function(xhr) {
-                    showToast('error', `Terjadi kesalahan: ${xhr.responseJSON.message}`);
-                }
-            });
-        }); */
-
-        $(document).ready(function() {
-            $('.select2').select2({
-                dropdownParent: $('#modalTambahRole')
-            });
 
             $('#formTambahRole').submit(function(e) {
                 e.preventDefault();
@@ -361,21 +306,18 @@
                     success: function(response) {
                         $('#modalTambahRole').modal('hide');
                         $('#user-table').DataTable().ajax.reload(); // Reload table
-                        alert(response.message);
+                        showToast('success', response.message);
                     },
                     error: function(xhr) {
-                        alert("Gagal menambahkan role.");
+                        showToast('error', "Gagal menambahkan role.");
                         console.error(xhr.responseText);
                     }
                 });
             });
         });
 
-        handleAction(datatable, function(res) {
-            select2Init()
-        })
+        handleAction(datatable)
         handleDelete(datatable)
-        ScrollDinamicDataTable(datatable, scrollOffsetOverride = 86);
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

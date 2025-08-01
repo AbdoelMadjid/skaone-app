@@ -21,7 +21,7 @@
         <div class="col-md-6">
             <div class="mb-3">
                 <label for="roles" class="form-label">roles</label>
-                <select id="roles" name="roles[]" class="select2 form-select form-select-sm" multiple>
+                <select id="roles" name="roles[]" class="form-select form-select-sm" multiple>
                     @foreach ($roles as $item)
                         <option value="{{ $item }}" @selected(in_array($item, $data->roles->pluck('name')->toArray()))>{{ $item }}</option>
                     @endforeach

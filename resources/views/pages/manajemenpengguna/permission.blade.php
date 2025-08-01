@@ -17,9 +17,7 @@
             <div class="flex-shrink-0">
                 <x-btn-tambah can="create manajemenpengguna/permissions" route="manajemenpengguna.permissions.create"
                     label="Tambah" icon="ri-add-line" />
-                <button class="btn btn-soft-primary btn-sm" data-bs-toggle="modal" data-bs-target="#permissionModal">
-                    Tambah Permission
-                </button>
+                <x-btn-action label="Permission" icon="ri-add-fill" data-bs-toggle="modal" data-bs-target="#permissionModal" />
             </div>
         </div>
         <div class="card-body p-1">
