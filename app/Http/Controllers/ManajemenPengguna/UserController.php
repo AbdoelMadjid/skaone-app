@@ -21,7 +21,8 @@ class UserController extends Controller
     public function index(UserDataTable $userDataTable)
     {
         $users = User::all();
-        return $userDataTable->render('pages.manajemenpengguna.user', compact('users'));
+        $roles = Role::all();
+        return $userDataTable->render('pages.manajemenpengguna.user', compact('users', 'roles'));
     }
 
     /**
@@ -195,5 +196,20 @@ class UserController extends Controller
             'message' => "Role '$role' berhasil dihapus dari semua user.",
             'total_removed' => $users->count()
         ]);
+    }
+
+    public function assignRole(Request $request)
+    {
+        $request->validate([
+            'users' => 'required|array',
+            'role' => 'required|string|exists:roles,name',
+        ]);
+
+        foreach ($request->users as $userId) {
+            $user = User::findOrFail($userId);
+            $user->assignRole($request->role);
+        }
+
+        return response()->json(['message' => 'Role berhasil ditambahkan ke user terpilih.']);
     }
 }

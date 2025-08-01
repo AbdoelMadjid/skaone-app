@@ -35,6 +35,19 @@
                         <i class="ri-search-line search-icon"></i>
                     </div>
                 </div>
+                <div class="col-lg-auto">
+                    <select id="filter-role" class="form-select form-select-sm">
+                        <option value="">Filter Role</option>
+                        @foreach (\Spatie\Permission\Models\Role::pluck('name') as $role)
+                            <option value="{{ $role }}">{{ $role }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-lg-auto">
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalTambahRole">
+                        Tambah Role
+                    </button>
+                </div>
                 @if (auth()->check() &&
                         auth()->user()->hasAnyRole(['master']))
                     <div class="col-lg-auto">
@@ -56,6 +69,41 @@
         </div>
         <div class="card-body p-1">
             {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modalTambahRole" tabindex="-1" aria-labelledby="modalTambahRoleLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="formTambahRole">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Tambah Role ke User</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="users">Pilih User</label>
+                            <select id="users" name="users[]" class="form-select select2" multiple required>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="role">Pilih Role</label>
+                            <select id="role" name="role" class="form-select" required>
+                                <option value="">-- Pilih Role --</option>
+                                @foreach ($roles as $role)
+                                    <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Simpan</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
     <script></script>
@@ -111,6 +159,12 @@
         $(document).ready(function() {
             const table = $("#user-table").DataTable();
 
+            // Tambahkan filter Ajax ke DataTable yang sudah ada
+            table.on('preXhr.dt', function(e, settings, data) {
+                data.searchName = $('.search-box .search').val();
+                data.role = $('#filter-role').val();
+            });
+
             // Fungsi debounce untuk mengurangi frekuensi reload
             function debounce(func, delay) {
                 let timer;
@@ -129,7 +183,12 @@
                     table.ajax.reload(); // Reload tabel saat pencarian berubah
                 }, 300)
             );
+
+            $('#filter-role').on('change', function() {
+                table.ajax.reload();
+            });
         });
+
 
         // Fungsi showToast dari user
         $(document).on('click', '.switch-account-link', function(e) {
@@ -288,7 +347,29 @@
             });
         }); */
 
+        $(document).ready(function() {
+            $('.select2').select2({
+                dropdownParent: $('#modalTambahRole')
+            });
 
+            $('#formTambahRole').submit(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '{{ route('manajemenpengguna.assignRole') }}',
+                    method: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#modalTambahRole').modal('hide');
+                        $('#user-table').DataTable().ajax.reload(); // Reload table
+                        alert(response.message);
+                    },
+                    error: function(xhr) {
+                        alert("Gagal menambahkan role.");
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
 
         handleAction(datatable, function(res) {
             select2Init()

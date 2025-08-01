@@ -83,6 +83,12 @@ class UserDataTable extends DataTable
             $query->where('name', 'like', '%' . request('searchName') . '%');
         }
 
+        if (request()->filled('role')) {
+            $query->whereHas('roles', function ($q) {
+                $q->where('name', request('role'));
+            });
+        }
+
         return $query;
     }
 
