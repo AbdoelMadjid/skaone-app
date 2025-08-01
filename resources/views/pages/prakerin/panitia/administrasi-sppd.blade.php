@@ -1,14 +1,14 @@
-<div id='cetak-sppd' style='@page {size: A4;landscape;}'>
-    <table cellspacing="0" cellpadding="4" style="border-collapse: collapse; width: 100%; font-size: 12px;">
+<div id='cetak-sppd' style='@page {size: 210mm 330mm landscape;}'>
+    <table cellspacing="0" cellpadding="4" style="border-collapse: collapse; width: 100%;">
         <tr>
             <td style="width: 50%;">
-                <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:12px Times New Roman;'>
+                <table style='margin: 0 auto;width:100%;border-collapse:collapse;'>
                     <tr>
                         <td align='center'><img src="{{ URL::asset('images/kopsuratbaru.jpg') }}" alt=""
                                 height="84" width="450" border="0"></td>
                     </tr>
                 </table>
-                <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:11px Times New Roman;'>
+                <table style='margin: 0 auto;width:100%;border-collapse:collapse;'>
                     <tr>
                         <td style="text-align: center; vertical-align: top;"></td>
                         <td style="width: 25%;">
@@ -18,12 +18,12 @@
                         </td>
                     </tr>
                 </table>
-                <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:14px Times New Roman;'>
+                <table style='margin: 0 auto;width:100%;border-collapse:collapse;font:14px;'>
                     <tr>
                         <td colspan="3" style="text-align: center;"><strong>SURAT PERJALANAN DINAS</strong></td>
                     </tr>
                 </table>
-                <table width="100%" border="1" style="font-size: 12px;">
+                <table width="100%" border="1">
                     <tr>
                         <td width="3%">1.</td>
                         <td width="50%">Pengguna Anggaran/Kuasa Pengguna Anggaran</td>
@@ -71,7 +71,7 @@
                         </td>
                         <td>
                             a. SMKN 1 Kadipaten<br>
-                            b. {{-- {{ $infoNegosiasi['nama_perusahaan'] }} <br>  --}}{{ $infoNegosiasi['alamatperusahaan'] }}
+                            b. Terlampir
                         </td>
                     </tr>
                     <tr>
@@ -91,8 +91,7 @@
                     <tr>
                         <td>8.</td>
                         <td colspan="2">
-                            <table width="100%" border="1"
-                                style="border-collapse: collapse; width: 100%; font-size: 12px;">
+                            <table width="100%" border="1" style="border-collapse: collapse; width: 100%;">
                                 <tr>
                                     <th>Pengikut: Nama</th>
                                     <th>Tanggal Lahir</th>
@@ -128,7 +127,7 @@
                     </tr>
                 </table>
                 *) Coret yang tidak perlu
-                <table style="border-collapse: collapse; width: 100%; font-size: 12px;">
+                <table style="border-collapse: collapse; width: 100%;">
                     <tr>
                         <td width="50%"></td>
                         <td>
@@ -154,11 +153,11 @@
                 </table>
             </td>
             <td style="width: 50%;vertical-align:top;">
-                <table border="1" style="border-collapse: collapse; width: 100%; font-size: 12px;">
+                <table border="1" style="border-collapse: collapse; width: 100%;">
                     <!-- Bagian I -->
                     <tr>
                         <td style="width: 50%;">
-                            <table width="100%" style="border-collapse: collapse; width: 100%; font-size: 12px;">
+                            <table width="100%" style="border-collapse: collapse; width: 100%;">
                                 <tr>
                                     <td>I.</td>
                                     <td></td>
@@ -180,7 +179,7 @@
                             </table>
                         </td>
                         <td style="width: 50%;">
-                            <table width="100%" style="border-collapse: collapse; width: 100%; font-size: 12px;">
+                            <table width="100%" style="border-collapse: collapse; width: 100%;">
                                 <tr>
                                     <td width="100">Berangkat dari (Tempat kedudukan)</td>
                                     <td>:</td>
@@ -202,7 +201,7 @@
                     </tr>
                     <tr>
                         <td style="width: 50%;">
-                            <table width="100%" style="border-collapse: collapse; width: 100%; font-size: 12px;">
+                            <table width="100%" style="border-collapse: collapse; width: 100%;">
                                 <tr>
                                     <td width="20">II.</td>
                                     <td width="100">Tiba di</td>
@@ -227,7 +226,7 @@
                             <p>&nbsp;</p>
                         </td>
                         <td style="width: 50%;">
-                            <table width="100%" style="border-collapse: collapse; width: 100%; font-size: 12px;">
+                            <table width="100%" style="border-collapse: collapse; width: 100%;">
                                 <tr>
                                     <td width="100">Berangkat dari</td>
                                     <td>:</td>
@@ -248,7 +247,7 @@
                     </tr>
                     <tr>
                         <td style="width: 50%;">
-                            <table width="100%" style="border-collapse: collapse; width: 100%; font-size: 12px;">
+                            <table width="100%" style="border-collapse: collapse; width: 100%;">
                                 <tr>
                                     <td width="20">III.</td>
                                     <td width="100">Tiba di</td>
@@ -272,7 +271,7 @@
                             <p>&nbsp;</p>
                         </td>
                         <td style="width: 50%;">
-                            <table width="100%" style="border-collapse: collapse; width: 100%; font-size: 12px;">
+                            <table width="100%" style="border-collapse: collapse; width: 100%;">
                                 <tr>
                                     <td width="100">Berangkat dari</td>
                                     <td>:</td>
@@ -293,7 +292,7 @@
                     </tr>
                     <tr>
                         <td style="width: 50%;">
-                            <table width="100%" style="border-collapse: collapse; width: 100%; font-size: 12px;">
+                            <table width="100%" style="border-collapse: collapse; width: 100%;">
                                 <tr>
                                     <td width="20">IV.</td>
                                     <td width="100">Tiba di</td>
@@ -317,7 +316,7 @@
                             <p>&nbsp;</p>
                         </td>
                         <td style="width: 50%;">
-                            <table width="100%" style="border-collapse: collapse; width: 100%; font-size: 12px;">
+                            <table width="100%" style="border-collapse: collapse; width: 100%;">
                                 <tr>
                                     <td width="100">Berangkat dari</td>
                                     <td>:</td>
@@ -338,7 +337,7 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <table width="100%" style="border-collapse: collapse; width: 100%; font-size: 12px;">
+                            <table width="100%" style="border-collapse: collapse; width: 100%;">
                                 <tr>
                                     <td width="20">V.</td>
                                     <td width="100">Tiba kembali di</td>
@@ -360,7 +359,7 @@
                                 </tr>
                             </table>
 
-                            <table style="border-collapse: collapse; width: 100%; font-size: 12px;">
+                            <table style="border-collapse: collapse; width: 100%;">
                                 <tr>
                                     <td width="50%"></td>
                                     <td>
@@ -385,7 +384,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2" style="border-collapse: collapse; width: 100%; font-size: 12px;">
+                        <td colspan="2" style="border-collapse: collapse; width: 100%;">
                             VI. PERHATIAN<br>
                             PA/KPA yang menerbitkan SPD, pegawai yang melakukan perjalanan dinas, para pejabat yang
                             mengesahkan tanggal berangkat/tiba, serta bendahara pengeluaran bertanggung jawab

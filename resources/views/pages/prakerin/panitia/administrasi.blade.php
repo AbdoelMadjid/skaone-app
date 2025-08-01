@@ -270,10 +270,9 @@
                 message: 'Silakan pilih tanggal terlebih dahulu sebelum mencetak daftar hadir panitia.'
             }], */
             customStyle: `
-                @page { size: 210mm 330mm landscape; margin: 10mm;}
-                body { font-family: 'Times New Roman', serif; font-size: 12px; }
-                table { width: 100%; border-collapse: collapse; }
-                table, th, td { padding: 3px; vertical-align: top; }
+                @page { size: 210mm 330mm landscape; margin: 5mm;}
+                table { width: 100%; border-collapse: collapse; font:12px Times New Roman;}
+                table th, table td { padding: 2px; vertical-align: top; }
             `
         });
     </script>
