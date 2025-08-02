@@ -254,7 +254,7 @@ class KbmPerRombelController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Jam mengajar berhasil disimpan',
+            'message' => 'Jumlah jam mengajar berhasil diperbaharui',
             'data' => $jam
         ]);
     }
