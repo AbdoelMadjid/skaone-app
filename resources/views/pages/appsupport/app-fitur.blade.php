@@ -51,18 +51,19 @@
                         // Perbarui label status di UI
                         const label = document.getElementById(`aktifLabel-${id}`);
                         label.textContent = aktifValue;
-
                         showToast('success', 'Status berhasil diperbarui.');
+                        // Tambahkan ini untuk reload halaman
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1500); // kasih delay dikit biar toast sempat tampil
                     } else {
                         throw new Error('Gagal memperbarui status.');
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-
                     // Tampilkan pesan error
                     showToast('error', 'Terjadi kesalahan, coba lagi.');
-
                     // Kembalikan status checkbox jika gagal
                     checkbox.checked = !checkbox.checked;
                 });
