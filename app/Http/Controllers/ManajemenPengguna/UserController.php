@@ -53,14 +53,6 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(User $user)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(User $user)
@@ -210,6 +202,6 @@ class UserController extends Controller
             $user->assignRole($request->role);
         }
 
-        return response()->json(['message' => 'Role berhasil ditambahkan ke user terpilih.']);
+        return response()->json(['message' => "Role '$request->role' berhasil ditambahkan ke user terpilih."]);
     }
 }

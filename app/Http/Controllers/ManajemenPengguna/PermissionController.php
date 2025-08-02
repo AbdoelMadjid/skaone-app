@@ -107,6 +107,6 @@ class PermissionController extends Controller
             }
         }
 
-        return response()->json(['message' => 'Permission berhasil ditambahkan!']);
+        return response()->json(['message' => "Permission '$route' berhasil ditambahkan!"]);
     }
 }

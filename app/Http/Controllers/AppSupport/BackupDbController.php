@@ -85,7 +85,7 @@ class BackupDbController extends Controller
                 // Save to file
                 Storage::put($fileName, $sqlContent);
 
-                session()->flash('toast_success', "Backup berhasil untuk tabel: $table");
+                session()->flash('success', "Backup berhasil untuk tabel: $table");
             } catch (\Exception $e) {
                 session()->flash('error', "Backup gagal untuk tabel: $table. Error: " . $e->getMessage());
             }

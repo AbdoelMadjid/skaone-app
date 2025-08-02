@@ -104,10 +104,6 @@
 @endsection
 @section('script-bottom')
     <script>
-        @if (session('toast_success'))
-            showToast('success', '{{ session('toast_success') }}');
-        @endif
-
         $(document).ready(function() {
             var table = $('#tables-list').DataTable({
                 dom: 'Bfrtip',
