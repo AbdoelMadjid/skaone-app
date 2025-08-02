@@ -218,7 +218,7 @@ class JadwalMingguanController extends Controller
         $ids = $request->ids;
         if (is_array($ids) && !empty($ids)) {
             JadwalMingguan::whereIn('id', $ids)->delete();
-            return response()->json(['success' => 'Data berhasil dihapus!']);
+            return response()->noContent();
         }
 
         return response()->json(['error' => 'Tidak ada data yang dihapus!'], 400);
@@ -376,6 +376,9 @@ class JadwalMingguanController extends Controller
             );
         }
 
-        return redirect()->back()->with('success', 'Jadwal berhasil disimpan.');
+        /* return redirect()->back()->with('success', 'Jadwal berhasil disimpan.'); */
+        return redirect()->back()
+            ->with('success', 'Jadwal berhasil disimpan.')
+            ->with('notify_via', 'toast'); // atau 'toast'
     }
 }

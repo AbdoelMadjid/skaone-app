@@ -672,3 +672,78 @@ function initNotifikasiSwal(options = {}) {
         if (typeof afterSwal === 'function') afterSwal();
     });
 }
+
+function showSessionNotification(callback = null) {
+    const container = document.getElementById('swal-session-container');
+    const items = container?.querySelectorAll('.swal-session') ?? [];
+    const notifyVia = container?.dataset.notifyVia || 'swal';
+
+    if (items.length === 0) {
+        if (typeof callback === 'function') callback();
+        return;
+    }
+
+    items.forEach(item => {
+        const status = item.dataset.status || 'info';
+        const message = item.dataset.message || 'Tidak ada pesan';
+
+        if (notifyVia === 'swal') {
+            // ---- SHOW SWAL
+            const config = {
+                success: {
+                    title: 'Berhasil!',
+                    buttonClass: 'btn btn-soft-success',
+                    buttonText: 'Lanjut'
+                },
+                error: {
+                    title: 'Oops...!',
+                    buttonClass: 'btn btn-soft-danger',
+                    buttonText: 'Tutup'
+                },
+                warning: {
+                    title: 'Peringatan!',
+                    buttonClass: 'btn btn-soft-warning',
+                    buttonText: 'Mengerti'
+                },
+                info: {
+                    title: 'Informasi',
+                    buttonClass: 'btn btn-soft-info',
+                    buttonText: 'Oke'
+                }
+            };
+
+            const alert = config[status] || config.info;
+
+            Swal.fire({
+                icon: status,
+                title: alert.title,
+                html: `<div class="text-muted">${message}</div>`,
+                showCancelButton: true,
+                showConfirmButton: false,
+                cancelButtonClass: `${alert.buttonClass} w-sm mb-1`,
+                cancelButtonText: alert.buttonText,
+                buttonsStyling: true,
+                showCloseButton: true,
+                showClass: {
+                    popup: "animate__animated animate__fadeInUp animate__faster"
+                },
+                hideClass: {
+                    popup: "animate__animated animate__fadeOutDown animate__faster"
+                },
+                footer: '<div class="text-muted fs-6"><a href="https://github.com/AbdoelMadjid" target="blank">Scripting & Design by. Abdul Madjid, S.Pd., M.Pd.</a></div>'
+            }).then(() => {
+                if (typeof callback === 'function') callback();
+            });
+
+        } else if (notifyVia === 'toast') {
+            // ---- SHOW TOAST
+            iziToast[status]({
+                title: status === 'success' ? 'Success' : status.charAt(0).toUpperCase() + status.slice(1),
+                message: message,
+                position: 'topRight'
+            });
+
+            if (typeof callback === 'function') callback();
+        }
+    });
+}

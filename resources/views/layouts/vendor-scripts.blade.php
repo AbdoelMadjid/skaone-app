@@ -21,6 +21,9 @@
 <script src="{{ URL::asset('build/js/main.js') }}"></script>
 @yield('script-bottom')
 
-<script>
+{{-- <script>
     window.addEventListener('DOMContentLoaded', showSessionSwal);
+</script> --}}
+<script>
+    window.addEventListener('DOMContentLoaded', showSessionNotification);
 </script>

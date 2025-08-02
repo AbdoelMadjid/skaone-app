@@ -76,10 +76,12 @@
         $swalMessages = collect(session()->all())->filter(
             fn($v, $k) => Str::startsWith($k, ['error', 'success', 'warning', 'info']),
         );
+
+        $notifyVia = session('notify_via', 'swal'); // default swal
     @endphp
 
     @if ($swalMessages->isNotEmpty())
-        <div id="swal-session-container" style="display: none;">
+        <div id="swal-session-container" style="display: none;" data-notify-via="{{ $notifyVia }}">
             @foreach ($swalMessages as $key => $message)
                 @php
                     $type = Str::contains($key, 'error')
