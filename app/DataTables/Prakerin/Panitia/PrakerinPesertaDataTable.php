@@ -65,7 +65,6 @@ class PrakerinPesertaDataTable extends DataTable
                         ->where('nama_kk', 'like', "%{$keyword}%");
                 });
             })
-
             ->filterColumn('nama_kelas', function ($query, $keyword) {
                 $query->whereIn(DB::raw('(nis, tahunajaran, kode_kk)'), function ($subquery) use ($keyword) {
                     $subquery->select(DB::raw('nis, tahun_ajaran, kode_kk'))

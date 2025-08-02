@@ -30,6 +30,12 @@ class PrakerinPerusahaanDataTable extends DataTable
             ->addColumn('jabatan_pembimbing', function ($row) {
                 return $row->nama_pembimbing . '<br>' . $row->jabatan_pembimbing . '<br>' . $row->id_pembimbing . ' ' . $row->no_ident_pembimbing;
             })
+            ->filterColumn('perusahaan', function ($query, $keyword) {
+                $query->where(function ($q) use ($keyword) {
+                    $q->where('nama', 'like', "%{$keyword}%")
+                        ->orWhere('alamat', 'like', "%{$keyword}%");
+                });
+            })
             ->addColumn('perusahaan', function ($row) {
                 return $row->nama . "<br><span class='text-info'>" . $row->alamat . '</span>';
             })

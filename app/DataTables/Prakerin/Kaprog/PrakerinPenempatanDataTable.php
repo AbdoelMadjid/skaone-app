@@ -28,6 +28,21 @@ class PrakerinPenempatanDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->filterColumn('nama', function ($query, $keyword) {
+                $query->where('nama', 'like', "%{$keyword}%");
+            })
+
+            ->filterColumn('nis_siswa', function ($query, $keyword) {
+                $query->whereIn('id', function ($subquery) use ($keyword) {
+                    $subquery->select('id_dudi')
+                        ->from('prakerin_penempatans')
+                        ->join('peserta_didiks', 'prakerin_penempatans.nis', '=', 'peserta_didiks.nis')
+                        ->where(function ($q) use ($keyword) {
+                            $q->where('prakerin_penempatans.nis', 'like', "%{$keyword}%")
+                                ->orWhere('peserta_didiks.nama_lengkap', 'like', "%{$keyword}%");
+                        });
+                });
+            })
             ->addColumn('nis_siswa', function ($row) {
 
                 $activeTahunAjaran = TahunAjaran::where('status', 'Aktif')->first();
