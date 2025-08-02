@@ -60,6 +60,9 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::resource('informasi', PrakerinInformasiPanitiaController::class);
+        Route::get('/get-siswa-perusahaan/{id}', [PrakerinInformasiPanitiaController::class, 'getSiswaByPerusahaan']);
+        Route::get('/getperusahaan/{id}', [PrakerinInformasiPanitiaController::class, 'getPerusahaan']);
+
         Route::resource('laporan', PrakerinLaporanPanitiaController::class);
     });
 });
