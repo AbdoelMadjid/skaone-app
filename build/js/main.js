@@ -60,9 +60,12 @@ function handleDelete(datatable, onSuccessAction) {
     })
 }
 
-function showToast(status = 'success', message) {
+function showToast(status = 'success', titleOrMessage, maybeMessage) {
+    const title = maybeMessage ? titleOrMessage : (status === 'success' ? 'Success' : (status === 'warning' ? 'Warning' : 'Error'));
+    const message = maybeMessage || titleOrMessage;
+
     iziToast[status]({
-        title: status == 'success' ? 'Success' : (status == 'warning' ? 'Warning' : 'Error'),
+        title: title,
         message: message,
         position: 'topRight'
     });

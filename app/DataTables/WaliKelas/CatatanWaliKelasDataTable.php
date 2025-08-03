@@ -29,7 +29,7 @@ class CatatanWaliKelasDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('catatan', function ($row) {
                 // Add a textarea for editing the catatan
-                return '<textarea class="form-control form-control-sm catatan-input" data-id="' . $row->id . '">' . htmlspecialchars($row->catatan) . '</textarea>';
+                return '<textarea placeholder="Silakan isi catatan kemudian ENTER agar tersimpan" class="form-control form-control-sm catatan-input" data-id="' . $row->id . '">' . htmlspecialchars($row->catatan) . '</textarea>';
             })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons

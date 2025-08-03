@@ -4,6 +4,7 @@ namespace App\Http\Controllers\GuruMapel;
 
 use App\DataTables\GuruMapel\TujuanPembelajaranDataTable;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GuruMapel\TujuanPembelajaranRequest;
 use App\Models\GuruMapel\CpTerpilih;
 use App\Models\GuruMapel\MateriAjar;
 use App\Models\GuruMapel\TujuanPembelajaran;
@@ -307,10 +308,10 @@ class TujuanPembelajaranController extends Controller
     }
 
 
-    public function saveTujuanPembelajaran(Request $request)
+    public function saveTujuanPembelajaran(TujuanPembelajaranRequest $request)
     {
         // Validasi input
-        $request->validate([
+        /*         $request->validate([
             'selected_rombel_ids' => 'required',
             'kel_mapel' => 'required',
             'personal_id' => 'required',
@@ -320,7 +321,7 @@ class TujuanPembelajaranController extends Controller
             'tingkat' => 'required',
             'selected_tp_data' => 'required', // JSON string berisi data materi
         ]);
-
+ */
         $request->validate([
             'tp_isi.*' => ['required', function ($attribute, $value, $fail) {
                 $wordCount = str_word_count($value);
@@ -368,7 +369,7 @@ class TujuanPembelajaranController extends Controller
         }
 
         return redirect()->route('gurumapel.adminguru.tujuan-pembelajaran.index')
-            ->with('toast_success', 'Tujuan Pembelajaran berhasil disimpan.');
+            ->with('success', 'Tujuan Pembelajaran berhasil disimpan.');
     }
 
     /* public function updateTujuanPembelajaran(Request $request, $id)

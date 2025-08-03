@@ -70,8 +70,8 @@ class TujuanPembelajaranDataTable extends DataTable
                         ' . csrf_field() . '
                         <textarea class="form-control edit-tp-textarea" name="tp_isi" id="tp_isi_' . $row->id . '" rows="5" style="display: none;">' . $row->tp_isi . '</textarea>
                         <div class="gap-2 hstack justify-content-end mt-3">
-                            <button class="btn btn-soft-danger edit-tp-button" data-target="#tp_isi_' . $row->id . '" type="button">Edit</button>
-                            <button type="submit" class="btn btn-soft-success" style="display: none;">Submit</button>
+                            <button class="btn btn-soft-danger btn-sm edit-tp-button" data-target="#tp_isi_' . $row->id . '" type="button">Edit</button>
+                            <button type="submit" class="btn btn-soft-success btn-sm" style="display: none;">Submit</button>
                         </div>
                     </form>';
 

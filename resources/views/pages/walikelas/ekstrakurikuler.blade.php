@@ -23,7 +23,8 @@
                     @if (!$ekstrakulikulerExists)
                         <form action="{{ route('walikelas.ekstrakulikuler.generateeskul') }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-sm btn-soft-primary">Generate Eskul</button>
+                            <button type="submit" class="btn btn-soft-primary btn-sm btn-label"><i
+                                    class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>Generate</button>
                         </form>
                     @else
                         <div></div>
@@ -40,20 +41,6 @@
     {!! $dataTable->scripts() !!}
 @endsection
 @section('script-bottom')
-    <script>
-        function showToast(status = 'success', message) {
-            iziToast[status]({
-                title: status == 'success' ? 'Success' : (status == 'warning' ? 'Warning' : 'Error'),
-                message: message,
-                position: 'topRight',
-                close: true, // Tombol close
-            });
-        }
-
-        @if (session('success'))
-            showToast("success", "{{ session('success') }}");
-        @endif
-    </script>
     <script>
         const datatable = 'ekstrakurikuler-table';
 
@@ -114,7 +101,7 @@
                     _token: $('meta[name="csrf-token"]').attr('content') // Token CSRF
                 },
                 success: function(response) {
-                    showToast('success', 'Penilaian dan Desk berhasil diperbarui!');
+                    showToast('success', 'Penilaian dan Deskripsi berhasil diperbarui!');
                     // Tampilkan wajib_desk setelah disimpan
                     $('.wajib-desk[data-id="' + id + '"]').text(wajibDesk)
                         .removeClass('alert-danger') // Hapus kelas alert-danger
@@ -186,7 +173,7 @@
                     _token: $('meta[name="csrf-token"]').attr('content') // Token CSRF
                 },
                 success: function(response) {
-                    showToast('success', 'Penilaian dan Desk berhasil diperbarui!');
+                    showToast('success', 'Penilaian dan Deskripsi berhasil diperbarui!');
                     // Jika desk diperbarui, tampilkan di kolom desk
                     $('.pilihan1-desk[data-id="' + id + '"]').text(pilihan1Desk)
                         .removeClass('alert-danger')
@@ -258,7 +245,7 @@
                     _token: $('meta[name="csrf-token"]').attr('content') // Token CSRF
                 },
                 success: function(response) {
-                    showToast('success', 'Penilaian dan Desk berhasil diperbarui!');
+                    showToast('success', 'Penilaian dan Deskripsi berhasil diperbarui!');
                     // Jika desk diperbarui, tampilkan di kolom desk
                     $('.pilihan2-desk[data-id="' + id + '"]').text(pilihan2Desk)
                         .removeClass('alert-danger')
@@ -332,7 +319,7 @@
                     _token: $('meta[name="csrf-token"]').attr('content') // Token CSRF
                 },
                 success: function(response) {
-                    showToast('success', 'Penilaian dan Desk berhasil diperbarui!');
+                    showToast('success', 'Penilaian dan Deskripsi berhasil diperbarui!');
                     // Jika desk diperbarui, tampilkan di kolom desk
                     $('.pilihan3-desk[data-id="' + id + '"]').text(pilihan3Desk)
                         .removeClass('alert-danger')
@@ -406,7 +393,7 @@
                     _token: $('meta[name="csrf-token"]').attr('content') // Token CSRF
                 },
                 success: function(response) {
-                    showToast('success', 'Penilaian dan Desk berhasil diperbarui!');
+                    showToast('success', 'Penilaian dan Deskripsi berhasil diperbarui!');
                     // Jika desk diperbarui, tampilkan di kolom desk
                     $('.pilihan4-desk[data-id="' + id + '"]').text(pilihan4Desk)
                         .removeClass('alert-danger')

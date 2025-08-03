@@ -23,8 +23,8 @@
                     @if (!$catatanWaliKelasExists)
                         <form action="{{ route('walikelas.catatan-wali-kelas.generatecatatanwalikelas') }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-sm btn-soft-primary">Generate Catatan Wali
-                                Kelas</button>
+                            <button type="submit" class="btn btn-soft-primary btn-sm btn-label"><i
+                                    class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>Generate</button>
                         </form>
                     @else
                         <div></div>
@@ -41,20 +41,6 @@
     {!! $dataTable->scripts() !!}
 @endsection
 @section('script-bottom')
-    <script>
-        function showToast(status = 'success', message) {
-            iziToast[status]({
-                title: status == 'success' ? 'Success' : (status == 'warning' ? 'Warning' : 'Error'),
-                message: message,
-                position: 'topRight',
-                close: true, // Tombol close
-            });
-        }
-
-        @if (session('success'))
-            showToast("success", "{{ session('success') }}");
-        @endif
-    </script>
     <script>
         const datatable = 'catatanwalikelas-table';
 
@@ -78,8 +64,9 @@
                         showToast('success', 'Catatan sukses disimpan atau diupdate');
                     },
                     error: function(xhr) {
-                        // Handle error (optional)
-                        showToast('error', 'Error saving catatan:', xhr);
+                        console.error('AJAX Error:', xhr.responseText);
+                        showToast('error',
+                            'Catatan gagal di simpan atau di update');
                     }
                 });
             }

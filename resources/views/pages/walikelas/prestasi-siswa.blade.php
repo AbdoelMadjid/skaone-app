@@ -22,10 +22,8 @@
                             {{ $waliKelas->rombel }}
                         </x-heading-title>
                         <div class="flex-shrink-0 me-2">
-                            @can('create walikelas/prestasi-siswa')
-                                <a class="btn btn-soft-primary btn-sm action"
-                                    href="{{ route('walikelas.prestasi-siswa.create') }}">Tambah</a>
-                            @endcan
+                            <x-btn-tambah can="create walikelas/prestasi-siswa" route="walikelas.prestasi-siswa.create"
+                                label="Tambah" icon="ri-add-line" />
                         </div>
                     </div>
                 </div>

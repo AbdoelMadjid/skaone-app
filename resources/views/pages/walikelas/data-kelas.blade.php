@@ -337,20 +337,6 @@
     <script src="{{ URL::asset('build/js/grid-helper.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.umd.js"></script>
     <script>
-        function showToast(status = 'success', message) {
-            iziToast[status]({
-                title: status == 'success' ? 'Success' : (status == 'warning' ? 'Warning' : 'Error'),
-                message: message,
-                position: 'topRight',
-                close: true, // Tombol close
-            });
-        }
-
-        @if (session('success'))
-            showToast("success", "{{ session('success') }}");
-        @endif
-    </script>
-    <script>
         // Data siswa dari Laravel
         const siswaData = @json($siswaData);
 

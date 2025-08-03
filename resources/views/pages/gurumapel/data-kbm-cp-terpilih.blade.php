@@ -164,10 +164,6 @@
     <script>
         const datatable = 'datacpterpilih-table';
 
-        @if (session('toast_success'))
-            showToast('success', '{{ session('toast_success') }}');
-        @endif
-
         function updateJmlMateri(id, jmlmateriValue) {
             $.ajax({
                 url: '/gurumapel/adminguru/updatejmlmateri', // Rute untuk update KKM
@@ -185,8 +181,9 @@
                     }
                 },
                 error: function(xhr) {
-                    /* alert('Terjadi kesalahan'); */
-                    showToast('error', 'Terjadi kesalahan: ' + xhr.responseText);
+                    console.error('AJAX Error:', xhr.responseText);
+                    showToast('error',
+                        'Terjadi kesalahan');
                 }
             });
         }
@@ -601,6 +598,61 @@
                 $('#selected_cp_tbody').empty();
                 $('#selected_cp_list').hide();
             });
+
+            $('#form_pilih_cp').on('submit', function(e) {
+                e.preventDefault();
+
+                const form = $(this);
+                const submitBtn = $('#button-simpan');
+
+                submitBtn.prop('disabled', true).text('Menyimpan...');
+
+                $.ajax({
+                    url: "{{ route('gurumapel.adminguru.savecpterpilih') }}",
+                    method: "POST",
+                    data: new FormData(form[0]),
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: response.message,
+                                timer: 4000,
+                                showConfirmButton: false
+                            });
+
+                            $('#pilihCapaianPembelajaran').modal('hide');
+                            form[0].reset();
+
+                            $('#datacpterpilih-table').DataTable().ajax.reload(null, false);
+                            // Reset tambahan kalau ada: rombel, table CP, dll
+                        } else {
+                            Swal.fire('Gagal', response.message, 'error');
+                        }
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 422) {
+                            const errors = xhr.responseJSON.errors;
+                            let list = '';
+                            $.each(errors, function(key, value) {
+                                list += `- ${value}<br>`;
+                            });
+
+                            showToast('error', list); // tampilkan semua pesan error validasi
+                        } else {
+                            showToast('error',
+                                `Terjadi kesalahan: ${xhr.responseJSON?.message || 'Tidak diketahui.'}`
+                            );
+                        }
+                    },
+                    complete: function() {
+                        submitBtn.prop('disabled', false).text('Simpan');
+                    }
+                });
+            });
+
 
 
             $('#' + datatable).DataTable(); // Pastikan DataTable diinisialisasi

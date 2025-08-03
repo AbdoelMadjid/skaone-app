@@ -4,11 +4,13 @@ namespace App\Http\Controllers\GuruMapel;
 
 use App\DataTables\GuruMapel\DataCpTerpilihDataTable;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GuruMapel\DataCpTerpilihRequest;
 use App\Models\GuruMapel\CpTerpilih;
 use App\Models\Kurikulum\DataKBM\KbmPerRombel;
 use App\Models\ManajemenSekolah\PersonilSekolah;
 use App\Models\ManajemenSekolah\Semester;
 use App\Models\ManajemenSekolah\TahunAjaran;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -152,7 +154,7 @@ class DataCpTerpilihController extends Controller
     public function updateJmlMateri(Request $request)
     {
         $validated = $request->validate([
-            'id' => 'required|exists:kbm_per_rombels,id',  // Sesuaikan dengan nama tabel dan primary key
+            'id' => 'required|exists:cp_terpilihs,id',  // Sesuaikan dengan nama tabel dan primary key
             'jml_materi' => 'required|integer|min:1|max:6',
         ]);
 
@@ -306,51 +308,32 @@ class DataCpTerpilihController extends Controller
     }
 
 
-    public function saveCpTerpilih(Request $request)
+    public function saveCpTerpilih(DataCpTerpilihRequest $request)
     {
-        // Validasi input
-        $request->validate([
-            'selected_rombel_ids' => 'required',
-            'kel_mapel' => 'required',
-            'personal_id' => 'required',
-            'tahunajaran' => 'required',
-            'ganjilgenap' => 'required',
-            'semester' => 'required',
-            'tingkat' => 'required',
-            'selected_cp_data' => 'required', // Validasi tambahan
-            'jml_materi' => 'required',
-        ]);
+        try {
+            $kode_rombel = explode(',', $request->selected_rombel_ids);
+            $selected_cp_data = json_decode($request->selected_cp_data, true);
 
-        // Ambil data dari request
-        $kode_rombel = explode(',', $request->input('selected_rombel_ids')); // Array dari kode_rombel
-        $kel_mapel = $request->input('kel_mapel');
-        $id_personil = $request->input('personal_id');
-        $tahunAjaran = $request->input('tahunajaran');
-        $semester = $request->input('semester');
-        $ganjilgenap = $request->input('ganjilgenap');
-        $tingkat = $request->input('tingkat');
-        $selected_cp_data = json_decode($request->input('selected_cp_data'), true); // Decode JSON ke array
-
-        // Iterasi untuk menyimpan data berdasarkan kombinasi kode_rombel dan selected_cp_data
-        foreach ($kode_rombel as $rombel) {
-            foreach ($selected_cp_data as $cp_data) {
-                CpTerpilih::create([
-                    'tahunajaran' => $tahunAjaran,
-                    'ganjilgenap' => $ganjilgenap,
-                    'semester' => $semester,
-                    'tingkat' => $tingkat,
-                    'kode_rombel' => $rombel,
-                    'kel_mapel' => $kel_mapel,
-                    'id_personil' => $id_personil,
-                    'kode_cp' => $cp_data['kode_cp'], // Simpan kode_cp
-                    'jml_materi' => $cp_data['jml_materi'], // Simpan jumlah materi
-                ]);
+            foreach ($kode_rombel as $rombel) {
+                foreach ($selected_cp_data as $cp_data) {
+                    CpTerpilih::create([
+                        'tahunajaran' => $request->tahunajaran,
+                        'ganjilgenap' => $request->ganjilgenap,
+                        'semester' => $request->semester,
+                        'tingkat' => $request->tingkat,
+                        'kode_rombel' => $rombel,
+                        'kel_mapel' => $request->kel_mapel,
+                        'id_personil' => $request->personal_id,
+                        'kode_cp' => $cp_data['kode_cp'],
+                        'jml_materi' => $cp_data['jml_materi'],
+                    ]);
+                }
             }
-        }
 
-        // Redirect dengan pesan sukses
-        return redirect()->route('gurumapel.adminguru.capaian-pembelajaran.index')
-            ->with('toast_success', 'CP berhasil dipilih dan disimpan.');
+            return response()->json(['status' => 'success', 'message' => 'Data berhasil disimpan.']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => 'Terjadi kesalahan saat menyimpan data.']);
+        }
     }
 
 
