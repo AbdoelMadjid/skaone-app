@@ -126,10 +126,6 @@
     <script>
         const datatable = 'tujuanpembelajaran-table';
 
-        @if (session('toast_success'))
-            showToast('success', '{{ session('toast_success') }}');
-        @endif
-
         $(document).ready(function() {
             var table = $('#tujuanpembelajaran-table').DataTable();
 
