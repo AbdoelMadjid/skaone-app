@@ -65,7 +65,7 @@
                 <td style="width:5px;">:</td>
                 <td style="text-align: justify">
                     Untuk melaksanakan Negosiasi Tempat Praktek Kerja Lapangan (PKL) atau (DU/DI) Tahun
-                    Pelajaran 2024/2025, Hari
+                    Pelajaran {{ $tahunAjaranAktif->tahunajaran }}, Hari
                     {{ \Carbon\Carbon::parse($infoNegosiasi['tgl_nego'])->translatedFormat('l') ?? '-' }}
                     Tanggal
                     {{ \Carbon\Carbon::parse($infoNegosiasi['tgl_nego'])->translatedFormat('d F Y') ?? '-' }}.
