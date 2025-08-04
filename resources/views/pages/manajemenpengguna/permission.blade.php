@@ -49,8 +49,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Tambahkan</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <x-form.modal-footer-button id="" label="Tambahkan" icon="ri-add-fill" />
                     </div>
                 </div>
             </form>

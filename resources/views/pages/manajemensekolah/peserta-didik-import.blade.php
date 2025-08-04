@@ -15,8 +15,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Import</button>
+                    <x-form.modal-footer-button id="" label="Import" icon="ri-upload-fill" />
                 </div>
             </form>
         </div>

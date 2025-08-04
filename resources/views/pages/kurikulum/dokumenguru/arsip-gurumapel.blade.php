@@ -97,7 +97,6 @@
             const table = $("#arsipngajar-table").DataTable();
 
             $('#id_guru').select2({
-                allowClear: true,
                 width: "resolve",
                 //theme: "classic",
             });

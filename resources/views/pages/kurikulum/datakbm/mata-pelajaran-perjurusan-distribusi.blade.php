@@ -7,7 +7,8 @@
                     <h5 class="modal-title" id="importModalLabel">Distribusi Mata Pelajaran Per Rombel</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body"
+                    style="max-height: calc(100vh - 200px); overflow-y: auto; margin-top:5px; margin-bottom:15px;">
                     <input type="hidden" name="selected_mapel_ids" id="selected_mapel_ids" value="">
                     <input type="hidden" name="id_personil" id="id_personil" value="">
 
@@ -105,8 +106,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Distribusikan</button>
+                    <x-form.modal-footer-button id="" label="Distribusikan" icon="ri-share-circle-fill" />
                 </div>
             </form>
         </div>

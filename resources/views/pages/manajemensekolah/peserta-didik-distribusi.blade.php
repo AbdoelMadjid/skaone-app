@@ -72,7 +72,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <x-form.modal-footer-button label="Distribusikan" icon="ri-save-2-fill" />
+                    <x-form.modal-footer-button label="Distribusikan" icon="ri-database-2-fill" />
                 </div>
             </form>
         </div>

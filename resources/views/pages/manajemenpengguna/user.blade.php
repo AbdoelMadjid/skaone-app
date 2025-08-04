@@ -111,7 +111,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Simpan</button>
+                        <x-form.modal-footer-button id="" label="Simpan" icon="ri-save-2-fill" />
                     </div>
                 </div>
             </form>

@@ -84,7 +84,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <x-form.modal-footer-button label="Generate" icon="ri-save-2-fill" />
+                    <x-form.modal-footer-button label="Generate" icon="ri-share-circle-fill" />
                 </div>
             </form>
         </div>
