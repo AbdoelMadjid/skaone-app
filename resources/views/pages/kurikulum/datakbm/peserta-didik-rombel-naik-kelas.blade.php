@@ -133,9 +133,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="submitNaikKelasBtn">Generate Naik
-                        Kelas</button>
+                    <x-form.modal-footer-button id="submitNaikKelasBtn" label="Generate" icon="ri-save-2-fill" />
                 </div>
             </form>
         </div>

@@ -1,4 +1,4 @@
-<x-form.modal title="{{ __('translation.akses-role') }}" action="{{ $action ?? null }}">
+<x-form.modal title="{{ __('translation.akses-role') }}" action="{{ $action ?? null }}" scrollable>
     @if ($data->id)
         @method('put')
     @endif

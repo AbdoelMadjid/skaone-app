@@ -74,12 +74,14 @@
                             @endforeach
                         </div>
 
-                        <button type="button" class="btn btn-outline-primary mt-2"
+                        <button type="button" class="btn btn-outline-primary btn-sm mt-2"
                             onclick="addPengumumanGroup({{ $judul->id }})">Tambah Grup Pengumuman</button>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-soft-primary">Simpan Perubahan</button>
-                        <button type="button" class="btn btn-soft-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-soft-success btn-label"><i
+                                class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>Simpan</button>
+                        <button type="button" class="btn btn-soft-secondary btn-label" data-bs-dismiss="modal"><i
+                                class="ri-shut-down-line label-icon align-middle fs-16 me-2"></i>Tutup</button>
                     </div>
                 </div>
             </form>

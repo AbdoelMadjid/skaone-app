@@ -6,19 +6,21 @@
     <div class="row">
         <div class="col-md-12">
             <x-form.input name="namalengkap" value="{{ $data->namalengkap }}" label="Nama Lengkap" />
-
+        </div>
+        <div class="col-md-6">
             <x-form.select name="jeniskelamin" :options="['Laki-laki' => 'Laki-laki', 'Perempuan' => 'Perempuan']" value="{{ old('jeniskelamin', $data->jeniskelamin) }}"
                 label="Jenis Kelamin" />
-
+        </div>
+        <div class="col-md-6">
             <x-form.select name="jabatan" :options="$jabatanTeam" value="{{ old('jabatan', $data->jabatan) }}"
                 label="Jabatan" />
-
+        </div>
+        <div class="col-md-6">
             <label for="deskripsi" class="form-label">Deskripsi</label>
             <textarea name="deskripsi" class="form-control" id="deskripsi" rows="5">{{ $data->deskripsi }}</textarea>
-
+        </div>
+        <div class="col-md-6">
             <x-form.input name="photo" type="file" label="Photo" onchange="previewImage(event)" />
-
-            <h5 class="fs-14 mb-3">Photo</h5>
             <img id="image-preview"
                 src="{{ $data->photo && file_exists(base_path('images/team/' . $data->photo)) ? asset('images/team/' . $data->photo) : asset('build/images/users/user-dummy-img.jpg') }}"
                 width="150" alt="Photo" />

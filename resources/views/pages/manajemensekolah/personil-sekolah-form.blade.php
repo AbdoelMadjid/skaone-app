@@ -1,5 +1,5 @@
-<x-form.modal title="{{ __('translation.personil-sekolah') }}" action="{{ $action ?? null }}"
-    enctype="multipart/form-data">
+<x-form.modal title="{{ __('translation.personil-sekolah') }}" action="{{ $action ?? null }}" enctype="multipart/form-data"
+    scrollable>
     @if ($data->id)
         @method('put')
     @endif

@@ -51,7 +51,18 @@
                 @if (auth()->check() &&
                         auth()->user()->hasAnyRole(['master']))
                     <div class="col-lg-auto">
-                        <div class="d-flex align-items-center gap-2"> <!-- Tambahan baris ini -->
+                        <div class="input-group">
+                            <select id="role-select" class="form-select form-select-sm">
+                                <option value="">Pilih Role</option>
+                                @foreach (\Spatie\Permission\Models\Role::pluck('name') as $role)
+                                    <option value="{{ $role }}">{{ $role }}</option>
+                                @endforeach
+                            </select>
+                            <button id="hapus-role-btn" class="btn btn-danger btn-sm btn-icon waves-effect waves-light w-25"
+                                data-bs-toggle="tooltip" data-bs-placement="left" title="Hapus Role"><i
+                                    class="ri-delete-bin-5-line fs-12"></i></button>
+                        </div>
+                        {{-- <div class="d-flex align-items-center gap-2"> <!-- Tambahan baris ini -->
                             <select id="role-select" class="form-select form-select-sm">
                                 <option value="">Pilih Role</option>
                                 @foreach (\Spatie\Permission\Models\Role::pluck('name') as $role)
@@ -62,7 +73,7 @@
                                 class="btn btn-danger rounded-pill btn-sm btn-icon waves-effect waves-light w-25"
                                 data-bs-toggle="tooltip" data-bs-placement="left" title="Hapus Role"><i
                                     class="ri-delete-bin-5-line fs-12"></i></button>
-                        </div>
+                        </div> --}}
                     </div>
                 @endif
             </div>

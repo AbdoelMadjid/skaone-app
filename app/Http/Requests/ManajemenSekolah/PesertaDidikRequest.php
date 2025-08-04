@@ -56,7 +56,7 @@ class PesertaDidikRequest extends FormRequest
             'kontak_telepon' => 'nullable|string|max:15',
             'kontak_email' => 'nullable|email|max:255',
             'foto' => 'nullable|image|max:2048', // Validasi untuk upload gambar
-            'status' => 'required|in:Aktif,Pindah,Keluar',
+            'status' => 'required|in:Aktif,Lulus,Pindah,Keluar',
             'alasan_status' => 'nullable|string|max:255',
         ];
     }

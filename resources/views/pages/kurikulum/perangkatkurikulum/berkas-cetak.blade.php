@@ -18,7 +18,8 @@
         <div class="col-lg-12">
             <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-4">
                 <div class="card-body p-3">
-                    <form method="GET" action="{{ route('kurikulum.perangkatkurikulum.berkas-cetak.index') }}">
+                    <form method="GET" id="filterForm"
+                        action="{{ route('kurikulum.perangkatkurikulum.berkas-cetak.index') }}">
                         <div class="row g-3">
                             <div class="col-lg">
                                 <h3><i class="ri-contacts-book-2-line text-muted align-bottom me-1"></i> Berkas Cetak Daftar
@@ -107,18 +108,22 @@
                                         <i class="ri-file-user-line text-muted align-bottom me-1"></i> Daftar Nilai
                                     </a>
                                 </li>
-                                <li class="nav-item ms-auto">
-                                    <div class="mb-3 d-flex align-items-center gap-2">
-                                        <div class="mb-3">
-                                            <button type="button" class="btn btn-soft-primary" id="btn-cetak-daftar-hadir">
-                                                Cetak Daftar Hadir
-                                            </button>
-                                            <button type="button" class="btn btn-soft-primary" id="btn-cetak-daftar-nilai">
-                                                Cetak Daftar Nilai
-                                            </button>
+                                @if (count($pesertaDidikRombels))
+                                    <li class="nav-item ms-auto">
+                                        <div class="mb-3 d-flex align-items-center gap-2">
+                                            <div class="mb-3">
+                                                <button type="button" class="btn btn-soft-primary"
+                                                    id="btn-cetak-daftar-hadir">
+                                                    Cetak Daftar Hadir
+                                                </button>
+                                                <button type="button" class="btn btn-soft-primary"
+                                                    id="btn-cetak-daftar-nilai">
+                                                    Cetak Daftar Nilai
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
+                                    </li>
+                                @endif
                             </ul>
                         </div>
                         <div class="tab-content">
@@ -129,8 +134,19 @@
                                 <div class="tab-pane" id="daftarNilai" role="tabpanel">
                                     @include('pages.kurikulum.perangkatkurikulum.daftar-nilai')
                                 </div>
+                            @else
+                                <div class="tab-pane active" id="daftarHadir" role="tabpanel">
+                                    <div class="alert alert-info mt-4">
+                                        <i class="ri-information-line me-2"></i> Nama Siswa Rombongan Belajar Belum Ada.
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="daftarNilai" role="tabpanel">
+                                    <div class="alert alert-info mt-4">
+                                        <i class="ri-information-line me-2"></i> Nama Siswa Rombongan Belajar Belum Ada.
+                                    </div>
+                                </div>
                             @endif
-                        </div><!--end tab-content-->
+                        </div>
                     </div>
                 </div>
             @endif
@@ -169,6 +185,21 @@
         }
 
         $('#tahun_ajaran, #kode_kk, #tingkat').on('change', loadRombelOptions);
+    </script>
+    <script>
+        $('#filterForm').on('submit', function(e) {
+            const tahunajaran = $('#tahun_ajaran').val();
+            const kode_kk = $('#kode_kk').val();
+            const tingkat = $('#tingkat').val();
+            const rombel = $('#rombel_kode').val();
+
+            if (!tahunajaran || !kode_kk || !tingkat || !rombel) {
+                e.preventDefault(); // cegah submit
+
+                showToast('warning', 'Lengkapi semua filter sebelum menampilkan data.');
+                return false;
+            }
+        });
     </script>
     <script>
         setupPrintHandler({

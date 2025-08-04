@@ -14,7 +14,8 @@
                             <!-- Judul Pengumuman -->
                             <div class="mb-3">
                                 <label class="form-label">Judul Utama</label>
-                                <input type="text" name="judul" class="form-control" required>
+                                <input type="text" name="judul" class="form-control"
+                                    placeholder="isi judul pengumuman. contoh GIAT KBM, UJIAN SUMATIF" required>
                             </div>
                         </div>
                         <div class="col-md-5">
@@ -32,12 +33,15 @@
                     <hr>
                     <h5 class="text-info">Grup Pengumuman</h5>
                     <div id="grup-container"></div>
-                    <button type="button" id="addGrup" class="btn btn-outline-primary mt-3">Tambah Grup</button>
+                    <button type="button" id="addGrup" class="btn btn-outline-primary btn-sm mt-3">Tambah
+                        Grup</button>
                 </div>
 
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-soft-primary">Simpan</button>
-                    <button type="button" class="btn btn-soft-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-soft-success btn-label"><i
+                            class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>Simpan</button>
+                    <button type="button" class="btn btn-soft-secondary btn-label" data-bs-dismiss="modal"><i
+                            class="ri-shut-down-line label-icon align-middle fs-16 me-2"></i>Tutup</button>
                 </div>
             </div>
         </form>
@@ -60,20 +64,22 @@
         return `
         <div class="border rounded p-3 mb-4 bg-secondary-subtle pengumuman-item" data-grup-index="${index}">
             <h6>Grup #${index + 1}</h6>
-            <div class="mb-2">
-                <label>Judul Grup Pengumuman</label>
-                <input type="text" name="pengumuman[${index}][judul]" class="form-control" required>
-            </div>
-            <div class="mb-2">
-                <label>Urutan</label>
-                <input type="number" name="pengumuman[${index}][urutan]" class="form-control" required min="1">
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <label>Judul Grup</label>
+                    <input type="text" name="pengumuman[${index}][judul]" class="form-control" placeholder="isi judul pengumuman. contoh Guru Mapel, Citivas Akademia, Wali kelas" required>
+                </div>
+                <div class="col-md-3">
+                    <label>Urutan</label>
+                <input type="number" name="pengumuman[${index}][urutan]" class="form-control" placeholder="isi dengan angka untuk nomor urut pengumuman" required min="1">
+                </div>
             </div>
             <div class="mb-2">
                 <label>Poin</label>
                 <div class="poin-container">
                     ${poinInput(index)}
                 </div>
-                <button type="button" class="btn btn-soft-primary btn-sm add-poin">Tambah Poin</button>
+                <button type="button" class="btn btn-soft-success btn-sm add-poin">Tambah Poin</button>
             </div>
             <div class="text-end">
                 <button type="button" class="btn btn-soft-danger btn-sm" onclick="removeGroup(this)">Hapus Grup</button>

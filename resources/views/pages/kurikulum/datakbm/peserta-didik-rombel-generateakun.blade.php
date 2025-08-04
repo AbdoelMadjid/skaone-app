@@ -8,7 +8,8 @@
                     <h5 class="modal-title" id="importModalLabel">Buat Akun Peserta Didik</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body"
+                    style="max-height: calc(100vh - 200px); overflow-y: auto; margin-top:5px; margin-bottom:15px;">
                     <div class="row">
                         <div class="col-md-4">
                             <label for="tahunajaran">Tahun Ajaran</label>
@@ -83,8 +84,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Generate Akun</button>
+                    <x-form.modal-footer-button label="Generate" icon="ri-save-2-fill" />
                 </div>
             </form>
         </div>

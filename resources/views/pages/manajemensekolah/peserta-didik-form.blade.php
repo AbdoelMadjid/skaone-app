@@ -1,4 +1,5 @@
-<x-form.modal size="lg" title="{{ __('translation.peserta-didik') }}" action="{{ $action ?? null }}">
+<x-form.modal size="lg" title="{{ __('translation.peserta-didik') }}" action="{{ $action ?? null }}"
+    enctype="multipart/form-data" scrollable>
     @if ($data->id)
         @method('put')
     @endif
