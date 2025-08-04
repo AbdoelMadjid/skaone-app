@@ -50,8 +50,7 @@
                     <div id="massal_token_wrap"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Simpan Massal</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <x-form.modal-footer-button id=" " label="Simpan" icon="ri-save-2-fill" />
                 </div>
             </div>
         </form>

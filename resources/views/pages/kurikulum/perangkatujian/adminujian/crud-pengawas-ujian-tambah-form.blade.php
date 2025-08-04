@@ -2,9 +2,7 @@
     <h5 class="modal-title">Tambah Pengawas Ujian</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
-
-<div class="modal-body">
-
+<div class="modal-body" style="max-height: calc(100vh - 200px); overflow-y: auto; margin-top:5px; margin-bottom:15px;">
     <input type="hidden" name="kode_ujian" value="{{ $identitasUjian?->kode_ujian }}">
     <table class="table table-bordered">
         <thead>
@@ -25,7 +23,7 @@
                         <input type="hidden" name="nip[{{ $p->id_personil }}]" value="{{ $p->nip }}">
                         <input type="hidden" name="nama_lengkap[{{ $p->id_personil }}]"
                             value="{{ $p->gelardepan }} {{ $p->namalengkap }} {{ $p->gelarbelakang }}">
-                        <select name="kode_pengawas[{{ $p->id_personil }}]" class="form-select">
+                        <select name="kode_pengawas[{{ $p->id_personil }}]" class="form-select" id="pilihpengawas2">
                             <option value="">-- Pilih Kode --</option>
                             @for ($i = 1; $i <= 100; $i++)
                                 @php
@@ -72,6 +70,5 @@
     </table>
 </div>
 <div class="modal-footer">
-    <button type="submit" class="btn btn-success">Simpan Massal</button>
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+    <x-form.modal-footer-button id=" " label="Simpan" icon="ri-save-2-fill" />
 </div>

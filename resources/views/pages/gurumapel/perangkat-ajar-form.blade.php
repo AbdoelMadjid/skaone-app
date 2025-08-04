@@ -36,8 +36,7 @@
                     </ul>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Upload</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <x-form.modal-footer-button id=" " label="Upload" icon="ri-upload-fill" />
                 </div>
             </div>
         </form>

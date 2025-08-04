@@ -30,7 +30,7 @@
                                         <i class="bx bx-upload"></i> Upload</button></li>
                             </ul>
                         </div> --}}
-                <a class="btn btn-soft-primary btn-sm" href="{{ route('gurumapel.penilaian.formatif.index') }}">Kembali</a>
+                <x-btn-kembali href="{{ route('gurumapel.penilaian.formatif.index') }}" />
             </div>
         </div>
         <div class="card-body">
@@ -121,7 +121,7 @@
                 </table>
                 <div class="col-lg-12">
                     <div class="gap-2 hstack justify-content-end">
-                        <button type="submit" class="btn btn-primary">Create</button>
+                        <x-btn-action size="btn-md" type="submit" label="Create" icon="ri-pencil-fill" class="w-100" />
                     </div>
                 </div>
             </form>

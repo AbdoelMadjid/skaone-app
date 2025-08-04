@@ -23,8 +23,7 @@
                     @if (!$catatanWaliKelasExists)
                         <form action="{{ route('walikelas.catatan-wali-kelas.generatecatatanwalikelas') }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-soft-primary btn-sm btn-label"><i
-                                    class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>Generate</button>
+                            <x-btn-action type="submit" label="Generate" icon="ri-share-circle-fill" />
                         </form>
                     @else
                         <div></div>

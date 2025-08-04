@@ -18,12 +18,12 @@
         <div class="card-header d-flex align-items-center">
             <h5 class="card-title mb-0 flex-grow-1">Edit Nilai @yield('title') - {{ $fullName }}</h5>
             <div>
-                <button id="hapusdata" class="btn btn-soft-danger" data-kode-rombel="{{ $data->kode_rombel }}"
+                <button id="hapusdata" class="btn btn-soft-danger btn-sm" data-kode-rombel="{{ $data->kode_rombel }}"
                     data-kel-mapel="{{ $data->kel_mapel }}" data-id-personil="{{ $data->id_personil }}"
                     data-tahunajaran="{{ $data->tahunajaran }}" data-ganjilgenap="{{ $data->ganjilgenap }}">
                     <i class="ri-delete-bin-2-line"></i>
                 </button>
-                <a class="btn btn-soft-primary" href="{{ route('gurumapel.penilaian.formatif.index') }}">Kembali</a>
+                <x-btn-kembali href="{{ route('gurumapel.penilaian.formatif.index') }}" />
             </div>
         </div>
         <div class="card-body">
@@ -112,8 +112,7 @@
                 </table>
                 <div class="col-lg-12">
                     <div class="gap-2 hstack justify-content-end">
-                        <button type="submit" class="btn btn-primary">Updates</button>
-                        {{-- <button type="button" class="btn btn-soft-success">Cancel</button> --}}
+                        <x-btn-action size="btn-md" type="submit" label="Update" icon="ri-save-2-fill" class="w-100" />
                     </div>
                 </div>
             </form>

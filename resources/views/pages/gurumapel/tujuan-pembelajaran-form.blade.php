@@ -8,7 +8,8 @@
                     <h5 class="modal-title" id="importModalLabel">Tambah Tujuan Pembelajaran</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body"
+                    style="max-height: calc(100vh - 200px); overflow-y: auto; margin-top:5px; margin-bottom:15px;">
 
                     <input type="hidden" name="tahunajaran" id="tahunajaran" value="{{ $tahunAjaran->tahunajaran }}">
                     <input type="hidden" name="ganjilgenap" id="ganjilgenap" value="{{ $semester->semester }}">

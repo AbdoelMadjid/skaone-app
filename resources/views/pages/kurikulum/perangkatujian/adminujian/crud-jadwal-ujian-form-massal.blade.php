@@ -1,5 +1,5 @@
 <div class="modal fade" id="modalMassal" tabindex="-1">
-    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-dialog modal-lg">
         <form id="formMassal">
             @csrf
             <div class="modal-content">
@@ -7,7 +7,8 @@
                     <h5 class="modal-title">Input Massal Jadwal Ujian</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body"
+                    style="max-height: calc(100vh - 200px); overflow-y: auto; margin-top:5px; margin-bottom:15px;">
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <label>Kompetensi Keahlian</label>
@@ -32,8 +33,7 @@
                     <div id="massal_table_wrap"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Simpan Massal</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <x-form.modal-footer-button id=" " label="Simpan Massal" icon="ri-save-2-fill" />
                 </div>
             </div>
         </form>

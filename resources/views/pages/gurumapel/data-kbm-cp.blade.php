@@ -6,15 +6,16 @@
                 <h5 class="modal-title" id="modalCapaianPembelajaranLabel">Capaian Pembelajaran </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body"
+                style="max-height: calc(100vh - 200px); overflow-y: auto; margin-top:5px; margin-bottom:15px;">
                 <table class="table" id="capaianPembelajaranTable">
                     <thead>
                         <tr>
-                            <th width="150">Kode CP</th>
+                            <th width="160">Kode CP</th>
                             <th>Tingkat / Fase</th>
-                            <th>Element</th>
-                            <th>Nama Mata Pelajaran</th>
-                            <th width="300">Isi CP</th>
+                            <th width="200">Element</th>
+                            <th width="200">Nama Mata Pelajaran</th>
+                            <th>Isi CP</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -23,7 +24,8 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <x-btn-action label="Close" data-bs-dismiss="modal" size="btn-md" icon="ri-close-fill" />
+                {{-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> --}}
             </div>
         </div>
     </div>

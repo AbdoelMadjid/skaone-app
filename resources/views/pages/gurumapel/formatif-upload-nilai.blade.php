@@ -75,8 +75,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Upload</button>
+                    <x-form.modal-footer-button id=" " label="Upload" icon="ri-upload-2-fill" />
                 </div>
             </form>
         </div>

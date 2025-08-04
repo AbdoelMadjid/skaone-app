@@ -37,10 +37,6 @@
     <script>
         const datatable = 'formatif-table';
 
-        @if (session('toast_success'))
-            showToast('success', '{{ session('toast_success') }}');
-        @endif
-
         handleDataTableEvents(datatable);
         handleAction(datatable)
         handleDelete(datatable)

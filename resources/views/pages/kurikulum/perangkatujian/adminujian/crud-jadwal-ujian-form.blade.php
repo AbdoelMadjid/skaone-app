@@ -3,41 +3,40 @@
         @method('put')
     @endif
     <div class="row">
-        <div class="col-md-12">
-            <div class="col-sm-4">
-                <x-form.input name="kode_ujian" value="{{ $ujianAktif?->kode_ujian }}" label="Kode Ujian" id="kode_ujian"
-                    readonly />
+        <div class="col-sm-4">
+            <x-form.input name="kode_ujian" value="{{ $ujianAktif?->kode_ujian }}" label="Kode Ujian" id="kode_ujian"
+                readonly />
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <x-form.select name="kode_kk" :options="$kompetensiKeahlianOption" value="{{ old('kode_kk', $data->kode_kk) }}"
+                    label="Kompetensi Keahlian" id="kode_kk" />
             </div>
-            <div class="row">
-                <div class="col-md-5">
-                    <x-form.select name="kode_kk" :options="$kompetensiKeahlianOption" value="{{ old('kode_kk', $data->kode_kk) }}"
-                        label="Kompetensi Keahlian" id="kode_kk" />
-                </div>
-                <div class="col-md-3">
-                    <x-form.select name="tingkat" :options="['10' => '10', '11' => '11', '12' => '12']" value="{{ old('tingkat', $data->tingkat) }}"
-                        label="Tingkat" id="tingkat" />
-                </div>
-                <div class="col-md-4">
-                    <x-form.select name="tanggal" :options="$tanggalUjianOption" value="{{ old('tanggal', $data->tanggal) }}"
-                        label="Tanggal" id="tanggal" />
-                </div>
+            <div class="col-md-3">
+                <x-form.select name="tingkat" :options="['10' => '10', '11' => '11', '12' => '12']" value="{{ old('tingkat', $data->tingkat) }}"
+                    label="Tingkat" id="tingkat" />
             </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <x-form.select name="jam_ke" :options="['1' => '1', '2' => '2', '3' => '3', '4' => '4']" value="{{ old('jam_ke', $data->jam_ke) }}"
-                        label="Jam Ke" id="jam_ke" />
-                </div>
-                <div class="col-md-3">
-                    <x-form.input name="jam_ujian" value="{{ old('jam_ujian', $data->jam_ujian) }}" label="Kode Ujian"
-                        id="jam_ujian" readonly />
-                </div>
-                <div class="col-md-6">
-                    <x-form.select name="mata_pelajaran" :options="$mataPelajaranOptions ?? []"
-                        value="{{ old('mata_pelajaran', $data->mata_pelajaran) }}" label="Mata Pelajaran"
-                        id="mata_pelajaran" />
-                </div>
+            <div class="col-md-4">
+                <x-form.select name="tanggal" :options="$tanggalUjianOption" value="{{ old('tanggal', $data->tanggal) }}"
+                    label="Tanggal" id="tanggal" />
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-3">
+                <x-form.select name="jam_ke" :options="['1' => '1', '2' => '2', '3' => '3', '4' => '4']" value="{{ old('jam_ke', $data->jam_ke) }}"
+                    label="Jam Ke" id="jam_ke" />
+            </div>
+            <div class="col-md-3">
+                <x-form.input name="jam_ujian" value="{{ old('jam_ujian', $data->jam_ujian) }}" label="Waktu Ujian"
+                    id="jam_ujian" readonly />
+            </div>
+            <div class="col-md-6">
+                <x-form.select name="mata_pelajaran" :options="$mataPelajaranOptions ?? []"
+                    value="{{ old('mata_pelajaran', $data->mata_pelajaran) }}" label="Mata Pelajaran"
+                    id="mata_pelajaran" />
+            </div>
+        </div>
+    </div>
 </x-form.modal>
 
 <script>

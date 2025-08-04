@@ -18,15 +18,7 @@
         <div class="card-header d-flex align-items-center">
             <h5 class="card-title mb-0 flex-grow-1">Tambah Nilai @yield('title') - {{ $fullName }}</h5>
             <div>
-                <a class="btn btn-soft-primary" href="{{ route('gurumapel.penilaian.sumatif.index') }}">Kembali</a>
-                {{--
-                        @if (auth()->check() &&
-    auth()->user()->hasAnyRole(['master']))
-                            <button class="btn btn-soft-primary" onclick="window.history.back();">
-                                Kembali Ke Arsip
-                            </button>
-                        @endif
-                        --}}
+                <x-btn-kembali href="{{ route('gurumapel.penilaian.sumatif.index') }}" />
             </div>
         </div>
         <div class="card-body">
@@ -106,7 +98,7 @@
                 </table>
                 <div class="col-lg-12">
                     <div class="gap-2 hstack justify-content-end">
-                        <button type="submit" class="btn btn-primary">Create</button>
+                        <x-btn-action size="btn-md" type="submit" label="Create" icon="ri-pencil-fill" class="w-100" />
                     </div>
                 </div>
             </form>

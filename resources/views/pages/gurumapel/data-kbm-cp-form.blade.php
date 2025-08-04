@@ -7,7 +7,8 @@
                     <h5 class="modal-title" id="importModalLabel">Pilih Capaian Pembelajaran</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body"
+                    style="max-height: calc(100vh - 200px); overflow-y: auto; margin-top:5px; margin-bottom:15px;">
                     <input type="hidden" name="tahunajaran" id="tahunajaran" value="{{ $tahunAjaran->tahunajaran }}">
                     <input type="hidden" name="ganjilgenap" id="ganjilgenap" value="{{ $semester->semester }}">
                     <input type="hidden" name="personal_id" id="personal_id" value="{{ $personal_id }}">
@@ -80,7 +81,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-soft-primary btn-label" id="button-simpan"
+                    <button type="submit" class="btn btn-soft-success btn-label" id="button-simpan"
                         style="display: none;"><i
                             class="ri-save-2-fill label-icon align-middle fs-16 me-2"></i>Simpan</button>
                     <button type="button" class="btn btn-soft-secondary btn-label" data-bs-dismiss="modal"><i
