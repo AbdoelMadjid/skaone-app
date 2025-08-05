@@ -70,8 +70,8 @@ class FiturCodingDataTable extends DataTable
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('judul')->width('20%'),
-            Column::make('deskripsi')->width('35%'),
-            Column::make('contoh'),
+            Column::make('deskripsi')->title('script / menu / logika')->width('35%'),
+            Column::make('contoh')->title('Keterangan'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

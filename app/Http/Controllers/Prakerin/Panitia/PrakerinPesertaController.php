@@ -66,8 +66,8 @@ class PrakerinPesertaController extends Controller
      */
     public function store(PrakerinPesertaRequest $request)
     {
-        $pesertaPrakerin = new PrakerinPeserta($request->validated());
-        $pesertaPrakerin->save();
+        $peserta = new PrakerinPeserta($request->validated());
+        $peserta->save();
 
         return responseSuccess();
     }
@@ -75,7 +75,7 @@ class PrakerinPesertaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(PrakerinPeserta $pesertaPrakerin)
+    public function show(PrakerinPeserta $peserta)
     {
         $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
 
@@ -98,42 +98,129 @@ class PrakerinPesertaController extends Controller
             ->toArray();
 
         return view('pages.prakerin.panitia.peserta-form', [
-            'data' => $pesertaPrakerin,
+            'data' => $peserta,
             'kompetensiKeahlian' => $kompetensiKeahlian,
             'tahunAjaran' => $tahunAjaran,
             'pesertaDidikOptions' => $pesertaDidikOptions,
         ]);
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(PrakerinPeserta $peserta)
+    {
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+
+        if (!$tahunAjaranAktif) {
+            return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
+        }
+
+        $tahunAjaran = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
+        $kompetensiKeahlian = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
+
+        $pesertaDidikOptions = PesertaDidikRombel::join('peserta_didiks', 'peserta_didik_rombels.nis', '=', 'peserta_didiks.nis')
+            ->where('peserta_didik_rombels.rombel_tingkat', '12')
+            ->where('peserta_didik_rombels.tahun_ajaran', $tahunAjaranAktif->tahunajaran)
+            ->get(['peserta_didik_rombels.nis', 'peserta_didiks.nama_lengkap', 'peserta_didik_rombels.rombel_nama'])
+            ->mapWithKeys(function ($item) {
+                return [
+                    $item->nis => $item->nis . ' - ' . $item->nama_lengkap . ' (' . $item->rombel_nama . ')'
+                ];
+            })
+            ->toArray();
+
+        return view('pages.prakerin.panitia.peserta-form', [
+            'data' => $peserta,
+            'kompetensiKeahlian' => $kompetensiKeahlian,
+            'tahunAjaran' => $tahunAjaran,
+            'pesertaDidikOptions' => $pesertaDidikOptions,
+            'action' => route('panitiaprakerin.peserta.update', $peserta->id)
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(PrakerinPesertaRequest $request, PrakerinPeserta $peserta)
+    {
+        $peserta->fill($request->validated());
+        $peserta->save();
+
+        return responseSuccess(true);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(PrakerinPeserta $peserta)
+    {
+        $peserta->delete();
+
+        return responseSuccessDelete();
+    }
+
     public function simpanPesertaPrakerin(Request $request)
     {
-        // Validasi input form
+        // Validasi input
+        $request->validate([
+            'tahunajaran' => 'required',
+            'kode_kk' => 'required',
+            'tingkat' => 'required',
+            'nis_terpilih' => 'required|array|min:1',
+            'nis_terpilih.*' => 'distinct', // pastikan tidak duplikat
+        ], [
+            'nis_terpilih.required' => 'Minimal 1 siswa harus dipilih untuk distribusi.',
+            'nis_terpilih.min' => 'Minimal 1 siswa harus dipilih untuk distribusi.'
+        ]);
+
+        // Loop dan simpan hanya siswa yang diceklis
+        foreach ($request->nis_terpilih as $nis) {
+            DB::table('prakerin_pesertas')->insert([
+                'tahunajaran' => $request->tahunajaran,
+                'kode_kk' => $request->kode_kk,
+                'nis' => $nis,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Distribusi peserta berhasil.');
+    }
+
+
+    public function getDaftarSiswa(Request $request)
+    {
         $request->validate([
             'tahunajaran' => 'required',
             'kode_kk' => 'required',
             'tingkat' => 'required',
         ]);
 
-        // Ambil data dari `peserta_didik_rombels` berdasarkan input form
-        $dataPeserta = DB::table('peserta_didik_rombels')
+        // Ambil NIS yang sudah pernah didistribusikan (prakerin_pesertas)
+        $siswaSudahTerdaftar = DB::table('prakerin_pesertas')
+            ->where('tahunajaran', $request->tahunajaran)
+            ->where('kode_kk', $request->kode_kk)
+            ->pluck('nis')
+            ->toArray();
+
+        $jumlahTerdaftar = count($siswaSudahTerdaftar);
+
+        // Ambil siswa dari peserta_didik_rombels tapi exclude yang sudah masuk prakerin_pesertas
+        $siswa = PesertaDidikRombel::with('pesertaDidik')
             ->where('tahun_ajaran', $request->tahunajaran)
             ->where('kode_kk', $request->kode_kk)
             ->where('rombel_tingkat', $request->tingkat)
-            ->select('tahun_ajaran', 'kode_kk', 'nis')
+            ->when($jumlahTerdaftar > 0, function ($query) use ($siswaSudahTerdaftar) {
+                $query->whereNotIn('nis', $siswaSudahTerdaftar);
+            })
             ->get();
 
-        // Masukkan data ke dalam tabel `peserta_prakerins`
-        foreach ($dataPeserta as $peserta) {
-            DB::table('prakerin_pesertas')->insert([
-                'tahunajaran' => $peserta->tahun_ajaran,
-                'kode_kk' => $peserta->kode_kk,
-                'nis' => $peserta->nis,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
+        $html = view('pages.prakerin.panitia.peserta-prakerin-tabel', compact('siswa'))->render();
 
-        // Redirect kembali dengan pesan sukses
-        return redirect()->back()->with('success', 'Distribusi peserta berhasil.');
+        return response()->json([
+            'html' => $html,
+            'terdaftar' => $jumlahTerdaftar,
+        ]);
     }
 }

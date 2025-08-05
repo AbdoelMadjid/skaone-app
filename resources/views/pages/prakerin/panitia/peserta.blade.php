@@ -47,12 +47,75 @@
 @endsection
 @section('script-bottom')
     <script>
+        $('#formDistribusiPesertaPrakerin').on('submit', function(e) {
+            if ($('input[name="nis_terpilih[]"]:checked').length === 0) {
+                e.preventDefault();
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Oops!',
+                    text: 'Minimal 1 siswa harus dipilih untuk didistribusikan.',
+                });
+            }
+        });
+    </script>
+    <script>
         const datatable = 'prakerinpeserta-table';
 
+        function loadSiswa() {
+            const tahunajaran = $('#tahunajaran').val();
+            const kode_kk = $('#kode_kk').val();
+            const tingkat = $('#tingkat').val();
+
+            if (tahunajaran && kode_kk && tingkat) {
+                $.ajax({
+                    url: "{{ route('panitiaprakerin.daftarSiswa') }}",
+                    method: "GET",
+                    data: {
+                        tahunajaran: tahunajaran,
+                        kode_kk: kode_kk,
+                        tingkat: tingkat
+                    },
+                    beforeSend: function() {
+                        $('#daftar_siswa_tbody').html('<tr><td colspan="6">Loading...</td></tr>');
+                    },
+                    success: function(response) {
+                        $('#daftar_siswa_tbody').html(response.html);
+
+                        // Tambah notifikasi jika ada siswa yang sudah terdaftar
+                        if (response.terdaftar > 0) {
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Sebagian siswa disembunyikan',
+                                text: response.terdaftar +
+                                    ' siswa sudah didistribusikan, jadi tidak ditampilkan di sini.',
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 5000,
+                            });
+                        }
+                    },
+                    error: function() {
+                        $('#daftar_siswa_tbody').html(
+                            '<tr><td colspan="6">Terjadi kesalahan saat memuat data.</td></tr>');
+                    }
+                });
+            } else {
+                $('#daftar_siswa_tbody').html(
+                    '<tr><td colspan="6">Silakan pilih Tahun Ajaran, Kompetensi Keahlian, dan Tingkat terlebih dahulu.</td></tr>'
+                );
+            }
+        }
+
+        $('#daftar_siswa_list').on('change', '#checkAll', function() {
+            $('input[name="nis_terpilih[]"]').prop('checked', this.checked);
+        });
+
+        $(document).on('change', '#tahunajaran, #kode_kk, #tingkat', loadSiswa);
+
         handleDataTableEvents(datatable);
-        handleAction(datatable, function(res) {
-            select2Init();
-        })
+        handleAction(datatable)
         handleDelete(datatable)
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>

@@ -50,6 +50,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('perusahaan', PrakerinPerusahaanController::class);
         Route::resource('peserta', PrakerinPesertaController::class);
         Route::post('/simpanpesertaprakerin', [PrakerinPesertaController::class, 'simpanPesertaPrakerin'])->name('simpanPesertaPrakerin');
+        Route::get('/daftar-siswa', [PrakerinPesertaController::class, 'getDaftarSiswa'])->name('daftarSiswa');
+
         //Route::resource('administrasi', PrakerinAdministrasiController::class);
 
         Route::get('administrasi', [PrakerinAdministrasiController::class, 'index'])->name('administrasi.index');
