@@ -19,7 +19,7 @@
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0">
-                    <x-btn-group-dropdown>
+                    <x-btn-group-dropdown size="sm">
                         @if (auth()->check() &&
                                 auth()->user()->hasAnyRole(['master', 'panitiapkl']))
                             <x-btn-action label="Upload" icon="ri-upload-fill" data-bs-toggle="modal"
