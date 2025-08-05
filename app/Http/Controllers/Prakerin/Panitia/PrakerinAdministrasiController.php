@@ -93,20 +93,28 @@ class PrakerinAdministrasiController extends Controller
                 : '-',
         ];
 
-        $penempatans = DB::table('penempatan_prakerins as pp')
-            ->join('peserta_didiks as pd', 'pp.nis', '=', 'pd.nis')
-            ->join('peserta_didik_rombels as pdr', function ($join) {
-                $join->on('pp.nis', '=', 'pdr.nis')
-                    ->on('pp.tahunajaran', '=', 'pdr.tahun_ajaran');
+        $penempatans = DB::table('prakerin_penempatans')
+            ->join('prakerin_pesertas', function ($join) use ($tahunAjaran) {
+                $join->on('prakerin_penempatans.nis', '=', 'prakerin_pesertas.nis')
+                    ->where('prakerin_pesertas.tahunajaran', '=', $tahunAjaran);
             })
-            ->where('pp.id_dudi', $idPerusahaan)
+            ->join('peserta_didiks', 'peserta_didiks.nis', '=', 'prakerin_pesertas.nis')
+            ->join('peserta_didik_rombels', function ($join) use ($tahunAjaran) {
+                $join->on('peserta_didik_rombels.nis', '=', 'prakerin_pesertas.nis')
+                    ->where('peserta_didik_rombels.tahun_ajaran', '=', $tahunAjaran);
+            })
+            ->join('kompetensi_keahlians', 'kompetensi_keahlians.idkk', '=', 'prakerin_penempatans.kode_kk')
+            ->where('prakerin_penempatans.id_dudi', $idPerusahaan)
+            ->where('prakerin_penempatans.tahunajaran', $tahunAjaran)
             ->select(
-                'pp.id_dudi',
-                'pp.nis',
-                'pd.nama_lengkap',
-                'pd.jenis_kelamin',
-                'pdr.rombel_nama'
+                'prakerin_pesertas.nis',
+                'peserta_didiks.nama_lengkap',
+                'peserta_didiks.jenis_kelamin',
+                'peserta_didik_rombels.rombel_nama as rombel',
+                'kompetensi_keahlians.nama_kk as jurusan'
             )
+            ->orderBy('peserta_didik_rombels.rombel_nama')
+            ->orderBy('prakerin_pesertas.nis')
             ->get();
 
         return view('pages.prakerin.panitia.administrasi', [

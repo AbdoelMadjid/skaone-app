@@ -168,7 +168,7 @@
                                     <td style="text-align: center;">{{ $siswa->nis }}</td>
                                     <td>{{ $siswa->nama_lengkap }}</td>
                                     <td style="text-align: center;">{{ $siswa->jenis_kelamin }}</td>
-                                    <td style="text-align: center;">{{ $siswa->rombel_nama }}</td>
+                                    <td style="text-align: center;">{{ $siswa->rombel }}</td>
                                 </tr>
                             @empty
                                 <tr>
