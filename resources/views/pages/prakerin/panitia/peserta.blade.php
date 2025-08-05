@@ -21,16 +21,9 @@
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0">
-                    <x-btn-group-dropdown>
-                        @if (auth()->check() &&
-                                auth()->user()->hasAnyRole(['master', 'panitiapkl']))
-                            <x-btn-action label="Distribusi Peserta" icon="ri-route-fill" data-bs-toggle="modal"
-                                data-bs-target="#distribusiPeserta" id="distribusiPesertaBtn"
-                                title="Distribusikan Peserta Prakerin" />
-                        @endif
-                        <x-btn-tambah can="create panitiaprakerin/peserta" route="panitiaprakerin.peserta.create"
-                            label="Tambah" icon="ri-add-line" />
-                    </x-btn-group-dropdown>
+                    <x-btn-action label="Distribusi Peserta" icon="ri-route-fill" data-bs-toggle="modal"
+                        data-bs-target="#distribusiPeserta" id="distribusiPesertaBtn"
+                        title="Distribusikan Peserta Prakerin" />
                 </div>
             </div>
         </div>
