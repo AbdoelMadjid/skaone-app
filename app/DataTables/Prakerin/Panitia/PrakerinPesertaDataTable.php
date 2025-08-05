@@ -75,8 +75,8 @@ class PrakerinPesertaDataTable extends DataTable
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
-                /* unset($actions['Delete']);
-                unset($actions['Edit']); */
+                unset($actions['Detail']);
+                unset($actions['Edit']);
                 return view('action', compact('actions'));
             })
             ->addIndexColumn()
@@ -88,7 +88,9 @@ class PrakerinPesertaDataTable extends DataTable
      */
     public function query(PrakerinPeserta $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()
+            ->orderBy('kode_kk')
+            ->orderBy('nis');
     }
 
     /**
