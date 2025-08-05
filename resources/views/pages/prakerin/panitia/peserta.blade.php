@@ -77,16 +77,14 @@
 
                         // Tambah notifikasi jika ada siswa yang sudah terdaftar
                         if (response.terdaftar > 0) {
-                            Swal.fire({
-                                icon: 'info',
-                                title: 'Sebagian siswa disembunyikan',
+                            showToast('warning', response.terdaftar + ' siswa sudah didistribusikan.');
+                            /* Swal.fire({
+                                icon: "info",
+                                title: "Sebagian siswa disembunyikan",
                                 text: response.terdaftar +
                                     ' siswa sudah didistribusikan, jadi tidak ditampilkan di sini.',
-                                toast: true,
-                                position: 'top-end',
-                                showConfirmButton: false,
-                                timer: 5000,
-                            });
+                                footer: '<a href="#">Why do I have this issue?</a>'
+                            }); */
                         }
                     },
                     error: function() {
