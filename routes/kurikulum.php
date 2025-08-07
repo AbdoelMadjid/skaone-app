@@ -70,6 +70,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/jadwal-mingguan-tabel-per-hari', [JadwalTabelPerhariController::class, 'index'])->name('tampiljadwalperhari');
             // routes/web.php
             Route::post('/simpankehadiranguru', [JadwalTabelPerhariController::class, 'simpanKehadiranGuru'])->name('simpankehadiranguru');
+            Route::get('/ajax-tampil', [JadwalTabelPerhariController::class, 'ajaxTampil']);
+
 
 
             Route::resource('peserta-didik-rombel', PesertaDidikRombelController::class);

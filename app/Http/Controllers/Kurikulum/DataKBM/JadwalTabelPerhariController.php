@@ -73,4 +73,49 @@ class JadwalTabelPerhariController extends Controller
             return response()->json(['status' => 'success', 'action' => 'created']);
         }
     }
+
+    public function ajaxTampil(Request $request)
+    {
+        $hari = $request->input('hari');
+
+        if (!$hari) {
+            return response()->json(['html' => '<div class="alert alert-warning">Silakan pilih hari terlebih dahulu.</div>']);
+        }
+
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+        $semesterAktif = Semester::where('status', 'Aktif')
+            ->where('tahun_ajaran_id', $tahunAjaranAktif->id ?? null)
+            ->first();
+
+        if (!$tahunAjaranAktif || !$semesterAktif) {
+            return response()->json(['html' => '<div class="alert alert-danger">Tahun ajaran atau semester aktif tidak ditemukan.</div>']);
+        }
+
+        $jadwalHari = JadwalMingguan::with(['personil', 'rombonganBelajar'])
+            ->where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->where('semester', $semesterAktif->semester)
+            ->where('hari', $hari)
+            ->get();
+
+        $semuaJamKe = range(1, 13);
+        $semuaKehadiran = KehadiranGuruHarian::where('hari', $hari)->get();
+
+        $guruIds = $jadwalHari->pluck('id_personil')->unique();
+        $jumlahJamTerisi = [];
+
+        foreach ($guruIds as $gid) {
+            $jumlahJamTerisi[$gid] = $jadwalHari->where('id_personil', $gid)->count();
+        }
+
+        $html = view('pages.kurikulum.datakbm.jadwal-mingguan-perhari-tabel', compact(
+            'jadwalHari',
+            'semuaJamKe',
+            'semuaKehadiran',
+            'guruIds',
+            'hari',
+            'jumlahJamTerisi'
+        ))->render();
+
+        return response()->json(['html' => $html]);
+    }
 }
