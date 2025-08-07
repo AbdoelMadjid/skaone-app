@@ -5,6 +5,7 @@ use App\Http\Controllers\Kurikulum\DataKBM\HariEfektifController;
 use App\Http\Controllers\Kurikulum\DataKBM\JadwalMingguanController;
 use App\Http\Controllers\Kurikulum\DataKBM\JadwalPerGuruController;
 use App\Http\Controllers\Kurikulum\DataKBM\JadwalPerRombelController;
+use App\Http\Controllers\Kurikulum\DataKBM\JadwalTabelPerhariController;
 use App\Http\Controllers\Kurikulum\DataKBM\KbmPerRombelController;
 use App\Http\Controllers\Kurikulum\DataKBM\KunciDataKbmController;
 use App\Http\Controllers\Kurikulum\DataKBM\MataPelajaranController;
@@ -66,6 +67,7 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/jadwal-mingguan-per-rombel', [JadwalPerRombelController::class, 'index'])->name('tampiljadwalperrombel');
             Route::get('/jadwal-mingguan-per-guru', [JadwalPerGuruController::class, 'index'])->name('tampiljadwalperguru');
+            Route::get('/jadwal-tabel-per-hari', [JadwalTabelPerhariController::class, 'index'])->name('tampiltabelperhari');
 
             Route::resource('peserta-didik-rombel', PesertaDidikRombelController::class);
             Route::get('/get-rombongan-belajar', [PesertaDidikRombelController::class, 'getRombonganBelajar'])->name('get-rombonganbelajar');

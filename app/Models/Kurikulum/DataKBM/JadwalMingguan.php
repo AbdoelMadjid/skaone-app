@@ -20,4 +20,9 @@ class JadwalMingguan extends Model
         'hari',
         'jam_ke',
     ];
+
+    public function personil()
+    {
+        return $this->belongsTo(PersonilSekolah::class, 'id_personil', 'id_personil');
+    }
 }

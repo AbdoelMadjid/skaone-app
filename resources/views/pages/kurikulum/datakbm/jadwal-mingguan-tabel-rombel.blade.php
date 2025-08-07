@@ -1,13 +1,15 @@
 <div class="text-center mt-lg-2 pt-3">
     <h1 class="fs-24 fw-semibold mb-1 lh-base">
-        JADWAL PEMBELAJARAN ROMBEL <br>
+        JADWAL PEMBELAJARAN PERMINGGU <br>
         <span class="text-danger">{{ $namaRombel }}</span>
     </h1>
     <p class="lead lh-base">TAHUN AJARAN {{ $tahunAjaran ?? '-' }} SEMESTER
         {{ strtoupper($semester ?? '-') }}</p>
+
+    <h5>Wali Kelas: {{ $namaWaliKelas }}</h5>
 </div>
 
-<h5>Wali Kelas: {{ $namaWaliKelas }}</h5>
+
 
 <table class="table table-bordered table-sm text-center align-middle">
     <thead class="table-light">

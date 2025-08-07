@@ -125,12 +125,13 @@
             </form>
         </div>
         --}}
-        <div class="card-body p-1">
-            <div class="row">
-                <div class="col-md-10">
-                    @include('pages.kurikulum.datakbm.jadwal-mingguan-tabel-rombel')
-                </div>
-                <div class="col-md-2">
+
+        <div class="row">
+            <div class="col-md-10 p-2">
+                @include('pages.kurikulum.datakbm.jadwal-mingguan-tabel-rombel')
+            </div>
+            <div class="col-md-2">
+                <div class="card-body p-2">
                     <x-heading-title>Pilih Rombongan Belajar</x-heading-title>
                     <br>
                     <select class="form-select form-select-sm mb-4" id="idRombelAuto" name="kode_rombel">

@@ -23,6 +23,8 @@
                         icon="ri-calendar-fill" />
                     <x-btn-action href="{{ route('kurikulum.datakbm.tampiljadwalperguru') }}" label="Jadwal Per Guru"
                         icon="ri-calendar-2-fill" />
+                    <x-btn-action href="{{ route('kurikulum.datakbm.tampiltabelperhari') }}" label="Tabel Per Hari"
+                        icon="ri-calendar-1-fill" />
                     {{-- <x-btn-tambah can="create kurikulum/datakbm/jadwal-mingguan"
                         route="kurikulum.datakbm.jadwal-mingguan.create" label="Tambah" icon="ri-add-line" /> --}}
                     <button id="deleteSelected" class="btn btn-soft-danger btn-sm" style="display: none;"><i
