@@ -72,10 +72,6 @@ Route::middleware('auth')->group(function () {
             Route::post('/simpankehadiranguru', [JadwalTabelPerhariController::class, 'simpanKehadiranGuru'])->name('simpankehadiranguru');
             Route::get('/ajax-tampil', [JadwalTabelPerhariController::class, 'ajaxTampil']);
 
-            Route::post('/simpan-massal', [JadwalTabelPerhariController::class, 'simpanMassal'])
-                ->name('simpankehadirangurumassal');
-
-
             Route::resource('peserta-didik-rombel', PesertaDidikRombelController::class);
             Route::get('/get-rombongan-belajar', [PesertaDidikRombelController::class, 'getRombonganBelajar'])->name('get-rombonganbelajar');
             Route::get('get-siswa', [PesertaDidikController::class, 'getSiswa'])->name('get-siswa');

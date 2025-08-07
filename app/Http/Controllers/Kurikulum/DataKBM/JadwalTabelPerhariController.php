@@ -128,41 +128,4 @@ class JadwalTabelPerhariController extends Controller
 
         return response()->json(['html' => $html]);
     }
-
-    public function simpanMassal(Request $request)
-    {
-        $data = $request->input('kehadiran');
-
-        foreach ($data as $item) {
-            // Validasi secukupnya
-            if (
-                !isset($item['jadwal_mingguan_id'], $item['id_personil'], $item['hari'], $item['tanggal'], $item['jam_ke'])
-            ) {
-                continue;
-            }
-
-            // Hapus dulu yang sudah ada untuk mencegah duplikat
-            KehadiranGuruHarian::where([
-                'jadwal_mingguan_id' => $item['jadwal_mingguan_id'],
-                'id_personil' => $item['id_personil'],
-                'hari' => $item['hari'],
-                'tanggal' => $item['tanggal'],
-                'jam_ke' => $item['jam_ke'],
-            ])->delete();
-
-            // Simpan baru
-            KehadiranGuruHarian::create([
-                'jadwal_mingguan_id' => $item['jadwal_mingguan_id'],
-                'id_personil' => $item['id_personil'],
-                'hari' => $item['hari'],
-                'tanggal' => $item['tanggal'],
-                'jam_ke' => $item['jam_ke'],
-            ]);
-        }
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Data kehadiran berhasil disimpan massal.'
-        ]);
-    }
 }

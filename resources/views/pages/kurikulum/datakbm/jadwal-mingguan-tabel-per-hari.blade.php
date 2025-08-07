@@ -60,11 +60,11 @@
                 <div class="col-lg-auto">
                     <button class="btn btn-ghost-danger" id="btnStatistik">Statistik</button>
                 </div>
-                <div class="col-lg-auto">
+                {{-- <div class="col-lg-auto">
                     <button id="btnSimpanMassal" class="btn btn-success mb-3" style="display:none;">
                         Simpan Kehadiran Massal
                     </button>
-                </div>
+                </div> --}}
             </div>
         </div>
         <div class="card-body p-1">
@@ -124,23 +124,6 @@
     {{--  --}}
 @endsection
 @section('script-bottom')
-    <script>
-        function cekHariDanTombol() {
-            const tgl = document.getElementById('inputTanggalKehadiran').value;
-            const btn = document.getElementById('btnSimpanMassal');
-            const hari = new Date(tgl).toLocaleDateString('id-ID', {
-                weekday: 'long'
-            });
-
-            // Hide tombol jika hari kosong atau Sabtu/Minggu
-            if (!tgl || ['Sabtu', 'Minggu'].includes(hari)) {
-                btn.style.display = 'none';
-            } else {
-                btn.style.display = 'inline-block';
-            }
-        }
-    </script>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const selectHari = document.getElementById('selectHari');
@@ -372,59 +355,6 @@
             });
         });
     </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const tombolMassal = document.getElementById('btnSimpanMassal');
-
-            tombolMassal.addEventListener('click', function() {
-                const tanggal = document.getElementById('inputTanggalKehadiran').value;
-                if (!tanggal) {
-                    showToast('error', 'Pilih tanggal terlebih dahulu');
-                    return;
-                }
-
-                const selectedCells = document.querySelectorAll('.cell-kehadiran.bg-primary');
-
-                if (selectedCells.length === 0) {
-                    showToast('warning', 'Tidak ada kehadiran yang dipilih untuk disimpan.');
-                    return;
-                }
-
-                const data = Array.from(selectedCells).map(cell => ({
-                    jadwal_mingguan_id: cell.dataset.idJadwal,
-                    id_personil: cell.dataset.idPersonil,
-                    hari: cell.dataset.hari,
-                    jam_ke: cell.dataset.jam,
-                    tanggal: tanggal
-                }));
-
-                fetch("{{ route('kurikulum.datakbm.simpankehadirangurumassal') }}", {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                        },
-                        body: JSON.stringify({
-                            kehadiran: data
-                        })
-                    })
-                    .then(res => res.json())
-                    .then(res => {
-                        if (res.status === 'success') {
-                            showToast('success', res.message || 'Semua kehadiran berhasil disimpan!');
-                        } else {
-                            showToast('error', res.message || 'Gagal menyimpan data massal!');
-                        }
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        showToast('error', 'Terjadi kesalahan saat menyimpan massal!');
-                    });
-            });
-        });
-    </script>
-
 
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection
