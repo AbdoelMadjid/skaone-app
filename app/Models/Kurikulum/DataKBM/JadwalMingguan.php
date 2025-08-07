@@ -3,6 +3,7 @@
 namespace App\Models\Kurikulum\DataKBM;
 
 use App\Models\ManajemenSekolah\PersonilSekolah;
+use App\Models\ManajemenSekolah\RombonganBelajar;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,5 +25,10 @@ class JadwalMingguan extends Model
     public function personil()
     {
         return $this->belongsTo(PersonilSekolah::class, 'id_personil', 'id_personil');
+    }
+
+    public function rombonganBelajar()
+    {
+        return $this->belongsTo(RombonganBelajar::class, 'kode_rombel', 'kode_rombel');
     }
 }

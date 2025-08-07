@@ -31,10 +31,10 @@ class JadwalTabelPerhariController extends Controller
             return redirect()->back()->with('error', 'Tidak ada semester aktif.');
         }
 
-        $dataJadwal = JadwalMingguan::with('personil')->get();
+        $dataJadwal = JadwalMingguan::with(['personil', 'rombonganBelajar'])->get();
 
         $grouped = $dataJadwal->groupBy('hari'); // ['Senin' => [...], 'Selasa' => [...], ...]
-        $semuaHari = ['Senin', 'Selasa', 'Rabu', 'Kamis', "Jum'at", 'Sabtu'];
+        $semuaHari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
 
 
         return view('pages.kurikulum.datakbm.jadwal-mingguan-tabel-per-hari', compact('grouped', 'semuaHari'));

@@ -53,30 +53,73 @@
                         @endphp
 
                         <div class="table-responsive">
+                            @php
+                                $semuaJamKe = range(1, 13); // Tetap 13 kolom Jam Ke
+                            @endphp
+
                             <table class="table table-bordered table-sm">
                                 <thead>
                                     <tr>
                                         <th>Nama Guru</th>
-                                        @foreach ($jamKe as $jam)
-                                            <th>Jam {{ $jam }}</th>
+                                        @foreach ($semuaJamKe as $jam)
+                                            <th width="60">{{ $jam }}</th>
                                         @endforeach
+                                        <th>Jml Kelas</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($guruIds as $gid)
                                         <tr>
                                             <td>{{ $guruMap[$gid]->namalengkap ?? 'N/A' }}</td>
-                                            @foreach ($jamKe as $jam)
+                                            @foreach ($semuaJamKe as $jam)
                                                 @php
                                                     $match = $jadwalHari->firstWhere(
                                                         fn($j) => $j->jam_ke == $jam && $j->id_personil == $gid,
                                                     );
                                                 @endphp
-                                                <td>{{ $match->kode_rombel ?? '-' }}</td>
+                                                <td class="fs-10">{{ $match?->rombonganBelajar?->rombel ?? '-' }}</td>
                                             @endforeach
+                                            @php
+                                                $kelasUnik = $jadwalHari
+                                                    ->where('id_personil', $gid)
+                                                    ->pluck('rombonganBelajar.rombel')
+                                                    ->filter()
+                                                    ->unique()
+                                                    ->count();
+                                            @endphp
+                                            <td class="text-center" width="100">{{ $kelasUnik }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Jml Kelas</th>
+                                        @foreach ($semuaJamKe as $jam)
+                                            @php
+                                                $jumlahKelas = $jadwalHari
+                                                    ->where('jam_ke', $jam)
+                                                    ->pluck('rombonganBelajar.rombel')
+                                                    ->filter()
+                                                    ->unique()
+                                                    ->count();
+                                            @endphp
+                                            <th class="text-center">{{ $jumlahKelas }}</th>
+                                        @endforeach
+                                        <th class="text-center">
+                                            @php
+                                                $jumlahTotalKelas = $guruIds->sum(function ($gid) use ($jadwalHari) {
+                                                    return $jadwalHari
+                                                        ->where('id_personil', $gid)
+                                                        ->pluck('rombonganBelajar.rombel')
+                                                        ->filter()
+                                                        ->unique()
+                                                        ->count();
+                                                });
+                                            @endphp
+                                            {{ $jumlahTotalKelas }}
+                                        </th>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
