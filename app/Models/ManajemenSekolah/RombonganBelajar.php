@@ -55,4 +55,10 @@ class RombonganBelajar extends Model
             $rombonganBelajar->walikelasSimpan()->delete();
         });
     }
+
+    // Model RombonganBelajar
+    public function kompetensiKeahlian()
+    {
+        return $this->belongsTo(KompetensiKeahlian::class, 'id_kk', 'idkk');
+    }
 }

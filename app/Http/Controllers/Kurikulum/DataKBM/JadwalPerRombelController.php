@@ -121,6 +121,14 @@ class JadwalPerRombelController extends Controller
         $kompetensiKeahlianOptions = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
         $rombonganBelajar = RombonganBelajar::pluck('rombel', 'kode_rombel')->toArray();
 
+        $rombonganBelajarGrouped = RombonganBelajar::with('kompetensiKeahlian')
+            ->where('tahunajaran', $tahunAjaranAktif->tahunajaran)
+            ->get()
+            ->filter(fn($item) => $item->kompetensiKeahlian !== null)
+            ->groupBy(fn($item) => $item->kompetensiKeahlian->nama_kk) // Level 1: nama KK
+            ->map(fn($rombelsByKk) => $rombelsByKk->groupBy('tingkat')); // Level 2: tingkat
+
+
         return view('pages.kurikulum.datakbm.jadwal-mingguan-per-rombel', [
             'tahunAjaranOptions' => $tahunAjaranOptions,
             'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
@@ -140,6 +148,7 @@ class JadwalPerRombelController extends Controller
             'mapelPerGuru' => $mapelPerGuru,
             'hariList' => $hariList,
             'jamList' => $jamList,
+            'rombonganBelajarGrouped' => $rombonganBelajarGrouped,
         ]);
     }
 }

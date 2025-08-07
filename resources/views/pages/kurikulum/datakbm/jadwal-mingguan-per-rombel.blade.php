@@ -8,6 +8,12 @@
             pointer-events: none;
             cursor: not-allowed;
         }
+
+        .list-group-item.active {
+            font-weight: bold;
+            border-left: 4px solid #3b82f6;
+            /* Tailwind blue-500 */
+        }
     </style>
 @endsection
 @section('content')
@@ -95,11 +101,84 @@
                         <button type="button" id="btn-tampil-jadwal"
                             class="btn btn-soft-primary btn-sm w-100 mb-4">Tampilkan</button>
                     </div>
-                </div>
+                    <div class="col-lg-auto me-2">
+                        <select class="form-select form-select-sm" id="idRombelAuto" name="kode_rombel">
+                            <option value="">Pilih Rombel</option>
+                            @foreach ($rombonganBelajarGrouped as $namaKK => $tingkatGrouped)
+                                @foreach ($tingkatGrouped as $tingkat => $rombels)
+                                    <optgroup label="{{ $namaKK }} - Tingkat {{ $tingkat }}">
+                                        @foreach ($rombels as $rombel)
+                                            <option value="{{ $rombel->kode_rombel }}"
+                                                data-tahunajaran="{{ $tahunAjaranAktif }}"
+                                                data-semester="{{ $semesterAktif }}"
+                                                data-kompetensikeahlian="{{ $rombel->id_kk }}"
+                                                data-tingkat="{{ $rombel->tingkat }}"
+                                                {{ request('kode_rombel') == $rombel->kode_rombel ? 'selected' : '' }}>
+                                                {{ $rombel->rombel }}
+                                            </option>
+                                        @endforeach
+                                    </optgroup>
+                                @endforeach
+                            @endforeach
+                        </select>
+                    </div>
             </form>
         </div>
         <div class="card-body p-1">
-            @include('pages.kurikulum.datakbm.jadwal-mingguan-tabel-rombel')
+            <div class="row">
+                <div class="col-md-10">
+                    @include('pages.kurikulum.datakbm.jadwal-mingguan-tabel-rombel')
+                </div>
+                <div class="col-md-2">
+                    <div class="accordion custom-accordionwithicon custom-accordion-border accordion-border-box accordion-secondary"
+                        id="accordionRombel">
+                        @foreach ($rombonganBelajarGrouped as $namaKK => $tingkatGrouped)
+                            @php
+                                // Cek apakah rombel aktif ada di dalam group ini
+                                $isOpen = collect($tingkatGrouped)
+                                    ->flatten()
+                                    ->contains(fn($rombel) => $rombel->kode_rombel == request('kode_rombel'));
+                            @endphp
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading-{{ Str::slug($namaKK) }}">
+                                    <button class="accordion-button {{ $isOpen ? '' : 'collapsed' }}" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#collapse-{{ Str::slug($namaKK) }}"
+                                        aria-expanded="false" aria-controls="collapse-{{ Str::slug($namaKK) }}">
+                                        {{ $namaKK }}
+                                    </button>
+                                </h2>
+                                <div id="collapse-{{ Str::slug($namaKK) }}"
+                                    class="accordion-collapse collapse {{ $isOpen ? 'show' : '' }}"
+                                    aria-labelledby="heading-{{ Str::slug($namaKK) }}" data-bs-parent="#accordionRombel">
+                                    <div class="accordion-body">
+
+                                        @foreach ($tingkatGrouped as $tingkat => $rombels)
+                                            <h6 class="mt-3">Tingkat {{ $tingkat }}</h6>
+                                            <ul class="list-group mb-2">
+                                                @foreach ($rombels as $rombel)
+                                                    <li class="list-group-item list-rombel-item
+                                    {{ request('kode_rombel') == $rombel->kode_rombel ? 'active bg-light-primary' : '' }}"
+                                                        data-tahunajaran="{{ $tahunAjaranAktif }}"
+                                                        data-semester="{{ $semesterAktif }}"
+                                                        data-kompetensikeahlian="{{ $rombel->id_kk }}"
+                                                        data-tingkat="{{ $rombel->tingkat }}"
+                                                        data-kode_rombel="{{ $rombel->kode_rombel }}"
+                                                        style="cursor: pointer;">
+                                                        {{ $rombel->rombel }}
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @endforeach
+
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                </div>
+
+            </div>
         </div>
     </div>
 
@@ -201,6 +280,65 @@
 
         });
     </script>
+    <script>
+        document.getElementById('idRombelAuto').addEventListener('change', function() {
+            const selected = this.options[this.selectedIndex];
+            const tahunajaran = selected.dataset.tahunajaran;
+            const semester = selected.dataset.semester;
+            const kompetensikeahlian = selected.dataset.kompetensikeahlian;
+            const tingkat = selected.dataset.tingkat;
+            const kode_rombel = selected.value;
+
+            if (kode_rombel) {
+                const query = new URLSearchParams({
+                    tahunajaran,
+                    semester,
+                    kompetensikeahlian,
+                    tingkat,
+                    kode_rombel
+                }).toString();
+
+                window.location.href = '?' + query;
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.list-rombel-item').forEach(function(item) {
+                item.addEventListener('click', function() {
+                    const tahunajaran = this.dataset.tahunajaran;
+                    const semester = this.dataset.semester;
+                    const kompetensikeahlian = this.dataset.kompetensikeahlian;
+                    const tingkat = this.dataset.tingkat;
+                    const kode_rombel = this.dataset.kode_rombel;
+
+                    if (kode_rombel) {
+                        const query = new URLSearchParams({
+                            tahunajaran,
+                            semester,
+                            kompetensikeahlian,
+                            tingkat,
+                            kode_rombel
+                        }).toString();
+
+                        window.location.href = '?' + query;
+                    }
+                });
+            });
+            // Tambahkan logika untuk highlight active berdasarkan query URL
+            const params = new URLSearchParams(window.location.search);
+            const activeKodeRombel = params.get('kode_rombel');
+
+            if (activeKodeRombel) {
+                const activeItem = document.querySelector(
+                    `.list-rombel-item[data-kode_rombel="${activeKodeRombel}"]`);
+                if (activeItem) {
+                    activeItem.classList.add('active', 'bg-light-primary');
+                }
+            }
+        });
+    </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const modal = new bootstrap.Modal(document.getElementById('modalInputJadwal'));
