@@ -36,15 +36,15 @@
                 </div>
             </div>
         </div>
+        {{--
         <div class="card-body p-1">
-            <form method="GET" id="formRombel">
+             <form method="GET" id="formRombel">
                 <div class="row g-3">
                     <div class="col-lg">
                     </div>
-
-                    <div class="col-lg-auto">
+                     <div class="col-lg-auto">
                         <div>
-                            <select class="form-select form-select-sm" name="tahunajaran" id="idThnAjaran">
+                            <select class="form-select form-select-sm" name="tahunajaran" id="idThnAjaran" type='hidden'>
                                 <option value="" disabled {{ request('tahunajaran') ? '' : 'selected' }}>Pilih Tahun
                                     Ajaran</option>
                                 @foreach ($tahunAjaranOptions as $thnajar)
@@ -100,8 +100,8 @@
                     <div class="col-lg-auto me-2">
                         <button type="button" id="btn-tampil-jadwal"
                             class="btn btn-soft-primary btn-sm w-100 mb-4">Tampilkan</button>
-                    </div>
-                    <div class="col-lg-auto me-2">
+                    </div> --}}
+        {{-- <div class="col-lg-auto me-2">
                         <select class="form-select form-select-sm" id="idRombelAuto" name="kode_rombel">
                             <option value="">Pilih Rombel</option>
                             @foreach ($rombonganBelajarGrouped as $namaKK => $tingkatGrouped)
@@ -124,13 +124,34 @@
                     </div>
             </form>
         </div>
+        --}}
         <div class="card-body p-1">
             <div class="row">
                 <div class="col-md-10">
                     @include('pages.kurikulum.datakbm.jadwal-mingguan-tabel-rombel')
                 </div>
                 <div class="col-md-2">
-                    <div class="accordion custom-accordionwithicon custom-accordion-border accordion-border-box accordion-secondary"
+                    <x-heading-title>Pilih Rombongan Belajar</x-heading-title>
+                    <br>
+                    <select class="form-select form-select-sm mb-4" id="idRombelAuto" name="kode_rombel">
+                        <option value="">Pilih Rombel</option>
+                        @foreach ($rombonganBelajarGrouped as $namaKK => $tingkatGrouped)
+                            @foreach ($tingkatGrouped as $tingkat => $rombels)
+                                <optgroup label="{{ $namaKK }} - Tingkat {{ $tingkat }}">
+                                    @foreach ($rombels as $rombel)
+                                        <option value="{{ $rombel->kode_rombel }}"
+                                            data-tahunajaran="{{ $tahunAjaranAktif }}" data-semester="{{ $semesterAktif }}"
+                                            data-kompetensikeahlian="{{ $rombel->id_kk }}"
+                                            data-tingkat="{{ $rombel->tingkat }}"
+                                            {{ request('kode_rombel') == $rombel->kode_rombel ? 'selected' : '' }}>
+                                            {{ $rombel->rombel }}
+                                        </option>
+                                    @endforeach
+                                </optgroup>
+                            @endforeach
+                        @endforeach
+                    </select>
+                    <div class="accordion custom-accordionwithicon custom-accordion-border accordion-border-box accordion-primary"
                         id="accordionRombel">
                         @foreach ($rombonganBelajarGrouped as $namaKK => $tingkatGrouped)
                             @php
@@ -325,7 +346,7 @@
                     }
                 });
             });
-            // Tambahkan logika untuk highlight active berdasarkan query URL
+            /* // Tambahkan logika untuk highlight active berdasarkan query URL
             const params = new URLSearchParams(window.location.search);
             const activeKodeRombel = params.get('kode_rombel');
 
@@ -335,7 +356,7 @@
                 if (activeItem) {
                     activeItem.classList.add('active', 'bg-light-primary');
                 }
-            }
+            } */
         });
     </script>
 
@@ -343,28 +364,35 @@
         document.addEventListener('DOMContentLoaded', function() {
             const modal = new bootstrap.Modal(document.getElementById('modalInputJadwal'));
 
+            // Fungsi ambil query parameter dari URL
+            function getQueryParam(param) {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get(param);
+            }
+
+            // Ambil nilai filter dari URL
+            const tahunajaran = getQueryParam('tahunajaran');
+            const semester = getQueryParam('semester');
+            const kompetensikeahlian = getQueryParam('kompetensikeahlian');
+            const tingkat = getQueryParam('tingkat');
+            const rombel = getQueryParam('kode_rombel');
+
             document.querySelectorAll('.cell-jadwal').forEach(cell => {
                 cell.addEventListener('click', function() {
-                    // Ambil nilai dari filter form
-                    const tahunajaran = document.getElementById('idThnAjaran').value;
-                    const semester = document.getElementById('idSemester').value;
-                    const kompetensikeahlian = document.getElementById('idKodeKK').value;
-                    const tingkat = document.getElementById('idTingkat').value;
-                    const rombel = document.getElementById('idRombel').value;
+                    // Jika ingin validasi masih berlaku, aktifkan kembali blok ini
 
-                    // Cek apakah semua filter telah dipilih
                     if (!tahunajaran || !semester || !kompetensikeahlian || !tingkat || !rombel) {
                         Swal.fire({
                             icon: 'warning',
-                            title: 'Lengkapi Filter!',
-                            text: 'Silakan pilih Tahun Ajaran, Semester, Kompetensi Keahlian, Tingkat, dan Rombel terlebih dahulu.',
+                            title: 'Rombel Belum Dipilih!',
+                            text: 'Silakan pilih Rombel terlebih dahulu.',
                             confirmButtonColor: '#3085d6',
                             confirmButtonText: 'OK'
                         });
-                        return; // Hentikan eksekusi, jangan tampilkan modal
+                        return;
                     }
 
-                    // Buka modal jika filter lengkap
+
                     const jam = this.dataset.jam;
                     const hari = this.dataset.hari;
                     const guru = this.dataset.id || '';
@@ -382,6 +410,7 @@
             });
         });
     </script>
+
     <script>
         const mapelPerGuru = @json($mapelPerGuru);
 
