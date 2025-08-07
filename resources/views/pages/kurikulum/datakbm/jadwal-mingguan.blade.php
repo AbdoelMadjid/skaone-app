@@ -24,7 +24,7 @@
                             icon="ri-calendar-fill" />
                         <x-btn-action href="{{ route('kurikulum.datakbm.tampiljadwalperguru') }}" label="Jadwal Per Guru"
                             icon="ri-calendar-2-fill" />
-                        <x-btn-action href="{{ route('kurikulum.datakbm.tampiltabelperhari') }}" label="Tabel Per Hari"
+                        <x-btn-action href="{{ route('kurikulum.datakbm.tampiljadwalperhari') }}" label="Jadwal Per Hari"
                             icon="ri-calendar-2-fill" />
                     </x-btn-group-dropdown>
                 </div>

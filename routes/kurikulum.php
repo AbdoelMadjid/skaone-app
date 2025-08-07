@@ -67,7 +67,7 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/jadwal-mingguan-per-rombel', [JadwalPerRombelController::class, 'index'])->name('tampiljadwalperrombel');
             Route::get('/jadwal-mingguan-per-guru', [JadwalPerGuruController::class, 'index'])->name('tampiljadwalperguru');
-            Route::get('/jadwal-tabel-per-hari', [JadwalTabelPerhariController::class, 'index'])->name('tampiltabelperhari');
+            Route::get('/jadwal-mingguan-tabel-per-hari', [JadwalTabelPerhariController::class, 'index'])->name('tampiljadwalperhari');
             // routes/web.php
             Route::post('/simpankehadiranguru', [JadwalTabelPerhariController::class, 'simpanKehadiranGuru'])->name('simpankehadiranguru');
 
