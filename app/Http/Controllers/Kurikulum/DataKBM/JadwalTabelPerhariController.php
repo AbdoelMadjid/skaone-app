@@ -95,12 +95,17 @@ class JadwalTabelPerhariController extends Controller
             ->where('tahunajaran', $tahunAjaranAktif->tahunajaran)
             ->where('semester', $semesterAktif->semester)
             ->where('hari', $hari)
+            ->join('personil_sekolahs', 'jadwal_mingguans.id_personil', '=', 'personil_sekolahs.id_personil')
+            ->orderBy('personil_sekolahs.namalengkap')
+            ->select('jadwal_mingguans.*') // Supaya tidak tumpang tindih kolom
             ->get();
+
 
         $semuaJamKe = range(1, 13);
         $semuaKehadiran = KehadiranGuruHarian::where('hari', $hari)->get();
 
         $guruIds = $jadwalHari->pluck('id_personil')->unique();
+
         $jumlahJamTerisi = [];
 
         foreach ($guruIds as $gid) {
