@@ -31,4 +31,9 @@ class JadwalMingguan extends Model
     {
         return $this->belongsTo(RombonganBelajar::class, 'kode_rombel', 'kode_rombel');
     }
+
+    public function kehadiranJam()
+    {
+        return $this->hasMany(KehadiranGuruHarian::class);
+    }
 }

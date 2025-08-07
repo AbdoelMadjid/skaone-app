@@ -182,8 +182,6 @@ class JadwalMingguanDataTable extends DataTable
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('tahunajaran')->title('Tahun Ajaran')->addClass('text-center'),
             Column::make('semester')->addClass('text-center'),
-            Column::make('nama_kk')->title('Kompetensi Keahlian')->addClass('text-center'),
-            Column::make('tingkat')->addClass('text-center'),
             Column::make('nama_kelas')->title('Rombel')->addClass('text-center'),
             Column::make('namaguru')->title('Nama Guru Mapel'),
             Column::make('matapelajaran')->title('Mata Pelajaran'),
