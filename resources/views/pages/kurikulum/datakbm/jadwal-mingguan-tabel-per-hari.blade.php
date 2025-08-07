@@ -108,8 +108,6 @@
                                                     $match = $jadwalHari->firstWhere(
                                                         fn($j) => $j->jam_ke == $jam && $j->id_personil == $gid,
                                                     );
-                                                @endphp
-                                                @php
                                                     $rombel = $match->rombonganBelajar->rombel ?? null;
                                                     $kehadiranAda =
                                                         $rombel &&
@@ -118,16 +116,30 @@
                                                             ->where('jam_ke', $jam)
                                                             ->where('hari', $hari)
                                                             ->isNotEmpty();
+                                                    $isIstirahat = in_array($jam, [6, 10]);
+
+                                                    // Teks khusus untuk kondisi tertentu
+                                                    $customText = null;
+                                                    if ($hari === 'Senin' && $jam == 1) {
+                                                        $customText = 'Upacara';
+                                                    } elseif ($hari === 'Jumat' && $jam == 1) {
+                                                        $customText = 'Insidentil';
+                                                    }
                                                 @endphp
-                                                <td class="fs-10 text-center {{ $rombel ? 'cell-kehadiran' : '' }} {{ $kehadiranAda ? 'bg-primary text-white' : '' }}"
-                                                    @if ($rombel) data-id-jadwal="{{ $match->id }}"
-                                                        data-id-personil="{{ $gid }}"
-                                                        data-hari="{{ $hari }}"
-                                                        data-jam="{{ $jam }}"
-                                                        style="cursor:pointer" @endif>
-                                                    {{ $rombel ?? '-' }}
+                                                <td class="fs-10 text-center
+                                                    {{ $rombel ? 'cell-kehadiran' : '' }}
+                                                    {{ $kehadiranAda ? 'bg-primary text-white' : '' }}
+                                                    {{ $isIstirahat ? 'bg-danger text-white' : '' }}
+                                                    {{ $customText ? 'bg-info text-white fw-bold' : '' }}"
+                                                    @if ($rombel && !$isIstirahat && !$customText) data-id-jadwal="{{ $match->id }}"
+                                                    data-id-personil="{{ $gid }}"
+                                                    data-hari="{{ $hari }}"
+                                                    data-jam="{{ $jam }}"
+                                                    style="cursor:pointer" @endif>
+                                                    {{ $customText ?? ($isIstirahat ? 'Istirahat' : $rombel ?? '-') }}
                                                 </td>
                                             @endforeach
+
                                             <td class="text-center">{{ $jumlahKelasPerGuru[$gid] }}</td>
                                             <td class="text-center jumlah-jam-terisi"
                                                 data-id="{{ $gid }}-{{ $hari }}">
