@@ -107,7 +107,7 @@
                     </th>
                 @endforeach
                 <th class="text-center">{{ collect($jumlahKelasPerGuru)->sum() }}</th>
-                <th class="text-center">{{ $jadwalHari->count() }}</th>
+                <th class="text-center jadwal-terisi">{{ $jadwalHari->count() }}</th>
                 <th class="text-center total-kehadiran" data-hari="{{ $hari }}">
                     {{ $semuaKehadiran->count() }}
                 </th>

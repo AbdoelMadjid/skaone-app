@@ -13,6 +13,7 @@ class KehadiranGuruHarian extends Model
         'jadwal_mingguan_id',
         'id_personil',
         'hari',
+        'tanggal',
         'jam_ke',
     ];
 

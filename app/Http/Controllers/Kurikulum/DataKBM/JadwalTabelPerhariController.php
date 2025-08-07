@@ -53,6 +53,7 @@ class JadwalTabelPerhariController extends Controller
             'jadwal_mingguan_id' => 'required|exists:jadwal_mingguans,id',
             'id_personil' => 'required|string',
             'hari' => 'required|string',
+            'tanggal' => 'required|date', // ← tambah ini
             'jam_ke' => 'required|integer|min:1|max:13',
         ]);
 
@@ -60,6 +61,7 @@ class JadwalTabelPerhariController extends Controller
             'jadwal_mingguan_id' => $validated['jadwal_mingguan_id'],
             'id_personil' => $validated['id_personil'],
             'hari' => $validated['hari'],
+            'tanggal' => $validated['tanggal'],
             'jam_ke' => $validated['jam_ke'],
         ])->first();
 
@@ -102,7 +104,10 @@ class JadwalTabelPerhariController extends Controller
 
 
         $semuaJamKe = range(1, 13);
-        $semuaKehadiran = KehadiranGuruHarian::where('hari', $hari)->get();
+        //$semuaKehadiran = KehadiranGuruHarian::where('hari', $hari)->get();
+        $semuaKehadiran = KehadiranGuruHarian::where('hari', $hari)
+            ->where('tanggal', $request->tanggal) // ← filter berdasarkan tanggal
+            ->get();
 
         $guruIds = $jadwalHari->pluck('id_personil')->unique();
 
@@ -122,5 +127,42 @@ class JadwalTabelPerhariController extends Controller
         ))->render();
 
         return response()->json(['html' => $html]);
+    }
+
+    public function simpanMassal(Request $request)
+    {
+        $data = $request->input('kehadiran');
+
+        foreach ($data as $item) {
+            // Validasi secukupnya
+            if (
+                !isset($item['jadwal_mingguan_id'], $item['id_personil'], $item['hari'], $item['tanggal'], $item['jam_ke'])
+            ) {
+                continue;
+            }
+
+            // Hapus dulu yang sudah ada untuk mencegah duplikat
+            KehadiranGuruHarian::where([
+                'jadwal_mingguan_id' => $item['jadwal_mingguan_id'],
+                'id_personil' => $item['id_personil'],
+                'hari' => $item['hari'],
+                'tanggal' => $item['tanggal'],
+                'jam_ke' => $item['jam_ke'],
+            ])->delete();
+
+            // Simpan baru
+            KehadiranGuruHarian::create([
+                'jadwal_mingguan_id' => $item['jadwal_mingguan_id'],
+                'id_personil' => $item['id_personil'],
+                'hari' => $item['hari'],
+                'tanggal' => $item['tanggal'],
+                'jam_ke' => $item['jam_ke'],
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data kehadiran berhasil disimpan massal.'
+        ]);
     }
 }
