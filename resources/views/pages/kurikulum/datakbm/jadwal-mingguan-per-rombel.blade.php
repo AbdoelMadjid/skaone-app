@@ -29,9 +29,15 @@
         <div class="card-header">
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
+                <div class="flex-shrink-0 me-3">
+                    <x-btn-group-dropdown>
+                        <x-btn-action href="{{ route('kurikulum.datakbm.tampiljadwalperguru') }}" label="Jadwal Per Guru"
+                            icon="ri-calendar-2-fill" />
+                        <x-btn-action href="{{ route('kurikulum.datakbm.tampiljadwalperhari') }}" label="Jadwal Per Hari"
+                            icon="ri-calendar-event-fill" />
+                    </x-btn-group-dropdown>
+                </div>
                 <div class="flex-shrink-0">
-                    <x-btn-action href="{{ route('kurikulum.datakbm.tampiljadwalperguru') }}" label="Jadwal Per Guru"
-                        icon="ri-calendar-2-fill" />
                     <x-btn-kembali href="{{ route('kurikulum.datakbm.jadwal-mingguan.index') }}" />
                 </div>
             </div>

@@ -169,7 +169,7 @@ class JadwalMingguanDataTable extends DataTable
                 'pageLength' => 100,
                 'paging' => true,
                 'scrollCollapse' => false,
-                'scrollY' => "calc(100vh - 401px)",
+                'scrollY' => "calc(100vh - 389px)",
             ]);
     }
 
