@@ -62,6 +62,7 @@
                                     <th>Nama Lengkap</th>
                                     <th>Kode KK</th>
                                     <th>Kompetensi Keahlian</th> <!-- Tambahkan kolom Nama KK -->
+                                    <th>Pilih</th> <!-- kolom baru -->
                                 </tr>
                             </thead>
                             <tbody id="selected_siswa_tbody">
@@ -78,3 +79,21 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Saat form distribusi dikirim
+        const form = document.querySelector('#distribusiSiswa form');
+
+        form.addEventListener('submit', function(e) {
+            // Ambil semua siswa yang diceklis dalam modal
+            let finalSelectedIds = [];
+
+            document.querySelectorAll('.chk-modal:checked').forEach(function(checkbox) {
+                finalSelectedIds.push(checkbox.dataset.id);
+            });
+
+            // Update input hidden dengan ID siswa yang benar-benar diceklis
+            document.getElementById('selected_siswa_ids').value = finalSelectedIds.join(',');
+        });
+    });
+</script>

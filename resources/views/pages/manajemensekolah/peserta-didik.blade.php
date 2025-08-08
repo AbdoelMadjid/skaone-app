@@ -188,42 +188,38 @@
 
             $('#distribusiSiswaBtn').on('click', function() {
                 let selectedIds = [];
-                let selectedRows = ''; // Variable untuk menyimpan baris tabel
+                let selectedRows = '';
 
-                // Pemetaan kode_kk ke nama_kk yang sudah diambil dari PHP
                 const kompetensiKeahlians = {
                     @foreach ($kompetensiKeahlian as $idkk => $nama_kk)
                         "{{ $idkk }}": "{{ $nama_kk }}",
                     @endforeach
                 };
 
-                // Loop untuk mengumpulkan id siswa, nama, NIS, kode_kk, dan nama_kk mereka yang dicentang
                 $('.chk-child:checked').each(function() {
-                    let nis = $(this).data('nis'); // Ambil NIS dari data attribute
-                    let name = $(this).data('name'); // Ambil nama dari data attribute
-                    let kode_kk = $(this).data('kode_kk'); // Ambil kode_kk dari data attribute
-                    let nama_kk = kompetensiKeahlians[kode_kk]; // Ambil nama_kk berdasarkan kode_kk
+                    let id = $(this).val();
+                    let nis = $(this).data('nis');
+                    let name = $(this).data('name');
+                    let kode_kk = $(this).data('kode_kk');
+                    let nama_kk = kompetensiKeahlians[kode_kk];
 
-                    selectedIds.push($(this).val());
+                    selectedIds.push(id);
 
-                    // Buat baris baru untuk setiap siswa
                     selectedRows += `
-                <tr>
-                    <td>${nis}</td>
-                    <td>${name}</td>
-                    <td>${kode_kk}</td>
-                    <td>${nama_kk}</td> <!-- Menambahkan kolom nama_kk -->
-                </tr>
-            `;
+                        <tr data-id="${id}">
+                            <td>${nis}</td>
+                            <td>${name}</td>
+                            <td>${kode_kk}</td>
+                            <td>${nama_kk}</td>
+                            <td class="text-center">
+                                <input type="checkbox" class="chk-modal" data-id="${id}" checked>
+                            </td>
+                        </tr>
+                    `;
                 });
 
-                // Set nilai hidden input di modal form dengan id siswa yang dipilih
                 $('#selected_siswa_ids').val(selectedIds.join(','));
-
-                // Tampilkan baris-baris siswa yang dipilih dalam tabel
                 $('#selected_siswa_tbody').html(selectedRows);
-
-                // Tampilkan modal distribusi siswa
                 $('#distribusiSiswa').modal('show');
             });
 
