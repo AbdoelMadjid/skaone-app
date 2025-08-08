@@ -58,11 +58,6 @@
                 <div class="col-lg-auto">
                     <button class="btn btn-soft-primary d-none" id="btnStatistik">Statistik</button>
                 </div>
-                {{-- <div class="col-lg-auto">
-                    <button id="btnSimpanMassal" class="btn btn-success mb-3" style="display:none;">
-                        Simpan Kehadiran Massal
-                    </button>
-                </div> --}}
             </div>
         </div>
         <div class="card-body p-1">
@@ -206,110 +201,7 @@
         });
     </script>
 
-    {{-- CEK KEHADIRAN MASSAL DAN MANUAL --}}
-    {{-- <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const container = document.getElementById('containerTableJadwal');
-            const tanggalInput = document.getElementById('inputTanggalKehadiran');
-
-            function toggleKehadiran(td, jamKe, tanggal) {
-                const idJadwal = td.dataset.idJadwal;
-                const idPersonil = td.dataset.idPersonil;
-                const hari = td.dataset.hari;
-
-                td.classList.toggle('bg-primary');
-                td.classList.toggle('text-white');
-
-                fetch("{{ route('kurikulum.datakbm.simpankehadiranguru') }}", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                        },
-                        body: JSON.stringify({
-                            jadwal_mingguan_id: idJadwal,
-                            id_personil: idPersonil,
-                            hari: hari,
-                            jam_ke: jamKe,
-                            tanggal: tanggal
-                        })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        const jumlahCell = document.querySelector(
-                            `.jumlah-kehadiran[data-id="${idPersonil}-${hari}"]`);
-                        const totalHariCell = document.querySelector(`.total-kehadiran[data-hari="${hari}"]`);
-                        const totalJamCell = document.querySelector(
-                            `.jumlah-jam-terisi[data-id="${idPersonil}-${hari}"]`);
-                        const persenCell = document.querySelector(
-                            `.persentase-kehadiran[data-id="${idPersonil}-${hari}"]`);
-                        const totalProsentaseCell = document.querySelector(
-                            `.total-prosentase[data-hari="${hari}"]`);
-
-                        let currentValue = parseInt(jumlahCell.textContent);
-                        let totalHariValue = parseInt(totalHariCell.textContent);
-                        let totalJam = parseInt(totalJamCell.textContent);
-
-                        if (data.status === 'success') {
-                            if (data.action === 'created') {
-                                showToast('success', 'Kehadiran sukses disimpan!');
-                                jumlahCell.textContent = currentValue + 1;
-                                totalHariCell.textContent = totalHariValue + 1;
-                            } else if (data.action === 'deleted') {
-                                showToast('success', 'Kehadiran sukses dihapus!');
-                                jumlahCell.textContent = Math.max(currentValue - 1, 0);
-                                totalHariCell.textContent = Math.max(totalHariValue - 1, 0);
-                            }
-
-                            let newJumlah = parseInt(jumlahCell.textContent);
-                            let newTotalHari = parseInt(totalHariCell.textContent);
-
-                            if (persenCell) persenCell.textContent = totalJam > 0 ?
-                                `${Math.round((newJumlah / totalJam) * 100)} %` : '0 %';
-
-                            if (totalProsentaseCell) {
-                                const totalJadwal = parseInt(totalProsentaseCell.getAttribute(
-                                    'data-total-jadwal'));
-                                totalProsentaseCell.textContent = totalJadwal > 0 ?
-                                    `${Math.round((newTotalHari / totalJadwal) * 100)} %` : '0 %';
-                            }
-                        } else {
-                            showToast('error', 'Gagal menyimpan kehadiran');
-                            td.classList.toggle('bg-primary');
-                            td.classList.toggle('text-white');
-                        }
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        showToast('error', 'Terjadi kesalahan!');
-                        td.classList.toggle('bg-primary');
-                        td.classList.toggle('text-white');
-                    });
-            }
-
-            // Klik massal (th-jam)
-            container.addEventListener('click', function(e) {
-                const th = e.target.closest('.th-jam');
-                if (!th) return;
-
-                const jamKe = th.dataset.jamKe;
-                const tanggal = tanggalInput.value;
-
-                const tds = container.querySelectorAll(
-                    `td[data-jam="${jamKe}"][data-id-jadwal][data-id-personil]`);
-                tds.forEach(td => toggleKehadiran(td, jamKe, tanggal));
-            });
-
-            // Klik manual (cell-kehadiran)
-            container.addEventListener('click', function(e) {
-                const td = e.target.closest('.cell-kehadiran');
-                if (!td) return;
-
-                toggleKehadiran(td, td.dataset.jam, tanggalInput.value);
-            });
-        });
-    </script> --}}
-
+    {{-- CEK KEHADIRAN MASSAL --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const container = document.getElementById('containerTableJadwal');
@@ -413,6 +305,7 @@
         });
     </script>
 
+    {{-- CEK KEHADIRAN MANUAL --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const container = document.getElementById('containerTableJadwal');
