@@ -9,8 +9,6 @@
     <h5>Wali Kelas: {{ $namaWaliKelas }}</h5>
 </div>
 
-
-
 <table class="table table-bordered table-sm text-center align-middle">
     <thead class="table-light">
         <tr>

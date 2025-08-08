@@ -91,10 +91,26 @@ class JadwalPerRombelController extends Controller
 
             foreach ($dataKBMPerRombel as $kbm) {
                 $idGuru = $kbm->id_personil;
+
+                // Hitung total jam yang sudah ditempatkan guru ini di semua rombel untuk mapel ini
+                $jamTerpakai = JadwalMingguan::where('tahunajaran', $tahunAjaran)
+                    ->where('semester', $semester)
+                    ->where('id_personil', $idGuru)
+                    ->where('mata_pelajaran', $kbm->kode_mapel_rombel)
+                    ->count();
+
+                // Total jam mengajar sesuai data KBM
+                $totalJam = $kbm->jamMengajar->jumlah_jam ?? 0;
+
+                // Hitung sisa jam
+                $sisaJam = max($totalJam - $jamTerpakai, 0);
+
                 $mapelPerGuru[$idGuru][] = [
                     'kode_mapel_rombel' => $kbm->kode_mapel_rombel,
                     'mata_pelajaran' => $kbm->mata_pelajaran,
-                    'jumlah_jam' => $kbm->jamMengajar->jumlah_jam ?? null, // ← akses lewat relasi
+                    'jumlah_jam' => $totalJam,
+                    'jam_terpakai' => $jamTerpakai,
+                    'sisa_jam' => $sisaJam,
                 ];
             }
         }

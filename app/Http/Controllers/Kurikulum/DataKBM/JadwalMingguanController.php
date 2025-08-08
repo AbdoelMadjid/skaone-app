@@ -334,18 +334,21 @@ class JadwalMingguanController extends Controller
                 ->withInput();
         }
 
+        // bentrok dengan jadwal sendiri
         if (count($duplikatSendiri) > 0) {
             return redirect()->back()
                 ->with('error', 'Jam ke-' . implode(', ', $duplikatSendiri) . ' di hari ' . $request->hari . ' sudah pernah diisi. Tidak boleh menimpa jadwal sebelumnya.')
                 ->withInput();
         }
 
+        // bentrok dengan guru lain
         if (count($bentrokRombel) > 0) {
             return redirect()->back()
                 ->with('error', 'Rombel ini sudah memiliki guru lain pada jam ke-' . implode(', ', $bentrokRombel) . ' di hari ' . $request->hari . '. Jadwal bentrok.')
                 ->withInput();
         }
 
+        // menempatkan jam melebihi jam yang di miliki guru.
         $kbm = KbmPerRombel::with('jamMengajar')
             ->where('tahunajaran', $request->tahunajaran)
             ->where('ganjilgenap', $request->semester)
@@ -363,9 +366,10 @@ class JadwalMingguanController extends Controller
             ->where('mata_pelajaran', $request->kode_mapel_rombel)
             ->count(); // karena 1 row = 1 jam
 
-        if ($jamTerpakai >= $jumlahJamNgajar) {
+        if (($jamTerpakai + $jumlahJam) > $jumlahJamNgajar) {
             return redirect()->back()
-                ->with('info', "Jumlah jam <strong>$mapel</strong> di <strong>$namaRombel</strong> yang di ampu oleh <strong>$namaGuru</strong><br> sebanyak $jumlahJamNgajar jam sudah terpenuhi.")
+                ->with('info', "Jumlah jam <strong>$mapel</strong> di <strong>$namaRombel</strong> yang diampu oleh <strong>$namaGuru</strong> melebihi batas.
+        Total jam: $jumlahJamNgajar, sudah terpakai: $jamTerpakai, mau ditambah: $jumlahJam.")
                 ->withInput();
         }
 

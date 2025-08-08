@@ -95,7 +95,7 @@
                                             <ul class="list-group mb-2">
                                                 @foreach ($rombels as $rombel)
                                                     <li class="list-group-item list-rombel-item
-                                    {{ request('kode_rombel') == $rombel->kode_rombel ? 'active bg-light-primary' : '' }}"
+                                                        {{ request('kode_rombel') == $rombel->kode_rombel ? 'active bg-light-primary' : '' }}"
                                                         data-tahunajaran="{{ $tahunAjaranAktif }}"
                                                         data-semester="{{ $semesterAktif }}"
                                                         data-kompetensikeahlian="{{ $rombel->id_kk }}"
@@ -126,98 +126,6 @@
     {{--  --}}
 @endsection
 @section('script-bottom')
-    <script>
-        // Function untuk mengecek apakah dropdown rombel harus di-disable atau tidak
-        function checkDisableRombel() {
-            var tahunAjaran = $('#idThnAjaran').val();
-            var kodeKK = $('#idKodeKK').val();
-            var tingKat = $('#idTingkat').val();
-            var semester = $('#idSemester').val();
-
-            // Jika salah satu dari Tahun Ajaran atau Kompetensi Keahlian belum dipilih
-            if (tahunAjaran === '' || semester === '' || kodeKK === '' || tingKat === '') {
-                // Disable dropdown Rombel
-                $('#idRombel').attr('disabled', true);
-                $('#idRombel').empty().append('<option value="all" selected>Rombel</option>'); // Kosongkan pilihan Rombel
-            } else {
-                // Jika sudah dipilih keduanya, enable dropdown Rombel dan muat datanya
-                $('#idRombel').attr('disabled', false);
-                loadRombelData(tahunAjaran, kodeKK, tingKat); // Panggil AJAX untuk load data
-            }
-        }
-
-        // Function untuk load data rombel sesuai pilihan Tahun Ajaran dan Kompetensi Keahlian
-        function loadRombelData(tahunAjaran, kodeKK, tingKat) {
-            $.ajax({
-                url: "{{ route('kurikulum.datakbm.getRombel') }}",
-                type: "GET",
-                data: {
-                    tahun_ajaran: tahunAjaran,
-                    kode_kk: kodeKK,
-                    tingkat: tingKat
-                },
-                success: function(data) {
-                    var rombelSelect = $('#idRombel');
-                    var selectedKodeRombel =
-                        "{{ request()->get('kode_rombel') ?? '' }}"; // Ambil dari request (blade)
-
-                    rombelSelect.empty();
-                    rombelSelect.append('<option value="all">Pilih Rombel</option>');
-
-                    if (Object.keys(data).length > 0) {
-                        $.each(data, function(key, value) {
-                            const isSelected = key === selectedKodeRombel ? 'selected' : '';
-                            rombelSelect.append('<option value="' + key + '" ' + isSelected + '>' +
-                                value + '</option>');
-                        });
-                    } else {
-                        rombelSelect.append('<option value="none">Tidak ada rombel tersedia</option>');
-                    }
-
-                    // Re-enable select
-                    rombelSelect.prop('disabled', false);
-                },
-                error: function(xhr) {
-                    console.error('Error pada AJAX:', xhr.responseText);
-                }
-            });
-        }
-
-
-        // Inisialisasi DataTable
-        $(document).ready(function() {
-
-            // Event listener ketika dropdown Tahun Ajaran atau Kompetensi Keahlian berubah
-            $('#idThnAjaran, #idSemester, #idKodeKK, #idTingkat').on('change', function() {
-                checkDisableRombel(); // Panggil fungsi untuk mengecek apakah Rombel harus di-disable
-            });
-
-            // Cek status Rombel saat halaman pertama kali dimuat
-            checkDisableRombel();
-
-            $('#btn-tampil-jadwal').on('click', function() {
-                // Cek apakah semua select sudah dipilih
-                if ($('#idThnAjaran').val() &&
-                    $('#idSemester').val() &&
-                    $('#idKodeKK').val() &&
-                    $('#idTingkat').val() &&
-                    $('#idRombel').val() &&
-                    $('#idRombel').val() !== 'all' &&
-                    $('#idRombel').val() !== 'none') {
-
-                    // Submit form
-                    $('#formRombel').submit();
-                } else {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Lengkapi Filter',
-                        text: 'Silakan lengkapi semua pilihan filter terlebih dahulu!',
-                    });
-                }
-            });
-
-        });
-    </script>
     <script>
         document.getElementById('idRombelAuto').addEventListener('change', function() {
             const selected = this.options[this.selectedIndex];
@@ -332,40 +240,38 @@
         const mapelPerGuru = @json($mapelPerGuru);
 
         $('#modalGuru').on('change', function() {
-            const guruId = $(this).val();
+            const idGuru = $(this).val();
             const mapelSelect = $('#modalMapel');
-            const jumlahJamSelect = $('#jumlahJamSelect');
 
-            // Reset dulu
             mapelSelect.empty().append('<option value="">-- Pilih Mata Pelajaran --</option>');
-            mapelSelect.prop('disabled', true);
-            jumlahJamSelect.val('').prop('disabled', true);
 
-            // Cek dan isi mapel
-            if (guruId && mapelPerGuru[guruId]) {
-                const daftarMapel = mapelPerGuru[guruId];
-
-                daftarMapel.forEach(item => {
+            if (idGuru && mapelPerGuru[idGuru]) {
+                mapelPerGuru[idGuru].forEach(item => {
                     mapelSelect.append(
-                        `<option value="${item.kode_mapel_rombel}" data-jumlah-jam="${item.jumlah_jam}">${item.mata_pelajaran}</option>`
+                        `<option value="${item.kode_mapel_rombel}"
+                         data-jumlah-jam="${item.jumlah_jam}"
+                         data-sisa-jam="${item.sisa_jam}">
+                    ${item.mata_pelajaran} (Sisa: ${item.sisa_jam})
+                </option>`
                     );
                 });
-
                 mapelSelect.prop('disabled', false);
+            } else {
+                mapelSelect.prop('disabled', true);
             }
         });
 
-        // Isi otomatis jumlah jam saat mapel dipilih
         $('#modalMapel').on('change', function() {
-            const selectedOption = $(this).find('option:selected');
-            const jumlahJam = selectedOption.data('jumlah-jam');
+            const sisaJam = $(this).find(':selected').data('sisa-jam');
+            const jumlahJamSelect = $('#jumlahJamSelect');
 
-            if (jumlahJam) {
-                $('#jumlahJamSelect').val(jumlahJam).prop('disabled', false);
+            if (sisaJam > 0) {
+                jumlahJamSelect.val(sisaJam).prop('disabled', false);
             } else {
-                $('#jumlahJamSelect').val('').prop('disabled', true);
+                jumlahJamSelect.val('').prop('disabled', true);
             }
         });
     </script>
+
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection
