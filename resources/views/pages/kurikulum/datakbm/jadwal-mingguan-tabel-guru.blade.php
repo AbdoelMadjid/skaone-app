@@ -50,12 +50,12 @@
                                 color: {{ $isUpacara || $isKegiatanInsidentil ? 'white' : $textColor }};
                                 cursor:pointer;">
                             @if ($isUpacara)
-                                <strong>UPACARA BENDERA</strong>
+                                <strong class="fs-12 fw-semibold">UPACARA BENDERA</strong>
                             @elseif ($isKegiatanInsidentil)
-                                <strong>KEGIATAN INSIDENTIL</strong>
+                                <strong class="fs-12 fw-semibold">KEGIATAN INSIDENTIL</strong>
                             @elseif ($cell)
-                                <div class="fw-semibold">{{ $cell['mapel'] }}</div>
-                                <div class="fs-14">{{ $cell['rombel'] }}</div>
+                                <div class="fs-24 fw-semibold">{{ $cell['rombel'] }}</div>
+                                <div class="fs-11">{{ $cell['mapel'] }}</div>
                             @else
                                 <span class="text-muted">-</span>
                             @endif
