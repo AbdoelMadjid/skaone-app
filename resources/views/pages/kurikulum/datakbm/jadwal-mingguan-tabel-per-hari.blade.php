@@ -87,12 +87,10 @@
                     <table class="table table-bordered table-striped">
                         <tbody>
                             <tr>
-                                <th style="width: 50%">Tanggal</th>
-                                <td id="statTanggal"></td>
-                            </tr>
-                            <tr>
-                                <th>Hari</th>
-                                <td id="statHari"></td>
+                                <th style="width: 50%">Hari, Tanggal</th>
+                                <td>
+                                    <span id="statHari"></span>, <span id="statTanggal"></span>
+                                </td>
                             </tr>
                             <tr>
                                 <th>Total Jam</th>
@@ -267,13 +265,13 @@
                             let newTotalHari = parseInt(totalHariCell.textContent);
 
                             if (persenCell) persenCell.textContent = totalJam > 0 ?
-                                `${Math.round((newJumlah / totalJam) * 100)}%` : '0%';
+                                `${Math.round((newJumlah / totalJam) * 100)} %` : '0 %';
 
                             if (totalProsentaseCell) {
                                 const totalJadwal = parseInt(totalProsentaseCell.getAttribute(
                                     'data-total-jadwal'));
                                 totalProsentaseCell.textContent = totalJadwal > 0 ?
-                                    `${Math.round((newTotalHari / totalJadwal) * 100)}%` : '0%';
+                                    `${Math.round((newTotalHari / totalJadwal) * 100)} %` : '0 %';
                             }
                         } else {
                             showToast('error', 'Gagal menyimpan kehadiran');
@@ -344,14 +342,14 @@
                 // Ambil prosentase
                 const prosentaseTidakHadirEl = document.querySelector(
                     `tfoot .total-prosentase[data-hari="${hari}"]`);
-                const prosentaseTidakHadir = prosentaseTidakHadirEl?.textContent.trim() || '0%';
+                const prosentaseTidakHadir = prosentaseTidakHadirEl?.textContent.trim() || '0 %';
 
                 // Hitung tidak hadir
                 const jamTidakHadir = totalJam - jamHadir;
 
                 // Tambahkan parsing angka
-                const persenAngka = parseFloat(prosentaseTidakHadir.replace('%', '')) || 0;
-                const prosentaseHadir = (100 - persenAngka) + '%';
+                const persenAngka = parseFloat(prosentaseTidakHadir.replace(' %', '')) || 0;
+                const prosentaseHadir = (100 - persenAngka) + ' %';
 
                 // Isi data ke modal
                 document.getElementById('statTanggal').textContent = tanggal ? formatTanggalIndonesia(

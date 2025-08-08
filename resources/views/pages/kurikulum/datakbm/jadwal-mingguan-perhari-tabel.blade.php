@@ -88,7 +88,7 @@
                     @endphp
                     <td class="text-center fw-bold bg-danger-subtle persentase-kehadiran"
                         data-id="{{ $gid }}-{{ $hari }}">
-                        {{ $persentase }}%
+                        {{ $persentase }} %
                     </td>
                 </tr>
             @endforeach
@@ -120,7 +120,7 @@
                         $totalHadir = $semuaKehadiran->count();
                         $persen = $totalJadwal > 0 ? round(($totalHadir / $totalJadwal) * 100) : 0;
                     @endphp
-                    {{ $persen }}%
+                    {{ $persen }} %
                 </th>
             </tr>
         </tfoot>
