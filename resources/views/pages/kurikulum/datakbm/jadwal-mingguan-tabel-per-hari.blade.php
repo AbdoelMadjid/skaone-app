@@ -207,7 +207,7 @@
     </script>
 
     {{-- CEK KEHADIRAN MASSAL DAN MANUAL --}}
-    <script>
+    {{-- <script>
         document.addEventListener('DOMContentLoaded', function() {
             const container = document.getElementById('containerTableJadwal');
             const tanggalInput = document.getElementById('inputTanggalKehadiran');
@@ -308,8 +308,215 @@
                 toggleKehadiran(td, td.dataset.jam, tanggalInput.value);
             });
         });
+    </script> --}}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('containerTableJadwal');
+            const tanggalInput = document.getElementById('inputTanggalKehadiran');
+
+            container.addEventListener('click', function(e) {
+                const th = e.target.closest('.th-jam');
+                if (!th) return;
+
+                const jamKe = th.dataset.jamKe;
+                const tanggal = tanggalInput.value;
+
+                // Ambil semua cell di kolom ini
+                const tds = container.querySelectorAll(
+                    `td[data-jam="${jamKe}"][data-id-jadwal][data-id-personil]`
+                );
+
+                let dataArray = [];
+                tds.forEach(td => {
+                    td.classList.toggle('bg-primary');
+                    td.classList.toggle('text-white');
+
+                    dataArray.push({
+                        id_jadwal: td.dataset.idJadwal,
+                        id_personil: td.dataset.idPersonil,
+                        hari: td.dataset.hari
+                    });
+                });
+
+                fetch("{{ route('kurikulum.datakbm.simpankehadirangurumassal') }}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                        },
+                        body: JSON.stringify({
+                            jam_ke: jamKe,
+                            tanggal: tanggal,
+                            data: dataArray
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === 'success' && Array.isArray(data.results)) {
+                            data.results.forEach(({
+                                id_personil,
+                                hari,
+                                action
+                            }) => {
+                                const jumlahCell = document.querySelector(
+                                    `.jumlah-kehadiran[data-id="${id_personil}-${hari}"]`);
+                                const totalHariCell = document.querySelector(
+                                    `.total-kehadiran[data-hari="${hari}"]`);
+                                const totalJamCell = document.querySelector(
+                                    `.jumlah-jam-terisi[data-id="${id_personil}-${hari}"]`);
+                                const persenCell = document.querySelector(
+                                    `.persentase-kehadiran[data-id="${id_personil}-${hari}"]`
+                                );
+                                const totalProsentaseCell = document.querySelector(
+                                    `.total-prosentase[data-hari="${hari}"]`);
+
+                                let currentValue = parseInt(jumlahCell.textContent);
+                                let totalHariValue = parseInt(totalHariCell.textContent);
+                                let totalJam = parseInt(totalJamCell.textContent);
+
+                                if (action === 'created') {
+                                    jumlahCell.textContent = currentValue + 1;
+                                    totalHariCell.textContent = totalHariValue + 1;
+                                } else {
+                                    jumlahCell.textContent = Math.max(currentValue - 1, 0);
+                                    totalHariCell.textContent = Math.max(totalHariValue - 1, 0);
+                                }
+
+                                let newJumlah = parseInt(jumlahCell.textContent);
+                                let newTotalHari = parseInt(totalHariCell.textContent);
+
+                                if (persenCell) persenCell.textContent =
+                                    totalJam > 0 ?
+                                    `${Math.round((newJumlah / totalJam) * 100)}%` : '0%';
+
+                                if (totalProsentaseCell) {
+                                    const totalJadwal = parseInt(totalProsentaseCell
+                                        .getAttribute('data-total-jadwal'));
+                                    totalProsentaseCell.textContent =
+                                        totalJadwal > 0 ?
+                                        `${Math.round((newTotalHari / totalJadwal) * 100)}%` :
+                                        '0%';
+                                }
+                            });
+
+                            showToast('success', 'Kehadiran massal berhasil diupdate!');
+                        } else {
+                            showToast('error', 'Gagal menyimpan massal');
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        showToast('error', 'Terjadi kesalahan!');
+                    });
+            });
+        });
     </script>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('containerTableJadwal');
+
+            container.addEventListener('click', function(e) {
+                const target = e.target.closest('.cell-kehadiran');
+                if (!target) return;
+
+                const idJadwal = target.dataset.idJadwal;
+                const idPersonil = target.dataset.idPersonil;
+                const hari = target.dataset.hari;
+                const jam = target.dataset.jam;
+                const tanggal = document.getElementById('inputTanggalKehadiran').value;
+
+                // Toggle warna dulu (optimis)
+                target.classList.toggle('bg-primary');
+                target.classList.toggle('text-white');
+
+                fetch("{{ route('kurikulum.datakbm.simpankehadiranguru') }}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                        },
+                        body: JSON.stringify({
+                            jadwal_mingguan_id: idJadwal,
+                            id_personil: idPersonil,
+                            hari: hari,
+                            jam_ke: jam,
+                            tanggal: tanggal // ← penting
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        const jumlahCell = document.querySelector(
+                            `.jumlah-kehadiran[data-id="${idPersonil}-${hari}"]`);
+                        const totalHariCell = document.querySelector(
+                            `.total-kehadiran[data-hari="${hari}"]`);
+                        const totalJamCell = document.querySelector(
+                            `.jumlah-jam-terisi[data-id="${idPersonil}-${hari}"]`);
+                        const persenCell = document.querySelector(
+                            `.persentase-kehadiran[data-id="${idPersonil}-${hari}"]`);
+                        const totalProsentaseCell = document.querySelector(
+                            `.total-prosentase[data-hari="${hari}"]`);
+
+                        let currentValue = parseInt(jumlahCell.textContent);
+                        let totalHariValue = parseInt(totalHariCell.textContent);
+                        let totalJam = parseInt(totalJamCell.textContent);
+
+                        if (data.status === 'success') {
+                            if (data.action === 'created') {
+                                showToast('success', 'Kehadiran sukses disimpan!');
+                                jumlahCell.textContent = currentValue + 1;
+                                totalHariCell.textContent = totalHariValue + 1;
+
+                                let persen = totalJam > 0 ? Math.round(((currentValue + 1) / totalJam) *
+                                    100) : 0;
+                                if (persenCell) persenCell.textContent = `${persen}%`;
+
+                                if (totalProsentaseCell) {
+                                    const totalJadwal = parseInt(totalProsentaseCell.getAttribute(
+                                        'data-total-jadwal'));
+                                    const totalHadirValue = parseInt(totalHariCell.textContent);
+                                    const persenTotal = totalJadwal > 0 ? Math.round((totalHadirValue /
+                                        totalJadwal) * 100) : 0;
+                                    totalProsentaseCell.textContent = `${persenTotal}%`;
+                                }
+
+                            } else if (data.action === 'deleted') {
+                                showToast('success', 'Kehadiran sukses dihapus!');
+                                let newJumlah = currentValue > 0 ? currentValue - 1 : 0;
+                                let newTotalHari = totalHariValue > 0 ? totalHariValue - 1 : 0;
+
+                                jumlahCell.textContent = newJumlah;
+                                totalHariCell.textContent = newTotalHari;
+
+                                let persen = totalJam > 0 ? Math.round((newJumlah / totalJam) * 100) :
+                                    0;
+                                if (persenCell) persenCell.textContent = `${persen}%`;
+
+                                if (totalProsentaseCell) {
+                                    const totalJadwal = parseInt(totalProsentaseCell.getAttribute(
+                                        'data-total-jadwal'));
+                                    const totalHadirValue = parseInt(totalHariCell.textContent);
+                                    const persenTotal = totalJadwal > 0 ? Math.round((totalHadirValue /
+                                        totalJadwal) * 100) : 0;
+                                    totalProsentaseCell.textContent = `${persenTotal}%`;
+                                }
+                            }
+                        } else {
+                            showToast('error', 'Gagal menyimpan kehadiran');
+                            target.classList.toggle('bg-primary');
+                            target.classList.toggle('text-white');
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        showToast('error', 'Terjadi kesalahan!');
+                        target.classList.toggle('bg-primary');
+                        target.classList.toggle('text-white');
+                    });
+            });
+        });
+    </script>
     {{-- TAMPILKAN STATISTIK KEHADIRAN --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {

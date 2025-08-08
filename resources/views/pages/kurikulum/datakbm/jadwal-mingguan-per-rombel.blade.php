@@ -42,103 +42,13 @@
                 </div>
             </div>
         </div>
-        {{--
-        <div class="card-body p-1">
-             <form method="GET" id="formRombel">
-                <div class="row g-3">
-                    <div class="col-lg">
-                    </div>
-                     <div class="col-lg-auto">
-                        <div>
-                            <select class="form-select form-select-sm" name="tahunajaran" id="idThnAjaran" type='hidden'>
-                                <option value="" disabled {{ request('tahunajaran') ? '' : 'selected' }}>Pilih Tahun
-                                    Ajaran</option>
-                                @foreach ($tahunAjaranOptions as $thnajar)
-                                    <option value="{{ $thnajar }}"
-                                        {{ request('tahunajaran', $tahunAjaranAktif) == $thnajar ? 'selected' : '' }}>
-                                        {{ $thnajar }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-auto">
-                        <div>
-                            <select class="form-select form-select-sm" name="semester" id="idSemester">
-                                <option value="" disabled {{ request('semester') ? '' : 'selected' }}>Pilih Semester
-                                </option>
-                                <option value="Ganjil"
-                                    {{ request('semester', $semesterAktif) == 'Ganjil' ? 'selected' : '' }}>Ganjil</option>
-                                <option value="Genap"
-                                    {{ request('semester', $semesterAktif) == 'Genap' ? 'selected' : '' }}>Genap</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-auto">
-                        <div>
-                            <select class="form-select form-select-sm" name="kompetensikeahlian" id="idKodeKK">
-                                <option value="" selected>Pilih Kompetensi Keahlian</option>
-                                @foreach ($kompetensiKeahlianOptions as $id => $kode_kk)
-                                    <option value="{{ $id }}"
-                                        {{ request('kompetensikeahlian') == $id ? 'selected' : '' }}>
-                                        {{ $kode_kk }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-auto">
-                        <div>
-                            <select class="form-select form-select-sm" name="tingkat" id="idTingkat">
-                                <option value="" selected>Pilih Tingkat</option>
-                                <option value="10" {{ request('tingkat') == '10' ? 'selected' : '' }}>10</option>
-                                <option value="11" {{ request('tingkat') == '11' ? 'selected' : '' }}>11</option>
-                                <option value="12" {{ request('tingkat') == '12' ? 'selected' : '' }}>12</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-auto me-2">
-                        <div>
-                            <select class="form-select form-select-sm" name="kode_rombel" id="idRombel" disabled>
-                                <option value="" selected>Pilih Rombel</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-auto me-2">
-                        <button type="button" id="btn-tampil-jadwal"
-                            class="btn btn-soft-primary btn-sm w-100 mb-4">Tampilkan</button>
-                    </div> --}}
-        {{-- <div class="col-lg-auto me-2">
-                        <select class="form-select form-select-sm" id="idRombelAuto" name="kode_rombel">
-                            <option value="">Pilih Rombel</option>
-                            @foreach ($rombonganBelajarGrouped as $namaKK => $tingkatGrouped)
-                                @foreach ($tingkatGrouped as $tingkat => $rombels)
-                                    <optgroup label="{{ $namaKK }} - Tingkat {{ $tingkat }}">
-                                        @foreach ($rombels as $rombel)
-                                            <option value="{{ $rombel->kode_rombel }}"
-                                                data-tahunajaran="{{ $tahunAjaranAktif }}"
-                                                data-semester="{{ $semesterAktif }}"
-                                                data-kompetensikeahlian="{{ $rombel->id_kk }}"
-                                                data-tingkat="{{ $rombel->tingkat }}"
-                                                {{ request('kode_rombel') == $rombel->kode_rombel ? 'selected' : '' }}>
-                                                {{ $rombel->rombel }}
-                                            </option>
-                                        @endforeach
-                                    </optgroup>
-                                @endforeach
-                            @endforeach
-                        </select>
-                    </div>
-            </form>
-        </div>
-        --}}
-
         <div class="row">
-            <div class="col-md-10 p-2">
+            <div class="col-md-9 p-2">
                 @include('pages.kurikulum.datakbm.jadwal-mingguan-tabel-rombel')
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="card-body p-2">
-                    <x-heading-title>Pilih Rombongan Belajar</x-heading-title>
+                    <x-heading-title>Pilih Rombel</x-heading-title>
                     <br>
                     <select class="form-select form-select-sm mb-4" id="idRombelAuto" name="kode_rombel">
                         <option value="">Pilih Rombel</option>

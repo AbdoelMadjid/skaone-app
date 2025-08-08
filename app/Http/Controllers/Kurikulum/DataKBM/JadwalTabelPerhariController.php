@@ -128,4 +128,53 @@ class JadwalTabelPerhariController extends Controller
 
         return response()->json(['html' => $html]);
     }
+
+    public function simpanMassal(Request $request)
+    {
+        $validated = $request->validate([
+            'jam_ke' => 'required|integer|min:1|max:13',
+            'tanggal' => 'required|date',
+            'data' => 'required|array',
+            'data.*.id_jadwal' => 'required|exists:jadwal_mingguans,id',
+            'data.*.id_personil' => 'required|string',
+            'data.*.hari' => 'required|string',
+        ]);
+
+        $results = [];
+
+        foreach ($validated['data'] as $item) {
+            $existing = KehadiranGuruHarian::where([
+                'jadwal_mingguan_id' => $item['id_jadwal'],
+                'id_personil' => $item['id_personil'],
+                'hari' => $item['hari'],
+                'tanggal' => $validated['tanggal'],
+                'jam_ke' => $validated['jam_ke'],
+            ])->first();
+
+            if ($existing) {
+                $existing->delete();
+                $action = 'deleted';
+            } else {
+                KehadiranGuruHarian::create([
+                    'jadwal_mingguan_id' => $item['id_jadwal'],
+                    'id_personil' => $item['id_personil'],
+                    'hari' => $item['hari'],
+                    'tanggal' => $validated['tanggal'],
+                    'jam_ke' => $validated['jam_ke'],
+                ]);
+                $action = 'created';
+            }
+
+            $results[] = [
+                'id_personil' => $item['id_personil'],
+                'hari' => $item['hari'],
+                'action' => $action
+            ];
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'results' => $results
+        ]);
+    }
 }

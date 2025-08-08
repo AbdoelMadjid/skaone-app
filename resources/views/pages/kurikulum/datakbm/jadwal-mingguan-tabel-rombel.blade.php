@@ -37,7 +37,7 @@
                 </tr>
             @else
                 <tr>
-                    <td style="width:100px;">
+                    <td style="width:150px;">
                         <strong class='fs-24'>{{ $jam }}</strong><br><small>{{ $waktu }}</small>
                     </td>
                     @foreach ($hariList as $hari)
@@ -58,12 +58,12 @@
                                    color: {{ $isUpacara || $isKegiatanInsidentil ? 'white' : $textColor }};
                                    cursor:pointer;">
                             @if ($isUpacara)
-                                <strong>UPACARA BENDERA</strong>
+                                <strong class="fs-12 fw-semibold">UPACARA BENDERA</strong>
                             @elseif ($isKegiatanInsidentil)
-                                <strong>KEGIATAN INSIDENTIL</strong>
+                                <strong class="fs-12 fw-semibold">KEGIATAN INSIDENTIL</strong>
                             @elseif ($cell)
-                                <div class="fw-semibold">{{ $cell['mapel'] }}</div>
-                                <div class="fs-14">{{ $cell['guru'] }}</div>
+                                <div class="fs-12 fw-semibold">{{ $cell['mapel'] }}</div>
+                                <div class="fs-10">{{ $cell['guru'] }}</div>
                             @else
                                 <span class="text-muted">-</span>
                             @endif
