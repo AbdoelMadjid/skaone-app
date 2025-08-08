@@ -512,6 +512,8 @@ class PesertaDidikRombelController extends Controller
 
         // Filter siswa yang belum terdaftar pada tahun ajaran tertentu dan urutkan berdasarkan ID
         $siswaBelumTerdaftar = PesertaDidik::where('kode_kk', $kode_kk)
+            ->where('status', 'Aktif')
+            ->where('thnajaran_masuk', $tahun_ajaran)
             ->whereNotIn('nis', $siswaTerdaftar)
             ->orderBy('id') // ← Ini yang mengurutkan berdasarkan kolom `id`
             ->get();
