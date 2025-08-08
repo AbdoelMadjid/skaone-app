@@ -64,18 +64,20 @@
                             {{ $rombel ? 'cell-kehadiran' : '' }}
                             {{ $kehadiranAda ? 'bg-primary text-white' : '' }}
                             {{ $isIstirahat ? 'bg-danger text-white' : '' }}
-                            {{ $customText ? 'bg-info text-white fw-bold' : '' }}"
+                            {{ $customText ? 'bg-info text-white fw-bold' : '' }}
+                            {{ (!$rombel || $rombel === '-') && !$kehadiranAda && !$isIstirahat && !$customText ? 'bg-danger-subtle' : '' }}"
                             @if ($rombel && !$isIstirahat && !$customText) data-id-jadwal="{{ $match->id }}"
                                 data-id-personil="{{ $gid }}"
                                 data-hari="{{ $hari }}"
                                 data-jam="{{ $jam }}"
                                 style="cursor:pointer" @endif>
-                            {{ $customText ?? ($isIstirahat ? 'Istirahat' : $rombel ?? '-') }}
+                            {{ $customText ?? ($isIstirahat ? 'Istirahat' : $rombel ?? '') }}
                         </td>
                     @endforeach
 
-                    <td class="text-center">{{ $jumlahKelasPerGuru[$gid] }}</td>
-                    <td class="text-center jumlah-jam-terisi" data-id="{{ $gid }}-{{ $hari }}">
+                    <td class="text-center fw-bold bg-info-subtle">{{ $jumlahKelasPerGuru[$gid] }}</td>
+                    <td class="text-center fw-bold bg-info-subtle jumlah-jam-terisi"
+                        data-id="{{ $gid }}-{{ $hari }}">
                         {{ $jumlahJamTerisi[$gid] }}
                     </td>
                     <td class="text-center fw-bold bg-info-subtle jumlah-kehadiran"

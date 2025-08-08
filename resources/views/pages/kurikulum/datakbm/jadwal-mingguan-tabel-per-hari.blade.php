@@ -388,15 +388,15 @@
 
                                 if (persenCell) persenCell.textContent =
                                     totalJam > 0 ?
-                                    `${Math.round((newJumlah / totalJam) * 100)}%` : '0%';
+                                    `${Math.round((newJumlah / totalJam) * 100)} %` : '0 %';
 
                                 if (totalProsentaseCell) {
                                     const totalJadwal = parseInt(totalProsentaseCell
                                         .getAttribute('data-total-jadwal'));
                                     totalProsentaseCell.textContent =
                                         totalJadwal > 0 ?
-                                        `${Math.round((newTotalHari / totalJadwal) * 100)}%` :
-                                        '0%';
+                                        `${Math.round((newTotalHari / totalJadwal) * 100)} %` :
+                                        '0 %';
                                 }
                             });
 
@@ -470,7 +470,7 @@
 
                                 let persen = totalJam > 0 ? Math.round(((currentValue + 1) / totalJam) *
                                     100) : 0;
-                                if (persenCell) persenCell.textContent = `${persen}%`;
+                                if (persenCell) persenCell.textContent = `${persen} %`;
 
                                 if (totalProsentaseCell) {
                                     const totalJadwal = parseInt(totalProsentaseCell.getAttribute(
@@ -478,7 +478,7 @@
                                     const totalHadirValue = parseInt(totalHariCell.textContent);
                                     const persenTotal = totalJadwal > 0 ? Math.round((totalHadirValue /
                                         totalJadwal) * 100) : 0;
-                                    totalProsentaseCell.textContent = `${persenTotal}%`;
+                                    totalProsentaseCell.textContent = `${persenTotal} %`;
                                 }
 
                             } else if (data.action === 'deleted') {
@@ -491,7 +491,7 @@
 
                                 let persen = totalJam > 0 ? Math.round((newJumlah / totalJam) * 100) :
                                     0;
-                                if (persenCell) persenCell.textContent = `${persen}%`;
+                                if (persenCell) persenCell.textContent = `${persen} %`;
 
                                 if (totalProsentaseCell) {
                                     const totalJadwal = parseInt(totalProsentaseCell.getAttribute(
@@ -499,7 +499,7 @@
                                     const totalHadirValue = parseInt(totalHariCell.textContent);
                                     const persenTotal = totalJadwal > 0 ? Math.round((totalHadirValue /
                                         totalJadwal) * 100) : 0;
-                                    totalProsentaseCell.textContent = `${persenTotal}%`;
+                                    totalProsentaseCell.textContent = `${persenTotal} %`;
                                 }
                             }
                         } else {
@@ -517,6 +517,7 @@
             });
         });
     </script>
+
     {{-- TAMPILKAN STATISTIK KEHADIRAN --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
