@@ -60,7 +60,7 @@
                                 $customText = 'Insidentil';
                             }
                         @endphp
-                        <td class="fs-10 text-center
+                        <td class="fs-10 text-center fw-bold
                             {{ $rombel ? 'cell-kehadiran' : '' }}
                             {{ $kehadiranAda ? 'bg-primary text-white' : '' }}
                             {{ $isIstirahat ? 'bg-danger text-white' : '' }}
