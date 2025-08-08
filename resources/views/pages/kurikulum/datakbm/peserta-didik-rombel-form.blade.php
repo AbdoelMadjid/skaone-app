@@ -56,28 +56,18 @@
     </div>
 </x-form.modal>
 <script>
-    var multiSelectOptGroup = document.getElementById("multiselect-optiongroup");
-    if (multiSelectOptGroup) {
-        multi(multiSelectOptGroup, {
+    // Fungsi inisialisasi multi select
+    function initMultiSelect() {
+        multi(document.getElementById("multiselect-optiongroup"), {
             enable_search: true
         });
     }
-
-    document.getElementById('nis').addEventListener('change', function() {
-        document.getElementById('multiselect-optiongroup').disabled = this.value ? true : false;
-    });
-
-    document.getElementById('multiselect-optiongroup').addEventListener('change', function() {
-        document.getElementById('nis').disabled = this.value.length >
-            0; // Disable 'nis' if any option is selected
-    });
 
     function updateRombel() {
         var tahunajaran = $('#tahun_ajaran').val();
         var kode_kk = $('#kode_kk').val();
         var tingkat = $('#tingkat').val();
 
-        // Hanya melakukan request jika tahun ajaran, kode_kk, dan tingkat terpilih
         if (tahunajaran && kode_kk && tingkat) {
             $.ajax({
                 url: "{{ route('kurikulum.datakbm.get-rombonganbelajar') }}",
@@ -91,61 +81,65 @@
                     $('#kode_rombel').empty();
                     $('#kode_rombel').append('<option value="" selected>Pilih Rombel</option>');
 
-                    // Cek apakah data tidak kosong
                     if (data && Object.keys(data).length > 0) {
                         $.each(data, function(index, item) {
                             $('#kode_rombel').append('<option value="' + index + '">' + item +
                                 '</option>');
                         });
-                        $('#rombel_input').val(''); // Bersihkan input Rombel jika ada data
+                        $('#rombel_input').val('');
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function(xhr) {
                     console.log('Error:', xhr.responseText);
                 }
             });
         } else {
-            $('#kode_rombel').empty();
-            $('#kode_rombel').append('<option value="" selected>Pilih Rombel</option>');
+            $('#kode_rombel').empty().append('<option value="" selected>Pilih Rombel</option>');
             $('#rombel_input').val('');
         }
     }
 
-    // Inisialisasi DataTable
     $(document).ready(function() {
-        // Event listener untuk select elements
-        $('#tahun_ajaran, #kode_kk, #tingkat').on('change', updateRombel);
-
+        // Inisialisasi pertama kali saat modal dibuka
         $('#modal_action').on('shown.bs.modal', function() {
             updateRombel();
         });
 
-        // Saat opsi Rombel dipilih, tampilkan nama Rombel di input text
-        $('#kode_rombel').on('change', function() {
-            var selectedRombel = $(this).find('option:selected').text();
-            $('#rombel_input').val(selectedRombel); // Set nama rombel ke input text
+        // Trigger ulang kode_kk saat tahun ajaran berubah agar siswa muncul
+        $('#tahun_ajaran').on('change', function() {
+            $('#kode_kk').trigger('change');
         });
 
-        $('#kode_kk').change(function() {
+        // Saat tingkat, tahun ajaran, atau kode_kk berubah, update pilihan rombel
+        $('#tahun_ajaran, #kode_kk, #tingkat').on('change', updateRombel);
+
+        // Update input nama rombel saat kode rombel dipilih
+        $('#kode_rombel').on('change', function() {
+            var selectedRombel = $(this).find('option:selected').text();
+            $('#rombel_input').val(selectedRombel);
+        });
+
+        // Load peserta didik saat kode_kk (dan tahun ajaran) dipilih
+        $('#kode_kk').on('change', function() {
             var kode_kk = $(this).val();
-            var tahun_ajaran = $('#tahun_ajaran').val(); // Pastikan tahun ajaran diambil dengan benar
+            var tahun_ajaran = $('#tahun_ajaran').val();
 
             if (kode_kk && tahun_ajaran) {
                 $.ajax({
                     url: '/kurikulum/datakbm/get-peserta-didik/' + kode_kk,
                     type: 'GET',
                     data: {
-                        tahun_ajaran: tahun_ajaran // Pastikan tahun ajaran dikirim sebagai parameter
+                        tahun_ajaran: tahun_ajaran
                     },
                     dataType: 'json',
                     success: function(data) {
-                        $('#multiselect-optiongroup').empty(); // Kosongkan opsi sebelumnya
+                        $('#multiselect-optiongroup').empty().prop('disabled', false);
 
                         if (data && data.length > 0) {
                             var groupedData = {};
+
                             $.each(data, function(index, peserta) {
-                                var groupKey = peserta
-                                    .kode_kk; // Atau gunakan field yang sesuai untuk pengelompokan
+                                var groupKey = peserta.kode_kk || 'Tanpa Grup';
                                 if (!groupedData[groupKey]) {
                                     groupedData[groupKey] = [];
                                 }
@@ -156,27 +150,44 @@
                                 var optgroup = $('<optgroup>').attr('label', key);
                                 $.each(pesertas, function(i, peserta) {
                                     optgroup.append(
-                                        $('<option>').val(peserta.nis)
+                                        $('<option>')
+                                        .val(peserta.nis)
                                         .text(peserta.nis + ' - ' +
                                             peserta.nama_lengkap)
                                     );
                                 });
                                 $('#multiselect-optiongroup').append(optgroup);
                             });
+
+                            // Re-inisialisasi plugin multi setelah option selesai dimuat
+                            initMultiSelect();
                         } else {
                             $('#multiselect-optiongroup').append(
                                 '<option value="" disabled>Tidak ada siswa ditemukan</option>'
                             );
                         }
                     },
-                    error: function(xhr, status, error) {
+                    error: function(xhr) {
                         console.log('Error:', xhr.responseText);
                     }
                 });
             } else {
-                $('#multiselect-optiongroup').empty();
-                $('#multiselect-optiongroup').append('<option value="" disabled>Pilih Siswa</option>');
+                $('#multiselect-optiongroup').empty()
+                    .append('<option value="" disabled>Pilih Siswa</option>')
+                    .prop('disabled', false);
             }
         });
+
+        // Interaksi antara select satuan (nis) dan multiple (daftarsiswa[])
+        document.getElementById('nis').addEventListener('change', function() {
+            document.getElementById('multiselect-optiongroup').disabled = this.value ? true : false;
+        });
+
+        document.getElementById('multiselect-optiongroup').addEventListener('change', function() {
+            document.getElementById('nis').disabled = this.value.length > 0;
+        });
+
+        // Inisialisasi awal untuk select multiple
+        initMultiSelect();
     });
 </script>

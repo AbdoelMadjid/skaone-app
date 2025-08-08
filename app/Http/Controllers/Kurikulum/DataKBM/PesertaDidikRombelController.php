@@ -505,21 +505,15 @@ class PesertaDidikRombelController extends Controller
         // Ambil data tahun ajaran dari request
         $tahun_ajaran = $request->input('tahun_ajaran');
 
-        // Ambil semua siswa yang memiliki kode_kk sesuai
-        $peserta_didiks = PesertaDidik::where('kode_kk', $kode_kk)->get();
-
         // Ambil NIS siswa yang sudah terdaftar di rombel untuk tahun ajaran yang dipilih
         $siswaTerdaftar = PesertaDidikRombel::where('tahun_ajaran', $tahun_ajaran)
             ->pluck('nis')
             ->toArray();
 
-        // Filter siswa yang belum terdaftar pada tahun ajaran tertentu
+        // Filter siswa yang belum terdaftar pada tahun ajaran tertentu dan urutkan berdasarkan ID
         $siswaBelumTerdaftar = PesertaDidik::where('kode_kk', $kode_kk)
-            ->whereNotIn('nis', function ($query) use ($tahun_ajaran) {
-                $query->select('nis')
-                    ->from('peserta_didik_rombels')
-                    ->where('tahun_ajaran', $tahun_ajaran);
-            })
+            ->whereNotIn('nis', $siswaTerdaftar)
+            ->orderBy('id') // ← Ini yang mengurutkan berdasarkan kolom `id`
             ->get();
 
         return response()->json($siswaBelumTerdaftar);
