@@ -23,6 +23,18 @@ class PesertaDidikRombelController extends Controller
      */
     public function index(PesertaDidikRombelDataTable $pesertaDidikRombelDataTable)
     {
+        // Ambil tahun ajaran yang aktif
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')
+            ->with(['semesters' => function ($query) {
+                $query->where('status', 'Aktif');
+            }])
+            ->first();
+
+        // Pastikan tahun ajaran aktif ada sebelum melanjutkan
+        if (!$tahunAjaranAktif) {
+            return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
+        }
+
         $angkaSemester = [];
         for ($i = 1; $i <= 6; $i++) {
             $angkaSemester[$i] = (string) $i;
@@ -33,6 +45,7 @@ class PesertaDidikRombelController extends Controller
         $rombonganBelajar = RombonganBelajar::pluck('rombel', 'kode_rombel')->toArray();
 
         return $pesertaDidikRombelDataTable->render('pages.kurikulum.datakbm.peserta-didik-rombel', [
+            'tahunAjaranAktif' => $tahunAjaranAktif->tahunajaran,
             'tahunAjaranOptions' => $tahunAjaranOptions,
             'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
             'rombonganBelajar' => $rombonganBelajar,

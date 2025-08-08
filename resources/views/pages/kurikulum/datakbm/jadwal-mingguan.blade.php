@@ -53,9 +53,17 @@
                     <div class="col-lg-auto">
                         <div>
                             <select class="form-select form-select-sm" name="semester" id="idSemester">
-                                <option value="all" selected>Pilih Semester</option>
+                                <option value="all" disabled {{ request('semester') ? '' : 'selected' }}>Pilih Semester
+                                </option>
+                                <option value="Ganjil"
+                                    {{ request('semester', $semesterAktif) == 'Ganjil' ? 'selected' : '' }}>
+                                    Ganjil</option>
+                                <option value="Genap"
+                                    {{ request('semester', $semesterAktif) == 'Genap' ? 'selected' : '' }}>Genap
+                                </option>
+                                {{-- <option value="all" selected>Pilih Semester</option>
                                 <option value="Ganjil">Ganjil</option>
-                                <option value="Genap">Genap</option>
+                                <option value="Genap">Genap</option> --}}
                             </select>
                         </div>
                     </div>

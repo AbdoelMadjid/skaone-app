@@ -40,16 +40,23 @@
                         name="choices-single-default" id="idThnAjaran">
                         <option value="all" selected>Pilih Tahun Ajaran</option>
                         @foreach ($tahunAjaranOptions as $thnajar)
-                            <option value="{{ $thnajar }}">{{ $thnajar }}</option>
+                            <option value="{{ $thnajar }}" {{ $thnajar == $tahunAjaranAktif ? 'selected' : '' }}>
+                                {{ $thnajar }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="col-lg-auto me-1">
                     <select class="form-select form-select-sm" data-plugin="choices" data-choices data-choices-search-false
                         name="choices-single-default" id="idSemester">
-                        <option value="all" selected>Pilih Semester</option>
+                        <option value="all" disabled {{ request('semester') ? '' : 'selected' }}>Pilih Semester
+                        </option>
+                        <option value="Ganjil" {{ request('semester', $semesterAktif) == 'Ganjil' ? 'selected' : '' }}>
+                            Ganjil</option>
+                        <option value="Genap" {{ request('semester', $semesterAktif) == 'Genap' ? 'selected' : '' }}>Genap
+                        </option>
+                        {{-- <option value="all" selected>Pilih Semester</option>
                         <option value="Ganjil">Ganjil</option>
-                        <option value="Genap">Genap</option>
+                        <option value="Genap">Genap</option> --}}
                     </select>
                 </div>
                 <div class="col-lg-auto me-1">

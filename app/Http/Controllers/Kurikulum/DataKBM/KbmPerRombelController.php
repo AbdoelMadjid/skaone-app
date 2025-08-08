@@ -11,6 +11,7 @@ use App\Models\Kurikulum\DataKBM\MataPelajaranPerJurusan;
 use App\Models\ManajemenSekolah\KompetensiKeahlian;
 use App\Models\ManajemenSekolah\PersonilSekolah;
 use App\Models\ManajemenSekolah\RombonganBelajar;
+use App\Models\ManajemenSekolah\Semester;
 use App\Models\ManajemenSekolah\TahunAjaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -22,10 +23,34 @@ class KbmPerRombelController extends Controller
      */
     public function index(KbmPerRombelDataTable $kbmPerRombelDataTable)
     {
+        // Ambil tahun ajaran yang aktif
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')
+            ->with(['semesters' => function ($query) {
+                $query->where('status', 'Aktif');
+            }])
+            ->first();
+
+        // Pastikan tahun ajaran aktif ada sebelum melanjutkan
+        if (!$tahunAjaranAktif) {
+            return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
+        }
+
+        // Retrieve the active semester related to the active academic year
+        $semesterAktif = Semester::where('status', 'Aktif')
+            ->where('tahun_ajaran_id', $tahunAjaranAktif->id)
+            ->first();
+
+        // Check if an active semester is found
+        if (!$semesterAktif) {
+            return redirect()->back()->with('error', 'Tidak ada semester aktif.');
+        }
+
         $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
         $kompetensiKeahlianOptions = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
         $rombonganBelajar = RombonganBelajar::pluck('rombel', 'kode_rombel')->toArray();
         return $kbmPerRombelDataTable->render('pages.kurikulum.datakbm.kbm-per-rombel', [
+            'tahunAjaranAktif' => $tahunAjaranAktif->tahunajaran,
+            'semesterAktif' => $semesterAktif->semester,
             'tahunAjaranOptions' => $tahunAjaranOptions,
             'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
             'rombonganBelajar' => $rombonganBelajar,

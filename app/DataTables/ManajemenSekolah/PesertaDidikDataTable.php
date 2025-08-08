@@ -127,16 +127,17 @@ class PesertaDidikDataTable extends DataTable
 
         if (request()->has('statusSiswa') && request('statusSiswa') != 'all') {
             $query->where('status', request('statusSiswa'));
+        } else {
+            // Default: hanya ambil siswa Aktif
+            $query->where('status', 'Aktif');
         }
 
-        $query->select(['id', 'kode_kk'])->select([
+        $query->select([
             'peserta_didiks.*',
             DB::raw('CONCAT(peserta_didiks.kode_kk, " - ", kompetensi_keahlians.singkatan) as kode_kk_singkatan_kk'),
-            // Pastikan tabel 'kompetensi_keahlians' terkait dengan model 'ProgramKeahlian'
         ])
-            ->join('kompetensi_keahlians', 'peserta_didiks.kode_kk', '=', 'kompetensi_keahlians.idkk');
-
-        $query->orderBy('peserta_didiks.kode_kk', 'asc')
+            ->join('kompetensi_keahlians', 'peserta_didiks.kode_kk', '=', 'kompetensi_keahlians.idkk')
+            ->orderBy('peserta_didiks.kode_kk', 'asc')
             ->orderBy('peserta_didiks.nis', 'asc');
 
         return $query;

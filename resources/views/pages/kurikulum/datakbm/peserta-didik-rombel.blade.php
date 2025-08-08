@@ -50,7 +50,8 @@
                         name="choices-single-default" id="idThnAjaran">
                         <option value="all" selected>Pilih Tahun Ajaran</option>
                         @foreach ($tahunAjaranOptions as $thnajar)
-                            <option value="{{ $thnajar }}">{{ $thnajar }}</option>
+                            <option value="{{ $thnajar }}" {{ $thnajar == $tahunAjaranAktif ? 'selected' : '' }}>
+                                {{ $thnajar }}</option>
                         @endforeach
                     </select>
                 </div>
