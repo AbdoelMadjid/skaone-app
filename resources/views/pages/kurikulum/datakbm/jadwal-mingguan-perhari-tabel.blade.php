@@ -12,7 +12,9 @@
             <tr>
                 <th>Nama Guru</th>
                 @foreach ($semuaJamKe as $jam)
-                    <th width="55">{{ $jam }}</th>
+                    <th width="55" class="th-jam" data-jam-ke="{{ $jam }}" style="cursor:pointer;">
+                        {{ $jam }}
+                    </th>
                 @endforeach
                 <th width="55">Kelas</th>
                 <th width="55">Terisi</th>
