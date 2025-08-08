@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('jadwal_mingguan_id')->constrained()->onDelete('cascade');
             $table->string('id_personil'); // redundan, tapi bisa dipakai indexing cepat
             $table->string('hari'); // contoh: 'Senin'
+            $table->date('tanggal');
             $table->integer('jam_ke'); // 1 s.d. 13
             $table->timestamps();
         });

@@ -58,7 +58,7 @@
                     </select>
                 </div>
                 <div class="col-lg-auto">
-                    <button class="btn btn-ghost-danger" id="btnStatistik">Statistik</button>
+                    <button class="btn btn-soft-primary d-none" id="btnStatistik">Statistik</button>
                 </div>
                 {{-- <div class="col-lg-auto">
                     <button id="btnSimpanMassal" class="btn btn-success mb-3" style="display:none;">
@@ -109,8 +109,12 @@
                                 <td id="statJamTidakHadir"></td>
                             </tr>
                             <tr>
-                                <th>Prosentase Kehadiran</th>
-                                <td id="statProsentase"></td>
+                                <th>Prosentase Absen</th>
+                                <td id="statProsentaseHadir"></td>
+                            </tr>
+                            <tr>
+                                <th>Prosentase Hadir</th>
+                                <td id="statProsentaseAbsen"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -129,18 +133,24 @@
             const selectHari = document.getElementById('selectHari');
             const inputTanggal = document.getElementById('inputTanggalKehadiran');
             const container = document.getElementById('containerTableJadwal');
+            const btnStatistik = document.getElementById('btnStatistik');
 
-            // Fungsi konversi hari dari string tanggal
+            // Sembunyikan tombol saat pertama kali
+            btnStatistik.classList.add('d-none');
+
             function getNamaHari(dateString) {
                 const hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
                 const d = new Date(dateString);
                 return hari[d.getDay()];
             }
 
-            // Ketika tanggal dipilih, isi select hari dan jalankan fetch jika bukan Sabtu/Minggu
             inputTanggal.addEventListener('change', function() {
                 const tgl = this.value;
-                if (!tgl) return;
+                if (!tgl) {
+                    btnStatistik.classList.add('d-none');
+                    selectHari.disabled = true; // Aktifkan kembali jika tanggal dihapus
+                    return;
+                }
 
                 const namaHari = getNamaHari(tgl);
 
@@ -148,39 +158,38 @@
                     container.innerHTML =
                         `<div class="alert alert-warning">Tidak ada jadwal pada hari ${namaHari}.</div>`;
                     selectHari.value = '';
+                    selectHari.disabled = true; // tetap bisa ubah manual kalau Sabtu/Minggu
+                    btnStatistik.classList.add('d-none');
                 } else {
                     selectHari.value = namaHari;
+                    selectHari.disabled = true; // Disable dropdown agar tidak bisa diubah
                     fetchJadwal(namaHari, tgl);
+                    btnStatistik.classList.remove('d-none');
                 }
             });
 
-            // Kalau pilih hari manual
             selectHari.addEventListener('change', function() {
                 const hari = this.value;
                 const tanggal = inputTanggal.value;
 
-                if (!hari) {
+                if (!hari || !tanggal) {
                     container.innerHTML =
-                        '<div class="alert alert-warning">Silakan pilih hari terlebih dahulu.</div>';
-                    return;
-                }
-
-                if (!tanggal) {
-                    container.innerHTML =
-                        '<div class="alert alert-warning">Silakan pilih tanggal terlebih dahulu.</div>';
+                        '<div class="alert alert-warning">Silakan pilih hari dan tanggal terlebih dahulu.</div>';
+                    btnStatistik.classList.add('d-none');
                     return;
                 }
 
                 if (hari === 'Sabtu' || hari === 'Minggu') {
                     container.innerHTML =
                         `<div class="alert alert-warning">Tidak ada jadwal pada hari ${hari}.</div>`;
+                    btnStatistik.classList.add('d-none');
                     return;
                 }
 
                 fetchJadwal(hari, tanggal);
+                btnStatistik.classList.remove('d-none'); // Tampilkan tombol
             });
 
-            // Fungsi AJAX fetch jadwal
             function fetchJadwal(hari, tanggal) {
                 container.innerHTML = '<div class="text-muted">Memuat jadwal...</div>';
 
@@ -199,6 +208,7 @@
             }
         });
     </script>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -229,11 +239,16 @@
                 const jamHadir = parseInt(jamHadirEl?.textContent.trim()) || 0;
 
                 // Ambil prosentase
-                const prosentaseEl = document.querySelector(`tfoot .total-prosentase[data-hari="${hari}"]`);
-                const prosentase = prosentaseEl?.textContent.trim() || '0%';
+                const prosentaseTidakHadirEl = document.querySelector(
+                    `tfoot .total-prosentase[data-hari="${hari}"]`);
+                const prosentaseTidakHadir = prosentaseTidakHadirEl?.textContent.trim() || '0%';
 
                 // Hitung tidak hadir
                 const jamTidakHadir = totalJam - jamHadir;
+
+                // Tambahkan parsing angka
+                const persenAngka = parseFloat(prosentaseTidakHadir.replace('%', '')) || 0;
+                const prosentaseHadir = (100 - persenAngka) + '%';
 
                 // Isi data ke modal
                 document.getElementById('statTanggal').textContent = tanggal ? formatTanggalIndonesia(
@@ -242,7 +257,8 @@
                 document.getElementById('statTotalJam').textContent = totalJam + " jam";
                 document.getElementById('statJamHadir').textContent = jamHadir + " jam";
                 document.getElementById('statJamTidakHadir').textContent = jamTidakHadir + " jam";
-                document.getElementById('statProsentase').textContent = prosentase;
+                document.getElementById('statProsentaseAbsen').textContent = prosentaseTidakHadir;
+                document.getElementById('statProsentaseHadir').textContent = prosentaseHadir;
 
                 // Tampilkan modal
                 modalStatistik.show();
