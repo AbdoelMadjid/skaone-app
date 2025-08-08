@@ -533,4 +533,104 @@ class PesertaDidikController extends Controller
             return redirect()->back()->with('error', 'Terjadi kesalahan saat mengimpor data: ' . $e->getMessage());
         }
     }
+
+    public function uploadPesertaDidik(Request $request)
+    {
+        $request->validate([
+            'file_excel' => 'required|mimes:xlsx,xls',
+        ]);
+
+        $file = $request->file('file_excel');
+
+        try {
+            // Load file Excel
+            $spreadsheet = IOFactory::load($file->getPathname());
+            $sheet = $spreadsheet->getActiveSheet();
+
+            // Iterasi setiap baris mulai dari baris kedua (mengabaikan header)
+            $data = [];
+            foreach ($sheet->getRowIterator(2) as $row) {
+                $rowIndex = $row->getRowIndex();
+
+                $nis = $sheet->getCell("B{$rowIndex}")->getValue();
+                $nisn = $sheet->getCell("C{$rowIndex}")->getValue();
+                $thnajaran_masuk = $sheet->getCell("D{$rowIndex}")->getValue();
+                $kode_kk = $sheet->getCell("E{$rowIndex}")->getValue();
+                $nama_lengkap = $sheet->getCell("F{$rowIndex}")->getValue();
+                $tempat_lahir = $sheet->getCell("G{$rowIndex}")->getValue();
+                $tanggal_lahir = $sheet->getCell("H{$rowIndex}")->getValue();
+                $jenis_kelamin = $sheet->getCell("I{$rowIndex}")->getValue();
+                $agama = $sheet->getCell("J{$rowIndex}")->getValue();
+                $status_dalam_kel = $sheet->getCell("K{$rowIndex}")->getValue();
+                $anak_ke = $sheet->getCell("L{$rowIndex}")->getValue();
+                $sekolah_asal = $sheet->getCell("M{$rowIndex}")->getValue();
+                $diterima_kelas = $sheet->getCell("N{$rowIndex}")->getValue();
+                $diterima_tanggal = $sheet->getCell("O{$rowIndex}")->getValue();
+                $asalsiswa = $sheet->getCell("P{$rowIndex}")->getValue();
+                $keterangan_pindah = $sheet->getCell("Q{$rowIndex}")->getValue();
+                $alamat_blok = $sheet->getCell("R{$rowIndex}")->getValue();
+                $alamat_norumah = $sheet->getCell("S{$rowIndex}")->getValue();
+                $alamat_rt = $sheet->getCell("T{$rowIndex}")->getValue();
+                $alamat_rw = $sheet->getCell("U{$rowIndex}")->getValue();
+                $alamat_desa = $sheet->getCell("V{$rowIndex}")->getValue();
+                $alamat_kec = $sheet->getCell("W{$rowIndex}")->getValue();
+                $alamat_kab = $sheet->getCell("X{$rowIndex}")->getValue();
+                $alamat_kodepos = $sheet->getCell("Y{$rowIndex}")->getValue();
+                $kontak_telepon = $sheet->getCell("Z{$rowIndex}")->getValue();
+                // Skip kolom AA karena tidak dipakai
+                $foto = $sheet->getCell("AB{$rowIndex}")->getValue();
+                $status = $sheet->getCell("AC{$rowIndex}")->getValue();
+                $alasan_status = $sheet->getCell("AD{$rowIndex}")->getValue();
+
+                // Format email
+                $nama_slug = strtolower(str_replace(' ', '_', $nama_lengkap));
+                $email = $nama_slug . '@skaone.com';
+
+                // Tambahkan ke array data
+                $data[] = [
+                    'nis' => $nis,
+                    'nisn' => $nisn,
+                    'thnajaran_masuk' => $thnajaran_masuk,
+                    'kode_kk' => $kode_kk,
+                    'nama_lengkap' => $nama_lengkap,
+                    'tempat_lahir' => $tempat_lahir,
+                    'tanggal_lahir' => $tanggal_lahir,
+                    'jenis_kelamin' => $jenis_kelamin,
+                    'agama' => $agama,
+                    'status_dalam_kel' => $status_dalam_kel,
+                    'anak_ke' => $anak_ke,
+                    'sekolah_asal' => $sekolah_asal,
+                    'diterima_kelas' => $diterima_kelas,
+                    'diterima_tanggal' => $diterima_tanggal,
+                    'asalsiswa' => $asalsiswa,
+                    'keterangan_pindah' => $keterangan_pindah,
+                    'alamat_blok' => $alamat_blok,
+                    'alamat_norumah' => $alamat_norumah,
+                    'alamat_rt' => $alamat_rt,
+                    'alamat_rw' => $alamat_rw,
+                    'alamat_desa' => $alamat_desa,
+                    'alamat_kec' => $alamat_kec,
+                    'alamat_kab' => $alamat_kab,
+                    'alamat_kodepos' => $alamat_kodepos,
+                    'kontak_telepon' => $kontak_telepon,
+                    'kontak_email' => $email,
+                    'foto' => $foto,
+                    'status' => $status,
+                    'alasan_status' => $alasan_status,
+                ];
+            }
+
+            if (count($data) === 0) {
+                return redirect()->back()->with('error', 'Tidak ada data yang bisa diimpor.');
+            }
+
+            // Insert data ke database
+            PesertaDidik::insert($data);
+            $jumlah = count($data);
+
+            return redirect()->back()->with('success', "Data berhasil diimpor! Total baris: {$jumlah}");
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
 }

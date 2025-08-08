@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('peserta-didik-ortu', PesertaDidikOrtuController::class);
         Route::get('get-rombels', [PesertaDidikController::class, 'getRombel'])->name('get-rombels');
         Route::post('simpandistribusi', [PesertaDidikController::class, 'simpandistribusi'])->name('simpandistribusi');
+        Route::post('uploadpesertadidik', [PesertaDidikController::class, 'uploadPesertaDidik'])->name('uploadpesertadidik');
 
         Route::group(['prefix' => 'datakeahlian', 'as' => 'datakeahlian.'], function () {
             Route::resource('bidang-keahlian', BidangKeahlianController::class);
