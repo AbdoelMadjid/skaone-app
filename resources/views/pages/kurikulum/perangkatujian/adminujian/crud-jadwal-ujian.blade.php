@@ -22,15 +22,30 @@
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0 me-2">
-                    <x-btn-group-dropdown>
-                        <x-btn-action label="Tambah Massal" icon="ri-checkbox-multiple-fill" id="btnTambahMassal" />
-                        <x-btn-tambah can="create kurikulum/perangkatujian/administrasi-ujian/jadwal-ujian"
-                            route="kurikulum.perangkatujian.administrasi-ujian.jadwal-ujian.create" label="Tambah"
-                            icon="ri-add-line" />
-                    </x-btn-group-dropdown>
+                    {{-- <x-btn-single label="Tambah Massal" icon="ri-checkbox-multiple-fill" iconSmall="ri-save-2-line"
+                        responsive="true" id="btnTambahMassal" /> --}}
+                    <x-btn-action dinamisBtn="true" label="Tambah Massal" icon="ri-checkbox-multiple-fill"
+                        id="btnTambahMassal" />
+                    <x-btn-tambah dinamisBtn="true" can="create kurikulum/perangkatujian/administrasi-ujian/jadwal-ujian"
+                        route="kurikulum.perangkatujian.administrasi-ujian.jadwal-ujian.create" label="Tambah"
+                        icon="ri-add-line" />
                 </div>
                 <div class="flex-shrink-0">
-                    <x-btn-kembali href="{{ route('kurikulum.perangkatujian.administrasi-ujian.index') }}" />
+                    <x-btn-group-dropdown>
+                        <a href="{{ route('kurikulum.perangkatujian.administrasi-ujian.ruang-ujian.index') }}"
+                            class="dropdown-item">Ruang Ujian</a>
+                        <a href="{{ route('kurikulum.perangkatujian.administrasi-ujian.peserta-ujian.index') }}"
+                            class="dropdown-item">Peserta
+                            Ujian</a>
+                        <a href="{{ route('kurikulum.perangkatujian.administrasi-ujian.jadwal-ujian.index') }}"
+                            class="dropdown-item">Jadwal
+                            Ujian</a>
+                        <a href="{{ route('kurikulum.perangkatujian.administrasi-ujian.pengawas-ujian.index') }}"
+                            class="dropdown-item">Pengawas
+                            Ujian</a>
+                        <a href="{{ route('kurikulum.perangkatujian.administrasi-ujian.index') }}"
+                            class="dropdown-item">Kembali</a>
+                    </x-btn-group-dropdown>
                 </div>
             </div>
         </div>

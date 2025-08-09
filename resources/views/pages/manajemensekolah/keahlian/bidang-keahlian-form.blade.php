@@ -7,4 +7,5 @@
             <x-form.input name="idbk" value="{{ $data->idbk }}" label="Id Bidang Keahlian" />
             <x-form.input name="nama_bk" value="{{ $data->nama_bk }}" label="Nama Bidang Keahlian" />
         </div>
+    </div>
 </x-form.modal>

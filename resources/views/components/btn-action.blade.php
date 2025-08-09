@@ -6,10 +6,11 @@
     'size' => 'btn-sm',
     'disabled' => false,
     'title' => null,
+    'dinamisBtn' => false, // default false
 ])
 
 @php
-    $classes = "btn btn-soft-primary btn-label waves-effect waves-light {$size}";
+    $classes = "btn btn-soft-primary d-inline-flex align-items-center waves-effect waves-light {$size}";
 @endphp
 
 @if ($href)
@@ -18,10 +19,17 @@
             'class' => $classes,
             'title' => $title,
         ]) }}>
-        @if ($icon)
-            <i class="{{ $icon }} label-icon align-middle fs-16 me-2"></i>
+        @if ($dinamisBtn)
+            @if ($icon)
+                <i class="{{ $icon }} align-middle fs-14"></i>
+            @endif
+            <span class="d-none d-sm-inline ms-2">{{ $label }}</span>
+        @else
+            @if ($icon)
+                <i class="{{ $icon }} align-middle fs-14 me-2"></i>
+            @endif
+            {{ $label }}
         @endif
-        {{ $label }}
     </a>
 @else
     <button type="{{ $type }}"
@@ -30,9 +38,16 @@
             'title' => $title,
         ]) }}
         @if ($disabled) disabled @endif>
-        @if ($icon)
-            <i class="{{ $icon }} label-icon align-middle fs-16 me-2"></i>
+        @if ($dinamisBtn)
+            @if ($icon)
+                <i class="{{ $icon }} align-middle fs-14"></i>
+            @endif
+            <span class="d-none d-sm-inline ms-2">{{ $label }}</span>
+        @else
+            @if ($icon)
+                <i class="{{ $icon }} align-middle fs-14 me-2"></i>
+            @endif
+            {{ $label }}
         @endif
-        {{ $label }}
     </button>
 @endif

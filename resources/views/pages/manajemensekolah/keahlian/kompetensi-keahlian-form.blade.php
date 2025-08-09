@@ -15,4 +15,5 @@
             <x-form.input name="nama_kk" value="{{ $data->nama_kk }}" label="Nama Kompetensi Keahlian" />
             <x-form.input name="singkatan" value="{{ $data->singkatan }}" label="Singkatan KK" />
         </div>
+    </div>
 </x-form.modal>

@@ -11,4 +11,5 @@
 
             <x-form.input name="nama_pk" value="{{ $data->nama_pk }}" label="Nama Program Keahlian" />
         </div>
+    </div>
 </x-form.modal>

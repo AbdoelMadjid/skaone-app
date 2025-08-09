@@ -9,4 +9,5 @@
             <textarea name="isi" class="form-control" id="isi" rows="5">{{ $data->isi }}</textarea>
             <x-form.input type="date" name="tanggal" value="{{ $data->tanggal }}" label="Tanggal" />
         </div>
+    </div>
 </x-form.modal>

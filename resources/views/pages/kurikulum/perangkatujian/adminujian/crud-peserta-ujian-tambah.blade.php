@@ -10,8 +10,8 @@
                 </div>
 
                 <div class="modal-body">
-                    <div class="row mb-3">
-                        <div class="col-md-3">
+                    <div class="row g-3 mb-lg-4">
+                        <div class="col-lg">
                             <label for="nomor_ruang" class="form-label">Nomor Ruangan</label>
                             <select name="nomor_ruang" id="nomor_ruang" class="form-control">
                                 <option value="">-- Pilih Ruang --</option>
@@ -20,23 +20,20 @@
                                 @endforeach
                             </select>
                         </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-sm-3">
+                        <div class="col-lg-auto">
                             <label for="kelas_kiri" class="form-label">Kelas Kiri</label>
                             <input type="text" class="form-control" name="kelas_kiri" id="kelas_kiri" readonly>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-lg-auto">
                             <label for="kelas_kanan" class="form-label">Kelas Kanan</label>
                             <input type="text" class="form-control" name="kelas_kanan" id="kelas_kanan" readonly>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-lg-auto">
                             <label for="kode_kelas_kiri" class="form-label">Kode Kelas Kiri</label>
                             <input type="text" class="form-control" name="kode_kelas_kiri" id="kode_kelas_kiri"
                                 readonly>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-lg-auto">
                             <label for="kode_kelas_kanan" class="form-label">Kode Kelas Kanan</label>
                             <input type="text" class="form-control" name="kode_kelas_kanan" id="kode_kelas_kanan"
                                 readonly>

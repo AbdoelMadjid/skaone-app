@@ -19,9 +19,9 @@
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0">
-                    <x-btn-group-dropdown>
+                    <x-btn-group-dropdown size="sm">
                         <x-btn-action href="{{ route('kurikulum.datakbm.mata-pelajaran-perjurusan.index') }}"
-                            label="Mapel Per Jurusan" icon="ri-file-copy-fill" />
+                            label="Mapel Jurusan" icon="ri-file-copy-fill" />
                         <div class="dropdown-divider"></div>
                         <x-btn-tambah can="create kurikulum/datakbm/mata-pelajaran"
                             route="kurikulum.datakbm.mata-pelajaran.create" label="Tambah" icon="ri-add-line" />

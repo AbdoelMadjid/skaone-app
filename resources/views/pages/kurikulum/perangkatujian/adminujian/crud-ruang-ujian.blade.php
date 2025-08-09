@@ -26,7 +26,21 @@
                         route="kurikulum.perangkatujian.administrasi-ujian.ruang-ujian.create" icon="ri-add-line" />
                 </div>
                 <div class="flex-shrink-0">
-                    <x-btn-kembali href="{{ route('kurikulum.perangkatujian.administrasi-ujian.index') }}" />
+                    <x-btn-group-dropdown>
+                        <a href="{{ route('kurikulum.perangkatujian.administrasi-ujian.ruang-ujian.index') }}"
+                            class="dropdown-item">Ruang Ujian</a>
+                        <a href="{{ route('kurikulum.perangkatujian.administrasi-ujian.peserta-ujian.index') }}"
+                            class="dropdown-item">Peserta
+                            Ujian</a>
+                        <a href="{{ route('kurikulum.perangkatujian.administrasi-ujian.jadwal-ujian.index') }}"
+                            class="dropdown-item">Jadwal
+                            Ujian</a>
+                        <a href="{{ route('kurikulum.perangkatujian.administrasi-ujian.pengawas-ujian.index') }}"
+                            class="dropdown-item">Pengawas
+                            Ujian</a>
+                        <a href="{{ route('kurikulum.perangkatujian.administrasi-ujian.index') }}"
+                            class="dropdown-item">Kembali</a>
+                    </x-btn-group-dropdown>
                 </div>
             </div>
         </div>

@@ -2,106 +2,100 @@
     @if ($data->id)
         @method('put')
     @endif
+    <!-- Kompetensi Keahlian Select -->
     <div class="row">
-        <div class="col-md-12">
-            <!-- Kompetensi Keahlian Select -->
-            <div class="row">
-                <div class="col-md-3">
-                    <!-- Kelompok Select -->
-                    <x-form.select name="kelompok" :options="[
-                        'A' => 'A',
-                        'B1' => 'B1',
-                        'B2' => 'B2',
-                        'B3' => 'B3',
-                        'B4' => 'B4',
-                        'B5' => 'B5',
-                        'PKL' => 'PKL',
-                    ]" value="{{ old('kelompok', $data->kelompok) }}"
-                        label="Kelompok" id="kelompok" />
-                </div>
-                <div class="col-md-3">
-                    <!-- Kelompok Select -->
-                    <x-form.select name="kode" :options="$kodeMapel" value="{{ old('kode', $data->kode) }}"
-                        label="Kode" id="kode" />
-                </div>
-                <div class="col-md-3">
-                    <!-- No. Urut Mapel Select -->
-                    <x-form.select name="nourut" :options="$nourutOptions" value="{{ old('nourut', $data->nourut) }}"
-                        label="No. Urut Mapel" id="nourut" />
-                </div>
-                <div class="col-md-3">
-                    <x-form.input name="kel_mapel" value="{{ old('kel_mapel', $data->kel_mapel) }}" label="Kel. MP"
-                        id="kel_mapel" readonly />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8">
-                    <x-form.input name="mata_pelajaran" value="{{ old('mata_pelajaran', $data->mata_pelajaran) }}"
-                        label="Mata Pelajaran" />
-                </div>
-                <div class="col-md-4">
-                    <x-form.input name="inisial_mp" value="{{ old('inisial_mp', $data->inisial_mp) }}"
-                        label="Inisial MP" id='inisial_mp' readonly />
-                </div>
-            </div>
+        <div class="col-md-3">
+            <!-- Kelompok Select -->
+            <x-form.select name="kelompok" :options="[
+                'A' => 'A',
+                'B1' => 'B1',
+                'B2' => 'B2',
+                'B3' => 'B3',
+                'B4' => 'B4',
+                'B5' => 'B5',
+                'PKL' => 'PKL',
+            ]" value="{{ old('kelompok', $data->kelompok) }}"
+                label="Kelompok" id="kelompok" />
+        </div>
+        <div class="col-md-3">
+            <!-- Kelompok Select -->
+            <x-form.select name="kode" :options="$kodeMapel" value="{{ old('kode', $data->kode) }}" label="Kode"
+                id="kode" />
+        </div>
+        <div class="col-md-3">
+            <!-- No. Urut Mapel Select -->
+            <x-form.select name="nourut" :options="$nourutOptions" value="{{ old('nourut', $data->nourut) }}"
+                label="No. Urut Mapel" id="nourut" />
+        </div>
+        <div class="col-md-3">
+            <x-form.input name="kel_mapel" value="{{ old('kel_mapel', $data->kel_mapel) }}" label="Kel. MP"
+                id="kel_mapel" readonly />
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Semester</th>
-                        <th>Kompetensi Keahlian</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            @for ($i = 1; $i <= 6; $i++)
-                                <!-- Semester {{ $i }} Checkbox -->
-                                <div class="form-check form-switch form-check-inline">
-                                    <!-- Hidden input to handle unchecked state -->
-                                    <input type="hidden" name="semester_{{ $i }}" value="0">
-                                    <input class="form-check-input" name="semester_{{ $i }}" type="checkbox"
-                                        value="1" id="semester_{{ $i }}" @checked(old("semester_$i", $data->{"semester_$i"}))>
-                                    <label class="form-check-label" for="semester_{{ $i }}">Semester
-                                        {{ $i }}</label>
-                                </div><br>
-                            @endfor
-                        </td>
-                        <td>
-                            @foreach ($kompetensiKeahlians as $kk)
-                                <div class="form-check form-switch form-check-inline">
-                                    <input class="form-check-input" name="kode_kk[]" type="checkbox"
-                                        value="{{ $kk->idkk }}" id="idkk_{{ $kk->idkk }}"
-                                        @checked(in_array($kk->idkk, old('kode_kk', $selectedIdKk ?? [])))>
-                                    <label class="form-check-label"
-                                        for="idkk_{{ $kk->idkk }}">{{ $kk->nama_kk }}</label>
-                                </div>
-                                <br>
-                            @endforeach
-                        </td>
-                        <td>
-                            B2 - DPK<br>
-                            B3 - KK<br>
-                            B4 - KWU<br>
-                            B5 - MPP
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <x-form.checkbox id="check_semester" name="check_semester" label="Check All Semester" />
-                        </td>
-                        <td>
-                            <x-form.checkbox id="check_all" name="check_all" label="Check All Jurusan" />
-                        </td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="col-md-8">
+            <x-form.input name="mata_pelajaran" value="{{ old('mata_pelajaran', $data->mata_pelajaran) }}"
+                label="Mata Pelajaran" />
+        </div>
+        <div class="col-md-4">
+            <x-form.input name="inisial_mp" value="{{ old('inisial_mp', $data->inisial_mp) }}" label="Inisial MP"
+                id='inisial_mp' readonly />
         </div>
     </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Semester</th>
+                <th>Kompetensi Keahlian</th>
+                <th>Keterangan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @for ($i = 1; $i <= 6; $i++)
+                        <!-- Semester {{ $i }} Checkbox -->
+                        <div class="form-check form-switch form-check-inline">
+                            <!-- Hidden input to handle unchecked state -->
+                            <input type="hidden" name="semester_{{ $i }}" value="0">
+                            <input class="form-check-input" name="semester_{{ $i }}" type="checkbox"
+                                value="1" id="semester_{{ $i }}" @checked(old("semester_$i", $data->{"semester_$i"}))>
+                            <label class="form-check-label" for="semester_{{ $i }}">Semester
+                                {{ $i }}</label>
+                        </div><br>
+                    @endfor
+                </td>
+                <td>
+                    @foreach ($kompetensiKeahlians as $kk)
+                        <div class="form-check form-switch form-check-inline">
+                            <input class="form-check-input" name="kode_kk[]" type="checkbox"
+                                value="{{ $kk->idkk }}" id="idkk_{{ $kk->idkk }}"
+                                @checked(in_array($kk->idkk, old('kode_kk', $selectedIdKk ?? [])))>
+                            <label class="form-check-label" for="idkk_{{ $kk->idkk }}">{{ $kk->nama_kk }}</label>
+                        </div>
+                        <br>
+                    @endforeach
+                </td>
+                <td>
+                    B2 - DPK<br>
+                    B3 - KK<br>
+                    B4 - KWU<br>
+                    B5 - MPP
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <x-form.checkbox id="check_semester" name="check_semester" label="Check All Semester" />
+                </td>
+                <td>
+                    <x-form.checkbox id="check_all" name="check_all" label="Check All Jurusan" />
+                </td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
 </x-form.modal>
 <script>
     function handleGenerateKodeMapel() {

@@ -8,4 +8,5 @@
             <x-form.input name="nomor" value="{{ $data->nomor }}" label="Nomor Kurikulum" />
             <x-form.input name="tentang" value="{{ $data->tentang }}" label="Tentang Kurikulum" />
         </div>
+    </div>
 </x-form.modal>
