@@ -14,7 +14,7 @@ class WaliKelasController extends Controller
      */
     public function index(WaliKelasDataTable $waliKelasDataTable)
     {
-        return $waliKelasDataTable->render('pages.manajemensekolah.wali-kelas');
+        return $waliKelasDataTable->render('pages.manajemensekolah.jabatan.wali-kelas');
     }
 
     /**

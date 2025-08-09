@@ -14,7 +14,7 @@ class BidangKeahlianController extends Controller
      */
     public function index(BidangKeahlianDataTable $bidangKeahlianDataTable)
     {
-        return $bidangKeahlianDataTable->render('pages.manajemensekolah.bidang-keahlian');
+        return $bidangKeahlianDataTable->render('pages.manajemensekolah.keahlian.bidang-keahlian');
     }
 
     /**
@@ -22,7 +22,7 @@ class BidangKeahlianController extends Controller
      */
     public function create()
     {
-        return view('pages.manajemensekolah.bidang-keahlian-form', [
+        return view('pages.manajemensekolah.keahlian.bidang-keahlian-form', [
             'data' => new BidangKeahlian(),
             'action' => route('manajemensekolah.datakeahlian.bidang-keahlian.store')
         ]);
@@ -44,7 +44,7 @@ class BidangKeahlianController extends Controller
      */
     public function show(BidangKeahlian $bidangKeahlian)
     {
-        return view('pages.manajemensekolah.bidang-keahlian-form', [
+        return view('pages.manajemensekolah.keahlian.bidang-keahlian-form', [
             'data' => $bidangKeahlian,
         ]);
     }
@@ -54,7 +54,7 @@ class BidangKeahlianController extends Controller
      */
     public function edit(BidangKeahlian $bidangKeahlian)
     {
-        return view('pages.manajemensekolah.bidang-keahlian-form', [
+        return view('pages.manajemensekolah.keahlian.bidang-keahlian-form', [
             'data' => $bidangKeahlian,
             'action' => route('manajemensekolah.datakeahlian.bidang-keahlian.update', $bidangKeahlian->idbk)
         ]);

@@ -16,7 +16,7 @@ class KompetensiKeahlianController extends Controller
      */
     public function index(KompetensiKeahlianDataTable $kompetensiKeahlianDataTable)
     {
-        return $kompetensiKeahlianDataTable->render('pages.manajemensekolah.kompetensi-keahlian');
+        return $kompetensiKeahlianDataTable->render('pages.manajemensekolah.keahlian.kompetensi-keahlian');
     }
 
     /**
@@ -26,7 +26,7 @@ class KompetensiKeahlianController extends Controller
     {
         $bidangKeahlian = BidangKeahlian::pluck('nama_bk', 'idbk')->toArray();
         $programKeahlian = ProgramKeahlian::pluck('nama_pk', 'idpk')->toArray();
-        return view('pages.manajemensekolah.kompetensi-keahlian-form', [
+        return view('pages.manajemensekolah.keahlian.kompetensi-keahlian-form', [
             'data' => new KompetensiKeahlian(),
             'bidangKeahlian' => $bidangKeahlian,
             'programKeahlian' => $programKeahlian,
@@ -52,7 +52,7 @@ class KompetensiKeahlianController extends Controller
     {
         $bidangKeahlian = BidangKeahlian::pluck('nama_bk', 'idbk')->toArray();
         $programKeahlian = ProgramKeahlian::pluck('nama_pk', 'idpk')->toArray();
-        return view('pages.manajemensekolah.kompetensi-keahlian-form', [
+        return view('pages.manajemensekolah.keahlian.kompetensi-keahlian-form', [
             'data' => $kompetensiKeahlian,
             'bidangKeahlian' => $bidangKeahlian,
             'programKeahlian' => $programKeahlian,
@@ -66,7 +66,7 @@ class KompetensiKeahlianController extends Controller
     {
         $bidangKeahlian = BidangKeahlian::pluck('nama_bk', 'idbk')->toArray();
         $programKeahlian = ProgramKeahlian::pluck('nama_pk', 'idpk')->toArray();
-        return view('pages.manajemensekolah.kompetensi-keahlian-form', [
+        return view('pages.manajemensekolah.keahlian.kompetensi-keahlian-form', [
             'data' => $kompetensiKeahlian,
             'bidangKeahlian' => $bidangKeahlian,
             'programKeahlian' => $programKeahlian,

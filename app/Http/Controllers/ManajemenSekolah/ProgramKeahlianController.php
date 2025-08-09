@@ -15,7 +15,7 @@ class ProgramKeahlianController extends Controller
      */
     public function index(ProgramKeahlianDataTable $programKeahlianDataTable)
     {
-        return $programKeahlianDataTable->render('pages.manajemensekolah.program-keahlian');
+        return $programKeahlianDataTable->render('pages.manajemensekolah.keahlian.program-keahlian');
     }
 
     /**
@@ -24,7 +24,7 @@ class ProgramKeahlianController extends Controller
     public function create()
     {
         $bidangKeahlian = BidangKeahlian::pluck('nama_bk', 'idbk'); // Mengambil nama_bk sebagai key dan idbk sebagai value
-        return view('pages.manajemensekolah.program-keahlian-form', [
+        return view('pages.manajemensekolah.keahlian.program-keahlian-form', [
             'data' => new ProgramKeahlian(),
             'bidangKeahlian' => $bidangKeahlian,
             'action' => route('manajemensekolah.datakeahlian.program-keahlian.store')
@@ -48,7 +48,7 @@ class ProgramKeahlianController extends Controller
     public function show(ProgramKeahlian $programKeahlian)
     {
         $bidangKeahlian = BidangKeahlian::pluck('nama_bk', 'idbk');
-        return view('pages.manajemensekolah.program-keahlian-form', [
+        return view('pages.manajemensekolah.keahlian.program-keahlian-form', [
             'data' => $programKeahlian,
             'bidangKeahlian' => $bidangKeahlian,
         ]);
@@ -60,7 +60,7 @@ class ProgramKeahlianController extends Controller
     public function edit(ProgramKeahlian $programKeahlian)
     {
         $bidangKeahlian = BidangKeahlian::pluck('nama_bk', 'idbk');
-        return view('pages.manajemensekolah.program-keahlian-form', [
+        return view('pages.manajemensekolah.keahlian.program-keahlian-form', [
             'data' => $programKeahlian,
             'bidangKeahlian' => $bidangKeahlian,
             'action' => route('manajemensekolah.datakeahlian.program-keahlian.update', $programKeahlian->idpk)

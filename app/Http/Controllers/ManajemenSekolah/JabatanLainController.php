@@ -16,7 +16,7 @@ class JabatanLainController extends Controller
      */
     public function index(JabatanLainDataTable $jabatanLainDataTable)
     {
-        return $jabatanLainDataTable->render('pages.manajemensekolah.jabatan-lain');
+        return $jabatanLainDataTable->render('pages.manajemensekolah.jabatan.jabatan-lain');
     }
 
     /**
@@ -45,7 +45,7 @@ class JabatanLainController extends Controller
                 return [$fullName => $personil->namalengkap];
             });
 
-        return view('pages.manajemensekolah.jabatan-lain-form', [
+        return view('pages.manajemensekolah.jabatan.jabatan-lain-form', [
             'data' => new JabatanLain(),
             'jenisJabatan' => $jenisJabatan,
             'namaPejabat' => $namaPejabat,
@@ -91,7 +91,7 @@ class JabatanLainController extends Controller
                 return [$fullName => $personil->namalengkap];
             });
 
-        return view('pages.manajemensekolah.jabatan-lain-form', [
+        return view('pages.manajemensekolah.jabatan.jabatan-lain-form', [
             'data' => $jabatanLain,
             'jenisJabatan' => $jenisJabatan,
             'namaPejabat' => $namaPejabat,
@@ -125,7 +125,7 @@ class JabatanLainController extends Controller
                 return [$fullName => $personil->namalengkap];
             });
 
-        return view('pages.manajemensekolah.jabatan-lain-form', [
+        return view('pages.manajemensekolah.jabatan.jabatan-lain-form', [
             'data' => $jabatanLain,
             'jenisJabatan' => $jenisJabatan,
             'namaPejabat' => $namaPejabat,

@@ -62,8 +62,8 @@
             {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
         </div>
     </div>
-    @include('pages.manajemensekolah.personil-sekolah-import')
-    @include('pages.manajemensekolah.personil-sekolah-buat-akun')
+    @include('pages.manajemensekolah.personil.personil-sekolah-import')
+    @include('pages.manajemensekolah.personil.personil-sekolah-buat-akun')
 @endsection
 @section('script')
     {!! $dataTable->scripts() !!}

@@ -16,7 +16,7 @@ class WakilKepalaSekolahController extends Controller
      */
     public function index(WakilKepalaSekolahDataTable $wakilKepalaSekolahDataTable)
     {
-        return $wakilKepalaSekolahDataTable->render('pages.manajemensekolah.wakil-kepala-sekolah');
+        return $wakilKepalaSekolahDataTable->render('pages.manajemensekolah.jabatan.wakil-kepala-sekolah');
     }
 
     /**
@@ -42,7 +42,7 @@ class WakilKepalaSekolahController extends Controller
                 );
                 return [$fullName => $personil->namalengkap];
             });
-        return view('pages.manajemensekolah.wakil-kepala-sekolah-form', [
+        return view('pages.manajemensekolah.jabatan.wakil-kepala-sekolah-form', [
             'data' => new WakilKepalaSekolah(),
             'jabatanWakasek' => $jabatanWakasek,
             'namaWakasek' => $namaWakasek,
@@ -85,7 +85,7 @@ class WakilKepalaSekolahController extends Controller
                 );
                 return [$fullName => $personil->namalengkap];
             });
-        return view('pages.manajemensekolah.wakil-kepala-sekolah-form', [
+        return view('pages.manajemensekolah.jabatan.wakil-kepala-sekolah-form', [
             'data' => $wakilKepalaSekolah,
             'jabatanWakasek' => $jabatanWakasek,
             'namaWakasek' => $namaWakasek,
@@ -116,7 +116,7 @@ class WakilKepalaSekolahController extends Controller
                 );
                 return [$fullName => $personil->namalengkap];
             });
-        return view('pages.manajemensekolah.wakil-kepala-sekolah-form', [
+        return view('pages.manajemensekolah.jabatan.wakil-kepala-sekolah-form', [
             'data' => $wakilKepalaSekolah,
             'jabatanWakasek' => $jabatanWakasek,
             'namaWakasek' => $namaWakasek,

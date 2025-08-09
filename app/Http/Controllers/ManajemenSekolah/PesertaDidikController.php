@@ -58,7 +58,7 @@ class PesertaDidikController extends Controller
             ->get()
             ->groupBy('idkk'); // Mengelompokkan berdasarkan idkk
 
-        return $pesertaDidikDataTable->render('pages.manajemensekolah.peserta-didik', [
+        return $pesertaDidikDataTable->render('pages.manajemensekolah.pesertadidik.peserta-didik', [
             'kompetensiKeahlian' => $kompetensiKeahlian,
             'jenkelOptions' => $jenkelOptions,
             'totalCount' => $totalCount,  // Kirim total hasil ke view
@@ -76,7 +76,7 @@ class PesertaDidikController extends Controller
         $agamaOptions = Referensi::where('jenis', 'Agama')->pluck('data', 'data')->toArray();
         $tahunAjaran = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
         $kompetensiKeahlian = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
-        return view('pages.manajemensekolah.peserta-didik-form', [
+        return view('pages.manajemensekolah.pesertadidik.peserta-didik-form', [
             'data' => new PesertaDidik(),
             'tahunAjaran' => $tahunAjaran,
             'kompetensiKeahlian' => $kompetensiKeahlian,
@@ -120,7 +120,7 @@ class PesertaDidikController extends Controller
         $agamaOptions = Referensi::where('jenis', 'Agama')->pluck('data', 'data')->toArray();
         $tahunAjaran = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
         $kompetensiKeahlian = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
-        return view('pages.manajemensekolah.peserta-didik-form', [
+        return view('pages.manajemensekolah.pesertadidik.peserta-didik-form', [
             'data' => $pesertaDidik,
             'tahunAjaran' => $tahunAjaran,
             'kompetensiKeahlian' => $kompetensiKeahlian,
@@ -136,7 +136,7 @@ class PesertaDidikController extends Controller
         $agamaOptions = Referensi::where('jenis', 'Agama')->pluck('data', 'data')->toArray();
         $tahunAjaran = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
         $kompetensiKeahlian = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
-        return view('pages.manajemensekolah.peserta-didik-form', [
+        return view('pages.manajemensekolah.pesertadidik.peserta-didik-form', [
             'data' => $pesertaDidik,
             'tahunAjaran' => $tahunAjaran,
             'kompetensiKeahlian' => $kompetensiKeahlian,

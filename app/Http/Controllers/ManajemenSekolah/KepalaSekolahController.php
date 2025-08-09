@@ -15,7 +15,7 @@ class KepalaSekolahController extends Controller
      */
     public function index(KepalaSekolahDataTable $kepalaSekolahDataTable)
     {
-        return $kepalaSekolahDataTable->render('pages.manajemensekolah.kepala-sekolah');
+        return $kepalaSekolahDataTable->render('pages.manajemensekolah.jabatan.kepala-sekolah');
     }
 
     /**
@@ -24,7 +24,7 @@ class KepalaSekolahController extends Controller
     public function create()
     {
         $tahunAjaran = TahunAjaran::pluck('tahunajaran', 'tahunajaran'); // Mengambil nama_bk sebagai key dan idbk sebagai value
-        return view('pages.manajemensekolah.kepala-sekolah-form', [
+        return view('pages.manajemensekolah.jabatan.kepala-sekolah-form', [
             'data' => new KepalaSekolah(),
             'tahunAjaran' => $tahunAjaran,
             'action' => route('manajemensekolah.timmanajemen.kepala-sekolah.store')
@@ -48,7 +48,7 @@ class KepalaSekolahController extends Controller
     public function show(KepalaSekolah $kepalaSekolah)
     {
         $tahunAjaran = TahunAjaran::pluck('tahunajaran', 'tahunajaran');
-        return view('pages.manajemensekolah.kepala-sekolah-form', [
+        return view('pages.manajemensekolah.jabatan.kepala-sekolah-form', [
             'data' => $kepalaSekolah,
             'tahunAjaran' => $tahunAjaran,
         ]);
@@ -60,7 +60,7 @@ class KepalaSekolahController extends Controller
     public function edit(KepalaSekolah $kepalaSekolah)
     {
         $tahunAjaran = TahunAjaran::pluck('tahunajaran', 'tahunajaran');
-        return view('pages.manajemensekolah.kepala-sekolah-form', [
+        return view('pages.manajemensekolah.jabatan.kepala-sekolah-form', [
             'data' => $kepalaSekolah,
             'tahunAjaran' => $tahunAjaran,
             'action' => route('manajemensekolah.timmanajemen.kepala-sekolah.update', $kepalaSekolah->id)

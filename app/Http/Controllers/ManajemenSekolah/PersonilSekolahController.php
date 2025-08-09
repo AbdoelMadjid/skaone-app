@@ -41,7 +41,7 @@ class PersonilSekolahController extends Controller
             'Pindah',
             'Keluar'
         ];
-        return $personilSekolah->render('pages.manajemensekolah.personil-sekolah', [
+        return $personilSekolah->render('pages.manajemensekolah.personil.personil-sekolah', [
             'jenisPersonilOptions' => $jenisPersonilOptions,
             'statusOptions' => $statusOptions,
         ]);
@@ -53,7 +53,7 @@ class PersonilSekolahController extends Controller
     public function create()
     {
         $agamaOptions = Referensi::where('jenis', 'Agama')->pluck('data', 'data')->toArray();
-        return view('pages.manajemensekolah.personil-sekolah-form', [
+        return view('pages.manajemensekolah.personil.personil-sekolah-form', [
             'data' => new PersonilSekolah(),
             'agamaOptions' => $agamaOptions,
             'action' => route('manajemensekolah.personil-sekolah.store')
@@ -94,7 +94,7 @@ class PersonilSekolahController extends Controller
     public function show(PersonilSekolah $personilSekolah)
     {
         $agamaOptions = Referensi::where('jenis', 'Agama')->pluck('data', 'data')->toArray();
-        return view('pages.manajemensekolah.personil-sekolah-form', [
+        return view('pages.manajemensekolah.personil.personil-sekolah-form', [
             'data' => $personilSekolah,
             'agamaOptions' => $agamaOptions,
         ]);
@@ -106,7 +106,7 @@ class PersonilSekolahController extends Controller
     public function edit(PersonilSekolah $personilSekolah)
     {
         $agamaOptions = Referensi::where('jenis', 'Agama')->pluck('data', 'data')->toArray();
-        return view('pages.manajemensekolah.personil-sekolah-form', [
+        return view('pages.manajemensekolah.personil.personil-sekolah-form', [
             'data' => $personilSekolah,
             'agamaOptions' => $agamaOptions,
             'action' => route('manajemensekolah.personil-sekolah.update', $personilSekolah->id)

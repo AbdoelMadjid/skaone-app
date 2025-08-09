@@ -17,7 +17,7 @@ class KetuaProgramStudiController extends Controller
      */
     public function index(KetuaProgramStudiDataTable $ketuaProgramStudi)
     {
-        return $ketuaProgramStudi->render('pages.manajemensekolah.ketua-program-studi');
+        return $ketuaProgramStudi->render('pages.manajemensekolah.jabatan.ketua-program-studi');
     }
 
     /**
@@ -47,7 +47,7 @@ class KetuaProgramStudiController extends Controller
                 return [$fullName => $personil->namalengkap];
             });
 
-        return view('pages.manajemensekolah.ketua-program-studi-form', [
+        return view('pages.manajemensekolah.jabatan.ketua-program-studi-form', [
             'data' => new KetuaProgramStudi(),
             'jabatanKaprog' => $jabatanKaprog,
             'namaKaprodi' => $namaKaprodi,
@@ -95,7 +95,7 @@ class KetuaProgramStudiController extends Controller
                 return [$fullName => $personil->namalengkap];
             });
 
-        return view('pages.manajemensekolah.ketua-program-studi-form', [
+        return view('pages.manajemensekolah.jabatan.ketua-program-studi-form', [
             'data' => $ketuaProgramStudi,
             'jabatanKaprog' => $jabatanKaprog,
             'namaKaprodi' => $namaKaprodi,
@@ -131,7 +131,7 @@ class KetuaProgramStudiController extends Controller
                 return [$fullName => $personil->namalengkap];
             });
 
-        return view('pages.manajemensekolah.ketua-program-studi-form', [
+        return view('pages.manajemensekolah.jabatan.ketua-program-studi-form', [
             'data' => $ketuaProgramStudi,
             'jabatanKaprog' => $jabatanKaprog,
             'namaKaprodi' => $namaKaprodi,

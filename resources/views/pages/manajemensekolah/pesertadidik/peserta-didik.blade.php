@@ -75,8 +75,8 @@
             {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
         </div>
     </div>
-    @include('pages.manajemensekolah.peserta-didik-import')
-    @include('pages.manajemensekolah.peserta-didik-distribusi')
+    @include('pages.manajemensekolah.pesertadidik.peserta-didik-import')
+    @include('pages.manajemensekolah.pesertadidik.peserta-didik-distribusi')
 @endsection
 @section('script')
     {!! $dataTable->scripts() !!}
