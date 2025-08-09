@@ -58,11 +58,16 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="text-center">
-                                <script>
-                                    document.write(new Date().getFullYear())
-                                </script> Repalogic. Crafted with <i class="mdi mdi-heart text-danger"></i>
-                                by
-                                Abdul Madjid, S.Pd., M.Pd.</p>
+                                <div class="text-center">
+                                    <p class="mb-0 text-muted">&copy;
+                                        {{ $profileApp->app_tahun ?? '' }}
+                                        <script>
+                                            document.write(new Date().getFullYear())
+                                        </script> {{ $profileApp->app_nama ?? '' }}. Crafted with <i
+                                            class="mdi mdi-heart text-danger"></i> by
+                                        {{ $profileApp->app_pengembang ?? '' }}
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>

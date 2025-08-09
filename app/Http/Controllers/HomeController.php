@@ -10,7 +10,7 @@ use App\Models\ManajemenPengguna\LoginRecord;
 use App\Models\ManajemenSekolah\PersonilSekolah;
 use App\Models\PengumumanJudul;
 use App\Models\PengumumanTerkini;
-use App\Models\PesertaDidikPkl\AbsensiSiswaPkl;
+use App\Models\Pkl\PesertaDidikPkl\AbsensiSiswaPkl;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
