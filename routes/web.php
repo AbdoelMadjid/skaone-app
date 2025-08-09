@@ -48,6 +48,9 @@ Route::fallback(function () {
     return response()->view('error.auth-404-basic', [], 404);
 });
 
+Route::get('/sedang-perbaikan', function () {
+    return view('sedang-perbaikan');
+})->name('sedangperbaikan');
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
@@ -63,9 +66,19 @@ Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard'); */
 
-Route::get('/dashboard', [HomeController::class, 'index'])
+/* Route::get('/dashboard', [HomeController::class, 'index'])
     ->middleware(['auth', 'verified', 'check.default.password'])
+    ->name('dashboard'); */
+
+Route::get('/dashboard', [HomeController::class, 'index'])
+    ->middleware([
+        'auth',
+        'verified',
+        'check.default.password',
+        \App\Http\Middleware\CheckMaintenanceLogin::class
+    ])
     ->name('dashboard');
+
 Route::get('/dashboard/active-users', [HomeController::class, 'fetchActiveUsers'])->name('dashboard.active-users');
 
 Route::get('/real-time-stats', function () {
