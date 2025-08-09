@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Wakasek\AgendaKegiatanController;
-use App\Http\Controllers\Wakasek\AnggaranController;
+use App\Http\Controllers\ManajemenSekolah\Wakasek\AgendaKegiatanController;
+use App\Http\Controllers\ManajemenSekolah\Wakasek\AnggaranController;
 use Illuminate\Support\Facades\Route;
 
 /*

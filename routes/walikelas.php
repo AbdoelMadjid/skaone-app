@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ManajemenSekolah\WaliKelasController;
 use App\Http\Controllers\WaliKelas\AbsensiSiswaWalasController;
 use App\Http\Controllers\WaliKelas\ArsipWalasController;
 use App\Http\Controllers\WaliKelas\CatatanWalikelasController;
@@ -10,7 +9,6 @@ use App\Http\Controllers\WaliKelas\EkstrakurikulerController;
 use App\Http\Controllers\WaliKelas\IdentitasSiswaController;
 use App\Http\Controllers\WaliKelas\PrestasiSiswaController;
 use App\Http\Controllers\WaliKelas\RaporPesertaDidikController;
-use App\Http\Controllers\WaliKelas\RaporPesertaDidikVersiDuaController;
 use Illuminate\Support\Facades\Route;
 
 /*

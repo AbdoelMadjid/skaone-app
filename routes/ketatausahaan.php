@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\Ketatausahaan\AgendaController;
-use App\Http\Controllers\Ketatausahaan\AnggaranController;
-use App\Http\Controllers\Ketatausahaan\ManajemenBarangController;
-use App\Http\Controllers\Ketatausahaan\PersuratanController;
-use App\Http\Controllers\Ketatausahaan\SaranaPrasaranaController;
+use App\Http\Controllers\ManajemenSekolah\Ketatausahaan\AgendaController;
+use App\Http\Controllers\ManajemenSekolah\Ketatausahaan\AnggaranController;
+use App\Http\Controllers\ManajemenSekolah\Ketatausahaan\ManajemenBarangController;
+use App\Http\Controllers\ManajemenSekolah\Ketatausahaan\PersuratanController;
+use App\Http\Controllers\ManajemenSekolah\Ketatausahaan\SaranaPrasaranaController;
 use Illuminate\Support\Facades\Route;
 
 /*

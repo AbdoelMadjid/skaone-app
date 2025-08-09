@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\Kaprodi\AgendaKegiatanController;
-use App\Http\Controllers\Kaprodi\AnggaranController;
-use App\Http\Controllers\Kaprodi\BagiJamNgajarController;
-use App\Http\Controllers\Kaprodi\LaboratoriumController;
-use App\Http\Controllers\Kaprodi\UjiKompetensiController;
+use App\Http\Controllers\ManajemenSekolah\Kaprodi\AgendaKegiatanController;
+use App\Http\Controllers\ManajemenSekolah\Kaprodi\AnggaranController;
+use App\Http\Controllers\ManajemenSekolah\Kaprodi\BagiJamNgajarController;
+use App\Http\Controllers\ManajemenSekolah\Kaprodi\LaboratoriumController;
+use App\Http\Controllers\ManajemenSekolah\Kaprodi\UjiKompetensiController;
 use Illuminate\Support\Facades\Route;
 
 /*

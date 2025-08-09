@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\PDFController;
-use App\Http\Controllers\PesertaDidik\KelulusanController;
 use App\Http\Controllers\PesertaDidik\KelulusanPesertaDidikController;
 use App\Http\Controllers\PesertaDidik\RaportPesertaDidikController;
 use App\Http\Controllers\PesertaDidik\RemedialPesertaDidikController;

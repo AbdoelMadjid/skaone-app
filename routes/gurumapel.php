@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\GuruMapel\AbsensiSiswaGmapelController;
-use App\Http\Controllers\GuruMapel\AdministrasiGuruController;
 use App\Http\Controllers\GuruMapel\AjuanRemedialController;
 use App\Http\Controllers\GuruMapel\ArsipKbmGmapelController;
 use App\Http\Controllers\GuruMapel\DataCpTerpilihController;
