@@ -15,7 +15,7 @@
             </div>
             <div class="col-md-6">
                 <x-form.input name="password_confirmation" type="password" value=""
-                    label="password_confirmation" />
+                    label="Password Confirmation" />
             </div>
         @endif
         <div class="col-md-6">
