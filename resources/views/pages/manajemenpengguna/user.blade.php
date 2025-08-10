@@ -20,8 +20,8 @@
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0">
-                    <x-btn-tambah can="create manajemenpengguna/users" route="manajemenpengguna.users.create" label="Tambah"
-                        icon="ri-add-line" />
+                    <x-btn-tambah dinamisBtn="true" can="create manajemenpengguna/users"
+                        route="manajemenpengguna.users.create" label="Tambah" />
                 </div>
             </div>
         </div>
@@ -129,9 +129,6 @@
                 /* theme: 'bootstrap-5', */
                 dropdownParent: $('#modal_action'),
                 width: '100%', // atau 'resolve'
-                tags: true, // ← aktifkan mode tagging
-                allowClear: true,
-                /* placeholder: "Pilih Role", */
             });
         });
         $('#modalTambahRole').on('shown.bs.modal', function() {

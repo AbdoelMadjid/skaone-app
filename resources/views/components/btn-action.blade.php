@@ -13,41 +13,39 @@
     $classes = "btn btn-soft-primary d-inline-flex align-items-center waves-effect waves-light {$size}";
 @endphp
 
+@if ($dinamisBtn && $title)
+    <span data-bs-toggle="tooltip" data-bs-placement="left" title="{{ $title }}">
+@endif
+
 @if ($href)
-    <a href="{{ $href }}"
-        {{ $attributes->merge([
-            'class' => $classes,
-            'title' => $title,
-        ]) }}>
+    <a href="{{ $href }}" {{ $attributes->merge([
+        'class' => $classes,
+    ]) }}>
+        @if ($icon)
+            <i class="{{ $icon }} align-middle fs-14 {{ $dinamisBtn ? '' : 'me-2' }}"></i>
+        @endif
         @if ($dinamisBtn)
-            @if ($icon)
-                <i class="{{ $icon }} align-middle fs-14"></i>
-            @endif
             <span class="d-none d-sm-inline ms-2">{{ $label }}</span>
         @else
-            @if ($icon)
-                <i class="{{ $icon }} align-middle fs-14 me-2"></i>
-            @endif
             {{ $label }}
         @endif
     </a>
 @else
-    <button type="{{ $type }}"
-        {{ $attributes->merge([
-            'class' => $classes,
-            'title' => $title,
-        ]) }}
+    <button type="{{ $type }}" {{ $attributes->merge([
+        'class' => $classes,
+    ]) }}
         @if ($disabled) disabled @endif>
+        @if ($icon)
+            <i class="{{ $icon }} align-middle fs-14 {{ $dinamisBtn ? '' : 'me-2' }}"></i>
+        @endif
         @if ($dinamisBtn)
-            @if ($icon)
-                <i class="{{ $icon }} align-middle fs-14"></i>
-            @endif
             <span class="d-none d-sm-inline ms-2">{{ $label }}</span>
         @else
-            @if ($icon)
-                <i class="{{ $icon }} align-middle fs-14 me-2"></i>
-            @endif
             {{ $label }}
         @endif
     </button>
+@endif
+
+@if ($dinamisBtn && $title)
+    </span>
 @endif
