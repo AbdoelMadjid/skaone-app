@@ -7,8 +7,6 @@
             <x-form.input name="idkk" value="{{ $data->idkk }}" label="Id Kompetensi Keahlian" />
             <!-- Select untuk Bidang Keahlian -->
             <x-form.select name="id_bk" label="Bidang Keahlian" :options="$bidangKeahlian" value="{{ $data->id_bk }}" />
-
-            <!-- Select untuk Program Keahlian -->
             <x-form.select name="id_pk" label="Program Keahlian" :options="$programKeahlian" value="{{ $data->id_pk }}" />
         </div>
         <div class="col-md-6">

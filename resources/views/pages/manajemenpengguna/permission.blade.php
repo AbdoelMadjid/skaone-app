@@ -16,9 +16,9 @@
             <x-heading-title>@yield('title')</x-heading-title>
             <div class="flex-shrink-0">
                 <x-btn-tambah dinamisBtn="true" can="create manajemenpengguna/permissions"
-                    route="manajemenpengguna.permissions.create" title="Tambah Permission" label="Tambah" />
-                <x-btn-action dinamisBtn="true" label="Permission" icon="ri-add-fill" data-bs-toggle="modal"
-                    data-bs-target="#permissionModal" title="Tambah Permission untuk role" />
+                    route="manajemenpengguna.permissions.create" />
+                <x-btn-action dinamisBtn="true" title="Tambah permission untuk role" label="Permission Role"
+                    icon="ri-user-add-fill" data-bs-toggle="modal" data-bs-target="#permissionModal" />
             </div>
         </div>
         <div class="card-body p-1">

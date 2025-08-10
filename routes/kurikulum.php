@@ -4,8 +4,8 @@ use App\Http\Controllers\Kurikulum\DataKBM\CapaianPembelajaranController;
 use App\Http\Controllers\Kurikulum\DataKBM\HariEfektifController;
 use App\Http\Controllers\Kurikulum\DataKBM\JadwalMingguanController;
 use App\Http\Controllers\Kurikulum\DataKBM\JadwalPerGuruController;
+use App\Http\Controllers\Kurikulum\DataKBM\JadwalPerHariController;
 use App\Http\Controllers\Kurikulum\DataKBM\JadwalPerRombelController;
-use App\Http\Controllers\Kurikulum\DataKBM\JadwalTabelPerhariController;
 use App\Http\Controllers\Kurikulum\DataKBM\KbmPerRombelController;
 use App\Http\Controllers\Kurikulum\DataKBM\KunciDataKbmController;
 use App\Http\Controllers\Kurikulum\DataKBM\MataPelajaranController;
@@ -67,12 +67,13 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/jadwal-mingguan-per-rombel', [JadwalPerRombelController::class, 'index'])->name('tampiljadwalperrombel');
             Route::get('/jadwal-mingguan-per-guru', [JadwalPerGuruController::class, 'index'])->name('tampiljadwalperguru');
-            Route::get('/jadwal-mingguan-tabel-per-hari', [JadwalTabelPerhariController::class, 'index'])->name('tampiljadwalperhari');
+
+            Route::get('/jadwal-mingguan-tabel-per-hari', [JadwalPerHariController::class, 'index'])->name('tampiljadwalperhari');
             // routes/web.php
-            Route::post('/simpankehadiranguru', [JadwalTabelPerhariController::class, 'simpanKehadiranGuru'])->name('simpankehadiranguru');
-            Route::get('/ajax-tampil', [JadwalTabelPerhariController::class, 'ajaxTampil']);
-            Route::post('/simpan-jadwal-massal', [JadwalTabelPerhariController::class, 'simpanMassal']);
-            Route::post('/simpankehadirangurumassal', [JadwalTabelPerhariController::class, 'simpanMassal'])
+            Route::post('/simpankehadiranguru', [JadwalPerHariController::class, 'simpanKehadiranGuru'])->name('simpankehadiranguru');
+            Route::get('/ajax-tampil', [JadwalPerHariController::class, 'ajaxTampil']);
+            Route::post('/simpan-jadwal-massal', [JadwalPerHariController::class, 'simpanMassal']);
+            Route::post('/simpankehadirangurumassal', [JadwalPerHariController::class, 'simpanMassal'])
                 ->name('simpankehadirangurumassal');
 
 

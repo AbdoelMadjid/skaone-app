@@ -73,7 +73,6 @@
                                 <th>Rombel</th>
                                 <th>NIS</th>
                                 <th>Nama Siswa</th>
-                                <th>Photo</th>
                                 <th>Email</th>
                             </tr>
                         </thead>

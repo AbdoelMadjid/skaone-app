@@ -19,8 +19,8 @@
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0">
-                    <x-btn-tambah can="create manajemensekolah/datakeahlian/kompetensi-keahlian"
-                        route="manajemensekolah.datakeahlian.kompetensi-keahlian.create" label="Tambah" icon="ri-add-line" />
+                    <x-btn-tambah dinamisBtn="true" can="create manajemensekolah/datakeahlian/kompetensi-keahlian"
+                        route="manajemensekolah.datakeahlian.kompetensi-keahlian.create" />
                 </div>
             </div>
         </div>

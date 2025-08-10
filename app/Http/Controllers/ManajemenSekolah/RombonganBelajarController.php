@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ManajemenSekolah\RombonganBelajarRequest;
 use App\Models\ManajemenSekolah\KompetensiKeahlian;
 use App\Models\ManajemenSekolah\PersonilSekolah;
+use App\Models\ManajemenSekolah\Semester;
 use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Models\ManajemenSekolah\WaliKelas;
 
@@ -18,12 +19,25 @@ class RombonganBelajarController extends Controller
      */
     public function index(RombonganBelajarDataTable $rombonganBelajarDataTable)
     {
+        // Ambil tahun ajaran yang aktif
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')
+            ->with(['semesters' => function ($query) {
+                $query->where('status', 'Aktif');
+            }])
+            ->first();
+
+        // Pastikan tahun ajaran aktif ada sebelum melanjutkan
+        if (!$tahunAjaranAktif) {
+            return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
+        }
+
         $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
         $kompetensiKeahlianOptions = KompetensiKeahlian::pluck('nama_kk', 'idkk')->toArray();
         $tingkatOptions = [];
         return $rombonganBelajarDataTable->render('pages.manajemensekolah.rombongan-belajar', [
             'tahunAjaranOptions' => $tahunAjaranOptions,
             'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
+            'tahunAjaranAktif' => $tahunAjaranAktif->tahunajaran,
         ]);
     }
 

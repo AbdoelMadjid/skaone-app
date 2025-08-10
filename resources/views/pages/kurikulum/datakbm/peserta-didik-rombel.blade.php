@@ -22,12 +22,11 @@
                 <div class="flex-shrink-0">
                     <x-btn-group-dropdown>
                         <x-btn-tambah can="create kurikulum/datakbm/peserta-didik-rombel"
-                            route="kurikulum.datakbm.peserta-didik-rombel.create" label="Peserta Didik Rombel"
-                            icon="ri-add-line" />
+                            route="kurikulum.datakbm.peserta-didik-rombel.create" label="Rombel PD" icon="ri-add-line" />
                         <div class="dropdown-divider"></div>
                         <x-btn-action href="{{ route('manajemensekolah.peserta-didik.index') }}" label="Peserta Didik"
                             icon="ri-user-fill" />
-                        <x-btn-action label="Generate Akun Siswa" icon="ri-admin-fill" data-bs-toggle="modal"
+                        <x-btn-action label="Generate Akun" icon="ri-admin-fill" data-bs-toggle="modal"
                             data-bs-target="#generateAkun" id="generateAkunBtn" title="generateAkun" />
                         <x-btn-action label="Naik Kelas / Kelulusan" icon="ri-anticlockwise-2-fill" data-bs-toggle="modal"
                             data-bs-target="#generateNaikKelas" id="generateNaikKelasBtn" title="generateAkun" />
@@ -303,7 +302,6 @@
                         <td>${item.rombel}</td>
                         <td>${item.nis}</td>
                         <td>${item.nama_siswa}</td>
-                        <td>${item.foto}</td>
                         <td>${item.email}</td>
                     </tr>
                 `);

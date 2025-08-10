@@ -16,13 +16,11 @@
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0 me-2">
-                    <x-btn-tambah can="create websiteapp/question" route="websiteapp.question.create" label="Tambah"
-                        icon="ri-add-line" />
+                    <x-btn-tambah dinamisBtn="true" can="create websiteapp/question" route="websiteapp.question.create" />
                 </div>
                 <div class="flex-shrink-0">
-                    <a class="btn btn-soft-primary btn-label waves-effect waves-light btn-sm"
-                        href="{{ route('websiteapp.polling.index') }}"> <i
-                            class="ri-speed-mini-fill label-icon align-middle fs-16 me-2"></i> Polling</a>
+                    <x-btn-action dinamisBtn="true" href="{{ route('websiteapp.polling.index') }}" icon="ri-speed-mini-fill"
+                        label="Polling" />
                 </div>
             </div>
         </div>

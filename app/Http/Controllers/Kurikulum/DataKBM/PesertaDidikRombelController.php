@@ -303,7 +303,6 @@ class PesertaDidikRombelController extends Controller
             ->select(
                 'peserta_didiks.nama_lengkap',
                 'peserta_didiks.nis',
-                'peserta_didiks.foto',
                 'peserta_didiks.kontak_email as email',
                 'rombongan_belajars.tingkat'
             )
@@ -331,18 +330,12 @@ class PesertaDidikRombelController extends Controller
             // Jika akun belum ada, buatkan akun baru
             $user = User::create([
                 'name' => $student->nama_lengkap,
-                'avatar' => $student->foto,
                 'email' => $email,
                 'nis' => $student->nis,
-                'password' => bcrypt('siswaSKAONE30'),  // Password default
+                'password' => bcrypt('Siliwangi30'),  // Password default
             ]);
 
-            // Menambahkan role sesuai dengan tingkat siswa
-            if ($student->tingkat == 12) {
-                $user->assignRole(['siswa', 'pesertapkl']);  // Menetapkan role 'siswa' dan 'pesertapkl' jika tingkat 12
-            } else {
-                $user->assignRole('siswa');  // Menetapkan role 'siswa' jika bukan tingkat 12
-            }
+            $user->assignRole('siswa');  // Menetapkan role 'siswa' jika bukan tingkat 12
         }
 
         return redirect()->back()->with('success', 'Akun berhasil dibuat!');

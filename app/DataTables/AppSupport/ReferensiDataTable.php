@@ -64,7 +64,7 @@ class ReferensiDataTable extends DataTable
                 'pageLength' => 25,
                 'paging' => true,
                 'scrollCollapse' => false,
-                'scrollY' => "calc(100vh - 397px)",
+                'scrollY' => "calc(100vh - 404px)",
             ]);
     }
 

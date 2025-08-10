@@ -16,8 +16,8 @@
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0">
-                    <x-btn-tambah can="create websiteapp/kumpulan-faqs" route="websiteapp.kumpulan-faqs.create" label="Tambah"
-                        icon="ri-add-line" />
+                    <x-btn-tambah dinamisBtn="true" can="create websiteapp/kumpulan-faqs"
+                        route="websiteapp.kumpulan-faqs.create" />
                 </div>
             </div>
         </div>

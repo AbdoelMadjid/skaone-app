@@ -30,10 +30,10 @@
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0 me-3">
-                    <x-btn-group-dropdown>
-                        <x-btn-action href="{{ route('kurikulum.datakbm.tampiljadwalperguru') }}" label="Jadwal Per Guru"
+                    <x-btn-group-dropdown size="sm">
+                        <x-btn-action href="{{ route('kurikulum.datakbm.tampiljadwalperguru') }}" label="Guru"
                             icon="ri-calendar-2-fill" />
-                        <x-btn-action href="{{ route('kurikulum.datakbm.tampiljadwalperhari') }}" label="Jadwal Per Hari"
+                        <x-btn-action href="{{ route('kurikulum.datakbm.tampiljadwalperhari') }}" label="Harian"
                             icon="ri-calendar-event-fill" />
                     </x-btn-group-dropdown>
                 </div>
@@ -43,83 +43,102 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-9 p-2">
-                @include('pages.kurikulum.datakbm.jadwal-mingguan-tabel-rombel')
-            </div>
-            <div class="col-md-3">
-                <div class="card-body p-2">
-                    <x-heading-title>Pilih Rombel</x-heading-title>
-                    <br>
-                    <select class="form-select form-select-sm mb-4" id="idRombelAuto" name="kode_rombel">
-                        <option value="">Pilih Rombel</option>
-                        @foreach ($rombonganBelajarGrouped as $namaKK => $tingkatGrouped)
-                            @foreach ($tingkatGrouped as $tingkat => $rombels)
-                                <optgroup label="{{ $namaKK }} - Tingkat {{ $tingkat }}">
-                                    @foreach ($rombels as $rombel)
-                                        <option value="{{ $rombel->kode_rombel }}"
-                                            data-tahunajaran="{{ $tahunAjaranAktif }}" data-semester="{{ $semesterAktif }}"
-                                            data-kompetensikeahlian="{{ $rombel->id_kk }}"
-                                            data-tingkat="{{ $rombel->tingkat }}"
-                                            {{ request('kode_rombel') == $rombel->kode_rombel ? 'selected' : '' }}>
-                                            {{ $rombel->rombel }}
-                                        </option>
-                                    @endforeach
-                                </optgroup>
-                            @endforeach
-                        @endforeach
-                    </select>
-                    <div class="accordion custom-accordionwithicon custom-accordion-border accordion-border-box accordion-primary"
-                        id="accordionRombel">
-                        @foreach ($rombonganBelajarGrouped as $namaKK => $tingkatGrouped)
-                            @php
-                                // Cek apakah rombel aktif ada di dalam group ini
-                                $isOpen = collect($tingkatGrouped)
-                                    ->flatten()
-                                    ->contains(fn($rombel) => $rombel->kode_rombel == request('kode_rombel'));
-                            @endphp
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="heading-{{ Str::slug($namaKK) }}">
-                                    <button class="accordion-button {{ $isOpen ? '' : 'collapsed' }}" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#collapse-{{ Str::slug($namaKK) }}"
-                                        aria-expanded="false" aria-controls="collapse-{{ Str::slug($namaKK) }}">
-                                        {{ $namaKK }}
-                                    </button>
-                                </h2>
-                                <div id="collapse-{{ Str::slug($namaKK) }}"
-                                    class="accordion-collapse collapse {{ $isOpen ? 'show' : '' }}"
-                                    aria-labelledby="heading-{{ Str::slug($namaKK) }}" data-bs-parent="#accordionRombel">
-                                    <div class="accordion-body">
-
-                                        @foreach ($tingkatGrouped as $tingkat => $rombels)
-                                            <h6 class="mt-3">Tingkat {{ $tingkat }}</h6>
-                                            <ul class="list-group mb-2">
-                                                @foreach ($rombels as $rombel)
-                                                    <li class="list-group-item list-rombel-item
-                                                        {{ request('kode_rombel') == $rombel->kode_rombel ? 'active bg-light-primary' : '' }}"
-                                                        data-tahunajaran="{{ $tahunAjaranAktif }}"
-                                                        data-semester="{{ $semesterAktif }}"
-                                                        data-kompetensikeahlian="{{ $rombel->id_kk }}"
-                                                        data-tingkat="{{ $rombel->tingkat }}"
-                                                        data-kode_rombel="{{ $rombel->kode_rombel }}"
-                                                        style="cursor: pointer;">
-                                                        {{ $rombel->rombel }}
-                                                    </li>
-                                                @endforeach
-                                            </ul>
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row gx-lg-5">
+                            <div class="col-xl-9">
+                                <div class="mt-xl-0 mt-5">
+                                    @include('pages.kurikulum.datakbm.jadwal-mingguan-tabel-rombel')
+                                </div>
+                            </div>
+                            <!-- end col -->
+                            <div class="col-xl-3 col-md-8 mx-auto">
+                                <div class="product-img-slider sticky-side-div">
+                                    <x-heading-title>Pilih Rombel</x-heading-title>
+                                    <br>
+                                    <select class="form-select form-select-sm mb-4" id="idRombelAuto" name="kode_rombel">
+                                        <option value="">Pilih Rombel</option>
+                                        @foreach ($rombonganBelajarGrouped as $namaKK => $tingkatGrouped)
+                                            @foreach ($tingkatGrouped as $tingkat => $rombels)
+                                                <optgroup label="{{ $namaKK }} - Tingkat {{ $tingkat }}">
+                                                    @foreach ($rombels as $rombel)
+                                                        <option value="{{ $rombel->kode_rombel }}"
+                                                            data-tahunajaran="{{ $tahunAjaranAktif }}"
+                                                            data-semester="{{ $semesterAktif }}"
+                                                            data-kompetensikeahlian="{{ $rombel->id_kk }}"
+                                                            data-tingkat="{{ $rombel->tingkat }}"
+                                                            {{ request('kode_rombel') == $rombel->kode_rombel ? 'selected' : '' }}>
+                                                            {{ $rombel->rombel }}
+                                                        </option>
+                                                    @endforeach
+                                                </optgroup>
+                                            @endforeach
                                         @endforeach
+                                    </select>
+                                    <div class="accordion custom-accordionwithicon custom-accordion-border accordion-border-box accordion-primary"
+                                        id="accordionRombel">
+                                        @foreach ($rombonganBelajarGrouped as $namaKK => $tingkatGrouped)
+                                            @php
+                                                // Cek apakah rombel aktif ada di dalam group ini
+                                                $isOpen = collect($tingkatGrouped)
+                                                    ->flatten()
+                                                    ->contains(
+                                                        fn($rombel) => $rombel->kode_rombel == request('kode_rombel'),
+                                                    );
+                                            @endphp
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="heading-{{ Str::slug($namaKK) }}">
+                                                    <button class="accordion-button {{ $isOpen ? '' : 'collapsed' }}"
+                                                        type="button" data-bs-toggle="collapse"
+                                                        data-bs-target="#collapse-{{ Str::slug($namaKK) }}"
+                                                        aria-expanded="false"
+                                                        aria-controls="collapse-{{ Str::slug($namaKK) }}">
+                                                        {{ $namaKK }}
+                                                    </button>
+                                                </h2>
+                                                <div id="collapse-{{ Str::slug($namaKK) }}"
+                                                    class="accordion-collapse collapse {{ $isOpen ? 'show' : '' }}"
+                                                    aria-labelledby="heading-{{ Str::slug($namaKK) }}"
+                                                    data-bs-parent="#accordionRombel">
+                                                    <div class="accordion-body">
 
+                                                        @foreach ($tingkatGrouped as $tingkat => $rombels)
+                                                            <h6 class="mt-3">Tingkat {{ $tingkat }}</h6>
+                                                            <ul class="list-group mb-2">
+                                                                @foreach ($rombels as $rombel)
+                                                                    <li class="list-group-item list-rombel-item
+                                                        {{ request('kode_rombel') == $rombel->kode_rombel ? 'active bg-light-primary' : '' }}"
+                                                                        data-tahunajaran="{{ $tahunAjaranAktif }}"
+                                                                        data-semester="{{ $semesterAktif }}"
+                                                                        data-kompetensikeahlian="{{ $rombel->id_kk }}"
+                                                                        data-tingkat="{{ $rombel->tingkat }}"
+                                                                        data-kode_rombel="{{ $rombel->kode_rombel }}"
+                                                                        style="cursor: pointer;">
+                                                                        {{ $rombel->rombel }}
+                                                                    </li>
+                                                                @endforeach
+                                                            </ul>
+                                                        @endforeach
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
                     </div>
-
+                    <!-- end card body -->
                 </div>
-
+                <!-- end card -->
             </div>
+            <!-- end col -->
         </div>
     </div>
-
     @include('pages.kurikulum.datakbm.jadwal-mingguan-modal-rombel')
 @endsection
 @section('script')
@@ -171,17 +190,6 @@
                     }
                 });
             });
-            /* // Tambahkan logika untuk highlight active berdasarkan query URL
-            const params = new URLSearchParams(window.location.search);
-            const activeKodeRombel = params.get('kode_rombel');
-
-            if (activeKodeRombel) {
-                const activeItem = document.querySelector(
-                    `.list-rombel-item[data-kode_rombel="${activeKodeRombel}"]`);
-                if (activeItem) {
-                    activeItem.classList.add('active', 'bg-light-primary');
-                }
-            } */
         });
     </script>
 

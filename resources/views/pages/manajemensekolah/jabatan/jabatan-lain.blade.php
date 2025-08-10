@@ -23,8 +23,8 @@
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0">
-                    <x-btn-tambah can="create manajemensekolah/timmanajemen/jabatan-lain"
-                        route="manajemensekolah.timmanajemen.jabatan-lain.create" label="Tambah" icon="ri-add-line" />
+                    <x-btn-tambah dinamisBtn="true" can="create manajemensekolah/timmanajemen/jabatan-lain"
+                        route="manajemensekolah.timmanajemen.jabatan-lain.create" />
                 </div>
             </div>
         </div>

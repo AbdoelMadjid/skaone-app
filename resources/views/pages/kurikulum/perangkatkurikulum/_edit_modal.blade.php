@@ -11,7 +11,8 @@
                         <h5 class="modal-title">Edit Pengumuman</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body"
+                        style="max-height: calc(100vh - 225px); overflow-y: auto; margin-top:5px; margin-bottom:15px;">
                         <div class="row">
                             <div class="col-md-7">
                                 <div class="mb-3">

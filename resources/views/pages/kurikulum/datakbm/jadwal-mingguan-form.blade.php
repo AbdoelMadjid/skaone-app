@@ -2,7 +2,6 @@
     @if ($data->id)
         @method('put')
     @endif
-
     <div class="row">
         <div class="col-md-3">
             <x-form.select name="tahunajaran" label="Tahun Ajaran" :options="$tahunAjaranOptions" value="{{ $data->tahunajaran }}"
@@ -78,7 +77,6 @@
         </div>
     </div>
 </x-form.modal>
-
 <script>
     function loadRombels() {
         const tahunajaran = $('#tahunajaran').val();

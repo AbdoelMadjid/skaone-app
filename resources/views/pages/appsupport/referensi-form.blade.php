@@ -15,13 +15,11 @@
                     <option value="new">Tambah Jenis Baru</option>
                 </select>
             </div>
-
             <div class="form-group mb-2" id="jenis_input" style="display: none;">
                 <label for="jenis_input_field">Jenis Referensi Baru</label>
                 <input type="text" id="jenis_input_field" name="jenis_new" class="form-control"
                     value="{{ old('jenis_new') }}">
             </div>
-
             <x-form.input name="data" value="{{ $data->data }}" label="Data Referensi" />
         </div>
     </div>

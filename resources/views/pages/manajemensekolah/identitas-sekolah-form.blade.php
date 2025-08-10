@@ -3,9 +3,7 @@
     @if ($data->id)
         @method('put')
     @endif
-
     <div class="row">
-
         <div class="col-sm-4">
             <x-form.input name="npsn" :value="old('npsn', $data->npsn)" label="NPSN" />
         </div><!--end col-->
@@ -17,7 +15,6 @@
         </div><!--end col-->
     </div>
     <div class="row">
-
         <div class="col-sm-3">
             <h5 class="fs-14 mb-3">Alamat Sekolah:</h5>
             <x-form.input name="alamat_jalan" :value="old('alamat_jalan', $data->alamat_jalan)" label="Jalan" />

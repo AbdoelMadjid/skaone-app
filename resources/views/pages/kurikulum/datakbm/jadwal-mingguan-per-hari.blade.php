@@ -24,10 +24,10 @@
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0 me-3">
-                    <x-btn-group-dropdown>
-                        <x-btn-action href="{{ route('kurikulum.datakbm.tampiljadwalperrombel') }}" label="Jadwal Per Rombel"
+                    <x-btn-group-dropdown size="sm">
+                        <x-btn-action href="{{ route('kurikulum.datakbm.tampiljadwalperrombel') }}" label="Rombel"
                             icon="ri-calendar-fill" />
-                        <x-btn-action href="{{ route('kurikulum.datakbm.tampiljadwalperguru') }}" label="Jadwal Per Guru"
+                        <x-btn-action href="{{ route('kurikulum.datakbm.tampiljadwalperguru') }}" label="Guru"
                             icon="ri-calendar-2-fill" />
                     </x-btn-group-dropdown>
                 </div>

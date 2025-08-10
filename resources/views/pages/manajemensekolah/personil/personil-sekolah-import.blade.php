@@ -15,7 +15,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <x-form.modal-footer-button label="Import" icon="ri-upload-fill" />
+                    <x-form.modal-footer-button label="Upload" icon="ri-upload-2-fill" />
                 </div>
             </form>
         </div>

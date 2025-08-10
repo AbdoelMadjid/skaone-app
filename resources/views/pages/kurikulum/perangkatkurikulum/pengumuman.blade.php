@@ -19,9 +19,8 @@
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0">
-                    <button class="btn btn-light btn-label waves-effect waves-light btn-sm" data-bs-toggle="modal"
-                        data-bs-target="#createModal"><i class="ri-add-fill label-icon align-middle fs-16 me-2"></i>
-                        Tambah</button>
+                    <x-btn-action dinamisBtn="true" data-bs-toggle="modal" data-bs-target="#createModal" Label="Tambah"
+                        icon="ri-menu-add-fill" />
                 </div>
             </div>
         </div>
@@ -44,7 +43,7 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $judul->judul }}</td>
                                 <td>
-                                    <span class="badge bg-{{ $judul->status == 'Y' ? 'success' : 'secondary' }}">
+                                    <span class="badge bg-{{ $judul->status == 'Y' ? 'primary' : 'danger' }}">
                                         {{ $judul->status == 'Y' ? 'Tampil' : 'Sembunyi' }}
                                     </span>
                                 </td>
@@ -53,18 +52,33 @@
                                     {{ $judul->pengumumanTerkiniAktif->sum(fn($item) => $item->poin->count()) }}
                                 </td>
                                 <td class="text-center">
-                                    <a href="#" class="btn btn-sm btn-info"
-                                        onclick="lihatDetail({{ $judul->id }})">Detail</a>
-                                    <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                        data-bs-target="#editModal-{{ $judul->id }}">
-                                        Edit
-                                    </a>
-                                    <form method="POST"
-                                        action="{{ route('kurikulum.perangkatkurikulum.pengumuman.destroy', $judul->id) }}"
-                                        class="d-inline" onsubmit="return confirm('Yakin ingin menghapus?')">
-                                        @csrf @method('DELETE')
-                                        <button class="btn btn-sm btn-danger">Hapus</button>
-                                    </form>
+                                    <ul class="list-inline hstack gap-2 mb-0">
+                                        <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                            data-bs-placement="top" title="View">
+                                            <a href="#" class="btn btn-sm btn-info"
+                                                onclick="lihatDetail({{ $judul->id }})"><i
+                                                    class="ri-eye-fill
+                                                fs-14"></i></a>
+                                        </li>
+                                        <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                            data-bs-placement="top" title="Edit">
+                                            <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                                data-bs-target="#editModal-{{ $judul->id }}">
+                                                <i class="ri-pencil-fill fs-14"></i>
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                            data-bs-placement="top" title="Remove">
+                                            <form method="POST"
+                                                action="{{ route('kurikulum.perangkatkurikulum.pengumuman.destroy', $judul->id) }}"
+                                                class="d-inline" onsubmit="return confirm('Yakin ingin menghapus?')">
+                                                @csrf @method('DELETE')
+                                                <button class="btn btn-sm btn-danger"><i
+                                                        class="ri-delete-bin-5-fill fs-14"></i></button>
+                                            </form>
+
+                                        </li>
+                                    </ul>
                                 </td>
                             </tr>
                         @endforeach

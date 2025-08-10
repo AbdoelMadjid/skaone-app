@@ -19,15 +19,16 @@
                     <form action="{{ route('appsupport.data-login.index') }}" method="GET">
                         <div class="input-group">
                             <input type="date" name="date" id="date" value="{{ $date }}"
-                                class="form-control" aria-label="Recipient's username" aria-describedby="button-addon3">
-                            <button class="btn btn-primary" type="submit" id="button-addon3">Filter</button>
+                                class="form-control form-control-sm" aria-label="Recipient's username"
+                                aria-describedby="button-addon3">
+                            <button class="btn btn-primary btn-sm" type="submit" id="button-addon3">Filter</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
         <div class="card-body">
-            <div class="px-4 mx-n4 mt-n2 mb-2">
+            <div class="px-4 mx-n4 mt-n2 mb-0" data-simplebar style="height: calc(100vh - 284px);">
                 <table class="table">
                     <thead>
                         <tr>

@@ -21,13 +21,14 @@
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0 me-2">
-                    <x-btn-tambah can="create websiteapp/polling" route="websiteapp.polling.create" label="Tambah"
-                        icon="ri-add-line" />
+                    <x-btn-tambah dinamisBtn="true" can="create websiteapp/polling" route="websiteapp.polling.create" />
                 </div>
                 <div class="flex-shrink-0">
-                    <a class="btn btn-soft-primary btn-label waves-effect waves-light btn-sm"
+                    <x-btn-action dinamisBtn="true" href="{{ route('websiteapp.question.index') }}" icon="ri-speed-mini-fill"
+                        label="Pertanyaan" />
+                    {{--                     <a class="btn btn-soft-primary btn-label waves-effect waves-light btn-sm"
                         href="{{ route('websiteapp.question.index') }}"> <i
-                            class="ri-speed-mini-fill label-icon align-middle fs-16 me-2"></i> Pertanyaan</a>
+                            class="ri-speed-mini-fill label-icon align-middle fs-16 me-2"></i> Pertanyaan</a> --}}
                 </div>
             </div>
         </div>
@@ -39,7 +40,7 @@
             </div>
             <div class="col-md-6">
                 <div class="card-body">
-                    <div class="px-4 mx-n4 mt-n2 mb-0" data-simplebar style="height: calc(100vh - 285px);">
+                    <div class="px-4 mx-n4 mt-n2 mb-0" data-simplebar style="height: calc(100vh - 289px);">
                         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                         <h4 class="mt-0">📈 Statistik Polling (Pilihan Ganda)</h4>
                         <div class="row">

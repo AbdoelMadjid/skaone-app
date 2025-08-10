@@ -9,7 +9,6 @@
                 id="namalengkapguru" label="Nama Lengkap" />
             <x-form.select name="mulai_tahun" :options="$tampilTahun" value="{{ old('mulai_tahun', $data->mulai_tahun) }}"
                 label="Mulai Tahun" />
-
             <div class="form-group mb-2">
                 <label for="akhir_tahun">Selesai Tahun / Masih Aktif</label>
                 <select id="jenis_select" name="akhir_tahun" class="form-control">

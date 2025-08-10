@@ -21,11 +21,12 @@
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0">
                     <x-btn-tambah dinamisBtn="true" can="create manajemenpengguna/users"
-                        route="manajemenpengguna.users.create" label="Tambah" />
+                        route="manajemenpengguna.users.create" label="Tambah" icon="ri-user-add-fill" />
                 </div>
             </div>
         </div>
-        <div class="card-body p-2">
+        <div class="card-body
+                        p-2">
             <div class="row g-3">
                 <div class="col-lg">
                 </div>
@@ -96,7 +97,8 @@
                             <label for="users">Pilih User</label>
                             <select id="users" name="users[]" class="form-select" multiple required>
                                 @foreach ($users as $user)
-                                    <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
+                                    <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})
+                                    </option>
                                 @endforeach
                             </select>
                         </div>

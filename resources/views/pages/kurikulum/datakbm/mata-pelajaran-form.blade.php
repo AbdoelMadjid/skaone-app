@@ -14,6 +14,7 @@
                 'B4' => 'B4',
                 'B5' => 'B5',
                 'PKL' => 'PKL',
+                'BK' => 'BK',
             ]" value="{{ old('kelompok', $data->kelompok) }}"
                 label="Kelompok" id="kelompok" />
         </div>

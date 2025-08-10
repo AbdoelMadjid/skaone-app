@@ -16,17 +16,12 @@
         <div class="card-header">
             <div class="d-flex align-items-center">
                 <x-heading-title>Backup Database</x-heading-title>
-                <div class="flex-shrink-0">
-
-                </div>
             </div>
         </div>
         <div class="card-body">
-
             <p>Backup database adalah proses untuk menyimpan data yang ada di database ke dalam file.</p>
             <form action="{{ route('appsupport.backup-db.process') }}" method="POST">
                 @csrf
-
                 <table class="table table-bordered" id="tables-list">
                     <thead>
                         <tr>

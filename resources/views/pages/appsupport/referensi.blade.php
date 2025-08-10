@@ -16,8 +16,7 @@
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0">
-                    <x-btn-tambah can="create appsupport/referensi" route="appsupport.referensi.create" label="Tambah"
-                        icon="ri-add-line" />
+                    <x-btn-tambah dinamisBtn="true" can="create appsupport/referensi" route="appsupport.referensi.create" />
                 </div>
             </div>
         </div>
@@ -34,8 +33,7 @@
                                 <option value="{{ $jenis }}">{{ $jenis }}</option>
                             @endforeach
                         </select>
-                        <button id="reset-filter" class="btn btn-sm btn-soft-primary btn-label waves-effect waves-light"> <i
-                                class="ri-arrow-go-back-fill label-icon align-middle fs-16 me-3"></i>Reset</button>
+                        <x-btn-action dinamisBtn="true" id="reset-filter" label="Reset" icon="ri-arrow-go-back-fill" />
                     </div> <!-- Penutup div flex -->
                 </div>
             </div>

@@ -14,14 +14,13 @@
 @endphp
 
 @can($can)
-    <a href="{{ route($route) }}"
-        {{ $attributes->merge([
-            'class' => $classes,
-            'title' => $title,
-            'data-bs-toggle' => $dinamisBtn ? 'tooltip' : null,
-            'data-bs-placement' => $dinamisBtn ? 'left' : null,
-        ]) }}>
+    @if ($dinamisBtn && $title)
+        <span data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $title }}">
+    @endif
 
+    <a href="{{ route($route) }}" {{ $attributes->merge([
+        'class' => $classes,
+    ]) }}>
         @if ($dinamisBtn)
             <i class="{{ $icon }} align-middle fs-14"></i>
             <span class="d-none d-sm-inline ms-2">{{ $label }}</span>
@@ -30,4 +29,8 @@
             {{ $label }}
         @endif
     </a>
+
+    @if ($dinamisBtn && $title)
+        </span>
+    @endif
 @endcan

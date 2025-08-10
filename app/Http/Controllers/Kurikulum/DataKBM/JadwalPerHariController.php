@@ -5,12 +5,11 @@ namespace App\Http\Controllers\Kurikulum\DataKBM;
 use App\Http\Controllers\Controller;
 use App\Models\Kurikulum\DataKBM\JadwalMingguan;
 use App\Models\Kurikulum\DataKBM\KehadiranGuruHarian;
-use App\Models\ManajemenSekolah\PersonilSekolah;
 use App\Models\ManajemenSekolah\Semester;
 use App\Models\ManajemenSekolah\TahunAjaran;
 use Illuminate\Http\Request;
 
-class JadwalTabelPerhariController extends Controller
+class JadwalPerHariController extends Controller
 {
     public function index()
     {
@@ -43,7 +42,7 @@ class JadwalTabelPerhariController extends Controller
 
         $semuaKehadiran = KehadiranGuruHarian::get();
 
-        return view('pages.kurikulum.datakbm.jadwal-mingguan-tabel-per-hari', compact('grouped', 'semuaHari', 'semuaKehadiran'));
+        return view('pages.kurikulum.datakbm.jadwal-mingguan-per-hari', compact('grouped', 'semuaHari', 'semuaKehadiran'));
     }
 
 
@@ -117,7 +116,7 @@ class JadwalTabelPerhariController extends Controller
             $jumlahJamTerisi[$gid] = $jadwalHari->where('id_personil', $gid)->count();
         }
 
-        $html = view('pages.kurikulum.datakbm.jadwal-mingguan-perhari-tabel', compact(
+        $html = view('pages.kurikulum.datakbm.jadwal-mingguan-tabel-harian', compact(
             'jadwalHari',
             'semuaJamKe',
             'semuaKehadiran',

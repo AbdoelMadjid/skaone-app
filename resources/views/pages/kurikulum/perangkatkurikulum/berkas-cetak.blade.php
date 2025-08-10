@@ -22,13 +22,14 @@
                         action="{{ route('kurikulum.perangkatkurikulum.berkas-cetak.index') }}">
                         <div class="row g-3">
                             <div class="col-lg">
-                                <h3><i class="ri-contacts-book-2-line text-muted align-bottom me-1"></i> Berkas Cetak Daftar
-                                    Hadir dan Nilai
-                                </h3>
+                                <h5><i class="ri-contacts-book-2-line text-muted align-bottom me-1"></i> Berkas Cetak <span
+                                        class="d-none d-sm-inline ms-2">Daftar
+                                        Hadir dan Nilai</span>
+                                </h5>
                                 <p>Pilih tahunajaran, kompetensi keahlian, tingkat dan rombel untuk proses cetak.</p>
                             </div>
                             <div class="col-lg-auto">
-                                <div class="mb-3 d-flex align-items-center gap-2">
+                                <div class="d-flex align-items-center gap-2">
                                     <select name="tahun_ajaran" id="tahun_ajaran" class="form-select form-select-sm">
                                         <option value="">Pilih Tahun Aajaran</option>
                                         @foreach ($tahunAjaranOptions as $key => $value)
@@ -39,7 +40,6 @@
                                     </select>
                                 </div>
                             </div>
-
                             <div class="col-lg-auto">
                                 <div class="d-flex align-items-center gap-2">
                                     <select name="kode_kk" id="kode_kk" class="form-select form-select-sm">
@@ -52,7 +52,6 @@
                                     </select>
                                 </div>
                             </div>
-
                             <div class="col-lg-auto">
                                 <div class="d-flex align-items-center gap-2">
                                     <select name="tingkat" id="tingkat" class="form-select form-select-sm">
@@ -65,7 +64,6 @@
                                     </select>
                                 </div>
                             </div>
-
                             <div class="col-lg-auto">
                                 <div class="d-flex align-items-center gap-2">
                                     <select name="rombel_kode" id="rombel_kode" class="form-select form-select-sm">

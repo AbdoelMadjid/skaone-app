@@ -16,7 +16,7 @@
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0">
-                    <x-btn-group-dropdown>
+                    <x-btn-group-dropdown padding="p-3">
                         <x-btn-action label="Distribusi Rombel" icon="ri-account-pin-box-fill" data-bs-toggle="modal"
                             data-bs-target="#distribusiSiswa" id="distribusiSiswaBtn" title="Distribusikan siswa yang dipilih"
                             :disabled="true" />
@@ -24,7 +24,7 @@
                             label="Siswa Per Rombel" icon="ri-parent-fill" />
                         <div class="dropdown-divider"></div>
                         <x-btn-tambah can="create manajemensekolah/peserta-didik"
-                            route="manajemensekolah.peserta-didik.create" label="Tambah" icon="ri-add-line" />
+                            route="manajemensekolah.peserta-didik.create" icon="ri-user-add-fill" />
                         <x-btn-action href="{{ route('pdexportExcel') }}" label="Download" icon="ri-download-2-fill" />
                         <x-btn-action label="Upload" icon="ri-upload-2-fill" data-bs-toggle="modal"
                             data-bs-target="#importModal" />

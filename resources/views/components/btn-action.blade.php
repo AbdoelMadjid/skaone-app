@@ -13,9 +13,9 @@
     $classes = "btn btn-soft-primary d-inline-flex align-items-center waves-effect waves-light {$size}";
 @endphp
 
-@if ($dinamisBtn && $title)
-    <span data-bs-toggle="tooltip" data-bs-placement="left" title="{{ $title }}">
-@endif
+{{-- @if ($dinamisBtn && $title)
+    <span data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $title }}">
+@endif --}}
 
 @if ($href)
     <a href="{{ $href }}" {{ $attributes->merge([
@@ -46,6 +46,7 @@
     </button>
 @endif
 
-@if ($dinamisBtn && $title)
+{{-- @if ($dinamisBtn && $title)
     </span>
 @endif
+ --}}

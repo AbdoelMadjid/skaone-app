@@ -22,7 +22,7 @@
                             :disabled="true" />
                         <div class="dropdown-divider"></div>
                         <x-btn-tambah can="create manajemensekolah/personil-sekolah"
-                            route="manajemensekolah.personil-sekolah.create" label="Tambah" icon="ri-add-line" />
+                            route="manajemensekolah.personil-sekolah.create" icon="ri-user-add-fill" />
                         <x-btn-action href="{{ route('ps_exportExcel') }}" label="Download" icon="ri-download-2-fill" />
                         <x-btn-action label="Upload" icon="ri-upload-2-fill" data-bs-toggle="modal"
                             data-bs-target="#importModal" />

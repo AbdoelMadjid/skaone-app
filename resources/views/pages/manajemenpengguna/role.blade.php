@@ -16,7 +16,7 @@
             <x-heading-title>@yield('title')</x-heading-title>
             <div class="flex-shrink-0">
                 <x-btn-tambah dinamisBtn="true" can="create manajemenpengguna/roles" route="manajemenpengguna.roles.create"
-                    title="Tambah Role Pengguna" label="Tambah" icon="ri-add-line" />
+                    icon="ri-user-add-fill" />
             </div>
         </div>
         <div class="card-body p-1">

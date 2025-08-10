@@ -1,4 +1,4 @@
-<x-modal-action action="{{ $action }}">
+<x-modal-action action="{{ $action }}" title="Kalender Pendidikan">
     @if ($data->id)
         @method('put')
     @endif

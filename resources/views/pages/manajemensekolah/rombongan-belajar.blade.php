@@ -16,8 +16,8 @@
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
                 <div class="flex-shrink-0">
-                    <x-btn-tambah can="create manajemensekolah/rombongan-belajar"
-                        route="manajemensekolah.rombongan-belajar.create" label="Tambah" icon="ri-add-line" />
+                    <x-btn-tambah dinamisBtn="true" can="create manajemensekolah/rombongan-belajar"
+                        route="manajemensekolah.rombongan-belajar.create" icon="ri-menu-add-fill" />
                 </div>
             </div>
         </div>
@@ -37,7 +37,9 @@
                         name="choices-single-default" id="idThnAjaran">
                         <option value="all" selected>Pilih Tahun Ajaran</option>
                         @foreach ($tahunAjaranOptions as $thnajar)
-                            <option value="{{ $thnajar }}">{{ $thnajar }}</option>
+                            <option value="{{ $thnajar }}"
+                                {{ request('tahunajaran', $tahunAjaranAktif) == $thnajar ? 'selected' : '' }}>
+                                {{ $thnajar }}</option>
                         @endforeach
                     </select>
                 </div>
