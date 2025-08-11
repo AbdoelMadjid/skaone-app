@@ -8,7 +8,7 @@
 @section('content')
     @component('layouts.breadcrumb')
         @slot('li_1')
-            @lang('translation.konseling')
+            @lang('translation.bimbingan-konseling')
         @endslot
     @endcomponent
     {{--  --}}

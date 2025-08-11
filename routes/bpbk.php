@@ -6,6 +6,7 @@ use App\Http\Controllers\ManajemenSekolah\BpBk\HomeVisitController;
 use App\Http\Controllers\ManajemenSekolah\BpBk\KonselingController;
 use App\Http\Controllers\ManajemenSekolah\BpBk\MelanjutkanKuliahController;
 use App\Http\Controllers\ManajemenSekolah\BpBk\PenelusuranLulusanController;
+use App\Http\Controllers\ManajemenSekolah\BpBk\SiswaBermasalahController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,7 +22,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'bpbk', 'as' => 'bpbk.'], function () {
-        Route::resource('konseling', KonselingController::class);
+        Route::get('konseling', [KonselingController::class, 'index'])->name('konseling.index');
+        Route::prefix('konseling')->as('konseling.')->group(function () {
+            Route::resource('siswa-bermasalah', SiswaBermasalahController::class);
+        });
+
         Route::resource('data-kip', DataKipController::class);
         Route::resource('home-visit', HomeVisitController::class);
         Route::resource('melanjutkan-kuliah', MelanjutkanKuliahController::class);

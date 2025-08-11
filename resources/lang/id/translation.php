@@ -413,6 +413,7 @@ return [
 
     'bimbingan-konseling' => 'Bimbingan & Konseling',
     'konseling' => 'Bimbingan Konseling',
+    'konseling-siswa-bermasalah' => 'Siswa Bermasalah',
     'data-kip' => 'Data KIP',
     'home-visit' => 'Home Visit',
     'melanjutkan-kuliah' => 'Melanjutkan Kuliah',
