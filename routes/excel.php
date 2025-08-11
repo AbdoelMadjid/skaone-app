@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AdministratorPkl\PerusahaanController;
+use App\Http\Controllers\Pkl\AdministratorPkl\PerusahaanController;
 use App\Http\Controllers\Kurikulum\DataKBM\MataPelajaranController;
 use App\Http\Controllers\ManajemenSekolah\PersonilSekolahController;
 use App\Http\Controllers\ManajemenSekolah\PesertaDidikController;

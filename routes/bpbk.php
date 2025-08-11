@@ -23,9 +23,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'bpbk', 'as' => 'bpbk.'], function () {
         Route::get('konseling', [KonselingController::class, 'index'])->name('konseling.index');
-        Route::prefix('konseling')->as('konseling.')->group(function () {
-            Route::resource('siswa-bermasalah', SiswaBermasalahController::class);
-        });
+        Route::post('/simpan-siswa-bermasalah', [KonselingController::class, 'simpanSiswaBermasalah'])->name('simpanSiswaBermasalah');
+        Route::get('/get-rombel', [KonselingController::class, 'getRombelByNis'])->name('getRombelByNis');
+        Route::get('/get-siswa-by-tahun', [KonselingController::class, 'getPesertaDidikByTahun'])
+            ->name('getSiswaByTahun');
 
         Route::resource('data-kip', DataKipController::class);
         Route::resource('home-visit', HomeVisitController::class);

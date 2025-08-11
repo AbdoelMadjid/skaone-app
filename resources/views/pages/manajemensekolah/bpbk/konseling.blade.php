@@ -62,23 +62,6 @@
                             <i class="ri-customer-service-2-fill text-muted align-bottom me-1"></i> Tangani Masalah
                         </a>
                     </li>
-                    <li class="nav-item ms-auto">
-                        <div class="dropdown">
-                            <a class="nav-link fw-medium text-reset mb-n1" href="#" role="button"
-                                id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="ri-pencil-fill align-middle me-1"></i> Input Data
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
-                                <li><a class="dropdown-item"
-                                        href="{{ route('bpbk.konseling.siswa-bermasalah.create') }}">Siswa
-                                        Bermasalah</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#">Tangani Masalah</a></li>
-                                <div class="dropdown-divider"></div>
-                                <li><a class="dropdown-item" href="#">Comming Soon</a></li>
-                            </ul>
-                        </div>
-                    </li>
                 </ul>
             </div>
             <div class="card-body p-4">
@@ -89,8 +72,10 @@
                                 <div class="d-flex align-items-center">
                                     <x-heading-title>Data Siswa Bermasalah</x-heading-title>
                                     <div class="flex-shrink-0">
-                                        <x-btn-tambah dinamisBtn="true" can="create bpbk/konseling/siswa-bermasalah"
-                                            route="bpbk.konseling.siswa-bermasalah.create" />
+                                        <button class="btn btn-primary mb-3" data-bs-toggle="modal"
+                                            data-bs-target="#modalCreate">
+                                            <i class="ri-add-fill"></i> Tambah Siswa Bermasalah
+                                        </button>
                                     </div>
                                 </div>
 
@@ -122,26 +107,11 @@
                                                     <td>{{ $row->pesertaDidik->nama_lengkap ?? '-' }}</td>
                                                     <td>{{ $row->rombel }}</td>
                                                     <td>{{ $row->jenis_kasus }}</td>
-                                                    <td>
-                                                        <ul class="list-inline hstack gap-2 mb-0">
-                                                            <li class="list-inline-item edit" data-bs-toggle="tooltip"
-                                                                data-bs-trigger="hover" data-bs-placement="top"
-                                                                title="Edit">
-                                                                <a href="{{ route('bpbk.konseling.siswa-bermasalah.edit', $row->id) }}"
-                                                                    class="text-primary d-inline-block">
-                                                                    <i class="ri-pencil-fill fs-16"></i>
-                                                                </a>
-                                                            </li>
-                                                            <li class="list-inline-item" data-bs-toggle="tooltip"
-                                                                data-bs-trigger="hover" data-bs-placement="top"
-                                                                title="Hapus">
-                                                                <a href="javascript:void(0)"
-                                                                    class="text-danger d-inline-block btn-hapus"
-                                                                    data-id="{{ $row->id }}">
-                                                                    <i class="ri-delete-bin-5-fill fs-16"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
+                                                    <td class="text-center">
+                                                        <a href="#" class="text-primary"><i
+                                                                class="ri-pencil-fill"></i></a>
+                                                        <a href="#" class="text-danger"><i
+                                                                class="ri-delete-bin-5-fill"></i></a>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -163,8 +133,12 @@
             </div><!--end card-body-->
         </div><!--end col-->
     </div><!--end row-->
+    @include('pages.manajemensekolah.bpbk._create_siswabermasalah')
 @endsection
 @section('script')
+    {{--  --}}
+@endsection
+@section('script-bottom')
     <script>
         $(function() {
             $('#tabelSiswaBermasalah').DataTable({
@@ -184,36 +158,112 @@
         });
     </script>
     <script>
-        $(document).on('click', '.btn-hapus', function(e) {
-            e.preventDefault();
+        $(document).ready(function() {
 
-            let id = $(this).data('id');
-            let url = "{{ route('bpbk.konseling.siswa-bermasalah.destroy', ':id') }}".replace(':id', id);
+            $('#modalCreate').on('shown.bs.modal', function() {
+                $('#nis').select2({
+                    dropdownParent: $('#modalCreate'),
+                    width: '100%',
+                });
+            });
 
-            Swal.fire({
-                title: 'Yakin hapus data ini?',
-                text: "Data yang dihapus tidak bisa dikembalikan!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Ya, hapus!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // bikin form delete on the fly
-                    let form = $('<form>', {
-                        'method': 'POST',
-                        'action': url
-                    }).append('@csrf', '@method('DELETE')');
 
-                    $('body').append(form);
-                    form.submit();
+            $('#modalCreate form').on('submit', function(e) {
+                e.preventDefault();
+
+                let form = $(this);
+                $('.invalid-feedback').remove();
+                $('.is-invalid').removeClass('is-invalid');
+
+                $.ajax({
+                    url: form.attr('action'),
+                    type: form.attr('method'),
+                    data: form.serialize(),
+                    success: function(res) {
+                        // Sukses — tutup modal
+                        $('#modalCreate').modal('hide');
+                        // Refresh data table atau lainnya
+                    },
+                    error: function(err) {
+                        if (err.status === 422) {
+                            let errors = err.responseJSON.errors;
+
+                            $.each(errors, function(key, value) {
+                                let el = $('[name="' + key + '"]', form);
+                                el.addClass('is-invalid');
+
+                                if (el.hasClass("select2-hidden-accessible")) {
+                                    // Kalau elemen adalah Select2, taruh pesan setelah container-nya
+                                    el.next('.select2').after(
+                                        '<div class="invalid-feedback d-block">' +
+                                        value[0] + '</div>');
+                                } else {
+                                    el.after('<div class="invalid-feedback">' + value[
+                                        0] + '</div>');
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+
+
+
+
+
+            $('#tahunajaran').on('change', function() {
+                let tahun = $(this).val();
+                $('#nis').empty().append('<option value="">-- Pilih Siswa --</option>');
+                $('#rombel').val('');
+
+                if (tahun) {
+                    $.ajax({
+                        url: "{{ route('bpbk.getSiswaByTahun') }}",
+                        type: "GET",
+                        data: {
+                            tahunajaran: tahun
+                        },
+                        success: function(res) {
+                            if (res.length > 0) {
+                                res.forEach(function(item) {
+                                    $('#nis').append(
+                                        `<option value="${item.nis}">${item.nama_lengkap}</option>`
+                                    );
+                                });
+                                // refresh select2 setelah opsi diubah
+                                $('#nis').trigger('change.select2');
+                            }
+                        }
+                    });
+                } else {
+                    // reset select2 jika tahunajaran kosong
+                    $('#nis').trigger('change.select2');
+                }
+            });
+
+            // Saat NIS dipilih, ambil rombel otomatis
+            $('#nis').on('change', function() {
+                let nis = $(this).val();
+                let tahun = $('#tahunajaran').val();
+
+                if (nis && tahun) {
+                    $.ajax({
+                        url: "{{ route('bpbk.getRombelByNis') }}",
+                        type: "GET",
+                        data: {
+                            nis: nis,
+                            tahunajaran: tahun
+                        },
+                        success: function(res) {
+                            $('#rombel').val(res.rombel ?? '');
+                        }
+                    });
+                } else {
+                    $('#rombel').val('');
                 }
             });
         });
     </script>
-@endsection
-@section('script-bottom')
+
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

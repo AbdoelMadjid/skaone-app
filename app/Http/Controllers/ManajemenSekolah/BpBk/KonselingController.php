@@ -4,7 +4,12 @@ namespace App\Http\Controllers\ManajemenSekolah\BpBk;
 
 use App\Helpers\ImageHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ManajemenSekolah\BpBk\BpBkSiswaBermasalahRequest;
+use App\Models\AppSupport\Referensi;
+use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
 use App\Models\ManajemenSekolah\BpBk\BpBkSiswaBermasalah;
+use App\Models\ManajemenSekolah\PesertaDidik;
+use App\Models\ManajemenSekolah\TahunAjaran;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -44,57 +49,60 @@ class KonselingController extends Controller
             ->orderBy('tanggal', 'desc')
             ->get();
 
+        $tahunAjaranOptions = TahunAjaran::pluck('tahunajaran', 'tahunajaran')->toArray();
+
+        $jenisKasus = Referensi::where('jenis', 'KasusSiswaBPBK')->pluck('data', 'data')->toArray();
+
         return view('pages.manajemensekolah.bpbk.konseling', [
             'guruBpbk' => $guruBpbk,
             'siswaBermasalah' => $siswaBermasalah,
+            'tahunAjaranOptions' => $tahunAjaranOptions,
+            'jenisKasus' => $jenisKasus,
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function simpanSiswaBermasalah(BpBkSiswaBermasalahRequest $request)
     {
-        //
+        // Simpan data
+        BpBkSiswaBermasalah::create($request->validated());
+
+        // Kalau request AJAX, kirim response JSON
+        if ($request->ajax()) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Data berhasil disimpan.'
+            ]);
+        }
+
+        // Kalau request biasa (non-AJAX), redirect balik dan kirim session flash untuk swal
+        return redirect()->back()->with('success', 'Data berhasil disimpan.');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function getRombelByNis(Request $request)
     {
-        //
+        $rombel = PesertaDidikRombel::where('nis', $request->nis)
+            ->where('tahun_ajaran', $request->tahunajaran)
+            ->value('rombel_nama');
+
+        return response()->json([
+            'rombel' => $rombel
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function getPesertaDidikByTahun(Request $request)
     {
-        //
-    }
+        $tahunajaran = $request->tahunajaran;
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        $siswa = PesertaDidikRombel::with('pesertaDidik')
+            ->where('tahun_ajaran', $tahunajaran)
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'nis' => $item->nis,
+                    'nama_lengkap' => $item->pesertaDidik->nama_lengkap ?? '-'
+                ];
+            });
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return response()->json($siswa);
     }
 }
