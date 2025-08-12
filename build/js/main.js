@@ -38,13 +38,14 @@ function handleDelete(datatable, onSuccessAction) {
     $('#' + datatable).on('click', '.delete', function(e) {
         e.preventDefault()
         Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            title: 'Apakah Anda yakin?',
+            text: "Anda tidak akan dapat mengembalikannya!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: 'Ya, Hapus saja!',
+            cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
                 handleAjax(this.href, 'delete')
@@ -53,12 +54,11 @@ function handleDelete(datatable, onSuccessAction) {
                     showToast(res.status, res.message)
                     window.LaravelDataTables[datatable].ajax.reload(null, false)
                 }, false).execute()
-
             }
         })
-
     })
 }
+
 
 function showToast(status = 'success', titleOrMessage, maybeMessage) {
     const title = maybeMessage ? titleOrMessage : (status === 'success' ? 'Success' : (status === 'warning' ? 'Warning' : 'Error'));
@@ -98,7 +98,7 @@ function submitLoader(formId = '#form_action') {
             );
     }
 
-    function hide(text = "Save") {
+    function hide(text = "Simpan") {
         button.removeClass("btn-load").removeAttr("disabled").text(text);
     }
 
@@ -249,7 +249,7 @@ function handleDataTableEvents(tableId, emptyMessage = 'Silakan untuk ditambahka
 }
 
 
-// Fungsi untuk memeriksa session dan menampilkan notifikasi
+/* // Fungsi untuk memeriksa session dan menampilkan notifikasi
 function checkSessionAndShowToast() {
     const sessionElement = document.getElementById('session-message');
 
@@ -261,9 +261,9 @@ function checkSessionAndShowToast() {
         // Tampilkan notifikasi menggunakan iziToast
         showToast(status, message);
     }
-}
+} */
 
-
+// membuat pagging tabel
 function initializeDynamicPagination(tableId, rowsPerPage = 10, maxVisiblePages = 3) {
     const table = $(`#${tableId}`);
     const tableBody = table.find("tbody");
