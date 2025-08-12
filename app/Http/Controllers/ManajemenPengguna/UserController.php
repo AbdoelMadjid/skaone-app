@@ -148,7 +148,7 @@ class UserController extends Controller
 
             session()->forget('original_user');
 
-            return redirect()->route('manajemenpengguna.users.index')->with('info', 'Anda sudah kembali ke akun asli.');
+            return redirect()->route('manajemenpengguna.users.index')->with('info', 'Anda sudah kembali ke akun asli.')->with('notify_via', 'toast');
         }
 
         return redirect()->route('dashboard')->with('error', 'Tidak ada akun asal ditemukan.');
