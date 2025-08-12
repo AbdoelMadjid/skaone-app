@@ -412,7 +412,7 @@ return [
     'anggaran-ketatausahaan' => 'Anggaran Biaya',
 
     'bimbingan-konseling' => 'Bimbingan & Konseling',
-    'konseling' => 'Bimbingan Konseling',
+    'konseling' => 'Konseling',
     'konseling-siswa-bermasalah' => 'Siswa Bermasalah',
     'data-kip' => 'Data KIP',
     'home-visit' => 'Home Visit',
