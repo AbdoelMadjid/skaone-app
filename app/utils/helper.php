@@ -32,7 +32,7 @@ if (!function_exists('responseSuccess')) {
     {
         return response()->json([
             'status' => 'success',
-            'message' => $isEdit ? 'Data sukses di update' : 'Data sukses di buat',
+            'message' => $isEdit ? 'Data sukses di update' : 'Data sukses di tambahkan',
         ]);
     }
 }
