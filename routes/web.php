@@ -39,37 +39,24 @@ use Illuminate\Support\Facades\Session;
 |
 */
 
+// penanganan error
 Route::get('/db-error', function () {
     return view('error.auth-500');
 })->name('db.error');
-
 
 Route::fallback(function () {
     return response()->view('error.auth-404-basic', [], 404);
 });
 
 Route::get('/sedang-perbaikan', function () {
-    return view('sedang-perbaikan');
+    return view('error.sedang-perbaikan');
 })->name('sedangperbaikan');
 
+
+//pertama kali masuk
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
-// Halaman welcome sebagai akses pertama
-/* Route::get('/', function () {
-    $photoSlides = PhotoSlide::where('is_active', true)->get();
-    $teamPengembang = TeamPengembang::all();
-    return view('welcome', compact('photoSlides', 'teamPengembang'));
-})->name('welcome'); */
-
-// Halaman dashboard, hanya dapat diakses oleh pengguna yang sudah terotentikasi dan terverifikasi
-/* Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard'); */
-
-/* Route::get('/dashboard', [HomeController::class, 'index'])
-    ->middleware(['auth', 'verified', 'check.default.password'])
-    ->name('dashboard'); */
-
+// masuk halaman dashboard
 Route::get('/dashboard', [HomeController::class, 'index'])
     ->middleware([
         'auth',
@@ -79,8 +66,9 @@ Route::get('/dashboard', [HomeController::class, 'index'])
     ])
     ->name('dashboard');
 
-Route::get('/dashboard/active-users', [HomeController::class, 'fetchActiveUsers'])->name('dashboard.active-users');
 
+// menampilkan user yang sedang aktif dan real time statistik di halaman dashboar
+Route::get('/dashboard/active-users', [HomeController::class, 'fetchActiveUsers'])->name('dashboard.active-users');
 Route::get('/real-time-stats', function () {
     // Hitung pengguna aktif
     $activeUsersCount = User::whereNotNull('last_login_at')
@@ -100,19 +88,22 @@ Route::get('/real-time-stats', function () {
     ]);
 });
 
+// MELAKUKAN PERINTAH PHP ARTISAN OPTIMIZE:CLEAR
 Route::middleware(['auth', 'master'])->get('/clear-cache', function () {
     Artisan::call('optimize:clear');
     return redirect()->back()->with('success-chache', 'Cache sukses dibersihkan!');
 })->name('clear.cache');
 
-//Route::middleware(['auth', 'master'])->post('/switch-account', [UserController::class, 'switchAccount'])->name('switch.account');
+// SWITCH ACCOUNT
 Route::middleware(['auth', 'adminOrMaster'])->post('/switch-account', [UserController::class, 'switchAccount'])->name('switch.account');
 
 // Rute untuk kembali ke akun asal
 Route::middleware(['auth'])->get('/return-account', [UserController::class, 'returnToOriginalAccount'])->name('return.account');
 
+// ABOUT
 Route::resource('about', AboutController::class);
 
+// MELAKUKAN POLLING SUBMIT
 Route::middleware(['auth'])->post('/websiteapp/pollingsubmit', [PollingController::class, 'submitPolling'])->name('websiteapp.pollingsubmit');
 
 // Kelompok rute untuk profil, hanya dapat diakses oleh pengguna yang sudah terotentikasi
@@ -127,6 +118,7 @@ Route::middleware('auth')->group(function () {
         return redirect()->back();
     })->name('lang.switch');
 
+    // PROFIL PENGGUNA
     Route::group(['prefix' => 'profilpengguna', 'as' => 'profilpengguna.'], function () {
         Route::resource('profil-pengguna', ProfilPenggunaController::class)->middleware(['check.default.password']);
         Route::post('/simpanphotoprofil', [ProfilPenggunaController::class, 'updateProfilePicture'])->name('simpanphotoprofil');
@@ -141,13 +133,17 @@ Route::middleware('auth')->group(function () {
         Route::get('/chats/{id}', [PesanController::class, 'getChatMessages']);
     });
 
+    // MANAJEMEN PENGGUNA
     Route::group(['prefix' => 'manajemenpengguna', 'as' => 'manajemenpengguna.'], function () {
         Route::resource('roles', RoleController::class);
         Route::resource('permissions', PermissionController::class);
+
         Route::get('akses-role/{role}/role', [AksesRoleController::class, 'getPermissionsByRole']);
         Route::resource('akses-role', AksesRoleController::class)->except(['create', 'store', 'delete'])->parameters(['akses-role' => 'role']);
+
         Route::get('akses-user/{user}/user', [AksesUserController::class, 'getPermissionsByUser']);
         Route::resource('akses-user', AksesUserController::class)->except(['create', 'store', 'delete'])->parameters(['akses-user' => 'user']);
+
         Route::resource('users', UserController::class);
         Route::post('/users/{user}/add-role', [UserController::class, 'addRole'])->name('users.addRole');
         Route::post('/users/reset-password/{id}', [UserController::class, 'directResetPassword'])->name('users.directResetPassword');
@@ -156,13 +152,17 @@ Route::middleware('auth')->group(function () {
         Route::post('/assign-role', [UserController::class, 'assignRole'])->name('assignRole');
     });
 
+    // APP SUPPORT
     Route::group(['prefix' => 'appsupport', 'as' => 'appsupport.'], function () {
         Route::put('menu/sort', [MenuController::class, 'sort'])->name('menu.sort');
         Route::resource('menu', MenuController::class);
+
         Route::resource('app-fiturs', AppFiturController::class);
         Route::put('app-fiturs/{id}/simpan-status', [AppFiturController::class, 'simpanStatus'])->name('app-fiturs.simpan-status');
+
         Route::resource('app-profil', AppProfilController::class);
         Route::resource('referensi', ReferensiController::class);
+
         Route::resource('backup-db', BackupDbController::class);
         Route::post('/backup-db/process', [BackupDbController::class, 'backupSelectedTables'])->name('backup-db.process');
         Route::delete('/backup-db/delete/{fileName}', [BackupDbController::class, 'deleteBackupFile'])->name('backup-db.delete');

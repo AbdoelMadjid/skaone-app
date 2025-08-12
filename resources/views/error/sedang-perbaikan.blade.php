@@ -25,7 +25,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-12">
-                            <div class="text-center mt-sm-5 pt-4">
+                            <div class="text-center mt-sm-5 pt-2">
                                 <div class="mb-5 text-white-50">
                                     <h1 class="display-5 coming-soon-text">LCKS App. Under Maintenance</h1>
                                     <p class="fs-14">Please check back in sometime</p>
@@ -34,7 +34,7 @@
                                             Home</a>
                                     </div>
                                 </div>
-                                <div class="row justify-content-center mb-5">
+                                <div class="row justify-content-center mb-2">
                                     <div class="col-xl-4 col-lg-8">
                                         <div>
                                             <img src="{{ URL::asset('images/sedang-perbaikan.png') }}" alt=""
@@ -42,6 +42,8 @@
                                         </div>
                                     </div>
                                 </div>
+                                <p class="fs-14">Mohon maaf, aplikasi sedang dalam proses perbaikan.</p>
+                                <p class="fs-6 text-muted">Design & Scripting : Abdul Madjid, S.Pd., M.Pd.</p>
                             </div>
                         </div>
                     </div>
