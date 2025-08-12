@@ -60,49 +60,4 @@ class KonselingController extends Controller
             'jenisKasus' => $jenisKasus,
         ]);
     }
-
-    public function simpanSiswaBermasalah(BpBkSiswaBermasalahRequest $request)
-    {
-        // Simpan data
-        BpBkSiswaBermasalah::create($request->validated());
-
-        // Kalau request AJAX, kirim response JSON
-        if ($request->ajax()) {
-            return response()->json([
-                'status' => true,
-                'message' => 'Data berhasil disimpan.'
-            ]);
-        }
-
-        // Kalau request biasa (non-AJAX), redirect balik dan kirim session flash untuk swal
-        return redirect()->back()->with('success', 'Data berhasil disimpan.');
-    }
-
-    public function getRombelByNis(Request $request)
-    {
-        $rombel = PesertaDidikRombel::where('nis', $request->nis)
-            ->where('tahun_ajaran', $request->tahunajaran)
-            ->value('rombel_nama');
-
-        return response()->json([
-            'rombel' => $rombel
-        ]);
-    }
-
-    public function getPesertaDidikByTahun(Request $request)
-    {
-        $tahunajaran = $request->tahunajaran;
-
-        $siswa = PesertaDidikRombel::with('pesertaDidik')
-            ->where('tahun_ajaran', $tahunajaran)
-            ->get()
-            ->map(function ($item) {
-                return [
-                    'nis' => $item->nis,
-                    'nama_lengkap' => $item->pesertaDidik->nama_lengkap ?? '-'
-                ];
-            });
-
-        return response()->json($siswa);
-    }
 }

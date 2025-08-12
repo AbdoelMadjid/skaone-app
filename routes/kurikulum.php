@@ -209,6 +209,7 @@ Route::middleware('auth')->group(function () {
 
         Route::group(['prefix' => 'perangkatujian', 'as' => 'perangkatujian.'], function () {
             Route::resource('identitas-ujian', IdentitasUjianController::class);
+
             Route::get('administrasi-ujian', [AdministrasiUjianController::class, 'index'])->name('administrasi-ujian.index');
             Route::prefix('administrasi-ujian')->as('administrasi-ujian.')->group(function () {
                 Route::resource('ruang-ujian', RuangUjianController::class);
@@ -236,6 +237,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/daftar-siswa-ruangan/{nomorRuang}', [AdministrasiUjianController::class, 'daftarSiswaPerRuang'])
                 ->name('daftar-siswa-ruangan');
             Route::get('/get-tempelan-ruang', [AdministrasiUjianController::class, 'getTempelanPesertaByRuang'])->name('get-tempelan-ruang');
+
             Route::get('pelaksanaan-ujian', [PelaksanaanUjianController::class, 'index'])->name('pelaksanaan-ujian.index');
             Route::prefix('pelaksanaan-ujian')->as('pelaksanaan-ujian.')->group(function () {
                 Route::resource('panitia-ujian', PanitiaUjianController::class);
