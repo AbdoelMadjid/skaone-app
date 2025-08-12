@@ -394,7 +394,7 @@ function initializeDynamicPagination(tableId, rowsPerPage = 10, maxVisiblePages 
     }
 }
 
-window.ScrollDinamicDataTable = function (tableId) {
+/* window.ScrollDinamicDataTable = function (tableId) {
     function adjustScrollYDynamic() {
         const wrapper = document.getElementById('datatable-wrapper');
         const scrollBody = document.querySelector('.dataTables_scrollBody');
@@ -450,7 +450,7 @@ window.ScrollStaticTable = function(wrapperId = 'custom-table-wrapper', scrollId
     window.addEventListener('resize', adjustTableScrollHeight);
     document.addEventListener('DOMContentLoaded', adjustTableScrollHeight);
 };
-
+ */
 /* function showSessionSwal() {
     const items = document.querySelectorAll('.swal-session');
 
@@ -512,7 +512,7 @@ window.ScrollStaticTable = function(wrapperId = 'custom-table-wrapper', scrollId
     });
 } */
 
-
+/*
 function showSessionSwal(callback = null) {
     const items = document.querySelectorAll('.swal-session');
 
@@ -675,7 +675,8 @@ function initNotifikasiSwal(options = {}) {
         if (typeof afterSwal === 'function') afterSwal();
     });
 }
-
+ */
+//==================== notifikasi pilihan swal or izzitoas
 function showSessionNotification(callback = null) {
     const container = document.getElementById('swal-session-container');
     const items = container?.querySelectorAll('.swal-session') ?? [];
