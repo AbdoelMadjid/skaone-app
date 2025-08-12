@@ -63,8 +63,8 @@
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a href="{{ route('bpbk.konseling.siswa-bermasalah.index') }}" class="dropdown-item">Siswa
                                     Bermasalah</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
+                                {{-- <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a> --}}
                             </div>
                         </div>
                     </li>
