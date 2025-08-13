@@ -40,7 +40,28 @@
                     $jmlHadir = $semuaKehadiran->where('id_personil', $gid)->count();
                 @endphp
                 <tr>
-                    <td>{{ $guruMap[$gid]->namalengkap ?? 'N/A' }}</td>
+                    <td>
+                        {{ $guruMap[$gid]->namalengkap ?? 'N/A' }}
+
+                        @php
+                            // cek apakah guru ini tidak hadir sama sekali di hari ini
+                            $tidakHadir = !$semuaKehadiran->where('id_personil', $gid)->count();
+                        @endphp
+
+                        @if ($tidakHadir)
+                            <button type="button" class="btn btn-sm btn-outline-danger ms-2 btn-keterangan-tidak-hadir"
+                                data-id-personil="{{ $gid }}"
+                                data-nama-guru="{{ $guruMap[$gid]->namalengkap ?? '' }}" data-hari="{{ $hari }}"
+                                data-bs-toggle="modal" data-bs-target="#modalKeteranganTidakHadir">
+                                <i class="ri-edit-2-line"></i> Ket.
+                            </button>
+                            @if (isset($keteranganTidakHadir[$gid]))
+                                <span class="ms-2 text-muted small">
+                                    ({{ $keteranganTidakHadir[$gid] }})
+                                </span>
+                            @endif
+                        @endif
+                    </td>
                     @foreach ($semuaJamKe as $jam)
                         @php
                             $match = $jadwalHari->firstWhere(fn($j) => $j->jam_ke == $jam && $j->id_personil == $gid);

@@ -114,11 +114,164 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modalKeteranganTidakHadir" tabindex="-1" aria-labelledby="modalKeteranganTidakHadirLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="formKeteranganTidakHadir" action="{{ route('kurikulum.datakbm.simpanKeterangan') }}" method="post">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalKeteranganTidakHadirLabel">Keterangan Ketidakhadiran Guru</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="mb-3">
+                            <label class="form-label">ID Personil</label>
+                            <input type="text" name="id_personil" id="id_personil" class="form-control" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Hari</label>
+                            <input type="text" name="hari" id="hari" class="form-control" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Tanggal</label>
+                            <input type="date" name="tanggal" id="tanggal" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Nama Guru</label>
+                            <input type="text" id="nama_guru" class="form-control" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Keterangan</label>
+                            <textarea name="keterangan" class="form-control" rows="3" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
 @section('script')
     {{--  --}}
 @endsection
 @section('script-bottom')
+    <script>
+        $(document).on('click', '.btn-keterangan-tidak-hadir', function() {
+            const tanggalDipilih = $('#inputTanggalKehadiran').val(); // Ambil dari input tanggal di halaman
+
+            $('#id_personil').val($(this).data('id-personil'));
+            $('#nama_guru').val($(this).data('nama-guru'));
+            $('#hari').val($(this).data('hari'));
+            $('#tanggal').val(tanggalDipilih); // Set ke field modal
+        });
+    </script>
+
+    <script>
+        // taruh di bawah definisi fetchJadwal(...)
+        window.refreshJadwalTanpaKedip = function(hari, tanggal) {
+            if (!hari || !tanggal) return;
+            // pakai silent=true biar nggak kedip
+            fetchJadwal(hari, tanggal, {
+                silent: true
+            });
+        };
+
+        $(document).on('submit', '#formKeteranganTidakHadir', function(e) {
+            e.preventDefault();
+
+            const $form = $(this);
+            const url = $form.attr('action'); // ← ambil dari action form
+            const data = $form.serialize();
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: data,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // aman2an
+                },
+                success: function(res) {
+                    if (res && res.status) {
+                        $('#modalKeteranganTidakHadir').modal('hide');
+
+                        // Notifikasi
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: res.message || 'Keterangan berhasil disimpan.',
+                            timer: 1200,
+                            showConfirmButton: false
+                        });
+
+                        // Refresh tabel TANPA kedip (pakai fungsi yang sudah berhasil kemarin)
+                        if (typeof window.refreshJadwalTanpaKedip === 'function') {
+                            const tgl = $('#inputTanggalKehadiran').val();
+                            const hari = $('#selectHari').val();
+                            window.refreshJadwalTanpaKedip(hari, tgl);
+                        } else {
+                            // fallback paling aman
+                            location.reload();
+                        }
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: (res && res.message) ? res.message :
+                                'Gagal menyimpan keterangan.'
+                        });
+                    }
+                },
+                error: function(xhr) {
+                    // 422 dari validator Laravel
+                    if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
+                        const errors = xhr.responseJSON.errors;
+                        const html = Object.values(errors).map(arr => arr.join('<br>')).join('<br>');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Validasi gagal',
+                            html
+                        });
+                        return;
+                    }
+                    // 419 CSRF / sesi
+                    if (xhr.status === 419) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Sesi kedaluwarsa',
+                            text: 'Silakan muat ulang halaman.'
+                        });
+                        return;
+                    }
+                    // 409 (kalau kamu nanti pakai unique & ketemu duplikat)
+                    if (xhr.status === 409 && xhr.responseJSON && xhr.responseJSON.message) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Duplikat',
+                            text: xhr.responseJSON.message
+                        });
+                        return;
+                    }
+                    // Lain-lain
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Terjadi kesalahan pada server.'
+                    });
+                    console.error(xhr.responseText || xhr);
+                }
+            });
+        });
+    </script>
+
+
     {{-- TAMPILKAN JADWAL UNTUK DI CEK KEHADIRAN --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -130,17 +283,72 @@
             // Sembunyikan tombol saat pertama kali
             btnStatistik.classList.add('d-none');
 
+            // === helper: nama hari ===
             function getNamaHari(dateString) {
                 const hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
                 const d = new Date(dateString);
                 return hari[d.getDay()];
             }
 
+            // === helper: fetch jadwal (dengan opsi silent biar gak kedip) ===
+            function fetchJadwal(hari, tanggal, {
+                silent = false
+            } = {}) {
+                if (!silent) {
+                    // tampilkan loader ringan tapi tetap di dalam container
+                    container.style.minHeight = container.offsetHeight + 'px'; // jaga tinggi biar gak "melompat"
+                    container.innerHTML = '<div class="text-muted">Memuat jadwal...</div>';
+                }
+
+                return fetch(
+                        `/kurikulum/datakbm/ajax-tampil?hari=${encodeURIComponent(hari)}&tanggal=${encodeURIComponent(tanggal)}`
+                    )
+                    .then(response => response.json())
+                    .then(data => {
+                        container.innerHTML = data.html;
+                        container.style.minHeight = ''; // lepas penjaga tinggi
+                    })
+                    .catch(error => {
+                        console.error('Gagal memuat:', error);
+                        container.innerHTML =
+                            '<div class="alert alert-danger">Terjadi kesalahan saat memuat data.</div>';
+                        container.style.minHeight = '';
+                    });
+            }
+
+            // === expose ke global biar bisa dipanggil script lain ===
+            window.getNamaHari = getNamaHari;
+            window.fetchJadwal = fetchJadwal;
+
+            // === ini menggantikan reload penuh: dipanggil dari script manual & massal ===
+            window.simpanTanggalDanReload = function() {
+                const tgl = inputTanggal.value;
+                if (!tgl) return;
+                const namaHari = getNamaHari(tgl);
+                // refresh isi tabel saja, tanpa reload halaman (silent = true untuk minim kedip)
+                fetchJadwal(namaHari, tgl, {
+                    silent: true
+                });
+            };
+
+            // (opsional) restore tanggal kalau sebelumnya sempat disimpan — aman walau sekarang gak dipakai
+            const savedTanggal = localStorage.getItem('selectedTanggal');
+            if (savedTanggal) {
+                inputTanggal.value = savedTanggal;
+                const namaHari = getNamaHari(savedTanggal);
+                selectHari.value = namaHari;
+                selectHari.disabled = true;
+                fetchJadwal(namaHari, savedTanggal);
+                btnStatistik.classList.remove('d-none');
+                localStorage.removeItem('selectedTanggal');
+            }
+
+            // === event change tanggal (tetap seperti semula) ===
             inputTanggal.addEventListener('change', function() {
                 const tgl = this.value;
                 if (!tgl) {
                     btnStatistik.classList.add('d-none');
-                    selectHari.disabled = true; // Aktifkan kembali jika tanggal dihapus
+                    selectHari.disabled = true;
                     return;
                 }
 
@@ -150,16 +358,17 @@
                     container.innerHTML =
                         `<div class="alert alert-warning">Tidak ada jadwal pada hari ${namaHari}.</div>`;
                     selectHari.value = '';
-                    selectHari.disabled = true; // tetap bisa ubah manual kalau Sabtu/Minggu
+                    selectHari.disabled = true;
                     btnStatistik.classList.add('d-none');
                 } else {
                     selectHari.value = namaHari;
-                    selectHari.disabled = true; // Disable dropdown agar tidak bisa diubah
+                    selectHari.disabled = true; // tetap kunci agar konsisten
                     fetchJadwal(namaHari, tgl);
                     btnStatistik.classList.remove('d-none');
                 }
             });
 
+            // (opsional) jika dropdown hari-mu tetap bisa diganti manual
             selectHari.addEventListener('change', function() {
                 const hari = this.value;
                 const tanggal = inputTanggal.value;
@@ -179,27 +388,11 @@
                 }
 
                 fetchJadwal(hari, tanggal);
-                btnStatistik.classList.remove('d-none'); // Tampilkan tombol
+                btnStatistik.classList.remove('d-none');
             });
-
-            function fetchJadwal(hari, tanggal) {
-                container.innerHTML = '<div class="text-muted">Memuat jadwal...</div>';
-
-                fetch(
-                        `/kurikulum/datakbm/ajax-tampil?hari=${encodeURIComponent(hari)}&tanggal=${encodeURIComponent(tanggal)}`
-                    )
-                    .then(response => response.json())
-                    .then(data => {
-                        container.innerHTML = data.html;
-                    })
-                    .catch(error => {
-                        console.error('Gagal memuat:', error);
-                        container.innerHTML =
-                            '<div class="alert alert-danger">Terjadi kesalahan saat memuat data.</div>';
-                    });
-            }
         });
     </script>
+
 
     {{-- CEK KEHADIRAN MASSAL --}}
     <script>
@@ -293,6 +486,7 @@
                             });
 
                             showToast('success', 'Kehadiran massal berhasil diupdate!');
+                            simpanTanggalDanReload();
                         } else {
                             showToast('error', 'Gagal menyimpan massal');
                         }
@@ -395,6 +589,7 @@
                                     totalProsentaseCell.textContent = `${persenTotal} %`;
                                 }
                             }
+                            simpanTanggalDanReload();
                         } else {
                             showToast('error', 'Gagal menyimpan kehadiran');
                             target.classList.toggle('bg-primary');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Kurikulum\DataKBM;
 use App\Http\Controllers\Controller;
 use App\Models\Kurikulum\DataKBM\JadwalMingguan;
 use App\Models\Kurikulum\DataKBM\KehadiranGuruHarian;
+use App\Models\Kurikulum\DataKBM\KeteranganTidakHadirGuru;
 use App\Models\ManajemenSekolah\Semester;
 use App\Models\ManajemenSekolah\TahunAjaran;
 use Illuminate\Http\Request;
@@ -42,7 +43,11 @@ class JadwalPerHariController extends Controller
 
         $semuaKehadiran = KehadiranGuruHarian::get();
 
-        return view('pages.kurikulum.datakbm.jadwal-mingguan-per-hari', compact('grouped', 'semuaHari', 'semuaKehadiran'));
+        return view('pages.kurikulum.datakbm.jadwal-mingguan-per-hari', [
+            'grouped' => $grouped,
+            'semuaHari' => $semuaHari,
+            'semuaKehadiran' => $semuaKehadiran,
+        ]);
     }
 
 
@@ -78,6 +83,7 @@ class JadwalPerHariController extends Controller
     public function ajaxTampil(Request $request)
     {
         $hari = $request->input('hari');
+        $tanggal = $request->input('tanggal');
 
         if (!$hari) {
             return response()->json(['html' => '<div class="alert alert-warning">Silakan pilih hari terlebih dahulu.</div>']);
@@ -98,20 +104,24 @@ class JadwalPerHariController extends Controller
             ->where('hari', $hari)
             ->join('personil_sekolahs', 'jadwal_mingguans.id_personil', '=', 'personil_sekolahs.id_personil')
             ->orderBy('personil_sekolahs.namalengkap')
-            ->select('jadwal_mingguans.*') // Supaya tidak tumpang tindih kolom
+            ->select('jadwal_mingguans.*')
             ->get();
-
 
         $semuaJamKe = range(1, 13);
-        //$semuaKehadiran = KehadiranGuruHarian::where('hari', $hari)->get();
+
         $semuaKehadiran = KehadiranGuruHarian::where('hari', $hari)
-            ->where('tanggal', $request->tanggal) // ← filter berdasarkan tanggal
+            ->where('tanggal', $tanggal)
             ->get();
+
+        // Ambil keterangan tidak hadir
+        $keteranganTidakHadir = KeteranganTidakHadirGuru::where('hari', $hari)
+            ->where('tanggal', $tanggal)
+            ->pluck('keterangan', 'id_personil')
+            ->toArray();
 
         $guruIds = $jadwalHari->pluck('id_personil')->unique();
 
         $jumlahJamTerisi = [];
-
         foreach ($guruIds as $gid) {
             $jumlahJamTerisi[$gid] = $jadwalHari->where('id_personil', $gid)->count();
         }
@@ -122,7 +132,8 @@ class JadwalPerHariController extends Controller
             'semuaKehadiran',
             'guruIds',
             'hari',
-            'jumlahJamTerisi'
+            'jumlahJamTerisi',
+            'keteranganTidakHadir' // ⬅ ditambahkan supaya Blade bisa akses
         ))->render();
 
         return response()->json(['html' => $html]);
@@ -174,6 +185,28 @@ class JadwalPerHariController extends Controller
         return response()->json([
             'status' => 'success',
             'results' => $results
+        ]);
+    }
+
+    public function simpanKeterangan(Request $request)
+    {
+        $validated = $request->validate([
+            'id_personil' => 'required|exists:personil_sekolahs,id_personil',
+            'hari'        => 'required|string|max:20',
+            'tanggal'     => 'required|date',
+            'keterangan'  => 'required|string',
+        ]);
+
+        // akan update jika sudah ada, create jika belum
+        $row = KeteranganTidakHadirGuru::updateOrCreate(
+            ['id_personil' => $validated['id_personil'], 'tanggal' => $validated['tanggal']],
+            ['hari' => $validated['hari'], 'keterangan' => $validated['keterangan']]
+        );
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Keterangan berhasil disimpan.',
+            'data'    => $row,
         ]);
     }
 }

@@ -75,6 +75,8 @@ Route::middleware('auth')->group(function () {
             Route::post('/simpan-jadwal-massal', [JadwalPerHariController::class, 'simpanMassal']);
             Route::post('/simpankehadirangurumassal', [JadwalPerHariController::class, 'simpanMassal'])
                 ->name('simpankehadirangurumassal');
+            Route::post('/simpan-keterangan', [JadwalPerHariController::class, 'simpanKeterangan'])
+                ->name('simpanKeterangan');
 
 
             Route::resource('peserta-didik-rombel', PesertaDidikRombelController::class);
