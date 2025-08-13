@@ -49,16 +49,28 @@
                         @endphp
 
                         @if ($tidakHadir)
-                            <button type="button" class="btn btn-sm btn-outline-danger ms-2 btn-keterangan-tidak-hadir"
-                                data-id-personil="{{ $gid }}"
-                                data-nama-guru="{{ $guruMap[$gid]->namalengkap ?? '' }}" data-hari="{{ $hari }}"
-                                data-bs-toggle="modal" data-bs-target="#modalKeteranganTidakHadir">
-                                <i class="ri-edit-2-line"></i> Ket.
-                            </button>
                             @if (isset($keteranganTidakHadir[$gid]))
+                                {{-- Jika sudah ada keterangan, tombol hapus --}}
+                                <button type="button"
+                                    class="btn btn-sm btn-outline-secondary ms-2 btn-hapus-keterangan-tidak-hadir"
+                                    data-id-personil="{{ $gid }}"
+                                    data-nama-guru="{{ $guruMap[$gid]->namalengkap ?? '' }}"
+                                    data-hari="{{ $hari }}">
+                                    <i class="ri-delete-bin-line"></i> Hapus Ket.
+                                </button>
                                 <span class="ms-2 text-muted small">
                                     ({{ $keteranganTidakHadir[$gid] }})
                                 </span>
+                            @else
+                                {{-- Jika belum ada keterangan, tombol tambah --}}
+                                <button type="button"
+                                    class="btn btn-sm btn-outline-danger ms-2 btn-keterangan-tidak-hadir"
+                                    data-id-personil="{{ $gid }}"
+                                    data-nama-guru="{{ $guruMap[$gid]->namalengkap ?? '' }}"
+                                    data-hari="{{ $hari }}" data-bs-toggle="modal"
+                                    data-bs-target="#modalKeteranganTidakHadir">
+                                    <i class="ri-edit-2-line"></i> Ket.
+                                </button>
                             @endif
                         @endif
                     </td>

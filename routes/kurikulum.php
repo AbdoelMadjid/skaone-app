@@ -77,6 +77,8 @@ Route::middleware('auth')->group(function () {
                 ->name('simpankehadirangurumassal');
             Route::post('/simpan-keterangan', [JadwalPerHariController::class, 'simpanKeterangan'])
                 ->name('simpanKeterangan');
+            Route::delete('/hapus-keterangan', [JadwalPerHariController::class, 'hapusKeteranganTidakHadir'])
+                ->name('hapusKeterangan');
 
 
             Route::resource('peserta-didik-rombel', PesertaDidikRombelController::class);

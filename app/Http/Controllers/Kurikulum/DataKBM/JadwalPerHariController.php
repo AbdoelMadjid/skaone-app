@@ -209,4 +209,30 @@ class JadwalPerHariController extends Controller
             'data'    => $row,
         ]);
     }
+
+    public function hapusKeteranganTidakHadir(Request $request)
+    {
+        $request->validate([
+            'id_personil' => 'required|string', // ✅ ubah integer → string
+            'hari'        => 'required|string',
+            'tanggal'     => 'required|date',
+        ]);
+
+        $deleted = KeteranganTidakHadirGuru::where('id_personil', $request->id_personil)
+            ->where('hari', $request->hari)
+            ->whereDate('tanggal', $request->tanggal)
+            ->delete();
+
+        if ($deleted) {
+            return response()->json([
+                'status'  => true,
+                'message' => 'Keterangan tidak hadir berhasil dihapus.',
+            ]);
+        }
+
+        return response()->json([
+            'status'  => false,
+            'message' => 'Data tidak ditemukan atau sudah dihapus.',
+        ], 404);
+    }
 }

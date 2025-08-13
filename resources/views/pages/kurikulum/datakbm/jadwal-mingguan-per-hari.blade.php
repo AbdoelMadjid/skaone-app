@@ -3,12 +3,12 @@
     @lang('translation.jadwal-per-guru')
 @endsection
 @section('css')
-    <style>
+    {{--  <style>
         #modalStatistik td {
             font-weight: bold;
             text-align: center;
         }
-    </style>
+    </style> --}}
 @endsection
 @section('content')
     @component('layouts.breadcrumb')
@@ -109,7 +109,21 @@
                             </tr>
                         </tbody>
                     </table>
-
+                    <div class="mt-4">
+                        <h6>Guru Tidak Hadir</h6>
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th style="width:5%">No.</th>
+                                    <th>Nama Guru</th>
+                                    <th>Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyGuruTidakHadir">
+                                <!-- Akan diisi via JS -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -271,7 +285,52 @@
         });
     </script>
 
+    <script>
+        $(document).on('click', '.btn-hapus-keterangan-tidak-hadir', function() {
+            let id_personil = $(this).data('id-personil');
+            let hari = $(this).data('hari');
+            let tanggal = $('#inputTanggalKehadiran').val(); // ✅ sesuaikan dengan id input tanggal
 
+            Swal.fire({
+                title: 'Hapus keterangan?',
+                text: "Keterangan akan dihapus permanen.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('kurikulum.datakbm.hapusKeterangan') }}",
+                        type: "DELETE",
+                        data: {
+                            id_personil: id_personil,
+                            hari: hari,
+                            tanggal: tanggal,
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function(res) {
+                            Swal.fire('Berhasil!', res.message, 'success');
+                            // Refresh tabel TANPA kedip (pakai fungsi yang sudah berhasil kemarin)
+                            if (typeof window.refreshJadwalTanpaKedip === 'function') {
+                                const tgl = $('#inputTanggalKehadiran').val();
+                                const hari = $('#selectHari').val();
+                                window.refreshJadwalTanpaKedip(hari, tgl);
+                            } else {
+                                // fallback paling aman
+                                location.reload();
+                            }
+                        },
+                        error: function(xhr) {
+                            Swal.fire('Gagal!', xhr.responseJSON?.message ||
+                                'Terjadi kesalahan', 'error');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
     {{-- TAMPILKAN JADWAL UNTUK DI CEK KEHADIRAN --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -656,6 +715,33 @@
                 document.getElementById('statJamTidakHadir').textContent = jamTidakHadir + " jam";
                 document.getElementById('statProsentaseAbsen').textContent = prosentaseTidakHadir;
                 document.getElementById('statProsentaseHadir').textContent = prosentaseHadir;
+
+                // Bersihkan tbody dulu
+                const tbody = document.getElementById('tbodyGuruTidakHadir');
+                tbody.innerHTML = '';
+
+                // Ambil semua guru yang tidak hadir dari tabel utama
+                const rowsGuru = document.querySelectorAll('tbody tr');
+                let no = 1;
+
+                rowsGuru.forEach(row => {
+                    const namaGuru = row.querySelector('td')?.childNodes[0].textContent.trim();
+                    const ketEl = row.querySelector('span.text-muted');
+                    const keterangan = ketEl ? ketEl.textContent.replace('(', '').replace(')', '')
+                        .trim() : '-';
+
+                    if (row.querySelector(
+                            '.btn-hapus-keterangan-tidak-hadir, .btn-keterangan-tidak-hadir')) {
+                        // Masukkan ke tbody modal
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${no++}</td>
+                            <td>${namaGuru}</td>
+                            <td>${keterangan}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    }
+                });
 
                 // Tampilkan modal
                 modalStatistik.show();
