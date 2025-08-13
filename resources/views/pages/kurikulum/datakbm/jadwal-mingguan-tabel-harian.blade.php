@@ -11,6 +11,7 @@
         <thead>
             <tr>
                 <th>Nama Guru</th>
+                <th>Ket</th>
                 @foreach ($semuaJamKe as $jam)
                     <th width="55" class="th-jam" data-jam-ke="{{ $jam }}" style="cursor:pointer;">
                         {{ $jam }}
@@ -38,38 +39,39 @@
                     $jumlahKelasPerGuru[$gid] = $rombelUnikGuru->count();
 
                     $jmlHadir = $semuaKehadiran->where('id_personil', $gid)->count();
+                    $tidakHadir = !$semuaKehadiran->where('id_personil', $gid)->count();
                 @endphp
                 <tr>
                     <td>
-                        {{ $guruMap[$gid]->namalengkap ?? 'N/A' }}
-
-                        @php
-                            // cek apakah guru ini tidak hadir sama sekali di hari ini
-                            $tidakHadir = !$semuaKehadiran->where('id_personil', $gid)->count();
-                        @endphp
-
+                        {{ $guruMap[$gid]->namalengkap ?? 'N/A' }}<br>
+                        @if ($tidakHadir)
+                            @if (isset($keteranganTidakHadir[$gid]))
+                                <span class="ms-2 text-muted small">
+                                    (<span class="text-danger">{{ $keteranganTidakHadir[$gid] }}</span>)
+                                </span>
+                            @endif
+                        @endif
+                    </td>
+                    <td class="text-center">
                         @if ($tidakHadir)
                             @if (isset($keteranganTidakHadir[$gid]))
                                 {{-- Jika sudah ada keterangan, tombol hapus --}}
                                 <button type="button"
-                                    class="btn btn-sm btn-outline-secondary ms-2 btn-hapus-keterangan-tidak-hadir"
+                                    class="btn btn-sm btn-outline-danger ms-2 btn-hapus-keterangan-tidak-hadir"
                                     data-id-personil="{{ $gid }}"
                                     data-nama-guru="{{ $guruMap[$gid]->namalengkap ?? '' }}"
                                     data-hari="{{ $hari }}">
-                                    <i class="ri-delete-bin-line"></i> Hapus Ket.
+                                    <i class="ri-delete-bin-line"></i>
                                 </button>
-                                <span class="ms-2 text-muted small">
-                                    ({{ $keteranganTidakHadir[$gid] }})
-                                </span>
                             @else
                                 {{-- Jika belum ada keterangan, tombol tambah --}}
                                 <button type="button"
-                                    class="btn btn-sm btn-outline-danger ms-2 btn-keterangan-tidak-hadir"
+                                    class="btn btn-sm btn-outline-info ms-2 btn-keterangan-tidak-hadir"
                                     data-id-personil="{{ $gid }}"
                                     data-nama-guru="{{ $guruMap[$gid]->namalengkap ?? '' }}"
                                     data-hari="{{ $hari }}" data-bs-toggle="modal"
                                     data-bs-target="#modalKeteranganTidakHadir">
-                                    <i class="ri-edit-2-line"></i> Ket.
+                                    <i class="ri-edit-2-line"></i>
                                 </button>
                             @endif
                         @endif

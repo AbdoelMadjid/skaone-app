@@ -3,12 +3,12 @@
     @lang('translation.jadwal-per-guru')
 @endsection
 @section('css')
-    {{--  <style>
-        #modalStatistik td {
+    <style>
+        .tblStat td {
             font-weight: bold;
             text-align: center;
         }
-    </style> --}}
+    </style>
 @endsection
 @section('content')
     @component('layouts.breadcrumb')
@@ -79,7 +79,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-bordered table-striped">
+                    <table class="table table-bordered table-striped tblStat">
                         <tbody>
                             <tr>
                                 <th style="width: 50%">Hari, Tanggal</th>
