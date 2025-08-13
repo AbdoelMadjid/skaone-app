@@ -111,9 +111,9 @@
 
             // Override data yang dikirim ke server
             table.on('preXhr.dt', function(e, settings, data) {
-                data.thajarSiswa = $('#idThnAjaran').val(); // Ambil nilai dari dropdown idKK
-                data.kodeKKSiswa = $('#idKodeKK').val(); // Ambil nilai dari dropdown idJenkel
-                data.tingkatSiswa = $('#idTingkat').val(); // Ambil nilai dari dropdown idJenkel
+                data.thajarSiswa = $('#idThnAjaran').val(); // Ambil nilai dari dropdown idThnAjaran
+                data.kodeKKSiswa = $('#idKodeKK').val(); // Ambil nilai dari dropdown idKodeKK
+                data.tingkatSiswa = $('#idTingkat').val(); // Ambil nilai dari dropdown idTingkat
                 data.rombelSiswa = $('#idRombel').val(); // Ambil nilai dari dropdown idJenkel
             });
         }

@@ -95,55 +95,68 @@
 @endsection
 @section('script-bottom')
     <script>
+        // ID tabel DataTable yang digunakan
         const datatable = 'kbmperrombel-table';
 
-        // PENCARIAN DATA KBM PER ROMBEL
+        /**
+         * Fungsi untuk handle pencarian & reload DataTable
+         * @param {string} tableId - ID dari tabel yang akan digunakan
+         */
         function handleFilterAndReload(tableId) {
             var table = $('#' + tableId).DataTable();
 
-            // Trigger saat mengetik di input pencarian
+            // Event untuk pencarian via input .search
             $('.search').on('keyup change', function() {
-                var searchValue = $(this).val(); // Ambil nilai dari input pencarian
-                table.search(searchValue).draw(); // Lakukan pencarian dan gambar ulang tabel
+                var searchValue = $(this).val(); // Ambil nilai input pencarian
+                table.search(searchValue).draw(); // Pencarian langsung di DataTable
             });
 
+            // Event saat salah satu dropdown filter berubah
             $('#idThnAjaran, #idSemester, #idKodeKK, #idTingkat, #idRombel').on('change', function() {
-                table.ajax.reload(null, false); // Reload tabel saat dropdown berubah
+                table.ajax.reload(null, false); // Reload DataTable tanpa reset pagination
             });
 
-            // Override data yang dikirim ke server
+            // Menambahkan parameter filter tambahan sebelum request AJAX DataTable
             table.on('preXhr.dt', function(e, settings, data) {
-                data.thajarSiswa = $('#idThnAjaran').val(); // Ambil nilai dari dropdown idKK
-                data.smstrSiswa = $('#idSemester').val(); // Ambil nilai dari dropdown idSemester
-                data.kodeKKSiswa = $('#idKodeKK').val(); // Ambil nilai dari dropdown idJenkel
-                data.tingkatSiswa = $('#idTingkat').val(); // Ambil nilai dari dropdown idTingkat
-                data.rombelSiswa = $('#idRombel').val(); // Ambil nilai dari dropdown idRombel
+                data.thajarSiswa = $('#idThnAjaran').val();
+                data.smstrSiswa = $('#idSemester').val();
+                data.kodeKKSiswa = $('#idKodeKK').val();
+                data.tingkatSiswa = $('#idTingkat').val();
+                data.rombelSiswa = $('#idRombel').val();
             });
         }
 
-        // Function untuk mengecek apakah dropdown rombel harus di-disable atau tidak
+        /**
+         * Mengecek apakah dropdown Rombel harus di-disable
+         * Rombel hanya aktif jika semua filter utama sudah dipilih
+         */
         function checkDisableRombel() {
             var tahunAjaran = $('#idThnAjaran').val();
             var semesterA = $('#idSemester').val();
             var tingKat = $('#idTingkat').val();
             var kodeKK = $('#idKodeKK').val();
 
-            // Jika salah satu dari Tahun Ajaran atau Kompetensi Keahlian belum dipilih
+            // Jika salah satu filter belum dipilih
             if (tahunAjaran === 'all' || semesterA === 'all' || kodeKK === 'all' || tingKat === 'all') {
-                // Disable dropdown Rombel
                 $('#idRombel').attr('disabled', true);
-                $('#idRombel').empty().append('<option value="all" selected>Rombel</option>'); // Kosongkan pilihan Rombel
+                $('#idRombel').empty().append('<option value="all" selected>Rombel</option>');
             } else {
-                // Jika sudah dipilih keduanya, enable dropdown Rombel dan muat datanya
+                // Semua filter sudah dipilih → enable & load data Rombel
                 $('#idRombel').attr('disabled', false);
-                loadRombelData(tahunAjaran, semesterA, kodeKK, tingKat); // Panggil AJAX untuk load data
+                loadRombelData(tahunAjaran, semesterA, kodeKK, tingKat);
             }
         }
 
-        // Function untuk load data rombel sesuai pilihan Tahun Ajaran dan Kompetensi Keahlian
+        /**
+         * Memuat data rombel dari server berdasarkan filter
+         * @param {string} tahunAjaran
+         * @param {string} semesterA
+         * @param {string} kodeKK
+         * @param {string} tingKat
+         */
         function loadRombelData(tahunAjaran, semesterA, kodeKK, tingKat) {
             $.ajax({
-                url: "{{ route('kurikulum.datakbm.getRombel') }}", // Route untuk request data rombel
+                url: "{{ route('kurikulum.datakbm.getRombel') }}", // Endpoint untuk ambil rombel
                 type: "GET",
                 data: {
                     tahun_ajaran: tahunAjaran,
@@ -152,14 +165,15 @@
                     tingkat: tingKat
                 },
                 success: function(data) {
-                    console.log('Response dari server:', data); // Cek apakah response data sudah benar
+                    console.log('Response dari server:', data); // Debug respon server
 
                     var rombelSelect = $('#idRombel');
-                    rombelSelect.empty(); // Kosongkan pilihan sebelumnya
+                    rombelSelect.empty(); // Bersihkan pilihan sebelumnya
 
-                    rombelSelect.append(
-                        '<option value="all" selected>Pilih Rombel</option>'); // Tambahkan default option
+                    // Default option
+                    rombelSelect.append('<option value="all" selected>Pilih Rombel</option>');
 
+                    // Tambahkan rombel jika ada data
                     if (Object.keys(data).length > 0) {
                         $.each(data, function(key, value) {
                             rombelSelect.append('<option value="' + key + '">' + value + '</option>');
@@ -168,15 +182,20 @@
                         rombelSelect.append('<option value="none">Tidak ada rombel tersedia</option>');
                     }
 
+                    // Trigger event change agar DataTable reload
                     $('#idRombel').trigger('change');
                 },
                 error: function(xhr) {
-                    console.error('Error pada AJAX:', xhr.responseText); // Handle error
+                    console.error('Error pada AJAX:', xhr.responseText);
                 }
             });
         }
 
-        // UPDATE PENGAJAR DI TIAP MATA PELAJARAN
+        /**
+         * Update guru pengajar di suatu mata pelajaran
+         * @param {number} kbmId - ID KBM
+         * @param {number} personilId - ID Guru (Personil)
+         */
         function updatePersonil(kbmId, personilId) {
             $.ajax({
                 url: '/kurikulum/datakbm/update-personil',
@@ -195,7 +214,11 @@
             });
         }
 
-
+        /**
+         * Update jumlah jam mengajar pada KBM
+         * @param {number} id - ID KBM per Rombel
+         * @param {number} jamValue - Jumlah jam baru
+         */
         function updateJam(id, jamValue) {
             $.ajax({
                 url: '/kurikulum/datakbm/update-jumlah-jam',
@@ -218,23 +241,24 @@
             });
         }
 
-        // Inisialisasi DataTable
+        // Saat dokumen siap
         $(document).ready(function() {
-
-            // Event listener ketika dropdown Tahun Ajaran atau Kompetensi Keahlian berubah
+            // Cek status rombel setiap kali filter utama berubah
             $('#idThnAjaran, #idSemester, #idKodeKK, #idTingkat').on('change', function() {
-                checkDisableRombel(); // Panggil fungsi untuk mengecek apakah Rombel harus di-disable
+                checkDisableRombel();
             });
 
-            // Cek status Rombel saat halaman pertama kali dimuat
+            // Cek awal saat halaman dimuat
             checkDisableRombel();
 
+            // Inisialisasi DataTable
             $('#' + datatable).DataTable();
 
+            // Inisialisasi fungsi-fungsi tambahan DataTable
             handleFilterAndReload(datatable);
             handleDataTableEvents(datatable);
-            handleAction(datatable)
-            handleDelete(datatable)
+            handleAction(datatable);
+            handleDelete(datatable);
         });
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>

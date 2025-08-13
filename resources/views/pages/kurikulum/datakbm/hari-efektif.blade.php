@@ -87,18 +87,23 @@
 @section('script-bottom')
     <script>
         $(document).ready(function() {
-            let globalRekap = {}; // 🌍 Simpan data rekap di global
+            let globalRekap = {}; // 🌍 Menyimpan data rekap hari efektif secara global untuk digunakan ulang
 
+            // Fungsi untuk mengubah angka bulan menjadi nama bulan dalam bahasa Indonesia
             function bulanName(bulan) {
-                return ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli',
-                    'Agustus', 'September', 'Oktober', 'November', 'Desember'
+                return [
+                    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
                 ][bulan - 1];
             }
 
+            // Fungsi untuk merender tabel rekap total hari efektif per bulan
             function renderRekapHari(rekap) {
-                let persenKehadiran = parseInt($('#kehadiranPersen').val() || 80);
-                let persenAlfa = 100 - persenKehadiran;
+                let persenKehadiran = parseInt($('#kehadiranPersen').val() ||
+                    80); // Ambil persentase kehadiran ideal (default 80%)
+                let persenAlfa = 100 - persenKehadiran; // Sisanya dianggap toleransi alfa
 
+                // Header tabel rekap
                 let html = `
                 <h5 class="mt-4">Rekap Total Hari Efektif per Bulan:</h5>
                 <div class="table-responsive">
@@ -118,6 +123,7 @@
                     totalKehadiranIdeal = 0,
                     totalToleransiAlfa = 0;
 
+                // Loop setiap bulan dalam rekap
                 Object.entries(rekap).forEach(([bulan, jumlah]) => {
                     let kehadiranIdeal = Math.round(jumlah * persenKehadiran / 100);
                     let toleransiAlfa = jumlah - kehadiranIdeal;
@@ -136,6 +142,7 @@
                 `;
                 });
 
+                // Footer tabel rekap
                 html += `
                         </tbody>
                         <tfoot class="table-secondary fw-bold">
@@ -150,27 +157,32 @@
                 </div>
             `;
 
-                $('#rekap-hari').html(html);
+                $('#rekap-hari').html(html); // Tampilkan di elemen #rekap-hari
             }
 
+            // Fungsi untuk memuat kalender dari server
             function loadKalender() {
                 let tahunId = $('#tahun_ajaran').val();
                 let semester = $('#semester').val();
 
+                // Request untuk mendapatkan data kalender
                 $.post('{{ route('kurikulum.datakbm.hari-efektif-generate') }}', {
                     _token: '{{ csrf_token() }}',
                     tahun_ajaran_id: tahunId,
                     semester: semester
                 }, function(res) {
                     let wrapper = $('#kalender-wrapper');
-                    wrapper.empty();
+                    wrapper.empty(); // Kosongkan wrapper
 
                     const kalender = res.kalender;
-                    globalRekap = res.rekap; // Simpan ke global
+                    globalRekap = res.rekap; // Simpan data rekap ke variabel global
 
+                    // Render setiap bulan
                     Object.entries(kalender).forEach(([bulan, hariList]) => {
                         let col = $('<div class="col-md-4 mb-4"></div>');
                         let card = $('<div class="card h-100 d-flex flex-column"></div>');
+
+                        // Buat tabel kalender dengan header nama bulan dan nama hari
                         let table = $(`
                         <table class="table table-bordered text-center mb-0">
                             <thead>
@@ -181,31 +193,36 @@
                     `);
 
                         let tbody = $('<tbody></tbody>');
-                        let minggu = [];
+                        let minggu = []; // Penampung satu minggu
 
                         hariList.forEach((item, index) => {
                             let date = new Date(item.tanggal);
                             let day = date.getDay(); // 0 = Minggu
 
+                            // Isi spasi kosong di awal bulan
                             if (index === 0 && day !== 1) {
                                 for (let i = 1; i < (day === 0 ? 7 : day); i++) {
                                     minggu.push('<td></td>');
                                 }
                             }
 
+                            // Tentukan warna cell
                             let cls = item.is_libur ? 'bg-danger text-white' :
                                 item.is_weekday ? 'bg-success text-white' : '';
 
+                            // Tambahkan tanggal ke array minggu
                             minggu.push(
                                 `<td class="tanggal ${cls}" data-tgl="${item.tanggal}">${date.getDate()}</td>`
                             );
 
+                            // Jika sudah 7 hari, masukkan sebagai 1 minggu di tabel
                             if (minggu.length === 7) {
                                 tbody.append('<tr>' + minggu.join('') + '</tr>');
                                 minggu = [];
                             }
                         });
 
+                        // Isi sisa minggu terakhir jika belum 7 hari
                         if (minggu.length) {
                             while (minggu.length < 7) minggu.push('<td></td>');
                             tbody.append('<tr>' + minggu.join('') + '</tr>');
@@ -214,7 +231,7 @@
                         table.append(tbody);
                         card.append(table);
 
-                        // Rekap bulan di bawah kalender
+                        // Tambahkan rekap hari efektif di bawah kalender
                         let totalHari = globalRekap[bulan] || 0;
                         let footer = $(`
                         <div class="px-3 py-2 bg-light border-top mt-auto text-end">
@@ -222,38 +239,41 @@
                         </div>
                     `);
                         card.append(footer);
+
                         col.append(card);
                         wrapper.append(col);
                     });
 
-                    renderRekapHari(globalRekap); // Render tabel rekap
+                    // Tampilkan tabel rekap di bawah kalender
+                    renderRekapHari(globalRekap);
                 });
             }
 
+            // Fungsi untuk menghitung ulang total hari efektif setelah perubahan
             function hitungHariEfektif() {
                 $.post('{{ route('kurikulum.datakbm.hari-efektif-hitung') }}', {
                     _token: '{{ csrf_token() }}',
                     tahun_ajaran_id: $('#tahun_ajaran').val(),
                     semester: $('#semester').val()
                 }, function(res) {
-                    // Perbarui globalRekap
+                    // Perbarui data global rekap
                     globalRekap = {};
                     res.data.forEach(r => {
                         globalRekap[r.bulan] = r.jumlah_hari_efektif;
                     });
 
-                    // Render ulang dengan format tabel
+                    // Render ulang tabel rekap
                     renderRekapHari(globalRekap);
                 });
             }
 
-            // Event submit filter form
+            // Event: Submit form filter
             $('#filter-form').on('submit', function(e) {
                 e.preventDefault();
-                loadKalender();
+                loadKalender(); // Muat ulang kalender sesuai filter
             });
 
-            // Event klik tanggal (toggle libur / efektif)
+            // Event: Klik tanggal untuk toggle libur/efektif
             $('#kalender-wrapper').on('click', '.tanggal', function() {
                 if (!$(this).hasClass('bg-success') && !$(this).hasClass('bg-danger')) return;
 
@@ -266,21 +286,22 @@
                     tahun_ajaran_id: $('#tahun_ajaran').val(),
                     semester: $('#semester').val()
                 }, function(res) {
+                    // Update warna tanggal sesuai status baru
                     if (res.status === 'added') {
                         el.removeClass('bg-success').addClass('bg-danger text-white');
                     } else {
                         el.removeClass('bg-danger text-white').addClass('bg-success');
                     }
-                    hitungHariEfektif();
+                    hitungHariEfektif(); // Hitung ulang rekap setelah perubahan
                 });
             });
 
-            // Event perubahan persentase kehadiran
+            // Event: Perubahan input persentase kehadiran
             $('#kehadiranPersen').on('change', function() {
-                renderRekapHari(globalRekap); // update rekap tanpa reload
+                renderRekapHari(globalRekap); // Update tabel rekap langsung tanpa reload data
             });
 
-            loadKalender(); // Initial load
+            loadKalender(); // Load awal kalender saat halaman dibuka
         });
     </script>
 

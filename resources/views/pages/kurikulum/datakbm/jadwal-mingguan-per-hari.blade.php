@@ -198,6 +198,7 @@
             });
         };
 
+        // simpan keterangan tidak hadir
         $(document).on('submit', '#formKeteranganTidakHadir', function(e) {
             e.preventDefault();
 
@@ -283,9 +284,8 @@
                 }
             });
         });
-    </script>
 
-    <script>
+        // btn hapus keterangan tidak hadir
         $(document).on('click', '.btn-hapus-keterangan-tidak-hadir', function() {
             let id_personil = $(this).data('id-personil');
             let hari = $(this).data('hari');
@@ -331,6 +331,7 @@
             });
         });
     </script>
+
     {{-- TAMPILKAN JADWAL UNTUK DI CEK KEHADIRAN --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -455,54 +456,63 @@
 
     {{-- CEK KEHADIRAN MASSAL --}}
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const container = document.getElementById('containerTableJadwal');
-            const tanggalInput = document.getElementById('inputTanggalKehadiran');
+        document.addEventListener('DOMContentLoaded', function() { // Menunggu seluruh DOM selesai dimuat
+            const container = document.getElementById(
+                'containerTableJadwal'); // Ambil elemen container tabel jadwal
+            const tanggalInput = document.getElementById('inputTanggalKehadiran'); // Ambil input tanggal kehadiran
 
+            // Event listener untuk klik pada container tabel
             container.addEventListener('click', function(e) {
-                const th = e.target.closest('.th-jam');
-                if (!th) return;
+                const th = e.target.closest(
+                    '.th-jam'); // Cari elemen header (th) dengan class "th-jam" yang diklik
+                if (!th) return; // Jika bukan kolom jam, hentikan eksekusi
 
-                const jamKe = th.dataset.jamKe;
-                const tanggal = tanggalInput.value;
+                const jamKe = th.dataset.jamKe; // Ambil nilai jam_ke dari atribut data
+                const tanggal = tanggalInput.value; // Ambil tanggal yang dipilih user
 
-                // Ambil semua cell di kolom ini
+                // Cari semua cell (td) di kolom yang sama berdasarkan jam_ke
                 const tds = container.querySelectorAll(
                     `td[data-jam="${jamKe}"][data-id-jadwal][data-id-personil]`
                 );
 
-                let dataArray = [];
+                let dataArray = []; // Array untuk menyimpan data yang akan dikirim ke server
                 tds.forEach(td => {
+                    // Toggle class untuk memberi highlight visual (menandai kehadiran)
                     td.classList.toggle('bg-primary');
                     td.classList.toggle('text-white');
 
+                    // Masukkan data setiap cell ke dalam array
                     dataArray.push({
-                        id_jadwal: td.dataset.idJadwal,
-                        id_personil: td.dataset.idPersonil,
-                        hari: td.dataset.hari
+                        id_jadwal: td.dataset.idJadwal, // ID jadwal
+                        id_personil: td.dataset.idPersonil, // ID guru/personil
+                        hari: td.dataset.hari // Hari
                     });
                 });
 
+                // Kirim data ke server menggunakan fetch API
                 fetch("{{ route('kurikulum.datakbm.simpankehadirangurumassal') }}", {
                         method: "POST",
                         headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                            "Content-Type": "application/json", // Data dikirim dalam format JSON
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}" // Token CSRF Laravel
                         },
                         body: JSON.stringify({
-                            jam_ke: jamKe,
-                            tanggal: tanggal,
-                            data: dataArray
+                            jam_ke: jamKe, // Jam ke yang dipilih
+                            tanggal: tanggal, // Tanggal yang dipilih
+                            data: dataArray // Data semua cell yang dipilih
                         })
                     })
-                    .then(res => res.json())
+                    .then(res => res.json()) // Parsing response JSON
                     .then(data => {
+                        // Jika server mengembalikan status success dan ada array results
                         if (data.status === 'success' && Array.isArray(data.results)) {
+                            // Loop setiap hasil update dari server
                             data.results.forEach(({
                                 id_personil,
                                 hari,
                                 action
                             }) => {
+                                // Ambil elemen terkait perhitungan statistik kehadiran
                                 const jumlahCell = document.querySelector(
                                     `.jumlah-kehadiran[data-id="${id_personil}-${hari}"]`);
                                 const totalHariCell = document.querySelector(
@@ -513,27 +523,33 @@
                                     `.persentase-kehadiran[data-id="${id_personil}-${hari}"]`
                                 );
                                 const totalProsentaseCell = document.querySelector(
-                                    `.total-prosentase[data-hari="${hari}"]`);
+                                    `.total-prosentase[data-hari="${hari}"]`
+                                );
 
+                                // Ambil nilai saat ini dari cell statistik
                                 let currentValue = parseInt(jumlahCell.textContent);
                                 let totalHariValue = parseInt(totalHariCell.textContent);
                                 let totalJam = parseInt(totalJamCell.textContent);
 
-                                if (action === 'created') {
+                                // Update jumlah kehadiran berdasarkan action dari server
+                                if (action === 'created') { // Jika kehadiran baru dibuat
                                     jumlahCell.textContent = currentValue + 1;
                                     totalHariCell.textContent = totalHariValue + 1;
-                                } else {
+                                } else { // Jika kehadiran dihapus
                                     jumlahCell.textContent = Math.max(currentValue - 1, 0);
                                     totalHariCell.textContent = Math.max(totalHariValue - 1, 0);
                                 }
 
+                                // Hitung nilai baru untuk persentase
                                 let newJumlah = parseInt(jumlahCell.textContent);
                                 let newTotalHari = parseInt(totalHariCell.textContent);
 
+                                // Update persentase kehadiran individu guru
                                 if (persenCell) persenCell.textContent =
                                     totalJam > 0 ?
                                     `${Math.round((newJumlah / totalJam) * 100)} %` : '0 %';
 
+                                // Update persentase total kehadiran hari itu
                                 if (totalProsentaseCell) {
                                     const totalJadwal = parseInt(totalProsentaseCell
                                         .getAttribute('data-total-jadwal'));
@@ -544,55 +560,65 @@
                                 }
                             });
 
+                            // Tampilkan notifikasi sukses
                             showToast('success', 'Kehadiran massal berhasil diupdate!');
+                            // Simpan tanggal di storage & reload halaman
                             simpanTanggalDanReload();
                         } else {
+                            // Jika gagal menyimpan kehadiran
                             showToast('error', 'Gagal menyimpan massal');
                         }
                     })
                     .catch(err => {
-                        console.error(err);
-                        showToast('error', 'Terjadi kesalahan!');
+                        console.error(err); // Log error ke console
+                        showToast('error', 'Terjadi kesalahan!'); // Notifikasi error
                     });
             });
         });
     </script>
 
+
     {{-- CEK KEHADIRAN MANUAL --}}
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const container = document.getElementById('containerTableJadwal');
+        document.addEventListener('DOMContentLoaded', function() { // Tunggu sampai semua elemen HTML selesai dimuat
+            const container = document.getElementById('containerTableJadwal'); // Ambil container tabel jadwal
 
+            // Event listener untuk menangani klik pada cell kehadiran
             container.addEventListener('click', function(e) {
-                const target = e.target.closest('.cell-kehadiran');
-                if (!target) return;
+                const target = e.target.closest(
+                '.cell-kehadiran'); // Cari elemen dengan class "cell-kehadiran" yang diklik
+                if (!target) return; // Jika bukan cell kehadiran, hentikan
 
-                const idJadwal = target.dataset.idJadwal;
-                const idPersonil = target.dataset.idPersonil;
-                const hari = target.dataset.hari;
-                const jam = target.dataset.jam;
-                const tanggal = document.getElementById('inputTanggalKehadiran').value;
+                // Ambil data dari atribut data-*
+                const idJadwal = target.dataset.idJadwal; // ID jadwal mingguan
+                const idPersonil = target.dataset.idPersonil; // ID guru/personil
+                const hari = target.dataset.hari; // Nama hari
+                const jam = target.dataset.jam; // Jam ke
+                const tanggal = document.getElementById('inputTanggalKehadiran')
+                .value; // Tanggal yang dipilih
 
-                // Toggle warna dulu (optimis)
+                // Toggle warna cell secara optimis (langsung ubah UI sebelum response server)
                 target.classList.toggle('bg-primary');
                 target.classList.toggle('text-white');
 
+                // Kirim request ke server untuk menyimpan/hapus kehadiran guru
                 fetch("{{ route('kurikulum.datakbm.simpankehadiranguru') }}", {
                         method: "POST",
                         headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                            "Content-Type": "application/json", // Kirim data dalam format JSON
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}" // Token keamanan Laravel
                         },
                         body: JSON.stringify({
-                            jadwal_mingguan_id: idJadwal,
-                            id_personil: idPersonil,
-                            hari: hari,
-                            jam_ke: jam,
-                            tanggal: tanggal // ← penting
+                            jadwal_mingguan_id: idJadwal, // ID jadwal
+                            id_personil: idPersonil, // ID guru
+                            hari: hari, // Hari
+                            jam_ke: jam, // Jam ke
+                            tanggal: tanggal // Tanggal kehadiran
                         })
                     })
-                    .then(res => res.json())
+                    .then(res => res.json()) // Ubah response menjadi JSON
                     .then(data => {
+                        // Ambil elemen-elemen yang akan diupdate
                         const jumlahCell = document.querySelector(
                             `.jumlah-kehadiran[data-id="${idPersonil}-${hari}"]`);
                         const totalHariCell = document.querySelector(
@@ -604,20 +630,24 @@
                         const totalProsentaseCell = document.querySelector(
                             `.total-prosentase[data-hari="${hari}"]`);
 
+                        // Ambil nilai saat ini dari tabel statistik
                         let currentValue = parseInt(jumlahCell.textContent);
                         let totalHariValue = parseInt(totalHariCell.textContent);
                         let totalJam = parseInt(totalJamCell.textContent);
 
-                        if (data.status === 'success') {
-                            if (data.action === 'created') {
+                        if (data.status === 'success') { // Jika request sukses
+                            if (data.action === 'created') { // Jika kehadiran baru dibuat
                                 showToast('success', 'Kehadiran sukses disimpan!');
-                                jumlahCell.textContent = currentValue + 1;
-                                totalHariCell.textContent = totalHariValue + 1;
+                                jumlahCell.textContent = currentValue + 1; // Tambah jumlah hadir guru
+                                totalHariCell.textContent = totalHariValue +
+                                1; // Tambah total hadir di hari itu
 
+                                // Hitung ulang persentase kehadiran guru
                                 let persen = totalJam > 0 ? Math.round(((currentValue + 1) / totalJam) *
                                     100) : 0;
                                 if (persenCell) persenCell.textContent = `${persen} %`;
 
+                                // Hitung ulang persentase total kehadiran hari itu
                                 if (totalProsentaseCell) {
                                     const totalJadwal = parseInt(totalProsentaseCell.getAttribute(
                                         'data-total-jadwal'));
@@ -627,18 +657,21 @@
                                     totalProsentaseCell.textContent = `${persenTotal} %`;
                                 }
 
-                            } else if (data.action === 'deleted') {
+                            } else if (data.action === 'deleted') { // Jika kehadiran dihapus
                                 showToast('success', 'Kehadiran sukses dihapus!');
                                 let newJumlah = currentValue > 0 ? currentValue - 1 : 0;
                                 let newTotalHari = totalHariValue > 0 ? totalHariValue - 1 : 0;
 
-                                jumlahCell.textContent = newJumlah;
-                                totalHariCell.textContent = newTotalHari;
+                                jumlahCell.textContent = newJumlah; // Kurangi jumlah hadir guru
+                                totalHariCell.textContent =
+                                newTotalHari; // Kurangi total hadir di hari itu
 
+                                // Hitung ulang persentase kehadiran guru
                                 let persen = totalJam > 0 ? Math.round((newJumlah / totalJam) * 100) :
-                                    0;
+                                0;
                                 if (persenCell) persenCell.textContent = `${persen} %`;
 
+                                // Hitung ulang persentase total kehadiran hari itu
                                 if (totalProsentaseCell) {
                                     const totalJadwal = parseInt(totalProsentaseCell.getAttribute(
                                         'data-total-jadwal'));
@@ -648,22 +681,26 @@
                                     totalProsentaseCell.textContent = `${persenTotal} %`;
                                 }
                             }
-                            simpanTanggalDanReload();
-                        } else {
+                            simpanTanggalDanReload(); // Simpan tanggal terakhir & reload halaman
+
+                        } else { // Jika request gagal
                             showToast('error', 'Gagal menyimpan kehadiran');
+                            // Kembalikan warna cell ke semula
                             target.classList.toggle('bg-primary');
                             target.classList.toggle('text-white');
                         }
                     })
                     .catch(err => {
-                        console.error(err);
+                        console.error(err); // Log error
                         showToast('error', 'Terjadi kesalahan!');
+                        // Kembalikan warna cell ke semula jika error
                         target.classList.toggle('bg-primary');
                         target.classList.toggle('text-white');
                     });
             });
         });
     </script>
+
 
     {{-- TAMPILKAN STATISTIK KEHADIRAN --}}
     <script>

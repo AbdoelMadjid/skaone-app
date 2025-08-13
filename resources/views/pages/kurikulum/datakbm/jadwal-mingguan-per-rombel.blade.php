@@ -146,6 +146,7 @@
 @endsection
 @section('script-bottom')
     <script>
+        // Event listener untuk dropdown "Rombel" otomatis
         document.getElementById('idRombelAuto').addEventListener('change', function() {
             const selected = this.options[this.selectedIndex];
             const tahunajaran = selected.dataset.tahunajaran;
@@ -155,6 +156,7 @@
             const kode_rombel = selected.value;
 
             if (kode_rombel) {
+                // Membuat query string dari data rombel yang dipilih
                 const query = new URLSearchParams({
                     tahunajaran,
                     semester,
@@ -163,11 +165,14 @@
                     kode_rombel
                 }).toString();
 
+                // Redirect halaman dengan query string baru
                 window.location.href = '?' + query;
             }
         });
     </script>
+
     <script>
+        // Event listener untuk list rombel versi klik list-item
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.list-rombel-item').forEach(function(item) {
                 item.addEventListener('click', function() {
@@ -194,10 +199,11 @@
     </script>
 
     <script>
+        // Event untuk membuka modal input jadwal saat sel jadwal diklik
         document.addEventListener('DOMContentLoaded', function() {
             const modal = new bootstrap.Modal(document.getElementById('modalInputJadwal'));
 
-            // Fungsi ambil query parameter dari URL
+            // Fungsi ambil nilai parameter dari query string URL
             function getQueryParam(param) {
                 const urlParams = new URLSearchParams(window.location.search);
                 return urlParams.get(param);
@@ -210,10 +216,11 @@
             const tingkat = getQueryParam('tingkat');
             const rombel = getQueryParam('kode_rombel');
 
+            // Event klik pada setiap cell jadwal
             document.querySelectorAll('.cell-jadwal').forEach(cell => {
                 cell.addEventListener('click', function() {
-                    // Jika ingin validasi masih berlaku, aktifkan kembali blok ini
 
+                    // Validasi: Pastikan semua filter sudah dipilih
                     if (!tahunajaran || !semester || !kompetensikeahlian || !tingkat || !rombel) {
                         Swal.fire({
                             icon: 'warning',
@@ -225,12 +232,13 @@
                         return;
                     }
 
-
+                    // Ambil data dari atribut dataset
                     const jam = this.dataset.jam;
                     const hari = this.dataset.hari;
                     const guru = this.dataset.id || '';
                     const mapel = this.dataset.mapel || '';
 
+                    // Set data ke dalam form modal
                     document.getElementById('modalJamKe').value = jam;
                     document.getElementById('modalHari').value = hari;
                     document.getElementById('modalGuru').value = guru;
@@ -238,6 +246,7 @@
                     document.getElementById('labelJamKe').textContent = jam;
                     document.getElementById('labelHari').textContent = hari;
 
+                    // Tampilkan modal
                     modal.show();
                 });
             });
@@ -245,34 +254,41 @@
     </script>
 
     <script>
+        // Data mapel per guru dari backend (Laravel -> Blade -> JSON)
         const mapelPerGuru = @json($mapelPerGuru);
 
+        // Event ketika guru di modal diganti
         $('#modalGuru').on('change', function() {
             const idGuru = $(this).val();
             const mapelSelect = $('#modalMapel');
 
+            // Kosongkan dan set default option
             mapelSelect.empty().append('<option value="">-- Pilih Mata Pelajaran --</option>');
 
+            // Jika guru dipilih dan memiliki mapel
             if (idGuru && mapelPerGuru[idGuru]) {
                 mapelPerGuru[idGuru].forEach(item => {
                     mapelSelect.append(
                         `<option value="${item.kode_mapel_rombel}"
-                         data-jumlah-jam="${item.jumlah_jam}"
-                         data-sisa-jam="${item.sisa_jam}">
-                    ${item.mata_pelajaran} (Sisa: ${item.sisa_jam})
-                </option>`
+                        data-jumlah-jam="${item.jumlah_jam}"
+                        data-sisa-jam="${item.sisa_jam}">
+                        ${item.mata_pelajaran} (Sisa: ${item.sisa_jam})
+                    </option>`
                     );
                 });
                 mapelSelect.prop('disabled', false);
             } else {
+                // Disable jika guru tidak punya mapel
                 mapelSelect.prop('disabled', true);
             }
         });
 
+        // Event ketika mapel dipilih
         $('#modalMapel').on('change', function() {
             const sisaJam = $(this).find(':selected').data('sisa-jam');
             const jumlahJamSelect = $('#jumlahJamSelect');
 
+            // Auto set jumlah jam ke sisa jam dan disable jika sisa 0
             if (sisaJam > 0) {
                 jumlahJamSelect.val(sisaJam).prop('disabled', false);
             } else {
