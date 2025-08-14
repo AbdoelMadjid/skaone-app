@@ -393,7 +393,9 @@ return [
 
     "guruwali" => "Guru Wali",
     "guru-wali" => "Guru Wali",
-    "laporan-perkembangan" => "Laporan Perkembangan",
+    "data-siswa-guruwali" => "Data Siswa",
+    "laporan-guruwali" => "Laporan",
+    "informasi-guruwali" => "Informasi",
 
     // manajemen sekolah
     'MANAJEMEN SEKOLAH' => 'MANAJEMEN SEKOLAH',
