@@ -38,7 +38,9 @@ class MenuDataTable extends DataTable
      */
     public function query(Menu $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()
+            ->orderBy('category', 'asc')
+            ->orderBy('url', 'asc');
     }
 
     /**
@@ -57,7 +59,7 @@ class MenuDataTable extends DataTable
                 //'order' => [[6, 'asc'], [4, 'asc'], [2, 'asc']],
                 'lengthChange' => false,
                 'searching' => false,
-                'pageLength' => 100,
+                'pageLength' => 200,
                 'paging' => true,
                 'scrollCollapse' => false,
                 'scrollY' => "calc(100vh - 348px)",
@@ -70,6 +72,7 @@ class MenuDataTable extends DataTable
     public function getColumns(): array
     {
         return [
+            Column::make('id'),
             Column::make('name'),
             Column::make('orders'),
             Column::make('url'),
