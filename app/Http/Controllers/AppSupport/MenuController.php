@@ -77,6 +77,7 @@ class MenuController extends Controller
             'mainMenus' => $this->repository->getMainMenus(),
             'subMenus' => $this->repository->getAllSubMenus(),
             'isSubSubMenu' => false,
+            'menuPermissions' => [],
         ]);
     }
 
@@ -110,16 +111,24 @@ class MenuController extends Controller
         try {
             $this->authorize('create appsupport/menu');
 
+            // Simpan menu dulu
             $this->fillData($request, $menu);
             $menu->save();
 
-            foreach ($request->permissions ?? [] as $permission) {
-                Permission::create(['name' => $permission . " {$menu->url}"])->menus()->attach($menu);
-            }
+            // Buat atau ambil permission, lalu attach ke menu
+            $permissionIds = collect($request->permissions ?? [])
+                ->map(function ($permission) use ($menu) {
+                    $name = "{$permission} {$menu->url}";
+                    return Permission::firstOrCreate(['name' => $name])->id;
+                })
+                ->toArray();
+
+            // Sinkronisasi relasi permission tanpa hapus existing
+            $menu->permissions()->syncWithoutDetaching($permissionIds);
+
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
-
             return responseError($th);
         }
 
@@ -182,13 +191,30 @@ class MenuController extends Controller
      */
     public function update(MenuRequest $request, Menu $menu)
     {
-        $this->authorize('update appsupport/menu');
+        DB::beginTransaction();
+        try {
+            $this->authorize('update appsupport/menu');
 
-        $this->fillData($request, $menu);
-        if ($request->level_menu == 'main_menu') {
-            $menu->main_menu_id = null;
+            // Isi data menu
+            $this->fillData($request, $menu);
+            $menu->save();
+
+            // Siapkan permission IDs dari input
+            $permissionIds = collect($request->permissions ?? [])
+                ->map(function ($permission) use ($menu) {
+                    $name = "{$permission} {$menu->url}";
+                    return Permission::firstOrCreate(['name' => $name])->id;
+                })
+                ->toArray();
+
+            // Sinkronisasi permission
+            $menu->permissions()->sync($permissionIds);
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return responseError($th);
         }
-        $menu->save();
 
         return responseSuccess(true);
     }
