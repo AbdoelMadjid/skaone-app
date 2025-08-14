@@ -74,7 +74,9 @@ class MenuController extends Controller
         return view('pages.appsupport.menu-form', [
             'action' => route('appsupport.menu.store'),
             'data' => $menu,
-            'mainMenus' => $this->repository->getMainMenus()
+            'mainMenus' => $this->repository->getMainMenus(),
+            'subMenus' => $this->repository->getAllSubMenus(),
+            'isSubSubMenu' => false,
         ]);
     }
 
@@ -85,9 +87,19 @@ class MenuController extends Controller
             'orders' => $request->orders,
             'icon' => $request->icon,
             'category' => $request->category,
-            'main_menu_id' => $request->main_menu,
         ]);
+
+        if ($request->level_menu === 'sub_sub_menu') {
+            // Ambil main menu id dari sub menu yang dipilih
+            $subMenu = Menu::findOrFail($request->sub_menu);
+            $menu->main_menu_id = $subMenu->main_menu_id;
+        } elseif ($request->level_menu === 'sub_menu') {
+            $menu->main_menu_id = $request->main_menu;
+        } else {
+            $menu->main_menu_id = null;
+        }
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -129,10 +141,30 @@ class MenuController extends Controller
     {
         $this->authorize('update appsupport/menu');
 
+        $isSubSubMenu = false;
+        $subMenuId = null;
+
+        if ($menu->main_menu_id) {
+            $parts = explode('/', $menu->url);
+            if (count($parts) > 2) {
+                $isSubSubMenu = true;
+
+                $parentUrl = implode('/', array_slice($parts, 0, 2));
+                $subMenu = Menu::where('url', $parentUrl)->first();
+                if ($subMenu) {
+                    $subMenuId = $subMenu->id;
+                }
+            }
+        }
+
+        $menu->id_sub_menu = $subMenuId;
+
         return view('pages.appsupport.menu-form', [
             'action' => route('appsupport.menu.update', $menu->id),
             'data' => $menu,
-            'mainMenus' => $this->repository->getMainMenus()
+            'mainMenus' => $this->repository->getMainMenus(),
+            'subMenus' => $this->repository->getAllSubMenus(),
+            'isSubSubMenu' => $isSubSubMenu,
         ]);
     }
 

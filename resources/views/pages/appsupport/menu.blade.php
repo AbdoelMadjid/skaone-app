@@ -43,15 +43,36 @@
     <script>
         const datatable = 'menu-table';
 
+        /* function handleMenuChange() {
+                    $('[name=level_menu]').on('change', function() {
+                        if (this.value == 'sub_menu') {
+                            $('#main_menu_wrapper').removeClass('d-none')
+                        } else {
+                            $('#main_menu_wrapper').addClass('d-none')
+                        }
+                    })
+                }
+         */
+
         function handleMenuChange() {
             $('[name=level_menu]').on('change', function() {
                 if (this.value == 'sub_menu') {
-                    $('#main_menu_wrapper').removeClass('d-none')
+                    $('#main_menu_wrapper').removeClass('d-none');
+                    $('#sub_menu_wrapper').addClass('d-none');
+                    $('#permissions_wrapper').removeClass('d-none');
+                } else if (this.value == 'sub_sub_menu') {
+                    $('#main_menu_wrapper').addClass('d-none');
+                    $('#sub_menu_wrapper').removeClass('d-none');
+                    $('#permissions_wrapper').removeClass('d-none');
                 } else {
-                    $('#main_menu_wrapper').addClass('d-none')
+                    $('#main_menu_wrapper').addClass('d-none');
+                    $('#sub_menu_wrapper').addClass('d-none');
+                    $('#permissions_wrapper').addClass('d-none');
                 }
-            })
+            });
         }
+
+
 
         $('.sort').on('click', function(e) {
             e.preventDefault()

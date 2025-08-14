@@ -21,17 +21,6 @@ class MenuRepository
             });
     }
 
-    public function getSubMenus()
-    {
-        return Menu::whereNotNull('main_menu_id')
-            ->whereNull('parent_sub_menu_id') // pastikan dia sub menu langsung
-            ->select('id', 'name')
-            ->get()
-            ->mapWithKeys(function ($item) {
-                return [$item->id => "{$item->id} - {$item->name}"];
-            });
-    }
-
     public function getMenus()
     {
         return Menu::active()->with(['subMenus' => function ($query) {
@@ -39,5 +28,15 @@ class MenuRepository
         }])->whereNull('main_menu_id')
             ->orderBy('orders')
             ->get();
+    }
+
+    public function getAllSubMenus()
+    {
+        return Menu::whereNotNull('main_menu_id')
+            ->select('id', 'name', 'main_menu_id')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [$item->id => "{$item->id} - {$item->name}"];
+            });
     }
 }
