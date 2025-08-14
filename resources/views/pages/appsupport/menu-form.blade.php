@@ -38,7 +38,7 @@
                 placeholder="Pilih sub menu" :options="$subMenus" label="Sub menu" />
         </div>
         {{-- Permissions --}}
-        @if (!$data->id || $data->main_menu_id)
+        {{-- @if (!$data->id || $data->main_menu_id)
             <div id="permissions_wrapper" class="col-12">
                 <div class="mb-3">
                     <label class="mb-2 form-label d-block">Permissions</label>
@@ -48,6 +48,22 @@
                     @endforeach
                 </div>
             </div>
+        @endif --}}
+
+        @if (!$data->id || $data->main_menu_id)
+            <div id="permissions_wrapper" class="col-12">
+                <div class="mb-3">
+                    <label class="mb-2 form-label d-block">Permissions</label>
+                    @foreach (['create', 'read', 'update', 'delete'] as $item)
+                        <label class="me-3">
+                            <input type="checkbox" name="permissions[]" value="{{ $item }}"
+                                {{ in_array($item, $menuPermissions ?? []) ? 'checked' : '' }}>
+                            {{ ucfirst($item) }}
+                        </label>
+                    @endforeach
+                </div>
+            </div>
         @endif
+
     </div>
 </x-form.modal>

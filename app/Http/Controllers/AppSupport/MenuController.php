@@ -159,12 +159,21 @@ class MenuController extends Controller
 
         $menu->id_sub_menu = $subMenuId;
 
+        $menuPermissions = $menu->permissions
+            ->pluck('name')
+            ->map(function ($name) {
+                // Ambil kata pertama sebelum spasi
+                return explode(' ', $name)[0];
+            })
+            ->toArray();
+
         return view('pages.appsupport.menu-form', [
             'action' => route('appsupport.menu.update', $menu->id),
             'data' => $menu,
             'mainMenus' => $this->repository->getMainMenus(),
             'subMenus' => $this->repository->getAllSubMenus(),
             'isSubSubMenu' => $isSubSubMenu,
+            'menuPermissions' => $menuPermissions,
         ]);
     }
 
