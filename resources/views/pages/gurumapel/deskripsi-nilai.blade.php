@@ -110,38 +110,43 @@
 @section('script')
     <script src="{{ URL::asset('build/libs/jquery/jquery.min.js') }}"></script>
     <script>
+        // Kalau kamu ganti pilihan di dropdown #datadeskripsi...
         $(document).on('change', '#datadeskripsi', function(e) {
-            e.preventDefault();
+            e.preventDefault(); // Jangan langsung reload halaman, kita yang atur alurnya
 
-            // Ambil data dari opsi yang dipilih
-            let selectedOption = $(this).find(':selected'); // Ambil opsi yang terpilih
-            let kelMapel = selectedOption.data('kel-mapel');
-            let kodeRombel = selectedOption.data('kode-rombel');
-            let idPersonil = selectedOption.val(); // Nilai dari value atribut
+            // Ambil pilihan yang kamu pilih dari dropdown
+            let selectedOption = $(this).find(':selected'); // Nyari option yang lagi kepilih
+            let kelMapel = selectedOption.data('kel-mapel'); // Kelompok mapelnya apa nih?
+            let kodeRombel = selectedOption.data('kode-rombel'); // Kelas atau rombelnya berapa?
+            let idPersonil = selectedOption.val(); // ID gurunya siapa?
 
-            // Panggil fungsi untuk memuat data nilai formatif
+            // Sekarang kita minta data nilainya dari server
             loadNilai(kodeRombel, kelMapel, idPersonil);
         });
 
+        // Fungsi ini tugasnya ngambil data nilai dari server dan nempelin ke tabel
         function loadNilai(kodeRombel, kelMapel, idPersonil) {
             $.ajax({
-                url: '/gurumapel/penilaian/getnilaiformatif',
-                type: 'GET',
+                url: '/gurumapel/penilaian/getnilaiformatif', // Link buat minta data
+                type: 'GET', // Metode ambil data
                 data: {
                     kode_rombel: kodeRombel,
                     kel_mapel: kelMapel,
                     id_personil: idPersonil,
                 },
                 success: function(response) {
+                    // Kalau servernya jawab "error", ya kita kasih tau usernya
                     if (response.error) {
                         alert(response.error);
                         return;
                     }
 
-                    const data = response.data;
-                    const jumlahTP = response.jumlahTP;
-                    const jmlSiswa = response.JmlSiswa;
+                    // Ambil data yang dikirim server
+                    const data = response.data; // Data utama nilai siswa
+                    const jumlahTP = response.jumlahTP; // Berapa TP (Tujuan Pembelajaran) yang ada
+                    const jmlSiswa = response.JmlSiswa; // Berapa banyak siswanya
 
+                    // Kalau ada data, kita isi info kelas & guru
                     if (data.length > 0) {
                         $('#rombel-info').text(data[0].rombel || 'Tidak Ada');
                         $('#mapel-info').text(data[0].mata_pelajaran || 'Tidak Ada');
@@ -151,58 +156,66 @@
                         $('#jmlsiswa-info').text(jmlSiswa);
                     }
 
+                    // Bikin header tabelnya
                     let tableHeader = `
-                        <tr>
-                            <th style="width: 30px;">No.</th>
-                            <th style="width: 30px;">ID Base</th>
-                            <th style="width: 100px;">NIS</th>
-                            <th style="width: 200px;">Nama Siswa</th>`;
+                    <tr>
+                        <th>No.</th>
+                        <th>ID Base</th>
+                        <th>NIS</th>
+                        <th>Nama Siswa</th>`;
 
+                    // Tambahin kolom untuk TP sesuai jumlah TP
                     for (let i = 1; i <= jumlahTP; i++) {
-                        tableHeader += `<th style="width: 50px;" id="tp-nilai-${i}">TP ${i}</th>`;
+                        tableHeader += `<th id="tp-nilai-${i}">TP ${i}</th>`;
                     }
 
+                    // Kolom tambahan buat nilai ringkasan
                     tableHeader += `
-                            <th>RF</th>
-                            <th id="sts">STS</th>
-                            <th id="sas">SAS</th>
-                            <th id="rs">RS</th>
-                            <th id="na">NA</th>
-                            <th style="display: none;">Semua Nilai</th>
-                            <th>Deskripsi Pencapaian Siswa</th>
-                        </tr>`;
+                        <th>RF</th> <!-- Rerata Formatif -->
+                        <th id="sts">STS</th> <!-- Sumatif Tengah Semester -->
+                        <th id="sas">SAS</th> <!-- Sumatif Akhir Semester -->
+                        <th id="rs">RS</th> <!-- Rerata Sumatif -->
+                        <th id="na">NA</th> <!-- Nilai Akhir -->
+                        <th style="display: none;">Semua Nilai</th>
+                        <th>Deskripsi Pencapaian Siswa</th>
+                    </tr>`;
 
+                    // Bersihin tabel sebelum diisi
                     $('#data-nilai-siswa').html('');
                     $('#data-nilai-siswa').append('<thead>' + tableHeader + '</thead><tbody>');
 
                     let tableBody = '';
                     let totals = {
-                        tp: Array(jumlahTP).fill(0),
+                        tp: Array(jumlahTP).fill(0), // Buat nyimpen total tiap TP
                         rf: 0,
                         sts: 0,
                         sas: 0,
                         rs: 0,
-                        na: 0,
+                        na: 0
                     };
 
+                    // Loop untuk tiap siswa
                     data.forEach((row, index) => {
-                        let totalTP = 0;
-                        let countTP = 0;
-                        let nilaiAtasRerata = [];
-                        let nilaiBawahRerata = [];
+                        let totalTP = 0; // Total nilai TP anak ini
+                        let countTP = 0; // Berapa TP yang nilainya ada
+                        let nilaiAtasRerata = []; // Nilai yang di atas rata-rata
+                        let nilaiBawahRerata = []; // Nilai yang di bawah rata-rata
 
+                        // Awal baris siswa
                         tableBody += `
-                        <tr>
-                            <td class="bg-primary-subtle text-center">${index + 1}</td>
-                            <td>${row.id}</td>
-                            <td>${row.nis}</td>
-                            <td>${row.nama_lengkap}</td>`;
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${row.id}</td>
+                        <td>${row.nis}</td>
+                        <td>${row.nama_lengkap}</td>`;
 
+                        // Masukin nilai tiap TP
                         for (let i = 1; i <= jumlahTP; i++) {
                             const tpNilai = row['tp_nilai_' + i] ? parseFloat(row['tp_nilai_' + i]) :
                                 null;
-                            tableBody += `<td class="text-center">${tpNilai || '-'}</td>`;
+                            tableBody += `<td>${tpNilai || '-'}</td>`;
 
+                            // Buat hitung rata-rata
                             if (tpNilai !== null) {
                                 totalTP += tpNilai;
                                 countTP++;
@@ -210,8 +223,10 @@
                             }
                         }
 
+                        // Hitung rata-rata TP anak ini
                         const averageTP = countTP > 0 ? totalTP / countTP : 0;
 
+                        // Cari nilai yang lebih tinggi atau rendah dari rata-rata
                         for (let i = 1; i <= jumlahTP; i++) {
                             const tpNilai = row['tp_nilai_' + i] ? parseFloat(row['tp_nilai_' + i]) :
                                 null;
@@ -227,50 +242,47 @@
                             }
                         }
 
+                        // Ambil nilai ringkasan
                         const rf = row.rerata_formatif ? parseFloat(row.rerata_formatif) : null;
                         const sts = row.sts ? parseFloat(row.sts) : null;
                         const sas = row.sas ? parseFloat(row.sas) : null;
                         const rs = row.rerata_sumatif ? parseFloat(row.rerata_sumatif) : null;
                         const na = row.nilai_na ? parseFloat(row.nilai_na) : null;
 
-                        // Filter nilai tertinggi dan terendah
+                        // Cari nilai tertinggi dan terendahnya
                         const highest = nilaiAtasRerata.length > 0 ? Math.max(...nilaiAtasRerata.map(
                             n => n.value)) : null;
                         const highestTP = nilaiAtasRerata.filter(n => n.value === highest).map(n =>
                             `TP ${n.tp}`).join(', ');
-
                         const lowest = nilaiBawahRerata.length > 0 ? Math.min(...nilaiBawahRerata.map(
                             n => n.value)) : null;
                         const lowestTP = nilaiBawahRerata.filter(n => n.value === lowest).map(n =>
                             `TP ${n.tp}`).join(', ');
 
+                        // Masukin ke tabel
                         tableBody += `
-                            <td class="bg-primary-subtle text-center">${rf || '-'}</td>
-                            <td class="text-center">${sts || '-'}</td>
-                            <td class="text-center">${sas || '-'}</td>
-                            <td class="bg-primary-subtle text-center">${rs ? Math.round(rs) : '-'}</td>
-                            <td class="bg-info-subtle text-center">${na ? Math.round(na) : '-'}</td>
-                            <td style="display: none;">Semua Nilai Tertinggi: <br>
-                                ${nilaiAtasRerata.map(n => `${n.value} (TP ${n.tp})`).join(', ') || '-'}<br>
-                                Semua Nilai Terendah :<br>
-                                ${nilaiBawahRerata.map(n => `${n.value} (TP ${n.tp})`).join(', ') || '-'}
-                            </td>
-                            <td>
-                                <span style="display: none;">Nilai Tertinggi : ${highest !== null ? `${highest} (${highestTP})` : '-'} </span>
-                                <span style="display: none;">Nilai Terendah : ${lowest !== null ? `${lowest} (${lowestTP})` : '-'} </span>
+                        <td>${rf || '-'}</td>
+                        <td>${sts || '-'}</td>
+                        <td>${sas || '-'}</td>
+                        <td>${rs ? Math.round(rs) : '-'}</td>
+                        <td>${na ? Math.round(na) : '-'}</td>
+                        <td style="display: none;">
+                            Semua Nilai Tinggi: ${nilaiAtasRerata.map(n => `${n.value} (TP ${n.tp})`).join(', ') || '-'}
+                            <br>Semua Nilai Rendah: ${nilaiBawahRerata.map(n => `${n.value} (TP ${n.tp})`).join(', ') || '-'}
+                        </td>
+                        <td>
+                            ${highestTP.split(', ').map(tp => {
+                                const tpNumber = tp.match(/\d+/);
+                                return tpNumber ? `Bagus banget di ${row['tp_isi_' + tpNumber[0]] || '(nggak ada deskripsi)'}` : '';
+                            }).join('<br>')}<br>
+                            ${lowestTP.split(', ').map(tp => {
+                                const tpNumber = tp.match(/\d+/);
+                                return tpNumber ? `Masih perlu belajar di ${row['tp_isi_' + tpNumber[0]] || '(nggak ada deskripsi)'}` : '';
+                            }).join('<br>')}
+                        </td>
+                    </tr>`;
 
-                                ${highestTP.split(', ').map(tp => {
-                                    const tpNumber = tp.match(/\d+/); // Ambil angka dari string "TP n"
-                                    return tpNumber ? `Menunjukkan kemampuan dalam ${row['tp_isi_' + tpNumber[0]] || '(deskripsi tidak tersedia)'}` : '';
-                                }).join('<br>')}<br>
-
-                                ${lowestTP.split(', ').map(tp => {
-                                    const tpNumber = tp.match(/\d+/); // Ambil angka dari string "TP n"
-                                    return tpNumber ? `Masih perlu bimbingan dalam ${row['tp_isi_' + tpNumber[0]] || '(deskripsi tidak tersedia)'}` : '';
-                                }).join('<br>')}
-                            </td>
-                        </tr>`;
-
+                        // Tambah total buat rata-rata kelas
                         if (rf) totals.rf += rf;
                         if (sts) totals.sts += sts;
                         if (sas) totals.sas += sas;
@@ -278,6 +290,7 @@
                         if (na) totals.na += na;
                     });
 
+                    // Hitung rata-rata kelas
                     const totalSiswa = data.length;
                     const averages = {
                         tp: totals.tp.map((tp) => (totalSiswa ? tp / totalSiswa : 0)),
@@ -288,30 +301,32 @@
                         na: totalSiswa ? totals.na / totalSiswa : 0,
                     };
 
+                    // Baris terakhir buat rata-rata kelas
                     let averageRow = `
-                        <tr>
-                            <td colspan="3" class="text-center bg-primary-subtle"><strong>Rata-rata</strong></td>`;
+                    <tr>
+                        <td colspan="3"><strong>Rata-rata Kelas</strong></td>`;
                     for (let i = 0; i < jumlahTP; i++) {
-                        averageRow +=
-                            `<td class="text-center bg-info-subtle">${averages.tp[i].toFixed(2) || '-'}</td>`;
+                        averageRow += `<td>${averages.tp[i].toFixed(2) || '-'}</td>`;
                     }
                     averageRow += `
-                <td class="text-center bg-info-subtle">${averages.rf.toFixed(2) || '-'}</td>
-                <td class="text-center bg-info-subtle">${averages.sts.toFixed(2) || '-'}</td>
-                <td class="text-center bg-info-subtle">${averages.sas.toFixed(2) || '-'}</td>
-                <td class="text-center bg-info-subtle">${averages.rs.toFixed(2) || '-'}</td>
-                <td class="text-center bg-info-subtle">${averages.na.toFixed(2) || '-'}</td>
-                <td colspan="2" class="text-center bg-primary-subtle"></td>
-            </tr>`;
+                    <td>${averages.rf.toFixed(2) || '-'}</td>
+                    <td>${averages.sts.toFixed(2) || '-'}</td>
+                    <td>${averages.sas.toFixed(2) || '-'}</td>
+                    <td>${averages.rs.toFixed(2) || '-'}</td>
+                    <td>${averages.na.toFixed(2) || '-'}</td>
+                    <td colspan="2"></td>
+                </tr>`;
 
+                    // Tempelin semua ke tabel
                     $('#data-nilai-siswa').append(tableBody + averageRow + '</tbody>');
                 },
                 error: function(xhr, status, error) {
-                    alert('Terjadi kesalahan saat memuat data nilai: ' + error);
+                    alert('Ups, ada masalah waktu ambil data: ' + error);
                 },
             });
         }
     </script>
+
     <script src="{{ URL::asset('build/libs/dragula/dragula.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/dom-autoscroller/dom-autoscroller.min.js') }}"></script>
 

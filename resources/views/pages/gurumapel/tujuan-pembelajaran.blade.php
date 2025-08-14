@@ -124,72 +124,86 @@
 @endsection
 @section('script-bottom')
     <script>
+        // Nama ID tabel yang digunakan
         const datatable = 'tujuanpembelajaran-table';
 
         $(document).ready(function() {
+            // Aktifkan DataTable pada tabel yang ada
             var table = $('#tujuanpembelajaran-table').DataTable();
 
-            // Select/Deselect all checkboxes
+            // ===============================
+            // Fungsi: Pilih / batal pilih semua checkbox
+            // ===============================
             $('#checkAll').on('click', function() {
+                // Ubah semua checkbox anak sesuai checkbox utama
                 $('.chk-child').prop('checked', this.checked);
                 toggleDeleteButton();
             });
 
-            // Check/uncheck individual checkboxes and toggle delete button
+            // ===============================
+            // Fungsi: Periksa jika semua checkbox anak dipilih
+            // ===============================
             $(document).on('click', '.chk-child', function() {
                 if ($('.chk-child:checked').length === $('.chk-child').length) {
-                    $('#checkAll').prop('checked', true);
+                    $('#checkAll').prop('checked', true); // Centang checkbox utama
                 } else {
-                    $('#checkAll').prop('checked', false);
+                    $('#checkAll').prop('checked', false); // Hilangkan centang
                 }
                 toggleDeleteButton();
             });
 
-            // Toggle delete button based on selection
+            // ===============================
+            // Fungsi: Menampilkan / menyembunyikan tombol hapus
+            // ===============================
             function toggleDeleteButton() {
                 if ($('.chk-child:checked').length > 0) {
-                    $('#deleteSelected').show();
+                    $('#deleteSelected').show(); // Munculkan tombol
                 } else {
-                    $('#deleteSelected').hide();
+                    $('#deleteSelected').hide(); // Sembunyikan tombol
                 }
             }
 
-            // Handle delete button click
+            // ===============================
+            // Fungsi: Saat tombol hapus diklik
+            // ===============================
             $('#deleteSelected').on('click', function() {
                 var selectedIds = [];
+
+                // Ambil semua ID yang dicentang
                 $('.chk-child:checked').each(function() {
                     selectedIds.push($(this).val());
                 });
 
                 if (selectedIds.length > 0) {
+                    // Munculkan popup konfirmasi hapus
                     Swal.fire({
                         title: 'Apa Anda yakin?',
-                        text: "Anda tidak akan dapat mengembalikan ini!",
+                        text: "Data yang dihapus tidak bisa dikembalikan!",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!'
+                        confirmButtonText: 'Ya, hapus!'
                     }).then((result) => {
                         if (result.isConfirmed) {
+                            // Kirim request hapus ke server
                             $.ajax({
-                                url: "{{ route('gurumapel.adminguru.hapustujuanpembelajaran') }}", // Sesuaikan route
+                                url: "{{ route('gurumapel.adminguru.hapustujuanpembelajaran') }}",
                                 type: 'POST',
                                 data: {
                                     _token: '{{ csrf_token() }}',
                                     ids: selectedIds
                                 },
                                 success: function(response) {
-                                    showToast('success',
-                                        'Tujuan Pembelajaran berhasil dihapus!');
-                                    table.ajax.reload(); // Reload DataTables
-                                    // Reset semua checkbox dan hide tombol delete
+                                    showToast('success', 'Data berhasil dihapus!');
+                                    table.ajax.reload(); // Perbarui tabel
+
+                                    // Reset checkbox
                                     $('.chk-child').prop('checked', false);
                                     $('#checkAll').prop('checked', false);
-                                    toggleDeleteButton
-                                        (); // Update tampilan tombol delete
+                                    toggleDeleteButton();
                                 },
-                                error: function(xhr) {
+                                error: function() {
                                     showToast('error',
                                         'Terjadi kesalahan saat menghapus data!');
                                 }
@@ -199,6 +213,9 @@
                 }
             });
 
+            // ===============================
+            // Fungsi: Saat pilihan kode_cp atau personal_id berubah
+            // ===============================
             $('#kode_cp, #personal_id').on('change', function() {
                 var selectedOption = $('#kode_cp').find(':selected');
                 var kelMapel = selectedOption.data('kel-mapel');
@@ -207,14 +224,15 @@
                 var kodeCp = selectedOption.val();
                 var personalId = $('#personal_id').val();
 
-                // Set kel_mapel, jml_materi, dan tingkat
+                // Isi input tersembunyi
                 $('#kel_mapel').val(kelMapel || '');
                 $('#jml_materi').val(jmlMateri || '');
                 $('#tingkat').val(tingkat || '');
 
-                updateSemesterValue();
+                updateSemesterValue(); // Hitung semester
 
                 if (selectedOption) {
+                    // Cek apakah kode_cp sudah ada di database
                     $.ajax({
                         url: '/gurumapel/adminguru/checktujuanpembelajaran',
                         method: 'GET',
@@ -224,9 +242,10 @@
                         },
                         success: function(response) {
                             if (response.exists) {
-                                // Tampilkan notifikasi jika kode_cp sudah ada
+                                // Kalau sudah ada, beri peringatan
                                 showToast('warning', response.message);
-                                // Reset semua input terkait
+
+                                // Kosongkan form
                                 $('#kode_cp').val('');
                                 $('#kel_mapel').val('');
                                 $('#jml_materi').val('');
@@ -238,40 +257,37 @@
                                 $('#judul-tp').hide();
                                 $('#button-simpan').hide();
                             } else {
-                                // Generate input materi berdasarkan jumlah materi
+                                // Kalau belum ada → buat input sesuai jumlah materi
                                 if (jmlMateri) {
                                     $('#ngisi_tp').empty();
 
                                     for (var i = 1; i <= jmlMateri; i++) {
                                         var rowHtml = `
-                                            <div class="row mt-3">
-                                                <div class="col-md-3">
-                                                    <input type="text" name="tp_kode[]" id="tp_kode_${i}" value="${kodeCp}-${i}" class="form-control" readonly>
-                                                    <select class="form-select mt-2" name="tp_no[]">
-                                                        <option value="${i}" selected>${i}</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <textarea class="form-control tp_isi" name="tp_isi[]" id="tp_isi_${i}" rows="3"></textarea>
-                                                    <small id="tp_isi_word_count_${i}" class="text-primary fw-bold text-muted">0/25 kata</small>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <input type="text" name="tp_desk_tinggi[]" id="tp_desk_tinggi_${i}" value="Peserta didik mampu" class="form-control" readonly>
-                                                    <input type="text" name="tp_desk_rendah[]" id="tp_desk_rendah_${i}" value="Peserta didik kurang mampu" class="form-control" readonly>
-                                                </div>
-                                            </div>`;
+                                        <div class="row mt-3">
+                                            <div class="col-md-3">
+                                                <input type="text" name="tp_kode[]" id="tp_kode_${i}" value="${kodeCp}-${i}" class="form-control" readonly>
+                                                <select class="form-select mt-2" name="tp_no[]">
+                                                    <option value="${i}" selected>${i}</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <textarea class="form-control tp_isi" name="tp_isi[]" id="tp_isi_${i}" rows="3"></textarea>
+                                                <small id="tp_isi_word_count_${i}" class="text-primary fw-bold text-muted">0/25 kata</small>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="text" name="tp_desk_tinggi[]" id="tp_desk_tinggi_${i}" value="Peserta didik mampu" class="form-control" readonly>
+                                                <input type="text" name="tp_desk_rendah[]" id="tp_desk_rendah_${i}" value="Peserta didik kurang mampu" class="form-control" readonly>
+                                            </div>
+                                        </div>`;
                                         $('#ngisi_tp').append(rowHtml);
                                     }
 
-                                    // Validasi jumlah kata
+                                    // Hitung jumlah kata di setiap textarea
                                     $('#ngisi_tp').on('input', '.tp_isi', function() {
-                                        const maxWords = 25; // Batas jumlah kata
+                                        const maxWords = 25;
                                         const textArea = $(this);
-                                        const wordCountDisplay = textArea.next(
-                                            'small'
-                                        ); // Elemen untuk menampilkan jumlah kata
+                                        const wordCountDisplay = textArea.next('small');
 
-                                        // Hitung jumlah kata
                                         const words = textArea.val().trim().split(/\s+/)
                                             .filter(word => word.length > 0);
                                         const wordCount = words.length;
@@ -280,14 +296,12 @@
                                             `${wordCount}/${maxWords} kata`);
 
                                         if (wordCount > maxWords) {
-                                            // Jika melebihi batas, ubah teks menjadi merah dan tebal
                                             wordCountDisplay.removeClass('text-muted')
                                                 .addClass('text-danger fw-bold');
                                             showToast('warning',
-                                                `Jumlah kata sudah melebihi batas maksimal ${maxWords} kata!`
+                                                `Jumlah kata sudah melebihi ${maxWords} kata!`
                                             );
                                         } else {
-                                            // Jika tidak, kembalikan ke normal
                                             wordCountDisplay.removeClass(
                                                 'text-danger fw-bold').addClass(
                                                 'text-muted');
@@ -297,7 +311,7 @@
                                     $('#ngisi_tp').empty();
                                 }
 
-                                // Fetch isi_cp dan kode_rombel
+                                // Ambil isi_cp, kode_rombel, dan kode_mapel dari server
                                 if (kodeCp) {
                                     var requestIsiCp = $.ajax({
                                         url: '/gurumapel/adminguru/getisicp',
@@ -331,25 +345,22 @@
                                             $('#isi_cp').val(responseIsiCp[0]?.isi_cp ||
                                                 '');
                                             $('#element_cp').val(responseIsiCp[0]
-                                                ?.element || ''); // Tambahkan element data
+                                                ?.element || '');
 
                                             var kodeRombelArray = responseKodeRombel[0]
                                                 ?.kode_rombel || [];
                                             $('#selected_rombel_ids').val(kodeRombelArray
-                                                .join(',')
-                                            ); // Simpan rombel ID sebagai koma
+                                                .join(','));
 
                                             var kodeMapelArray = responseKodeMapel[0]
                                                 ?.kel_mapel || [];
-                                            $('#kel_mapel').val(kodeMapelArray.join(
-                                                ',')); // Simpan Mapel ID sebagai koma
+                                            $('#kel_mapel').val(kodeMapelArray.join(','));
                                         });
 
                                     $('#tampil_cp').show();
                                     $('#judul-tp').show();
                                     $('#button-simpan').show();
                                 } else {
-                                    // Sembunyikan elemen jika kode_cp tidak dipilih
                                     $('#tampil_cp').hide();
                                     $('#judul-tp').hide();
                                     $('#button-simpan').hide();
@@ -357,14 +368,15 @@
                             }
                         },
                         error: function() {
-                            showToast('error',
-                                'Terjadi kesalahan saat memeriksa data. Silakan coba lagi.');
+                            showToast('error', 'Terjadi kesalahan saat memeriksa data.');
                         }
                     });
                 }
             });
 
-
+            // ===============================
+            // Fungsi: Saat form materi diajukan
+            // ===============================
             $('#form-tp-ajar').on('submit', function(e) {
                 e.preventDefault();
 
@@ -382,13 +394,15 @@
                     });
                 }
 
-                // Save materi data as JSON string
+                // Simpan data sebagai JSON
                 $('#selected_tp_data').val(JSON.stringify(materiData));
 
-                // Submit the form
                 this.submit();
             });
 
+            // ===============================
+            // Fungsi: Hitung semester otomatis
+            // ===============================
             function updateSemesterValue() {
                 var ganjilgenap = $('#ganjilgenap').val();
                 var tingkat = $('#tingkat').val();
@@ -404,10 +418,11 @@
                 $('#semester').val(angkatsemester);
             }
 
-            // Bersihkan tabel siswa ketika modal ditutup
+            // ===============================
+            // Fungsi: Reset modal ketika ditutup
+            // ===============================
             $('#buatMateriAjar').on('hidden.bs.modal', function() {
                 $('#kode_cp').val('');
-                // Reset semua input terkait
                 $('#kel_mapel').val('');
                 $('#jml_materi').val('');
                 $('#tingkat').val('');
@@ -418,48 +433,50 @@
                 $('#judul-tp').hide();
             });
 
+            // ===============================
+            // Fungsi: Mode edit TP
+            // ===============================
             $(document).on('click', '.edit-tp-button', function() {
-                var targetTextarea = $(this).data('target'); // Ambil ID dari atribut data-target
-                $(targetTextarea).show(); // Tampilkan textarea
+                var targetTextarea = $(this).data('target');
+                $(targetTextarea).show();
 
-                // Ubah tombol menjadi submit
-                $(this).hide(); // Sembunyikan tombol Edit
-                $(this).closest('form').find('button[type="submit"]').show(); // Tampilkan tombol Submit
+                $(this).hide();
+                $(this).closest('form').find('button[type="submit"]').show();
             });
 
+            // ===============================
+            // Fungsi: Simpan hasil edit TP lewat AJAX
+            // ===============================
             $(document).on('submit', '.update-tp-form', function(e) {
-                e.preventDefault(); // Cegah reload halaman
+                e.preventDefault();
 
                 var form = $(this);
-                var id = form.data('id'); // Ambil ID dari atribut data-id
-                var url = `/gurumapel/adminguru/updatetujuanpembelajaran/${id}`; // URL sesuai route
-                var data = form.serialize(); // Serialisasi data form
+                var id = form.data('id');
+                var url = `/gurumapel/adminguru/updatetujuanpembelajaran/${id}`;
+                var data = form.serialize();
 
                 $.ajax({
                     url: url,
-                    type: 'POST', // Gunakan POST meskipun method disimulasikan sebagai PUT
+                    type: 'POST',
                     data: data,
                     success: function(response) {
-                        // Tampilkan notifikasi sukses (opsional)
                         showToast('success', 'Data berhasil diperbarui!');
-
                         $('#tujuanpembelajaran-table').DataTable().ajax.reload(null, false);
 
-                        // Sembunyikan textarea dan kembalikan tombol Edit
                         form.find('.edit-tp-textarea').hide();
                         form.find('.submit-tp-button').hide();
                         form.find('.edit-tp-button').show();
                     },
                     error: function(xhr) {
-                        // Tampilkan pesan error
                         showToast('error', 'Terjadi kesalahan: ' + xhr.responseText);
                     }
                 });
             });
 
+            // Event tambahan untuk DataTable
             handleDataTableEvents(datatable);
-            handleAction(datatable)
-            handleDelete(datatable)
+            handleAction(datatable);
+            handleDelete(datatable);
         });
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
