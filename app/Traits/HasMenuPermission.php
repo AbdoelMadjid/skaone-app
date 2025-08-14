@@ -7,21 +7,32 @@ use App\Models\Permission;
 
 trait HasMenuPermission
 {
-    public function attachMenupermission(Menu $menu, array | null $permissions, array | null $roles)
+    public function attachMenupermission(Menu $menu, array|null $permissions, array|null $roles)
     {
-        /**
-         * @var Permission $permission
-         */
-
         if (!is_array($permissions)) {
             $permissions = ['create', 'read', 'update', 'delete'];
-        };
+        }
 
         foreach ($permissions as $item) {
-            $permission = Permission::create(['name' => $item . " {$menu->url}"]);
-            $permission->menus()->attach($menu);
+            $permission = Permission::firstOrCreate(
+                [
+                    'name'       => $item . " {$menu->url}",
+                    'guard_name' => 'web'
+                ]
+            );
+
+            // Pastikan menu terhubung
+            if (!$permission->menus->contains($menu->id)) {
+                $permission->menus()->attach($menu);
+            }
+
+            // Pastikan role terhubung
             if ($roles) {
-                $permission->assignRole($roles);
+                foreach ((array)$roles as $role) {
+                    if (!$permission->roles->contains($role)) {
+                        $permission->assignRole($role);
+                    }
+                }
             }
         }
     }
