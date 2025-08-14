@@ -156,6 +156,7 @@ class User extends Authenticatable
             'kaprakerintkj' => 'Panitia Prakerin TKJ',
             'guruprakerin' => 'Guru Pembimbing PKL',
             'siswaprakerin' => 'Siswa Peserta PKL',
+            'guruwali' => 'Guru Wali',
         ];
 
         // Mendapatkan semua nama role pengguna

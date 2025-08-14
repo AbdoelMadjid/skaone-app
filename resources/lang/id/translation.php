@@ -391,6 +391,9 @@ return [
     "cek-remedial" => "Cek Remedial",
     "arsip-walas" => "Arsip Wali Kelas",
 
+    "guruwali" => "Guru Wali",
+    "guru-wali" => "Guru Wali",
+    "laporan-perkembangan" => "Laporan Perkembangan",
 
     // manajemen sekolah
     'MANAJEMEN SEKOLAH' => 'MANAJEMEN SEKOLAH',

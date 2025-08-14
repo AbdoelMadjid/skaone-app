@@ -39,7 +39,7 @@ if (!function_exists('getRoleName')) {
             'kaprakerintkj' => 'Panitia Prakerin TKJ',
             'guruprakerin' => 'Guru Pembimbing PKL',
             'siswaprakerin' => 'Siswa Peserta PKL',
-
+            'guruwali' => 'Guru Wali',
         ];
 
         if ($user && $user->roles->isNotEmpty()) {
