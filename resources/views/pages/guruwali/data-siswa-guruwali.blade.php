@@ -34,6 +34,31 @@
     <script>
         const datatable = 'datasiswaguruwali-table';
 
+        $('#datasiswaguruwali-table').on('draw.dt', function() {
+            var api = $('#datasiswaguruwali-table').DataTable();
+            var lastGuru = null;
+            var no = 1;
+
+            api.rows({
+                page: 'current'
+            }).every(function() {
+                var $row = $(this.node());
+                var cellNo = $row.find('td').eq(0); // No
+                var cellTahun = $row.find('td').eq(1); // Tahunajaran
+                var cellGuru = $row.find('td').eq(2); // Nama Guru
+
+                if (lastGuru === cellGuru.text()) {
+                    cellNo.text('');
+                    cellTahun.text('');
+                    cellGuru.text('');
+                } else {
+                    cellNo.text(no++);
+                    lastGuru = cellGuru.text();
+                }
+            });
+        });
+
+
         handleDataTableEvents(datatable);
         handleAction(datatable, function(res) {
             select2Init();

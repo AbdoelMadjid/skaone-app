@@ -393,7 +393,7 @@ return [
 
     "guruwali" => "Guru Wali",
     "guru-wali" => "Guru Wali",
-    "data-siswa-guruwali" => "Data Siswa",
+    "data-siswa-guruwali" => "Data Siswa Guru Wali",
     "laporan-guruwali" => "Laporan",
     "informasi-guruwali" => "Informasi",
 

@@ -57,6 +57,7 @@ class DataSiswaGuruWaliController extends Controller
             ->orderBy('pd.nama_lengkap')
             ->get([
                 'peserta_didik_rombels.nis',
+                'pd.jenis_kelamin',
                 'pd.nama_lengkap',
                 'peserta_didik_rombels.rombel_nama',
                 'kk.nama_kk'
@@ -65,7 +66,7 @@ class DataSiswaGuruWaliController extends Controller
             ->map(function ($group) {
                 return $group->mapWithKeys(function ($item) {
                     return [
-                        $item->nis => "{$item->nis} - {$item->nama_lengkap} ({$item->rombel_nama})"
+                        $item->nis => "{$item->nis} - {$item->nama_lengkap} ({$item->rombel_nama}) - {$item->jenis_kelamin}"
                     ];
                 });
             })
@@ -131,9 +132,11 @@ class DataSiswaGuruWaliController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(GuruWaliSiswa $data_siswa_guruwali)
     {
-        //
+        $data_siswa_guruwali->delete();
+
+        return responseSuccessDelete();
     }
 
     public function getPesertaDidik(Request $request)

@@ -3,8 +3,10 @@
 namespace App\DataTables\GuruWali;
 
 use App\Models\GuruWali\GuruWaliSiswa;
+use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -24,12 +26,69 @@ class DataSiswaGuruWaliDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addColumn('namaguru', function ($row) {
+                return trim($row->gelardepan . ' ' . $row->namalengkap . ', ' . $row->gelarbelakang, ' ,');
+            })
+            ->addColumn('pesertadidik', function ($row) {
+                $pesertaDidik = DB::table('peserta_didiks')
+                    ->where('nis', $row->nis)
+                    ->select('nama_lengkap', 'jenis_kelamin') // Ambil semua field yang diperlukan
+                    ->first();
+
+                if ($pesertaDidik->jenis_kelamin == "Perempuan") {
+                    $jenis_kelaminbadge = "<i class='ri-women-line text-danger'></i>";
+                } elseif ($pesertaDidik->jenis_kelamin == "Laki-laki") {
+                    $jenis_kelaminbadge = "<i class='ri-men-line text-info'></i>";
+                }
+
+                if ($pesertaDidik) {
+                    return "[" . $row->nis . "] " . $pesertaDidik->nama_lengkap . " " . $jenis_kelaminbadge;
+                }
+
+                return $row->nis . '<em>Data tidak ditemukan</em>';
+            })
+            ->addColumn('tingkat_10', function ($row) {
+                $data = PesertaDidikRombel::where('nis', $row->nis)
+                    ->where('rombel_tingkat', 10)
+                    ->first();
+
+                if ($data) {
+                    return $data->tahun_ajaran . "<br><span class='badge bg-info'>" . $data->rombel_nama . "</span>";
+                }
+
+                return '-';
+            })
+            ->addColumn('tingkat_11', function ($row) {
+                $data = PesertaDidikRombel::where('nis', $row->nis)
+                    ->where('rombel_tingkat', 11)
+                    ->first();
+
+                if ($data) {
+                    return $data->tahun_ajaran . "<br><span class='badge bg-warning'>" . $data->rombel_nama . "</span>";
+                }
+
+                return '-';
+            })
+            ->addColumn('tingkat_12', function ($row) {
+                $data = PesertaDidikRombel::where('nis', $row->nis)
+                    ->where('rombel_tingkat', 12)
+                    ->first();
+
+                if ($data) {
+                    return $data->tahun_ajaran . "<br><span class='badge bg-danger'>" . $data->rombel_nama . "</span>";
+                }
+
+                return '-';
+            })
             ->addColumn('action', function ($row) {
                 // Menggunakan basicActions untuk menghasilkan action buttons
                 $actions = $this->basicActions($row);
+                unset($actions['Detail']);
+                unset($actions['Edit']);
                 return view('action', compact('actions'));
             })
-            ->addIndexColumn();
+            ->addIndexColumn()
+            ->rawColumns(['tingkat_10', 'tingkat_11', 'tingkat_12', 'pesertadidik', 'action']);
     }
 
     /**
@@ -37,7 +96,10 @@ class DataSiswaGuruWaliDataTable extends DataTable
      */
     public function query(GuruWaliSiswa $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()
+            ->join('personil_sekolahs', 'personil_sekolahs.id_personil', '=', 'guru_wali_siswas.id_personil')
+            ->select('guru_wali_siswas.*', 'personil_sekolahs.namalengkap', 'personil_sekolahs.gelardepan', 'personil_sekolahs.gelarbelakang')
+            ->orderBy('personil_sekolahs.namalengkap', 'asc');
     }
 
     /**
@@ -56,8 +118,8 @@ class DataSiswaGuruWaliDataTable extends DataTable
                 //'order' => [[6, 'asc'], [4, 'asc'], [2, 'asc']],
                 'lengthChange' => false,
                 'searching' => false,
-                'pageLength' => 100,
-                'paging' => true,
+                'pageLength' => 15,
+                'paging' => false,
                 'scrollCollapse' => false,
                 'scrollY' => "calc(100vh - 351px)",
             ]);
@@ -71,8 +133,11 @@ class DataSiswaGuruWaliDataTable extends DataTable
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('tahunajaran')->addClass('text-center'),
-            Column::make('id_personil')->title('Nama Guru'),
-            Column::make('nis')->title('Nama Siswa'),
+            Column::make('namaguru')->title('Nama Guru'),
+            Column::make('pesertadidik')->title('Nama Siswa'),
+            Column::make('tingkat_10'),
+            Column::make('tingkat_11'),
+            Column::make('tingkat_12'),
             Column::make('status')->title('Status'),
             Column::computed('action')
                 ->exportable(false)
