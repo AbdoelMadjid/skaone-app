@@ -26,6 +26,8 @@ class ReferensiDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($row) {
                 $actions = $this->basicActions($row);
+                unset($actions['Detail']);
+                unset($actions['Delete']);
                 return view('action', compact('actions'));
             })
             ->addIndexColumn();
@@ -36,7 +38,7 @@ class ReferensiDataTable extends DataTable
      */
     public function query(Referensi $model): QueryBuilder
     {
-        $query = $model->newQuery()->orderBy('id', 'desc');
+        $query = $model->newQuery()->orderBy('jenis', 'asc');
 
         if (request()->has('jenis') && request()->jenis !== '') {
             $query->where('jenis', request()->jenis);
@@ -61,7 +63,7 @@ class ReferensiDataTable extends DataTable
                 //'order' => [[6, 'asc'], [4, 'asc'], [2, 'asc']],
                 'lengthChange' => false,
                 'searching' => false,
-                'pageLength' => 25,
+                'pageLength' => 100,
                 'paging' => true,
                 'scrollCollapse' => false,
                 'scrollY' => "calc(100vh - 404px)",

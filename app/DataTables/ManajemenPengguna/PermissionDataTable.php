@@ -26,6 +26,8 @@ class PermissionDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($row) {
                 $actions = $this->basicActions($row);
+                unset($actions['Detail']);
+                unset($actions['Delete']);
                 return view('action', compact('actions'));
             })
             ->addIndexColumn();

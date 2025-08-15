@@ -39,7 +39,7 @@ class RoleDataTable extends DataTable
     public function query(Role $model): QueryBuilder | Builder
     {
         $model = $model->withTrashed();
-        return $model->newQuery();
+        return $model->newQuery()->orderBy('name', 'asc');
     }
 
     /**

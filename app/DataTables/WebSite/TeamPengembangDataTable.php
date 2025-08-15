@@ -58,7 +58,7 @@ class TeamPengembangDataTable extends DataTable
      */
     public function query(TeamPengembang $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->orderBy('namalengkap', 'asc');
     }
 
     /**

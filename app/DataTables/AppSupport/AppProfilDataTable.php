@@ -26,6 +26,8 @@ class AppProfilDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($row) {
                 $actions = $this->basicActions($row);
+                unset($actions['Detail']);
+                unset($actions['Delete']);
                 return view('action', compact('actions'));
             })
             ->addColumn('app_icon', function ($row) {

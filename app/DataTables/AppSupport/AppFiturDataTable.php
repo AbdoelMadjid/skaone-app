@@ -47,6 +47,8 @@ class AppFiturDataTable extends DataTable
             })
             ->addColumn('action', function ($row) {
                 $actions = $this->basicActions($row);
+                unset($actions['Detail']);
+                unset($actions['Delete']);
                 return view('action', compact('actions'));
             })
             ->addIndexColumn()
@@ -58,7 +60,7 @@ class AppFiturDataTable extends DataTable
      */
     public function query(AppFitur $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->orderBy('nama_fitur', 'asc');
     }
 
     /**
