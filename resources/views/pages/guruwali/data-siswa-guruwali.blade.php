@@ -12,19 +12,31 @@
         @endslot
     @endcomponent
     <div class="card d-lg-flex gap-1 mx-n3 mt-n3 p-1 mb-2">
-        <div class="card-header">
-            <div class="d-flex align-items-center">
-                <x-heading-title>@yield('title')</x-heading-title>
-                <div class="flex-shrink-0">
-                    <x-btn-tambah dinamisBtn="true" can="create guruwali/data-siswa-guruwali"
-                        route="guruwali.data-siswa-guruwali.create" />
+        @if (auth()->check() &&
+                auth()->user()->hasAnyRole(['guruwali']))
+            <div class="card-header">
+                <div class="d-flex align-items-center">
+                    <x-heading-title>@yield('title')</x-heading-title>
                 </div>
             </div>
-        </div>
-        <div class="card-body p-1">
-            {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
-        </div>
+            <div class="card-body p-1">
+                ini halaman guru wali
+            </div>
+        @else
+            <div class="card-header">
+                <div class="d-flex align-items-center">
+                    <x-heading-title>@yield('title')</x-heading-title>
+                    <div class="flex-shrink-0">
+                        <x-btn-tambah dinamisBtn="true" can="create guruwali/data-siswa-guruwali"
+                            route="guruwali.data-siswa-guruwali.create" />
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-1">
+                {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
+            </div>
     </div>
+    @endif
 @endsection
 @section('script')
     <script src="{{ URL::asset('build/libs/multi.js/multi.min.js') }}"></script>
