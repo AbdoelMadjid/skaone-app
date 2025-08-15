@@ -17,5 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'guruwali', 'as' => 'guruwali.'], function () {
         Route::resource('data-siswa-guruwali', DataSiswaGuruWaliController::class);
+        Route::get('/get-peserta-didik', [DataSiswaGuruWaliController::class, 'getPesertaDidik'])
+            ->name('get-peserta-didik');
     });
 });

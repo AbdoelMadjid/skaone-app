@@ -2,6 +2,7 @@
 
 namespace App\Models\GuruWali;
 
+use App\Models\ManajemenSekolah\PesertaDidik;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,4 +17,9 @@ class GuruWaliSiswa extends Model
         'nis',
         'status'
     ];
+
+    public function siswa()
+    {
+        return $this->belongsTo(PesertaDidik::class, 'nis', 'nis');
+    }
 }

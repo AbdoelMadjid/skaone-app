@@ -3,7 +3,7 @@
     @lang('translation.data-siswa-guruwali')
 @endsection
 @section('css')
-    {{--  --}}
+    <link href="{{ URL::asset('build/libs/multi.js/multi.min.css') }}" rel="stylesheet">
 @endsection
 @section('content')
     @component('layouts.breadcrumb')
@@ -27,6 +27,7 @@
     </div>
 @endsection
 @section('script')
+    <script src="{{ URL::asset('build/libs/multi.js/multi.min.js') }}"></script>
     {!! $dataTable->scripts() !!}
 @endsection
 @section('script-bottom')
@@ -34,7 +35,9 @@
         const datatable = 'datasiswaguruwali-table';
 
         handleDataTableEvents(datatable);
-        handleAction(datatable)
+        handleAction(datatable, function(res) {
+            select2Init();
+        })
         handleDelete(datatable)
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>

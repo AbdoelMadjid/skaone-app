@@ -2,6 +2,8 @@
 
 namespace App\Models\ManajemenSekolah;
 
+use App\Models\GuruWali\GuruWaliSiswa;
+use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -48,5 +50,15 @@ class PesertaDidik extends Model
     public function ortus()
     {
         return $this->hasOne(PesertaDidikOrtu::class, 'nis', 'nis');
+    }
+
+    public function rombel()
+    {
+        return $this->hasOne(PesertaDidikRombel::class, 'nis', 'nis');
+    }
+
+    public function guruWali()
+    {
+        return $this->hasOne(GuruWaliSiswa::class, 'nis', 'nis');
     }
 }
