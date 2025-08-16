@@ -157,7 +157,7 @@ class SkaOneWelcomeController extends Controller
             'personil_sekolahs.gelarbelakang'
         )
             ->join('personil_sekolahs', 'personil_sekolahs.id_personil', '=', 'photo_personils.id_personil')
-            ->orderBy('photo_personils.no_personil')
+            ->orderByRaw('CAST(photo_personils.no_personil AS UNSIGNED)')
             ->get();
 
 
