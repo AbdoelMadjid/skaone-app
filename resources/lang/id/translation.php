@@ -287,7 +287,7 @@ return [
     'polling' => 'Polling',
     'question' => 'Pertanyaan polling',
     'photo-personil' => 'Photo Personil',
-    'profil-jurusan' => 'Profil Konsentrasi Keahlian',
+    'profil-jurusan' => 'Profil Jurusan',
     'logo-jurusan' => 'Logo Jurusan',
 
 
