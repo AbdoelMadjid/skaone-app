@@ -7,8 +7,8 @@
             <x-form.select name="jabatan" :options="$jabatanKaprog" value="{{ old('jabatan', $data->jabatan) }}" label="Jabatan" />
             <x-form.select name="id_kk" :options="$kompetensiKeahlian" value="{{ old('id_kk', $data->id_kk) }}"
                 label="Kompetensi Keahlian" />
-            <x-form.select name="namalengkap" :options="$namaKaprodi" value="{{ old('namalengkap', $data->namalengkap) }}"
-                label="Nama Lengkap" id="namalengkapkaprog" />
+            <x-form.select class="select2 form-select form-select-sm" name="id_personil" label="Personil Sekolah"
+                :options="$personilOption" value="{{ $data->id_personil }}" id="id_personil" />
             <x-form.select name="mulai_tahun" :options="$tampilTahun" value="{{ old('mulai_tahun', $data->mulai_tahun) }}"
                 label="Mulai Tahun" />
             <div class="form-group mb-2">
@@ -28,7 +28,7 @@
 </x-form.modal>
 <script>
     $('#modal_action').on('shown.bs.modal', function() {
-        $('#namalengkapkaprog').select2({
+        $('#id_personil').select2({
             dropdownParent: $('#modal_action'),
             width: '100%', // atau 'resolve'
         });

@@ -67,28 +67,29 @@ class SkaOneWelcomeController extends Controller
             $totalSiswaPerKK[$kodeKK] = array_sum(array_column($data, 'jumlah_siswa'));
         }
 
-        $personilData = WelcomeDataPersonil::select(
-            'welcome_data_personil.id',
-            'welcome_data_personil.id_personil',
-            'welcome_data_personil.jenis_group',
-            'welcome_data_personil.group_name',
-            'welcome_data_personil.image',
+        $personilData = PhotoPersonil::select(
+            'photo_personils.id',
+            'photo_personils.no_group',
+            'photo_personils.nama_group',
+            'photo_personils.no_personil',
+            'photo_personils.id_personil',
+            'photo_personils.photo',
             'personil_sekolahs.gelardepan',
             'personil_sekolahs.namalengkap',
             'personil_sekolahs.gelarbelakang'
         )
-            ->join('personil_sekolahs', 'personil_sekolahs.id_personil', '=', 'welcome_data_personil.id_personil')
-            ->whereIn('welcome_data_personil.jenis_group', ['akuntansi', 'bisnisdigital', 'mperkantoran', 'rpl', 'tkj'])
-            ->orderBy('welcome_data_personil.id_personil')
+            ->join('personil_sekolahs', 'personil_sekolahs.id_personil', '=', 'photo_personils.id_personil')
+            ->whereIn('photo_personils.nama_group', ['Akuntansi', 'Bisnis Digital', 'Manajemen Perkantoran', 'Rekayasa Perangkat Lunak', 'Teknik Komputer dan Jaringan'])
+            ->orderByRaw('CAST(photo_personils.no_personil AS UNSIGNED)')
             ->get();
 
-        $groupedData = $personilData->groupBy('jenis_group');
+        $groupedData = $personilData->groupBy('nama_group');
 
-        $personilAkuntansi = $groupedData->get('akuntansi', collect());
-        $personilBisnisDigital = $groupedData->get('bisnisdigital', collect());
-        $personilMPerkantoran = $groupedData->get('mperkantoran', collect());
-        $personilRPL = $groupedData->get('rpl', collect());
-        $personilTKJ = $groupedData->get('tkj', collect());
+        $personilAkuntansi = $groupedData->get('Akuntansi', collect());
+        $personilBisnisDigital = $groupedData->get('Bisnis Digital', collect());
+        $personilMPerkantoran = $groupedData->get('Manajemen Perkantoran', collect());
+        $personilRPL = $groupedData->get('Rekayasa Perangkat Lunak', collect());
+        $personilTKJ = $groupedData->get('Teknik Komputer dan Jaringan', collect());
 
 
         return view(
@@ -119,33 +120,12 @@ class SkaOneWelcomeController extends Controller
 
     public function faculty_and_staff()
     {
-        $groupsPersonil = WelcomeDataPersonil::select('jenis_group', 'group_name')
-            ->groupBy('jenis_group', 'group_name')
-            ->orderBy('jenis_group')
-            ->get();
-
-        $personilData = WelcomeDataPersonil::select(
-            'welcome_data_personil.id',
-            'welcome_data_personil.id_personil',
-            'welcome_data_personil.jenis_group',
-            'welcome_data_personil.group_name',
-            'welcome_data_personil.image',
-            'personil_sekolahs.gelardepan',
-            'personil_sekolahs.namalengkap',
-            'personil_sekolahs.gelarbelakang'
-        )
-            ->join('personil_sekolahs', 'personil_sekolahs.id_personil', '=', 'welcome_data_personil.id_personil')
-            ->orderBy('welcome_data_personil.id_personil')
-            ->get();
-
-
-
-        $groupsPersonil2 = PhotoPersonil::select('no_group', 'nama_group')
+        $groupsPersonil = PhotoPersonil::select('no_group', 'nama_group')
             ->groupBy('no_group', 'nama_group')
             ->orderByRaw('CAST(no_group AS UNSIGNED)')
             ->get();
 
-        $personilData2 = PhotoPersonil::select(
+        $personilData = PhotoPersonil::select(
             'photo_personils.id',
             'photo_personils.no_group',
             'photo_personils.nama_group',
@@ -223,10 +203,8 @@ class SkaOneWelcomeController extends Controller
         return view(
             'skaonewelcome.faculty-and-staff',
             [
-                'groupsPersonil2' => $groupsPersonil2,
                 'groupsPersonil' => $groupsPersonil,
                 'personilData' => $personilData,
-                'personilData2' => $personilData2,
                 'dataPersonil' => $dataPersonil,
                 'totalGuruLakiLaki' => $totalGuruLakiLaki,
                 'totalGuruPerempuan' => $totalGuruPerempuan,

@@ -9,7 +9,7 @@
         </div>
         <div class="col-md-9">
             <x-form.select class="select2 form-select form-select-sm" name="id_personil" label="Personil Sekolah"
-                :options="$personilOption" value="{{ $data->id_dudi }}" id="id_personil" />
+                :options="$personilOption" value="{{ $data->id_personil }}" id="id_personil" />
         </div>
         <div class="col-md-12">
             <select multiple name="nis[]" id="multiselect-optiongroup">

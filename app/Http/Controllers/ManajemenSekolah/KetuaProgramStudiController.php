@@ -36,7 +36,7 @@ class KetuaProgramStudiController extends Controller
         $kompetensiKeahlian = KompetensiKeahlian::pluck('nama_kk', 'idkk');
 
         // Prepare concatenated names for select options
-        $namaKaprodi = PersonilSekolah::where('jenispersonil', 'Guru')
+        $namaKaprodi = PersonilSekolah::where('jenispersonil', 'Guru')->where('aktif', 'Aktif')
             ->get()
             ->mapWithKeys(function ($personil) {
                 $fullName = trim(
@@ -47,9 +47,14 @@ class KetuaProgramStudiController extends Controller
                 return [$fullName => $personil->namalengkap];
             });
 
+        $personilOption = PersonilSekolah::where('jenispersonil', 'Guru')->where('aktif', 'Aktif')->orderBy('namalengkap')
+            ->pluck('namalengkap', 'id_personil')
+            ->toArray();
+
         return view('pages.manajemensekolah.jabatan.ketua-program-studi-form', [
             'data' => new KetuaProgramStudi(),
             'jabatanKaprog' => $jabatanKaprog,
+            'personilOption' => $personilOption,
             'namaKaprodi' => $namaKaprodi,
             'tampilTahun' => $tampilTahun,
             'kompetensiKeahlian' => $kompetensiKeahlian,
@@ -95,9 +100,14 @@ class KetuaProgramStudiController extends Controller
                 return [$fullName => $personil->namalengkap];
             });
 
+        $personilOption = PersonilSekolah::where('jenispersonil', 'Guru')->where('aktif', 'Aktif')->orderBy('namalengkap')
+            ->pluck('namalengkap', 'id_personil')
+            ->toArray();
+
         return view('pages.manajemensekolah.jabatan.ketua-program-studi-form', [
             'data' => $ketuaProgramStudi,
             'jabatanKaprog' => $jabatanKaprog,
+            'personilOption' => $personilOption,
             'namaKaprodi' => $namaKaprodi,
             'tampilTahun' => $tampilTahun,
             'kompetensiKeahlian' => $kompetensiKeahlian,
@@ -131,9 +141,14 @@ class KetuaProgramStudiController extends Controller
                 return [$fullName => $personil->namalengkap];
             });
 
+        $personilOption = PersonilSekolah::where('jenispersonil', 'Guru')->where('aktif', 'Aktif')->orderBy('namalengkap')
+            ->pluck('namalengkap', 'id_personil')
+            ->toArray();
+
         return view('pages.manajemensekolah.jabatan.ketua-program-studi-form', [
             'data' => $ketuaProgramStudi,
             'jabatanKaprog' => $jabatanKaprog,
+            'personilOption' => $personilOption,
             'namaKaprodi' => $namaKaprodi,
             'tampilTahun' => $tampilTahun,
             'kompetensiKeahlian' => $kompetensiKeahlian,

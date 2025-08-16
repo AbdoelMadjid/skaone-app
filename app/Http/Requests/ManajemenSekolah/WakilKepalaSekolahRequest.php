@@ -26,7 +26,7 @@ class WakilKepalaSekolahRequest extends FormRequest
                 'required',
                 'string',
             ],
-            'namalengkap' => [
+            'id_personil' => [
                 'required',
                 'string',
             ],
@@ -47,7 +47,7 @@ class WakilKepalaSekolahRequest extends FormRequest
     {
         return [
             'jabatan.required' => 'Jabatan Wakasek harus di pilih.',
-            'namalengkap.required' => 'Nama Lengkap Wakasek harus dipilih.',
+            'id_personil.required' => 'Nama Lengkap Wakasek harus dipilih.',
             'mulai_tahun.required' => 'Mulai tahun harus dipilih.',
             'akhir_tahun.required' => 'Selesai tahun harus dipilih.',
         ];

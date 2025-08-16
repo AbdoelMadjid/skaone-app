@@ -111,7 +111,7 @@
                     <ul class="nav flex-column u-nav-v1-1 u-nav-primary" role="tablist"
                         data-target="nav-1-1-accordion-primary-ver" data-tabs-mobile-type="accordion"
                         data-btn-classes="btn btn-md btn-block rounded-0 u-btn-outline-primary g-mb-20">
-                        @foreach ($groupsPersonil2 as $index => $group)
+                        @foreach ($groupsPersonil as $index => $group)
                             <li class="nav-item">
                                 <a class="nav-link {{ $index == 0 ? 'active' : '' }}" data-toggle="tab"
                                     href="#tab-{{ str_pad($group->no_group, 2, '0', STR_PAD_LEFT) }}" role="tab">
@@ -126,13 +126,13 @@
                 <!-- Tab Content -->
                 <div class="col-md-7">
                     <div id="nav-1-1-accordion-primary-ver" class="tab-content">
-                        @foreach ($groupsPersonil2 as $index => $group)
+                        @foreach ($groupsPersonil as $index => $group)
                             <div class="tab-pane fade {{ $index == 0 ? 'show active' : '' }}"
                                 id="tab-{{ str_pad($group->no_group, 2, '0', STR_PAD_LEFT) }}" role="tabpanel">
 
                                 <h2>{{ ucfirst($group->nama_group) }}</h2>
                                 <div class="row">
-                                    @foreach ($personilData2->where('no_group', $group->no_group) as $personil)
+                                    @foreach ($personilData->where('no_group', $group->no_group) as $personil)
                                         <div class="col-sm-7 col-lg-4 g-mb-30">
                                             <div
                                                 class="u-shadow-v36 g-brd-around g-brd-7 g-brd-white g-brd-primary--hover rounded g-pos-rel g-transition-0_2">

@@ -130,9 +130,9 @@
                                 <div class="col-sm-7 col-lg-4 g-mb-30">
                                     <div
                                         class="u-shadow-v36 g-brd-around g-brd-7 g-brd-white g-brd-primary--hover rounded g-pos-rel g-transition-0_2">
-                                        @if ($personil->image)
+                                        @if ($personil->photo)
                                             <img class="img-fluid"
-                                                src="{{ URL::asset('images/welcome/personil/' . strtolower($personil->jenis_group) . '/' . strtolower($personil->image)) }}"
+                                                src="{{ URL::asset('images/photo-personil/' . $personil->photo) }}"
                                                 alt="Image Description">
                                         @else
                                             <img class="img-fluid"

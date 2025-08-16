@@ -12,7 +12,7 @@ class KetuaProgramStudi extends Model
     protected $fillable = [
         'jabatan',
         'id_kk',
-        'namalengkap',
+        'id_personil',
         'mulai_tahun',
         'akhir_tahun',
     ];

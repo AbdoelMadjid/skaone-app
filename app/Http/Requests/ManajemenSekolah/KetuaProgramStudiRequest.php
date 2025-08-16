@@ -30,7 +30,7 @@ class KetuaProgramStudiRequest extends FormRequest
                 'required',
                 'string',
             ],
-            'namalengkap' => [
+            'id_personil' => [
                 'required',
                 'string',
             ],
@@ -52,7 +52,7 @@ class KetuaProgramStudiRequest extends FormRequest
         return [
             'jabatan.required' => 'Jenis Jabatan harus di pilih.',
             'id_kk.required' => 'Kompetensi Keahlian harus di pilih.',
-            'namalengkap.required' => 'Nama Lengkap harus dipilih.',
+            'id_personil.required' => 'Nama Lengkap harus dipilih.',
             'mulai_tahun.required' => 'Mulai tahun harus dipilih.',
             'akhir_tahun.required' => 'Selesai tahun harus dipilih.',
         ];

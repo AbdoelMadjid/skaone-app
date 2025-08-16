@@ -5,6 +5,7 @@ namespace App\DataTables\ManajemenSekolah;
 use App\Models\ManajemenSekolah\WakilKepalaSekolah;
 use App\Traits\DatatableHelper;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -24,6 +25,18 @@ class WakilKepalaSekolahDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addColumn('namapersonil', function ($row) {
+                $personilSekolah = DB::table('personil_sekolahs')
+                    ->where('id_personil', $row->id_personil)
+                    ->select('gelardepan', 'namalengkap', 'gelarbelakang') // Ambil semua field yang diperlukan
+                    ->first();
+
+                if ($personilSekolah) {
+                    return $personilSekolah->gelardepan . ' ' . $personilSekolah->namalengkap . ', ' . $personilSekolah->gelarbelakang;
+                }
+
+                return $row->id_personil . '<em>Data tidak ditemukan</em>';
+            })
             ->addColumn('action', function ($row) {
                 $actions = $this->basicActions($row);
                 return view('action', compact('actions'));
@@ -70,7 +83,7 @@ class WakilKepalaSekolahDataTable extends DataTable
         return [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('jabatan')->width(275),
-            Column::make('namalengkap')->title('Nama Lengkap'),
+            Column::make('namapersonil')->title('Nama Lengkap'),
             Column::make('mulai_tahun')->title('Mulai Tahun')->addClass('text-center')->width(100),
             Column::make('akhir_tahun')->title('Selesai Tahun / AKtif')->addClass('text-center')->width(200),
             Column::computed('action')

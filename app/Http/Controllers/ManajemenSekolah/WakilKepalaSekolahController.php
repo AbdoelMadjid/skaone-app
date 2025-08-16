@@ -42,9 +42,15 @@ class WakilKepalaSekolahController extends Controller
                 );
                 return [$fullName => $personil->namalengkap];
             });
+
+        $personilOption = PersonilSekolah::where('jenispersonil', 'Guru')->where('aktif', 'Aktif')->orderBy('namalengkap')
+            ->pluck('namalengkap', 'id_personil')
+            ->toArray();
+
         return view('pages.manajemensekolah.jabatan.wakil-kepala-sekolah-form', [
             'data' => new WakilKepalaSekolah(),
             'jabatanWakasek' => $jabatanWakasek,
+            'personilOption' => $personilOption,
             'namaWakasek' => $namaWakasek,
             'tampilTahun' => $tampilTahun,
             'action' => route('manajemensekolah.timmanajemen.wakil-kepala-sekolah.store')
@@ -85,9 +91,15 @@ class WakilKepalaSekolahController extends Controller
                 );
                 return [$fullName => $personil->namalengkap];
             });
+
+        $personilOption = PersonilSekolah::where('jenispersonil', 'Guru')->where('aktif', 'Aktif')->orderBy('namalengkap')
+            ->pluck('namalengkap', 'id_personil')
+            ->toArray();
+
         return view('pages.manajemensekolah.jabatan.wakil-kepala-sekolah-form', [
             'data' => $wakilKepalaSekolah,
             'jabatanWakasek' => $jabatanWakasek,
+            'personilOption' => $personilOption,
             'namaWakasek' => $namaWakasek,
             'tampilTahun' => $tampilTahun,
         ]);
@@ -116,9 +128,15 @@ class WakilKepalaSekolahController extends Controller
                 );
                 return [$fullName => $personil->namalengkap];
             });
+
+        $personilOption = PersonilSekolah::where('jenispersonil', 'Guru')->where('aktif', 'Aktif')->orderBy('namalengkap')
+            ->pluck('namalengkap', 'id_personil')
+            ->toArray();
+
         return view('pages.manajemensekolah.jabatan.wakil-kepala-sekolah-form', [
             'data' => $wakilKepalaSekolah,
             'jabatanWakasek' => $jabatanWakasek,
+            'personilOption' => $personilOption,
             'namaWakasek' => $namaWakasek,
             'tampilTahun' => $tampilTahun,
             'action' => route('manajemensekolah.timmanajemen.wakil-kepala-sekolah.update', $wakilKepalaSekolah->id)

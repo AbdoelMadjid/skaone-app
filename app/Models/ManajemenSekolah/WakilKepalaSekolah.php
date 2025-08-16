@@ -11,7 +11,7 @@ class WakilKepalaSekolah extends Model
     protected $table = 'wakil_kepala_sekolahs';
     protected $fillable = [
         'jabatan',
-        'namalengkap',
+        'id_personil',
         'mulai_tahun',
         'akhir_tahun',
     ];
