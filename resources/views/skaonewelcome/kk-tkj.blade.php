@@ -18,11 +18,19 @@
                         <h6 class="g-font-size-12 g-font-weight-600">Ketua Kompetensi Keahlian</h6>
                     </div>
                 </header>
-                <img class="img-fluid img-thumbnail g-rounded-10 g-mb-20"
-                    src="{{ URL::asset('images/welcome/personil/tkj/personil_0005.jpg') }}" alt="Image Description">
-                <div class="u-heading-v6-2 text-center text-uppercase g-mb-20">
-                    <h6 class="g-font-size-12">Otong Sunahdi S.T.</h6>
-                </div>
+                @if (isset($tampilKaprodi['421']))
+                    @php $kaprodi = $tampilKaprodi['421']; @endphp
+                    <div class="text-center">
+                        <img class="img-fluid img-thumbnail g-rounded-10 g-mb-20"
+                            src="{{ asset('images/photo-personil/' . $kaprodi->photo) }}"
+                            alt="{{ $kaprodi->namalengkap }}">
+                        <div class="u-heading-v6-2 text-center text-uppercase g-mb-20">
+                            <h6 class="g-font-size-12">
+                                {{ trim($kaprodi->gelardepan . ' ' . $kaprodi->namalengkap . ' ' . $kaprodi->gelarbelakang) }}
+                            </h6>
+                        </div>
+                    </div>
+                @endif
                 <hr class="g-brd-gray-light-v4 g-my-60">
                 <table class="table mt-5">
                     <thead>

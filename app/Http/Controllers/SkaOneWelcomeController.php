@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
+use App\Models\ManajemenSekolah\KetuaProgramStudi;
 use App\Models\ManajemenSekolah\PersonilSekolah;
 use App\Models\ManajemenSekolah\Semester;
 use App\Models\ManajemenSekolah\TahunAjaran;
@@ -92,6 +93,25 @@ class SkaOneWelcomeController extends Controller
         $personilTKJ = $groupedData->get('Teknik Komputer dan Jaringan', collect());
 
 
+        //Tampilkan Wakil Kepala Sekolah
+        $tampilKaprodi = KetuaProgramStudi::select(
+            'ketua_program_studis.id',
+            'ketua_program_studis.jabatan',
+            'ketua_program_studis.id_kk',
+            'ketua_program_studis.id_personil',
+            'photo_personils.photo',
+            'kompetensi_keahlians.nama_kk',
+            'personil_sekolahs.gelardepan',
+            'personil_sekolahs.namalengkap',
+            'personil_sekolahs.gelarbelakang'
+        )
+            ->join('personil_sekolahs', 'personil_sekolahs.id_personil', '=', 'ketua_program_studis.id_personil')
+            ->join('photo_personils', 'photo_personils.id_personil', '=', 'ketua_program_studis.id_personil')
+            ->join('kompetensi_keahlians', 'kompetensi_keahlians.idkk', '=', 'ketua_program_studis.id_kk')
+            ->get()
+            ->keyBy('id_kk'); // jadikan array dengan key kode prodi
+
+
         return view(
             'skaonewelcome.program',
             [
@@ -104,6 +124,7 @@ class SkaOneWelcomeController extends Controller
                 'personilMPerkantoran' => $personilMPerkantoran,
                 'personilRPL' => $personilRPL,
                 'personilTKJ' => $personilTKJ,
+                'tampilKaprodi' => $tampilKaprodi,
             ]
         );
     }
