@@ -38,6 +38,10 @@ class WakilKepalaSekolahRequest extends FormRequest
                 'required',
                 'string',
             ],
+            'motto' => [
+                'required',
+                'string',
+            ],
         ];
     }
     /**
@@ -50,6 +54,7 @@ class WakilKepalaSekolahRequest extends FormRequest
             'id_personil.required' => 'Nama Lengkap Wakasek harus dipilih.',
             'mulai_tahun.required' => 'Mulai tahun harus dipilih.',
             'akhir_tahun.required' => 'Selesai tahun harus dipilih.',
+            'motto.required' => 'Motto harus diisi.',
         ];
     }
 }

@@ -21,6 +21,7 @@
                     </option>
                 </select>
             </div>
+            <x-form.textarea name="motto" id="motto" label="Motto">{{ $data->motto }}</x-form.textarea>
         </div>
     </div>
 </x-form.modal>

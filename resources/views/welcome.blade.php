@@ -282,63 +282,23 @@
         <!-- End Heading -->
 
         <div class="row g-mx-minus-25 g-mb-40">
-            <div class="col-6 col-lg-3 g-px-25 g-mb-50">
-                <!-- Team -->
-                <div class="text-center">
-                    <img class="img-fluid u-shadow-v39 g-brd-around g-brd-10 g-brd-white rounded g-max-width-250 align-self-center mb-5"
-                        src="{{ URL::asset('images/welcome/personil/rpl/personil_0001.jpg') }}" alt="Image Description">
-                    <h4 class="h5 g-font-weight-600 mb-1">Abdul Madjid, S.Pd., M.Pd.</h4>
-                    <span class="d-block g-color-primary">Bidang Akademik/Kurikulum</span>
-                    <hr class="g-brd-gray-light-v4 g-my-15">
-                    <span class="g-color-text g-color-main--hover g-font-size-13">"Merdeka Belajar, Kreatif
-                        Berkarya, Sukses Bersama!"</span>
+            @foreach ($tampilWakasek as $wakasek)
+                <div class="col-12 col-md-6 g-px-25 g-mb-50">
+                    <!-- Team -->
+                    <div class="text-center">
+                        <img class="img-fluid u-shadow-v39 g-brd-around g-brd-10 g-brd-white rounded g-max-width-250 align-self-center mb-5"
+                            src="{{ asset('images/photo-personil/' . $wakasek->photo) }}"
+                            alt="{{ $wakasek->namalengkap }}">
+                        <h4 class="h5 g-font-weight-600 mb-1">
+                            {{ $wakasek->gelardepan }} {{ $wakasek->namalengkap }} {{ $wakasek->gelarbelakang }}
+                        </h4>
+                        <span class="d-block g-color-primary">{{ $wakasek->jabatan }}</span>
+                        <hr class="g-brd-gray-light-v4 g-my-15">
+                        <span class="g-color-text g-color-main--hover g-font-size-13">"{{ $wakasek->motto }}"</span>
+                    </div>
+                    <!-- End Team -->
                 </div>
-                <!-- End Team -->
-            </div>
-
-            <div class="col-6 col-lg-3 g-px-25 g-mb-50">
-                <!-- Team -->
-                <div class="text-center">
-                    <img class="img-fluid u-shadow-v39 g-brd-around g-brd-10 g-brd-white rounded g-max-width-250 align-self-center mb-5"
-                        src="{{ URL::asset('images/welcome/personil/sejarah/personil_0001.jpg') }}"
-                        alt="Image Description">
-                    <h4 class="h5 g-font-weight-600 mb-1">Dana I. Hadiana, S.Pd., M.Pd.</h4>
-                    <span class="d-block g-color-primary">Bidang Kesiswaan</span>
-                    <hr class="g-brd-gray-light-v4 g-my-15">
-                    <span class="g-color-text g-color-main--hover g-font-size-13">"Membimbing dengan
-                        Teladan, Menginspirasi dengan Tindakan!"</span>
-                </div>
-                <!-- End Team -->
-            </div>
-
-            <div class="col-6 col-lg-3 g-px-25 g-mb-50">
-                <!-- Team -->
-                <div class="text-center">
-                    <img class="img-fluid u-shadow-v39 g-brd-around g-brd-10 g-brd-white rounded g-max-width-250 align-self-center mb-5"
-                        src="{{ URL::asset('images/welcome/personil/akuntansi/personil_0003.jpg') }}"
-                        alt="Image Description">
-                    <h4 class="h5 g-font-weight-600 mb-1">Dra. Ebah Habibah, MM.</h4>
-                    <span class="d-block g-color-primary">Bidang Hubungan Masyarakat</span>
-                    <hr class="g-brd-gray-light-v4 g-my-15">
-                    <span class="g-color-text g-color-main--hover g-font-size-13">"Bersama,
-                        Berkomunikasi, dan Berprestasi!"</span>
-                </div>
-                <!-- End Team -->
-            </div>
-
-            <div class="col-6 col-lg-3 g-px-25 g-mb-50">
-                <!-- Team -->
-                <div class="text-center">
-                    <img class="img-fluid u-shadow-v39 g-brd-around g-brd-10 g-brd-white rounded g-max-width-250 align-self-center mb-5"
-                        src="{{ URL::asset('images/welcome/personil/tkj/personil_0002.jpg') }}" alt="Image Description">
-                    <h4 class="h5 g-font-weight-600 mb-1">Aryono, S.T.</h4>
-                    <span class="d-block g-color-primary">Bidang Sarana Prasarana</span>
-                    <hr class="g-brd-gray-light-v4 g-my-15">
-                    <span class="g-color-text g-color-main--hover g-font-size-13">"Mewujudkan Lingkungan Nyaman untuk
-                        Pendidikan Gemilang!"</span>
-                </div>
-                <!-- End Team -->
-            </div>
+            @endforeach
         </div>
     </div>
     <!-- End Team -->

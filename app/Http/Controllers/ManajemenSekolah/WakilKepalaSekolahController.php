@@ -32,16 +32,6 @@ class WakilKepalaSekolahController extends Controller
         }
 
         $jabatanWakasek = Referensi::where('jenis', 'Jabatan Wakasek')->pluck('data', 'data')->toArray();
-        $namaWakasek = PersonilSekolah::where('jenispersonil', 'Guru')
-            ->get()
-            ->mapWithKeys(function ($personil) {
-                $fullName = trim(
-                    $personil->gelardepan . ' ' .
-                        $personil->namalengkap . ' ' .
-                        $personil->gelarbelakang
-                );
-                return [$fullName => $personil->namalengkap];
-            });
 
         $personilOption = PersonilSekolah::where('jenispersonil', 'Guru')->where('aktif', 'Aktif')->orderBy('namalengkap')
             ->pluck('namalengkap', 'id_personil')
@@ -51,7 +41,6 @@ class WakilKepalaSekolahController extends Controller
             'data' => new WakilKepalaSekolah(),
             'jabatanWakasek' => $jabatanWakasek,
             'personilOption' => $personilOption,
-            'namaWakasek' => $namaWakasek,
             'tampilTahun' => $tampilTahun,
             'action' => route('manajemensekolah.timmanajemen.wakil-kepala-sekolah.store')
         ]);
@@ -81,7 +70,7 @@ class WakilKepalaSekolahController extends Controller
         }
 
         $jabatanWakasek = Referensi::where('jenis', 'Jabatan Wakasek')->pluck('data', 'data')->toArray();
-        $namaWakasek = PersonilSekolah::where('jenispersonil', 'Guru')
+        /* $namaWakasek = PersonilSekolah::where('jenispersonil', 'Guru')
             ->get()
             ->mapWithKeys(function ($personil) {
                 $fullName = trim(
@@ -90,7 +79,7 @@ class WakilKepalaSekolahController extends Controller
                         $personil->gelarbelakang
                 );
                 return [$fullName => $personil->namalengkap];
-            });
+            }); */
 
         $personilOption = PersonilSekolah::where('jenispersonil', 'Guru')->where('aktif', 'Aktif')->orderBy('namalengkap')
             ->pluck('namalengkap', 'id_personil')
@@ -100,7 +89,7 @@ class WakilKepalaSekolahController extends Controller
             'data' => $wakilKepalaSekolah,
             'jabatanWakasek' => $jabatanWakasek,
             'personilOption' => $personilOption,
-            'namaWakasek' => $namaWakasek,
+            /*  'namaWakasek' => $namaWakasek, */
             'tampilTahun' => $tampilTahun,
         ]);
     }
@@ -118,16 +107,6 @@ class WakilKepalaSekolahController extends Controller
         }
 
         $jabatanWakasek = Referensi::where('jenis', 'Jabatan Wakasek')->pluck('data', 'data')->toArray();
-        $namaWakasek = PersonilSekolah::where('jenispersonil', 'Guru')
-            ->get()
-            ->mapWithKeys(function ($personil) {
-                $fullName = trim(
-                    $personil->gelardepan . ' ' .
-                        $personil->namalengkap . ' ' .
-                        $personil->gelarbelakang
-                );
-                return [$fullName => $personil->namalengkap];
-            });
 
         $personilOption = PersonilSekolah::where('jenispersonil', 'Guru')->where('aktif', 'Aktif')->orderBy('namalengkap')
             ->pluck('namalengkap', 'id_personil')
@@ -137,7 +116,6 @@ class WakilKepalaSekolahController extends Controller
             'data' => $wakilKepalaSekolah,
             'jabatanWakasek' => $jabatanWakasek,
             'personilOption' => $personilOption,
-            'namaWakasek' => $namaWakasek,
             'tampilTahun' => $tampilTahun,
             'action' => route('manajemensekolah.timmanajemen.wakil-kepala-sekolah.update', $wakilKepalaSekolah->id)
         ]);

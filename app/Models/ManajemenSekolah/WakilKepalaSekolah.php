@@ -14,5 +14,6 @@ class WakilKepalaSekolah extends Model
         'id_personil',
         'mulai_tahun',
         'akhir_tahun',
+        'motto',
     ];
 }

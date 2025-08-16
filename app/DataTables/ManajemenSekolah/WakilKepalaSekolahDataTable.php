@@ -86,6 +86,7 @@ class WakilKepalaSekolahDataTable extends DataTable
             Column::make('namapersonil')->title('Nama Lengkap'),
             Column::make('mulai_tahun')->title('Mulai Tahun')->addClass('text-center')->width(100),
             Column::make('akhir_tahun')->title('Selesai Tahun / AKtif')->addClass('text-center')->width(200),
+            Column::make('motto')->title('Motto'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

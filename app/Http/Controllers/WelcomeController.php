@@ -13,6 +13,7 @@ use App\Models\ManajemenPengguna\LoginRecord;
 use App\Models\ManajemenSekolah\PersonilSekolah;
 use App\Models\ManajemenSekolah\Semester;
 use App\Models\ManajemenSekolah\TahunAjaran;
+use App\Models\ManajemenSekolah\WakilKepalaSekolah;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -104,9 +105,6 @@ class WelcomeController extends Controller
             // Kumpulkan data berdasarkan kode_kk
             $dataByKodeKK[$result->kode_kk][] = $result->total;
         }
-
-
-
 
         // Hitung jumlah siswa per rombel_tingkat dan tahun_ajaran
         $dataPesertaDidik = DB::table('peserta_didik_rombels')
@@ -218,7 +216,7 @@ class WelcomeController extends Controller
         });
 
 
-        $now = Carbon::now();
+        /* $now = Carbon::now();
 
         $jadwals = ExamSchedule::orderBy('tanggal_mulai')
             ->orderBy('jam_mulai')
@@ -267,9 +265,23 @@ class WelcomeController extends Controller
                 $jadwal->status_ujian = $status;
 
                 return $jadwal;
-            });
+            }); */
 
-
+        //Tampilkan Wakil Kepala Sekolah
+        $tampilWakasek = WakilKepalaSekolah::select(
+            'wakil_kepala_sekolahs.id',
+            'wakil_kepala_sekolahs.jabatan',
+            'wakil_kepala_sekolahs.id_personil',
+            'wakil_kepala_sekolahs.motto',
+            'photo_personils.photo',
+            'personil_sekolahs.gelardepan',
+            'personil_sekolahs.namalengkap',
+            'personil_sekolahs.gelarbelakang'
+        )
+            ->join('personil_sekolahs', 'personil_sekolahs.id_personil', '=', 'wakil_kepala_sekolahs.id_personil')
+            ->join('photo_personils', 'photo_personils.id_personil', '=', 'wakil_kepala_sekolahs.id_personil')
+            ->orderByRaw('CAST(wakil_kepala_sekolahs.id AS UNSIGNED)')
+            ->get();
 
 
         return view(
@@ -304,8 +316,9 @@ class WelcomeController extends Controller
                 'jumlahKelas' => $jumlahKelas,
                 'loginCount' => $loginCount,
                 'activeUsersCount' => $activeUsersCount,
-                'chartData' => $data, // Tambahkan di sini
-                'jadwals' => $jadwals, // Tambahkan di sini
+                'chartData' => $data,
+                'tampilWakasek' => $tampilWakasek,
+                /* 'jadwals' => $jadwals, */
             ]
         );
     }
