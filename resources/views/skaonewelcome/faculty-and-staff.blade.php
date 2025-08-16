@@ -106,7 +106,7 @@
             </div>
             <div class="row">
                 <!-- Sidebar Tabs -->
-                <div class="col-md-4">
+                <div class="col-md-5">
                     <h3>Pilih Jenis Personil</h3>
                     <ul class="nav flex-column u-nav-v1-1 u-nav-primary" role="tablist"
                         data-target="nav-1-1-accordion-primary-ver" data-tabs-mobile-type="accordion"
@@ -124,7 +124,7 @@
                 </div>
 
                 <!-- Tab Content -->
-                <div class="col-md-8">
+                <div class="col-md-7">
                     <div id="nav-1-1-accordion-primary-ver" class="tab-content">
                         @foreach ($groupsPersonil2 as $index => $group)
                             <div class="tab-pane fade {{ $index == 0 ? 'show active' : '' }}"
