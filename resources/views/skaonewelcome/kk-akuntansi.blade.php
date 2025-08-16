@@ -66,7 +66,12 @@
                             <p class="mb-0 g-font-size-16">Membekali peserta didik Kompetensi Keahlian Akuntansi dengan
                                 keterampilan, pengetahuan dan sikap agar kompeten dalam :
                             </p>
-                            <x-variasi-ceklist-one> Mencerdaskan kehidupan bangsa dan
+                            @if (isset($dataProfil['833']['profil_lulusan']))
+                                @foreach ($dataProfil['833']['profil_lulusan'] as $item)
+                                    <x-variasi-ceklist-one>{{ $item->deskripsi }}</x-variasi-ceklist-one>
+                                @endforeach
+                            @endif
+                            {{-- <x-variasi-ceklist-one> Mencerdaskan kehidupan bangsa dan
                                 mengembangkan manusia Indoensia seutuhnya, yaitu manusia yang
                                 beriman dan
                                 bertaqwa terhadap Tuhan Yang Maha Esa dan berbudi pekerti luhur,
@@ -110,7 +115,7 @@
                                 kejujuran,
                                 berjiwa
                                 wirausaha, serta memiliki sikap professional yang berorientasi masa
-                                depan.</x-variasi-ceklist-one>
+                                depan.</x-variasi-ceklist-one> --}}
                             <!-- End Taglines Bordered -->
                         </div>
                         <!-- End Footer Content -->
@@ -118,6 +123,12 @@
                         <!-- Footer Content -->
                         <div class="col-lg-4 col-md-4 g-mb-40 g-mb-0--lg">
                             <h2 class="text-success g-font-weight-800">PROSPEK KERJA</h2>
+                            @if (isset($dataProfil['833']['prospek_kerja']))
+                                @foreach ($dataProfil['833']['prospek_kerja'] as $item)
+                                    <x-variasi-ceklist-one>{{ $item->deskripsi }}</x-variasi-ceklist-one>
+                                @endforeach
+                            @endif
+                            {{--
                             <x-variasi-ceklist-one> Instansi pemerintahan</x-variasi-ceklist-one>
                             <x-variasi-ceklist-one> BUMN/BUMS</x-variasi-ceklist-one>
                             <x-variasi-ceklist-one> Perbankan</x-variasi-ceklist-one>
@@ -128,7 +139,7 @@
                             <x-variasi-ceklist-one> Juru penggajian</x-variasi-ceklist-one>
                             <x-variasi-ceklist-one> Operator komputer</x-variasi-ceklist-one>
                             <x-variasi-ceklist-one> Administrasi gudang</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Menyusun laporan keuangan</x-variasi-ceklist-one>
+                            <x-variasi-ceklist-one> Menyusun laporan keuangan</x-variasi-ceklist-one> --}}
                             @php
                                 // Query untuk mendapatkan data berdasarkan kode_kk
                                 $photo = DB::table('photo_jurusans')->where('kode_kk', '833')->first();

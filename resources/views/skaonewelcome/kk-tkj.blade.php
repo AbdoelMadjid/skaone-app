@@ -72,7 +72,12 @@
                             <p class='mb-1 fs-6'>Secara khusus tujuan Program Keahlian Teknik Komputer dan
                                 Jaringan adalah membekali peserta didik dengan keterampilan, pengetahuan dan sikap
                                 agar kompeten, dengan kegiatan :</p>
-                            <x-variasi-ceklist-one> Mendidik peserta didik dengan keahlian
+                            @if (isset($dataProfil['421']['profil_lulusan']))
+                                @foreach ($dataProfil['421']['profil_lulusan'] as $item)
+                                    <x-variasi-ceklist-one>{{ $item->deskripsi }}</x-variasi-ceklist-one>
+                                @endforeach
+                            @endif
+                            {{-- <x-variasi-ceklist-one> Mendidik peserta didik dengan keahlian
                                 dan keterampilan dalam program keahlian teknik Komputer dan Jaringan agar dapat
                                 bekerja baik secara mandiri atau mengisi lowongan pekerjaan yang ada di dunia
                                 usaha dan dunia industri sebagai tenaga kerja tingkat menengah;</x-variasi-ceklist-one>
@@ -82,14 +87,19 @@
                             <x-variasi-ceklist-one> Membekali peserta didik dengan ilmu
                                 pengetahuan dan keterampilan sebagai bekal bagi yang berminat untuk melanjutkan
                                 pendidikan. Kurikulum yang digunakan di Teknik Komputer dan Jaringan menggunakan
-                                Kurikulum 2013.</x-variasi-ceklist-one>
+                                Kurikulum 2013.</x-variasi-ceklist-one> --}}
                         </div>
                         <!-- End Footer Content -->
 
                         <!-- Footer Content -->
                         <div class="col-lg-4 col-md-4 g-mb-40 g-mb-0--lg">
                             <h2 class="text-success g-font-weight-800">PROSPEK KERJA</h2>
-                            <x-variasi-ceklist-one> IT Support</x-variasi-ceklist-one>
+                            @if (isset($dataProfil['421']['prospek_kerja']))
+                                @foreach ($dataProfil['421']['prospek_kerja'] as $item)
+                                    <x-variasi-ceklist-one>{{ $item->deskripsi }}</x-variasi-ceklist-one>
+                                @endforeach
+                            @endif
+                            {{-- <x-variasi-ceklist-one> IT Support</x-variasi-ceklist-one>
                             <x-variasi-ceklist-one> Installation</x-variasi-ceklist-one>
                             <x-variasi-ceklist-one> Networking</x-variasi-ceklist-one>
                             <x-variasi-ceklist-one> Maintenance</x-variasi-ceklist-one>
@@ -99,7 +109,7 @@
                             <x-variasi-ceklist-one> Administrator Jaringan Level Terampil</x-variasi-ceklist-one>
                             <x-variasi-ceklist-one> Administrator Jaringan Level Mahir</x-variasi-ceklist-one>
                             <x-variasi-ceklist-one> Pekerjaan-pekerjaan lainnya yang
-                                berbasis komputer dan jaringan</x-variasi-ceklist-one>
+                                berbasis komputer dan jaringan</x-variasi-ceklist-one> --}}
                             @php
                                 // Query untuk mendapatkan data berdasarkan kode_kk
                                 $photo = DB::table('photo_jurusans')->where('kode_kk', '421')->first();

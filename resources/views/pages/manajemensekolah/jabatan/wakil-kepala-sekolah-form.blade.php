@@ -21,7 +21,7 @@
                     </option>
                 </select>
             </div>
-            <x-form.textarea name="motto" id="motto" label="Motto">{{ $data->motto }}</x-form.textarea>
+            <x-form.textarea name="motto" id="motto" label="Motto" :value="old('motto', $data->motto)" />
         </div>
     </div>
 </x-form.modal>

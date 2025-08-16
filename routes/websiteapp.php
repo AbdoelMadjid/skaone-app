@@ -9,6 +9,7 @@ use App\Http\Controllers\WebSite\PhotoJurusanController;
 use App\Http\Controllers\WebSite\PhotoPersonilController;
 use App\Http\Controllers\WebSite\PhotoSlideController;
 use App\Http\Controllers\WebSite\PollingController;
+use App\Http\Controllers\WebSite\ProfilLulusanProspekController;
 use App\Http\Controllers\WebSite\QuestionController;
 use App\Http\Controllers\WebSite\TeamPengembangController;
 use Illuminate\Support\Facades\Route;
@@ -38,5 +39,6 @@ Route::middleware('auth')->group(function () {
         Route::resource('polling', PollingController::class);
         Route::resource('question', QuestionController::class);
         Route::resource('photo-personil', PhotoPersonilController::class);
+        Route::resource('profil-jurusan', ProfilLulusanProspekController::class);
     });
 });

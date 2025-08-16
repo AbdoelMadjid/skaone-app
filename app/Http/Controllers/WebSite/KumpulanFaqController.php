@@ -15,12 +15,7 @@ class KumpulanFaqController extends Controller
     public function index(KumpulanFaqDataTable $kumpulanFaqDataTable)
     {
         $faqs = KumpulanFaq::all()->groupBy('kategori');
-        return $kumpulanFaqDataTable->render(
-            'pages.website.kumpulan-faq',
-            [
-                'faqs' => $faqs,
-            ]
-        );
+        return $kumpulanFaqDataTable->render('pages.website.kumpulan-faq', ['faqs' => $faqs,]);
     }
 
     /**

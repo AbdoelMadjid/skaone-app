@@ -92,8 +92,7 @@ class SkaOneWelcomeController extends Controller
         $personilRPL = $groupedData->get('Rekayasa Perangkat Lunak', collect());
         $personilTKJ = $groupedData->get('Teknik Komputer dan Jaringan', collect());
 
-
-        //Tampilkan Wakil Kepala Sekolah
+        //tampilkan kaprodi masing-masing konsentrasi keahlian
         $tampilKaprodi = KetuaProgramStudi::select(
             'ketua_program_studis.id',
             'ketua_program_studis.jabatan',
@@ -111,6 +110,13 @@ class SkaOneWelcomeController extends Controller
             ->get()
             ->keyBy('id_kk'); // jadikan array dengan key kode prodi
 
+        $dataProfil = DB::table('profil_lulusan_prospeks')
+            ->select('id_kk', 'tipe', 'deskripsi')
+            ->get()
+            ->groupBy('id_kk') // grouped per prodi
+            ->map(function ($items) {
+                return $items->groupBy('tipe'); // di dalamnya dibagi lagi per tipe
+            });
 
         return view(
             'skaonewelcome.program',
@@ -125,6 +131,7 @@ class SkaOneWelcomeController extends Controller
                 'personilRPL' => $personilRPL,
                 'personilTKJ' => $personilTKJ,
                 'tampilKaprodi' => $tampilKaprodi,
+                'dataProfil' => $dataProfil,
             ]
         );
     }

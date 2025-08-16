@@ -67,7 +67,12 @@
                             <p class="mb-0 g-font-size-16">Membekali peserta didik Kompetensi Keahlian
                                 Manajemen Perkantoran
                                 dengan keterampilan, pengetahuan dan sikap agar kompeten dalam :</p>
-                            <x-variasi-ceklist-one> Mencerdaskan kehidupan bangsa dan
+                            @if (isset($dataProfil['821']['profil_lulusan']))
+                                @foreach ($dataProfil['821']['profil_lulusan'] as $item)
+                                    <x-variasi-ceklist-one>{{ $item->deskripsi }}</x-variasi-ceklist-one>
+                                @endforeach
+                            @endif
+                            {{-- <x-variasi-ceklist-one> Mencerdaskan kehidupan bangsa dan
                                 mengembangkan manusia Indoensia seutuhnya, yaitu manusia yang beriman dan
                                 bertaqwa terhadap Tuhan Yang Maha Esa dan berbudi pekerti luhur, memiliki
                                 pengetahuan dan keterampilan, kesehatan jasmani dan rohani, kepribadian yang
@@ -92,14 +97,19 @@
                             <x-variasi-ceklist-one> Menyelenggarakan pendidikan dan
                                 keterampilan dengan mengedepankan keunggulan, kedisiplinan, kejujuran,
                                 berjiwawirausaha, serta memiliki sikap professional yang berorientasi masa
-                                depan.</x-variasi-ceklist-one>
+                                depan.</x-variasi-ceklist-one> --}}
                         </div>
                         <!-- End Footer Content -->
 
                         <!-- Footer Content -->
                         <div class="col-lg-4 col-md-4 g-mb-40 g-mb-0--lg">
                             <h2 class="text-success g-font-weight-800">PROSPEK KERJA</h2>
-                            <x-variasi-ceklist-one> Administrasi Perkantoran Yunior</x-variasi-ceklist-one>
+                            @if (isset($dataProfil['821']['prospek_kerja']))
+                                @foreach ($dataProfil['821']['prospek_kerja'] as $item)
+                                    <x-variasi-ceklist-one>{{ $item->deskripsi }}</x-variasi-ceklist-one>
+                                @endforeach
+                            @endif
+                            {{-- <x-variasi-ceklist-one> Administrasi Perkantoran Yunior</x-variasi-ceklist-one>
                             <x-variasi-ceklist-one> Juru Tata Usaha Kantor</x-variasi-ceklist-one>
                             <x-variasi-ceklist-one> Administrasi Perkantoran Muda (Yunior
                                 Secretary)</x-variasi-ceklist-one>
@@ -111,7 +121,7 @@
                             <x-variasi-ceklist-one> Arsiparis / Agendaris</x-variasi-ceklist-one>
                             <x-variasi-ceklist-one> Petugas Humas / Keprotokola</x-variasi-ceklist-one>
                             <x-variasi-ceklist-one> Berbagai lembaga/ organisasi
-                                pemerintah atau swasta</x-variasi-ceklist-one>
+                                pemerintah atau swasta</x-variasi-ceklist-one> --}}
                             @php
                                 // Query untuk mendapatkan data berdasarkan kode_kk
                                 $photo = DB::table('photo_jurusans')->where('kode_kk', '821')->first();

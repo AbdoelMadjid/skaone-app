@@ -287,6 +287,7 @@ return [
     'polling' => 'Polling',
     'question' => 'Pertanyaan polling',
     'photo-personil' => 'Photo Personil',
+    'profil-jurusan' => 'Profil Konsentrasi Keahlian',
 
 
     //manajemen sekolah --> rapor
