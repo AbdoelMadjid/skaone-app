@@ -89,6 +89,9 @@ class MenuWebSiteSeeder extends Seeder
 
             $sm = $mm->subMenus()->create(['name' => 'Profil Jurusan', 'url' => $mm->url . '/profil-jurusan', 'category' => $mm->category]);
             $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['admin']);
+
+            $sm = $mm->subMenus()->create(['name' => 'Logo Jurusan', 'url' => $mm->url . '/logo-jurusan', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['admin']);
         });
     }
 }

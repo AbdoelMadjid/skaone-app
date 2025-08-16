@@ -1,13 +1,13 @@
-<x-form.modal size="lg" title="Photo Jurusan" action="{{ $action ?? null }}" enctype="multipart/form-data">
+<x-form.modal size="lg" title="Logo Jurusan" action="{{ $action ?? null }}" enctype="multipart/form-data">
     @if ($data->id)
         @method('put')
     @endif
     <div class="row">
         <div class="col-md-6">
-            <x-form.input name="image" type="file" label="Upload Gambar Jurusan" onchange="previewImage(event)" />
+            <x-form.input name="logo" type="file" label="Upload Gambar Logo" onchange="previewImage(event)" />
             <h5 class="fs-14 mb-3 mt-4">Image Slide</h5>
             <img id="image-preview"
-                src="{{ $data->image && file_exists(base_path('images/jurusan_gmb/' . $data->image)) ? asset('images/jurusan_gmb/' . $data->image) : asset('build/images/bg-auth.jpg') }}"
+                src="{{ $data->logo && file_exists(base_path('images/jurusan_logo/' . $data->logo)) ? asset('images/jurusan_logo/' . $data->logo) : asset('build/images/bg-auth.jpg') }}"
                 width="350" alt="Photo" />
         </div>
         <div class="col-md-6">

@@ -5,6 +5,7 @@ use App\Http\Controllers\WebSite\DailyMessagesController;
 use App\Http\Controllers\WebSite\FiturCodingController;
 use App\Http\Controllers\WebSite\GaleryController;
 use App\Http\Controllers\WebSite\KumpulanFaqController;
+use App\Http\Controllers\WebSite\LogoJurusanController;
 use App\Http\Controllers\WebSite\PhotoJurusanController;
 use App\Http\Controllers\WebSite\PhotoPersonilController;
 use App\Http\Controllers\WebSite\PhotoSlideController;
@@ -40,5 +41,6 @@ Route::middleware('auth')->group(function () {
         Route::resource('question', QuestionController::class);
         Route::resource('photo-personil', PhotoPersonilController::class);
         Route::resource('profil-jurusan', ProfilLulusanProspekController::class);
+        Route::resource('logo-jurusan', LogoJurusanController::class);
     });
 });

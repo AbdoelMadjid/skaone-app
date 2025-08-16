@@ -11,7 +11,17 @@
         <!-- Lightbox Single Image -->
         <div class="row">
             <div class="col-md-3">
-                <img class="img-fluid" src="{{ URL::asset('images/jurusan_logo/logo-bd.png') }}" alt="Image Description">
+                @php
+                    // Query untuk mendapatkan data berdasarkan kode_kk
+                    $photo = DB::table('logo_jurusans')->where('kode_kk', '811')->first();
+
+                    // Tentukan path gambar
+                    $imagePath =
+                        $photo && $photo->logo
+                            ? asset('images/jurusan_logo/' . $photo->logo)
+                            : asset('images/jurusan_logo/default.jpg');
+                @endphp
+                <img src="{{ $imagePath }}" alt="client-img" class="mx-auto img-fluid d-block">
                 <hr class="g-brd-gray-light-v4 g-my-60">
                 <header class="text-center mx-auto g-mb-10">
                     <div class="u-heading-v6-2 text-center text-uppercase g-mb-20">
