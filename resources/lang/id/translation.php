@@ -286,6 +286,7 @@ return [
     'events' => 'Kalendar Pendidikan',
     'polling' => 'Polling',
     'question' => 'Pertanyaan polling',
+    'photo-personil' => 'Photo Personil',
 
 
     //manajemen sekolah --> rapor

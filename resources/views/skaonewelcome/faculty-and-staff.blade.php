@@ -111,12 +111,12 @@
                     <ul class="nav flex-column u-nav-v1-1 u-nav-primary" role="tablist"
                         data-target="nav-1-1-accordion-primary-ver" data-tabs-mobile-type="accordion"
                         data-btn-classes="btn btn-md btn-block rounded-0 u-btn-outline-primary g-mb-20">
-                        @foreach ($groupsPersonil as $index => $group)
+                        @foreach ($groupsPersonil2 as $index => $group)
                             <li class="nav-item">
                                 <a class="nav-link {{ $index == 0 ? 'active' : '' }}" data-toggle="tab"
-                                    href="#tab-{{ strtolower(str_replace(' ', '-', $group->jenis_group)) }}" role="tab">
+                                    href="#tab-{{ $group->no_group }}" role="tab">
                                     <i class="g-font-size-13 g-pos-rel g-top-2 mr-2 material-icons">arrow_forward</i>
-                                    {{ ucfirst($group->group_name) }}
+                                    {{ ucfirst($group->nama_group) }}
                                 </a>
                             </li>
                         @endforeach
@@ -126,19 +126,19 @@
                 <!-- Tab Content -->
                 <div class="col-md-8">
                     <div id="nav-1-1-accordion-primary-ver" class="tab-content">
-                        @foreach ($groupsPersonil as $index => $group)
+                        @foreach ($groupsPersonil2 as $index => $group)
                             <div class="tab-pane fade {{ $index == 0 ? 'show active' : '' }}"
-                                id="tab-{{ strtolower(str_replace(' ', '-', $group->jenis_group)) }}" role="tabpanel">
+                                id="tab-{{ $group->no_group }}" role="tabpanel">
 
-                                <h2>{{ ucfirst($group->group_name) }}</h2>
+                                <h2>{{ ucfirst($group->nama_group) }}</h2>
                                 <div class="row">
-                                    @foreach ($personilData->where('jenis_group', $group->jenis_group) as $personil)
+                                    @foreach ($personilData2->where('no_group', $group->no_group) as $personil)
                                         <div class="col-sm-7 col-lg-4 g-mb-30">
                                             <div
                                                 class="u-shadow-v36 g-brd-around g-brd-7 g-brd-white g-brd-primary--hover rounded g-pos-rel g-transition-0_2">
-                                                @if ($personil->image)
+                                                @if ($personil->photo)
                                                     <img class="img-fluid"
-                                                        src="{{ URL::asset('images/welcome/personil/' . strtolower($personil->jenis_group) . '/' . strtolower($personil->image)) }}"
+                                                        src="{{ URL::asset('images/photo-personil/' . $personil->photo) }}"
                                                         alt="Image Description">
                                                 @else
                                                     <img class="img-fluid"

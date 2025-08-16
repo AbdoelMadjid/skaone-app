@@ -6,6 +6,7 @@ use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
 use App\Models\ManajemenSekolah\PersonilSekolah;
 use App\Models\ManajemenSekolah\Semester;
 use App\Models\ManajemenSekolah\TahunAjaran;
+use App\Models\WebSite\PhotoPersonil;
 use App\Models\WelcomeDataPersonil;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -137,6 +138,30 @@ class SkaOneWelcomeController extends Controller
             ->orderBy('welcome_data_personil.id_personil')
             ->get();
 
+
+
+        $groupsPersonil2 = PhotoPersonil::select('no_group', 'nama_group')
+            ->groupBy('no_group', 'nama_group')
+            ->orderBy('no_group')
+            ->get();
+
+        $personilData2 = PhotoPersonil::select(
+            'photo_personils.id',
+            'photo_personils.no_group',
+            'photo_personils.nama_group',
+            'photo_personils.no_personil',
+            'photo_personils.id_personil',
+            'photo_personils.photo',
+            'personil_sekolahs.gelardepan',
+            'personil_sekolahs.namalengkap',
+            'personil_sekolahs.gelarbelakang'
+        )
+            ->join('personil_sekolahs', 'personil_sekolahs.id_personil', '=', 'photo_personils.id_personil')
+            ->orderBy('photo_personils.no_personil')
+            ->get();
+
+
+
         //MENGHITUNG JENIS PERSONIL BERDASARKAN JENIS KELAMIN ===================================?
         // Contoh: Mengambil data dari database
         $dataPersonil = PersonilSekolah::select('jenispersonil', DB::raw('count(*) as total'))
@@ -198,8 +223,10 @@ class SkaOneWelcomeController extends Controller
         return view(
             'skaonewelcome.faculty-and-staff',
             [
+                'groupsPersonil2' => $groupsPersonil2,
                 'groupsPersonil' => $groupsPersonil,
                 'personilData' => $personilData,
+                'personilData2' => $personilData2,
                 'dataPersonil' => $dataPersonil,
                 'totalGuruLakiLaki' => $totalGuruLakiLaki,
                 'totalGuruPerempuan' => $totalGuruPerempuan,

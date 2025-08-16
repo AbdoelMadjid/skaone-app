@@ -6,6 +6,7 @@ use App\Http\Controllers\WebSite\FiturCodingController;
 use App\Http\Controllers\WebSite\GaleryController;
 use App\Http\Controllers\WebSite\KumpulanFaqController;
 use App\Http\Controllers\WebSite\PhotoJurusanController;
+use App\Http\Controllers\WebSite\PhotoPersonilController;
 use App\Http\Controllers\WebSite\PhotoSlideController;
 use App\Http\Controllers\WebSite\PollingController;
 use App\Http\Controllers\WebSite\QuestionController;
@@ -36,5 +37,6 @@ Route::middleware('auth')->group(function () {
         Route::resource('events', EventController::class);
         Route::resource('polling', PollingController::class);
         Route::resource('question', QuestionController::class);
+        Route::resource('photo-personil', PhotoPersonilController::class);
     });
 });
