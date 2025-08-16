@@ -1,4 +1,4 @@
-<x-form.modal size="lg" title="{{ __('translation.profil-jurusan') }}" action="{{ $action ?? null }}">
+<x-form.modal size="md" title="{{ __('translation.profil-jurusan') }}" action="{{ $action ?? null }}">
     @if ($data->id)
         @method('put')
     @endif
@@ -8,7 +8,7 @@
                 label="Kompetensi Keahlian" />
             <x-form.select name="tipe" :options="['profil_lulusan' => 'Profil Lulusan', 'prospek_kerja' => 'Prospek Kerja']" value="{{ old('tipe', $data->tipe) }}" label="Tipe" />
             <div id="deskripsi-wrapper">
-                <x-form.textarea name="deskripsi[]" label="Deskripsi" rows="3" />
+                <x-form.textarea name="deskripsi[]" :value="old('deskripsi', $data->deskripsi)" label="Deskripsi" rows="5" />
             </div>
 
             <button type="button" id="add-deskripsi" class="btn btn-sm btn-outline-primary mt-2">
@@ -25,7 +25,7 @@
         let newField = `
         <div class="mb-3 deskripsi-item">
             <label class="form-label">Deskripsi ${index + 1}</label>
-            <textarea name="deskripsi[]" class="form-control" rows="3"></textarea>
+            <textarea name="deskripsi[]" class="form-control" rows="5"></textarea>
         </div>
     `;
         wrapper.insertAdjacentHTML('beforeend', newField);
