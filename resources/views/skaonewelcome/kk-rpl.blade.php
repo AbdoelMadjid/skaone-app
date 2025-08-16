@@ -3,8 +3,8 @@
         <header class="text-center g-width-80x--md mx-auto g-mb-10">
             <div class="u-heading-v6-2 text-center text-uppercase g-mb-20">
                 <h6 class="g-font-size-12 g-font-weight-600">Kompetensi Keahlian</h6>
-                <h2 class="h3 u-heading-v6__title g-brd-primary g-color-gray-dark-v2 g-font-weight-600">Rekayasa
-                    Perangkat Lunak
+                <h2 class="h3 u-heading-v6__title g-brd-primary g-color-gray-dark-v2 g-font-weight-600">
+                    Rekayasa Perangkat Lunak
                 </h2>
             </div>
         </header>
@@ -72,31 +72,6 @@
                                     <x-variasi-ceklist-one>{{ $item->deskripsi }}</x-variasi-ceklist-one>
                                 @endforeach
                             @endif
-                            {{-- <x-variasi-ceklist-one> Mencerdaskan kehidupan bangsa dan
-                                mengembangkan manusia Indoensia seutuhnya, yaitu manusia yang beriman dan
-                                bertaqwa terhadap Tuhan Yang Maha Esa dan berbudi pekerti luhur, memiliki
-                                pengetahuan dan keterampilan, kesehatan jasmani dan rohani, kepribadian yang
-                                mantap dan mandiri.</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Berjiwa sosial yang tinggi dalam
-                                kehidupan bermasyarakat, berbangsa dan bernegara.</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Mampu Merakit, Menginstalasi, Merawat,
-                                dan Memperbaiki Personal Computer (PC).</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Mampu menginstalasi sistem operasi dan
-                                menginstalasi aplikasi-aplikasi komputer baik opened source ataupun closed
-                                source.</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Mampu menginstalasi jaringan lokal dan
-                                mengoperasikan jaringan wired dan wireless</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Mampu merancang, membuat dan
-                                mengaplikasikan tampilan website secara statis.</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Mampu membuat, mengelola dan
-                                memelihara aplikasi website dinamis</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Mampu membuat, mengelola dan
-                                memelihara aplikasi berbasis desktop client-server..</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Mampu merancang, membuat, mengelola
-                                dan memelihara basis data client-server</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Mampu merancang berbagai perangkat
-                                lunak berbagai platform dengan berbagai teknik pemodelan perangkat
-                                lunak.</x-variasi-ceklist-one> --}}
                         </div>
                         <!-- End Footer Content -->
 
@@ -108,18 +83,6 @@
                                     <x-variasi-ceklist-one>{{ $item->deskripsi }}</x-variasi-ceklist-one>
                                 @endforeach
                             @endif
-                            {{-- <x-variasi-ceklist-one> Web Application Programmer</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Database Programmer</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Interfacing Programmer</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Mobile Application Programmer (Java
-                                and Android)</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Desktop Application Programmer</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> C++ Programmer</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Game Programmer</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Hardware and Software Technicians</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> IT Support and IT Staff</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Pekerjaan-pekerjaan lainnya yang
-                                berbasis komputer</x-variasi-ceklist-one> --}}
                             @php
                                 // Query untuk mendapatkan data berdasarkan kode_kk
                                 $photo = DB::table('photo_jurusans')->where('kode_kk', '411')->first();
@@ -136,11 +99,8 @@
                     </div>
                 </div>
 
-
                 <!-- End Footer -->
                 <div class="u-shadow-v1-5 g-line-height-2 g-pa-40 g-mb-30" role="alert">
-
-
                     @if ($personilRPL->isNotEmpty())
                         <h2>Guru Produktif</h2>
                         <div class="row">

@@ -3,7 +3,9 @@
         <header class="text-center g-width-80x--md mx-auto g-mb-10">
             <div class="u-heading-v6-2 text-center text-uppercase g-mb-20">
                 <h6 class="g-font-size-12 g-font-weight-600">Kompetensi Keahlian</h6>
-                <h2 class="h3 u-heading-v6__title g-brd-primary g-color-gray-dark-v2 g-font-weight-600">Akuntansi</h2>
+                <h2 class="h3 u-heading-v6__title g-brd-primary g-color-gray-dark-v2 g-font-weight-600">
+                    Akuntansi
+                </h2>
             </div>
         </header>
         <!-- Lightbox Single Image -->
@@ -71,52 +73,6 @@
                                     <x-variasi-ceklist-one>{{ $item->deskripsi }}</x-variasi-ceklist-one>
                                 @endforeach
                             @endif
-                            {{-- <x-variasi-ceklist-one> Mencerdaskan kehidupan bangsa dan
-                                mengembangkan manusia Indoensia seutuhnya, yaitu manusia yang
-                                beriman dan
-                                bertaqwa terhadap Tuhan Yang Maha Esa dan berbudi pekerti luhur,
-                                memiliki
-                                pengetahuan dan keterampilan, kesehatan jasmani dan rohani,
-                                kepribadian yang
-                                mantap dan mandiri serta rasa tanggung jawab kemasyarakatan dan
-                                kebangsaan.</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Meningkatkan kualitas lulusan yang
-                                kompetitif di dunia kerja</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Menciptakan situasi kerja dan
-                                pembelajaran yang kondusif serta berwawasan
-                                lingkungan.</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Mendidik peserta didik dengan
-                                keahlian
-                                dan keterampilan dalam bidang keahlian Bisnis dan Manajemen,
-                                khususnya
-                                kompetensi keahlian Akuntansi agar dapat bekerja baik secara mandiri
-                                atau
-                                mengisi lowongan pekerjaan yang ada di dunia usaha dan dunia
-                                industri
-                                sebagai
-                                tenaga kerja tingkat menengah.</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Mendidik peserta didik agar mampu
-                                memilih karir, kompetensi, dan mengembangkan sikap professional
-                                dalam bidang
-                                keahlian Bisnis dan Manajemen khususnya kompetensi keahlian
-                                Akuntansi.</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Menjadikan Kompetensi Keahlian
-                                Akuntansi Keuangan dan Lembaga sebagai pusat pendidikan dan
-                                pelatihan,
-                                tempat
-                                uji kompetensi dan sertifikasi Kompetensi Keahlian Akuntansi
-                                Keuangan dan
-                                Lembaga.</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Meningkatkan kecerdasan yang
-                                bermartabat didasari azas kecakapan hidup di bidang kompetensi
-                                Akuntansi</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Menyelenggarakan pendidikan dan
-                                keterampilan dengan mengedepankan keunggulan, kedisiplinan,
-                                kejujuran,
-                                berjiwa
-                                wirausaha, serta memiliki sikap professional yang berorientasi masa
-                                depan.</x-variasi-ceklist-one> --}}
-                            <!-- End Taglines Bordered -->
                         </div>
                         <!-- End Footer Content -->
 
@@ -128,18 +84,6 @@
                                     <x-variasi-ceklist-one>{{ $item->deskripsi }}</x-variasi-ceklist-one>
                                 @endforeach
                             @endif
-                            {{--
-                            <x-variasi-ceklist-one> Instansi pemerintahan</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> BUMN/BUMS</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Perbankan</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Lembaga sosial</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Usaha mandiri</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Kasir/teller</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Operasi mesin hitung</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Juru penggajian</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Operator komputer</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Administrasi gudang</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Menyusun laporan keuangan</x-variasi-ceklist-one> --}}
                             @php
                                 // Query untuk mendapatkan data berdasarkan kode_kk
                                 $photo = DB::table('photo_jurusans')->where('kode_kk', '833')->first();
@@ -157,11 +101,8 @@
                     </div>
                 </div>
 
-
                 <!-- End Footer -->
                 <div class="u-shadow-v1-5 g-line-height-2 g-pa-40 g-mb-30" role="alert">
-
-
                     @if ($personilAkuntansi->isNotEmpty())
                         <h2>Guru Produktif</h2>
                         <div class="row">

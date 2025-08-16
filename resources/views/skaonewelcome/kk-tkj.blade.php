@@ -3,8 +3,8 @@
         <header class="text-center g-width-80x--md mx-auto g-mb-10">
             <div class="u-heading-v6-2 text-center text-uppercase g-mb-20">
                 <h6 class="g-font-size-12 g-font-weight-600">Kompetensi Keahlian</h6>
-                <h2 class="h3 u-heading-v6__title g-brd-primary g-color-gray-dark-v2 g-font-weight-600">Teknik Komputer
-                    dan Jaringan
+                <h2 class="h3 u-heading-v6__title g-brd-primary g-color-gray-dark-v2 g-font-weight-600">
+                    Teknik Komputer dan Jaringan
                 </h2>
             </div>
         </header>
@@ -77,17 +77,6 @@
                                     <x-variasi-ceklist-one>{{ $item->deskripsi }}</x-variasi-ceklist-one>
                                 @endforeach
                             @endif
-                            {{-- <x-variasi-ceklist-one> Mendidik peserta didik dengan keahlian
-                                dan keterampilan dalam program keahlian teknik Komputer dan Jaringan agar dapat
-                                bekerja baik secara mandiri atau mengisi lowongan pekerjaan yang ada di dunia
-                                usaha dan dunia industri sebagai tenaga kerja tingkat menengah;</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Mendidik peserta didik agar mampu
-                                memilih karir, berkompetisi, dan mengembangkan sikap profesional dalam program
-                                keahlian Komputer dan Jaringan;</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Membekali peserta didik dengan ilmu
-                                pengetahuan dan keterampilan sebagai bekal bagi yang berminat untuk melanjutkan
-                                pendidikan. Kurikulum yang digunakan di Teknik Komputer dan Jaringan menggunakan
-                                Kurikulum 2013.</x-variasi-ceklist-one> --}}
                         </div>
                         <!-- End Footer Content -->
 
@@ -99,17 +88,6 @@
                                     <x-variasi-ceklist-one>{{ $item->deskripsi }}</x-variasi-ceklist-one>
                                 @endforeach
                             @endif
-                            {{-- <x-variasi-ceklist-one> IT Support</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Installation</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Networking</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Maintenance</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Teknisi Komputer</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Teknisi Jaringan</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Administrator Jaringan Level Dasar</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Administrator Jaringan Level Terampil</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Administrator Jaringan Level Mahir</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Pekerjaan-pekerjaan lainnya yang
-                                berbasis komputer dan jaringan</x-variasi-ceklist-one> --}}
                             @php
                                 // Query untuk mendapatkan data berdasarkan kode_kk
                                 $photo = DB::table('photo_jurusans')->where('kode_kk', '421')->first();
@@ -126,11 +104,8 @@
                     </div>
                 </div>
 
-
                 <!-- End Footer -->
                 <div class="u-shadow-v1-5 g-line-height-2 g-pa-40 g-mb-30" role="alert">
-
-
                     @if ($personilTKJ->isNotEmpty())
                         <h2>Guru Produktif</h2>
                         <div class="row">

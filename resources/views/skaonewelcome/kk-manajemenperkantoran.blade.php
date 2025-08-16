@@ -3,8 +3,8 @@
         <header class="text-center g-width-80x--md mx-auto g-mb-10">
             <div class="u-heading-v6-2 text-center text-uppercase g-mb-20">
                 <h6 class="g-font-size-12 g-font-weight-600">Kompetensi Keahlian</h6>
-                <h2 class="h3 u-heading-v6__title g-brd-primary g-color-gray-dark-v2 g-font-weight-600">Manajemen
-                    Perkantoran
+                <h2 class="h3 u-heading-v6__title g-brd-primary g-color-gray-dark-v2 g-font-weight-600">
+                    Manajemen Perkantoran
                 </h2>
             </div>
         </header>
@@ -72,32 +72,6 @@
                                     <x-variasi-ceklist-one>{{ $item->deskripsi }}</x-variasi-ceklist-one>
                                 @endforeach
                             @endif
-                            {{-- <x-variasi-ceklist-one> Mencerdaskan kehidupan bangsa dan
-                                mengembangkan manusia Indoensia seutuhnya, yaitu manusia yang beriman dan
-                                bertaqwa terhadap Tuhan Yang Maha Esa dan berbudi pekerti luhur, memiliki
-                                pengetahuan dan keterampilan, kesehatan jasmani dan rohani, kepribadian yang
-                                mantap dan mandiri.</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Meningkatkan kekualitas lulusan yang
-                                kompetitif di dunia kerja.</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Menciptakan situasi kerja dan
-                                pembelajaran yang kondusif serta berwawasan lingkungan.</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Menyiapkan peserta didik dengan
-                                pengetahuan dan ketrampilan dalam kompetensi keahlian Otomatisasi dan Tata
-                                Kelola Perkantoran agar dapat bekerja dengan baik dan dapat mengisi formasi
-                                pekerjaan yang ada di dunia usaha maupun industri sebagai tenaga kerja tingkat
-                                menengah.</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Membekali peserta didik dengan
-                                keahlian di bidang perkantoran antara lain dalam hal pelayanan informasi,
-                                pelayanan prima.</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Membekali peserta didik agar trampil
-                                dalam mengelola administrasi keuangan dan perjalanan dinas.</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Membekali peserta didik agar trampil
-                                dalam mengelola administrasi kepegawaian, administrasi sarana dan prasarana,
-                                administrasi humas dan keprotokolan</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Menyelenggarakan pendidikan dan
-                                keterampilan dengan mengedepankan keunggulan, kedisiplinan, kejujuran,
-                                berjiwawirausaha, serta memiliki sikap professional yang berorientasi masa
-                                depan.</x-variasi-ceklist-one> --}}
                         </div>
                         <!-- End Footer Content -->
 
@@ -109,19 +83,6 @@
                                     <x-variasi-ceklist-one>{{ $item->deskripsi }}</x-variasi-ceklist-one>
                                 @endforeach
                             @endif
-                            {{-- <x-variasi-ceklist-one> Administrasi Perkantoran Yunior</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Juru Tata Usaha Kantor</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Administrasi Perkantoran Muda (Yunior
-                                Secretary)</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Juru Tik</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Resepsionis</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Juru Steno</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Operator Komputer</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Operator Telepon, Telex dan Facsimile,</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Arsiparis / Agendaris</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Petugas Humas / Keprotokola</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Berbagai lembaga/ organisasi
-                                pemerintah atau swasta</x-variasi-ceklist-one> --}}
                             @php
                                 // Query untuk mendapatkan data berdasarkan kode_kk
                                 $photo = DB::table('photo_jurusans')->where('kode_kk', '821')->first();
@@ -138,11 +99,8 @@
                     </div>
                 </div>
 
-
                 <!-- End Footer -->
                 <div class="u-shadow-v1-5 g-line-height-2 g-pa-40 g-mb-30" role="alert">
-
-
                     @if ($personilMPerkantoran->isNotEmpty())
                         <h2>Guru Produktif</h2>
                         <div class="row">

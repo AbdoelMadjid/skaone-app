@@ -3,7 +3,8 @@
         <header class="text-center g-width-80x--md mx-auto g-mb-10">
             <div class="u-heading-v6-2 text-center text-uppercase g-mb-20">
                 <h6 class="g-font-size-12 g-font-weight-600">Kompetensi Keahlian</h6>
-                <h2 class="h3 u-heading-v6__title g-brd-primary g-color-gray-dark-v2 g-font-weight-600">Bisnis Digital
+                <h2 class="h3 u-heading-v6__title g-brd-primary g-color-gray-dark-v2 g-font-weight-600">
+                    Bisnis Digital
                 </h2>
             </div>
         </header>
@@ -71,34 +72,6 @@
                                     <x-variasi-ceklist-one>{{ $item->deskripsi }}</x-variasi-ceklist-one>
                                 @endforeach
                             @endif
-                            {{-- <x-variasi-ceklist-one> Mencerdaskan kehidupan bangsa dan
-                                mengembangkan manusia Indonesia seutuhnya yaitu manusia yang beriman dan
-                                bertaqwa Kepada Tuhan YME dan berbudi pekerti luhur memiliki pengetahuan dan
-                                keterampilan , kesehatan jasmani dan rohani kepribadian yang mantap dan mandiri.
-                            </x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Meningkatkan kualitas lulusan yang
-                                kompetitif di dunia kerja.</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Menciptakan situasi kerja dan
-                                pembelajaran yang kondusif serta berwawasan lingkungan.</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Mendidik peserta didik dengan keahlian
-                                dan keterampilan dalam bidang keahlian Bisnis dan Manajemen, khususnya
-                                kompetensi keahlian Pemasaran agar dapat bekerja baik secara mandiri atau
-                                mengisi lowongan pekerjaan yang ada di dunia usaha dan dunia industri sebagai
-                                tenaga kerja tingkat menengah.</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Mendidik peserta didik agar mampu
-                                memilih karir, kompetensi, dan mengembangkan asikap professional dalam bidang
-                                keahlian Bisnis dan Manajemen khususnya kompetensi keahlian
-                                Pemasaran.</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Menjadikan Kompetensi Keahlian
-                                Pemasaran sebagai pusat pendidikan dan pelatihan, tempat uji kompetensi dan
-                                sertifikasi Kompetensi Keahlian Pemasaran.</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Meningkatkan kecerdasan yang
-                                bermartabat didasari azas kecakapan hidup di bidang Bisnis Pemasaran (Marketing)
-                            </x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Menyelenggarakan pendidikan dan
-                                ketrampilan dengan mengedepankan keunggulan, kedisiplinan, kejujuran, berjiwa
-                                wirausaha serta memiliki sikap professional yang berorientasi pada masa depan.
-                            </x-variasi-ceklist-one> --}}
                         </div>
                         <!-- End Footer Content -->
 
@@ -110,18 +83,6 @@
                                     <x-variasi-ceklist-one>{{ $item->deskripsi }}</x-variasi-ceklist-one>
                                 @endforeach
                             @endif
-                            {{-- <x-variasi-ceklist-one> Marketting</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Administrasi Bisnis</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Account Officer</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Kasir</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Display (Penataan) Barang</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Mengelola bisnis online</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Mengelola bisnis ritel</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Pramuniaga</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Mengelola Usaha Pemasaran</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Telemarketting</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Wirausaha/entrepreneur</x-variasi-ceklist-one>
-                            <x-variasi-ceklist-one> Eksekutif Sales</x-variasi-ceklist-one> --}}
                             @php
                                 // Query untuk mendapatkan data berdasarkan kode_kk
                                 $photo = DB::table('photo_jurusans')->where('kode_kk', '811')->first();
@@ -139,11 +100,8 @@
                     </div>
                 </div>
 
-
                 <!-- End Footer -->
                 <div class="u-shadow-v1-5 g-line-height-2 g-pa-40 g-mb-30" role="alert">
-
-
                     @if ($personilBisnisDigital->isNotEmpty())
                         <h2>Guru Produktif</h2>
                         <div class="row">
