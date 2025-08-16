@@ -142,7 +142,7 @@ class SkaOneWelcomeController extends Controller
 
         $groupsPersonil2 = PhotoPersonil::select('no_group', 'nama_group')
             ->groupBy('no_group', 'nama_group')
-            ->orderBy('no_group')
+            ->orderByRaw('CAST(no_group AS UNSIGNED)')
             ->get();
 
         $personilData2 = PhotoPersonil::select(

@@ -114,7 +114,7 @@
                         @foreach ($groupsPersonil2 as $index => $group)
                             <li class="nav-item">
                                 <a class="nav-link {{ $index == 0 ? 'active' : '' }}" data-toggle="tab"
-                                    href="#tab-{{ $group->no_group }}" role="tab">
+                                    href="#tab-{{ str_pad($group->no_group, 2, '0', STR_PAD_LEFT) }}" role="tab">
                                     <i class="g-font-size-13 g-pos-rel g-top-2 mr-2 material-icons">arrow_forward</i>
                                     {{ ucfirst($group->nama_group) }}
                                 </a>
@@ -128,7 +128,7 @@
                     <div id="nav-1-1-accordion-primary-ver" class="tab-content">
                         @foreach ($groupsPersonil2 as $index => $group)
                             <div class="tab-pane fade {{ $index == 0 ? 'show active' : '' }}"
-                                id="tab-{{ $group->no_group }}" role="tabpanel">
+                                id="tab-{{ str_pad($group->no_group, 2, '0', STR_PAD_LEFT) }}" role="tabpanel">
 
                                 <h2>{{ ucfirst($group->nama_group) }}</h2>
                                 <div class="row">
