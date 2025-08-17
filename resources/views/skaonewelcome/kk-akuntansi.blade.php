@@ -74,12 +74,12 @@
                             aria-labelledby="tab-833-{{ $ta->id }}">
 
                             <h6>Kompetensi Keahlian 833 ({{ $ta->tahunajaran }})</h6>
-                            <table class="table mt-3 table-bordered">
+                            <table class="table mt-3 table-bordered" style="font-size: 12px;">
                                 <thead>
                                     <tr>
-                                        <th>Tingkat</th>
-                                        <th>Rombel</th>
-                                        <th>Siswa</th>
+                                        <th style="text-align: center;">Tingkat</th>
+                                        <th style="text-align: center;">Rombel</th>
+                                        <th style="text-align: center;">Siswa</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -103,9 +103,9 @@
                                     </tr>
                                 </tfoot>
                             </table>
-                            <p class="text-danger fs-6">
+                            <h6 class="text-danger">
                                 {{ terbilang($dataPerTahunAjaran[$ta->tahunajaran]['totalSiswaPerKK']['833']) }} orang
-                            </p>
+                            </h6>
 
                         </div>
                     @endforeach
