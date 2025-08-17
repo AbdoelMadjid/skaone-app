@@ -22,7 +22,7 @@ class SkaOneWelcomeController extends Controller
 
     public function program()
     {
-        // Ambil tahun ajaran yang aktif
+        /* // Ambil tahun ajaran yang aktif
         $tahunAjaran = TahunAjaran::where('status', 'Aktif')->first();
 
         // Periksa jika tidak ada tahun ajaran aktif
@@ -66,6 +66,54 @@ class SkaOneWelcomeController extends Controller
         $totalSiswaPerKK = [];
         foreach ($jumlahSiswaPerKK as $kodeKK => $data) {
             $totalSiswaPerKK[$kodeKK] = array_sum(array_column($data, 'jumlah_siswa'));
+        }
+ */
+
+        // Cari tahun ajaran aktif
+        $tahunAjaranAktif = TahunAjaran::where('status', 'Aktif')->first();
+
+        if (!$tahunAjaranAktif) {
+            return redirect()->back()->with('error', 'Tidak ada tahun ajaran aktif.');
+        }
+
+        // Ambil 3 tahun ajaran terakhir (aktif + 2 sebelumnya)
+        $tahunAjarans = TahunAjaran::where('tahunajaran', '<=', $tahunAjaranAktif->tahunajaran)
+            ->orderBy('tahunajaran', 'desc')
+            ->take(2)
+            ->get();
+
+        $dataPerTahunAjaran = [];
+
+        foreach ($tahunAjarans as $ta) {
+            $dataSiswa = PesertaDidikRombel::where('tahun_ajaran', $ta->tahunajaran)
+                ->select('kode_kk', 'rombel_tingkat', DB::raw('count(*) as jumlah_siswa'))
+                ->groupBy('kode_kk', 'rombel_tingkat')
+                ->orderBy('kode_kk')
+                ->get();
+
+            $jumlahSiswaPerKK = [
+                '411' => [],
+                '421' => [],
+                '811' => [],
+                '821' => [],
+                '833' => [],
+            ];
+
+            foreach ($dataSiswa as $data) {
+                if (array_key_exists($data->kode_kk, $jumlahSiswaPerKK)) {
+                    $jumlahSiswaPerKK[$data->kode_kk][] = $data;
+                }
+            }
+
+            $totalSiswaPerKK = [];
+            foreach ($jumlahSiswaPerKK as $kodeKK => $data) {
+                $totalSiswaPerKK[$kodeKK] = array_sum(array_column($data, 'jumlah_siswa'));
+            }
+
+            $dataPerTahunAjaran[$ta->tahunajaran] = [
+                'jumlahSiswaPerKK' => $jumlahSiswaPerKK,
+                'totalSiswaPerKK'  => $totalSiswaPerKK,
+            ];
         }
 
         $personilData = PhotoPersonil::select(
@@ -121,8 +169,13 @@ class SkaOneWelcomeController extends Controller
         return view(
             'skaonewelcome.program',
             [
-                'tahunAjaran' => $tahunAjaran,
-                'semester' => $semester,
+                /* 'tahunAjaran' => $tahunAjaran,
+                'semester' => $semester, */
+
+                'tahunAjarans' => $tahunAjarans,
+                'dataPerTahunAjaran' => $dataPerTahunAjaran,
+                'tahunAjaranAktif' => $tahunAjaranAktif,
+
                 'jumlahSiswaPerKK' => $jumlahSiswaPerKK,
                 'totalSiswaPerKK' => $totalSiswaPerKK,
                 'personilAkuntansi' => $personilAkuntansi,

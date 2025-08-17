@@ -44,30 +44,67 @@
                     </div>
                 @endif
                 <hr class="g-brd-gray-light-v4 g-my-60">
-                <table class="table mt-5">
-                    <thead>
-                        <tr>
-                            <th>Tingkat</th>
-                            <th>Jumlah Siswa</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($jumlahSiswaPerKK['833'] as $row)
-                            <tr>
-                                <td align="center">{{ $row->rombel_tingkat }}</td>
-                                <td align="center">{{ $row->jumlah_siswa }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td align="center"><strong>Total</strong></td>
-                            <td align="center"><strong>{{ $totalSiswaPerKK['833'] }}</strong></td>
-                        </tr>
-                    </tfoot>
-                </table>
-                <p class="text-danger fs-6">{{ terbilang($totalSiswaPerKK['833']) }} orang</p>
+                <style>
+                    /* khusus untuk tab tahun ajaran */
+                    #tahunAjaranTab-833 .nav-link {
+                        font-size: 0.85rem;
+                        /* lebih kecil sedikit dari default */
+                        padding: 0.3rem 0.6rem;
+                        /* supaya tab nya tidak terlalu tinggi */
+                    }
+                </style>
+                <ul class="nav nav-tabs" id="tahunAjaranTab-833" role="tablist">
+                    @foreach ($tahunAjarans as $ta)
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link {{ $ta->id == $tahunAjaranAktif->id ? 'active' : '' }}"
+                                id="tab-833-{{ $ta->id }}" data-toggle="tab"
+                                href="#content-833-{{ $ta->id }}" role="tab"
+                                aria-controls="content-833-{{ $ta->id }}"
+                                aria-selected="{{ $ta->id == $tahunAjaranAktif->id ? 'true' : 'false' }}">
+                                {{ $ta->tahunajaran }}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
 
+                <div class="tab-content mt-3" id="tahunAjaranContent-833">
+                    @foreach ($tahunAjarans as $ta)
+                        <div class="tab-pane fade {{ $ta->id == $tahunAjaranAktif->id ? 'show active' : '' }}"
+                            id="content-833-{{ $ta->id }}" role="tabpanel"
+                            aria-labelledby="tab-833-{{ $ta->id }}">
+
+                            <h6>Kompetensi Keahlian 833 ({{ $ta->tahunajaran }})</h6>
+                            <table class="table mt-3 table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Tingkat</th>
+                                        <th>Jumlah Siswa</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($dataPerTahunAjaran[$ta->tahunajaran]['jumlahSiswaPerKK']['833'] as $row)
+                                        <tr>
+                                            <td align="center">{{ $row->rombel_tingkat }}</td>
+                                            <td align="center">{{ $row->jumlah_siswa }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td align="center"><strong>Total</strong></td>
+                                        <td align="center">
+                                            <strong>{{ $dataPerTahunAjaran[$ta->tahunajaran]['totalSiswaPerKK']['833'] }}</strong>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <p class="text-danger fs-6">
+                                {{ terbilang($dataPerTahunAjaran[$ta->tahunajaran]['totalSiswaPerKK']['833']) }} orang
+                            </p>
+
+                        </div>
+                    @endforeach
+                </div>
             </div>
             <div class="col-md-9">
                 <!-- Footer -->
