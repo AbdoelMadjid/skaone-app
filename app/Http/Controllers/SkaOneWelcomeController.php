@@ -86,7 +86,12 @@ class SkaOneWelcomeController extends Controller
 
         foreach ($tahunAjarans as $ta) {
             $dataSiswa = PesertaDidikRombel::where('tahun_ajaran', $ta->tahunajaran)
-                ->select('kode_kk', 'rombel_tingkat', DB::raw('count(*) as jumlah_siswa'))
+                ->select(
+                    'kode_kk',
+                    'rombel_tingkat',
+                    DB::raw('count(*) as jumlah_siswa'),
+                    DB::raw('count(distinct rombel_nama) as jumlah_rombel') // ✅ hitung rombel unik
+                )
                 ->groupBy('kode_kk', 'rombel_tingkat')
                 ->orderBy('kode_kk')
                 ->get();
@@ -106,15 +111,19 @@ class SkaOneWelcomeController extends Controller
             }
 
             $totalSiswaPerKK = [];
+            $totalRombelPerKK = [];
             foreach ($jumlahSiswaPerKK as $kodeKK => $data) {
                 $totalSiswaPerKK[$kodeKK] = array_sum(array_column($data, 'jumlah_siswa'));
+                $totalRombelPerKK[$kodeKK] = array_sum(array_column($data, 'jumlah_rombel')); // ✅ total rombel
             }
 
             $dataPerTahunAjaran[$ta->tahunajaran] = [
                 'jumlahSiswaPerKK' => $jumlahSiswaPerKK,
                 'totalSiswaPerKK'  => $totalSiswaPerKK,
+                'totalRombelPerKK' => $totalRombelPerKK,
             ];
         }
+
 
         $personilData = PhotoPersonil::select(
             'photo_personils.id',

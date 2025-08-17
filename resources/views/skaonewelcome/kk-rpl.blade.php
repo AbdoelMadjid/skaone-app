@@ -76,13 +76,15 @@
                                 <thead>
                                     <tr>
                                         <th>Tingkat</th>
-                                        <th>Jumlah Siswa</th>
+                                        <th>Rombel</th>
+                                        <th>Siswa</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($dataPerTahunAjaran[$ta->tahunajaran]['jumlahSiswaPerKK']['411'] as $row)
                                         <tr>
                                             <td align="center">{{ $row->rombel_tingkat }}</td>
+                                            <td align="center">{{ $row->jumlah_rombel }}</td>
                                             <td align="center">{{ $row->jumlah_siswa }}</td>
                                         </tr>
                                     @endforeach
@@ -90,6 +92,9 @@
                                 <tfoot>
                                     <tr>
                                         <td align="center"><strong>Total</strong></td>
+                                        <td align="center">
+                                            <strong>{{ $dataPerTahunAjaran[$ta->tahunajaran]['totalRombelPerKK']['411'] }}</strong>
+                                        </td>
                                         <td align="center">
                                             <strong>{{ $dataPerTahunAjaran[$ta->tahunajaran]['totalSiswaPerKK']['411'] }}</strong>
                                         </td>
