@@ -9,7 +9,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
-class MenuWakasekSeeder extends Seeder
+class MenuPklPesertaSeeder extends Seeder
 {
     use HasMenuPermission;
     /**
@@ -24,8 +24,8 @@ class MenuWakasekSeeder extends Seeder
 
         DB::transaction(function () {
             // ====== Hapus data lama ======
-            $menuIds = Menu::where('url', 'wakilkepalasekolah')
-                ->orWhere('url', 'like', 'wakilkepalasekolah%')
+            $menuIds = Menu::where('url', 'pesertapkl')
+                ->orWhere('url', 'like', 'pesertapkl%')
                 ->pluck('id');
 
             if ($menuIds->isNotEmpty()) {
@@ -46,7 +46,7 @@ class MenuWakasekSeeder extends Seeder
                 DB::table('permissions')->whereIn('id', $permissionIds)->delete();
 
                 // 🔹 Pastikan hapus permission yang URL-nya mirip (antisipasi orphan permission)
-                DB::table('permissions')->where('name', 'like', '%wakilkepalasekolah%')->delete();
+                DB::table('permissions')->where('name', 'like', '%pesertapkl%')->delete();
 
                 // Hapus menus
                 DB::table('menus')->whereIn('id', $menuIds)->delete();
@@ -54,14 +54,23 @@ class MenuWakasekSeeder extends Seeder
                 DB::statement('SET FOREIGN_KEY_CHECKS=1;');
             }
 
-            $mm = Menu::firstOrCreate(['url' => 'wakilkepalasekolah'], ['name' => 'Wakil Kepala Sekolah', 'category' => 'MANAJEMEN SEKOLAH', 'icon' => 'contacts-book-2']);
-            $this->attachMenupermission($mm, ['read'], ['wakasek']);
+            $mm = Menu::firstOrCreate(['url' => 'pesertapkl'], ['name' => 'Peserta', 'category' => 'APLIKASI PKL', 'icon' => 'account-pin-box']);
+            $this->attachMenupermission($mm, ['read'], ['pesertapkl']);
 
-            $sm = $mm->subMenus()->create(['name' => 'Agenda Wakasek', 'url' => $mm->url . '/agenda-kegiatan-wakasek', 'category' => $mm->category]);
-            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['wakasek']);
+            $sm = $mm->subMenus()->create(['name' => 'Informasi', 'url' => $mm->url . '/siswa-informasi', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['read'], ['pesertapkl']);
 
-            $sm = $mm->subMenus()->create(['name' => 'Anggaran Wakasek', 'url' => $mm->url . '/anggaran-wakasek', 'category' => $mm->category]);
-            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['wakasek']);
+            $sm = $mm->subMenus()->create(['name' => 'Jurnal PKL', 'url' => $mm->url . '/jurnal-siswa', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['pesertapkl']);
+
+            $sm = $mm->subMenus()->create(['name' => 'Absensi', 'url' => $mm->url . '/absensi-siswa', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['pesertapkl']);
+
+            $sm = $mm->subMenus()->create(['name' => 'Monitoring', 'url' => $mm->url . '/monitoring-siswa', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['pesertapkl']);
+
+            $sm = $mm->subMenus()->create(['name' => 'Pesan', 'url' => $mm->url . '/pesan-prakerin', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['pesertapkl']);
         });
     }
 }

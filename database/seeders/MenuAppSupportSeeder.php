@@ -7,6 +7,7 @@ use App\Traits\HasMenuPermission;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class MenuAppSupportSeeder extends Seeder
 {
@@ -21,32 +22,64 @@ class MenuAppSupportSeeder extends Seeder
          * @var Menu $mm
          */
 
-        //tools
-        $mm = Menu::firstOrCreate(['url' => 'appsupport'], ['name' => 'App Support', 'category' => 'KONFIGURASI', 'icon' => 'tools']);
-        $this->attachMenupermission($mm, ['read'], ['admin']);
+        DB::transaction(function () {
+            // ====== Hapus data lama ======
+            $menuIds = Menu::where('url', 'appsupport')
+                ->orWhere('url', 'like', 'appsupport%')
+                ->pluck('id');
 
-        $sm = $mm->subMenus()->create(['name' => 'Menu', 'url' => $mm->url . '/menu', 'category' => $mm->category]);
-        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete', 'sort'], ['admin']);
+            if ($menuIds->isNotEmpty()) {
+                // Ambil semua permission_id yang terkait
+                $permissionIds = DB::table('menu_permission')
+                    ->whereIn('menu_id', $menuIds)
+                    ->pluck('permission_id');
 
-        $sm = $mm->subMenus()->create(['name' => 'App Profil', 'url' => $mm->url . '/app-profil', 'category' => $mm->category]);
-        $this->attachMenupermission($sm, ['create', 'read', 'update'], ['admin']);
+                DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-        $sm = $mm->subMenus()->create(['name' => 'App Fitur', 'url' => $mm->url . '/app-fiturs', 'category' => $mm->category]);
-        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['admin']);
+                // Hapus role_has_permissions
+                DB::table('role_has_permissions')->whereIn('permission_id', $permissionIds)->delete();
 
-        $sm = $mm->subMenus()->create(['name' => 'Impor Data Master', 'url' => $mm->url . '/impor-data-master', 'category' => $mm->category]);
-        $this->attachMenupermission($sm, ['read'], ['admin']);
+                // Hapus relasi menu_permission
+                DB::table('menu_permission')->whereIn('menu_id', $menuIds)->delete();
 
-        $sm = $mm->subMenus()->create(['name' => 'Ekspor Data Master', 'url' => $mm->url . '/ekspor-data-master', 'category' => $mm->category]);
-        $this->attachMenupermission($sm, ['read'], ['admin']);
+                // Hapus permissions berdasarkan ID relasi
+                DB::table('permissions')->whereIn('id', $permissionIds)->delete();
 
-        $sm = $mm->subMenus()->create(['name' => 'Backup DB', 'url' => $mm->url . '/backup-db', 'category' => $mm->category]);
-        $this->attachMenupermission($sm, ['read'], ['admin']);
+                // 🔹 Pastikan hapus permission yang URL-nya mirip (antisipasi orphan permission)
+                DB::table('permissions')->where('name', 'like', '%appsupport%')->delete();
 
-        $sm = $mm->subMenus()->create(['name' => 'Data Login', 'url' => $mm->url . '/data-login', 'category' => $mm->category]);
-        $this->attachMenupermission($sm, ['read'], ['admin']);
+                // Hapus menus
+                DB::table('menus')->whereIn('id', $menuIds)->delete();
 
-        $sm = $mm->subMenus()->create(['name' => 'Referensi', 'url' => $mm->url . '/referensi', 'category' => $mm->category]);
-        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['admin']);
+                DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+            }
+            //tools
+            $mm = Menu::firstOrCreate(['url' => 'appsupport'], ['name' => 'App Support', 'category' => 'KONFIGURASI', 'icon' => 'tools']);
+            $this->attachMenupermission($mm, ['read'], ['admin']);
+
+            $sm = $mm->subMenus()->create(['name' => 'Menu', 'url' => $mm->url . '/menu', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete', 'sort'], ['admin']);
+
+            $sm = $mm->subMenus()->create(['name' => 'App Profil', 'url' => $mm->url . '/app-profil', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update'], ['admin']);
+
+            $sm = $mm->subMenus()->create(['name' => 'App Fitur', 'url' => $mm->url . '/app-fiturs', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['admin']);
+
+            $sm = $mm->subMenus()->create(['name' => 'Impor Data Master', 'url' => $mm->url . '/impor-data-master', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['read'], ['admin']);
+
+            $sm = $mm->subMenus()->create(['name' => 'Ekspor Data Master', 'url' => $mm->url . '/ekspor-data-master', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['read'], ['admin']);
+
+            $sm = $mm->subMenus()->create(['name' => 'Backup DB', 'url' => $mm->url . '/backup-db', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['read'], ['admin']);
+
+            $sm = $mm->subMenus()->create(['name' => 'Data Login', 'url' => $mm->url . '/data-login', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['read'], ['admin']);
+
+            $sm = $mm->subMenus()->create(['name' => 'Referensi', 'url' => $mm->url . '/referensi', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['admin']);
+        });
     }
 }

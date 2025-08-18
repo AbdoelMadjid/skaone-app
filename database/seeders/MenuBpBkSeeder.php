@@ -7,6 +7,7 @@ use App\Traits\HasMenuPermission;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class MenuBpBkSeeder extends Seeder
 {
@@ -21,25 +22,58 @@ class MenuBpBkSeeder extends Seeder
          * @var Menu $mm
          */
 
-        $mm = Menu::firstOrCreate(['url' => 'bpbk'], ['name' => 'Bimbingan Konseling', 'category' => 'MANAJEMEN SEKOLAH', 'icon' => 'user-settings']);
-        $this->attachMenupermission($mm, ['read'], ['bpbk']);
+        DB::transaction(function () {
+            // ====== Hapus data lama ======
+            $menuIds = Menu::where('url', 'bpbk')
+                ->orWhere('url', 'like', 'bpbk%')
+                ->pluck('id');
 
-        $sm = $mm->subMenus()->create(['name' => 'Konseling', 'url' => $mm->url . '/konseling', 'category' => $mm->category]);
-        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['bpbk']);
+            if ($menuIds->isNotEmpty()) {
+                // Ambil semua permission_id yang terkait
+                $permissionIds = DB::table('menu_permission')
+                    ->whereIn('menu_id', $menuIds)
+                    ->pluck('permission_id');
 
-        $sm = $mm->subMenus()->create(['name' => 'Data KIP', 'url' => $mm->url . '/data-kip', 'category' => $mm->category]);
-        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['bpbk']);
+                DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-        $sm = $mm->subMenus()->create(['name' => 'Home Visit', 'url' => $mm->url . '/home-visit', 'category' => $mm->category]);
-        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['bpbk']);
+                // Hapus role_has_permissions
+                DB::table('role_has_permissions')->whereIn('permission_id', $permissionIds)->delete();
 
-        $sm = $mm->subMenus()->create(['name' => 'Melanjutkan Kuliah', 'url' => $mm->url . '/melanjutkan-kuliah', 'category' => $mm->category]);
-        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['bpbk']);
+                // Hapus relasi menu_permission
+                DB::table('menu_permission')->whereIn('menu_id', $menuIds)->delete();
 
-        $sm = $mm->subMenus()->create(['name' => 'Penelusuran Lulusan', 'url' => $mm->url . '/penelusuran-lulusan', 'category' => $mm->category]);
-        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['bpbk']);
+                // Hapus permissions berdasarkan ID relasi
+                DB::table('permissions')->whereIn('id', $permissionIds)->delete();
 
-        $sm = $mm->subMenus()->create(['name' => 'Anggaran BP BK', 'url' => $mm->url . '/anggaran-bpbk', 'category' => $mm->category]);
-        $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['bpbk']);
+                // 🔹 Pastikan hapus permission yang URL-nya mirip (antisipasi orphan permission)
+                DB::table('permissions')->where('name', 'like', '%bpbk%')->delete();
+
+                // Hapus menus
+                DB::table('menus')->whereIn('id', $menuIds)->delete();
+
+                DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+            }
+
+            $mm = Menu::firstOrCreate(['url' => 'bpbk'], ['name' => 'Bimbingan Konseling', 'category' => 'MANAJEMEN SEKOLAH', 'icon' => 'user-settings']);
+            $this->attachMenupermission($mm, ['read'], ['bpbk']);
+
+            $sm = $mm->subMenus()->create(['name' => 'Konseling', 'url' => $mm->url . '/konseling', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['bpbk']);
+
+            $sm = $mm->subMenus()->create(['name' => 'Data KIP', 'url' => $mm->url . '/data-kip', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['bpbk']);
+
+            $sm = $mm->subMenus()->create(['name' => 'Home Visit', 'url' => $mm->url . '/home-visit', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['bpbk']);
+
+            $sm = $mm->subMenus()->create(['name' => 'Melanjutkan Kuliah', 'url' => $mm->url . '/melanjutkan-kuliah', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['bpbk']);
+
+            $sm = $mm->subMenus()->create(['name' => 'Penelusuran Lulusan', 'url' => $mm->url . '/penelusuran-lulusan', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['bpbk']);
+
+            $sm = $mm->subMenus()->create(['name' => 'Anggaran BP BK', 'url' => $mm->url . '/anggaran-bpbk', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['bpbk']);
+        });
     }
 }

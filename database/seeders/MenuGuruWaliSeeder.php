@@ -23,7 +23,7 @@ class MenuGuruWaliSeeder extends Seeder
          */
 
         DB::transaction(function () {
-            // ====== Hapus data lama khusus guruwali ======
+            // ====== Hapus data lama ======
             $menuIds = Menu::where('url', 'guruwali')
                 ->orWhere('url', 'like', 'guruwali%')
                 ->pluck('id');

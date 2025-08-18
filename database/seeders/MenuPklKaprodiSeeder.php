@@ -1,0 +1,85 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\AppSupport\Menu;
+use App\Traits\HasMenuPermission;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+
+class MenuPklKaprodiSeeder extends Seeder
+{
+    use HasMenuPermission;
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        Cache::forget('menus');
+        /**
+         * @var Menu $mm
+         */
+
+        DB::transaction(function () {
+            // ====== Hapus data lama ======
+            $menuIds = Menu::where('url', 'kaprodipkl')
+                ->orWhere('url', 'like', 'kaprodipkl%')
+                ->pluck('id');
+
+            if ($menuIds->isNotEmpty()) {
+                // Ambil semua permission_id yang terkait
+                $permissionIds = DB::table('menu_permission')
+                    ->whereIn('menu_id', $menuIds)
+                    ->pluck('permission_id');
+
+                DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+                // Hapus role_has_permissions
+                DB::table('role_has_permissions')->whereIn('permission_id', $permissionIds)->delete();
+
+                // Hapus relasi menu_permission
+                DB::table('menu_permission')->whereIn('menu_id', $menuIds)->delete();
+
+                // Hapus permissions berdasarkan ID relasi
+                DB::table('permissions')->whereIn('id', $permissionIds)->delete();
+
+                // 🔹 Pastikan hapus permission yang URL-nya mirip (antisipasi orphan permission)
+                DB::table('permissions')->where('name', 'like', '%kaprodipkl%')->delete();
+
+                // Hapus menus
+                DB::table('menus')->whereIn('id', $menuIds)->delete();
+
+                DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+            }
+
+            $mm = Menu::firstOrCreate(['url' => 'kaprodipkl'], ['name' => 'Ketua Program Studi', 'category' => 'APLIKASI PKL', 'icon' => 'briefcase']);
+            $this->attachMenupermission($mm, ['read'], ['kaprodiak', 'kaprodibd', 'kaprodimp', 'kaprodirpl', 'kaproditkj']);
+
+            $sm = $mm->subMenus()->create(['name' => 'Informasi', 'url' => $mm->url . '/informasi-prakerin', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['kaprodiak', 'kaprodibd', 'kaprodimp', 'kaprodirpl', 'kaproditkj']);
+
+            $sm = $mm->subMenus()->create(['name' => 'Modul Ajar', 'url' => $mm->url . '/modul-ajar', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['kaprodiak', 'kaprodibd', 'kaprodimp', 'kaprodirpl', 'kaproditkj']);
+
+            $sm = $mm->subMenus()->create(['name' => 'Peserta Prakerin', 'url' => $mm->url . '/peserta-prakerin', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['kaprodiak', 'kaprodibd', 'kaprodimp', 'kaprodirpl', 'kaproditkj']);
+
+            $sm = $mm->subMenus()->create(['name' => 'Pembimbing', 'url' => $mm->url . '/pembimbing-prakerin', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['kaprodiak', 'kaprodibd', 'kaprodimp', 'kaprodirpl', 'kaproditkj']);
+
+            $sm = $mm->subMenus()->create(['name' => 'Penempatan', 'url' => $mm->url . '/penempatan-prakerin', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['kaprodiak', 'kaprodibd', 'kaprodimp', 'kaprodirpl', 'kaproditkj']);
+
+            $sm = $mm->subMenus()->create(['name' => 'Pembobotan', 'url' => $mm->url . '/pembobotan-nilai', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['kaprodiak', 'kaprodibd', 'kaprodimp', 'kaprodirpl', 'kaproditkj']);
+
+            $sm = $mm->subMenus()->create(['name' => 'Penilaian', 'url' => $mm->url . '/penilaian-prakerin', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['kaprodiak', 'kaprodibd', 'kaprodimp', 'kaprodirpl', 'kaproditkj']);
+
+            $sm = $mm->subMenus()->create(['name' => 'Pelaporan', 'url' => $mm->url . '/pelaporan-prakerin', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['kaprodiak', 'kaprodibd', 'kaprodimp', 'kaprodirpl', 'kaproditkj']);
+        });
+    }
+}

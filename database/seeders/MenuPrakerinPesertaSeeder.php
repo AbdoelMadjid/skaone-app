@@ -4,12 +4,12 @@ namespace Database\Seeders;
 
 use App\Models\AppSupport\Menu;
 use App\Traits\HasMenuPermission;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
-class MenuAlumniSeeder extends Seeder
+class MenuPrakerinPesertaSeeder extends Seeder
 {
     use HasMenuPermission;
     /**
@@ -24,8 +24,8 @@ class MenuAlumniSeeder extends Seeder
 
         DB::transaction(function () {
             // ====== Hapus data lama ======
-            $menuIds = Menu::where('url', 'alumni')
-                ->orWhere('url', 'like', 'alumni%')
+            $menuIds = Menu::where('url', 'siswapesertapkl')
+                ->orWhere('url', 'like', 'siswapesertapkl%')
                 ->pluck('id');
 
             if ($menuIds->isNotEmpty()) {
@@ -46,7 +46,7 @@ class MenuAlumniSeeder extends Seeder
                 DB::table('permissions')->whereIn('id', $permissionIds)->delete();
 
                 // 🔹 Pastikan hapus permission yang URL-nya mirip (antisipasi orphan permission)
-                DB::table('permissions')->where('name', 'like', '%alumni%')->delete();
+                DB::table('permissions')->where('name', 'like', '%siswapesertapkl%')->delete();
 
                 // Hapus menus
                 DB::table('menus')->whereIn('id', $menuIds)->delete();
@@ -54,20 +54,17 @@ class MenuAlumniSeeder extends Seeder
                 DB::statement('SET FOREIGN_KEY_CHECKS=1;');
             }
 
-            $mm = Menu::firstOrCreate(['url' => 'alumni'], ['name' => 'Alumni', 'category' => 'PESERTA DIDIK', 'icon' => 'group']);
-            $this->attachMenupermission($mm, ['read'], ['alumni']);
+            $mm = Menu::firstOrCreate(['url' => 'siswapesertapkl'], ['name' => 'Siswa Peserta PKL', 'category' => 'APLIKASI PRAKERIN', 'icon' => 'account-pin-box']);
+            $this->attachMenupermission($mm, ['read'], ['siswaprakerin']);
 
-            $sm = $mm->subMenus()->create(['name' => 'Riwayat Kerja', 'url' => $mm->url . '/riwayat-kerja', 'category' => $mm->category]);
-            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['alumni']);
+            $sm = $mm->subMenus()->create(['name' => 'Informasi', 'url' => $mm->url . '/informasi', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['read'], ['siswaprakerin']);
 
-            $sm = $mm->subMenus()->create(['name' => 'Informasi Alumni', 'url' => $mm->url . '/informasi-alumni', 'category' => $mm->category]);
-            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['alumni']);
+            $sm = $mm->subMenus()->create(['name' => 'Jurnal', 'url' => $mm->url . '/jurnal', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['siswaprakerin']);
 
-            $sm = $mm->subMenus()->create(['name' => 'Arsip Transkrip', 'url' => $mm->url . '/arsip-transkrip', 'category' => $mm->category]);
-            $this->attachMenupermission($sm, ['read'], ['alumni']);
-
-            $sm = $mm->subMenus()->create(['name' => 'Arsip Kelulusan', 'url' => $mm->url . '/arsip-kelulusan', 'category' => $mm->category]);
-            $this->attachMenupermission($sm, ['read'], ['alumni']);
+            $sm = $mm->subMenus()->create(['name' => 'Absensi', 'url' => $mm->url . '/absensi', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['siswaprakerin']);
         });
     }
 }
