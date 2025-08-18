@@ -22,7 +22,6 @@
         "spatie/laravel-permission": "^6.9",
         "stichoza/google-translate-php": "^5.2",
         "yajra/laravel-datatables": "10.0",
-        "yajra/laravel-datatables-buttons": "^10.0",
         "yajra/laravel-datatables-editor": "^1.25"
     },
     "require-dev": {
