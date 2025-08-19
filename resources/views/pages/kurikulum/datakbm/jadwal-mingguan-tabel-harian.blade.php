@@ -133,6 +133,7 @@
         <tfoot>
             <tr>
                 <th>Total</th>
+                <th></th>
                 @foreach ($semuaJamKe as $jam)
                     <th class="text-center">
                         @php
