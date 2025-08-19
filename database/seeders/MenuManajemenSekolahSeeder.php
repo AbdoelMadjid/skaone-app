@@ -104,6 +104,9 @@ class MenuManajemenSekolahSeeder extends Seeder
             $sm = $mm->subMenus()->create(['name' => 'Wali Kelas', 'url' => $mm->url . '/wali-kelas', 'category' => $mm->category]);
             $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['admin']);
 
+            $sm = $mm->subMenus()->create(['name' => 'Guru Wali', 'url' => $mm->url . '/data-guru-wali', 'category' => $mm->category]);
+            $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['admin']);
+
             $sm = $mm->subMenus()->create(['name' => 'Peserta Didik', 'url' => $mm->url . '/peserta-didik', 'category' => $mm->category]);
             $this->attachMenupermission($sm, ['create', 'read', 'update', 'delete'], ['admin']);
         });

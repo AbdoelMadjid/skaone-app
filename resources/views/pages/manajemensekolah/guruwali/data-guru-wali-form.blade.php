@@ -1,4 +1,4 @@
-<x-form.modal size="xl" title="{{ __('translation.data-siswa-guruwali') }}" action="{{ $action ?? null }}">
+<x-form.modal size="xl" title="{{ __('translation.guru-wali') }}" action="{{ $action ?? null }}">
     @if ($data->id)
         @method('put')
     @endif

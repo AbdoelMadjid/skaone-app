@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ManajemenSekolah\BidangKeahlianController;
+use App\Http\Controllers\ManajemenSekolah\GuruWaliController;
 use App\Http\Controllers\ManajemenSekolah\IdentitasSekolahController;
 use App\Http\Controllers\ManajemenSekolah\JabatanLainController;
 use App\Http\Controllers\ManajemenSekolah\KepalaSekolahController;
@@ -53,5 +54,7 @@ Route::middleware('auth')->group(function () {
             Route::resource('ketua-program-studi', KetuaProgramStudiController::class);
             Route::resource('jabatan-lain', JabatanLainController::class);
         });
+
+        Route::resource('data-guru-wali', GuruWaliController::class);
     });
 });

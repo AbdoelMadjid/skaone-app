@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\GuruWali;
+namespace App\Http\Requests\ManajemenSekolah;
 
 use Illuminate\Foundation\Http\FormRequest;
 
