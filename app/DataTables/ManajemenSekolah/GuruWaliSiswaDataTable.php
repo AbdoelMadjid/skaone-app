@@ -178,8 +178,8 @@ class GuruWaliSiswaDataTable extends DataTable
 
         $user = User::find(Auth::user()->id);
 
-        // Jika user memiliki role 'master', tambahkan kolom role_add
-        if ($user && $user->hasRole('master')) {
+        // Tambahkan kolom action HANYA jika route bukan guruwali/data-siswa-guruwali
+        if ($user && $user->hasRole('master') && !request()->is('guruwali/data-siswa-guruwali*')) {
             $columns[] = Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

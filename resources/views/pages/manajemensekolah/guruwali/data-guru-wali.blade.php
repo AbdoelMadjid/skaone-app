@@ -15,9 +15,13 @@
         <div class="card-header">
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
+
                 <div class="flex-shrink-0">
-                    <x-btn-tambah dinamisBtn="true" can="create manajemensekolah/data-guru-wali"
-                        route="manajemensekolah.data-guru-wali.create" />
+                    @if (auth()->check() &&
+                            auth()->user()->hasAnyRole(['master']))
+                        <x-btn-tambah dinamisBtn="true" can="create manajemensekolah/data-guru-wali"
+                            route="manajemensekolah.data-guru-wali.create" />
+                    @endif
                 </div>
             </div>
         </div>
