@@ -9,7 +9,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
-class MenuProfilSeeder extends Seeder
+class MenuProfilSeeder extends BaseMenuSeeder
 {
     use HasMenuPermission;
     /**

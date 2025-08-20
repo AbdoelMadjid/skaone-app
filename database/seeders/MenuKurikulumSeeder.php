@@ -9,7 +9,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
-class MenuKurikulumSeeder extends Seeder
+class MenuKurikulumSeeder extends BaseMenuSeeder
 {
     use HasMenuPermission;
     /**

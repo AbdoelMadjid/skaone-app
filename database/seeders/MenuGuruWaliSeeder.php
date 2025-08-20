@@ -9,7 +9,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
-class MenuGuruWaliSeeder extends Seeder
+class MenuGuruWaliSeeder extends BaseMenuSeeder
 {
     use HasMenuPermission;
     /**

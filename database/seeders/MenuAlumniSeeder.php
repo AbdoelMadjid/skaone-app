@@ -9,7 +9,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Cache;
 
-class MenuAlumniSeeder extends Seeder
+class MenuAlumniSeeder extends BaseMenuSeeder
 {
     use HasMenuPermission;
     /**

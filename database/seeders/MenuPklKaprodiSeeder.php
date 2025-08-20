@@ -9,7 +9,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
-class MenuPklKaprodiSeeder extends Seeder
+class MenuPklKaprodiSeeder extends BaseMenuSeeder
 {
     use HasMenuPermission;
     /**
