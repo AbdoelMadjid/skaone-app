@@ -15,7 +15,6 @@
         <div class="card-header">
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
-
                 <div class="flex-shrink-0">
                     @if (auth()->check() &&
                             auth()->user()->hasAnyRole(['master']))

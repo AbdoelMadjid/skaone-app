@@ -15,6 +15,9 @@
         <div class="card-header">
             <div class="d-flex align-items-center">
                 <x-heading-title>@yield('title')</x-heading-title>
+                <div class="flex-shrink-0">
+                    <x-btn-action dinamisBtn="true" icon="ri-pencil-fill" label="Catatan" />
+                </div>
             </div>
         </div>
         <div class="card-body p-1">
