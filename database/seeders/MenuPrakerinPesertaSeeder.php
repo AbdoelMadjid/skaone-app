@@ -42,12 +42,12 @@ class MenuPrakerinPesertaSeeder extends BaseMenuSeeder
                 // Hapus relasi menu_permission
                 DB::table('menu_permission')->whereIn('menu_id', $menuIds)->delete();
 
-                // 🔹 Hapus permission orphan khusus
+                // 🔹 Cari permissions orphan KHUSUS untuk menu ini
                 $orphanPermissionIds = DB::table('permissions')
                     ->whereNotIn('id', function ($query) {
                         $query->select('permission_id')->from('menu_permission');
                     })
-                    ->where('name', 'like', '%siswapesertapkl%')
+                    ->whereIn('name', Menu::whereIn('id', $menuIds)->pluck('url')) // exact match
                     ->pluck('id');
 
                 if ($orphanPermissionIds->isNotEmpty()) {

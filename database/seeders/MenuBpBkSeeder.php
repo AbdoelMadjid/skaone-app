@@ -45,19 +45,17 @@ class MenuBpBkSeeder extends BaseMenuSeeder
                 // Hapus permissions berdasarkan ID relasi
                 DB::table('permissions')->whereIn('id', $permissionIds)->delete();
 
-                // 🔹 Hapus permission orphan khusus
+                // 🔹 Cari permissions orphan KHUSUS untuk menu ini
                 $orphanPermissionIds = DB::table('permissions')
                     ->whereNotIn('id', function ($query) {
                         $query->select('permission_id')->from('menu_permission');
                     })
-                    ->where('name', 'like', '%bpbk%')
+                    ->whereIn('name', Menu::whereIn('id', $menuIds)->pluck('url')) // exact match
                     ->pluck('id');
 
                 if ($orphanPermissionIds->isNotEmpty()) {
                     DB::table('permissions')->whereIn('id', $orphanPermissionIds)->delete();
                 }
-
-
 
                 // Hapus menus
                 DB::table('menus')->whereIn('id', $menuIds)->delete();
