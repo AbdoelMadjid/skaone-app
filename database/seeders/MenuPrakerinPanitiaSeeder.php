@@ -45,8 +45,17 @@ class MenuPrakerinPanitiaSeeder extends Seeder
                 // Hapus permissions berdasarkan ID relasi
                 DB::table('permissions')->whereIn('id', $permissionIds)->delete();
 
-                // 🔹 Pastikan hapus permission yang URL-nya mirip (antisipasi orphan permission)
-                DB::table('permissions')->where('name', 'like', '%panitiaprakerin%')->delete();
+                // 🔹 Hapus permission orphan khusus
+                $orphanPermissionIds = DB::table('permissions')
+                    ->whereNotIn('id', function ($query) {
+                        $query->select('permission_id')->from('menu_permission');
+                    })
+                    ->where('name', 'like', '%panitiaprakerin%')
+                    ->pluck('id');
+
+                if ($orphanPermissionIds->isNotEmpty()) {
+                    DB::table('permissions')->whereIn('id', $orphanPermissionIds)->delete();
+                }
 
                 // Hapus menus
                 DB::table('menus')->whereIn('id', $menuIds)->delete();
