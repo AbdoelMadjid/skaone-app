@@ -392,7 +392,7 @@
 
                     {{-- Kolom nilai akhir total --}}
                     <td style="text-align: center;">
-                        <span class="{{ $nilaiAkhir < 75 ? 'text-danger fw-bold' : '' }}">
+                        <span class="{{ $nilaiAkhir < 60 ? 'text-danger fw-bold' : '' }}">
                             {{ $nilaiAkhir !== null ? number_format($nilaiAkhir, 2, ',', '.') : '' }}
                         </span>
                     </td>
