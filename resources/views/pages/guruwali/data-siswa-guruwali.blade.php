@@ -18,13 +18,46 @@
             </div>
         </div>
         <div class="card-body p-1">
-            halaman guru wali
+            {!! $dataTable->table(['class' => 'table table-striped hover', 'style' => 'width:100%']) !!}
         </div>
     </div>
 @endsection
 @section('script')
-    {{--  --}}
+    {!! $dataTable->scripts() !!}
 @endsection
 @section('script-bottom')
+    <script>
+        const datatable = 'guruwalisiswa-table';
+
+        $('#guruwalisiswa-table').on('draw.dt', function() {
+            var api = $('#guruwalisiswa-table').DataTable();
+            var lastGuru = null;
+            var no = 1;
+
+            api.rows({
+                page: 'current'
+            }).every(function() {
+                var $row = $(this.node());
+                var cellNo = $row.find('td').eq(0); // No
+                var cellTahun = $row.find('td').eq(1); // Tahunajaran
+                var cellGuru = $row.find('td').eq(2); // Nama Guru
+
+                if (lastGuru === cellGuru.text()) {
+                    cellNo.text('');
+                    cellTahun.text('');
+                    cellGuru.text('');
+                } else {
+                    cellNo.text(no++);
+                    lastGuru = cellGuru.text();
+                }
+            });
+        });
+
+        handleDataTableEvents(datatable);
+        handleAction(datatable, function(res) {
+            select2Init();
+        })
+        handleDelete(datatable)
+    </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

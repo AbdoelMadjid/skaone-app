@@ -6,9 +6,12 @@ use App\Helpers\ImageHelper;
 use App\Models\Kurikulum\DataKBM\PesertaDidikRombel;
 use App\Models\ManajemenSekolah\GuruWaliSiswa;
 use App\Models\ManajemenSekolah\PesertaDidik;
+use App\Models\User;
 use App\Traits\DatatableHelper;
-use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -125,6 +128,11 @@ class GuruWaliSiswaDataTable extends DataTable
             )
             ->orderBy('personil_sekolahs.namalengkap', 'asc');
 
+        // filter berdasarkan personal_id jika akses route guru wali
+        if (request()->is('guruwali/data-siswa-guruwali*')) {
+            $query->where('guru_wali_siswas.id_personil', Auth::user()->personal_id);
+        }
+
         return $query;
     }
 
@@ -156,7 +164,7 @@ class GuruWaliSiswaDataTable extends DataTable
      */
     public function getColumns(): array
     {
-        return [
+        $columns = [
             Column::make('DT_RowIndex')->title('No')->orderable(false)->searchable(false)->addClass('text-center')->width(50),
             Column::make('tahunajaran')->addClass('text-center'),
             Column::make('namaguru')->title('Nama Guru'),
@@ -166,12 +174,20 @@ class GuruWaliSiswaDataTable extends DataTable
             Column::make('tingkat_12'),
             Column::make('status')->title('Status'),
             Column::make('foto')->title('Photo'),
-            Column::computed('action')
+        ];
+
+        $user = User::find(Auth::user()->id);
+
+        // Jika user memiliki role 'master', tambahkan kolom role_add
+        if ($user && $user->hasRole('master')) {
+            $columns[] = Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
                 ->width(60)
-                ->addClass('text-center'),
-        ];
+                ->addClass('text-center');
+        }
+
+        return $columns;
     }
 
     /**
